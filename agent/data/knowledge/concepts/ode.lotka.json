@@ -1,0 +1,77 @@
+{
+  "schema_version": 3,
+  "concept_id": "ode.lotka",
+  "title": "种群竞争模型（Lotka-Volterra）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "微分方程建模",
+    "种群竞争模型（Lotka-Volterra）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.1",
+  "aliases": [
+    "捕食者猎物",
+    "Lotka-Volterra",
+    "种群模型"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "它用两个相互影响的方程，描述捕食者和猎物数量如何像跷跷板一样此消彼长。",
+    "intuition": "想象一片草原上有兔子和狐狸。兔子吃草，繁殖很快；狐狸吃兔子，繁殖较慢。当兔子多时，狐狸食物充足，数量增加；狐狸多了，兔子被大量捕食，数量减少；兔子少了，狐狸饿死，数量下降；狐狸少了，兔子又能安全繁殖，数量回升。如此循环，就像秋千一样来回摆动。Lotka-Volterra模型就是用来描述这种周期波动的数学工具。",
+    "when_to_use": "当题目涉及两个物种（或两个竞争实体）的相互影响，且一个以另一个为食（或资源），数据呈现周期性波动时，就该想到这个模型。例如：捕食者-猎物系统、寄生虫-宿主、甚至商业竞争（如论文中饮料市场份额的竞争）。",
+    "definition": "Lotka-Volterra模型（又称捕食者-猎物模型）是一对一阶非线性微分方程，用于描述两个物种在捕食关系下种群数量的动态变化。设猎物数量为 $x$，捕食者数量为 $y$，模型为：\n$$\\frac{dx}{dt} = \\alpha x - \\beta x y$$\n$$\\frac{dy}{dt} = \\delta x y - \\gamma y$$\n其中 $\\alpha, \\beta, \\delta, \\gamma$ 为正参数。",
+    "math_principle": "模型基于以下假设：\n- 猎物在没有捕食者时呈指数增长（$\\alpha x$）。\n- 捕食者与猎物的相遇导致捕食，捕食率与两者乘积成正比（$\\beta x y$），这减少了猎物数量。\n- 捕食者依靠猎物繁殖，繁殖率与猎物数量成正比（$\\delta x y$）。\n- 捕食者自然死亡率为常数（$\\gamma y$）。\n\n**平衡点**：令导数为零，得到两个平衡点：\n1. $(0,0)$：两者灭绝。\n2. $(\\gamma/\\delta, \\alpha/\\beta)$：非零平衡点。\n\n**稳定性分析**：计算Jacobian矩阵：\n$$J = \\begin{bmatrix} \\alpha - \\beta y & -\\beta x \\\\ \\delta y & \\delta x - \\gamma \\end{bmatrix}$$\n在非零平衡点处，特征值为纯虚数 $\\pm i\\sqrt{\\alpha\\gamma}$，表明该点是中心点，种群数量围绕平衡点做周期振荡。",
+    "step_by_step": [
+      "1. 确定两个物种：明确哪个是猎物（x），哪个是捕食者（y）。",
+      "2. 收集数据：获取两个物种随时间变化的种群数量数据（或估计参数）。",
+      "3. 设定参数：根据生态学知识或数据拟合，确定 α（猎物增长率）、β（捕食效率）、δ（捕食转化率）、γ（捕食者死亡率）。",
+      "4. 建立微分方程组：写出 Lotka-Volterra 方程。",
+      "5. 求解方程：使用数值方法（如欧拉法或龙格-库塔法）模拟种群变化，或解析求解平衡点。",
+      "6. 分析结果：观察种群是否振荡，计算周期和振幅，与实际数据对比。",
+      "7. 验证与调整：若模型不符合实际，可修改假设（如加入环境承载力、线性增长等）。"
+    ],
+    "worked_example": "假设一个简单系统：兔子（猎物）初始数量 x0=100，狐狸（捕食者）初始数量 y0=10。参数：α=0.1（兔子周增长率10%），β=0.01（每只狐狸每周捕食兔子效率），δ=0.005（每只兔子转化为狐狸繁殖的比率），γ=0.1（狐狸每周死亡率10%）。\n\n使用欧拉法模拟（时间步长 dt=0.1周）：\n- 第0周：x=100, y=10\n- 第0.1周：dx/dt = 0.1*100 - 0.01*100*10 = 10 - 10 = 0，所以 x 不变；dy/dt = 0.005*100*10 - 0.1*10 = 5 - 1 = 4，所以 y 增加 4*0.1=0.4，y=10.4。\n- 继续迭代，可观察到 x 和 y 的周期性波动。\n\n平衡点：x* = γ/δ = 0.1/0.005 = 20，y* = α/β = 0.1/0.01 = 10。初始点 (100,10) 远离平衡点，系统将围绕 (20,10) 振荡。",
+    "pitfalls": [
+      "1. 模型假设环境无限，没有考虑食物或空间限制，实际中种群不会无限增长。",
+      "2. 参数估计困难：α、β、δ、γ 往往难以从实际数据中准确获得。",
+      "3. 模型对初始条件敏感：微小变化可能导致不同振荡模式。",
+      "4. 忽略其他因素：如年龄结构、随机性、季节变化等。",
+      "5. 平衡点为中心点，实际中由于扰动，系统可能不会严格周期振荡。"
+    ],
+    "tools": "Python 使用 scipy.integrate.odeint 求解微分方程。\n```python\nimport numpy as np\nfrom scipy.integrate import odeint\nimport matplotlib.pyplot as plt\n\ndef lotka_volterra(state, t, alpha, beta, delta, gamma):\n    x, y = state\n    dxdt = alpha * x - beta * x * y\n    dydt = delta * x * y - gamma * y\n    return [dxdt, dydt]\n\n# 参数和初始条件\nalpha, beta, delta, gamma = 0.1, 0.01, 0.005, 0.1\nx0, y0 = 100, 10\nt = np.linspace(0, 200, 1000)\n\n# 求解\nsol = odeint(lotka_volterra, [x0, y0], t, args=(alpha, beta, delta, gamma))\nx, y = sol.T\n\n# 绘图\nplt.plot(t, x, label='Prey')\nplt.plot(t, y, label='Predator')\nplt.legend()\nplt.xlabel('Time')\nplt.ylabel('Population')\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\frac{dx}{dt} = \\alpha x - \\beta x y",
+      "variables": {
+        "x": "猎物数量",
+        "t": "时间",
+        "α": "猎物的自然增长率",
+        "β": "捕食效率（捕食者与猎物相遇导致捕食的速率）"
+      }
+    },
+    {
+      "latex_code": "\\frac{dy}{dt} = \\delta x y - \\gamma y",
+      "variables": {
+        "y": "捕食者数量",
+        "δ": "捕食转化率（猎物转化为捕食者繁殖的比率）",
+        "γ": "捕食者死亡率"
+      }
+    }
+  ],
+  "cases": [
+    "9548"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_C03"
+    ],
+    "from_papers": [
+      "9548"
+    ]
+  }
+}

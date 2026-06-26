@@ -1,0 +1,116 @@
+{
+  "paper_id": "2930",
+  "meta": {
+    "paper_id": "2930",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2011,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2011\\A\\2930.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "对原始 ISS 经费数据（1985-2011）进行非线性拟合，选用 Logistic 方程描述经费随时间增长并趋于饱和的趋势。",
+      "formulas": [
+        {
+          "latex_code": "y = \\frac{L}{1 + e^{-k(x - x_0)}}",
+          "variables": {
+            "y": "经费（百万美元）",
+            "x": "年份",
+            "L": "饱和值",
+            "k": "增长率",
+            "x_0": "中点年份"
+          }
+        }
+      ],
+      "source_excerpt": "After looking at this scatter plot of data, we decided that the best fit would probably be a logistic equation."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "对调整后的经费数据（1985-2011）进行线性回归，得到经费随时间线性增长的趋势方程。",
+      "formulas": [
+        {
+          "latex_code": "y = 0.0001x - 0.1931",
+          "variables": {
+            "y": "调整后经费（十亿美元）",
+            "x": "年份"
+          }
+        }
+      ],
+      "source_excerpt": "We then performed a linear regression on the adjusted data to get the equation y = 0.0001x - 0.1931."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "在私有化模型（Part 2A）中，对候选商业火箭公司按价格、可靠性、载荷等指标加权求和，选择最优品牌。",
+      "formulas": [
+        {
+          "latex_code": "S_i = \\sum_{j} w_j \\cdot x_{ij}",
+          "variables": {
+            "S_i": "第 i 个品牌的综合得分",
+            "w_j": "第 j 个指标的权重",
+            "x_{ij}": "第 i 个品牌在第 j 个指标上的得分"
+          }
+        }
+      ],
+      "source_excerpt": "We used a weighted sum model to compare different private companies based on price, reliability, and payload capacity."
+    },
+    {
+      "concept_id": "opt.lp",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "在 Part 1D 中，建立线性规划模型以最小化总成本，同时满足每年所需的载荷吨位和比例约束。",
+      "formulas": [
+        {
+          "latex_code": "\\min \\sum_{i} c_i x_i \\quad \\text{s.t.} \\quad \\sum_{i} p_i x_i \\geq D, \\quad x_i \\geq 0",
+          "variables": {
+            "c_i": "第 i 种运输方式的单位成本",
+            "x_i": "第 i 种运输方式的使用次数",
+            "p_i": "第 i 种运输方式的载荷",
+            "D": "总需求载荷"
+          }
+        }
+      ],
+      "source_excerpt": "We formulated a linear programming model to minimize cost subject to payload requirements."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "对模型中的关键参数（如载荷需求、成本系数）进行灵敏度分析，评估结果对参数变化的稳定性。",
+      "formulas": [],
+      "source_excerpt": "We performed sensitivity analysis on the payload demand and cost coefficients to see how the optimal solution changes."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用散点图展示原始经费数据，并叠加拟合曲线；使用柱状图对比不同方案的成本。",
+      "formulas": [],
+      "source_excerpt": "Figure 1.1: Raw Space Station Funding v. Year"
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出 14 条明确假设，如成本为决定性因素、忽略政治因素、2.2 lbs=1 kg 等，为模型简化提供依据。",
+      "formulas": [],
+      "source_excerpt": "Assumptions: Cost is the deciding factor in selecting the best option..."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用 IMRaD 结构：Problem Summary（引言）、Assumptions、Background Research（方法）、Part 1-4（结果）、Appendix（附录）。",
+      "formulas": [],
+      "source_excerpt": "Table of Contents: Problem Summary, Assumptions, Glossary, Background Research, Part 1: Baseline Projections..."
+    }
+  ]
+}

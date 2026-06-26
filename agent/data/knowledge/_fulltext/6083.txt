@@ -1,0 +1,884 @@
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 1
+Director of the Department of Transportation,
+As you know, traffic congestion is a significant issue that adversely affects many roads. In our
+study, we attempted to develop a method to refine the flow of vehicles near lane closures, as
+these areas frequently cause traffic congestion. At the same time, we wanted to ensure that this
+system was fair for all drivers. Based on our findings, there are specific guideline and signage
+changes we strongly recommend you adopt.
+Firstly, we suggest that something must be done to influence drivers to merge later rather than
+M
+earlier. While it is understandable that many drivers merge early because they fear not doing so
+will result in risky maneuvers, this practice imbalances the distribution of vehicles between the
+C
+two lanes and often times results in traffic jams. On the other hand, late lane merging allows both
+lanes to be optimally used and thus improves efficiency in traffic Mflow. There are several
+approaches which can be taken to eliminate early merging. You could update driver education
+materials or employ an outreach campaign, delivering widespreaid messages to publicize the
+H
+benefits of late merging as identified in our paper. You could also reposition and re-word merge
+warning road signs to discourage early merging. ：
+In addition, we recommend that you implement speed harmonization, which is the inclusion of
+号
+dynamic speed limits through electronic road signs. By setting up a detector at the sign
+announcing the lane closure and another half a mile ahead, we can count how many cars pass by
+众
+this distance in a given time, giving us a measured “congestion”. Based on varying degrees of
+congestion, we can manipulate the speed limit to optimize traffic flow near the lane closure.
+公
+Our methods should be tested before widespread implementation; after all, this is a rather large
+change to our trans信portation systems. Perhaps you could start with select merge zones with a
+history of congestion. Based on preliminary field testing, the solution could be further refined
+and then promoted nationwide.
+微
+The adoption of these recommendations will undoubtedly alleviate traffic congestion near lane
+closures. In turn, this will provide a plethora of benefits, including higher fuel efficiency for cars,
+reduced road rage, faster arrival times, and even greater economic production.
+Thank you,
+Team #6083
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 2
+Introduction
+Traffic congestion can result in a multitude of detrimental effects, including late arrivals for
+many commuters, wasted fuel from idle cars, and road rage. One common situation where this
+phenomenon occurs is during lane merging. For example, in a typical highway (65 mph speed
+limit) lane merging, a two-lane road will converge into a one-lane road. Since each person drives
+differently, drivers in the ending lane will perform varying maneuvers to merge into the other
+lane. After seeing a sign indicating an ending lane, some drivers will immediately switch lanes,
+while others will wait to merge later. In addition to considering the various behaviors of merging
+M
+drivers, it is equally important to recognize the actions of the drivers in the remaining lane. The
+combination of all these variations which exist within the system ultimatCely results in disrupted
+traffic flow. Thus, this paper seeks to model and describe a universal method for two-lane
+M
+highway merging that minimizes congestion. Furthermore, this analysis is applied to alternate
+situations, such as merging on a three-lane highway or on a slower two-lane secondary road.
+i
+H
+Assumptions and Justifications
+：
+Assumption 1: Cars enter the model at the speed limit.
+Justification: People commuting 号want to get to their destination, so they tend to
+drive at about the suggested speed limit if there are no obstructions.
+Therefore, cars entering the model are traveling at the speed limit set for
+众
+the road.
+公
+Assumption 2: Cars adhere to the two-second rule.
+Justification: Drivers wish to maintain a safe following distance to the car in front of
+信
+them. One widely followed guideline is the two-second rule, in which
+drivers stay at least two seconds behind the vehicle directly in front of
+微them ( Crimson Concrete).
+Assumption 3: All cars are the same dimensions, 6 feet wide and 16 feet long.
+Justification: This is based on average midsize sedan dimension data retrieved from
+USA Today (Woodyard). These dimensions do not heavily affect the
+model, but note that this does not account for buses, cars with trailers, or
+other large vehicles.
+Assumption 4: When the driver is aware that a two-lane road is being reduced to a
+one-lane road and there is an open space in the remaining road for a car
+from the closing lane to merge into, the car will merge.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 3
+Justification: Afraid that they will have to make a risky maneuver further down the
+road, most drivers will take advantage and merge when they see an open
+space.
+Assumption 5: Signaling to switch lanes helps with merging.
+Justification: A car signal lets other drivers know the intentions of the signaling car.
+Assumption 6: All cars have the same acceleration and deceleration.
+Justification: Constant acceleration and deceleration values are simplifying
+M
+assumptions for the model; although cars will realistically have varying
+acceleration and deceleration speeds, the majority of these differences are
+C
+small and have no significant effect.
+M
+Assumption 7: Drivers are unaware of lane merges until they see an indicating road sign.
+Justification: In reality, some drivers familiar with the iroad will merge far before seeing
+H
+any indication to merge, but it is difficult to determine which drivers will
+act this way. Therefore, as a： simplifying assumption, all drivers are
+unfamiliar with the road in our model.
+号
+Assumption 8: Drivers have a reaction time of 0.75 seconds.
+Justification: This is based on the average reaction time data retrieved from multiple
+众
+online sources. Drivers will need time to react before they hit the brake,
+which influences the delay time.
+公
+Assumption 9: In all calculations, friction and air resistance were neglected.
+Justification: 信 Friction and air resistance are two factors that affect all distance, speed,
+and time calculations; however, they do not significantly affect the
+calculations. Removing both of them greatly simplifies the model.
+微
+Definitions
+The “efficiency” of the model is measured by the average speed of cars in the zone, which is
+proportional to the average time in the zone. Higher average speed means greater efficiency.
+“Fairness” is measured by the deviation of the speeds of the cars. Lower deviation from the
+average speed means greater fairness.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 4
+Basic Car Model
+Analysis of Driver Behavior
+While merging from a closing right lane into the left lane, drivers exhibit a variety of behaviors
+that have certain consequences on the flow of traffic:
+● When they merge far before the right lane ends in order to avoid hassle, it causes
+congestion in the left lane, since traffic is meant to fully utilize the length of both lanes
+for as long as possible. M
+● When the right lane drivers merge wherever there is space, it requires left lane drivers to
+slow down to make space for them, causing a backlog of traffic aCs all cars in the left lane
+must now slow down to accommodate for the merging.
+M
+● While merging as late as possible is more efficient because the cars in the left lane to
+slow down the least, it can lead to other issues. If a driver waits until the last moment to
+i
+merge but is unable to find a spot, he/she must slowH down to a complete stop because the
+road is closing. This decreases amount of space that all of the driver in the right lane have
+：
+to merge, and also requires the cars in the left lane to slow down considerably to allow
+the stationary car to merge. Late merging may also result in a higher chance of car
+号
+accidents as the time to merge reduces, people are less able to find possible openings to
+merge.
+众
+All of these behaviors also have implications in causing road rage. In general, drivers become
+irritable when roads are co公ngested or when they feel like traffic passage is unfair. This leads
+drivers who are:
+● “Side-zoomers”, those that merge as late as possible, and often cause inflammatory
+信
+remarks. Surrounding cars and cars that are being passed in the slow lane will feel that it
+is unfair which may increase chances of road rage.
+微
+● “Early mergers”, those that merge immediately because they feel that it is not fair to
+those in the slow lane. They can potentially cause large traffic delays, which may
+increase the chance of road rage along with the chance of unfairness.
+We decided that road rage can best be controlled by mitigating the root cause of a number of
+scenarios that cause drivers to become irritated, namely traffic delays. Therefore, our model
+seeks to make traffic as efficient and fair as possible.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 5
+Analytical Merging Model
+There has been extensive research conducted on the methods of merging that result in reduced
+traffic, and the zipper method appears to be one of the best ways for cars to efficiently enter a
+new lane without causing a traffic flow disturbance (Johnson). Hypothetically, cars should be
+able to merge into the new lane without causing a traffic jam if drivers in the left lane travel at a
+constant speed, maintain a large space ahead of them, and allow drivers in the right lane to speed
+up and merge as their lane closes (F igure 1 ). Drivers in the right lane should merge as late as
+M
+possible so both lanes are used for the maximum amount of time. Afterwards, the cars in the
+single lane can accelerate to the speed limit and continue on their way. Our first step was to
+C
+model this pre-existing zipper method and determine the relationship between the speeds of cars,
+before and after the merge. M
+i
+H
+：
+号
+众
+Step 1 Step 2 Step 3 Step 4
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083    Page 6
+
+Step 1
+The Blue car has just finished slowing down to allow a car ahead of it to merge and is about to
+accelerate at a  ft/s to reach the speed limit V  ft/s; the current Blue car speed is represented by
+| 1   |     |     |     | F   |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+V  ft/s. Both the Orange and Green cars are travelling at the initial speed prior to entering the
+S
+merging zone, V  ft/s.
+I
+
+Step 2
+M
+Now the Blue car begins accelerating to V  ft/s and the Orange car simultaneously begins
+F
+decelerating at a  ft/s2   in order to create enough space for the Green car to merge. From various
+| 2   |     |     |     |     | C   |     |
+| --- | --- | --- | --- | --- | --- | --- |
+online sources, the average acceleration and average braking deceleration was calculated
+(Baricella, Road Safety News ). For the analytic model, we designMated a  = 11.4829 ft/s 2  and a  =
+1  2
+-21.458 ft/s2   , although in our simulation model, the acceleration rates are adjustable.   Most
+driving guidelines recommend that drivers keep 2 seconds behinid the car ahead of them
+H
+(Crimson Concrete); therefore, the distance traveled by the Blue car minus the distance traveled
+by the Orange car needs to be at least 2(V  + V ), ：which takes into account both the distance
+|     |     |     | F   | S   |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+between the Blue and merging Green cars, and the distance between the merging Green and
+Orange cars. Using one-dimensional physics laws, and letting the final speed be V  ft/s for the
+号
+F
+Blue car, and the final speed be V  ft/s for the Orange car we found:
+s
+
+众
+|     |     |     | V   2 |  V 2    | V   2  V 2 |     |
+| --- | --- | --- | ----- | ------- | ---------- | --- |
+|     |     |     | F     | S       | S I        |     |
+|     | d   | =   |       | d       | =          |     |
+|     |     | top | 2a    | bottom  | 2a         |     |
+|     |     |     |       | 1       | 2          |     |
+|     | 公   |     |       |         |            |     |
+|     |     |     | d =   |  d      |  d         |     |
+|     |     |     |       | bottom  | top        |     |
+信
+
+In order to maintain the following distance of 2 seconds, 2 seconds in front and 2 seconds behind
+微
+the merging car need to be created. Thus, d =  ( V S +V F)(4 x)is used to calculate the distance
+2
+needed to be created, where x   is the current following distance in seconds. For example, if the
+current following distance is 2, then an additional 2 seconds needs to be created such that there
+exists a 4 second distance between the Blue car and the Orange car so that the Green car can
+merge in and still maintain the 2 second following distance buffer in front and behind. Thus, the
+distance created for a car merging into the left lane must be equal to at least 4 seconds.
+
+| 2   | 2   | 2   | 2   |            |                  |     |
+| --- | --- | --- | --- | ---------- | ---------------- | --- |
+| V V |     | V   | V   | V +V       |                  |     |
+| F   | S   | S   | F   | = ( S F)(4 | x)  (Equation 1) |     |
+| 2 a |     | 2 a |     | 2          |                  |     |
+| 1   |     |     | 2   |            |                  |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 7
+Step 3
+The Green car merges into the left lane, behind the Blue car. The Orange car accelerates at a rate
+of a ft/s2 and Green cars immediately begin accelerating at a rate of a ft/s2 such that a > a until
+2 x x 2
+they both reach a speed of V ft/s and the 2 second boundaries still exists between the Blue car
+F
+and the Green car, and between the Green car and the Orange car. Because we assumed that
+drivers will want to abide the two-second rule, we can assume that merging cars will properly
+accelerate to maintain the 2 second buffer between the car in front and in back. This means that
+the acceleration of merging cars will exceed the acceleration of the cars in the left lane.
+M
+Step 4
+C
+Now that all the cars resume their speed at the speed limit, they are all driving at the original
+speed they entered at. These cars have all effectively left the congMestion zone. A new car will
+begin to merge behind the Orange car after the acceleration to V ft/s starts and will merge once
+F
+the Orange car reaches V ft/s. This process continues in the samie alternating pattern (zipper
+F H
+merging).
+：
+Analysis of Speed over Time
+号
+Using this merging model, we now have several ways to adjust the car movements so that they
+are optimized. Using a V of 95.333 ft/s (65 mph), which is the standard speed limit on US
+F 众
+highways and a following time of 2 seconds, we wanted to see how the speed of the Orange car
+varied over time, with different V .
+I
+公
+We started by examining the speed over time of a Orange car (a car getting passed) with a V of
+I
+95.333 ft/s. When 信the Green car signals to merge, the Orange car immediately begins
+deccelerating at -21.458 ft/s2 until it reaches V , which we solved for using Equation 1 and
+S
+found to be 45.931 ft/s. This occurs at t = 2.302 s, and marks the transition from step 1 to step 2.
+微
+Next, the car begins accelerating at 11.4829 ft/s 2 until it reaches the speed limit of V = 95.333
+F
+ft/s, at which point it is in step 3. This occurs at t = 6.605 s.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083    Page 8
+M
+C
+M
+i
+H
+：
+号
+| y  =                             | 21.458t + 95.333 from t  |     |                | =  0 to t  | =  2.302   |
+| -------------------------------- | ------------------------ | --- | -------------- | ---------- | ---------- |
+| y  =  11.4829众t + 19.492 from t  |                          |     | =  2.302 to t  |            | =  6.605   |
+
+Noting the steep dip from t = 0 to t = 2.302 where the speed is reduced by more than half, it was
+公
+deduced that decreasing the slope to 0 would increase the overall average speed over the entire
+interval because there is would be no slow down (V ⇒V
+ ), and therefore make the cars’
+|     |     |     | S   | I   |     |
+| --- | --- | --- | --- | --- | --- |
+信
+passage through the closure more efficient. To model this, we created a second graph of the
+Orange car’s speed over time, with V  = V  , so that the Orange car does not slow down, merely
+|     | I  S  |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- |
+allowing th微e Blue car’s acceleration to create a gap large enough for the Green car to merge.
+Taking into account this alteration, the equation solving for V  becomes:
+s
+
+|     | 2 2  |         |      |      |     |
+| --- | ---- | ------- | ---- | ---- | --- |
+|     | V V  | V       | +V   |      |     |
+|     | f s  |   = ( s | f)(4 | x)   |     |
+|     | 2 a  |         | 2    |      |     |
+1
+
+|       |   a (4 x) + √(a |     | (4 x))2 | 4(a V | (4 x)   V 2)  |
+| ----- | --------------- | --- | ------- | ----- | ------------- |
+| V = V | = 1             | 1   |         | 1 f   | f             |
+| I     | S               |     | 2       |       |               |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 9
+Once again we used a V of 95.333 ft/s and a following time of 2 seconds, and solved for a V of
+F S
+72.368 ft/s . Therefore, the car maintains a speed of 72.368 ft/s until it reaches step 2, at t =
+2.302. At this point, it begins accelerating at 11.4829 ft/s 2 until it reaches the speed limit of V
+F
+=95.333 ft/s. Since V is much faster in this graph, the car reaches the speed limit of 95.333 ft/s
+S
+much quicker, at t = 4.302. It then continues at this speed until the end of the time interval, at t =
+6.605.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+y = 72.368 from x = 0 to x = 2.302
+微
+y = 11.483x + 19.492 from x = 2.302 to 4.302
+y = 95.333 from x = 4.302 to 6.605
+In order to compare the efficiency of these two graphs, we integrated both of them and divided
+by the time interval to find the average speed.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 10
+V = 95.333 ft/s V = V = 72.368 ft/s
+I I S
+6.6 6.6
+∫V (t) dt = 477.499 ft over 6.6 ∫V (t) dt = 553.806 ft over 6.6
+current optimal
+0 0
+seconds, or 72.348333 ft/s on average seconds, or 83.910 ft/s on average
+Since the first graph has a much lower average speed, we can conclude that zipper merging at V
+I
+= 95.333 ft/s is slower on average than zipper merging when V = V = 72.368 ft/s. Therefore, it
+I S
+may be beneficial to lower the speed limit before a lane closure to allow zippeMr merging to occur
+more efficiently. We can effectively say that when V = V an optimal recommended speed is
+I S
+generated that increases overall average speed. C
+M
+However, the first graph does not account for the “lag” created by braking nor the reaction time
+needed to brake for the left lane drivers. This lag caused by braking only further supports the
+i
+conclusion that shows that temporarily lowering the speedH limit for a small interval of road
+length is a solution to traffic jams. In reality, the average speed over the merging interval is much
+：
+lower 72.34833 ft/s calculated value because as more cars enter, the more the traffic delay
+increases, concordantly causing the average speed to decrease. The traffic delay increases
+号
+because cars are spending longer and longer in V instead of instantaneously accelerating after
+S
+reaching minimum speed. Because the optimal speed V = 72.368 ft/s allows for an interaction
+S
+between the two lanes where the c众ars do not need to slow down for other merging cars, there
+should exist no traffic delay. The lag is nonexistent if all cars are passing through a certain
+interval at a rate of 1 car per 2 seconds.
+公
+Using our equations to model the current situation where there is maximum congestion and
+信
+maximum speed (cars are evenly spaced 2 seconds apart and every car is initially traveling at
+95.333 ft/s) we found that once the cars reach the lane closure, the merging will cause traffic to
+微
+backup because the cars in the left lane need to slow down significantly in order for the cars in
+the right lane to merge properly, causing a wave-like compression of traffic. We decided to
+investigate this delay further.
+Lag calculation
+If each car is 2 seconds behind the one in front of it (maximum congestion), and traveling at
+some speed above the optimal speed, the cars will need to brake to let the cars from the right lane
+to merge. The time taken to brake coupled with each driver’s reaction time is what creates a
+wave-like compression of lag ( Figure 2 )
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 11
+M
+C
+M
+i
+H
+：
+号
+If the lag is great enough, a traffic jam may occur. The
+purpose of this analysis is to calculate specifically how
+众
+much lag results on a 65 mph highway lane closure during
+a period of heavy congestion (each car is two seconds
+公
+apart).
+信 The first car to reach the lane closure experiences no lag
+because no slow cars are in front of it. However, when the
+as soon as a car in the left lane brakes to allow a car in the
+微
+right lane to merge over, it will cause every subsequent car
+behind it to brake to maintain spacing. This braking causes
+every car behind it to travel at a slower speed. Because the
+following distance remains at 190.6 feet (2 seconds *
+95.333 ft/s) and the cars are now traveling at a slower
+speed, cars behind the first will have to spend a longer time
+driving up to the previous spot where the car in front was,
+where the merge previously occurred (F igure 3) .
+To factor in reaction time, 0.75 seconds was used
+(Following Distances and Road Crashes). This means that
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 12
+the driver will take 0.75 seconds before he/she will start to apply the brakes. This delay in
+braking will shorten the following distance briefly. To calculate this reduction in following
+distance, the speeds for both the car in front and the car behind were integrated:
+The front car will travel at 95.333 ft/s and decelerate at -21.458 ft/s 2 until it reaches 45.931 ft/s
+from t = 0 to t = 2.302 seconds (car in front starts braking at t = 0 and starts to accelerate away
+after 2.302 seconds).
+2.302
+∫ V (t) dt = 162.595 feet traveled
+front car
+0 M
+The back car will travel at 95.333 ft/s from t = 0 to t = 0.75 seconds (Car behind does not apply
+C
+brakes until 0.75s) and decelerates at -21.458 ft/s 2 from t = 0.75 to t = 2.302 seconds (62.0240
+ft/s at t = 2.302 seconds). M
+i
+0.75
+∫ V (t) dt = 193.609 fe H et traveled
+back car
+0
+：
+By subtracting these integration values, we find that the distance between the two cars decreased
+by 31.014 feet. Subtracting this value from号 the initial following distance of 190.609 feet gives us
+a new following distance of 159.586 feet.
+众
+The time needed to travel the remaining distance is dependent upon the rate at which the Back
+car decelerates down to 45.9307 ft/s, the speed required to allow for a car to merge into the lane.
+公
+To find the possible range of values that the possible delay times could fall in, the minimum and
+maximum possible times were calculated. For the minimum time, first an 119.103 feet are
+信
+traversed at a rate of 62.024 feet per second which means it takes 1.920 seconds and then the
+remaining 40.483 ft are traveled at a decelerating rate of -21.458 ft/s 2, such that by the end of the
+159.586 fe微et, the speed of the car is 45.931 ft/s, the speed necessary for merging. This yields a
+minimum time of 1.920 s + 0.75 s = 2.67 seconds to clear the 159.586 feet. For the maximum
+possible time, the back car continues to decelerate from 62.024 ft/s to 45.9307 ft/s for 0.75
+seconds. During this deceleration, the car will travel 40.483 ft and 119.103 feet remain to close.
+For the remaining 119.103 feet, the car drives at a rate of 45.9307 ft/s, which means it takes
+2.593 seconds to travel this distance. This calculation yields a maximum time of 0.75 s + 2.593 s
+= 3.343 seconds to clear the 159.586 feet.
+Driving at a slower speed for the same distance of 190.6 feet between the cars means it takes a
+time of anywhere between 2.67 and 3.343 seconds. However, in optimal conditions, there should
+be no lag, thus cars can reach the previous location of the car in front of it in 2 seconds. This
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 13
+means that that there is a deviation from the 2 second optimal time of 0.67 to 1.343 seconds per
+merge at max congestion and 65 mph. This small lag quickly stacks up additively as cars pass
+over time. Consequently, when the left lane lane starts to congest, the right merging lane will
+also slow down and become congested, because it takes longer for a 4 second window to open up
+for cars to merge over. Both lanes will travel slowly if the speed at which the cars are traveling at
+exceeds the optimum speed. Over a duration of a mere 10 minutes, at a rate of 30 cars per minute
+in each lane, 3.350 - 6.715 minutes of traffic can potentially build up from merging inefficiently.
+Over the course of a long rush hour period (4:30 pm to 7:30 pm) a car could potentially spend an
+estimated one to two hours stuck in traffic due to the congestion caused by the lane closure.
+M
+Speed Harmonization
+C
+Speed harmonization is a method to relieve traffic congestion thatM is common in Europe. By
+measuring the flow of cars among a specific section of a road in real time using sensors, an
+electronic speed limit sign a few hundred feet before the lane cloisure will change accordingly.
+H
+Having a dynamic speed limit allows for flexibility when conditions change. For example, if the
+highway is more congested and has a very high de：nsity of cars, the speed limit will be lower so
+that the zipper merging method will be effective. However, during less populated hours, the
+speed limit may be higher. By adjusting the speed at which cars travel, a more stable traffic flow
+号
+is achieved, thereby relieving congestion and optimizing efficiency.
+众
+This harmonic speed limit is found by calculating the optimal speed such that V = V and that
+I S
+cars in the left lane do not have to slow down to allow cars on the right to merge.
+公
+Our model incorporates the design of speed harmonization near lane closures on both highways
+and on inner city r信oads. Since traffic congestion occurs frequently in these areas, we can apply
+speed harmonization to regulate the flow of cars and improve upon the zipper merging system.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 14
+NetLogo Agent Based Model
+In order to corroborate the analytic model, an agent based model was created in NetLogo. This
+model incorporates the assumptions about individual driver behaviors and parameters. The
+behaviors in the code are listed below.
+1. The car moves forward at its current speed.
+2. If the car is moving slower than the speed limit and there is not another car within the
+‘following distance’ in front of it, the car speeds up.
+M
+3. If there is a car within the ‘following distance’, the car slows down.
+4. If the car is in the lane that ends and has passed the lane closure sCign, they will merge if
+adjacent to an available space, defined by ‘following distance’. This does not contradict
+M
+the zipper model, in which there is not enough space to merge without the other lane
+slowing down.
+i
+5. If the car is getting close to the lane closure, they will slow down and turn on their turn
+H
+signal.
+：
+6. Cars in the remaining lane will slow down if a car in front of it in the other lane has its
+signal on. This allows the other car to merge more easily.
+号
+The environment is a 200 patch tall map with a road running up the center. Each patch is the
+width of a highway lane, 12 feet (I nterstate) . Cars travel from the bottom to the top, after being
+众
+randomly placed in a lane. The cars are sent randomly at a constant probability (one of the
+variable inputs) and always enter the model traveling at the harmonic speed limit, and will
+公
+accelerate back to the original speed limit after merging. The lane closure sign is denoted as a
+yellow patch at the side of the road, and the lane closure is denoted by a red zone in one lane.
+信
+The positions of the sign and the lane closure can be changed in the model. All distances, speeds,
+times, and accelerations are in terms of patches and ticks (1 patch= 12 ft, 1 tick = 0.1 seconds).
+微
+Two lanes merging to one lane
+Using the metric for changing speed limit based on the average following distance (in patches),
+this model sets up two lanes, one of which closes. The model measures the number of cars in the
+the road between the sign and the lane closure and calculates the average following distance
+between the cars. The harmonic speed limit (initial speed entering system) is then derived from
+this number, the approximate acceleration of the cars, and the speed limit, V using the equation:
+F,
+a (4 x) + √(a (4 x))2 4(a V (4 x) V 2)
+1 1 1 f f
+V = where x is following distance in seconds.
+I 2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 15
+The “efficiency” of the model is measured by the average speed of cars in the zone, which is
+proportional to the average time in the zone. Higher average speed means greater efficiency.
+“Fairness” is measured by the deviation of the speeds of the cars. Lower deviation from the
+average speed means greater fairness.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+There are several inputs for this model, the values of which were chosen based on the analysis of
+driver behavior and car statistics. After setting the location of the sign and setting the driver
+信
+parameters (such as following distance), the simulation runs for 10000 ticks (1000 seconds) and
+outputs two plots (examples shown below). In the plots below, the first two are without speed
+微
+harmonization, and the second two incorporate it. According to these plots, the harmonization
+allows cars to maintain a higher speed and results in a more efficient and fair merge (The
+average speed for the second set is higher while the deviation is lower). At a speed of 65 mph,
+not only is the average speed lower than the average speed when a harmonic speed limit (50
+mph) is set, but also the count of cars on the road is higher overall, indicating a higher level of
+congestion.
+Also note that the speed limit decreases (down to about 0.61 patches per tick, or 50 mph) when
+there is a large influx of cars and increases (back to 0.79 patches per tick, or 65 mph) when there
+are fewer cars. This confirms that the analytic model is reliable for predicting the optimal speed
+limit, which is then used as the harmonic speed limit.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 16
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 17
+The model is then iterated several hundred times to test for the optimal sign placement relative to
+the lane closure (the difference between the two is the “warning distance”).
+For a 65 mph highway, the optimum efficiency occurs when the lane merge warning sign is
+placed 660 feet before the lane merge. If placed further away, drivers merge too early. If placed
+closer, the drivers are not prepared enough and large amounts of congestion occur.
+M
+C
+M
+i
+H
+：
+号
+众
+On a slower secondary road, with a speed limit of 35 mph, the lane merging sign should be
+placed at least 900 feet before the lane merge. At this speed, moving it further away does not
+seem to cause more conge公stion, but placing it closer tends to cause much more congestion.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 18
+Merging More Lanes
+This model adds an option to change the number of initial and final lanes (examples shown: 3
+lanes merge to 2 lanes, 5 lanes merge to 3 lanes).
+M
+C
+M
+i
+H
+：
+号
+众
+公
+Using the same method and behaviors as before with the two lane model, other configurations
+are tested for optimal warning distance.
+信
+Three Lane Road is Reduced to Two Lanes
+微
+Even with the addition of an extra lane, the same concept of zipper merging can be applied. The
+drivers in this model will follow the same behaviors as with the two lane merge, with one
+exception: drivers in the center lane will switch to the other open lane to make space for merging
+drivers.
+On a three lane road that loses one lane, the merge warning sign should be placed at least 720
+feet from the lane merge. Similar to the slower two lane road, increasing this distance does not
+have much of an effect, while decreasing the distance reduces the efficiency significantly.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 19
+M
+C
+M
+i
+H
+Three Lane Road is Reduced to One Lane
+：
+Once again, the same zipper merging method is applied to the system. Drivers will follow the
+same previous behavior models to merge into a single lane.
+号
+On a three lane road that loses two lanes, the merge warning sign should be placed at least 500
+众
+feet from the lane merge. Note that this closure causes extremely large delays if there are more
+cars in the model than can be accommodated in one lane.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 20
+Changes to Driver Guidelines and Signage
+Driver Guidelines
+If our method becomes standardized, drivers must become comfortable with the process of
+zipper merging and speed harmonization. This can be taught to current drivers through public
+service announcements and to new drivers by updating the driver’s education curriculum. Firstly,
+drivers should be taught to merge as late as possible so the zipper system can be employed.
+Conversely, drivers should let those in the closing lane merge as late as possible. It is important
+M
+to know that this is not “cutting”, but simply an efficient allocation of both lanes. Furthermore,
+claims that this system is “unfair” can also be repealed by illustrating hoCw the zipper system
+works, as it allows cars to fairly alternate into the open lane.
+M
+Heavy emphasis should also be placed on recognizing merging road signs and speed
+harmonization limits. This way, drivers will know when is the appropriate time to merge. In
+i
+order for traffic to flow smoothly, all drivers have a responsibility to adhere to the rules.
+H
+：
+Signage
+号
+According to our NetLogo simulations, the maximum traffic efficiency for a two lane 65 mph
+merge zone occurs when cars begin merging 660 feet from the lane closure. Therefore, we
+encourage the Department of High众way Safety to post “Merge Ahead” signs approximately 660
+feet before the right lane merges with the left lane. For alternative lane closure situations, the
+NetLogo model provides i公nformation as to where to put these signs. In addition, to promote the
+practice of zipper merging, these signs should also tell drivers to merge late rather than early, and
+to take turns merging.
+信
+We also recommend that the electronic speed limit sign be placed anywhere from 0.25 to 0.5
+微
+miles away from the merging lanes. Placing the sign further means that the cars are travelling
+slow for too long, while placing it too close would potentially cause congestion from the sudden
+slow down. After the lanes have merged, we suggest posting the regular speed limit sign
+immediately so that cars can resume traveling at faster speeds and don’t congest the cars that
+haven’t yet merged.
+Strengths
+● The NetLogo model is highly adaptable for sensitivity analysis. N etLogo is an agent
+based modeling program capable of testing multiple conditions due to its interactivity.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 21
+For our model, many changes can be made on specific parameters such as car
+acceleration values or the regular speed limit.
+● The model satisfies our initial definitions of “fair” and “efficient”. By using both the
+zipper merge and speed harmonization, drivers will have relatively high average speeds
+with low standard deviation throughout the merge zone.
+● The NetLogo simulation verifies our analytic model. F or example, when analytically
+calculating the optimal speed limit during periods of heavy congestion, we determined
+this value to be around 51 mph. Later, when using the NetLogo model, simulation trials
+determined the same optimal speed limit. This helped to confirm the results of our
+M
+analytic model.
+C
+Weaknesses
+M
+● The model assumes all drivers and cars are uniform. I n reality, drivers will have
+i
+unique behaviors based on their character. Since it is difficult to predict how each driver
+H
+reacts differently to a situation, we made all drivers safe and intelligible. Likewise, there
+：
+are too many existing car models to incorporate specifications. For the sake of simplicity,
+we had to reduce all cars to a uniform type with the same acceleration and deceleration
+values, inherently decreasing the re号alism of our model.
+● The model does not account for some notable circumstances. The NetLogo model is
+unable to incorporate factors such as the weather or texting drivers. In reality, these
+众
+factors will influence the dynamic of the merge zone, taking away from the accuracy of
+our model.
+公
+● Adding new signs can be costly. A n electronic variable sign can cost upwards of
+$100,000 (Moeur). Furthermore, manual costs of labor in repositioning existing merge
+信
+signs may accumulate quickly. In addition, constantly monitoring traffic patterns may be
+too high maintenance. Instead, monitoring traffic patterns only during rush hours of the
+day微 may be more effective and less resource consuming.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 22
+References
+Barricella, Meredith. "Acceleration of a Car." A cceleration of a Car. N.p., 2001. Web. 15 Nov.
+2015. <h ttp://hypertextbook.com/facts/2001/MeredithBarricella.shtml >.
+Beaty, Bill. "MERGING- LANE TRAFFIC JAMS, A SIMPLE CURE." Z IPPER MERGE:
+Curing Merging-lane Traffic Jams . ESKIMO NORTH, n.d. Web. 15 Nov. 2015.
+M
+http://trafficwaves.org/seatraf.html
+C
+Crimson Concrete. " Following Distance." Portland State University, n.d. Web. 15 Nov. 2015.
+http://crimsonconcrete.unst.pdx.edu/website/?page_id=454M
+"Following Distances and Road Crashes." W ww.arrivealive.co.zia. n.d. Web. 15 Nov. 2015.
+H
+https://arrivealive.co.za/Following-Distances-and-Road-Crashes >.
+：
+"Interstate Highway Standards." Wikipedia. Wikimedia Foundation, 23 Sept. 2015. Web. 15
+Nov. 2015. h ttps://en.wikipedia.org/wiki/Interstate_Highway_standards
+号
+Johnson, Ken. "LATE MERGE … the ZIPPER SYSTEM." Minnesota Department of
+众
+Transportation. Minnesota Department of Transportation, Oct. 2008. Web. 15 Nov.
+2015. http://www.dot.state.mn.us/trafficeng/workzone/doc/When-latemerge-zipper.pdf
+公
+Moeur, Richard C. "Costs of Traffic Signs." M anual of Traffic Signs . Richard C Moeur, n.d.
+Web. 15 N信ov. 2015. h ttp://www.trafficsign.us/signcost.html
+"Recurring Traffic Bottlenecks: A Primer Focus on Low-Cost Operational Improvements."
+微
+United States Department of Transportation. United States Department of Transportation
+- Federal Highway Administration, n.d. Web. 15 Nov. 2015.
+http://ops.fhwa.dot.gov/publications/fhwahop12012/index.htm
+"Road Safety News." H ome. N.p., n.d. Web. 15 Nov. 2015.
+http://www.brake.org.uk/
+"Visual Expert Human Factors: Driver Reaction Time." V isual Expert Human Factors: Driver
+Reaction Time. N.p., n.d. Web. 15 Nov. 2015.
+http://www.visualexpert.com/Resources/reactiontime.html
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #6083 Page 23
+Waller, S. Travis. Speed Harmonization and Peak-period Shoulder Use to Manage Urban
+Freeway Congestion. Austin, TX: Center for Transportation Research, U of Texas at
+Austin, 2009. Texas A&M University, Oct. 2009. Web. 15 Nov. 2015.
+https://www.utexas.edu/research/ctr/pdf_reports/0_5913_1.pdf
+Woodyard, Chris. "Vehicles Keep Inching up and Putting on Pounds - USATODAY.com." U SA
+Today . USA Today, 16 July 2007. Web. 15 Nov. 2015.
+http://usatoday30.usatoday.com/money/autos/2007-07-15-little-big-cars_N.htm
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

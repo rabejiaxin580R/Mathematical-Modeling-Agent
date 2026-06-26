@@ -1,0 +1,81 @@
+{
+  "schema_version": 3,
+  "concept_id": "opt.simplex",
+  "title": "单纯形法",
+  "taxonomy_path": [
+    "模型求解算法",
+    "数学规划求解方法",
+    "单纯形法"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.1",
+  "aliases": [
+    "单纯形法",
+    "simplex"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "单纯形法是一种在可行域的顶点之间移动，逐步找到线性规划问题最优解的迭代算法。",
+    "intuition": "想象你在一座多边形的山顶上，目标是找到最低点。你从任意一个顶点开始，沿着棱走到相邻的更低顶点，重复直到无法再下降，此时你就站在了最低点。单纯形法就是这样在可行域的顶点间跳跃，每次让目标函数值改善，直到最优。",
+    "when_to_use": "当问题可以建模为线性规划（目标函数和约束都是线性），且变量数不多（例如几百个以内）时，单纯形法非常高效。特别适合约束条件为等式、变量非负的标准形式。",
+    "definition": "单纯形法是一种求解线性规划问题的数值方法，它通过迭代地从一个基本可行解（顶点）移动到另一个相邻的基本可行解，使得目标函数值不断改善，直至达到最优解。",
+    "math_principle": "考虑标准形式线性规划：\n\\[\\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad \\mathbf{A}\\mathbf{x} = \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0}\\]\n其中 \\(\\mathbf{A}\\) 是 \\(m \\times n\\) 矩阵，\\(\\mathbf{b} \\geq \\mathbf{0}\\)。\n\n基本可行解：选择 \\(m\\) 个线性无关的列构成基矩阵 \\(\\mathbf{B}\\)，对应基变量 \\(\\mathbf{x}_B = \\mathbf{B}^{-1}\\mathbf{b}\\)，非基变量 \\(\\mathbf{x}_N = \\mathbf{0}\\)。\n\n迭代步骤：\n1. 计算检验数 \\(\\mathbf{r}_N = \\mathbf{c}_N - \\mathbf{c}_B^T \\mathbf{B}^{-1} \\mathbf{N}\\)。\n2. 若所有 \\(\\mathbf{r}_N \\geq 0\\)，则当前解最优；否则选择最小检验数对应的非基变量入基。\n3. 确定离基变量：计算 \\(\\theta = \\min\\{ (\\mathbf{B}^{-1}\\mathbf{b})_i / (\\mathbf{B}^{-1}\\mathbf{A}_j)_i \\mid (\\mathbf{B}^{-1}\\mathbf{A}_j)_i > 0 \\}\\)，对应下标离基。\n4. 更新基矩阵，重复。",
+    "step_by_step": [
+      "1. 将线性规划化为标准形式：目标函数最小化，约束为等式，变量非负，右端项非负。",
+      "2. 构造初始基本可行解：通常通过添加松弛变量或人工变量得到单位基。",
+      "3. 计算当前基变量的值和非基变量的检验数。",
+      "4. 若所有检验数 ≥ 0，则当前解为最优解，停止。",
+      "5. 否则，选择检验数最小的非基变量作为入基变量。",
+      "6. 确定离基变量：计算比值 θ，选择最小正比值对应的基变量离基。",
+      "7. 进行基变换，更新基矩阵和基本可行解，返回步骤3。"
+    ],
+    "worked_example": "求解线性规划：\n\\[\\min z = -x_1 - 2x_2\\]\n约束：\n\\[x_1 + x_2 \\leq 6\\]\n\\[x_1 \\leq 4\\]\n\\[x_2 \\leq 3\\]\n\\[x_1, x_2 \\geq 0\\]\n\n标准化：引入松弛变量 \\(x_3, x_4, x_5\\)，得：\n\\[\\min z = -x_1 - 2x_2\\]\n\\[x_1 + x_2 + x_3 = 6\\]\n\\[x_1 + x_4 = 4\\]\n\\[x_2 + x_5 = 3\\]\n\\[x_i \\geq 0\\]\n\n初始基变量 \\(x_3, x_4, x_5\\)，基矩阵为单位阵。初始基本可行解：\\(x_3=6, x_4=4, x_5=3\\)，\\(z=0\\)。\n\n检验数：\\(r_1 = -1, r_2 = -2\\)，选择 \\(x_2\\) 入基（最小检验数）。\n\n比值：\\(\\theta = \\min\\{6/1=6, 3/1=3\\} = 3\\)，对应 \\(x_5\\) 离基。\n\n新基：\\(x_3, x_4, x_2\\)。计算新解：\\(x_2=3, x_3=3, x_4=4\\)，\\(z = -6\\)。\n\n检验数：\\(r_1 = -1\\)（因为 \\(x_1\\) 仍为非基），选择 \\(x_1\\) 入基。\n\n比值：\\(\\theta = \\min\\{3/1=3, 4/1=4\\} = 3\\)，对应 \\(x_3\\) 离基。\n\n新基：\\(x_1, x_4, x_2\\)。计算：\\(x_1=3, x_2=3, x_4=1\\)，\\(z = -9\\)。\n\n检验数：\\(r_3 = 1, r_5 = 1\\)，均非负，最优解 \\(x_1=3, x_2=3\\)，最优值 \\(z=-9\\)。",
+    "pitfalls": [
+      "1. 退化问题：当基本可行解中基变量取值为0时，可能导致循环，需要Bland规则等避免。",
+      "2. 初始基本可行解不易获得：当约束为不等式或等式时，需引入人工变量，使用两阶段法或大M法。",
+      "3. 大规模问题效率低：单纯形法在最坏情况下是指数时间，实际中通常高效，但超大规模问题建议用内点法。",
+      "4. 数值稳定性：基矩阵求逆可能引入误差，需使用修正单纯形法或LU分解。"
+    ],
+    "tools": "Python 中可使用 `scipy.optimize.linprog` 实现单纯形法。示例：\n```python\nfrom scipy.optimize import linprog\nc = [-1, -2]  # 目标函数系数（最小化）\nA_ub = [[1, 1], [1, 0], [0, 1]]  # 不等式约束矩阵\nb_ub = [6, 4, 3]  # 不等式右端项\nbounds = [(0, None), (0, None)]  # 变量非负\nres = linprog(c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')  # 'highs' 使用单纯形法\nprint(res)\n```\n注意：`method='highs'` 是HiGHS求解器，包含单纯形法。"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad \\mathbf{A}\\mathbf{x} = \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0}",
+      "variables": {
+        "\\mathbf{c}": "目标函数系数向量",
+        "\\mathbf{x}": "决策变量向量",
+        "\\mathbf{A}": "约束系数矩阵",
+        "\\mathbf{b}": "约束右端项向量"
+      }
+    },
+    {
+      "latex_code": "\\mathbf{r}_N = \\mathbf{c}_N - \\mathbf{c}_B^T \\mathbf{B}^{-1} \\mathbf{N}",
+      "variables": {
+        "\\mathbf{r}_N": "非基变量的检验数向量",
+        "\\mathbf{c}_N": "非基变量对应的目标系数",
+        "\\mathbf{c}_B": "基变量对应的目标系数",
+        "\\mathbf{B}": "基矩阵",
+        "\\mathbf{N}": "非基矩阵"
+      }
+    },
+    {
+      "latex_code": "\\theta = \\min\\left\\{ \\frac{(\\mathbf{B}^{-1}\\mathbf{b})_i}{(\\mathbf{B}^{-1}\\mathbf{A}_j)_i} \\mid (\\mathbf{B}^{-1}\\mathbf{A}_j)_i > 0 \\right\\}",
+      "variables": {
+        "\\theta": "最小比值，用于确定离基变量",
+        "\\mathbf{B}^{-1}\\mathbf{b}": "当前基变量的值",
+        "\\mathbf{B}^{-1}\\mathbf{A}_j": "入基变量对应的列在基变换后的系数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_D01"
+    ],
+    "from_papers": []
+  }
+}

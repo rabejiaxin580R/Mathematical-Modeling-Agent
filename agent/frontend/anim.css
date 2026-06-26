@@ -1,0 +1,209 @@
+/* ====================================================================
+   anim.css —— 全站动效基础层（克制基线 + 局部惊喜）
+   与 style.css 的「新中式刺绣」设计系统配套，纯增量、可被 reduced-motion 降级。
+   引入顺序：放在 style.css 之后。
+   ==================================================================== */
+
+:root {
+  /* 缓动 */
+  --ease-out: cubic-bezier(.22, .61, .36, 1);     /* 标准出场/入场 */
+  --ease-in-out: cubic-bezier(.45, .05, .25, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1); /* 局部惊喜专用回弹 */
+  /* 时长 */
+  --dur-fast: .16s;
+  --dur-base: .24s;
+  --dur-slow: .42s;
+}
+
+/* ===== 跨文档页面转场（Chromium 生效，其它浏览器无害降级）===== */
+@view-transition { navigation: auto; }
+@keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+::view-transition-old(root) { animation: vt-fade-out .22s var(--ease-out) both; }
+::view-transition-new(root) { animation: vt-fade-in .30s var(--ease-out) both; }
+
+/* ===== 可复用 keyframes ===== */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes rise-in-sm {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: translateY(8px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(.7); }
+  60%  { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: -150% 0; }
+  to   { background-position: 250% 0; }
+}
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+@keyframes grow-check {
+  0%   { transform: scale(0) rotate(-12deg); opacity: 0; }
+  60%  { transform: scale(1.25) rotate(0); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes thinking-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: .35; }
+  40%           { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ===== 工具 class =====
+   入场类用 backwards 填充：动画前保持起始态（防闪），结束后交还常规样式，
+   这样卡片的 :hover transform 不会被动画锁死。 */
+.anim-fade { animation: fade-in var(--dur-base) var(--ease-out) backwards; }
+.anim-rise { animation: rise-in var(--dur-base) var(--ease-out) backwards; }
+.anim-rise-sm { animation: rise-in-sm var(--dur-fast) var(--ease-out) backwards; }
+.anim-pop { animation: pop-in .42s var(--ease-spring) both; }
+
+/* 级联入场：容器加 .stagger，子项由 JS 设置 style="--i:n" */
+.stagger > * { animation: rise-in var(--dur-base) var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 55ms); }
+/* 进入视口逐个触发（IntersectionObserver 路径） */
+.stagger-item { animation: rise-in var(--dur-base) var(--ease-out) backwards; }
+
+/* 按压反馈：交互元素加 .press */
+.press { transition: transform var(--dur-fast) var(--ease-out); }
+.press:active { transform: scale(.96); }
+
+/* 悬停抬升：统一手感（配合元素自身的 box-shadow 过渡） */
+.lift { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.lift:hover { transform: translateY(-3px); }
+
+/* ===== AI 思考三点 ===== */
+.mm-thinking { display: inline-flex; align-items: center; gap: 5px; padding: 2px 2px; }
+.mm-thinking i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rouge); display: inline-block;
+  animation: thinking-bounce 1.2s var(--ease-in-out) infinite;
+}
+.mm-thinking i:nth-child(2) { animation-delay: .16s; }
+.mm-thinking i:nth-child(3) { animation-delay: .32s; }
+
+/* ===== 骨架占位（shimmer 流光） ===== */
+.skeleton {
+  border-radius: 10px;
+  background: linear-gradient(100deg, var(--mist) 30%, var(--mist-deep) 50%, var(--mist) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* ===== 局部惊喜：完成态 ✓ 长出 ===== */
+.mm-grow-check { display: inline-block; animation: grow-check .5s var(--ease-spring) both; }
+
+/* ===== 连线生长（SVG，呼应点阵母题） ===== */
+.mm-connector path, .mm-connector line {
+  stroke-dasharray: var(--len, 200);
+  stroke-dashoffset: var(--len, 200);
+  animation: draw-line .6s var(--ease-out) forwards;
+}
+
+/* ===== 环境点阵网络画布（home / 欢迎页背景母题） ===== */
+.mm-ambient {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+/* 让 home 背景画布垫底，内容浮于其上 */
+.home { position: relative; }
+.home > .home-top, .home > .home-main { position: relative; z-index: 1; }
+/* 聊天欢迎页背景画布：铺满 welcome 框，淡淡垫底；正文浮于其上 */
+.welcome { position: relative; }
+.welcome > .mm-ambient { z-index: 0; }
+.welcome > h1, .welcome > p, .welcome > .suggestions { position: relative; z-index: 1; }
+.welcome > .vertical-deco { z-index: 1; }
+
+/* ====================================================================
+   现有组件的进出场增强（纯 CSS，不需 JS）
+   ==================================================================== */
+
+/* —— 设置弹窗：打开时背景淡入 + 弹窗 scale 入场（基础层用 display 切换，故出场为即时）—— */
+.settings-overlay.open { animation: fade-in var(--dur-fast) var(--ease-out) both; }
+.settings-overlay.open .settings-modal { animation: scale-in var(--dur-base) var(--ease-out) both; }
+
+/* —— 模型下拉菜单：展开下滑淡入 —— */
+.model-menu:not([hidden]) { animation: rise-in-sm var(--dur-fast) var(--ease-out) both; transform-origin: top right; }
+
+/* —— 真题卡 / 概念条目 / chip：统一抬升手感对齐到 --ease-out —— */
+.pcard, .chip, .home-card, .mod-card { transition:
+  transform var(--dur-base) var(--ease-out),
+  box-shadow var(--dur-base) var(--ease-out),
+  border-color var(--dur-fast) var(--ease-out); }
+
+/* —— learn 阅读器关闭出场 —— */
+.concept-reader.reader-closing { animation: fade-in .18s var(--ease-out) reverse both; }
+.concept-reader.reader-closing .reader-shell { animation: rslide .2s var(--ease-out) reverse both; }
+
+/* —— 聊天气泡入场 —— */
+.msg.anim-bubble, .chat-msg.anim-bubble, .sv-msg.anim-bubble {
+  animation: rise-in-sm var(--dur-base) var(--ease-out) both;
+}
+
+/* —— 主要按钮按压反馈（多数已有 transition，故顺滑；无的则瞬时回弹）—— */
+.btn-new:active, .landing-btn:active, .sv-btn:active, .sv-send:active, .chat-send:active,
+.ide-btn:active, .home-logout:active, .home-back:active, .reader-done:active, .reader-close:active,
+.pstep-assess:active, .composer-tool:active, .composer-mini:active, .btn-save:active,
+.btn-attach:active, .btn-send:active, .preset:active, .model-pill:active, .landing-link:active,
+.practice-listbtn:active, .sv-link-btn:active {
+  transform: scale(.96);
+}
+
+/* ====================================================================
+   组件层叠 / 滚动修复
+   顶栏在 flex 流里排在内容区之前且无 z-index，导致其内的「模型下拉菜单」
+   被后面的聊天/网格内容盖住。把含下拉的顶栏抬到内容之上，并给菜单加滚动兜底。
+   ==================================================================== */
+.topbar, .ws-topbar, .sv-top { position: relative; z-index: 50; }
+.model-menu {
+  z-index: 200;
+  max-height: min(70vh, 460px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ====================================================================
+   学习地图：瀑布流（masonry）独立卡片
+   - 用多列瀑布流，卡片各自自然高度、紧凑铺满，不再被同行拉成等高/留大空隙
+   - 配模块色做淡淡的头部渐变 + 同色悬停投影，让每张卡有个性、不死板
+   ==================================================================== */
+.learn-map {
+  display: block;
+  columns: 340px;
+  column-gap: 20px;
+}
+.mod-card {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  width: 100%;
+  margin: 0 0 20px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--mod, var(--rouge)) 16%, var(--line));
+  border-top-width: 4px;
+  box-shadow: 0 2px 10px var(--shadow);
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+.mod-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--mod, var(--rouge)) 22%, transparent);
+}
+.mod-card > .mod-head {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--mod, var(--rouge)) 8%, #fff), #fff);
+}
+
+/* ===== 无障碍：尊重「减弱动态效果」 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .mm-ambient { display: none !important; }
+}

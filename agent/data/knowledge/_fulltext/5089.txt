@@ -1,0 +1,1021 @@
+Team 5089
+Director of Transportation,
+We’re attempting to optimize the configuration of staircases for a platform. In doing this, the
+most important thing to consider is the passenger’s safety and happiness while exiting. In our
+model we strive to minimize first the amount of time it takes for a passenger to exit a train and
+get to street level and then the amount of time that a passenger stands waiting to use the
+staircase. We did this based on the assumption that people would be happiest and safest if
+they can exit the platform quickly without standing in a mob in front of the opening of the
+stairs.
+M
+Keeping this in mind, we compared different platform configurations. For example, although
+putting one staircase at one end of the platform and putting one staircase in the middle of the
+C
+platform yields effectively the same time for each passenger to get to street level, in the first
+configuration the time people arrive at the opening of the stairs iMs more staggered and
+therefore people are waiting for the stair for less long. This makes the first configuration
+better.
+i
+H
+Of course, adding more staircases reduces both the total and waiting time for each
+：
+passenger. Of the configurations with two separate staircases, the one that minimizes these
+times the best has the stairs on either end of the platform. Anything with the stairs closer to
+the center of the platform increases waiti号ng time, and a configuration with the two staircases
+together increases the total time.
+众
+We find that model allows us to configure a platform to enhance the process of exiting the
+station for passengers in the most optimum way. Adopting our model would improve overall
+passenger safety and hap公piness.
+Thank you,
+信
+Team 5089
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 5089
+Summary Sheet
+Our problem deals with configuring the platform of a commuter train station in a way
+that minimizes the amount of time that it takes for passengers to exit the train and climb the
+stairs to street level. We used a worse case scenario of a full train of ten cars arriving at the
+platform and unloading all of its passengers, who then go directly to the staircase to exit the
+station. We optimized our configuration by looking at minimizing the average time spent
+getting to street level, and then minimizing the time spent waiting in line to get to the
+staircase.
+To solve this problem, we divided exiting the platform into three sections of time: time
+M
+to get off the train and to the staircase, time spent waiting at the stairs, and time spent
+climbing the stairs. We first found walking speed to be normally distributed. Then, using both
+C
+a numerical and analytical approach, found the distribution of arrival times of individuals to the
+staircase(s). The numerical approach used a program to procedMurally generate scenarios and
+average them for an accurate result. The analytical approach found the cumulative distribution
+function associated with aggregate inverse scaled normal distributions. Once this data or
+i
+distribution had been acquired, by taking data on how lonHg it takes the average person to walk
+up a set of stairs, it was then possible to find both the average time to get to a staircase and
+：
+the average time spent waiting. The time to ascend the stairs was unrelated to this distribution
+and found separately to be fixed. Because we assumed that spending time walking to the
+staircase was preferable to waiting en ma号sse in front of the stairs, we found that positioning
+staircases at the ends of the platform was more optimal than having them towards the middle.
+Both models recommend three configurations that each work best in a different way. If
+众
+it’s a priority to minimize the overall time, a configuration with three staircases positioned ⅙,
+½, and ⅚ of the way along the platform. However, if it’s a priority to minimize the crowding,
+two staircases at either en公d of the platform is optimal. Finally, if it is desirable to have only one
+staircase, it is best to position it on one end of the platform.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+HiMCM Problem A: Unloading Commuter Trains
+Team 5089
+November 2014
+M
+1 Introduction
+C
+Commuter train platforms are generally some of the busiest places in a city. Thousands of people
+enterandexiteveryday,resultinginmassivedelaysandcrowdsaroundtheexits. Peopleareenter-
+ing and leaving the station, transferring trains, or simply staying inMthe same one. With all this in
+mind,itmaybedifficultandtime-consumingforeachpassengertoleavethestation. Thereisoften
+a ”fan” of passengers near the stairway, as it cannot accommodate a large number of people all at
+i
+once. In the busiest scenario, a train entirely full of commHuters arrives at a platform, and every
+passenger gets off to exit the station. Though the platform will crowd up for just one train full
+ofpassengers,thecrowdingwouldbeevenworseift：wofulltrainshappentoarriveatthesametime.
+Inthisproblem,welookatageneralplatformandtrain. Givencertainpropertiesofthestation
+and the train, we attempt to develop a model that measures the time it takes for a commuter to
+号
+reach street level and exit a station and determines an optimum platform configuration, through
+placement of staircases. We also consider how the time would be affected if there is a second train
+that arrives at the same time. Lastly, we looked at seeing how the amount of people the staircase
+众
+can accommodate would change the time, as well as how the number of stairways would affect it.
+2 Given Infor公mation
+• Each train consists of at least 10 cars and is full to capacity. Each car has 2 exits, one near
+each end. There is a center aisle with two seats on one side and three on the other, for each
+信
+row of seats.
+• After exiting the car, all passengers must walk to the stairway to exit the station at street
+le微vel.
+• The stairways can only accommodate two columns of people exiting to the top of the stairs.
+• Each row of seating has an aisle with two seats on one side and three on the other.
+3 Assumptions and Justifications
+• Each train car’s doors split the car into equal parts (thirds). This is based on the
+R143 car, used by the New York City Subway. Based on other references, the dimensions of
+this car seems to be representative of the average car size. (Reference 1)
+1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 2 of 18
+• There is a three foot gap between each row of seats. Each row of seats has to have
+a gap in order to allow room for people to be seated. Most seating arrangements on public
+transportation vehicles seemed to have roughly this amount of space, so we decided to use it
+as well.
+• All staircases are the same dimensions, with a height of two stories (6 meters)
+and where each step is 6 inches (.15 meters) tall. This was based on average staircase
+dimensions and standard building codes. The width of the platform was assumed to be 50
+feet, and the staircases were placed exactly in between the two rail tracks, so 25 feet from
+each.
+M
+• Walking speeds follow the normal distribution N(1.34,0.37). We assumed it was 1.5
+m/s, or4.92feet/sec. Fromthisreference, wealsoassumedtheaveragespeedforclimbingup
+stairs was .442 m/s. We reached a final value of 4 people/sec, which says the stairway lets 4
+C
+people exit every second. Based on the problem, let the number stairs in each staircase be q.
+(Reference 3)
+M
+• The same number of people leave each car door. We assume that for each car, half
+of the occupants go to each door to minimize the wait time to get out of the train. People
+i
+would also want to leave the car as soon as possible, sHo they would go towards the exit with
+fewerpeople; becausethedoorsareevenlyspreadapartonthecar, halfofthecarshouldexit
+through each. ：
+• There is nobody standing in the train. The problem statement gives us the seating
+arrangement for each row, so we assumed the entire occupancy comes from people seated in
+号
+the train, and that there is no one standing in the aisle. Additionally, with the dimensions of
+the train car, it would be relatively unreasonable for people to stand in the aisle.
+• There are no more tha众n three staircases being added. Based on the size of our
+platform and the number of people who could be on the platform, we found it would be
+unreasonable to have more than three staircases.
+公
+• The stairway is at the end of platform. Theinitialconfigurationistohaveonestairway
+at one end of the platform. This is the configuration in many commuter stations, such as the
+Center City Commuter Connection at the Market East Station in Philadelphia.
+信
+4 Models
+微
+4.1 Basic Quantities
+Both the analytical and numerical models require the definition of some fundamental variables.
+They are as follows:
+n=number of cars to a train
+d=length of each car
+p=platform length
+h =horizontal distance between gate i and the stairs
+c
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 3 of 18
+q =number of stairs in each staircase
+β =number of stairwells
+There is a 3 foot difference between each row, and 5 seats per row, which gave us the above
+equation, so the number of people per car can be represented by: 5d, making the capacity, or total
+3
+number of people in the station:
+5nd
+C =
+3
+M
+where C is the total number of people in the train station. So when d=60 and n =10, the train
+can hold 1000 commuters.
+C
+Given this information, it is possible to use either model in order to perform projections and
+determine the amount of time it takes the average passenger to leave the station. The diagram
+M
+below gives the general diagram that assigns values to a few of the above variables. Each dot
+represents a door and the number above is its assigned door number. In this case, the length of
+each car is 60 feet, and length of the platform is 50 feet. These vailues came from averages that we
+foundonline. Wealsomadenequalto10. FromourassumpHtions,thedoorssplitthecarintoequal
+parts, so the doors on each car are 20 feet apart. The drawing also depicts how simple geometry
+was used to calculate the walking distance to the：staircase. This process was repeated for every
+door on the train. The number of doors on the train is simply 2n, because there are two per car.
+First, we would need to find the walking distance for a passenger from a certain door. Let c be
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 4 of 18
+M
+C
+M
+i
+H
+：
+Figure 1: Diagram of central station
+号
+the door number and let D be the walking distance for a passenger from a certain door. D can be
+represented as: 众
+(cid:114)
+(cid:16)p(cid:17)2
+D = +(h )2
+2 c
+where h is defined as: 公
+(cid:40)
+60c-40 if c mod 2 ≡1
+h= ;c∈{1,2,...,2n}
+信60c-20 if c mod 2 ≡0
+Then, we looked at the time it took for a person to reach the end of a staircase, or the rate at
+which people move on/off the stairway. We obtained a value of 0.15m for the height of a stair, and
+微
+from 0.442m/s as the average climbing rate, we calculated a value of about 3 footsteps/sec. This
+is about 1 footstep for every 1 of a second. Because it takes two footsteps to get up one step, this
+3
+translatesto1.5peopleperstepandthento3peopleperfullstep. Wedecidedthatbecausepeople
+would be crowded up the stairs at more than one person every other step, we should introduce a
+buffer that accommodates for this, which gives us 4 people per second as the speed of traveling up
+the staircase.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 5 of 18
+| 4.2 Numerical |     | Model |     |     |
+| ------------- | --- | ----- | --- | --- |
+In order to calculate time spent to get to ground level, we separate the different time periods: time
+spent for each person walking to the stairway, T , the time spent waiting to get onto the stairs, W,
+i
+and the time spent walking up the stairs, S. This can be presented by the equation below.
+|     |     |     | T total =T +W | +S  |
+| --- | --- | --- | ------------- | --- |
+The time each person spent walking to the stairway, T , is calculated by the equation below.
+i
+D
+T i =
+N(4.396,1.213) M
+The average of those T values is then calculated for 100 runs with a computer program (See
+i
+appendix). Essentially, T is determined by finding the average walking times C for 100 times the
+| capacity | of the train(s) | in the station. |     |     |
+| -------- | --------------- | --------------- | --- | --- |
+M
+To calculate average wait times, W, we find the number of people who have already made it to
+the street by subtracting the time it takes for the first person to get to the stairs from the time it
+takesfortheaveragepersontogettothestairs, whichwethenmuiltipliedby2Qtogetthenumber
+of people who have left when the last person gets in line.(BHecause arrival times are fairly linear,
+we can approximate the arrival time of the final person by doubling the arrival time of the average
+to：get
+person.) We subtract this from the capacity, C, the number of people left in line. Dividing
+| this quantity | by 2Qβ | gives the wait time | for the average | person. |
+| ------------- | ------ | ------------------- | --------------- | ------- |
+|               |        |                     | (cid:0)         | (cid:1) |
+|               |        |                     | 号C−2 T −T       | Min Q   |
+W =
+2Qβ
+Using empirical data, we found that it takes about 25 seconds to climb up 40 stairs. We used
+thisasaproportionfortheratea众twhichittakesonetoclimbupstairs,andultimatelydetermined
+| S with | the equation | below. |     |     |
+| ------ | ------------ | ------ | --- | --- |
+|        |              |        | 25  | 5q  |
+公S
+|       |               |     | = ×q = |     |
+| ----- | ------------- | --- | ------ | --- |
+|       |               |     | 40     | 8   |
+| 4.2.1 | Example Model |     |        |     |
+信
+Forourinitialtraincarsetup, weassumed10carspertrain, sothattheentiretrainlengthwas600
+feet. We assumed of the length of the platform, p, was 50 feet. The doors on each car were placed
+20 feet微from each end, resulting the doors on each car being 20 feet apart from each other. Inside
+each car there is a side with two seats and a side with three seats, separated by an aisle. With our
+assumption that each row takes up three feet of space there are a total of 20 rows in each car. This
+| was the | basic setup | of every car, as shown | in Figure | 1.  |
+| ------- | ----------- | ---------------------- | --------- | --- |
+Initially, the configuration with only one staircase was used. Other configurations were tested,
+asexplainedlater inthepaper. The staircasewas placedattheend oftheplatform(theend ofthe
+train)inthebetweenbothtracks. Thisgivesthestaircaseadistanceof25feetfromeachrailtrack.
+For each door on a car, we calculated the distance to the staircase, and the time it would take for
+each group of people from that door to reach the staircase. The following calculations shows how
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #5089 |            |               |           |     |     | Page 6 of 18 |
+| ---------- | ---------- | ------------- | --------- | --- | --- | ------------ |
+| we reached | the number | of passengers | per door. |     |     |              |
+Based on our assumption, 50 people exit from each door, because 100/2=50.
+Next, weusedthePythagoreanTheoremtofindthedistancestothestairwayfromeachdoor. The
+time to reach the stairway was simply done by dividing the distance by the average walking speed,
+| 4.92 feet/sec, | as stated | in Section | 4. q =6/.15=40 | steps |     |     |
+| -------------- | --------- | ---------- | -------------- | ----- | --- | --- |
+Horizontal Distance of Passenger’s Walking TimeToReachStaircase
+|     | Gate from | Staircase | Distance | to Staircase | (sec) |     |
+| --- | --------- | --------- | -------- | ------------ | ----- | --- |
+|     | (feet)    |           | (feet)   |              |       |     |
+|     | 20        |           | 32.0     |              | 6.5   | M   |
+|     | 40        |           | 47.2     |              | 9.6   |     |
+|     | 80        |           | 83.8     |              | 17.1  |     |
+C
+|     | 100 |     | 103.1 |     | 21.0 |     |
+| --- | --- | --- | ----- | --- | ---- | --- |
+|     | 140 |     | 142.2 |     | 28.9 |     |
+M
+|     | 160 |     | 161.9 |     | 32.9  |     |
+| --- | --- | --- | ----- | --- | ----- | --- |
+|     | 200 |     | 201.6 |     | 41.0  |     |
+|     | 220 |     | 221.4 |     | 45i   |     |
+|     | 260 |     | 261.2 |     | H53.1 |     |
+|     | 280 |     | 281.1 |     | 57.1  |     |
+：65.2
+|     | 320 |     | 321.0  |     |      |     |
+| --- | --- | --- | ------ | --- | ---- | --- |
+|     | 340 |     | 340.9  |     | 69.3 |     |
+|     | 380 |     | 380.8  |     | 77.4 |     |
+|     | 400 |     | 400.8号 |     | 81.5 |     |
+|     | 440 |     | 440.7  |     | 89.6 |     |
+|     | 460 |     | 460.7  |     | 93.6 |     |
+众500.6
+|     | 500      |                 |              |          | 101.8             |           |
+| --- | -------- | --------------- | ------------ | -------- | ----------------- | --------- |
+|     | 520      |                 | 520.6        |          | 105.8             |           |
+|     | 560      |                 | 560.6        |          | 113.9             |           |
+|     | 580      | 公580.3          |              |          | 118.0             |           |
+|     | Table 1: | Table depicting | the distance | and time | from each exit on | the train |
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 7 of 18
+After analyzing the data from this table and based on our assumption that the staircase is two
+stories high, we found that q = 40. Based on the average speed for climbing up the stairs, we
+determined it would take 25 seconds for each person to go up all of the stairs.
+| 4.2.2 | General | Method |     |     |     |     |     |
+| ----- | ------- | ------ | --- | --- | --- | --- | --- |
+In the method above, we worked under assumptions given by the problem, but this method can be
+made to be made completely abstract: able to work with any platform configuration.
+| Adding | Multiple | Stairways |     |     |     |     |     |
+| ------ | -------- | --------- | --- | --- | --- | --- | --- |
+M
+The method above assumed only one stairway will be used and it will be placed at an end;
+however, multiple configurations can be built if we change the position of that stairway, as well as
+toClie (cid:0) 0,p(cid:1)
+adding additional stairways. This is done by allowing the initial stairway at the point
+2
+and allowing other stairways to have x coordinates of up to nd. This would change our calculation
+M
+of D to be:
+(cid:114)
+(cid:16)p(cid:17)2
+|     |     |     |     | D   | =   | +(h | −β )2 |
+| --- | --- | --- | --- | --- | --- | --- | ----- |
+|     |     |     |     |     |     | 2   | c Min |
+i
+| where β | is the     | closest | stairwell. |      |     |     |     |
+| ------- | ---------- | ------- | ---------- | ---- | --- | --- | --- |
+|         | Min        |         |            |      |     |     | H   |
+| Varying | Car Number |         | and        | Size |     | ：   |     |
+In the method above we assumed d and n were constants that were later used to get times;
+however, these constants can be changed.号Variability of these constants force h to be redefined as:
+|     |     |     | (cid:40) | (cid:0)3c |     |          |                 |
+| --- | --- | --- | -------- | --------- | --- | -------- | --------------- |
+|     |     |     | d/3      | ×         | +2) | if c mod | 2 ≡1            |
+|     |     | h=  |          | 2         |     |          | ;c∈{1,2,...,2n} |
+(cid:0)3c
+|     |     |     | d/3 | ×众  | +1) | if c mod | 2 ≡0 |
+| --- | --- | --- | --- | --- | --- | -------- | ---- |
+2
+| Allowing | A Second | Train |     |     |     |     |     |
+| -------- | -------- | ----- | --- | --- | --- | --- | --- |
+公
+In order to account for the need to accommodate multiple trains on the platform, the model
+must simply be changed to double the carrying capacity of a single car, assuming the additional
+trainisacrosstheplatform,ofthesameconfiguration(nanddvaluesareequivalent),andopposing
+cardoorswillopenatthesametime. 信 Undertheconstraintsofourmodel,alloptimalconfigurations
+| developed | for a | single train | is also | viable | for | a two train | system. |
+| --------- | ----- | ------------ | ------- | ------ | --- | ----------- | ------- |
+微
+| 4.3 Analytical |     | Model |     |     |     |     |     |
+| -------------- | --- | ----- | --- | --- | --- | --- | --- |
+While the numerical model produced accurate results on a whole, we noticed that there was a
+tendency for large outliers to appear in the data. For instance, over individual runs, sometimes the
+combination of a slow walker and the longest walking distance would produce one or two individu-
+als who would take over ten minutes to reach the stairway. In order to address the problem in an
+| alternative | way, | we created | the | following | analytical | model. |     |
+| ----------- | ---- | ---------- | --- | --------- | ---------- | ------ | --- |
+We begin the analytical model with the given assumption that walking speeds follow the nor-
+mal distribution ω ∼ N(1.34,0.37). We would like to find the distribution of the arrival times of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 8 of 18
+individuals at the stairs, Y, which has the relation Y = D. If F is the cumulative distribution
+Y
+ω
+function of the random variable Y and F is the cumulative distribution function of the random
+ω
+| variable | ω, then we | can do the following | to establish | a relation: |
+| -------- | ---------- | -------------------- | ------------ | ----------- |
+|          |            |                      | F (y)=Pr(Y   | ≤x)         |
+Y
+=Pr(ω−1∗D
+≤x)
+|     |     |     | (cid:16) | x(cid:17) |
+| --- | --- | --- | -------- | --------- |
+|     |     |     | =Pr      | ω−1 ≤     |
+D
+|     |     |     | (cid:18) | (cid:19) M |
+| --- | --- | --- | -------- | ---------- |
+D
+|     |     |     | =Pr | ω ≥ |
+| --- | --- | --- | --- | --- |
+x
+(cid:18) (cid:19) C
+D
+|     |     |     | =1−Pr | ω < |
+| --- | --- | --- | ----- | --- |
+x
+M
+(cid:18) D (cid:19)
+|     |     |     | =1−F | ω   |
+| --- | --- | --- | ---- | --- |
+x
+i
+H
+Because we know that the probability density function of a random variable is the derivate of
+know:：
+| its cumulative | distribution | function, | we also |     |
+| -------------- | ------------ | --------- | ------- | --- |
+(cid:18) (cid:19)
+D
+F (号y)=1−F
+|     |     |     | Y   | ω   |
+| --- | --- | --- | --- | --- |
+x
+|     |     |     | D      | (cid:18) D (cid:19) |
+| --- | --- | --- | ------ | ------------------- |
+|     |     |     | f (y)= | f                   |
+|     |     | 众   | Y y2   | ω x                 |
+We know the probab公ility density function of ω because it follows a normal distribution, so:
+1
+−(x−µ)2
+|     |     |     | f (x)= √ | e 2ω2 |
+| --- | --- | --- | -------- | ----- |
+|     | 信   |     | ω σ 2π   |       |
+(cid:18) (cid:19)
+|     |     |     | D   | D   |
+| --- | --- | --- | --- | --- |
+f (x)= f
+Y ω
+|     |     |     | y2  | y   |
+| --- | --- | --- | --- | --- |
+微
+y−µ)2
+|     |     |     | D   | −(D |
+| --- | --- | --- | --- | --- |
+|     |     |     | = √ | e   |
+2σ2
+|     |     |     | y2σ | 2π  |
+| --- | --- | --- | --- | --- |
+(cid:113)
+|     |     |     | )2+ | (cid:0)p(cid:1)2 |
+| --- | --- | --- | --- | ---------------- |
+Because D was defined earlier to be (h c , we can substitute in D to make f Y (x) a
+2
+| parametric | equation. |     |     |     |
+| ---------- | --------- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 9 of 18
+−(D y−µ)2
+D
+|     |     |     | f (x)= | √   | e 2σ2 |     |
+| --- | --- | --- | ------ | --- | ----- | --- |
+Y
+|     |     |     |     | y2σ 2π |             |     |
+| --- | --- | --- | --- | ------ | ----------- | --- |
+|     |     |     |     |        |  (cid:114) |  2 |
+(hc)2 +(p )2
+|     |     |     |     | (cid:113) |                      | 2  |
+| --- | --- | --- | --- | --------- | ---------------------- | ---- |
+|     |     |     |     | (h )2+    | (cid:0)p(cid:1)2 −  y | −µ  |
+c
+|     |     | f   | (x;h ,p)= |     | √ 2 e |     |
+| --- | --- | --- | --------- | --- | ----- | --- |
+|     |     |     | Y c       |     | 2σ2   |     |
+y2σ 2π
+For a given train with n cars and doors at locations h , we can then sumMup and average
+c
+the probability density functions to get the aggregate probability density function of the entire
+| population |     | of the train. |     |     |     |     |
+| ---------- | --- | ------------- | --- | --- | --- | --- |
+C
+|     |     |     |     |          | 2 n−1      | M   |
+| --- | --- | --- | --- | -------- | ---------- | --- |
+|     |     |     |     |          | 1 (cid:88) |     |
+|     |     |     | f   | (x)=     | f (x;h ,p) |     |
+|     |     |     |     | total 2n | Y n        |     |
+i=0
+i
+We can then integrate again to find the cumulative disHtribution function, which gives us the
+| distribution |     | of arrivals: |     |     |     |     |
+| ------------ | --- | ------------ | --- | --- | --- | --- |
+：
+|     |     |     |     | 1 2n−1 | (cid:18) D (cid:19) |     |
+| --- | --- | --- | --- | ------ | ------------------- | --- |
+(cid:88)
+|     |     |     | F (x)= |     | 1−F |     |
+| --- | --- | --- | ------ | --- | --- | --- |
+|     |     |     | total  | 2n  | ω y |     |
+号
+i=0
+|     |     |     |     |          | (cid:113)  |    |
+| --- | --- | --- | --- | -------- | ----------- | --- |
+|     |     |     |     |          | (hc)2+(p )2 |     |
+|     |     |     |     | 1 2      | n−1 2       | −µ  |
+|     |     |     |     | (cid:88) | Φ x        |    |
+=1−
+|     |     |     | 众2n |     |  σ |    |
+| --- | --- | --- | --- | --- | --- | --- |
+i=0
+Once we have F (x), we can then multiply it by the capacity C to find the total number of
+total
+th公e
+people who arrived at stairs at time x. Furthermore, if we subtract from F total (x) the quantity
+4xβ, the rate at which people leave the queue, then we have the length of the queue at time x.
+Finally, dividing this entire expression by 4β will give us the amount of time spent waiting when
+| the | individual | a信t time x joins | the queue. |     |     |     |
+| --- | ---------- | ---------------- | ---------- | --- | --- | --- |
+F (x)−4xβ
+|     | 微   |     | F   | (x)=    | total |     |
+| --- | --- | --- | --- | ------- | ----- | --- |
+|     |     |     |     | waiting | 4β    |     |
+The expected value of F will be the average time spent waiting for someone who enters
+waiting
+| the | queue, | which is the quantity | W   | in the numerical | model. |     |
+| --- | ------ | --------------------- | --- | ---------------- | ------ | --- |
+D
+ThequantityT iscomputedbysimplytakingtheexpectedvalueof whichsimplifiesasfollows:
+ω
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 10 of 18
+M
+Figure 2: F and F Graphs
+waiting total
+C
+(cid:20) (cid:21) M
+D
+T =E
+ω
+(cid:20) D (cid:21) i
+=E H
+µ
+(cid:113)
+1 (cid:88) 2n (：h c )2+ (cid:0)p 2 (cid:1)2
+=
+2n µ
+i=1
+号
+Finally,S iscomputedinthesamewayasthenumericalmodelwhichresultedintheexpression:
+众
+5q
+S =
+8
+公
+4.3.1 Example Model
+信
+Running this simulation through Mathematica using the example parameters used in section 4.2.1,
+we arrive at the following graphs for F and F
+total waiting
+微
+5 Results
+5.1 Evaluation of Configurations
+The computer program ran 100 runs for the each configuration and gave an average based on the
+staircase orientation and car carrying capacity. The data was based on the values shown in the
+example earlier in the section. The numbers in parentheses are used to represent where on the
+platform the stairways are placed. For example, 2 Stairways (1/4, 3/4) means that the stairways
+were placed 1 of the way from one end, and 3 of the way from the same end. All of the staircases
+4 4
+are centered along the middle of the platform. The third column represents the required Q needed
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #5089 |     |     |     |     |     |     | Page 11 of 18 |
+| ---------- | --- | --- | --- | --- | --- | --- | ------------- |
+so that the last person who reaches the stairs would not have to wait. This was done by simply
+| taking | the total | capacity | and dividing | by 2T. | We called this Q | .   |     |
+| ------ | --------- | -------- | ------------ | ------ | ---------------- | --- | --- |
+req
+C
+Q =
+|     |     |     |     | req | 2T  |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+Type of Stairway Average Time to Q (people/sec) Wait Time (sec)
+req
+|     |          |       | Staircase | (sec) |        |     |     |
+| --- | -------- | ----- | --------- | ----- | ------ | --- | --- |
+| 1   | Stairway | (End) | 77.304    |       | 6.467  | 52  |     |
+| 1   | Stairway | (Mid- | 39.530    |       | 12.648 | 90  |     |
+M
+dle)
+| 2   | Stairways | (Ends) | 39.426 |     | 12.682 | 45    |     |
+| --- | --------- | ------ | ------ | --- | ------ | ----- | --- |
+| 2   | Stairways | (1/4,  | 20.695 |     | 24.167 | 54C.5 |     |
+3/4)
+| 3   | Stairways | (Mid- | 20.807 |     | 24.030 | M36.3 |     |
+| --- | --------- | ----- | ------ | --- | ------ | ----- | --- |
+| dle | and Ends) |       |        |     |        |       |     |
+| 3   | Stairways | (1/6, | 14.622 |     | 34.195 | 38.3  |     |
+i
+| 1/2, | 5/6) |     |     |     |     |     |     |
+| ---- | ---- | --- | --- | --- | --- | --- | --- |
+H
+|     | Table | 2: Average | waiting time | and | time to staircase | values, including | Q req . |
+| --- | ----- | ---------- | ------------ | --- | ----------------- | ----------------- | ------- |
+：
+To evaluate the separate configurations in the table above, all factors were put in consideration
+to find the best configuration. As stated earlier in the section, the total time to leave the station is
+号
+the sum of the walking time, the time waiting in the crowd, and the time on the stairs. However,
+the time on the stairs is practically negligible because it is the same amount for every passenger;
+all passengers are assumed to move up the stairs at the same rate. From our general equation,
+time众and
+we would sum average wait the average time to the staircase and some constant for S,
+whichisbasedonthenumberofstairs, q. Wedecidedtousea”crowdedness”metricbyusingQ
+req
+and dividing by 4β. We divided by 4β to account for the fact that 4 people/sec is the stairway up
+speed, so the total numb公er of people per second is 4 multiplied by the number of stairways. Let M
+be this metric. From the values of the time to reach street level, we can easily see that the number
+of stairways generally decreases the amount of total time needed to exit the station. Based on how
+M was calculate信d, there would be a significant change if k varied. Because k was used to calculate
+the ”crowdedness” metric, it shows that the crowdedness will decrease for every increasing value
+of k. Because it is in the denominator, the ratio will decrease with larger values and increase with
+smaller values.
+微
+From our data, we believe the configuration with stairways located 1/6, 1/2, and 5/6 along the
+platform would create the situation in which the average time to leave the station is the lowest.
+This ispurely basedon time, butweshould also considerthe excessive crowding thatoccurs atthe
+bottom of the staircase. The configuration with two stairways at the end have the least crowding
+because some of people are already on the stairs while passengers farther away are just arriving at
+the staircase. With this in mind, we would recommend using the configuration with 2 stairways
+located at each end of the platform. Though the time is about 30 seconds higher, there would
+be a much smaller crowd, which implies there is a higher probability that the passenger would
+be spending more time walking to the stairs, instead of waiting. Walking to the stairs would
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 12 of 18
+Type of Stairway Time to Reach M
+Street Level (sec)
+1 Stairway (End) 129.304 + 5q 1.617
+8
+1 Stairway (Mid- 129.530 + 5q 3.162
+8
+dle)
+2 Stairways (Ends) 84.426 + 5q 1.585
+8
+2 Stairways (1/4, 75.195 + 5q 3.021
+8
+3/4)
+3 Stairways (Mid- 57.107 + 5q 2.002
+8
+dle and Ends)
+M
+3 Stairways (1/6, 53.922 + 5q 2.549
+8
+1/2, 5/6)
+C
+Table 3: Total time to reach street level and ”Crowding” Metric
+M
+be a ”better use” of a passenger’s time. If it is necessary to have only one staircase, our model
+recommends positioning it at one end of the platform.
+i
+H
+5.2 Analytical Solution
+：
+Type of Stairway Average Time to Wait Time (sec) M
+Staircase (sec)
+号
+1 Stairway (End) 68.742 49.770 1.818
+1 Stairway (Mid- 34.932 87.702 3.578
+dle)
+众
+2 Stairways (Ends) 34.932 51.757 1.789
+2 Stairways (1/4, 18.308 41.279 3.413
+3/4)
+3 Stairways (Mid公- 18.308 56.037 2.276
+dle and Ends)
+3 Stairways (1/6, 12.719 55.697 3.276
+1/2, 5/6)信
+Table 4: Data retrieved from the Analytical Model
+微
+This model has values of T which are generally always larger than the average which results
+fromthatofthenumericalmodel. Thisismostlikelyduetothefactthatthereciprocalofanormal
+distribution is skewed. In addition, W the waiting times for the configurations with 3 stairwells
+are much higher than that of the numerical model due to skew. In the analysis of the numerical
+models we determined that the distribution of arrivals to the staircases was fairly linear. However,
+intheanalyticalapproachmuchmoreskewcomesintoplayandsotheheavierinitialqueuescreates
+discrepancies. Thusthelargersurgesinthemodelingofconfigurationswiththreestairwellscreates
+longer average waiting times than the numerical approach and the trailing off in the modeling of
+the configurations involving one stairwell resulted in lower average waiting times.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #5089 |     |     |     |     |     | Page 13 of 18 |
+| ---------- | --- | --- | --- | --- | --- | ------------- |
+Despite these discrepancies, the conclusions from this model are the same as the numerical
+model. Asbefore,ifweprioritizethespeedatwhichpeoplecanexitthebuilding,theconfiguration
+of stairways located at 1/6, 1/2, and 5/6 would allow for the minimum time spent walking out of
+the platform and station. However, if we are concerned with the crowding at the entrance of the
+stairs, we advocate the configuration with two stairwells at both ends of the platform. Finally, if
+the station has already been built or we are for some reason constrained to one staircase, then we
+recommend placement at the end since the total times are the same and crowding is minimized.
+6 Strengths
+M
+• Our model accounts not only for minimizing the time needed for a passenger to get to street
+level,butalsothetimethatpassengersareleftstanding,whichismoreCundesirableandunsafe
+| than | having the passengers | walking | for longer. |     |     |     |
+| ---- | --------------------- | ------- | ----------- | --- | --- | --- |
+M
+• By using two methods, we’ve increased the amount of data one can take into consideration
+whendecidinguponaplatformconfiguration. Presentingbothmodelsevaluatestheaccuracy
+| of the | other model, | and gives two different | approaches | to thie | same problem. |     |
+| ------ | ------------ | ----------------------- | ---------- | ------- | ------------- | --- |
+H
+• By using a normal distribution for the walking speed of passengers, we accounted for a wider
+range of commuters. This distribution would：help in giving a more accurate representation
+of the people walking, allowing us to have a better represent the total time it takes for the
+| passengers | to reach | the stairwell. |     |     |     |     |
+| ---------- | -------- | -------------- | --- | --- | --- | --- |
+号
+7 Weaknesses
+account众for
+• Our model doesn’t pre-existing crowding in the platform that could impact the
+speedatwhichpeoplecangettoandclimbthestaircase. Thiscouldcausethetimeforpeople
+to leave the station to increase, and it is more difficult to model a pre-existing crowd. The
+model also assume公s all passengers walk in a straight line to the stairs, but if there are other
+commuters, it will undoubtedly make passengers move in different directions.
+• Thoughthewalkingspeedisforanormaldistribution,itmaynotbecompletelyrepresentative
+信
+of everyone walking up the stairs. The speed for going up the stairs may not be accurate, as
+the amount of people per second would be different based on traffic, and the time of day.
+微
+| 8 Sensitivity |             | Analysis           |                 |          |          |         |
+| ------------- | ----------- | ------------------ | --------------- | -------- | -------- | ------- |
+|               | Independent | Variable Change    | (%) Dependent   | Variable | Change   | (%)     |
+|               | +10% Q      | (speed going up    | stairs) - 21.0% | W (wait  | time)    |         |
+|               | -10% Q      |                    | + 26.9%         | W        |          |         |
+|               | +10% q      | (number of stairs) | + 10%           | S (time  | spent on | stairs) |
+|               | -10% q      |                    | - 10%           | S        |          |         |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #5089 |     |     |     |     |     | Page 14 of 18 |
+| ---------- | --- | --- | --- | --- | --- | ------------- |
+Error in our Q value would have a significant effect on W, which directly affects our T total
+total
+value. Because S is directly proportional to q, an error in the q value would have a proportional
+| effect on | the S value. |           |     |             |             |     |
+| --------- | ------------ | --------- | --- | ----------- | ----------- | --- |
+| Change    | in n         | Change in | d   | Change in C | Effect upon | T   |
+(Number of Cars) (Length of each Car) (Capacity of Train) (Average arrival time)
+| +     | 50% | - 33.334% |     | 0%    | + 1.2% | (negligible) |
+| ----- | --- | --------- | --- | ----- | ------ | ------------ |
+| - 50% |     | + 50%     |     | 0%    | + .26% | (negligible) |
+| +     | 10% | 0%        |     | + 10% | + 9.2% |              |
+| - 10% |     | 0%        |     | - 10% | -11.1% |              |
+M
+Change in the n or d values without changing the overall capacity does not have a significant
+effect on the T value, but changing the overall capacity has a directly proportional effect on T.
+C
+| 9 Future | Applications |     | and | Extensions | M   |     |
+| -------- | ------------ | --- | --- | ---------- | --- | --- |
+Our model currently has general assumptions, and many factors are taken into account. However,
+there are some that we were not able to integrate into our modelsi. For example, we would like to
+H
+seehowintroducingacrowdtobeontheplatforminitiallywouldaffectthetimeforapassengerto
+leave the station. Some of the people on the platform may want to exit, while others may attempt
+：
+to get on the train at the same time passengers are getting off. It is also relatively unreasonable
+for a fully occupied train to have all of its passengers to leave the train at the same station. As
+mentioned before, some may transfer to other trains, stay on the same one, or loiter, so the crowd
+号
+| attempting | to exit would | not be as | packed. |     |     |     |
+| ---------- | ------------- | --------- | ------- | --- | --- | --- |
+Another extension of this project we could pursue is to look at how different train setups would
+affect the timing. We would also investigate how the time it takes to reach street level varies based
+mo众rnings
+on time of day. Generally, the and evenings would have the more traffic compared to the
+afternoon. This would cause the time to reach street level to be higher during the earlier and later
+parts of the day. Including time of day and taking into account varying traffic would easily change
+| our distributions | and | cal公culated values. |     |     |     |     |
+| ----------------- | --- | ------------------- | --- | --- | --- | --- |
+10 Conclusion
+信
+Lookingattheresultsfromourmetrics,wefindthatplacingthestaircaseattheendsoftheplatform
+is best for minimizing both total time and time spent waiting for use for the stairs. When adding
+secon微d
+a staircase the rule holds, and it’s best to have those at the ends. Finally, when adding a
+third staircase, it becomes optimal to place them at 1, 1, and 5. We also explored the effects of
+|     |     |     |     | 6 2 | 6   |     |
+| --- | --- | --- | --- | --- | --- | --- |
+changing the other variables and initial conditions in the model to see the effects, such as adding
+a second train or how many people the staircase(s) can accommodate. To see how these changes
+| affect the | total time | that it takes to | get to the | street. |     |     |
+| ---------- | ---------- | ---------------- | ---------- | ------- | --- | --- |
+11 References
+Sources used:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5089 Page 15 of 18
+”R143 (New York City Subway Car).” Wikipedia. Wikimedia Foundation, 22 Oct. 2014. Web.
+15 Nov. 2014.
+Levine, Richard. ”Seeking Bearable Level Of Subway Discomfort.” New York Times. The New
+YorkTimesCompany,10Oct. 1987. Web. 15Nov. 2014. http://www.nytimes.com/1987/10/10/ny
+region/seeking-bearable-level-of-subway-discomfort.html.
+Daamen, W., and S. Hoogendoorn. ”Free Speed Distributions — Based on Empirical Data in
+Different Traffic Conditions.” Springer Link. Springer Science+Business Media, 2007. Web. 15
+Nov. 2014. http://link.springer.com/chapter/10.1007/978-3-540-47064-9 2.
+M
+Shah, Jiten, Gaurang Joshi, and Purnima Parida. ”Walking Speed of Pedestrian on Stair-
+ways at Intercity Railway Station in India.” Proceedings Of The Eastern Asia Society For Trans-
+C
+portation Studies 9 (2013): Easts Info. 2013. Web. 15 Nov. 2014. http://easts.info/on-
+line/proceedings/vol9/PDF/P269.pdf.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #5089 |     |     |     |     |     |     |     |     | Page 16 of 18 |
+| ---- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | ------------- |
+12 Appendix
+A program was made in the programming language JavaTM that calculates the time each person takes to
+reach the stairwell. Relevant functions are documented below. Namely, the function that returns a random
+set of random normal speeds for each person getSpeeds(), the function that returns distance each person
+in their respective car doors must travel to reach the stairway findDisatnce(), the function that calculates
+the time it takes to arrive at a stairway calcArrivalTimes(), and the function that runs these processes
+| 100 times | to  | develop | an average |     | T i , main() |     | and runMain(). |     |     |     |
+| --------- | --- | ------- | ---------- | --- | ------------ | --- | -------------- | --- | --- | --- |
+// returns average of 100 runs to get representative average for parameters
+M
+| public   | static | void            | main(String[] |                    |              | args) | {    |     |     |     |
+| -------- | ------ | --------------- | ------------- | ------------------ | ------------ | ----- | ---- | --- | --- | --- |
+| double[] |        | averages        |               | = new              | double[100]; |       |      |     |     |     |
+| double   |        | sum =           | 0;            |                    |              |       |      |     |     | C   |
+| for      | (int   | i =             | 0; i          | < averages.length; |              |       | i++) | {   |     |     |
+|          | sum    | += runMain(50); |               |                    |              |       |      |     | M   |     |
+}
+| double |     | superAvg | =   | sum / | averages.length; |     |     |     |     |     |
+| ------ | --- | -------- | --- | ----- | ---------------- | --- | --- | --- | --- | --- |
+System.out.println("The average of " + averages.lengthi+ " runs is " + superAvg + " minutes");
+H
+}
+：
+| static            | double | runMain(int |     | capacity)     |     | {   |                      |     |     |     |
+| ----------------- | ------ | ----------- | --- | ------------- | --- | --- | -------------------- | --- | --- | --- |
+| ArrayList<Double> |        |             |     | walkingSpeeds |     | =   | getSpeeds(capacity); |     |     |     |
+号
+System.out.println(walkingSpeeds);
+int[] openDoors = {20, 40, 80, 100, 140, 160, 200, 220, 260, 280, 320, 340, 380, 400, 440,
+|     | 460, | 500, | 520, | 560, | 580}; |     |     |     |     |     |
+| --- | ---- | ---- | ---- | ---- | ----- | --- | --- | --- | --- | --- |
+{0.0};众
+| double[] |     | stairways |     | =   |     |     |     |     |     |     |
+| -------- | --- | --------- | --- | --- | --- | --- | --- | --- | --- | --- |
+ArrayList<Double> distances = findDistance(openDoors, stairways);
+ArrayList<Double> arrivalTimes = calcArrivalTimes(distances, walkingSpeeds);
+System.out.println(a公rrivalTimes);
+| double |         | sum = | 0;     |               |     |     |     |     |     |     |
+| ------ | ------- | ----- | ------ | ------------- | --- | --- | --- | --- | --- | --- |
+| for    | (Double |       | time : | arrivalTimes) |     |     | {   |     |     |     |
+sum += ti信me.doubleValue();
+}
+| double                      |     | average | = sum | /   | arrivalTimes.size() |       |           | / 60; |     |     |
+| --------------------------- | --- | ------- | ----- | --- | ------------------- | ----- | --------- | ----- | --- | --- |
+| System.out.println("Average |     |         |       |     |                     | = " + | average); |       |     |     |
+微
+| return |     | average; |     |     |     |     |     |     |     |     |
+| ------ | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+| // returns        |                   | list    | of individual |                   | people |                      | speeds          | that will |     |     |
+| ----------------- | ----------------- | ------- | ------------- | ----------------- | ------ | -------------------- | --------------- | --------- | --- | --- |
+| // be             | a random          | numbers |               | within            | a      | normal               | distribution    |           |     |     |
+| // mean:          | 4.396;            |         | stdev:        | 1.213             |        |                      |                 |           |     |     |
+| static            | ArrayList<Double> |         |               | getSpeeds(int     |        |                      | capacityPerCar) |           | {   |     |
+| ArrayList<Double> |                   |         |               | speeds            | = new  | ArrayList<Double>(); |                 |           |     |     |
+| Random            |                   | rand    | = new         | Random();         |        |                      |                 |           |     |     |
+| for               | (int              | i =     | 0; i          | < capacityPerCar; |        |                      | i++)            | {         |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #5089                          |         |     |         |        |         |           |     | Page 17 of 18 |
+| ---- | ------------------------------ | ------- | --- | ------- | ------ | ------- | --------- | --- | ------------- |
+|      | speeds.add(rand.nextGaussian() |         |     |         |        | * 1.213 | + 4.396); |     |               |
+|      | // nextGaussian()              |         |     | returns | random | normal  | numbers   |     |               |
+|      | // with                        | a stdev | of  | 1 and   | a mean | of 0    |           |     |               |
+}
+| return | speeds; |     |     |     |     |     |     |     |     |
+| ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+static ArrayList<Double> findDistance(int[] doors, double[] stairways) {
+// Returns an ArrayList of the closest distance each car door is from its respective stairway
+| ArrayList<Double> |                   |        | distances |              | = new | ArrayList<Double>();       |     |     |     |
+| ----------------- | ----------------- | ------ | --------- | ------------ | ----- | -------------------------- | --- | --- | --- |
+| for               | (int              | door : | doors)    | {            |       |                            |     |     | M   |
+|                   | ArrayList<Double> |        |           | allDistances |       | = new ArrayList<Double>(); |     |     |     |
+|                   | for (double       |        | stairway  | : stairways) |       | {                          |     |     |     |
+C
+allDistances.add(Double.valueOf(Math.sqrt(Math.pow(25, 2) + Math.pow(door - stairway,
+2))));
+M
+|     | //  | calculates |     | distance | of  | car door | from each stairway |     |     |
+| --- | --- | ---------- | --- | -------- | --- | -------- | ------------------ | --- | --- |
+}
+distances.add(Collections.min(allDistances)); // people will flock to closest stairway
+i
+}
+H
+| return | distances; |     |     |     |     |     |     |     |     |
+| ------ | ---------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| }      |            |     |     |     |     |     | ：   |     |     |
+static ArrayList<Double> calcArrivalTimes(ArrayList<Double> distances, ArrayList<Double> speeds) {
+| ArrayList<Double> |             |           | arrivalTimes               |                       | =   | ne号w ArrayList<Double>(); |                 |     |      |
+| ----------------- | ----------- | --------- | -------------------------- | --------------------- | --- | ------------------------- | --------------- | --- | ---- |
+| for               | (Double     | tdistance |                            | : distances)          |     | {                         |                 |     |      |
+| double            | distance    |           | = tdistance.doubleValue(); |                       |     |                           |                 |     |      |
+|                   | for (Double |           | tspeed                     | : speeds)             | 众   | {                         |                 |     |      |
+|                   | double      |           | speed =                    | tspeed.doubleValue(); |     |                           |                 |     |      |
+|                   | //          | assuming  | it                         | takes                 | 3/4 | of a second               | for next person | to  | exit |
+arrivalTimes.add(distance / speed + 3/4 * (arrivalTimes.size()));
+公
+}
+}
+Collections.sort(arrivalTimes); // sorts times from least to greatest
+| return | arrivalTimes; | 信   |     |     |     |     |     |     |     |
+| ------ | ------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+Thefollo微wingfunctionswereuseddeveloptheanalyticalsolution. ThecodebelowwaswritteninWolfram
+MathematicaTM.
+| f1[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 9.76/x)]/2  |     |     |     |     |
+| ------ | ------ | ----------------- | --- | --- | ------------- | --- | --- | --- | --- |
+| f2[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 14.38/x)]/2 |     |     |     |     |
+| f3[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 25.55/x)]/2 |     |     |     |     |
+| f4[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 31.43/x)]/2 |     |     |     |     |
+| f5[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 43.34/x)]/2 |     |     |     |     |
+| f6[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 49.37/x)]/2 |     |     |     |     |
+| f7[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 61.45/x)]/2 |     |     |     |     |
+| f8[x_] | := 1 - | Erfc[1.9111*(1.34 |     |     | - 67.50/x)]/2 |     |     |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #5089 |                          |                   |                |     |     | Page 18 of 18 |
+| ---------- | ------------------------ | ----------------- | -------------- | --- | --- | ------------- |
+| f9[x_]     | := 1 - Erfc[1.9111*(1.34 |                   | - 79.63/x)]/2  |     |     |               |
+| f10[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 85.71/x)]/2  |     |     |               |
+| f11[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 97.86/x)]/2  |     |     |               |
+| f12[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 103.94/x)]/2 |     |     |               |
+| f13[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 116.10/x)]/2 |     |     |               |
+| f14[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 122.19/x)]/2 |     |     |               |
+| f15[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 134.46/x)]/2 |     |     |               |
+| f16[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 140.45/x)]/2 |     |     |               |
+| f17[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 152.63/x)]/2 |     |     |               |
+| f18[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 158.72/x)]/2 |     |     |               |
+| f19[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 170.90/x)]/2 |     |     | M             |
+| f20[x_]    | := 1 -                   | Erfc[1.9111*(1.34 | - 176.99/x)]/2 |     |     |               |
+g[x_] := (f1[x] + f2[x] + f3[x] + f4[x] + f5[x] + f6[x] + f7[x] +
+C
+| f8[x]  | + f9[x]  | + f10[x] | + f11[x] + f12[x] | + f13[x]     | + f14[x] + |     |
+| ------ | -------- | -------- | ----------------- | ------------ | ---------- | --- |
+| f15[x] | + f16[x] | + f17[x] | + f18[x] + f19[x] | + f20[x])/20 |            |     |
+M
+| Plot[(g[x]*1000 |     | - 4*x)/4, | {x, 0, 300}] |     |     |     |
+| --------------- | --- | --------- | ------------ | --- | --- | --- |
+| Plot[g[x],      | {x, | 0, 300}]  |              |     |     |     |
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

@@ -1,0 +1,860 @@
+For office use only
+T1 ________________
+T2 ________________
+T3 ________________
+T4 ________________
+
+For office use only
+F1 ________________
+F2 ________________
+F3 ________________
+F4 ________________
+
+2011
+
+14th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+
+Team Control Number: 2881
+
+Problem Chosen: B
+No one enters the wilderness expecting to get lost.  However, each year forest rangers
+
+search for thousands of missing or stranded people.  In order to maintain public safety, it is
+
+critical to find the missing personnel in the fastest time possible.
+
+Unfortunately, instead of calling 911, many people will operate off of their natural
+
+instinct and go searching for their friend – without help.  Though some may have luck searching
+
+for their friends, many will not because the odds are very literally stacked against them.  Our
+
+models show that, while certain methods of searching are somewhat effective, searching on
+
+one’s own with a pen light is not the best solution, especially when searching such a large
+
+amount of land.  Though the probabilities of finding the ring are not insufferably low, (as it is an
+
+inanimate object), the probabilities of finding a living being who could accidentally and
+
+repeatedly evade the searcher are horrendous.  While the search methods are optimized, one
+
+person searching for a friend is never as effective as a well-equipped search party.
+
+http://www.comap.com/highschool/contests/himcm/summary_sheet.php3
+
+11/10/11
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Introduction:
+
+Page 1 of 19
+
+No one enters the wilderness expecting to get lost.  However, each year forest rangers
+
+search for thousands of missing or stranded people (Forest Ranger Annual Report).  It is critical
+
+for rescue teams to find these individuals within a few hours in order to rescue them.  Due to the
+
+dire necessity of finding the lost quickly, search methods have developed to include the
+
+implementation of helicopters, rescue dogs, SARS (search and rescue squads), county sheriff
+
+departments, technicians, and local volunteers.
+
+On October 23, 2011, Robbie Wood, an autistic eight year old child, wandered off while
+
+walking along a trail in Doswell, Virginia with his family.  Mr. Wood tried to run after his son
+
+but eventually lost sight of him.  Numerous rescue searches were performed with over 6,000
+
+volunteers joining to search for the boy (Smith).  After five nights, over 2,000 acres were
+
+searched.  Robbie was finally found in a shallow creek bed and taken to the hospital, sustaining
+
+minor injuries (Fields).
+
+With the many success stories, there are also numerous failures.  In 2011, a hiker went
+
+missing in Yellowstone National Park.  Rangers sent out search parties as night fell, hoping to
+
+find the hiker before it was too late.  The search parties covered thousands of acres but could not
+
+find the hiker.  A week later the hiker’s dead body was found.  The hiker had lacerations and had
+
+been attacked by a grizzly bear.  These tragedies make it vital for rangers and search parties to
+
+find their target as quickly as possible while covering the maximum area (Fenton).
+
+Unfortunately many of these incidences begin during the night.  Therefore, without the
+
+use of artificial lighting, it would be nearly impossible to pinpoint the lost person or object.
+
+Search and rescue can be equipped with helicopters, night vision capabilities, radio/navigation
+
+equipment, and other special devices.  However in this problem, the lone searcher is only
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 2 of 19
+
+equipped with a mere pen light.  The question arises whether or not the searcher will even be
+
+able to see the whole trail.  The answer is, with a few exceptions, yes.  Because the pen light
+
+gives off 20 lumens, through a calculation of the working distance (the distance in which one can
+
+see at a certain level of luminance), the searcher could see a distance of 19.09 feet away with the
+
+luminance level of the full moon.  Any ambient light would only increase this value.  If he
+
+rotates the flashlight from 45 degrees to the left of his head to 45 degrees to the right of his head
+
+every second and then the opposite direction in one second, then he will periodically see the
+
+entire pathway in front of him, so for long stretches he will see the entire path.  The exceptions
+
+occur when there are short paths or highly curved paths.  In the first instance there will be small
+
+segments on either side of him which he misses, whereas in the second he will miss small
+
+patches on the side of the curvature.  However, in either case the distance of the path would be so
+
+small that the probability of the lost object or person being there would be an insignificant
+
+enough that any effect due to curvature or length would be negligible.  Thus, it is reasonable to
+
+assume that in his search he will see the entire pathway directly in front of him.
+
+In this paper we will seek to solve two problems.  In the first part of the paper, we will
+
+develop a search model in order to find a lost object, in which we present three models: one
+
+taking into account the connectivity of each path, another taking into account the distance of the
+
+path from parking spaces, and a third taking into account both.  Through these models we seek to
+
+develop and improve upon a search method which would both improve our chances of finding
+
+the lost object and improve the accuracy of the calculation of the probability of finding the
+
+object.  In the second part of our paper, we develop a model which should optimize the search
+
+pattern of the searcher given the possible movement of the lost jogger.  However to accomplish
+
+either of these tasks, it was necessary to determine the length of each segment.  To do this, we
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 3 of 19
+
+use a piece of string to follow a segment of the map and then we measured the piece of string and
+
+then used the scale to determine how long the segment actually is.  Segments are any subsections
+
+of a path such that they are between two intersections of trails, as listed in the map of the park,
+
+and/or paved roads.
+
+Assumptions for Finding Small Objects (for all Models):
+
+1)  The searcher is walking at a constant speed of 4mph.
+
+2)  The pen-flashlight used is 20 lumens.
+
+3)  If the light touching the object has a lux of X, then the object will be found.
+
+4)  The searcher has no recollection of where he has been.
+
+5)  The searcher is walking down the middle of the paths.
+
+6)  The path is nine feet wide (Virginia state law for maximum for vehicles).
+
+7)  The searcher is looking where the light is shining and he has a vision span of the
+
+radiation angle of the flashlight.
+
+Assumptions specific for Small Object Model#1:
+
+1.  The searcher cannot walk on paved roads, except to cross them.
+
+a.  The distance walked on a paved road is negligible
+
+2.  The searcher has a vehicle that, when being driven, maintains a constant speed of 15
+
+miles per hour.
+
+3.  The searcher must leave the park two hours after entering.
+
+4.  The searcher always enters and exits the park through the main entrance.
+
+5.  The object is on a path.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 4 of 19
+
+6.  The number of paths connected to the sth segment’s trail is directly proportional to the
+
+probability that the object is in that segment.
+
+Small Objects Model # 1 Equation and Calculation:
+
+k is the union of all segments that are in a given search path
+
+is the probability of finding the missing object for any given k
+
+z is the total number of segments accounted for in the search
+
+is the length of the sth segment of K
+is the number of connected paths to the sth segment trail,
+
+is the length of the ith segment of the map
+
+ is the number of connected paths to any
+
+The probability of the object being on a specific
+segment.
+
+Equation Derivation:
+
+Google has the tedious task of organizing a hierarchy of web pages.  To accomplish this
+
+task, they developed a ranking system.  Google correlated the number of pages linking to a
+
+website to that website’s popularity.  Thus, that web page would earn a higher page rank.  We
+
+used a similar methodology.  The more highly populated roads should be those roads with a
+
+greater number of linking trails.  For instance, a trail that is connected to three other trails would
+
+be more popular than one with only one connection.  So, let
+
+ indicate the number of paths
+
+connected to the s th trail.
+
+We may use this to weigh each trail segment with the popularity measure,
+
+.  Since
+
+without this weight, the probability of finding the missing object in the sth segment would be
+
+微信公众号：HiMCM111zssnksiiilCPlC1()()()()ssniiilClCsCsC1kPslsCiliC关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 5 of 19
+
+precisely equal to its length,
+
+, divided by the total length of all trails, we can simply multiply
+
+by the popularity measure
+
+to obtain the weighted measure.  Furthermore, the probability of
+
+the ring being on the sth segment is equal to
+
+ multiplied by the popularity measure
+
+divided
+
+by the sum of the weighted measures of every segment in the park.  If we define
+
+ to be the set
+
+of all segments in any given search path, then the probability of
+
+ containing the ring,
+
+, is
+
+equal to the sum of the aforementioned probabilities for every segment in
+
+.
+
+Maximizing the Probability of finding object
+
+Step 1:
+
+ was calculated by taking the lengths of each segment of each trail and multiplying it by
+
+the number of paths connected to that chosen trail (we did this for all 58 segments and all 17
+
+possible trails for the given map).  This calculation determined the weight of each specific
+
+segment. The “weight” was a numerical scale which determined how likely it was to find the
+
+object on a specific segment of a path.  Once the weight of each segment was found the total
+
+weight of each path was found by adding the weights of all the segments in one path.  The total
+
+weight, sum, (of all the paths) gave us the total weight of map 1 was 15.45.
+
+微信公众号：HiMCMslslsCslsCKKkPK1niiilC关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 6 of 19
+
+Step 2: Developing the best search path
+
+After determining the sum of the weights of every segment on the map, we needed to
+
+come up with a way to search the park that allowed for the greatest probability of finding the
+
+object.  Our search method allowed for visiting the paths with the highest total weight, which
+
+would increase the probability of the object being located, given the formula we developed.
+
+However, there were no parking lots within the vicinity of the two most likely trails (the two
+
+trails with the greatest weight), so the model was constructed to include other trails as well.
+
+We ended up selecting the parking lot on Dogwood Drive that directly touched the Oval Trail.
+
+This parking lot was chosen because it allowed the searcher to have access to Aikens Road and
+
+the Long Trail, which were the paths with the highest weight values.  The model began with the
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 7 of 19
+
+searcher driving from the main entrance to this parking lot.  The searcher would go past the
+
+Contact Station, up Main Road, and then down Dogwood Drive to the designated parking lot.
+
+This would take a total of 5.111 minutes.  Once the searcher reached the parking lot ( labeled
+
+“Starting Position #1” on Map 1A), he then begins his journey to find the object.  This is the
+
+portion of Map 1A which is highlighted in yellow.  His direction is marked by black arrows.  In
+
+this one section of the model, the man searches all of Aikens Road, Long Trail, Aikens Trail,
+
+Wachusett Trail, and some of Oval Trail, Caesar Trail, and Loop Trail.  He then proceeds to
+
+return to his vehicle, and then he drives it to the location on Map 1A labeled “Starting Position
+
+#2.”  From Starting Position #1 to Starting Position #2, the commute is about 5.556 minutes.  He
+
+then follows the blue path, with the directions shown by the black arrows.  This route begins
+
+going towards the Arborvitae Trail.  By the end of this route, the searcher has looked through all
+
+portions of the Arborvitae Trail, the Vista Trail, the Foxtrot Trail, the Swenson Trail, Rock Road,
+
+and some of Loop Trail.  Once this path is complete, the man returns to his vehicle and exits out
+
+of the park through the main entrance, along the red highlighted road.  His exit takes
+
+approximately 2.64 minutes.  This model results in an 82.091 percent chance of the object being
+
+found, because the routes mentioned above have a total weight of 12.683, which is 82.091
+
+percent of the total weight.  This model allows the total walking distance to be 7.044 miles.
+
+Given that he walks at a rate of four miles per hour, the walking time is 105.667 minutes.
+
+Adding this to the commute times, the total time taken for this model is 118.978 minutes, which
+
+does not exceed the 2 hour time limit.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 8 of 19
+
+Small Objects Model # 1 Critique:
+
+Pros
+
+-  This model is based off of a very successful internet ranking system used for webpages,
+
+so it should provide a reasonable approximation for the popularity of the given trail paths.
+
+-  Relative to our other models, the numbers and variables are simple to calculate.
+
+Cons
+
+-  This model does not take into account the crossing of roads.
+
+-  This model is only an approximation for the popularity of each possible trail, without
+
+actual traffic data.
+
+Small Objects Model # 2:
+
+Assumptions specific for Small Object Model#2:
+
+1.  The searcher cannot walk on paved roads, except to cross them.
+
+2.  The searcher has a vehicle that, when being driven, maintains a constant speed of 15
+
+miles per hour.
+
+3.  The searcher must leave the park two hours after entering.
+
+4.  The searcher always enters and exits the park through the main entrance.
+
+5.  The object is on a path.
+
+6.  The number of intersections between the segment’s nearest parking lot and the
+
+segment is inversely proportional to the probability that the object is in that segment.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 9 of 19
+
+Small Objects Model # 2 Equation and Calculation:
+
+is the probability of finding the missing object for any given k
+
+z is the total number of segments accounted for in the search
+
+is the length of the sth segment of k
+ is total number of segments in the park
+
+ is the number of intersections between the nearest parking lot
+
+of the sth segment and the sth segment.
+
+is the length to the ith segment of the map
+
+ is the total number of intersections that occur between the
+
+nearest parking lot to the ith segment and the ith segment
+
+Equation Derivation
+
+While there are those intensive joggers who will run through an entire park, the average
+
+person will shy away from long excursions.  As the sth segment is further away, the probability
+
+that one of these people would be there decreases.  This distance can be effectively approximated
+
+by Ss, or the minimum number of path intersections before the sth path from the nearest parking
+
+lot.  So, the probability of the sth segment containing the ring decreases as Ss increases.  Thus, we
+
+weight any given path with the division of 1 by Ss.
+
+So the probability of the sth segment containing the ring is proportional to the length of
+
+the segment and inversely proportional to Ss and the sum of the weighted lengths for all possible
+
+segments.  Thus, the overall probability of the ring being found on any search path
+
+ is equal to
+
+the sum of the previous probabilities for any given sub-segment of
+
+.
+
+微信公众号：HiMCM211kszsnsiiiPSsllKK2kPslnsSiliS关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 10 of 19
+
+Maximizing probability of finding lost object:
+
+Step 1:
+
+  was calculated by taking the number of intersections with a paved road that a segment
+
+of a hiking trail, unpaved road, or self-guided nature trail had, and dividing it by the number of
+
+intersections it makes with a paved road. This essentially calculates this segment’s distance from
+
+a parking lot. This was done for all segments in all paths used for walking.  This calculation
+
+determined the weight of each specific segment. In this model, the “weight” was a numerical
+
+scale which gave the chance of finding the object on any segment chosen. Once the weight of
+
+each segment was found, the weights of all seventeen paths were found by taking the sum of the
+
+segments in each path. Adding these together, the total weight of map 1B was 5.45.
+
+微信公众号：HiMCM1sniiiSsl关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 11 of 19
+
+Step 2: Developing the Best Path
+
+After determining the sum of the weights of every segment on the map, we needed to
+
+come up with a way to search the park that allowed for the greatest probability of finding the
+
+object.  Our search method allowed for visiting the trails with the highest total weight, which
+
+would increase the probability of the object being located, given the formula we developed.
+
+Given that the trails with the highest weights were located on the top half of the map and the
+
+right half of the map, a route was developed which allowed the searcher to go through these trails
+
+with the greatest weights. This method began on Starting Position #1 (refer to map 1B) and
+
+continued down the yellow highlighted path, in the direction of the black arrows. The searcher
+
+then travelled to Starting Position #2 by car, and followed the blue search path. Lastly, the
+
+searcher drove to Starting Position #3, traveling the purple path, and then exiting the park. This
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 12 of 19
+
+route took 119.374 minutes, and it allowed the searcher a 58.716% probability of finding the
+
+object.
+
+Small Objects Model # 2 Critique:
+
+Pros
+
+-  This model takes into consideration the position in which the searcher would have begun
+
+his hike, thus making it more likely that he will find the object.
+
+-  The numbers used in this model are fairly simple to calculate.
+
+-  The maximum time limit is not exceeded.
+
+-  A large portion of the map is searched, and over half of the total weight of the map is
+
+searched.
+
+Cons
+
+-  This model does not take into account the distance or time it takes to cross the road on
+
+foot.
+
+-  This model is an approximation, and does not use the actual measurements of the
+
+distance of a segment to a parking lot.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 13 of 19
+
+Small Objects Model # 3 (For Future Models)
+
+Model 3 Derivation and Explanation:
+
+  While the first two models both provide reasonably good probabilities for finding the
+
+runner, perhaps taking into account both of their respective weight would improve the
+
+effectiveness of the model.  Thus, both the number of connections to the segment’s trail and
+
+the number of intersections that occur before the segment from the nearest parking spot are
+
+taken into account.  The new weight, then, is equal to the division of the number of
+
+connected paths by the number of intersections occurring before the segment. This weight is
+
+multiplied by the length of the segment and divided by the number of intersections occurring
+
+before the segment.  This, when divided by the sum of these values for every segment on the
+
+map gives the probability that the ring will be found in that segment according to this new
+
+model.  Then, the probability of finding the ring on any given path K is equal to the sum of
+
+these individual probabilities such that each segment is a member of K.  In variable from, we
+
+have that:
+
+When this model is implemented, though it may or may not provide a better probability of
+
+finding the object, it should provide a more accurate probability that the person searching
+
+微信公众号：HiMCM113iiinizssssklCSlCSP113iiinizssssklCSlCSP关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 14 of 19
+
+will actually find the object.  We can infer from the previous two, similar models, that the
+
+optimum path according to this third model would incorporate the similar paths of the first
+
+two.  This combination should yield more accurate information about the popularity of
+
+separate paths and thus the chance that he would have dropped the ring along any one of
+
+these paths.
+
+Missing Runner Model Assumptions:
+
+1)  The jogger who is missing understands that he is lost and is trying to go to one of the
+
+parking lots or he is unconscious.
+
+2)  The jogger is lost on the path and not in the woods.
+
+3)  The jogger could be anywhere in the park, according to a distribution, D.
+
+4)  The jogger will not have an initial lost position at an intersection, but rather on a certain
+
+path.
+
+5)  At the start of the search, the jogger has a 1/3 probability of being unconscious and a 2/3
+
+probability of moving.
+
+6)  The jogger is moving at a constant velocity.
+
+7)  After two hours of searching for the jogger, we will call 911 to search.
+
+Runner Model Derivation, Explanation, and Testing:
+
+While there are many factors which could affect the ability of a runner to be lost, there
+
+are a couple of effective methods for predicting his or her location.  In general, the greater the
+
+length of a trail segment, the greater the possibility of discovery or recognition of location
+
+becomes.  If we simply take the length, Ls, of a given segment and divide it by the length of all
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 15 of 19
+
+trails, then we get the probability that the runner will be found on that segment if the runner
+
+would be lost on larger roads.  However, this is the opposite of our initial assumption.  So, we
+
+adjust this formula to provide greater weights to smaller roads.  Given the highest initial
+
+probability of any given segment, we subtract the segment’s, S’s, probability.  This, then,
+
+provides an unadjusted probability, Pt, that the runner will be found on one the tth trail.  Note that
+
+under this scenario, there is a zero percent chance that the runner will be lost on the longest trail.
+
+ However, there still is the issue that these numbers do not sum to 1.  This can be accomplished
+
+by implementation of the following equation:
+
+,
+
+where a is a scalar quantity by which we must multiply each Pt and n is the number of
+
+segments in the park.  This final probability, a*Pt, is the probability that the initial position of
+
+the runner will be at the tth segment.  As there are a total of 112.09 miles of trails, it is
+
+necessary to look over a small portion of the trails.  Given the assumption that we only have
+
+two hours to search, we can cover at maximum 8 miles by walking.  This, however, is
+
+reduced as we drive to various drop-off points to search various trails.  Thus, we want to look
+
+at as few groups of trails as possible to minimize travel time.  We then introduce the idea of
+
+clusters.  Clusters are groups of segments which are in the same general area and have large
+
+probability densities (Pt/mile).  The probability of the runner’s initial position being in one of
+
+these clusters is equal to the sum of each of the Pt’s such that the tth segment is in one of the
+
+clusters.  This, then, would be a simple model if not for the fact that the runner has the
+
+possibility of moving.  Given a perfectly straight path with no curvature attached on either
+
+end by another road, the runner, if conscious, would have a one hundred percent chance of
+
+reaching one of the roads.  However, as the pathways become more convoluted and
+
+微信公众号：HiMCM11snsPa关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 16 of 19
+
+intertwined, the lower the chance that the lost runner will escape the cluster.  We can
+
+approximate this notion of curvature by dividing the total length of all of the paths in the
+
+cluster, including its exterior paths (the set of paths that surround the interior portion) by the
+
+length of solely its exterior paths.  In general, the greater this ratio, the greater the
+
+approximation of curvature will become, and the probability that the runner will leave will
+
+decrease.  Given the original assumption that if the runner was in the middle of a completely
+
+straight road, s, he would have to travel a distance of Ls/2 to leave, and he would have a 100
+
+percent chance of leaving, he would have a high chance of leaving the cluster after traveling
+
+the product of Ls/2 and the approximation of curvature, or:
+
+,
+
+where LI is the length of the interior of the cluster, including its circumscriptive length, and
+
+where LC is the length of solely the circumscriptive path.  Thus, if the jogger is moving at 4
+
+miles per hour, it would take him a time of
+
+ hours to leave.  Once this time is reached
+
+for any given cluster, the initial position probabilities would change.  At this point, the
+
+probabilities become a function of time.
+
+Finding Missing Runner Model Critique:
+
+Pros
+
+-The model limits the large amount of area to a few subsections and then restricts the
+
+subsections to an optimized search path
+
+-It takes into account the an approximated notion of curvature in determining the amount of
+
+time it takes the runner to leave his position
+
+微信公众号：HiMCM[]2IICLLL[]8IICLLL关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Cons
+
+Page 17 of 19
+
+-Only takes into account the notion of length and determining where the runner would have
+
+gotten lost
+
+-It doesn’t take into account the psychological decisions of a person who is lost
+
+Conclusion:
+
+Ultimately, though each of these models approximated the possible locations of the missing
+
+person or ring, the first model for the missing ring provided the best probability of finding the
+
+object.  However, this does not necessarily imply that this is the best model, as the actual
+
+probability of finding the object may be, in fact, lower.  In this case, though the second model
+
+has a lower probability, the result may more accurately resemble actual possibilities.  In either
+
+case, the third, proposed model combines these two and should, when tested, provide a more
+
+accurate representation of probabilities.
+
+While there was only one model for the runner, this model successfully restricted the
+
+amount of area which needed to be searched and allowed for an optimized search path.  Though
+
+this produces a low probability, it is likely that this resembles reality as the total area to be
+
+searched is very large.  This model illustrates the sheer improbability of finding a missing person
+
+using solely a pen light in such a large park.  Further traffic analysis of each path should confirm
+
+both of these models to have a certain degree of accuracy.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Bibliography:
+
+Page 18 of 19
+
+"Candela (cd)." Encyclopædia Britannica. Encyclopædia Britannica Online Academic Edition.
+
+Encyclopædia Britannica Inc., 2011. Web. 09 Nov. 2011.
+
+<http://www.britannica.com/EBchecked/topic/92362/candela>.
+
+Cates, Gordon. "Experimental Atomic, Molecular, and Optical Physics." Energy on This World
+
+and Elsewhere (2011). Web.
+
+Crowley, Kristin. “Runner may have saved 2-year-old’s life.” Fox 11. 3 Nov 2011. Web.
+
+9 Nov 2011. <http://www.fox11online.com/dpp/news/runner-may-have-saved-2-year
+
+-olds-life>.
+
+Fenton, Heidi. "Grand Rapids Man Killed in Grizzly Bear Attack in Yellowstone National Park.”
+
+MLive.com." Editorial. The Associated Press 30 July 2010. Michigan News. Web.
+
+10 Nov. 2011. <http://www.mlive.com/news/grandrapids/index.ssf/2010/07/grand
+
+_rapids_man_killed_in_gri.html>.
+
+Fields, Jim. “Update on the search for Robbie Wood Jr.” Mechanicsville Local.
+
+25 Oct 2011. Web. 9Nov/2011. <http://www.mechlocal.com/index.php/news/article/
+
+authorities_search_for_missing_child/6612>.
+
+"Forest Ranger Annual Report Statewide Highlights for 2010 - NYS Dept. of Environmental
+
+Conservation." New York State Department of Environmental Conservation. 2011. Web.
+
+10 Nov. 2011. <http://www.dec.ny.gov/regulations/2371.html>.
+
+"Luminous intensity." Encyclopædia Britannica. Encyclopædia Britannica Online Academic
+
+Edition. Encyclopædia Britannica Inc., 2011. Web. 10 Nov. 2011.
+
+<http://www.britannica.com/EBchecked/topic/351262/luminous-intensity>.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 2881
+
+Page 19 of 19
+
+"Luminous flux." Encyclopædia Britannica. Encyclopædia Britannica Online Academic Edition.
+
+Encyclopædia Britannica Inc., 2011. Web. 10 Nov. 2011.
+
+<http://www.britannica.com/EBchecked/topic/351259/luminous-flux>.
+
+Smith, Portsia. “Boy lost in woods released from hospital.” Free Lance-Star Publishing Co.
+
+7 Nov 2011. Web. 9 Nov. 2011.
+
+<http://www.fredericksburg.com/News/FLS/2011/112011/11072011/663389>.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM

@@ -1,0 +1,1322 @@
+Traveling at the Speed of Life: Optimizing the Efficiency of
+Ambulances in a Multizonal County
+Team # 4498
+November 10, 2013
+M
+1 Summary
+In tackling the problem, we considered the ideal distributions of ambulances amCong the zones depending on
+the number of ambulances that are available. To do this, we had to develop criteria to be able to compare
+distributions. To do this, a simplifying assumption was first made and then removed.
+M
+Ifweassumethatonlyoneemergencycallwillhappenatatime(twocallswillnothappeninclosesuccession
+so that the response to one affects the possibilities of response to the oither), we can consider the percent of
+the population that can be reached by an ambulance in under 8Hminutes as a preliminary statistic. Using a
+computerbasedsearchofallofthepossibledistributionsofalgorithms,wefoundthattherewere13distribu-
+：
+tions of 3 ambulances which cover 100% of the population in under 8 minutes. Therefore, to compare these
+distributions, we calculated the average response time for each distribution. There was a clearly superior
+distribution: stationing an ambulance in each of zones 1, 2, and 5.
+号
+We repeated this search for an ideal allocation of two ambulances. We found that only one distribution of 2
+ambulances resulted in 100% of the population being reached in under 8 minutes: positioning one in region
+2 and the other in region 5. Finally, w众e considered one ambulance, and found that the ideal zone to place it
+in was zone 2 so as to reach the maximum number of people in under 8 minutes.
+Additionally,giventheseidea公ldistributions,itwasconsideredhowmuchtimewasrequiredtomovebetween
+them given that an ambulance suddenly became available or unavailable. However, for ambulances that
+become unavailable for short, predictable periods of time (such as would happen from taking a call) it was
+considered on a case-by-case basis whether it would be beneficial to move the remaining ambulances or
+信
+simply wait for the ambulance to become available again.
+However,sometimesmultiplecallsoccurinclosesuccession,andcanbemodeledashappeningsimultaneously
+微
+for purposes of response. Using a Poisson distribution, we calculated estimates as to the likelihood of some
+number of calls happening within a 10 minute time period. In these situations, if there are less than 3 calls
+(which will happen roughly 99.8% of the time), our available resources are still sufficient to deal with the
+situation. Aneventwheretwoemergencycallshappensimultaneouslywasmodeledwiththe13distributions
+previously found, and all things considered, the previous distribution of ambulances was found to still be
+thebest. Althoughtherearethreeormoreincidentsextremelyinfrequently, itispossible, andourresources
+would be overwhelmed in these cases.
+关注 HiMCM
+1 Hi
+×+ −÷
+CM 获取更多资讯
+
+CONTENTS Team # 4498 Page 2 of 24
+Contents
+1 Summary 1
+2 Introduction 3
+3 Assumptions 4
+4 Model 6
+5 Conclusions 14
+M
+6 Memo to ESC 15
+7 References 16
+C
+8 Appendix A: Placement Code 17
+M
+9 Appendix B: Code for Crisis 21
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 2 INTRODUCTION |     | Team # 4498 |     | Page 3 of 24 |
+| -------------- | --- | ----------- | --- | ------------ |
+2 Introduction
+The availability of speedy and effective emergency services is imperative in times of crisis: for the majority
+of citizens, an ambulance is the only source of aid during emergencies. There are 240 million 9-1-1 calls
+each year in the United States [1]. But ambulances are limited in their ability to reach people quickly, and
+in life or death situations, the extra minute of delay caused by various inconveniences can be the difference
+between a heroic rescue and a tragic loss. Unfortunately, very little can be done about random occurrences
+such as traffic and weather. But where an ambulance is when a call comes in is something completely
+within our control, and is arguably the most significant factor in reducing response times. Obviously, an
+ambulance 10 miles from you is far less useful to you than one down the block. The problem then is to posi-
+tionambulancessothatthegreatestnumberofpeoplecanbereachedinthesmallestamountoftimepossible.
+M
+Inthispaper,wehavedevelopedamathematicalmodeltooptimizetheusefulnessofavailableambulancesin
+a given urban area. This area consists of 6 zones, and travel times between the zones, as well as populations
+C
+per zone, are shown below.
+M
+|     | Travel | Times in Minutes |     |     |
+| --- | ------ | ---------------- | --- | --- |
+|     | Zones  | 1 2 3 4          | 5 6 |     |
+i
+|     | 1   | 1 8 12 14 | 10 16 |     |
+| --- | --- | --------- | ----- | --- |
+H
+|     | 2   | 8 1 6 18     | 16 16 |     |
+| --- | --- | ------------ | ----- | --- |
+|     | 3   | 12 18 1.5 12 | 6 4   |     |
+：
+|     | 4   | 16 14 4 1  | 16 12 |     |
+| --- | --- | ---------- | ----- | --- |
+|     | 5   | 18 16 10 4 | 2 2   |     |
+|     | 6   | 16 18 4 12 | 2 2   |     |
+号
+|     | 众   | Zone Population |     |     |
+| --- | --- | --------------- | --- | --- |
+|     |     | 1 50,000        |     |     |
+|     |     | 2 80,000        |     |     |
+| 公3  |     | 30,000          |     |     |
+|     |     | 4 55,000        |     |     |
+|     |     | 5 35,000        |     |     |
+|     |     | 6 20,000        |     |     |
+信
+|     |     | Total 270,000 |     |     |
+| --- | --- | ------------- | --- | --- |
+Our model determines the optimum placement of 1, 2, and 3 ambulances, as well as the county’s ability to
+微
+respond to catastrophic situations. This was accomplished by exhaustively checking all cases using modern
+software, sincetherearesofewambulancesandsofewzonesthatthisisextremelycomputationallyfeasible.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+3 ASSUMPTIONS Team # 4498 Page 4 of 24
+3 Assumptions
+Assumption 1. Maximizing the number of people covered takes priority over minimizing response time.
+Justification. Studieshaveshownthat8minutesisthecriticaltimebywhichindividualsinneedofassistance
+must be reached [2]. Below 8 minutes, variations in arrival time are much less important, and so our model
+strives to maximize the number of people reached in 8 minutes rather than reducing times further below 8
+minutes, since there are diminishing returns for decreasing time past 8 minutes.
+Assumption 2. Thepositionoftheambulanceineachzoneisirrelevanttotheaveragetimetakentoreach
+people.
+Justification. SincewehavenoinformationastothegeographiclayoutinsideeachzonMe,itwillbeconsidered
+that the only reference to position that is significant for each ambulance is the zone that it is in.
+Assumption 3. RandomdeviationsfromtheaveragetraveltimearesmallenouCghthattheyarenegligible.
+Justification. We have no data on the variability of travel times, and aMny variations in travel time would
+most likely uniformly affect all ambulances, so we may assume that these times are fixed.
+Assumption 4. Emergency calls are equally likely to come from anyione individual.
+H
+Justification. While this may not actually be the case in real life, unless there is a group of high-risk
+individuals in some geographic zone (and there is nothing to suggest that this is the case), differences in
+：
+individual probabilities will balance each other out geographically and so we can assume that all individuals
+are equally likely to place an emergency call that needs to be responded to. Additionally, since we don not
+have data on the frequency of emery calls from each each area, taking variances in zonal needs into account
+号
+is impossible, and so we must assume population is the only factor affecting how important it is that a zone
+be quickly serviced.
+Assumption 5. Deviations from “se众mi-perfect conditions” will affect all transportation times proportion-
+ally.
+Justification. The given travel times are small enough that we may assume that this county is relatively
+公
+small, and factors such as weather and traffic will most likely impact travel between all zones equally. This
+means that the results from semi-perfect conditions will be roughly generalizable to all conditions.
+Assumption 6. No信two emergencies occur at the same time.1
+Justification. This means that each ambulance is summoned from its designated location, and not another
+location where it is responding to an emergency. This assumption is acceptable because the probability of
+微
+one emergency is already low, and the probability of two occurring simultaneously is so small it must be
+negligible.
+Assumption 7. More than one ambulance can be placed in the same zone.
+Justification. Thisisclearlypossibleinreallife,andalthoughseeminglycounterproductive,placingmultiple
+ambulances in the same zone may decrease response times.
+Assumption 8. The rate of calls that require medical attention is the same as the U.S. national average
+Justification. There is no indication that the rate of calls is higher or lower than the U.S. national average,
+so therefore we will use this rate as the best approximation to the number of calls that can be expected to
+require medical attention.
+1Thisassumptionisrevisitedinthe“Crisis”partofthemodel
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+3 ASSUMPTIONS Team # 4498 Page 5 of 24
+Assumption 9. The time an ambulance spends on a call (ignoring travel time) is in the neighborhood of
+10 minutes
+Justification. This is an order of magnitude estimate for the amount of time an ambulance will be occupied
+on average by a call for the purpose of rough calculations.
+Assumption 10. The probability of an emergency call being placed does not change with time.
+Justification. Although in reality there may be minor differences in the probability of an emergency call
+happening at any one time, given lack of data, we must assume that 9-1-1 calls are equally likely to happen
+at any time.
+Assumption 11. Emergency calls are independent of each other (i.e. one call happMening will not in any
+way influence other calls).
+Justification. For the most part, emergency calls are unrelated to one anotherC, so it is a safe assumption
+that they will be independent events.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 4 MODEL |     |     |     |     |     | Team # 4498 | Page 6 of 24 |
+| ------- | --- | --- | --- | --- | --- | ----------- | ------------ |
+4 Model
+Purpose
+The purpose of this model is to determine how to place 3 or fewer ambulances so as to best serve the people
+of the county.
+| Ranking | Arrangements |     |     |     |     |     |     |
+| ------- | ------------ | --- | --- | --- | --- | --- | --- |
+Inordertodecidewhicharrangementisbest,wemustsomehowsortthembasedon“value.”Accordingtoour
+assumptions, the best way to do this is by favoring arrangements that serve more people over arrangements
+thatservefewerpeople. Ifmultiplearrangementscanservethesamenumberofpeople,Mthenthearrangement
+| with the | higher | average | response | time is | superior. |     |     |
+| -------- | ------ | ------- | -------- | ------- | --------- | --- | --- |
+C
+Algorithm
+WefirstwriteaprogramthatwillhelpusindeterminingtheidealplacemeMntofambulances(thecode,written
+inJava,canbefoundinappendixA).First,thecodedefinesthetimethresholdofimportancetobe8minutes.
+Additionally, the code defines a method that will return the time it takies to travel between two input zones,
+H
+the starting zone and destination zone. It also makes a method that will return a population (in thousands)
+given a zone number. Finally, it employs two standard methods that will return the least of 2 or 3 numbers
+：
+respectively.
+With these methods, the program can implement a method that returns the population an arrangement of
+号
+some number of ambulances can reach. As inputs, it takes some number of zone numbers each one corre-
+sponding to the location of an ambulance. It then creates a variable initially equal to 0 representing the
+population that can be reached in less than or equal to threshold minutes. For each zone i from 1 to 6, the
+tim众e
+program checks that the minimum from each of the input zone numbers to the zone i is less than or
+equal to the threshold. If it is, then the population of that zone is added to the population reached; other-
+wise, nothing happens. Then the method returns the number of people reached. There are three versions of
+| this method, | one | for | one of | 1公, 2, or 3 ambulances. |     |     |     |
+| ------------ | --- | --- | ------ | ----------------------- | --- | --- | --- |
+Also,theprogramhasamethodtodeterminetheexpectedtimeitwilltaketoreacharandompersonwitha
+given configuration o信f ambulances. As inputs, it takes some number of zone numbers that correspond to the
+positions of ambulances. It then defines a variable that will correspond to the average time. For each of the
+6 zones, it adds to the variable the minimum of the times the ambulances will make from each of the input
+zones, times the population of the current zone it is checking. It then divides this value by total population
+微
+| and returns | it. | This | method | also works | for 1, 2, | or 3 ambulances. |     |
+| ----------- | --- | ---- | ------ | ---------- | --------- | ---------------- | --- |
+With all the necessary methods defined, the program’s main method runs as follows. Using 3 cycled loops,
+it checks all possible configurations of 3 ambulances. For each one, if it reaches all of the population in less
+| than 8 minutes, |               | it prints: |          |          |          |            |     |
+| --------------- | ------------- | ---------- | -------- | -------- | -------- | ---------- | --- |
+| • The           | configuration |            |          |          |          |            |     |
+| • The           | average       | time       | it takes | to reach | a random | individual |     |
+• The average ofthe populationreachedin under 8minutes, for each of the3 subsets oftwo ambulances
+| of  | the configuration |     |     |     |     |     |     |
+| --- | ----------------- | --- | --- | --- | --- | --- | --- |
+It then checks (using two nested loops) all possible configurations of 3 ambulances. Fore each one, if it
+reaches all of the population in under 8 minutes, it prints the configuration and the average time it will take
+| to reach | a random | individual. |     |     |     |     |     |
+| -------- | -------- | ----------- | --- | --- | --- | --- | --- |
+Finally, using a single loop, it checks all possible configurations of one ambulance and prints the population
+| that it can | reach | in under | 8   | minutes. |     |     |     |
+| ----------- | ----- | -------- | --- | -------- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 4 MODEL |     |     |     |     | Team | # 4498 |     |     |     | Page 7 of 24 |
+| ------- | --- | --- | --- | --- | ---- | ------ | --- | --- | --- | ------------ |
+Three Ambulances
+Sincetherearelessthan63 =216possiblearrangementsoftheambulances,weusedthepreviouslydescribed
+program. It determined that there are 13 arrangements that are able to service the entire population. They
+arelistedbelow,wheretheorderedtriple(a,b,c)denotesanambulanceinzonesa,b,andc(thesamenumber
+appearing multiple times in one triple denotes putting multiple ambulances in one zone):
+|     |     |         | (1,2,5) (1,3,4) |         | (1,3,5) | (1,4,5) | (1,4,6) | (1,5,6) |         |     |
+| --- | --- | ------- | --------------- | ------- | ------- | ------- | ------- | ------- | ------- | --- |
+|     |     | (2,2,5) | (2,3,4)         | (2,3,5) | (2,4,5) |         | (2,4,6) | (2,5,5) | (2,5,6) |     |
+Since there are multiple configurations that can reach 100% of people, the program then calculated the
+average time taken to reach an individual for each of the 13 configurations. The results of this analysis are
+| shown below. |     |     |                |     |                 |     |        |        | M   |     |
+| ------------ | --- | --- | -------------- | --- | --------------- | --- | ------ | ------ | --- | --- |
+|              |     |     | Configurations |     | of 3 Ambulances |     | Sorted | by ETA |     |     |
+C
+|     |     |     |     | Distribution |     | ETA   | (min.) |     |     |     |
+| --- | --- | --- | --- | ------------ | --- | ----- | ------ | --- | --- | --- |
+|     |     |     |     | (1,2,5)      |     | 2.370 |        | M   |     |     |
+|     |     |     |     | (2,4,5)      |     | 2.833 |        |     |     |     |
+|     |     |     |     | (2,4,6)      |     | 2.833 |        |     |     |     |
+|     |     |     |     | (2,3,5)      |     | 3.166 |        | i   |     |     |
+H
+|     |     |     |     | (2,3,4) |     | 3.222 |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | ----- | --- | --- | --- | --- |
+|     |     |     |     | (2,5,6) |     | 3.444 |     |     |     |     |
+：
+|     | Time |     |     | Population |     |       |     |     |     |     |
+| --- | ---- | --- | --- | ---------- | --- | ----- | --- | --- | --- | --- |
+|     |      |     |     | (1,4,5)    |     | 3.611 |     |     |     |     |
+|     |      |     | 1   |            |     |       | 130 |     |     |     |
+|     |      |     |     | (1,4,6)    |     | 3.611 |     |     |     |     |
+|     |      |     | 2   |            |     |       | 55  |     |     |     |
+|     |      |     |     | (2,2,5)    |     | 3.666 |     |     |     |     |
+|     |      |     | 3   |            |     |       | 0   |     |     |     |
+号
+|     |     |     | 4   | (2,5,5) |     | 3.66655 |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | ------- | --- | --- | --- | --- |
+|     |     |     | 5   | (1,3,5) |     | 3.944   | 0   |     |     |     |
+|     |     |     | 6   |         |     | 4.00030 |     |     |     |     |
+(1,3,4)
+众(1,5,6)
+|     |     |     | 7   |     |     | 4.222 | 0   |     |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- |
+|     |     |     | 8   |     |     |       | 0   |     |     |     |
+This clearly shows that if only 3 ambulances are available, they should be placed in zones 1, 2, and 5. This
+will minimize response time, and serve everyone in the county. A histogram of response times, as well as
+公
+| statistics | on response | time | for this configuration |     | are | below. |     |     |     |     |
+| ---------- | ----------- | ---- | ---------------------- | --- | --- | ------ | --- | --- | --- | --- |
+Reponse Times for Positioning of Ambulances in Regions 1, 2, and 5
+信
+150
+微
+120
+)sdnasuoht( noitalupoP
+90
+60
+30
+0
+|     |     |     | 1 2 | 3   |     | 4   | 5   | 6   | 7 8 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Response Time (minutes)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 4 MODEL |           |     |            | Team         | # 4498            |     |     | Page 8 of 24 |
+| ------- | --------- | --- | ---------- | ------------ | ----------------- | --- | --- | ------------ |
+|         |           |     | Statistics | for Response | Time Distribution |     |     |              |
+|         | x         | Min | Q1         |              | Median            | Q3  | Max |              |
+|         | 2.3T7i0me | 1   | 1          | Population   | 2                 | 4   | 6   |              |
+|         |           |     | 1          |              | 80                |     |     |              |
+|         |           |     | 2          |              | 55                |     |     |              |
+|         |           |     | 3          |              | 0                 |     |     |              |
+Two Ambulances
+|     |     |          | 4   |     | 55           |     |     |     |
+| --- | --- | -------- | --- | --- | ------------ | --- | --- | --- |
+|     |     | opt5imal |     |     | ambulance0s, |     |     |     |
+We have determined the positioning of three but we now consider the problem of what
+to do if only two ambulance6s are available. We repeat the pr3o0cedure that we used for 3 ambulances, but
+our task is greatly simplified7 this time: for two ambulances, th0is results in only oneMarrangement that can
+|     |     |     | 8   |     | 50  |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+cover all of the population in under 8 minutes: an ambulance in zone 2 and another in zone 5. There is thus
+no need to consider response times, since we place priority on serving the maximum number of people. The
+C
+histogram of response times, and statistics for this configuration are shown below.
+M
+Reponse Times for Positioning of Ambulances in Regions 2 and 5
+|     | 100 |     |     |     |     | i   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+：
+80
+)sdnasuoht( noitalupoP
+号
+60
+众
+40
+公
+20
+信
+0
+|     | 微1  |     | 2   | 3   | 4 5 | 6   | 7   | 8   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Response Time (minutes)
+|     |       |     | Statistics | for Response | Time Distribution |     |     |     |
+| --- | ----- | --- | ---------- | ------------ | ----------------- | --- | --- | --- |
+|     | x     | Min | Q1         |              | Median            | Q3  | Max |     |
+|     | 3.667 | 1   | 1          |              | 3                 | 6   | 8   |     |
+One Ambulance
+We recycled the approach used for three and two ambulances for this case. Shown below is the number of
+people reached in under 8 minutes by placing the single ambulance in each zone.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+|     | Time |     | Population |     |     |     |     |     |     |
+| --- | ---- | --- | ---------- | --- | --- | --- | --- | --- | --- |
+|     |      | 1   |            |     | 80  |     |     |     |     |
+2
+3
+4
+5
+|     |     | 6   |     |     | 30  |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+7
+|     |     | 8   |     |     | 50  |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+9
+| 4   | MODEL |     |     | Team | # 4498 |     |     |     | Page 9 of 24 |
+| --- | ----- | --- | --- | ---- | ------ | --- | --- | --- | ------------ |
+10
+11
+|     |     | 12  |     | Zone | Population |     |     |     |     |
+| --- | --- | --- | --- | ---- | ---------- | --- | --- | --- | --- |
+13
+1 130,000
+14
+2 160,000
+15
+3 85,05050
+16
+|     |     | 17  |     | 4   | 85,000    |     |     |     |     |
+| --- | --- | --- | --- | --- | --------- | --- | --- | --- | --- |
+|     |     | 18  |     | 5   | 1105,0500 |     |     |     |     |
+6 85,000
+This shows that an ambulance placed in zone 2 will serve the largest number of people, and is the best
+configuration. This histogram and statistics of response time for a single ambulance placed here are shown.
+Reponse Times for Positioning of Ambulance in Region 2M
+100
+C
+M
+80
+)sdnasuoht( noitalupoP
+i
+H
+60
+：
+40
+号
+20
+众
+0
+公
+|     | 1 2 | 3 4 | 5 6 7 | 8 9 | 10 11 | 12 13 14 | 15 16 | 17 18 |     |
+| --- | --- | --- | ----- | --- | ----- | -------- | ----- | ----- | --- |
+Response Time (minutes)
+信
+|     |     |     | Statistics | for Response | Time | Distribution |     |     |     |
+| --- | --- | --- | ---------- | ------------ | ---- | ------------ | --- | --- | --- |
+微
+|          | x      | Min | Q1         |     | Median | Q3  |     | Max |     |
+| -------- | ------ | --- | ---------- | --- | ------ | --- | --- | --- | --- |
+|          | 9.370  | 1   | 1          |     | 8      | 16  |     | 18  |     |
+| Changing | Number | of  | Ambulances |     |        |     |     |     |     |
+In the case that one ambulance may be suddenly needed to deal with an emergency for an indefinite period
+of time or may finish dealing with an emergency and is now free, the number of ambulances available to
+helpatanygiventimewillconstantlychange. Toaddressthis, thenumberofambulancesthatarepresently
+available should redeploy to the ideal configuration of the number of ambulances that are available.
+| Losing | an Ambulance |     |     |     |     |     |     |     |     |
+| ------ | ------------ | --- | --- | --- | --- | --- | --- | --- | --- |
+In the case that we have three ambulances and one becomes unavailable, we consider what zone that ambu-
+lance was covering, and what should be done fix any gap in coverage of the county:
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+| 4 MODEL |     |     |      |           |             |         | Team    | # 4498 |           |            |             | Page 10 of 24 |
+| ------- | --- | --- | ---- | --------- | ----------- | ------- | ------- | ------ | --------- | ---------- | ----------- | ------------- |
+|         |     |     | Zone | Movement  |             |         |         |        |           | Time       | to Redeploy |               |
+|         |     |     | 1    | None      | (ambulances |         | are in  | ideal  | position) | 0 minutes  |             |               |
+|         |     |     | 2    | Ambulance |             | in zone | 1 moves | to     | zone 2    | 8 minutes  |             |               |
+|         |     |     | 5    | Ambulance |             | in zone | 1 moves | to     | zone 5    | 10 minutes |             |               |
+Alternatively, if we only had two ambulances to begin with and we lose one, we consider what should be
+| done depending |     | on  | what zone | the       | newly | occupied | ambulance |     | was  | covering     |          |     |
+| -------------- | --- | --- | --------- | --------- | ----- | -------- | --------- | --- | ---- | ------------ | -------- | --- |
+|                |     |     | Zone      | Movement  |       |          |           |     |      | Time to      | Redeploy |     |
+|                |     |     | 2         | Ambulance |       | in zone  | 5 moves   | to  | zone | 2 16 minutes |          |     |
+M
+|         |     |           | 5   | None | (ambulance |     | is in ideal | position) |     | 0 minutes |     |     |
+| ------- | --- | --------- | --- | ---- | ---------- | --- | ----------- | --------- | --- | --------- | --- | --- |
+| Gaining | an  | Ambulance |     |      |            |     |             |           |     |           | C   |     |
+In the case that we have an ambulance in zone 2, we consider what we should do with a newly available
+M
+| ambulance | depending |     | on the | zone     | in which | it  | is located: |     |     |                  |     |     |
+| --------- | --------- | --- | ------ | -------- | -------- | --- | ----------- | --- | --- | ---------------- | --- | --- |
+|           |           |     | Zone   | Movement |          |     |             |     |     | Time to Redeploy |     |     |
+i
+|     |     |     | 1   | Move | new | ambulance |     | to zone | 5   | H10 minutes |     |     |
+| --- | --- | --- | --- | ---- | --- | --------- | --- | ------- | --- | ----------- | --- | --- |
+|     |     |     | 2   | Move | new | ambulance |     | to zone | 5   | 16 minutes  |     |     |
+to：zone
+|     |     |     | 3   | Move | new       | ambulance  |        |         | 5   | 6 minutes  |     |     |
+| --- | --- | --- | --- | ---- | --------- | ---------- | ------ | ------- | --- | ---------- | --- | --- |
+|     |     |     | 4   | Move | new       | ambulance  |        | to zone | 5   | 16 minutes |     |     |
+|     |     |     | 5   | Move | ambulance |            | within | zone    | 5   | 2 minutes  |     |     |
+|     |     |     | 6   | Move | new       | amb号ulance |        | to zone | 5   | 2 minutes  |     |     |
+Additionally, inthecasethatwehavetwoambulancesinzones2and5,weconsiderwhatweshoulddowith
+| a newly     | available | ambulance    |      | depending | 众             | on the      | zone   | in which | it   | is located: |          |     |
+| ----------- | --------- | ------------ | ---- | --------- | ------------- | ----------- | ------ | -------- | ---- | ----------- | -------- | --- |
+|             |           |              | Zone | Movement  |               |             |        |          |      | Time to     | Redeploy |     |
+|             |           |              | 1    | M公ove     | new ambulance |             | within | zone     | 1    | 1 minute    |          |     |
+|             |           |              | 2    | Move      | new ambulance |             | to     | zone     | 1    | 1 minute    |          |     |
+|             |           |              | 3    | Move      | new ambulance |             | to     | zone     | 1    | 12 minutes  |          |     |
+|             |           |              | 信4   | Move      | new ambulance |             | to     | zone     | 1    | 16 minutes  |          |     |
+|             |           |              | 5    | Move      | new ambulance |             | to     | zone     | 2    | 16 minutes  |          |     |
+|             |           |              |      | and move  | zone          | 2 ambulance |        | to       | zone | 1           |          |     |
+|             | 微6        |              |      | Move      | new ambulance |             | to     | zone     | 1    | 16 minutes  |          |     |
+| Short-lived |           | Fluctuations |      |           |               |             |        |          |      |             |          |     |
+Whilst these movements are necessary to provide ideal coverage for the county if an ambulance is going to
+be unavailable for an indefinite period of time, they may be counterproductive if an ambulance is going to
+be unavailable for only a short period of time, in which it may return to it’s coverage of a zone before any
+adjustments can take place. In the cases where the ambulance can return to its position faster than could
+be achieved by removing and adding the ambulance successively using the above procedures, it is preferable
+| to only | change | the | position | of the | ambulance |     | that was | called. |     |     |     |     |
+| ------- | ------ | --- | -------- | ------ | --------- | --- | -------- | ------- | --- | --- | --- | --- |
+For this, we consider 3 ambulances in their ideal locations in zones 1, 2, and 5. For an emergency call in
+any one zone, we consider the ambulance that responds and the time it would take for the ambulance to
+travel to the zone with the emergency and back. Additionally, we consider the time it would take for the
+ambulance to go to to the emergency zone, wait (if necessary) for the ambulances to redeploy (as per the
+section “losing an ambulance”), and then be added back to the active ambulances (as per the procedures in
+| the section | “gaining |     | an ambulance”). |     |     |     |     |     |     |     |     |     |
+| ----------- | -------- | --- | --------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 4 MODEL |     |     |     |     |     | Team # | 4498 |     | Page 11 of 24 |
+| ------- | --- | --- | --- | --- | --- | ------ | ---- | --- | ------------- |
+Emergency Zone Response Ambulance Zone Round-trip time Time to Redeploy
+|     |     | 1   |     |     | 1   |     | 2 minutes  | 2 minute   |     |
+| --- | --- | --- | --- | --- | --- | --- | ---------- | ---------- | --- |
+|     |     | 2   |     |     | 2   |     | 2 minute   | 9 minutes  |     |
+|     |     | 3   |     |     | 2   |     | 24 minutes | 20 minutes |     |
+|     |     | 4   |     |     | 5   |     | 20 minutes | 26 minutes |     |
+|     |     | 5   |     |     | 5   |     | 4 minutes  | 26 minutes |     |
+|     |     | 6   |     |     | 5   |     | 4 minutes  | 26 minutes |     |
+Since redeploying is a trivial action if the emergency is in zone 1 (the unoccupied ambulances already repre-
+sentanidealpositioning),around-tripfortheambulanceisthesameasredeploying,andtheidealmovement
+for this case.
+M
+For an emergency is zone 2, redeploying presents a significantly larger time than that of a round-trip, and
+as such a round-trip for the occupied ambulance is preferable. C
+For an emergency in zone 3, redeploying presents a slightly shorter time M (and more coverage in the mean-
+| while) | and as | such presents | the | more preferable |     | option. |     |     |     |
+| ------ | ------ | ------------- | --- | --------------- | --- | ------- | --- | --- | --- |
+For an emergency in any zone 4, a round-trip presents a slightly shiorter time (with a negligible loss of
+coverage since we are assuming that calls last in the neighborhooHd of 10 minutes).
+：
+For an emergency in zone 5 or 6, the great time difference between a round-trip and the time to redeploy
+| means | that the | round-trip | greatly | preferable. |     |     |     |     |     |
+| ----- | -------- | ---------- | ------- | ----------- | --- | --- | --- | --- | --- |
+号
+Crisis Situations
+We interpreted a crisis situation as one that violates the assumption that no two emergencies happen at the
+same time, and attempted to determi众ne the best course of action in such a situation.
+Likelihood
+公
+In considering the likelihood of what we define to be a crisis situation (more than one emergency at a time)
+wemustfirstdefinehowcloselyspacedtwocallsshouldbetoconsiderthemhappeningatthesametime. In
+our ideal positioning信of 3 ambulances, given the loss of any one ambulance, the other two ambulances can
+position themselves ideally in a maximum of 10 minutes. Therefore, we define two calls placed within a 10
+| minute | time period | to  | be considered | a   | crisis. |     |     |     |     |
+| ------ | ----------- | --- | ------------- | --- | ------- | --- | --- | --- | --- |
+微
+With this definition in hand, we consider that in 2008, “fire departments nationwide responded to 15.7
+million total medical aid calls” [7]. Also, according to the United States Census, the population of the
+United States in 2008 was approximately 314 million. With this information, we can find our expected rate
+of responses for this county (in expected number of responses per 10 minutes):
+|     | 15.7×106 |             | responses | 1 year |           | 1 day   |                     |                 |     |
+| --- | -------- | ----------- | --------- | ------ | --------- | ------- | ------------------- | --------------- | --- |
+|     |          |             |           | ·      | ·         |         | (270,000 people)(10 | minutes)=0.2568 |     |
+|     | 314×106  | people·year |           | 365    | days 1440 | minutes |                     |                 |     |
+Given this information for the average number of calls in a 10 minute period, and the assumptions, we can
+model the number of calls that occur in a 10 minute period as a Poisson distribution with λ=0.2568. This
+| means | that we | can create | the | probability | distribution: |          |             |     |     |
+| ----- | ------- | ---------- | --- | ----------- | ------------- | -------- | ----------- | --- | --- |
+|       |         |            |     |             | Number        | of Calls | Probability |     |     |
+|       |         |            |     |             | 0             |          | 0.7735      |     |     |
+|       |         |            |     |             | 1             |          | 0.1987      |     |     |
+|       |         |            |     |             | 2             |          | 0.0255      |     |     |
+|       |         |            |     |             | 3             |          | 0.0022      |     |     |
+|       |         |            |     |             | more than     | 3        | 0.0001      |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+4 MODEL Team # 4498 Page 12 of 24
+From this information, we can see that 97.22% of the time, there will only be one emergency call that re-
+quires attention in a given 10-minute time period. However, 2.55% of the time, there will be two emergency
+calls in a time period. Since any greater number of events will only happen less than 0.23% of the time, it
+isveryunlikelythatwegetmorethantwocallsandwecanconsiderthesecasestooraretobeofimportance.
+Therefore, we concern ourselves with ensuring that our distribution of ambulances is the best possible to
+deal with the possibility of 2 events happening at the same time.
+The Algorithm
+To tackle this new situation, we must write a new program (which can be found in appendix b). For this
+program, we once again define the threshold value at the beginning and set it equal tMo 8 minutes.
+First,theprogramredefinesthemethodsthatweredefinedinthefirstprogram. Amethodisdefinedthatwill
+C
+return the time it takes to travel from a source zone to a destination zone, both of which are given as input.
+Additionally,amethodisdefinedthatwillreturnthepopulationofaregiongiventheregionnumberasinput.
+M
+The program then defines a method that will, given 3 zone numbers for ambulances, and 2 destination
+numbers for emergencies, determine the maximum number of the emergencies that can be reached by an
+i
+ambulance in under threshold minutes. It is assumed that onceHan ambulance is going to one emergency,
+it can not help the other. The method first defines a variable that is going to be the maximum number
+of the emergencies that can be helped and sets it equa：l to 0. It then considers all possible pairings of the
+emergencies with an ambulance, and if for any one of these, one location can be reached in under threshold
+minutes,thevariableissetequalto1. Itthenconsidersallpossiblematchings,andifanyoneofthemresults
+in both emergencies being reached in under thr号eshold minutes, the variable is set equal to 2. The variable is
+then returned.
+Also, the program defines a method that will give the population that can be reached in under threshold
+众
+minutesifemergencieshappentwoatatime. Themethodtakesinasinputthreenumberscorrespondingto
+the locations of the three ambulances. A variable is defined to be the population that can be reached. The
+methodcyclesthroughallpossiblepairsofregionsinwhichemergencieshappenusingtwonestedloops. For
+公
+each pair the variable is incremented by the product of the two regions times the output of the previously
+defined method given the two emergencies and three ambulance locations. The variable is then returned.
+信
+With the definition of all the necessary methods, the main method can be defined. The main method cycles
+throughallpossibleconfigurationsofambulances,andifaconfigurationisoneofthe13thatcoversallofthe
+population(asdeterminedfromthepreviousprogram)theprogramoutputstheconfigurationalongwiththe
+percentage o微f the population that is covered if two incident happen at the same time (the previous method
+for the configuration divided by (total population squared times two)).
+Three Ambulances
+Inordertocompareallpossiblearrangementsofthreeambulancesbythiscriteria, foreacharrangement, we
+will consider all possible combinations of two calls. Two simplify calculations, we consider that the origin
+of the first and the second call are independent (meaning that theoretically both could will result from the
+same person); given the 1 in 270,000 chances of this happening in the model, it provides negligible error of
+1
+≈±3.7×10−6 in calculations.
+270,000
+Foreverypossibleoriginoftwodifferentcalls,wethenconsiderthepercentageofthosecallscouldbereached
+in under 8 minutes (0%, 50%, or 100%) given some distribution of ambulances. Having these values, we
+average them to get the percentage of the time that the ambulances will reach their destinations given that
+2 emergencies happen in the same time interval. We can test the 13 solutions that we had previously found
+that reach 100% of the population if only one emergency happens at a time (using the program found in
+appendix B), to get the following results:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+4 MODEL Team # 4498 Page 13 of 24
+Distribution Percent Covered
+(2,2,5) 92.81%
+(1,2,5) 92.20%
+(2,3,5) 87.45%
+(2,4,5) 87.45%
+(2,5,6) 87.45%
+(1,3,5) 86.83%
+(1,5,6) 86.83%
+(1,4,5) 86.83%
+(1,3,4) 85.37%
+(1,4,6) 85.37% M
+(2,3,4) 85.37%
+(2,4,6) 85.37%
+C
+(2,5,5) 83.55%
+This has the surprising result of showing us that that placing an ambulaMnce in each of zones 1, 2, and 5 is
+not by this metric the best (but still the second best) arrangement. However, upon further investigation, we
+see that the difference between placing two ambulances in zone 2 and one in zone 5, and an ambulance in
+i
+each of zones 1, 2, and 5 is about 0.6% of the population 2.55% of the time which pales in comparison to an
+H
+average time of arrival difference of about 1 minute 20 seconds.
+：
+Therefore,allthingsconsidered,placinganambulanceineachofzones1,2,and5isstillthebestdistribution
+when taking into account that emergencies can happen at roughly the same time.
+号
+Real World Preparations
+In real life, urban areas employ a variety of strategies to prepare themselves for large scale disasters. Re-
+cently, disaster planning has shifted fr众om forming a single plan for all disasters to forming individual plans
+for specific disasters. In an effort to plan for specific catastrophes, local state officials often use a technique
+known as gap analysis [5]. This is able to account and provide a basis for planning for catastrophes. By
+looking at the amount of res公ources the city/county possesses, the amount of resources needed in order for
+the county/city to be able to successfully respond to the disaster, and the gap between these two measures,
+planners are able to see how prepared the city/county is to handle the catastrophe at hand. Using this
+analysis, planners can see what needs to be done in order to be fully prepared for the disaster at hand.
+信
+As another means of preparing for these catastrophic events, cities/counties generally implement what are
+known as early warning systems [4]. These systems serve to provide a warning to the population of an area
+微
+that a catastrophe is about to occur. Even a warning a couple minutes early can allow the population to
+remove themselves from dangerous positions, moving to a safer position, and be more prepared when the
+disaster hits. By reducing the number of people in jeopardy during a disaster, cities/counties are also able
+to reduce the scope of the necessary response, and thus the resources necessary in the case of emergency.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+5 CONCLUSIONS Team # 4498 Page 14 of 24
+5 Conclusions
+The mathematical analysis, along with the program, allowed us to answer each question presented in the
+problem statement.
+Ifthreeambulancesareavailable,thentheyshouldbeplacedinzones1,2,and5. Theywillbeabletoreach
+theentirepopulationinlessthan8minutes, andwilltake, onaverage, abouttwo-and-a-halfminutes. Iftwo
+ambulancesareavailable,thentheyshouldbeplacedinzones2and5. Thisstillservesthepopulationofthe
+entire county in less than 8 minutes, but has an average response time of about three-and-a-half minutes.
+If only one ambulance is available, it should be placed in zone 2. Unfortunately, this leaves 110,000 people
+unable to be reached in less than 8 minutes, but has an average response time of about 9 minutes.
+M
+In the event of a crisis situation with multiple calls at the same time, ambulances in zones 1, 2, and 5 are
+still the optimal configuration. However, if there are more than 3 call simultaneously, which is unlikely but
+ETA PCercentage Reached in Under 8 minutes
+possible, the cities’ emergency response system would be overwhelmed. 9.37 5.92592592592593
+3.67 10
+M
+Our model is strong in that because it exhaustively checks all cases, w2e.3k7now that it gave the optimal 10
+configurationgivenourassumptions. Also,becausewegathereddataonthefrequencyofcallsintheUS,and
+the given numbers for population are reasonable, this model could realiistically be applied to a metropolitan
+area. Unfortunately, some of our assumptions may be violated iHn real life. Travel times can vary based on
+weather, and it maybe difficult to divide a large city into only 6 areas with consistent travel times from one
+zone to another. ：
+Efficiency with Different Number of Ambulances
+号
+10
+众
+7.5
+公
+5
+信
+2.5
+微
+0
+1 2 3
+)setunim(
+ATE
+100%
+75%
+50%
+25%
+0%
+Number of Ambulances
+ETA Percentage Reached in Under 8 minutes
+Percent
+Population
+Reached
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+6 MEMO TO ESC Team # 4498 Page 15 of 24
+6 Memo to ESC
+Memorandum
+To: County Emergency Service Personnel
+Date: November 10, 2013
+Re: Ambulance Allocation
+The speedy and effective response of the countys limited supply of ambulances is crucial to the safety of
+citizens in peril. As a result of the need to tend to those who depend on us for help, we must properly
+allocate our emergency services three ambulances throughout the county’s zones so that we can be prepared
+to respond to a call from any zone within the generally-accepted 8-minute ALS/BLS standard. With the
+helpofextensivecomputersimulationandin-depthanalysisoftheaverageresponsetiMmedataonrecord, we
+have concluded that an ambulance must be placed in zone 1; another one in zone 2; and a third in zone 5 in
+order to achieve maximal speed, minimum distance, and greatest coverage.
+C
+Withallthreeambulancesavailablefordispatch, onaverage, firstresponderscanaddressanyofthe270,000
+M
+of our residents in about two-and-a-half minutes. This is outperforms the vast majority of over two hundred
+possible ambulance orientations. If the ambulance in zone 1 is already responding to an emergency, on
+average, the other two ambulances will be able to reach a given counity resident within three minutes and
+forty seconds. Despite the incapacity of ambulance 1, our emeHrgency medical staff will still be perfectly
+capable of reaching all of the county’s citizens, highlighting the potentially life-saving efficacy of this new
+distribution of ambulances. ：
+If ambulances 1 and5 are already respondingto emergencies, ambulance 2 will still be able toreach160,000
+residents (59.3% of the population) within 8 m号inutes and, on average, a given county resident in 9.27 min-
+utes. The ability to reach nearly 60% of our citizens is noteworthy and surpasses the extension of any of the
+other ambulances. Moreover, while an average overall response time of 9.37 seconds may not be within the
+8-minute ALS/BLS standard, it still lies within the time to respond to the majority of emergencies as the
+众
+ALS/BLS standards are based on the window for treating cardiac arrest, which only has a survival rate of
+2.2% when consciousness revival treatment is first applied by ambulance personnel [3].
+公
+Inacrisissituation,iftherearenomorethanthreecallsoccurringsimultaneously,wewillbeabletorespond
+using the same ambulance placements as in non-crisis situations. However, if there is an excessive number
+of overlapping calls, external resources must be taken advantage of to effectively handle the situation. Some
+信
+popular methods of handling larger crises include gap analysis, and awareness programs.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+7 REFERENCES Team # 4498 Page 16 of 24
+7 References
+[1] 911Statistics.(n.d.).RetrievedNovember10, 2013, fromNationalEmergencyNumberAssociationweb-
+site: http://www.nena.org/?page=911Statistics
+[2] Saadah, R. (n.d.). The Eight-Minute ALS Response Time Standard. Retrieved November 10, 2013, from
+Federal Emergency Management Agency website: http://www.usfa.fema.gov/pdf/efop/efo37506.pdf
+[3] Nolan, J. (n.d.). Resuscitation Council (UK) comments on compression-only CPR study published in
+The Lancet 17 March 2007. Retrieved November 10, 2013, from Resuscitation Council (UK) website:
+http://www.resus.org.uk/pages/compCPRs.htm
+[4] Earthquake Preparedness. (n.d.). Retrieved November 10, 2013, from City oMf Temecula website:
+http://www.cityoftemecula.org/Temecula/Residents/PublicSafety/earthquakes.htm
+[5] Catastrophe Readiness and Response. (n.d.). Retrieved November 10, 2013C, from Federal Emergency
+Management Agency website: http://training.fema.gov/emiweb/edu/docs/crr/CAT
+M
+[6] U.S. and World Population Clock. (n.d.). Retrieved November 10, 2013, from United States Census
+Bureau website: http://www.census.gov/popclock/
+i
+[7] Kavilanz, P. (n.d.). 911 abuse: Calling with the Hsniffles. Retrieved from CNN website:
+http://money.cnn.com/2009/08/24/news/economy/healthcare 911 abuse/
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 8   | APPENDIX | A:  | PLACEMENT | CODE      |     | Team | # 4498 |     |     |     |     | Page 17 of 24 |
+| --- | -------- | --- | --------- | --------- | --- | ---- | ------ | --- | --- | --- | --- | ------------- |
+| 8   | Appendix |     | A:        | Placement |     | Code |        |     |     |     |     |               |
+// ∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗
+| //  | OneEmergencyAtATime.java |     |     |     |     |     |     | Author: |     | Team | #4498 |     |
+| --- | ------------------------ | --- | --- | --- | --- | --- | --- | ------- | --- | ---- | ----- | --- |
+//
+| //  | Provides | a    | comparison | of            | different |      | ambulance | locations |        |     |     |     |
+| --- | -------- | ---- | ---------- | ------------- | --------- | ---- | --------- | --------- | ------ | --- | --- | --- |
+| //  | assuming | that | only       | one emergency |           | will | happen    | at        | a time |     |     |     |
+// ∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗
+| public | class | model |     |     |     |     |     |     |     |     |     |     |
+| ------ | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+{
+M
+|     | final  | static | double | THRESHOLD   |     | = 8;     |     |     |     |     |     |     |
+| --- | ------ | ------ | ------ | ----------- | --- | -------- | --- | --- | --- | --- | --- | --- |
+|     | public | static | void   | main(String |     | [] args) |     |     |     |     |     |     |
+C
+{
+|     | for | (int | a   | = 1; a<=6; | a++) |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | ---------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     | for | (int | b   | = a; b<=6; | b++) |     |     |     | M   |     |     |     |
+|     | for | (int | c   | = b; c<=6; | c++) |     |     |     |     |     |     |     |
+{
+|     |     | if  | (populationReached(a,b,c) |     |     |     | ==  | 270) | i   |     |     |     |
+| --- | --- | --- | ------------------------- | --- | --- | --- | --- | ---- | --- | --- | --- | --- |
+H
+{
+|     |     |     |     | System.out.print(”(” |     |     | + a | + ”, | ” + | b + ”, | ” + | c + ”)”); |
+| --- | --- | --- | --- | -------------------- | --- | --- | --- | ---- | --- | ------ | --- | --------- |
+：
+|     |     |     |     | System.out. |     | println(” | Expected |     | time | of arrival |     | : ” + |
+| --- | --- | --- | --- | ----------- | --- | --------- | -------- | --- | ---- | ---------- | --- | ----- |
+expectedTime(a,b,c));
+|     |     |     |     | System.out. |     | println((populationReached(a,b) |     |     |     |     | +   |     |
+| --- | --- | --- | --- | ----------- | --- | ------------------------------- | --- | --- | --- | --- | --- | --- |
+号
+|     |     |     |     | populationReached(a,c) |     |     |     | + populationReached(b,c))/3.0); |     |     |     |     |
+| --- | --- | --- | --- | ---------------------- | --- | --- | --- | ------------------------------- | --- | --- | --- | --- |
+}
+}
+众
+|     | System.out. |      |     | println (); |      |     |     |     |     |     |     |     |
+| --- | ----------- | ---- | --- | ----------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     | for         | (int | a   | = 公1; a<=6; | a++) |     |     |     |     |     |     |     |
+|     | for         | (int | b   | = a; b<=6;  | b++) |     |     |     |     |     |     |     |
+{
+|     |     | if  | 信(populationReached(a,b) |     |     |     | == 270) |     |     |     |     |     |
+| --- | --- | --- | ------------------------ | --- | --- | --- | ------- | --- | --- | --- | --- | --- |
+{
+System.out. println(”(” + a + ”, ” + b + ”) Expected time: ” +
+微expectedTime(a,b));
+}
+}
+|     | System.out. |      |     | println (); |      |     |     |     |     |     |     |     |
+| --- | ----------- | ---- | --- | ----------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     | for         | (int | a   | = 1; a<=6;  | a++) |     |     |     |     |     |     |     |
+{
+System.out. println(a + ”: population reached: ” + populationReached(a));
+}
+}
+/∗
+|     | ∗ returns |       | the | time it | takes | to go | from | zone #”from” |     | to  |     |     |
+| --- | --------- | ----- | --- | ------- | ----- | ----- | ---- | ------------ | --- | --- | --- | --- |
+|     | ∗ zone    | #”to” |     |         |       |       |      |              |     |     |     |     |
+∗/
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+| 8   | APPENDIX |     | A: PLACEMENT |        | CODE       |     | Team | #     | 4498 |     |     | Page 18 of 24 |
+| --- | -------- | --- | ------------ | ------ | ---------- | --- | ---- | ----- | ---- | --- | --- | ------------- |
+|     | public   |     | static       | double | timeTo(int |     |      | from, | int  | to) |     |               |
+{
+double [][] vals = {{1, 8, 12, 14, 10, 16}, {8, 1, 6, 18, 16, 16},
+|     |     | {12,   | 18,  | 1.5,            | 12, | 6, 4}, | {16, | 14, | 4,     | 1, 16, | 12}, |     |
+| --- | --- | ------ | ---- | --------------- | --- | ------ | ---- | --- | ------ | ------ | ---- | --- |
+|     |     | {18,   | 16,  | 10,             | 4,  | 2, 2}, | {16, | 18, | 4, 12, | 2,     | 2}}; |     |
+|     |     | return | vals | [from−1][to−1]; |     |        |      |     |        |        |      |     |
+}
+/∗
+|     | ∗   | returns | the | population |     | in  | thousands |     | of  | zone | #”zone” |     |
+| --- | --- | ------- | --- | ---------- | --- | --- | --------- | --- | --- | ---- | ------- | --- |
+∗/
+M
+|     | public |     | static | int | population(int |     |     | zone) |     |     |     |     |
+| --- | ------ | --- | ------ | --- | -------------- | --- | --- | ----- | --- | --- | --- | --- |
+{
+|     |     | if   | (zone  | == 1) | return | 50;    |     |     |     |     | C   |     |
+| --- | --- | ---- | ------ | ----- | ------ | ------ | --- | --- | --- | --- | --- | --- |
+|     |     | else | if     | (zone | == 2)  | return | 80; |     |     |     |     |     |
+|     |     | else | if     | (zone | == 3)  | return | 30; |     |     |     | M   |     |
+|     |     | else | if     | (zone | == 4)  | return | 55; |     |     |     |     |     |
+|     |     | else | if     | (zone | == 5)  | return | 35; |     |     |     |     |     |
+|     |     | else | if     | (zone | == 6)  | return | 20; |     |     |     | i   |     |
+|     |     | else | return | 0;    |        |        |     |     |     | H   |     |     |
+}
+：
+/∗
+|     | ∗   | returns | the | population |      | a          | configuration |         |     | of 3 | ambulances |     |
+| --- | --- | ------- | --- | ---------- | ---- | ---------- | ------------- | ------- | --- | ---- | ---------- | --- |
+|     | ∗   | reaches | in  | less       | than | THRESH号OLD |               | minutes |     |      |            |     |
+∗/
+|     | public |     | static  | int | populationReached(int |      |      |     | a,  | int | b, int c) |     |
+| --- | ------ | --- | ------- | --- | --------------------- | ---- | ---- | --- | --- | --- | --------- | --- |
+|     | {      |     |         |     |                       | 众    |      |     |     |     |           |     |
+|     |        | int | reached | =   | 0;                    |      |      |     |     |     |           |     |
+|     |        | for | (int    | i = | 1; i                  | <=6; | i++) |     |     |     |           |     |
+{
+公
+if (min(timeTo(a, i), timeTo(b, i), timeTo(c, i )) <= THRESHOLD)
+|     |     |     |     | reached | +=  | population(i |     | );  |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | ------------ | --- | --- | --- | --- | --- | --- |
+}
+信
+|     |     | return | reached; |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+微
+/∗
+|     | ∗   | returns | the           | expected |     | value | of           | the    | time   | it takes |     |     |
+| --- | --- | ------- | ------------- | -------- | --- | ----- | ------------ | ------ | ------ | -------- | --- | --- |
+|     | ∗   | for     | an ambulance  |          | to  | get   | to a         | random | person | for      |     |     |
+|     | ∗   | a given | configuration |          |     | of    | 3 ambulances |        |        |          |     |     |
+∗/
+|     | public |     | static | double | expectedTime(int |     |     |     | a, int | b,  | int c) |     |
+| --- | ------ | --- | ------ | ------ | ---------------- | --- | --- | --- | ------ | --- | ------ | --- |
+{
+|     |     | double | sum  | =   | 0;   |      |      |     |     |     |     |     |
+| --- | --- | ------ | ---- | --- | ---- | ---- | ---- | --- | --- | --- | --- | --- |
+|     |     | for    | (int | i = | 1; i | <=6; | i++) |     |     |     |     |     |
+sum += min(timeTo(a, i), timeTo(b, i), timeTo(c, i))∗population(i );
+|     |     | sum    | /= 270; |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | return | sum;    |     |     |     |     |     |     |     |     |     |
+}
+/∗
+|     | ∗   | returns | the          | expected |     | value | of   | the    | time   | it takes |     |     |
+| --- | --- | ------- | ------------ | -------- | --- | ----- | ---- | ------ | ------ | -------- | --- | --- |
+|     | ∗   | for     | an ambulance |          | to  | get   | to a | random | person | for      |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 8   | APPENDIX | A:    | PLACEMENT     | CODE |      | Team       | # 4498 |     |     |     |     | Page 19 of 24 |
+| --- | -------- | ----- | ------------- | ---- | ---- | ---------- | ------ | --- | --- | --- | --- | ------------- |
+|     | ∗ a      | given | configuration |      | of 2 | ambulances |        |     |     |     |     |               |
+∗/
+|     | public | static | double | expectedTime(int |     |     | a,  | int | b)  |     |     |     |
+| --- | ------ | ------ | ------ | ---------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+{
+|     | double |      | sum = 0;         |      |         |           |     |                  |     |     |     |     |
+| --- | ------ | ---- | ---------------- | ---- | ------- | --------- | --- | ---------------- | --- | --- | --- | --- |
+|     | for    | (int | i = 1;           | i <= | 6; i++) |           |     |                  |     |     |     |     |
+|     |        | sum  | += min(timeTo(a, |      | i),     | timeTo(b, |     | i))∗population(i |     |     | );  |     |
+|     | sum    | /=   | 270;             |      |         |           |     |                  |     |     |     |     |
+|     | return |      | sum;             |      |         |           |     |                  |     |     |     |     |
+}
+M
+/∗
+|     | ∗ returns |     | the population |      | a configuration |         |     | of  | 2 ambulances |     |     |     |
+| --- | --------- | --- | -------------- | ---- | --------------- | ------- | --- | --- | ------------ | --- | --- | --- |
+|     | ∗ reaches |     | in less        | than | THRESHOLD       | minutes |     |     |              |     | C   |     |
+∗/
+|     | public | static | int populationReached(int |     |     |     |     | a, int | b) M |     |     |     |
+| --- | ------ | ------ | ------------------------- | --- | --- | --- | --- | ------ | ---- | --- | --- | --- |
+{
+|     | int | reached | = 0;           |        |      |           |     |       |            |     |     |     |
+| --- | --- | ------- | -------------- | ------ | ---- | --------- | --- | ----- | ---------- | --- | --- | --- |
+|     | for | (int    | i = 1;         | i <=6; | i++) |           |     |       | i          |     |     |     |
+|     | {   |         |                |        |      |           |     | H     |            |     |     |     |
+|     |     | if      | (min(timeTo(a, |        | i),  | timeTo(b, | i   | )) <= | THRESHOLD) |     |     |     |
+)：;
+|     |     |     | reached | +=  | population(i |     |     |     |     |     |     |     |
+| --- | --- | --- | ------- | --- | ------------ | --- | --- | --- | --- | --- | --- | --- |
+}
+|     | return |     | reached; |     |     |     |     |     |     |     |     |     |
+| --- | ------ | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | }      |     |          |     |     | 号   |     |     |     |     |     |     |
+/∗
+|     | ∗ returns |     | the populatio众n |      | a configuration |         |     | of  | 1 ambulance |     |     |     |
+| --- | --------- | --- | --------------- | ---- | --------------- | ------- | --- | --- | ----------- | --- | --- | --- |
+|     | ∗ reaches |     | in less         | than | THRESHOLD       | minutes |     |     |             |     |     |     |
+∗/
+|     | public | static | int populationReached(int |     |     |     |     | a)  |     |     |     |     |
+| --- | ------ | ------ | ------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+{
+|     | int | reached | = 0;   |      |         |     |     |     |     |     |     |     |
+| --- | --- | ------- | ------ | ---- | ------- | --- | --- | --- | --- | --- | --- | --- |
+|     | for | (int    | i = 1; | i <= | 6; i++) |     |     |     |     |     |     |     |
+信
+{
+|     |     | if  | (timeTo(a, | i)  | <= THRESHOLD) |     |     |     |     |     |     |     |
+| --- | --- | --- | ---------- | --- | ------------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     | reached    | +=  | population(i  |     | );  |     |     |     |     |     |
+微
+}
+|     | return |     | reached; |     |     |     |     |     |     |     |     |     |
+| --- | ------ | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+/∗
+|     | ∗ returns |     | the minimum |     | of 3 values |     |     |     |     |     |     |     |
+| --- | --------- | --- | ----------- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+∗/
+|     | public | static | double | min(double |     | a,  | double | b,  | double | c)  |     |     |
+| --- | ------ | ------ | ------ | ---------- | --- | --- | ------ | --- | ------ | --- | --- | --- |
+{
+|     | if   | (a     | <= b && a | <=  | c) return | a;     |     |     |     |     |     |     |
+| --- | ---- | ------ | --------- | --- | --------- | ------ | --- | --- | --- | --- | --- | --- |
+|     | else | if     | (b <= a   | &&  | b <= c)   | return | b;  |     |     |     |     |     |
+|     | else | return | c;        |     |           |        |     |     |     |     |     |     |
+}
+/∗
+|     | ∗ returns |     | the minimum |     | of 2 values |     |     |     |     |     |     |     |
+| --- | --------- | --- | ----------- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+∗/
+关注 HiMCM
+|     |     |     |     |     |     |     |     |     |     |     |     | ×+ −÷        |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+
+8 APPENDIX A: PLACEMENT CODE Team # 4498 Page 20 of 24
+public static double min(double a, double b)
+{
+if (a <= b) return a; return b;
+}
+}
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 9 APPENDIX |     | B: CODE | FOR  | CRISIS | Team   | #   | 4498 |     |     | Page 21 of | 24  |
+| ---------- | --- | ------- | ---- | ------ | ------ | --- | ---- | --- | --- | ---------- | --- |
+| 9 Appendix |     | B:      | Code | for    | Crisis |     |      |     |     |            |     |
+// ∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗
+| // Crisis | .java |     |     |     | Author: |     | Team | #4498 |     |     |     |
+| --------- | ----- | --- | --- | --- | ------- | --- | ---- | ----- | --- | --- | --- |
+//
+| // Provides |     | a comparison |             | of different |        | ambulance |      | locations |     |     |     |
+| ----------- | --- | ------------ | ----------- | ------------ | ------ | --------- | ---- | --------- | --- | --- | --- |
+| // assuming |     | that two     | emergencies |              | happen |           | at a | time      |     |     |     |
+// ∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗
+| public | class | catastrophe |     |     |     |     |     |     |     |     |     |
+| ------ | ----- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+{
+M
+|     | final | static | int | THRESHOLD |     | = 8; |     |     |     |     |     |
+| --- | ----- | ------ | --- | --------- | --- | ---- | --- | --- | --- | --- | --- |
+C
+|     | public | static | void | main(String |     | []  | args) |     |     |     |     |
+| --- | ------ | ------ | ---- | ----------- | --- | --- | ----- | --- | --- | --- | --- |
+{
+|     |     | for | (int | a = 1; | a<=6; | a++) |     | M   |     |     |     |
+| --- | --- | --- | ---- | ------ | ----- | ---- | --- | --- | --- | --- | --- |
+|     |     | for | (int | b = 1; | b<=6; | b++) |     |     |     |     |     |
+|     |     | for | (int | c = 1; | c<=6; | c++) |     |     |     |     |     |
+|     |     | {   |      |        |       |      |     | i   |     |     |     |
+H
+|     |     | if  | ((a | == 1 && | b == | 2) && | c == | 5)  |     |     |     |
+| --- | --- | --- | --- | ------- | ---- | ----- | ---- | --- | --- | --- | --- |
+：
+|     |     |     |        | System.out.                   |       | println(”(” |      | + a + | ”, ” + b +     | ”, ” + c + ”): | ” + |
+| --- | --- | --- | ------ | ----------------------------- | ----- | ----------- | ---- | ----- | -------------- | -------------- | --- |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |       |             |      |       | /(2∗270∗270))) |                |     |
+|     |     | if  | ((a==2 | && b                          | == 4) | &&          | c == | 5)    |                |                |     |
+号
+|     |     |     |        | System.out.                   |     | println(”(” |       | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+| --- | --- | --- | ------ | ----------------------------- | --- | ----------- | ----- | ----- | ---------------- | -------------- | --- |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |     |             |       |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==2 | && b==4)                      |     | && c        | == 6) |       |                  |                |     |
+Syst众em.out.
+|     |     |              |              |                               |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+| --- | --- | ------------ | ------------ | ----------------------------- | ---- | ----------- | ---- | ----- | ---------------- | -------------- | --- |
+|     |     |              |              | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if           | ((a==2       | && b                          | ==3) | && c==5)    |      |       |                  |                |     |
+|     |     |              | 公System.out. |                               |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |              |              | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if           | ((a==2       | && b                          | ==3) | && c        | ==4) |       |                  |                |     |
+|     |     | 信System.out. |              |                               |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |              |              | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if           | ((a==2       | && b==5)                      |      | && c==6)    |      |       |                  |                |     |
+微 System.out. println(”(” + a + ”, ” + b + ”, ” + c + ”): ” +
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+| --- | --- | --- | ------ | ----------------------------- | ---- | ----------- | ---- | ----- | ---------------- | -------------- | --- |
+|     |     | if  | ((a==1 | && b==4)                      |      | && c==5)    |      |       |                  |                |     |
+|     |     |     |        | System.out.                   |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==1 | && b                          | ==4) | && c        | ==6) |       |                  |                |     |
+|     |     |     |        | System.out.                   |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==2 | && b                          | ==2) | & c==5)     |      |       |                  |                |     |
+|     |     |     |        | System.out.                   |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==2 | && b                          | ==5) | && c        | ==5) |       |                  |                |     |
+|     |     |     |        | System.out.                   |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==1 | && b                          | ==3) | && c==5)    |      |       |                  |                |     |
+|     |     |     |        | System.out.                   |      | println(”(” |      | + a + | ”, ” + b +       | ”, ” + c + ”): | ” + |
+|     |     |     |        | (1.0∗populationReached(a,b,c) |      |             |      |       | / (2∗270∗270))); |                |     |
+|     |     | if  | ((a==1 | && b                          | ==3) | && c==4)    |      |       |                  |                |     |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| 9 APPENDIX | B:  | CODE | FOR CRISIS  |                               | Team                          | #           | 4498 |       |                  |       | Page 22 of     | 24  |
+| ---------- | --- | ---- | ----------- | ----------------------------- | ----------------------------- | ----------- | ---- | ----- | ---------------- | ----- | -------------- | --- |
+|            |     |      | System.out. |                               |                               | println(”(” |      | + a + | ”, ”             | + b + | ”, ” + c + ”): | ” + |
+|            |     |      |             | (1.0∗populationReached(a,b,c) |                               |             |      |       | / (2∗270∗270))); |       |                |     |
+|            |     | if   | ((a==1      | && b                          | ==5)                          | & c==6)     |      |       |                  |       |                |     |
+|            |     |      | System.out. |                               |                               | println(”(” |      | + a + | ”, ”             | + b + | ”, ” + c + ”): | ” + |
+|            |     |      |             |                               | (1.0∗populationReached(a,b,c) |             |      |       |                  | /     | (2∗270∗270))); |     |
+}
+}
+/∗
+|     | ∗ returns |     | the time | it  | takes | to  | go from | zone | #”from” | to  |     |     |
+| --- | --------- | --- | -------- | --- | ----- | --- | ------- | ---- | ------- | --- | --- | --- |
+M
+|     | ∗ zone | #”to” |     |     |     |     |     |     |     |     |     |     |
+| --- | ------ | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+∗/
+|     | public | static | double | timeTo(int |     |     | from, | int to) |     | C   |     |     |
+| --- | ------ | ------ | ------ | ---------- | --- | --- | ----- | ------- | --- | --- | --- | --- |
+{
+double [][] vals = {{1, 8, 12, 14, 10, M 16}, {8, 1, 6, 18, 16, 16},
+{12, 18, 1.5, 12, 6, 4}, {16, 14, 4, 1, 16, 12}, {18, 16, 10, 4, 2, 2},
+|     |     | {16,   | 18,                 | 4, 12, | 2,  | 2}}; |     |     |     |     |     |     |
+| --- | --- | ------ | ------------------- | ------ | --- | ---- | --- | --- | --- | --- | --- | --- |
+|     |     | return | vals[from−1][to−1]; |        |     |      |     | i   |     |     |     |     |
+|     | }   |        |                     |        |     |      |     | H   |     |     |     |     |
+：
+/∗
+|     | ∗ returns |     | the population |     | in  | thousands |     | of zone | #”zone” |     |     |     |
+| --- | --------- | --- | -------------- | --- | --- | --------- | --- | ------- | ------- | --- | --- | --- |
+∗/
+|     | public | static | int | populati号on(int |     |     | zone) |     |     |     |     |     |
+| --- | ------ | ------ | --- | --------------- | --- | --- | ----- | --- | --- | --- | --- | --- |
+{
+|     |     | if   | (zone ==  | 1)  | return | 50;    |     |     |     |     |     |     |
+| --- | --- | ---- | --------- | --- | ------ | ------ | --- | --- | --- | --- | --- | --- |
+|     |     | else | if (zon众e | ==  | 2)     | return | 80; |     |     |     |     |     |
+|     |     | else | if (zone  | ==  | 3)     | return | 30; |     |     |     |     |     |
+|     |     | else | if (zone  | ==  | 4)     | return | 55; |     |     |     |     |     |
+|     |     | else | if (zone  | ==  | 5)     | return | 35; |     |     |     |     |     |
+公
+|     |     | else | if (zone | ==  | 6)  | return | 20; |     |     |     |     |     |
+| --- | --- | ---- | -------- | --- | --- | ------ | --- | --- | --- | --- | --- | --- |
+|     |     | else | return   | 0;  |     |        |     |     |     |     |     |     |
+}
+信
+/∗
+|     | ∗ returns |     | the population |     | a   | configuration |     | of  | 3 ambulances |     |     |     |
+| --- | --------- | --- | -------------- | --- | --- | ------------- | --- | --- | ------------ | --- | --- | --- |
+微
+|     | ∗ reaches |     | in less | than | THRESHOLD |     | minutes |     |     |     |     |     |
+| --- | --------- | --- | ------- | ---- | --------- | --- | ------- | --- | --- | --- | --- | --- |
+∗/
+|     | public | static | int | populationReached(int |     |     |     | a, int | b,  | int c) |     |     |
+| --- | ------ | ------ | --- | --------------------- | --- | --- | --- | ------ | --- | ------ | --- | --- |
+{
+|     |     | int | reached | = 0;   |        |      |     |     |     |     |     |     |
+| --- | --- | --- | ------- | ------ | ------ | ---- | --- | --- | --- | --- | --- | --- |
+|     |     | for | (int    | i = 1; | i <=6; | i++) |     |     |     |     |     |     |
+|     |     | for | (int    | j = 1; | j<=6;  | j++) |     |     |     |     |     |     |
+{
+reached+= population(i)∗population(j)∗numReached(a,b,c,i , j );
+|     |     |     |     |     | reached | +=  | population(i |     | );  |     |     |     |
+| --- | --- | --- | --- | --- | ------- | --- | ------------ | --- | --- | --- | --- | --- |
+}
+|     |     | return | reached; |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+public static int numReached(int a, int b, int c, int i , int j)
+{
+|     |     | int | max = | 0;  |     |     |     |     |     |     |     |     |
+| --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+|     |     |     |     |     |     |     |     |     |     |     | ×+ −÷        |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+
+| 9 APPENDIX | B:  | CODE | FOR CRISIS |     | Team | #   | 4498 |     |     | Page | 23 of 24 |
+| ---------- | --- | ---- | ---------- | --- | ---- | --- | ---- | --- | --- | ---- | -------- |
+if (timeTo(a, i)<=THRESHOLD || timeTo(b, j)<=THRESHOLD) max = 1;
+if (timeTo(a, i)<=THRESHOLD || timeTo(c, j)<=THRESHOLD) max = 1;
+if (timeTo(b, i)<=THRESHOLD || timeTo(a, j)<=THRESHOLD) max = 1;
+if (timeTo(b, i)<=THRESHOLD || timeTo(c, j)<=THRESHOLD) max = 1;
+if (timeTo(c, i)<=THRESHOLD || timeTo(a, j)<=THRESHOLD) max = 1;
+if (timeTo(c, i)<=THRESHOLD || timeTo(b, j)<=THRESHOLD) max = 1;
+if (timeTo(a, i)<=THRESHOLD && timeTo(b, j)<=THRESHOLD) max = 2;
+if (timeTo(a, i)<=THRESHOLD && timeTo(c, j)<=THRESHOLD) max = 2;
+if (timeTo(b, i)<=THRESHOLD && timeTo(a, j)<=THRESHOLD) max = 2;
+if (timeTo(b, i)<=THRESHOLD && timeTo(c, j)<=THRESHOLD) max = 2;
+if (timeTo(c, i)<=THRESHOLD && timeTo(a, j)<=THRESHOLD) max = 2;
+M
+if (timeTo(c, i)<=THRESHOLD && timeTo(b, j)<=THRESHOLD) max = 2;
+|     |           | return       | max;          |                  |       |              |        |         |           |     |     |
+| --- | --------- | ------------ | ------------- | ---------------- | ----- | ------------ | ------ | ------- | --------- | --- | --- |
+|     | }         |              |               |                  |       |              |        |         | C         |     |     |
+|     | /∗        |              |               |                  |       |              |        |         | M         |     |     |
+|     | ∗ returns |              | the expected  |                  | value | of           | the    | time it | takes     |     |     |
+|     | ∗ for     | an ambulance |               | to               | get   | to a         | random | person  | for       |     |     |
+|     | ∗ a       | given        | configuration |                  | of    | 3 ambulances |        |         | i         |     |     |
+|     | ∗/        |              |               |                  |       |              |        | H       |           |     |     |
+|     | public    | static       | double        | expectedTime(int |       |              |        | a, int  | b, int c) |     |     |
+：
+{
+|     |     | double | sum  | = 0;   |        |      |     |     |     |     |     |
+| --- | --- | ------ | ---- | ------ | ------ | ---- | --- | --- | --- | --- | --- |
+|     |     | for    | (int | i = 1; | i <=6; | i++) |     |     |     |     |     |
+sum += min号(timeTo(a, i), timeTo(b, i), timeTo(c, i))∗population(i );
+|     |     | sum    | /= 270; |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | return | sum;    |     |     |     |     |     |     |     |     |
+|     | }   |        |         | 众   |     |     |     |     |     |     |     |
+/∗
+|     | ∗ returns |     | the expected |     | value | of  | the | time it | takes |     |     |
+| --- | --------- | --- | ------------ | --- | ----- | --- | --- | ------- | ----- | --- | --- |
+公
+|     | ∗ for | an ambulance |               | to  | get | to a         | random | person | for |     |     |
+| --- | ----- | ------------ | ------------- | --- | --- | ------------ | ------ | ------ | --- | --- | --- |
+|     | ∗ a   | given        | configuration |     | of  | 2 ambulances |        |        |     |     |     |
+∗/
+信
+|     | public | static | double | expectedTime(int |     |     |     | a, int | b)  |     |     |
+| --- | ------ | ------ | ------ | ---------------- | --- | --- | --- | ------ | --- | --- | --- |
+{
+|     |     | double | sum | = 0; |     |     |     |     |     |     |     |
+| --- | --- | ------ | --- | ---- | --- | --- | --- | --- | --- | --- | --- |
+微
+|     |     | for    | (int    | i = 1; | i <=          | 6;  | i++) |           |                  |     |     |
+| --- | --- | ------ | ------- | ------ | ------------- | --- | ---- | --------- | ---------------- | --- | --- |
+|     |     |        | sum     | +=     | min(timeTo(a, |     | i),  | timeTo(b, | i))∗population(i |     | );  |
+|     |     | sum    | /= 270; |        |               |     |      |           |                  |     |     |
+|     |     | return | sum;    |        |               |     |      |           |                  |     |     |
+}
+/∗
+|     | ∗ returns |     | the population |      | a         | configuration |         | of  | 2 ambulances |     |     |
+| --- | --------- | --- | -------------- | ---- | --------- | ------------- | ------- | --- | ------------ | --- | --- |
+|     | ∗ reaches |     | in less        | than | THRESHOLD |               | minutes |     |              |     |     |
+∗/
+|     | public | static | int | populationReached(int |     |     |     | a,  | int b) |     |     |
+| --- | ------ | ------ | --- | --------------------- | --- | --- | --- | --- | ------ | --- | --- |
+{
+|     |     | int | reached | =      | 0;     |      |     |     |     |     |     |
+| --- | --- | --- | ------- | ------ | ------ | ---- | --- | --- | --- | --- | --- |
+|     |     | for | (int    | i = 1; | i <=6; | i++) |     |     |     |     |     |
+{
+|     |     |     | if  | (min(timeTo(a, |         |     | i),          | timeTo(b, | i )) <= THRESHOLD) |     |          |
+| --- | --- | --- | --- | -------------- | ------- | --- | ------------ | --------- | ------------------ | --- | -------- |
+|     |     |     |     |                | reached | +=  | population(i |           | );                 |     |          |
+|     |     |     |     |                |         |     |              |           |                    |     | 关注 HiMCM |
+×+ −÷
+Hi CM 获取更多资讯
+
+| 9 APPENDIX | B:  | CODE | FOR | CRISIS |     | Team # | 4498 |     |     |     | Page 24 of 24 |
+| ---------- | --- | ---- | --- | ------ | --- | ------ | ---- | --- | --- | --- | ------------- |
+}
+|     |     | return | reached; |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+}
+/∗
+|     | ∗ returns |     | the population |      |           | a configuration |         | of  | 1 ambulance |     |     |
+| --- | --------- | --- | -------------- | ---- | --------- | --------------- | ------- | --- | ----------- | --- | --- |
+|     | ∗ reaches |     | in less        | than | THRESHOLD |                 | minutes |     |             |     |     |
+∗/
+|     | public | static | int | populationReached(int |     |     |     | a)  |     |     |     |
+| --- | ------ | ------ | --- | --------------------- | --- | --- | --- | --- | --- | --- | --- |
+{
+|     |     | int | reached | =   | 0;  |     |     |     |     |     |     |
+| --- | --- | --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+|     |     | for | (int | i = | 1; i | <= 6; | i++) |     |     |     |     |
+| --- | --- | --- | ---- | --- | ---- | ----- | ---- | --- | --- | --- | --- |
+{
+|     |     |        |          | if (timeTo(a, |         | i)  | <= THRESHOLD)   |     |     | C   |     |
+| --- | --- | ------ | -------- | ------------- | ------- | --- | --------------- | --- | --- | --- | --- |
+|     |     |        |          |               | reached |     | += population(i |     | );  |     |     |
+|     |     | }      |          |               |         |     |                 |     | M   |     |     |
+|     |     | return | reached; |               |         |     |                 |     |     |     |     |
+}
+i
+|     | /∗        |     |             |     |     |          |     | H   |     |     |     |
+| --- | --------- | --- | ----------- | --- | --- | -------- | --- | --- | --- | --- | --- |
+|     | ∗ returns |     | the minimum |     | of  | 3 values |     |     |     |     |     |
+：
+∗/
+|     | public | static | double |     | min(double |     | a, double | b,  | double | c)  |     |
+| --- | ------ | ------ | ------ | --- | ---------- | --- | --------- | --- | ------ | --- | --- |
+{
+|     |     | if   | (a <=  | b &&  | a <=号c) | return |           | a;  |     |     |     |
+| --- | --- | ---- | ------ | ----- | ------- | ------ | --------- | --- | --- | --- | --- |
+|     |     | else | if     | (b <= | a &&    | b <=   | c) return | b;  |     |     |     |
+|     |     | else | return |       | c;      |        |           |     |     |     |     |
+|     | }   |      |        | 众     |         |        |           |     |     |     |     |
+/∗
+|     | ∗ returns |     | the minimum |     | of  | 2 values |     |     |     |     |     |
+| --- | --------- | --- | ----------- | --- | --- | -------- | --- | --- | --- | --- | --- |
+公
+∗/
+|     | public | static | double |     | min(double |     | a, double | b)  |     |     |     |
+| --- | ------ | ------ | ------ | --- | ---------- | --- | --------- | --- | --- | --- | --- |
+{
+信
+|     |     | if  | (a <= | b)  | return | a; return |     | b;  |     |     |     |
+| --- | --- | --- | ----- | --- | ------ | --------- | --- | --- | --- | --- | --- |
+}
+微
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

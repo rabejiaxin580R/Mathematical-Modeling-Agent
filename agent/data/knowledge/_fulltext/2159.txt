@@ -1,0 +1,859 @@
+Page 1 of 23
+Team 2159
+Our objective is to mathematically model the behavior of the Untied States national public debt
+over the next eight years. We need to predict the value of the national debt for each year between
+2009 and 2017 and be able to adjust our prediction based on different circumstances. Our model
+accounts for the change in national public debt based on various factors, such as government
+spending, previous debt, national debt interest rate, and the gross domestic product (GDP).
+From our general model, we can create several extensions, allowing us to vary the parameters
+from which it is comprised. Different values for each parameter allow us to develop differential
+equations that model the change in the debt year-to-year. Since the data is basMed on yearly
+figures, we use Euler's Method to solve these equations numerically. The different extensions
+that we create come from varying the interest and GDP growth rates. In addition, we develop two
+C
+different spending policies, which we call the "Eisenhower plan" and the "Reagan plan". The
+Eisenhower plan represents federal expenditures that are 18% of GDP, while the Reagan plan
+M
+represents federal expenditures that are 22.4% of GDP. These two plans are demonstrative of the
+administrations with lowest and highest spending as a percentage of the GDP on average since
+i
+World War II.
+H
+Our results show that the most efficient combinati：on for the reduction of the national debt is low
+interest, high GDP growth rate, and low spending. Since it is impossible to directly control the
+GDP growth and interest rates, we focus on these as market circumstances upon which to build
+号
+the extensions of our model, and see what effect the different spending plans have on our
+forecast. Our model shows that, in order for the national debt as a percentage of GDP to be
+lowered, the federal government must adopt a spending plan with a low expenditure during an
+众
+economic situation that avoids unfavorable extrema in GDP growth and interest rates.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 2 of 23
+Team 2159
+National Debt and National Crisis
+Table of Contents
+<><><><>
+I. Problem Restatement
+II. General Assumptions and Justifications
+III. Task I: Our Model of the National Debt
+a. General Model Overview
+b. Extension I
+M
+c. Extension II
+d. Extension III
+IV. Task II: Two Alternative Plans C
+V. Results and Conclusions
+M
+VI. Strengths and Weaknesses of Our models
+VII. Letter to the President
+VIII. Works Cited i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 3 of 23
+Team 2159
+I. Problem Restatement
+The national debt, or public debt, is the amount of debt held by the United States Federal
+Government, excluding any intergovernmental debt (United States Public Debt). The national
+debt depends on various factors, such as government expenditures, income, and the interest rates
+on the borrowed money.
+Our objective is to create a model that can help explain the national debt, and use it to forecast
+the amount of debt from the year 2009 to 2017 given at least two alternative government
+spending and tax plans. We must also determine the degree to which each parameter in our
+model affects the outcome. In order to create this model, we will consider various sources of
+M
+historical information and determine how each variable has affected debt and related factors in
+the past.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 4 of 23
+Team 2159
+II. General Assumptions and Justifications
+1. The United States Government borrows money from various sources in order to pay off
+whatever expenditures are not covered by the federal income.
+While a branch of the federal government does print money, this money must be a
+negligible source of income; otherwise, the United States would undergo hyperinflation.
+2. The Government must pay interest on the money that it owes.
+M
+Banks and other lenders expect an interest payment as an incentive to lend money.
+C
+3. There is no United States national debt ceiling.
+M
+The debt ceiling is the maximum debt allowed by law. In practice, government elevates
+this value to accommodate the growing debt (Welna, 2006). Therefore, we can assume
+i
+that if the debt approaches the ceiling, a new ceiling will be made to accommodate it. In
+H
+reality, it is as if there is no debt ceiling.
+：
+4. All sources of federal income other than taxation are negligible.
+号
+The government earns a minor income from selling certain goods and services. However,
+these sources are not large enough to be significant. The problem description itself states
+that the federal income is composed primarily of taxes. In making this assumption, we
+众
+simplify our model, since other sources of income would be superfluous variables.
+5. No major and complete公ly unpredictable events will occur that greatly impact the world.
+We assume that such upheavals as colliding with an asteroid or finding extraterrestrial
+life will no信t occur. It is impossible to provide for these in our model, so we must take it as
+given that nothing will cause an abrupt change in the economy.
+微
+6. The gross domestic product (GDP) is an indicator of the state of the economy (Barnes, 2008).
+The GDP is the total value of all goods and services produced by a country in a given
+year. Essentially, it measures the wealth that has been produced by the country. After
+adjustment for inflation, the GDP tends to grow more rapidly during economic booms
+and more slowly during recessions. It is useful to consider the GDP as an economic
+indicator because expressing the national debt as a fraction of the GDP is more
+meaningful than expressing it in dollars.
+7. The government’s debt and its annual expenditures can be meaningfully expressed as
+fractions of the GDP.
+Without knowledge of the nation’s wealth at any given time, the figures for the national
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 5 of 23
+Team 2159
+debt and the expenditure have little meaning. Looking at these quantities relative to the
+GDP gives a concept of their magnitude in the context of the economy at the time. It also
+helps account for inflation.
+8. The total tax revenue in a given year is equal to 19.5 percent of that year’s GDP.
+This is known as Hauser’s Law. Although controversial, this assertion is strongly
+supported by market data (Ranson, 2008). The factors that influence total tax revenue
+such as the tax rate, tax brackets, median house income, and the unemployment rate
+change over time, but Hauser’s Law has been shown to continually and accurately
+approximate net revenue regardless of these factors. Therefore, if we assume that
+M
+Hauser’s Law is true, we would be able to remove many variables without any loss of
+accuracy to our model.
+C
+We make additional assumptions that are specific to each of the extensions of our model. These
+M
+assumptions involve changing the parameters that predict the future of the economy, namely
+GDP and interest rates. More detail will be given as the assumptions are adopted.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 6 of 23
+Team 2159
+III. Task I: Our Model of the National Debt
+a) General Model Overview
+Our model for forecasting the national debt begins with the general concept that the national debt
+at time t is equal to the sum of the initial national public debt, the interest on that debt, and the
+federal expenditure during that year subtracted by the total tax revenue. Thus, the national debt
+can be represented by equation [1].
+D(t)= D(t −1)+G (t)−T(t)+(D(t −1)*I(t))
+sp [1]
+M
+In this equation, D(t) represents the debt in a given year in billions of dollars, G (t) represents
+sp
+government expenditures in billions of dollars per year, T(t) represents tax revenue in billions of
+dollars per year, and I(t) represents the interest rate on government borroCwing in a given year, as
+a value between 0 and 1 (representing rates between 0% and 100%, respectively). The time t is
+M
+measured in years and t = 0 corresponds with the beginning of the year 2008. Another important
+fact is that our function is defined only over the positive integers, in order to take into account
+the fact that the data supporting this model is presented in discreite one-year segments.
+H
+Now that we have an equation representing the national debt, we consider the following general
+：
+equation:
+Δf
+f(t号)= +f(t −1)
+Δt
+This equation holds true for any function f defined over such discrete intervals. We can then
+众
+restate it as:
+Δf
+公= f(t)− f(t−1)
+Δt [2]
+Next, we combine 信equations [1] and [2] in order to arrive at:
+ΔD
+=G (t)−T(t)+(D(t −1)*I(t))
+微 Δt sp [3]
+Applying Hauser’s Law to equation [3] allows us to replace T(t) with a multiple of GDP in
+billions of dollars which is represented by y(t) :
+ΔD
+=G (t)−.195*y(t)+(D(t−1)*I(t))
+Δt sp [4]
+This final equation represents our base model, which allows us to forecast the change in the
+national debt based on three different variables. These variables are the national debt interest
+rate I(t), gross domestic product y(t), and the federal expenditure G (t). We account for these
+sp
+different variables in the following extensions of our base model. In addition to this, these
+different extensions allow for us to determine the sensitivity of the national debt to each of our
+three different variables.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 7 of 23
+Team 2159
+b) Extension I
+Assumptions and Justifications
+1. The GDP growth rate from 2006-2020 will remain at an average constant of 2.9% per year.
+Although it would be best for us to consider in our model the individual factors that affect
+the GDP growth rate per year, they are beyond the reach of this model. However, we
+found a study showing that the average GDP growth rate will be 2.9% per year (Foresight
+2020, 2006).
+2. The national debt interest rate during the years 2009-2017 will remain at an average constant
+M
+of 5.18%.
+The national debt interest rate fluctuates greatly every month eveCn though the national
+debt stays constant because of how the National Treasury sells and redeems securities.
+M
+Some securities are sold at much lower interest rates than others. In addition to this, the
+securities mature after various time periods. The difference between the interest rates on
+the securities redeemed and the securities sold in a giveni month account for wildly
+H
+fluctuating interest rate (Frequently Asked Questions About the National Debt, 2008).
+Even though it would make our model more accurate to account for the interest rate every
+：
+month, we cannot predict what that interest rate will be. Therefore, we use an average of
+the national debt interest rate over the past eight years which comes out to be 5.18%
+(Average Interest Rates on US Tre号asury Securities, 2008).
+Model
+众
+Our assumptions have shown that both GDP and the national debt interest rate cannot be easily
+forecast. In this extension, we use the GDP growth rate of 2.9% per year and the national debt
+interest rate of 5.18% in or公der to develop an equation relating the national debt to the federal
+expenditure. This relationship is useful because the federal expenditure represents the only
+variable in this model that the government fully controls.
+信
+We use the value of GDP growth in the following differential equations in order to determine a
+function for the GDP with respect to time.
+微
+dy
+= .029 y
+dt
+1
+dy = .029 dt
+y
+1
+∫ dy = ∫ .029 dt
+y
+ln( y ) = .029 t + C
+1
+y = e .029 t+C 1
+y = C e .029 t
+2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 8 of 23
+Team 2159
+Since y(0) is equal to the GDP at the beginning of the year 2008 and y(0) = C we can use our
+2,
+data to find that C = 14,000 billion dollars (Gross Domestic Product). Then we can substitute y
+2
+and I into equation [4] and arrive at:
+ΔD
+=G (t)−.195*14000e.029t +.0518D(t−1)
+Δt sp
+=G (t)−2730e.029t +.0518D(t−1)
+sp
+This extension represents the most realistic extension of our model because it uses constants that
+agree with current trends. The next several extensions will use extremes of both national debt
+M
+interest rate and GDP growth rate in order to demonstrate some other possibilities. This equation
+will be used in Section IV in order to forecast the national debt in the year 2017.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 9 of 23
+Team 2159
+c) Extension II
+Part a
+Assumptions and Justifications
+1. The GDP growth rate from 2006-2020 will remain at an average constant of 5.1% per year.
+An analysis of previous GDP growth rates from 1947 to 2007 showed that for
+consecutive eight year periods, the greatest average GDP growth rate is 5.1% (National
+Income and Product Accounts Table, 2008). Therefore, we use this value to create a
+M
+model to show the effect of high GDP growth on the national debt.
+2. The national debt interest rate during the years 2009-2017 will remainC at an average constant
+of 5.18%.
+M
+See Extension I Assumptions and Justifications
+i
+Model
+H
+In this extension, we use the GDP growth rate of 5.1% per year and the national debt interest rate
+：
+of 5.18% in order to develop an equation relating the national debt to the federal expenditure.
+Again, the only variable that the government is in control of is the federal expenditure. We use
+the same procedures as for Extension I in 号order to arrive at:
+众
+This extension details a model for the national debt based on the assumption of a high average
+GDP growth rate. This model will be used in part IV to forecast the national debt in 2017.
+公
+信
+Part b
+Assumptions and Justifications
+微
+1. The GDP growth rate from 2006-2020 will remain at an average constant of 2.4% per year.
+An analysis of previous GDP growth rates from 1947 to 2007 showed that for
+consecutive eight year periods, the least average GDP growth rate is 2.4% (National
+Income and Product Accounts Table, 2008). Therefore, we use this value in order to
+create a model to show the effect of low GDP growth on the national debt.
+2. The national debt interest rate during the years 2009-2017 will remain at an average constant
+of 5.18%.
+See Extension I Assumptions and Justifications
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 10 of 23
+Team 2159
+Model
+In this extension, we use the GDP growth rate of 2.4% per year and the national debt interest rate
+of 5.18% in order to develop an equation relating the national debt to the federal expenditure.
+Again, the only variable that the government is in control of is the federal expenditure. We use
+the same procedures as for Extension I in order to arrive at:
+This extension details a model for the national debt based on the assumption of a low average
+GDP growth rate. This model will be used in part IV to forecast the national debt in 2017. In
+M
+addition, our forecasts in Part IV will determine the sensitivity of the national debt to changes in
+GDP growth rate.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 11 of 23
+Team 2159
+d) Extension III
+Part a
+Assumptions and Justifications
+1. The GDP growth rate from 2006-2020 will remain at an average constant of 2.9% per year.
+See Extension I Assumptions and Justifications
+2. The national debt interest rate during the years 2009-2017 will remain at anM average constant
+of 4.01%.
+C
+Based on the historical monthly interest rate data for the past eight years, we determined
+that the lowest interest rate was 4.01% (Average Interest Rates on US Treasury
+M
+Securities, 2008). Since this is the lowest interest rate in the past eight years, we decided
+that it would make a reasonable lower bound for interest rates. Therefore, we use this
+i
+value to create a model to show the effect of low national debt interest rates on the
+H
+national debt.
+：
+Model
+In this extension, we use the GDP growth rate of 2.9% per year and the national debt interest rate
+号
+of 4.01% in order to develop an equation relating the national debt to the federal expenditure.
+Again, the only variable that the government is in control of is the federal expenditure. We use
+the same procedures as for Extens众ion I in order to arrive at:
+公
+This extension details a model for the national debt based on the assumption of a low national
+debt interest rate. This model will be used in part IV to forecast the national debt in 2017.
+信
+微
+Part b
+Assumptions and Justifications
+1. The GDP growth rate from 2006-2020 will remain at an average constant of 2.9% per year.
+See Extension I Assumptions and Justifications
+2. The national debt interest rate during the years 2009-2017 will remain at an average constant
+of 6.64%.
+Based on the historical interest rate data for the past eight years, we determined that the
+highest interest rate was 6.641% (Average Interest Rates on US Treasury Securities,
+2008). Since this is the highest interest rate in the past eight years, we decided that it
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 12 of 23
+Team 2159
+would make a reasonable upper bound for interest rates. Therefore, we use this value to
+create a model to show the effect of high national debt interest rates on the national debt.
+Model
+In this extension, we use the GDP growth rate of 2.9% per year and the national debt interest rate
+of 6.64% in order to develop an equation relating the national debt to the federal expenditure.
+Again, the only variable that the government is in control of is the federal expenditure. We use
+the same procedures as for Extension I in order to arrive at:
+M
+C
+This extension details a model for the national debt based on the assumption of a high national
+debt interest rate. This model will be used in part IV to forecast thMe national debt in 2017. In
+addition, our forecasts in part IV will demonstrate how sensitive the national debt is to national
+debt interest rate changes.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 13 of 23
+Team 2159
+d) Extension IV
+We used four pairings of the GDP growth rates from Extension II and the national debt interest
+rates from Extension III. These four additional models show the effect on national debt at the
+extremes of both conditions. For assumptions and justifications of the values, see previous
+extensions.
+Part a
+M
+Model
+C
+In this extension, we use the GDP growth rate of 5.1% per year and the national debt interest rate
+of 4.01% in order to develop an equation relating the national debMt to the federal expenditure. We
+use the same procedures as for Extension I in order to arrive at:
+i
+H
+：
+This extension details a model for the national debt based on the assumption of a high GDP
+growth rate and a low national debt interest rate. This model will be used in part IV to forecast
+the national debt in 2017.
+号
+众
+Part b
+Model
+公
+In this extension, we use the GDP growth rate of 5.1% per year and the national debt interest rate
+of 6.64% in order to develop an equation relating the national debt to the federal expenditure. We
+信
+use the same procedures as for Extension I in order to arrive at:
+微
+This extension details a model for the national debt based on the assumption of a high GDP
+growth rate and a high national debt interest rate. This model will be used in part IV to forecast
+the national debt in 2017.
+Part c
+Model
+In this extension, we use the GDP growth rate of 2.4% per year and the national debt interest rate
+of 4.01% in order to develop an equation relating the national debt to the federal expenditure. We
+use the same procedures as for Extension I in order to arrive at:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 14 of 23
+Team 2159
+This extension details a model for the national debt based on the assumption of a low GDP
+growth rate and a low national debt interest rate. This model will be used in part IV to forecast
+the national debt in 2017.
+Part d
+Model
+M
+In this extension, we use the GDP growth rate of 2.4% per year and the national debt interest rate
+of 6.64% in order to develop an equation relating the national debt to the federal expenditure. We
+C
+use the same procedures as for Extension I in order to arrive at:
+M
+i
+This extension details a model for the national debt based Hon the assumption of a low GDP
+growth rate and a high national debt interest rate. This model will be used in part IV to forecast
+：
+the national debt in 2017.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 15 of 23
+Team 2159
+IV. Task II: Two Alternative Plans
+Of the three parameters of our model, the GDP and the interest rate are future conditions beyond
+the government’s control. These conditions are covered by the four extensions. But now, in order
+to get an idea of how the government can behave to change the national debt, we create two
+plans that represent the two extremes of government spending. Seeing how our model responds
+to these plans, the federal administration may choose to lean toward one of the two extremes as
+its fiscal policy. Those two extremes are low expenditure and high expenditure.
+To define the two plans, we look at the history of
+federal expenditure since 1953, as a fraction of the M
+Table 1
+GDP (Office of Management and Budget, 2004).
+We calculate the mean of the yearly ratios of
+C
+expenditure to GDP during each president’s
+administration (see Table 1). This shows that,
+M
+relative to the GDP, Dwight Eisenhower spent the
+least, and Ronald Reagan spent the most. We use
+i
+these two presidents’ expenditures for the two
+H
+plans: the Eisenhower low-expenditure plan and
+the Reagan high-expenditure plan. ：
+We first consider how the Eisenhower and
+Reagan plans would fare in extension I. W号e
+assume that the government spending is constant,
+relative to the GDP. Thus, since Eisenhower’s
+众
+administration spent an average of 18.0% of the
+GDP each year, government spending from 2009
+to 2017 can be given by:
+公
+G (t) =.180*14000e.029t
+sp
+信 G (t) = 2520e.029t
+sp
+Substituting this function for government spending into the model for extension I, we get:
+微
+ΔD
+=G (t)−2730e.029t +.0518D(t−1)
+Δt sp
+=2520e.029t −2730e.029t +.0518D(t−1)
+=.0518D(t−1)−210e.029t
+We then use Euler’s method, which tells us that:
+ΔD
+D(t) = D(t −1)+
+Δt
+t
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 16 of 23
+Team 2159
+Since the national debt at the beginning of 2008 wasD(0)=9200, Euler’s method can be used to
+find the national debt for the next nine years, as shown in the following calculations:
+| D(1) =9200+(.0518*9200)−210e.029 |       | =9500              |     |
+| -------------------------------- | ----- | ------------------ | --- |
+| D(1) 9500                        |       | (2009 projection)  |     |
+| =                                | =.659 |                    |     |
+y(1) 14000e.029
+| D(2) =9500+(.0518*9500)−210e.058 |     | =9700 |     |
+| -------------------------------- | --- | ----- | --- |
+(2010 projection)
+| D(2) 9800                        |        |        |     |
+| -------------------------------- | ------ | ------ | --- |
+| =                                | =.6606 |        |     |
+| y(2) 14000e.058                  |        |        | M   |
+| D(3) =9700+(.0518*9700)−210e.087 |        | =10000 | C   |
+(2011 projection)
+D(3) 10100
+| =   | =.6613 | M   |     |
+| --- | ------ | --- | --- |
+y(3) 14000e.087
+. . .  i
+H
+. . .
+. . .  ：
+
+=11500+(.0518*11500)−210e.261
+| D(9) |     | =11800 |     |
+| ---- | --- | ------ | --- |
+号
+| D(9) 11900 |       | (2017 projection)  |     |
+| ---------- | ----- | ------------------ | --- |
+| =          | =.655 |                    |     |
+y(9) 14000e.261
+众
+So extension I predicts that, under the Eisenhower plan, the national debt will be 11,800 billion
+dollars, or 65.5 percent of the GDP, in 2017. This is a higher dollar value, but a lower fraction of
+the GDP, than in 2008. At公 face value, the Eisenhower plan seems to be able to slow the rise of
+the national debt.
+Next, we put the R信eagan expenditure plan through extension I. In the same way that we derived a
+function for Eisenhower’s spending, we find the function for Reagan’s spending to be:
+微
+G (t) =3136e.029t
+sp
+We put the two government expenditure functions from the Eisenhower plan and the Reagan
+plan into all of the extensions of our model. The results are summarized in the following two
+tables.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 17 of 23
+Team 2159
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 18 of 23
+Team 2159
+V. Results and Conclusions
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 19 of 23
+Team 2159
+In order to obtain our results, we used the four extensions developed from our general model,
+combined with our two spending plans. We wanted to find how we could lower the national debt
+and the national debt as a percentage of GDP. The optimal case that lowers the national debt as a
+percentage of GDP is a low interest rate, high GDP growth rate, and low federal expenditures.
+As expected, the least effective case is the opposite. However, the interest and GDP growth rates
+are impossible to control, so we must consider how spending, the factor we can control, affects
+the results under different circumstances. Under the Reagan plan, with high federal expenditures,
+national debt as a percentage of GDP always increases. However, under the Eisenhower plan,
+national public debt as a percentage of GDP decreases by 2017, except in extreme situations such
+as the low GDP growth of extension IIb or the high interest rates of extension IIIb. Under either
+plan, national debt in dollars increased every year during the years 2009-2017. In summary, our
+M
+model states that in order to lower the national debt as a percentage of GDP in the next eight
+years, the government must enact a more conservative spending plan. In addition, we found that,
+C
+while the national debt never decreased in dollars for 2009-2017 in any of the extensions, it
+would decrease to zero if we let our forecast run to the year 2149 for extension I, the year 2051
+M
+for extension IIa, and the year 2066 for extension IIIa. Although our model may not be accurate
+enough to predict the debt for the next 60 years, it suggests that a low expenditure plan may
+i
+make it possible to completely pay off the national debt.
+H
+The different extensions also allowed us to test the： sensitivity of our model to the different
+parameters. Figure 1 shows the change of national debt as a percentage of the GDP from our
+forecast. A negative value means that the national debt decreased in relation to the GDP by 2017
+in our forecast. In order to show the relatio号nship between each parameter and our forecast, we
+considered the observed extrema of each parameter on its own (extensions II and III) and which
+parameter was stronger when they were taken together (extension IV), all in relation to what we
+众
+considered "normal" market conditions (extension I). In "normal" conditions, the Eisenhower
+plan reduced the national debt as a percentage of the GDP by .7% and the Reagan plan increased
+it by 42.5% by 2017. In extension IIa (high GDP growth), the Eisenhower plan reduced the same
+公
+percentage by 13.8% and the Reagan plan increased it by 25.8%. In extension IIIa (low interest
+rate), the Eisenhower plan reduced this percentage by 7.7% and the Reagan plan increased it by
+33.6%. With both 信plans, higher GDP growth affected the model more than lower interest rates,
+which is intuitive, as a higher GDP created more tax revenue according to our model. By similar
+reasoning, comparing the unfavorable extrema (extensions IIb and IIIc) shows that high interest
+微
+causes poorer debt performance than low GDP growth. This also agrees with intuition, as high
+interest rates cumulate, whereas poor GDP simply means poor tax revenue. Finally, considering
+the mixed shows that a good GDP with high interest (extension IVb) creates better performance
+for the Eisenhower plan and the opposite is true (extension IVc creates better performance) for
+the Reagan plan.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 20 of 23
+Team 2159
+VI. Strengths and Weaknesses
+Strengths:
+1. Due to the way we built each extension from the basic model, we can easily vary the
+different parameters and perform Euler’s Method on the new extension. For example, if
+we wanted to test a different method for predicting the GDP, we could substitute it in for
+the current exponential model.
+2. Over large periods of time, we take into account perturbations in the global and national
+markets in that they should average out over the course of about a decade.
+M
+Weaknesses:
+C
+1. Our model assumes Hauser’s Law. Although it is strongly supported by market data, it is
+highly controversial and may be shown to be invalid.
+M
+2. Since our model assumes that the effects of perturbations average out over time, we must
+use a large time period, and the results are less reliable fior the intermediate years.
+H
+3. All of the extensions to our model assumed that GDP grew at a constant percentage of
+itself yearly and that the interest rate was c：onstant over a decade. Although we believed
+that these values averaged out, a more advanced model could take a possibly more
+accurate prediction into account.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 21 of 23
+Team 2159
+VII. Letter to the President
+Dear Mr. President:
+Congratulations on being elected! We know that you are inheriting a host of difficult issues, one
+of which is the rapidly increasing national debt. After thorough analysis of U.S. economic
+history and national debt, we have devised a model that accounts for the change in national
+public debt, based on government spending, previous debt, interest rate, and the gross domestic
+product (GDP). After we constructed this model, we created several different extensions of the
+model that allowed us to change the parameters upon which it depended. Our tests involved
+different combinations of GDP growth rates, interest rates and spending plans. We hope that the
+M
+results of our model will help you make the crucial budget decisions with which you will be
+faced over the next four years.
+C
+We considered two different spending plans, which we coined the “Eisenhower plan” and the
+“Reagan plan.” In the former, we considered a yearly federal expeMnditure of 18% of the GDP,
+the average rate of spending during the Eisenhower administration and the lowest such rate of all
+presidential administrations since the conclusion of World War II. For the latter, we considered
+i
+an expenditure of 22.4%, the average during the Reagan adHministration and the highest rate
+during the same period.
+：
+The results of our forecasts confirmed what may seem intuitive: the most efficient combination
+for the reduction of the national debt is low interest, high GDP growth rate, and low spending.
+号
+Obviously, it is impossible to directly affect the GDP growth rate and interest rates. However,
+keeping our model in mind can help guide decisions on how much to regulate spending. We are
+aware that there are many crucial government programs, and we are not advising that they all be
+众
+cut. However, it is vital to evaluate the trade-off between the benefits of spending and its effect
+on our debt. Even with the Eisenhower plan, we found that some extreme market conditions, like
+low GDP growth rate or hi公gh interest rates, caused the national debt as a percentage of GDP to
+rise; however, our other scenarios showed that the Eisenhower plan lowered national debt as a
+fraction of GDP. On the other hand, the Reagan plan increased the national debt as a percentage
+of GDP in every si信tuation. In other words, it is very difficult to lower the national debt as a
+percentage of GDP, and even more difficult to lower it in nominal dollars, especially within eight
+years.
+微
+We acknowledge that our model depends on the assumption of Hauser’s Law, which states that
+tax revenue will stay at approximately 19.5% of the GDP regardless of the tax rate. This is a
+fairly controversial statement, which may be unpopular with many, but there are ample data to
+support the assertion. We hope that our model is of use to you and to your advisors.
+Best,
+Team 2159
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 22 of 23
+Team 2159
+Works Cited
+A GRAPH REPRESENTATION OF A BASIC MACROECONOMIC SCHEME: THE IS-LM
+MODEL. (2001). Retrieved November 15, 2008, from
+http://www.economicswebinstitute.org/essays/is-lm2.htm
+An Analysis of the Presidents Who Are Responsible for the Borrowing. (2008, September 21).
+Retrieved November 15, 2008, from United States National Debt:
+http://www.cedarcomm.com/~stevelm1/usdebt.htm
+Average Interest Rates on US Treasury Securities. (2008, November 6). Retrieved November 15,
+M
+2008, from Treasury Direct: http://www.treasurydirect.gov/govt/rates/pd/avg/avg.htm
+Barnes. (n.d.). Economic Indicators: Gross Domestic Product (GDP). RCetrieved November 15,
+2008, from Investopedia: http://www.investopedia.com/university/releases/gdp.asp
+M
+Budget of the United States Government. (2004). Retrieved November 15, 2008, from
+http://www.cfo.doe.gov/budget/04budget/content/appendix/hist.pdf
+i
+H
+Budget of the United States Government. (2008, January 24). Retrieved November 15, 2008,
+from GPO Access: http://www.gpoaccess.：gov/usbudget/browse.html
+Economic Statistics. (n.d.). Retrieved November 15, 2008, from The White House:
+http://www.whitehouse.gov/fsbr/es号br.htm
+Foresight 2020. (2006). The Economist , 10-15.
+众
+Frequently Asked Questions About the National Debt. (2008). Retrieved November 15, 2008,
+from The Muser: http://www.greatreality.com/DebtFAQ.htm#OweWild
+公
+Gross Domestic Product. (n.d.). Retrieved November 15, 2008, from Wikipedia:
+http://en.wikipedia.org/wiki/Gross_domestic_product
+信
+National Income and Product Accounts Table. (2008, October 30). Retrieved November 15,
+2008, from Bureau of Economic Analysis:
+http微://www.bea.gov/national/nipaweb/TableView.asp?SelectedTable=1&ViewSeries=NO
+&Java=no&Request3Place=N&3Place=N&FromView=YES&Freq=Year&FirstYear=19
+30&LastYear=2008&3Place=N&Update=Update&JavaBox=no#
+Ranson, D. (2008, May 20). You Can't Soak It Rich. Retrieved November 15, 2008, from The
+Wall Street Journal: http://online.wsj.com/article/SB121124460502305693.html
+The Debt to the Penny and Who Holds It. (2008, November 14). Retrieved November 15, 2008,
+from Treasury Direct: http://www.treasurydirect.gov/NP/BPDLogin?application=np
+United States Public Debt. (n.d.). Retrieved November 2008, 2008, from Wikipedia:
+http://en.wikipedia.org/wiki/United_States_public_debt
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 23 of 23
+Team 2159
+Welna, D. (2006, March 16). Congress Sets New Federal Debt Limit: $9 Trillion. Retrieved
+November 15, 2008, from NPR:
+http://www.npr.org/templates/story/story.php?storyId=5282521
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

@@ -1,0 +1,78 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.occam",
+  "title": "模型复杂度控制（奥卡姆剃刀）",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "模型选择准则",
+    "模型复杂度控制（奥卡姆剃刀）"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.2",
+  "aliases": [
+    "模型复杂度",
+    "奥卡姆剃刀"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "模型复杂度控制（奥卡姆剃刀）就是在保证预测效果的前提下，尽量选择简单的模型，避免过拟合。",
+    "intuition": "想象你要用一条线来拟合一些散点。如果线太弯（复杂），虽然能完美穿过每个点，但稍微来一个新点就可能偏离很远；如果线是直的（简单），虽然可能没穿过所有点，但整体趋势更稳定，对新数据也更有预测力。奥卡姆剃刀就是提醒你：如无必要，勿增实体——在模型效果差不多时，选那个更简单的。",
+    "when_to_use": "当你训练模型时发现训练误差很小但测试误差很大（过拟合），或者需要比较多个候选模型（比如不同阶数的多项式回归、不同变量个数的线性回归），就应该考虑模型复杂度控制。常见场景：回归、分类、时间序列预测等。",
+    "definition": "模型复杂度控制是指在建模过程中，通过正则化、模型选择准则（如AIC、BIC）或交叉验证等方法，在模型拟合能力与泛化能力之间取得平衡，避免选择过于复杂的模型。奥卡姆剃刀原则是其中的核心思想：在同等预测能力下，应选择最简单的模型。",
+    "math_principle": "模型复杂度通常用参数数量（k）或正则化项度量。例如，线性回归中L2正则化（岭回归）的目标函数：\n\\min_{\\beta} \\left\\{ \\sum_{i=1}^n (y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_{ij})^2 + \\lambda \\sum_{j=1}^p \\beta_j^2 \\right\\}\n其中λ控制正则化强度，λ越大，模型复杂度越低。另一种常用准则是AIC（Akaike信息准则）：\n\\text{AIC} = 2k - 2\\ln(\\hat{L})\n其中k是模型参数个数，\\hat{L}是最大似然值。AIC越小，模型越优，它在拟合优度和复杂度之间权衡。类似地，BIC（贝叶斯信息准则）为：\n\\text{BIC} = k\\ln(n) - 2\\ln(\\hat{L})\n其中n是样本量，BIC对复杂模型惩罚更重。",
+    "step_by_step": [
+      "1. 确定候选模型集合：例如，不同阶数的多项式回归、不同变量组合的线性回归、不同正则化强度的模型。",
+      "2. 对每个候选模型，计算其复杂度度量（如参数个数k）和拟合优度（如对数似然值或残差平方和）。",
+      "3. 使用模型选择准则（如AIC、BIC）或交叉验证误差来评估每个模型，准则值越小越好。",
+      "4. 选择准则值最小的模型作为最终模型。如果多个模型准则值相近，优先选择参数更少的简单模型（奥卡姆剃刀）。",
+      "5. 验证所选模型的泛化能力，例如在测试集上评估性能。"
+    ],
+    "worked_example": "假设我们有10个数据点，想用多项式回归拟合。候选模型：一次、二次、三次多项式。计算每个模型的AIC：\n- 一次多项式：k=2（截距和斜率），对数似然值ln(L) = -20，AIC = 2*2 - 2*(-20) = 4 + 40 = 44\n- 二次多项式：k=3，ln(L) = -15，AIC = 6 + 30 = 36\n- 三次多项式：k=4，ln(L) = -14，AIC = 8 + 28 = 36\n二次和三次AIC相同，根据奥卡姆剃刀，选择更简单的二次多项式。",
+    "pitfalls": [
+      "1. 模型选择准则（如AIC）假设样本量足够大，小样本时可能不准确。",
+      "2. 正则化参数λ的选择需要谨慎，通常通过交叉验证确定，否则可能过度正则化导致欠拟合。",
+      "3. 奥卡姆剃刀不是绝对的：如果简单模型预测能力明显差于复杂模型，应选择复杂模型。",
+      "4. 不同准则（AIC vs BIC）可能给出不同结果，需根据问题背景选择。"
+    ],
+    "tools": "Python中，scikit-learn库提供了正则化模型（如Ridge、Lasso）和交叉验证（GridSearchCV）。最小可运行代码：\n```python\nfrom sklearn.linear_model import Ridge\nfrom sklearn.model_selection import GridSearchCV\nimport numpy as np\n\n# 生成示例数据\nX = np.random.rand(100, 5)\ny = np.random.rand(100)\n\n# 定义模型和参数网格\nmodel = Ridge()\nparam_grid = {'alpha': [0.1, 1, 10, 100]}\n\n# 交叉验证选择最佳正则化强度\ngrid = GridSearchCV(model, param_grid, cv=5, scoring='neg_mean_squared_error')\ngrid.fit(X, y)\nprint('Best alpha:', grid.best_params_['alpha'])\n```\n对于AIC/BIC，可使用statsmodels库：\n```python\nimport statsmodels.api as sm\nX = sm.add_constant(X)  # 添加截距\nmodel = sm.OLS(y, X).fit()\nprint('AIC:', model.aic)\nprint('BIC:', model.bic)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min_{\\beta} \\left\\{ \\sum_{i=1}^n (y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_{ij})^2 + \\lambda \\sum_{j=1}^p \\beta_j^2 \\right\\}",
+      "variables": {
+        "n": "样本数量",
+        "p": "特征数量",
+        "y_i": "第i个观测的响应变量",
+        "x_{ij}": "第i个观测的第j个特征",
+        "\\beta_j": "第j个特征的回归系数",
+        "\\lambda": "正则化强度参数"
+      }
+    },
+    {
+      "latex_code": "\\text{AIC} = 2k - 2\\ln(\\hat{L})",
+      "variables": {
+        "k": "模型参数个数",
+        "\\hat{L}": "模型的最大似然值"
+      }
+    },
+    {
+      "latex_code": "\\text{BIC} = k\\ln(n) - 2\\ln(\\hat{L})",
+      "variables": {
+        "k": "模型参数个数",
+        "n": "样本量",
+        "\\hat{L}": "模型的最大似然值"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_I07"
+    ],
+    "from_papers": []
+  }
+}

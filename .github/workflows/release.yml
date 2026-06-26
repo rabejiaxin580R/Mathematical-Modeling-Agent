@@ -1,0 +1,98 @@
+name: 构建并发布安装包
+
+# 打 tag（如 v1.0.0）即触发：三平台并行构建，产物上传到 GitHub Releases。
+# 也可在 Actions 页手动触发（workflow_dispatch）只构建、不发布。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 创建 Release / 上传资产需要
+
+env:
+  PY_VERSION: "3.13.5"
+  PBS_TAG: "20250712"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+          - os: macos-latest
+            platform: macos
+          - os: ubuntu-latest
+            platform: linux
+    runs-on: ${{ matrix.os }}
+    name: 构建 ${{ matrix.platform }}
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装系统 Python（仅用于驱动构建脚本）
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # ── Windows：跑 PowerShell 打包脚本（含 Inno Setup） ──
+      - name: 安装 Inno Setup (Windows)
+        if: matrix.platform == 'windows'
+        run: choco install innosetup --no-progress -y
+        shell: pwsh
+
+      - name: 构建 (Windows)
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          ./packaging/build_windows.ps1 -PyVersion "$env:PY_VERSION" -PbsTag "$env:PBS_TAG"
+
+      # ── macOS / Linux：跑 bash 打包脚本 ──
+      - name: 构建 (macOS / Linux)
+        if: matrix.platform != 'windows'
+        shell: bash
+        run: |
+          chmod +x packaging/build_posix.sh
+          PY_VERSION="$PY_VERSION" PBS_TAG="$PBS_TAG" packaging/build_posix.sh
+
+      - name: 收集产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.platform }}
+          # zip / tar.gz / 安装程序 exe，忽略中间便携目录
+          path: |
+            packaging/dist/*.zip
+            packaging/dist/*.tar.gz
+            packaging/dist/*安装程序*.exe
+          if-no-files-found: warn
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: 下载所有平台产物
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: 发布到 Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+          body: |
+            ## 数学建模助教 ${{ github.ref_name }}
+
+            自带运行环境的桌面版，下载对应系统的包，解压/安装后双击即用，无需另装 Python。
+
+            | 系统 | 下载 |
+            |------|------|
+            | Windows | `数学建模助教-安装程序-*.exe`（图形安装）或 `*-windows-x64.zip`（免安装） |
+            | macOS | `*-macos-*.tar.gz` |
+            | Linux | `*-linux-*.tar.gz` |
+
+            首次启动会引导你连接 AI 大模型（用提供的额度，或填自己的 API Key）。

@@ -1,0 +1,76 @@
+{
+  "schema_version": 3,
+  "concept_id": "stoch.cellular",
+  "title": "元胞自动机",
+  "taxonomy_path": [
+    "常用建模方法",
+    "概率与随机模型",
+    "元胞自动机"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.3",
+  "aliases": [
+    "元胞自动机",
+    "cellular automata",
+    "CA"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "元胞自动机是一种用简单规则在网格上演化出复杂行为的模型，常用于模拟空间扩散、交通流、人群运动等动态系统。",
+    "intuition": "想象一个棋盘，每个格子（元胞）有自己的颜色（状态），比如黑色代表有树、白色代表空地。每过一秒，每个格子根据自己和邻居的颜色，按照一个简单规则改变颜色，比如“如果周围黑格子多，我就变黑”。虽然规则简单，但整个棋盘会演化出像森林火灾蔓延、雪花生长等复杂图案。",
+    "when_to_use": "当问题涉及大量个体在空间中的相互作用、局部规则导致全局模式、且个体行为随机或确定时，比如模拟交通拥堵、人群疏散、病毒传播、生态扩散等。",
+    "definition": "元胞自动机（Cellular Automaton, CA）是一个离散的动力学系统，由规则排列的元胞（cell）组成，每个元胞具有有限个状态，所有元胞按照相同的局部规则同步更新状态。",
+    "math_principle": "元胞自动机由四要素定义：\n1. 元胞空间：通常是二维网格，每个格子坐标 (i,j)。\n2. 状态集 S：每个元胞可取的状态，如 {0,1} 或 {空, 生长, 成熟}。\n3. 邻居：通常取 Moore 邻居（周围8格）或 von Neumann 邻居（上下左右4格）。\n4. 更新规则 f：根据当前元胞状态和邻居状态，决定下一时刻状态。\n数学上，设 s_{i,j}^t 为 t 时刻元胞 (i,j) 的状态，则 s_{i,j}^{t+1} = f(s_{i,j}^t, s_{i-1,j}^t, s_{i+1,j}^t, s_{i,j-1}^t, s_{i,j+1}^t, ...)。规则可以是确定性的或概率性的。",
+    "step_by_step": [
+      "1. 定义元胞空间：确定网格大小（如 100×100）和边界条件（如周期边界或固定边界）。",
+      "2. 定义状态集：列出每个元胞可能的状态，例如 {0:空, 1:生长, 2:成熟}。",
+      "3. 定义邻居类型：选择 Moore 或 von Neumann 邻居。",
+      "4. 定义更新规则：根据当前状态和邻居状态，写出下一时刻状态的函数。例如，对于森林火灾模型：若元胞是树且邻居有火，则变为火；若元胞是火，则变为灰烬；若元胞是空地，则以概率 p 生长为树。",
+      "5. 初始化：给每个元胞赋予初始状态（如随机或特定模式）。",
+      "6. 迭代模拟：按时间步同步更新所有元胞状态，记录或可视化结果。",
+      "7. 分析输出：统计全局量（如密度、聚类大小）或观察时空模式。"
+    ],
+    "worked_example": "以论文13719中的蒲公英种子扩散为例：\n- 元胞空间：二维网格，每个元胞代表一个区域。\n- 状态集：{空, 生长, 成熟}。\n- 邻居：Moore 邻居（周围8格）。\n- 规则：\n  - 空 → 生长：若邻居中有成熟元胞，则以概率 p 变为生长。\n  - 生长 → 成熟：经过固定时间步（如3步）后变为成熟。\n  - 成熟 → 空：经过固定时间步（如5步）后变为空，同时种子扩散到邻居。\n- 初始化：中心几个元胞设为成熟，其余为空。\n- 模拟：每步更新所有元胞，观察蒲公英斑块向外扩散。",
+    "pitfalls": [
+      "1. 规则设计过于简单可能导致不符合现实，需要结合领域知识调整。",
+      "2. 网格大小和边界条件会影响结果，需测试敏感性。",
+      "3. 同步更新假设所有元胞同时变化，但实际系统可能异步。",
+      "4. 参数（如概率、时间步长）需要校准，否则模拟失真。",
+      "5. 大规模网格计算量大，需优化或使用并行计算。"
+    ],
+    "tools": "常用工具：NetLogo（适合快速原型）、Python 的 `numpy` 和 `matplotlib` 手动实现。\n最小可运行代码（Python）：\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 参数\nsize = 50\np_grow = 0.1\np_fire = 0.001\n\n# 初始化：0=空, 1=树, 2=火\ngrid = np.zeros((size, size), dtype=int)\ngrid[size//2, size//2] = 2  # 中心点火\n\n# 更新规则\ndef update(grid):\n    new_grid = grid.copy()\n    for i in range(size):\n        for j in range(size):\n            if grid[i,j] == 0:\n                # 空 -> 树：概率生长\n                if np.random.rand() < p_grow:\n                    new_grid[i,j] = 1\n            elif grid[i,j] == 1:\n                # 树 -> 火：邻居有火或随机雷击\n                neighbors = grid[max(0,i-1):min(size,i+2), max(0,j-1):min(size,j+2)]\n                if np.any(neighbors == 2) or np.random.rand() < p_fire:\n                    new_grid[i,j] = 2\n            elif grid[i,j] == 2:\n                # 火 -> 空\n                new_grid[i,j] = 0\n    return new_grid\n\n# 模拟\nfor t in range(100):\n    plt.imshow(grid, cmap='viridis', vmin=0, vmax=2)\n    plt.title(f'Time step {t}')\n    plt.pause(0.1)\n    grid = update(grid)\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "s_{i,j}^{t+1} = f(s_{i,j}^t, s_{i-1,j}^t, s_{i+1,j}^t, s_{i,j-1}^t, s_{i,j+1}^t, \\ldots)",
+      "variables": {
+        "s_{i,j}^t": "t时刻元胞(i,j)的状态",
+        "f": "局部更新规则"
+      }
+    }
+  ],
+  "cases": [
+    "10174",
+    "13719",
+    "4671",
+    "6080",
+    "7054",
+    "8201"
+  ],
+  "provenance": {
+    "from_lectures": [],
+    "from_papers": [
+      "10174",
+      "13719",
+      "4671",
+      "6080",
+      "7054",
+      "8201"
+    ]
+  }
+}

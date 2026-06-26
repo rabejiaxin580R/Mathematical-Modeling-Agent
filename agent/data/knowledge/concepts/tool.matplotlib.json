@@ -1,0 +1,64 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.matplotlib",
+  "title": "Matplotlib 可视化",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "Python 数据科学栈",
+    "Matplotlib 可视化"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.1",
+  "aliases": [
+    "Matplotlib",
+    "绘图",
+    "中文字体"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "Matplotlib 是一个 Python 绘图库，能把数据变成折线图、散点图、柱状图等各种图表，让你一眼看出数据的规律。",
+    "intuition": "想象你有一堆数字，比如每天的气温。光看数字很难发现趋势，但如果你把数字画成折线图，温度高低、升降就一目了然了。Matplotlib 就是帮你做这件事的工具——它把数据点放到一张画布上，然后连成线、堆成柱、或者散成点。",
+    "when_to_use": "任何时候你想把数据可视化：数据探索（看分布、趋势）、结果展示（模型预测对比）、报告配图。在数学建模中，常用它画折线图（时间序列）、散点图（相关性）、柱状图（对比）、直方图（分布）等。",
+    "definition": "Matplotlib 是 Python 中一个用于创建静态、交互式图表的 2D 绘图库，它提供了类似 MATLAB 的绘图接口，支持多种图表类型和高度定制化。",
+    "math_principle": "Matplotlib 的核心是将数据坐标映射到像素坐标。每个轴（Axis）有一个数据范围（例如 x 从 0 到 10），对应画布上的像素范围（例如 0 到 800 像素）。映射是线性的：像素坐标 = a * 数据坐标 + b，其中 a 和 b 由轴范围决定。例如，x 轴数据范围 [0,10] 映射到像素 [100,700]，则 a = (700-100)/(10-0)=60，b=100。所有图形元素（线、点、矩形）都基于这个映射绘制。",
+    "step_by_step": [
+      "1. 导入库：import matplotlib.pyplot as plt",
+      "2. 准备数据：创建 x 和 y 列表或 NumPy 数组",
+      "3. 创建图形：plt.figure(figsize=(宽,高)) 设置画布大小",
+      "4. 选择图表类型：plt.plot(x,y) 折线图；plt.scatter(x,y) 散点图；plt.bar(x,y) 柱状图；plt.hist(data) 直方图",
+      "5. 添加细节：plt.title('标题')；plt.xlabel('x轴标签')；plt.ylabel('y轴标签')；plt.legend() 图例",
+      "6. 显示或保存：plt.show() 显示；plt.savefig('文件名.png') 保存"
+    ],
+    "worked_example": "假设你有某城市一周的日最高气温数据：周一20°C，周二22°C，周三21°C，周四25°C，周五24°C，周六26°C，周日23°C。你想画折线图展示变化趋势。\n\n代码：\nimport matplotlib.pyplot as plt\ndays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']\ntemps = [20,22,21,25,24,26,23]\nplt.figure(figsize=(8,5))\nplt.plot(days, temps, marker='o', linestyle='-', color='b', label='最高气温')\nplt.title('一周最高气温变化')\nplt.xlabel('星期')\nplt.ylabel('温度 (°C)')\nplt.legend()\nplt.grid(True)\nplt.show()\n\n结果：你会看到一条折线，从周一到周日上下波动，周四和周六温度较高，周三较低。",
+    "pitfalls": [
+      "1. 中文显示问题：默认字体不支持中文，需要设置中文字体，如 plt.rcParams['font.sans-serif'] = ['SimHei']，否则中文显示为方框。",
+      "2. 坐标轴刻度重叠：当 x 轴标签过多时，可用 plt.xticks(rotation=45) 旋转标签。",
+      "3. 图例位置不当：图例可能遮挡数据，可用 plt.legend(loc='upper left') 指定位置。",
+      "4. 颜色和样式选择：避免使用色盲不易区分的颜色，推荐使用颜色方案如 'tab10'。",
+      "5. 保存图片模糊：保存时设置 dpi，如 plt.savefig('fig.png', dpi=300)。"
+    ],
+    "tools": "Python 的 Matplotlib 库，核心模块是 pyplot。最小可运行代码：\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\nplt.plot(x, y)\nplt.title('Sine Wave')\nplt.xlabel('x')\nplt.ylabel('sin(x)')\nplt.show()"
+  },
+  "formulas": [
+    {
+      "latex_code": "p = a \\cdot d + b",
+      "variables": {
+        "p": "像素坐标",
+        "d": "数据坐标",
+        "a": "缩放因子（由轴范围决定）",
+        "b": "偏移量（由轴范围决定）"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_H03"
+    ],
+    "from_papers": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "paper_id": "3874",
+  "meta": {
+    "paper_id": "3874",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2012,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2012\\B\\3874.pdf",
+    "kind": "pdf"
+  },
+  "concepts_used": [
+    {
+      "concept_id": "pred.multireg",
+      "title": "多元回归",
+      "stage": "build",
+      "how_used": "构建多元回归模型，从多个经济与自然因素中筛选出三个显著预测变量：过去一周汽油价格变化、原油价格变化和埃克森美孚股票价格。",
+      "source_excerpt": "We constructed a multiple regression model from 2011 data and reduced it through AIC-selection, until only three significant predictor variables remained: the change in gasoline and crude oil price from the past week and the value of Exxon-Mobil stock."
+    },
+    {
+      "concept_id": "valid.aicbic",
+      "title": "AIC/BIC 准则",
+      "stage": "build",
+      "how_used": "使用AIC准则进行变量选择，从多个候选变量中逐步剔除不显著的变量，最终保留三个预测变量。",
+      "source_excerpt": "We constructed a multiple regression model from 2011 data and reduced it through AIC-selection, until only three significant predictor variables remained"
+    },
+    {
+      "concept_id": "stoch.bayes",
+      "title": "贝叶斯方法",
+      "stage": "solve",
+      "how_used": "将汽油价格变化百分比分为五个五分位数，对每个五分位数拟合多元正态分布，生成概率预测，并计算模型相对于零假设的似然比。",
+      "source_excerpt": "We split the possible percent changes in gasoline price into five quintiles, then used the 2011 training data to fit the parameters of each quintile to a multivariate normal distribution. ... we showed that our model was 1020 times more likely than the null hypothesis."
+    },
+    {
+      "concept_id": "valid.split",
+      "title": "训练集/测试集划分",
+      "stage": "evaluate",
+      "how_used": "使用2011年数据作为训练集，2012年数据作为测试集，评估模型的预测性能。",
+      "source_excerpt": "Testing the model on 2012 data, we obtained, for each week, the probabilities that the change in gas would be in each of the five quintiles."
+    },
+    {
+      "concept_id": "opt.dp",
+      "title": "动态规划",
+      "stage": "solve",
+      "how_used": "使用阈值决策策略：根据预测的价格变化概率，设定阈值来决定购买半箱油还是满箱油，并通过训练数据优化阈值。",
+      "source_excerpt": "we used the idea of thresholds: if the predicted change in price is above a certain threshold, we advise the consumer to buy more gas (a full tank instead of a half tank, or a half tank instead of nothing). We found the optimal thresholds by training on 2011 data"
+    },
+    {
+      "concept_id": "valid.metrics",
+      "title": "误差度量（R²/相对误差/RMSE）",
+      "stage": "evaluate",
+      "how_used": "通过比较实际节省与理想节省的比值来计算效率，作为模型性能的度量。",
+      "source_excerpt": "We calculated the efficiency of our strategy by comparing the resulting savings to the best possible savings."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "title": "论文整体结构（IMRaD 格式）",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：摘要、引言（背景、问题重述、假设）、模型（变量识别、预测、决策）、讨论、附录、参考文献。",
+      "source_excerpt": "The paper includes sections: Letter to the Local Newspaper, Introduction (Background, Problem Restatement, Global Assumptions), Model (Identification of Significant Variables, Price Prediction, Decision Model), Discussion, Appendices, Bibliography."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "title": "常用图表类型及选择指南",
+      "stage": "write",
+      "how_used": "使用折线图展示美国汽油消费趋势（1935-2005），并配有图标题和编号。",
+      "source_excerpt": "Figure 1: Trend of gasoline consumption in the US from 1935 to 2005"
+    }
+  ]
+}

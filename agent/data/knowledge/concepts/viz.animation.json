@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "concept_id": "viz.animation",
+  "title": "动态/动画展示",
+  "taxonomy_path": [
+    "结果可视化与解释",
+    "可视化方法",
+    "动态/动画展示"
+  ],
+  "module_id": "G",
+  "subcat_id": "G.1",
+  "aliases": [
+    "动画",
+    "动态展示"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "动态/动画展示就是把模型随时间变化的过程变成一段视频，让你亲眼看到数据如何演变。",
+    "intuition": "想象你在看一部天气预报的动画，云图慢慢移动，雨区逐渐扩大。数学建模中的动画展示就像这样：把模型算出的每一时刻结果（比如无人机的位置、传染病人数）连起来播放，让你直观感受系统是怎么变化的，而不是只看一张静态图。",
+    "when_to_use": "当你的模型涉及时间变化（如传染病传播、物体运动、优化迭代过程）时，用动画展示比静态图更能揭示动态规律。特别适合需要展示路径、波动、收敛过程等场景。",
+    "definition": "动态/动画展示是一种通过逐帧更新图形来呈现模型状态随时间演化的可视化方法。它将时间离散化为一系列帧，每帧对应一个时间点的状态，连续播放形成动画。",
+    "math_principle": "设模型状态由函数 $\\mathbf{x}(t)$ 描述，时间区间 $[0,T]$ 离散为 $N$ 个时间步 $t_k = k \\Delta t$，其中 $\\Delta t = T/N$。每一帧对应 $t_k$ 时刻的状态 $\\mathbf{x}(t_k)$。若模型由微分方程 $\\frac{d\\mathbf{x}}{dt} = f(\\mathbf{x}, t)$ 控制，则数值求解（如欧拉法：$\\mathbf{x}_{k+1} = \\mathbf{x}_k + \\Delta t \\cdot f(\\mathbf{x}_k, t_k)$）得到各帧状态。动画通过快速连续显示这些帧（通常每秒24-30帧）产生平滑运动效果。",
+    "step_by_step": [
+      "1. 确定要展示的动态变量（如无人机位置、人口数量）。",
+      "2. 将时间离散化，设定总时间T和时间步长Δt，计算每个时间步的状态。",
+      "3. 初始化图形窗口，设置坐标轴、标题等。",
+      "4. 编写更新函数，该函数在每个时间步更新图形数据（如点的位置、线条的延伸）。",
+      "5. 使用动画库（如Matplotlib的FuncAnimation）创建动画对象，传入更新函数和帧数。",
+      "6. 保存为视频文件（如MP4）或直接显示。"
+    ],
+    "worked_example": "以无人机运动为例：无人机在二维平面运动，位置由微分方程 $\\frac{dx}{dt}=v_x, \\frac{dy}{dt}=v_y$ 描述，初始位置(0,0)，速度(1,0.5)。时间T=10秒，Δt=0.1秒，共100帧。使用欧拉法计算每帧位置：$x_{k+1}=x_k+0.1$, $y_{k+1}=y_k+0.05$。在Matplotlib中，初始化散点图，更新函数将散点位置设为当前帧的(x,y)，并添加轨迹线。动画显示无人机沿直线匀速运动。",
+    "pitfalls": [
+      "1. 帧数过多导致动画文件过大或播放卡顿，需平衡时间步长和性能。",
+      "2. 更新函数中不要重复创建图形对象，应只更新数据，否则效率极低。",
+      "3. 动画保存为视频时需安装合适的编码器（如ffmpeg）。",
+      "4. 对于复杂模型，实时计算可能较慢，可先计算所有帧数据再动画化。"
+    ],
+    "tools": "Python的Matplotlib库，主要使用`matplotlib.animation.FuncAnimation`。最小可运行代码：\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.animation import FuncAnimation\n\n# 数据：无人机位置随时间变化\nt = np.linspace(0, 10, 100)\nx = t\ny = 0.5 * t\n\nfig, ax = plt.subplots()\nax.set_xlim(0, 10)\nax.set_ylim(0, 5)\npoint, = ax.plot([], [], 'ro')\n\ndef update(frame):\n    point.set_data(x[frame], y[frame])\n    return point,\n\nani = FuncAnimation(fig, update, frames=len(t), interval=50)\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\mathbf{x}_{k+1} = \\mathbf{x}_k + \\Delta t \\cdot f(\\mathbf{x}_k, t_k)",
+      "variables": {
+        "\\mathbf{x}_k": "第k个时间步的状态向量",
+        "\\Delta t": "时间步长",
+        "f(\\mathbf{x}_k, t_k)": "状态变化率函数"
+      }
+    }
+  ],
+  "cases": [
+    "8206"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_G04"
+    ],
+    "from_papers": [
+      "8206"
+    ]
+  }
+}

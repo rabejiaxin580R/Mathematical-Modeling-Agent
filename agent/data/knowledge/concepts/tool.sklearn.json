@@ -1,0 +1,87 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.sklearn",
+  "title": "Scikit-learn 建模",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "Python 数据科学栈",
+    "Scikit-learn 建模"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.1",
+  "aliases": [
+    "sklearn",
+    "scikit-learn",
+    "fit predict"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "Scikit-learn 建模就是用 Python 里一个统一的工具箱，通过几行代码就能训练和预测各种机器学习模型。",
+    "intuition": "想象你有一个万能遥控器，上面有各种按钮（模型），每个按钮对应一种功能（算法）。你只需要按一下“训练”按钮（fit），遥控器就会学习你的习惯，然后按“预测”按钮（predict），它就能告诉你下一步该做什么。Scikit-learn 就是这样一个遥控器，让你不用关心内部电路（数学原理），就能快速使用机器学习。",
+    "when_to_use": "当你需要快速实现分类、回归、聚类、降维等机器学习任务，并且希望代码简洁、接口统一时，就应该使用 Scikit-learn。它特别适合数据探索、基线模型构建和教学演示。",
+    "definition": "Scikit-learn 是一个基于 Python 的机器学习库，提供统一的 API 接口（fit、predict、transform 等）来训练和评估多种机器学习模型，包括监督学习（分类、回归）和无监督学习（聚类、降维）。",
+    "math_principle": "Scikit-learn 本身不实现数学原理，而是封装了各种算法的实现。例如：\n- 线性回归：最小化均方误差，目标函数为 $\\min_{w} \\|Xw - y\\|_2^2$，解析解 $w = (X^T X)^{-1} X^T y$。\n- 逻辑回归：使用逻辑函数 $\\sigma(z) = \\frac{1}{1+e^{-z}}$，最大化对数似然 $\\ell(w) = \\sum_i [y_i \\log(\\sigma(x_i^T w)) + (1-y_i) \\log(1-\\sigma(x_i^T w))]$。\n- SVM：寻找最大间隔超平面，通过拉格朗日对偶求解。\n用户无需手动推导，只需调用 fit 即可自动完成优化。",
+    "step_by_step": [
+      "1. 导入所需库：from sklearn import ...",
+      "2. 准备数据：将特征和标签分别存入 X 和 y（NumPy 数组或 Pandas DataFrame）。",
+      "3. 划分数据集：使用 train_test_split 将数据分为训练集和测试集。",
+      "4. 选择模型：实例化一个模型对象，如 model = LinearRegression()。",
+      "5. 训练模型：调用 model.fit(X_train, y_train)。",
+      "6. 预测：调用 model.predict(X_test) 得到预测结果。",
+      "7. 评估：使用 metrics 模块计算准确率、均方误差等指标。"
+    ],
+    "worked_example": "以波士顿房价数据集为例（经典回归问题）：\n```python\nfrom sklearn.datasets import load_boston\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.metrics import mean_squared_error\n\n# 加载数据\nboston = load_boston()\nX, y = boston.data, boston.target\n\n# 划分训练集和测试集\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# 创建线性回归模型\nmodel = LinearRegression()\n\n# 训练模型\nmodel.fit(X_train, y_train)\n\n# 预测\ny_pred = model.predict(X_test)\n\n# 评估\nmse = mean_squared_error(y_test, y_pred)\nprint(f\"均方误差: {mse:.2f}\")\n```\n输出：均方误差: 24.29（数值可能因版本不同略有差异）",
+    "pitfalls": [
+      "1. 数据预处理：Scikit-learn 要求输入数据为数值型，缺失值需提前处理，特征需缩放（如标准化）以提高某些模型性能。",
+      "2. 过拟合：模型可能过于复杂，导致在训练集上表现好但测试集差，需使用正则化或交叉验证。",
+      "3. 类别特征：Scikit-learn 不支持直接处理类别特征，需进行独热编码或标签编码。",
+      "4. 模型选择：不同模型适用于不同问题，需根据数据特点选择，如线性模型假设特征与目标线性相关。"
+    ],
+    "tools": "Python 的 Scikit-learn 库，主要模块：sklearn.linear_model, sklearn.svm, sklearn.ensemble, sklearn.model_selection, sklearn.metrics。最小可运行代码：\n```python\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.datasets import make_regression\nX, y = make_regression(n_samples=100, n_features=1, noise=0.1)\nmodel = LinearRegression()\nmodel.fit(X, y)\nprint(model.predict([[0.5]]))\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min_{w} \\|Xw - y\\|_2^2",
+      "variables": {
+        "X": "特征矩阵",
+        "w": "权重向量",
+        "y": "目标向量"
+      }
+    },
+    {
+      "latex_code": "w = (X^T X)^{-1} X^T y",
+      "variables": {
+        "X": "特征矩阵",
+        "w": "权重向量",
+        "y": "目标向量"
+      }
+    },
+    {
+      "latex_code": "\\sigma(z) = \\frac{1}{1+e^{-z}}",
+      "variables": {
+        "z": "线性组合值",
+        "\\sigma": "逻辑函数"
+      }
+    },
+    {
+      "latex_code": "\\ell(w) = \\sum_i [y_i \\log(\\sigma(x_i^T w)) + (1-y_i) \\log(1-\\sigma(x_i^T w))]",
+      "variables": {
+        "w": "权重向量",
+        "x_i": "第 i 个样本特征",
+        "y_i": "第 i 个样本标签",
+        "\\sigma": "逻辑函数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_H04"
+    ],
+    "from_papers": []
+  }
+}

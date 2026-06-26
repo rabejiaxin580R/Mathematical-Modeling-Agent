@@ -1,0 +1,137 @@
+{
+  "schema_version": 3,
+  "concept_id": "ts.expsmooth",
+  "title": "指数平滑法",
+  "taxonomy_path": [
+    "常用建模方法",
+    "时间序列分析",
+    "指数平滑法"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.2",
+  "aliases": [
+    "指数平滑",
+    "Holt",
+    "Holt-Winters",
+    "二次指数平滑"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "指数平滑法是一种给近期数据更高权重的预测方法，权重随时间指数衰减，适合做短期预测。",
+    "intuition": "想象你每天记录体重，今天称的体重比昨天的更值得参考，而昨天的又比前天的更值得参考。指数平滑法就像用一把“记忆衰减”的尺子，越近的数据权重越大，越远的数据权重越小，而且权重是按指数规律衰减的。这样预测明天的体重时，主要参考最近几天的数据，但也会稍微考虑更早的信息。",
+    "when_to_use": "当数据是时间序列，且没有明显的长期趋势或季节性（一次指数平滑），或者有趋势但无季节性（二次指数平滑），或者既有趋势又有季节性（三次指数平滑）时，可以考虑使用指数平滑法。特别适合短期预测，比如未来1-2期的预测。",
+    "definition": "指数平滑法是一种时间序列预测方法，它通过计算加权平均值来平滑数据，其中权重随着时间间隔的增加呈指数衰减。根据数据特征，有一次、二次（Holt法）和三次（Holt-Winters法）指数平滑。",
+    "math_principle": "一次指数平滑：\n平滑值：\\(S_t = \\alpha x_t + (1-\\alpha)S_{t-1}\\)，其中 \\(0<\\alpha<1\\) 为平滑系数。\n预测：\\(\\hat{x}_{t+1} = S_t\\)。\n\n二次指数平滑（Holt法）：\n水平：\\(l_t = \\alpha x_t + (1-\\alpha)(l_{t-1}+b_{t-1})\\)\n趋势：\\(b_t = \\beta (l_t - l_{t-1}) + (1-\\beta)b_{t-1}\\)\n预测：\\(\\hat{x}_{t+k} = l_t + k b_t\\)\n\n三次指数平滑（Holt-Winters法）：\n水平：\\(l_t = \\alpha (x_t - s_{t-m}) + (1-\\alpha)(l_{t-1}+b_{t-1})\\)\n趋势：\\(b_t = \\beta (l_t - l_{t-1}) + (1-\\beta)b_{t-1}\\)\n季节：\\(s_t = \\gamma (x_t - l_{t-1} - b_{t-1}) + (1-\\gamma)s_{t-m}\\)\n预测：\\(\\hat{x}_{t+k} = l_t + k b_t + s_{t+k-m}\\)\n其中 \\(m\\) 为季节周期长度。",
+    "step_by_step": [
+      "1. 收集时间序列数据，确保按时间顺序排列。",
+      "2. 根据数据特征选择模型：无趋势无季节用一次，有趋势无季节用二次，有趋势有季节用三次。",
+      "3. 初始化平滑值：一次指数平滑通常取第一个观测值或前几个的平均值；二次和三次需要初始化水平和趋势（如用前两个点估计），季节分量可用前一个周期数据。",
+      "4. 选择平滑系数 α、β、γ（通常通过最小化预测误差如MSE来优化，或凭经验取0.1-0.3）。",
+      "5. 递推计算每个时间点的平滑值、趋势和季节分量。",
+      "6. 使用最新平滑值进行预测：一次直接预测下一期；二次预测未来k期；三次预测未来k期并加上季节分量。",
+      "7. 评估预测效果（如计算MAPE、RMSE），必要时调整平滑系数。"
+    ],
+    "worked_example": "假设某商品月销量数据：1月100，2月120，3月130，4月140。用一次指数平滑预测5月销量，取α=0.3。\n初始化S1 = x1 = 100。\nS2 = 0.3*120 + 0.7*100 = 106\nS3 = 0.3*130 + 0.7*106 = 113.2\nS4 = 0.3*140 + 0.7*113.2 = 121.24\n预测5月销量：x̂5 = S4 = 121.24。",
+    "pitfalls": [
+      "平滑系数α的选择很敏感，α过大模型反应快但可能过拟合噪声，α过小模型平滑但滞后。",
+      "指数平滑法假设数据模式（趋势、季节）是稳定的，如果模式突然变化，预测会不准确。",
+      "对于长期预测，误差会累积，因此只适合短期预测。",
+      "初始值的设定对早期预测影响较大，尤其是数据量少时。"
+    ],
+    "tools": "Python中可使用statsmodels库的SimpleExpSmoothing, Holt, HoltWinters。\n代码示例：\n```python\nimport pandas as pd\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing, Holt, ExponentialSmoothing\n\n# 一次指数平滑\ndata = [100, 120, 130, 140]\nmodel = SimpleExpSmoothing(data).fit(smoothing_level=0.3, optimized=False)\npred = model.forecast(1)\nprint(pred)  # 预测下一期\n\n# 二次指数平滑（Holt）\nmodel2 = Holt(data).fit(smoothing_level=0.3, smoothing_trend=0.1)\npred2 = model2.forecast(2)\nprint(pred2)\n\n# 三次指数平滑（Holt-Winters）\n# 假设有季节周期，例如季度数据周期为4\nmodel3 = ExponentialSmoothing(data, trend='add', seasonal='add', seasonal_periods=4).fit()\npred3 = model3.forecast(1)\nprint(pred3)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "S_t = \\alpha x_t + (1-\\alpha)S_{t-1}",
+      "variables": {
+        "S_t": "t时刻的平滑值",
+        "x_t": "t时刻的实际观测值",
+        "α": "平滑系数，0<α<1"
+      }
+    },
+    {
+      "latex_code": "\\hat{x}_{t+1} = S_t",
+      "variables": {
+        "\\hat{x}_{t+1}": "t+1时刻的预测值",
+        "S_t": "t时刻的平滑值"
+      }
+    },
+    {
+      "latex_code": "l_t = \\alpha x_t + (1-\\alpha)(l_{t-1}+b_{t-1})",
+      "variables": {
+        "l_t": "t时刻的水平分量",
+        "x_t": "t时刻的实际值",
+        "b_t": "t时刻的趋势分量",
+        "α": "水平平滑系数"
+      }
+    },
+    {
+      "latex_code": "b_t = \\beta (l_t - l_{t-1}) + (1-\\beta)b_{t-1}",
+      "variables": {
+        "b_t": "t时刻的趋势分量",
+        "l_t": "t时刻的水平分量",
+        "β": "趋势平滑系数"
+      }
+    },
+    {
+      "latex_code": "\\hat{x}_{t+k} = l_t + k b_t",
+      "variables": {
+        "\\hat{x}_{t+k}": "t+k时刻的预测值",
+        "l_t": "t时刻的水平分量",
+        "b_t": "t时刻的趋势分量",
+        "k": "预测步长"
+      }
+    },
+    {
+      "latex_code": "l_t = \\alpha (x_t - s_{t-m}) + (1-\\alpha)(l_{t-1}+b_{t-1})",
+      "variables": {
+        "l_t": "t时刻的水平分量",
+        "x_t": "t时刻的实际值",
+        "s_t": "t时刻的季节分量",
+        "m": "季节周期长度",
+        "α": "水平平滑系数"
+      }
+    },
+    {
+      "latex_code": "b_t = \\beta (l_t - l_{t-1}) + (1-\\beta)b_{t-1}",
+      "variables": {
+        "b_t": "t时刻的趋势分量",
+        "l_t": "t时刻的水平分量",
+        "β": "趋势平滑系数"
+      }
+    },
+    {
+      "latex_code": "s_t = \\gamma (x_t - l_{t-1} - b_{t-1}) + (1-\\gamma)s_{t-m}",
+      "variables": {
+        "s_t": "t时刻的季节分量",
+        "x_t": "t时刻的实际值",
+        "l_t": "t时刻的水平分量",
+        "b_t": "t时刻的趋势分量",
+        "γ": "季节平滑系数",
+        "m": "季节周期长度"
+      }
+    },
+    {
+      "latex_code": "\\hat{x}_{t+k} = l_t + k b_t + s_{t+k-m}",
+      "variables": {
+        "\\hat{x}_{t+k}": "t+k时刻的预测值",
+        "l_t": "t时刻的水平分量",
+        "b_t": "t时刻的趋势分量",
+        "s_{t+k-m}": "对应季节的季节分量",
+        "m": "季节周期长度"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C07"
+    ],
+    "from_papers": []
+  }
+}

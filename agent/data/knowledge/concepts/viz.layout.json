@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "concept_id": "viz.layout",
+  "title": "多图组合排版",
+  "taxonomy_path": [
+    "结果可视化与解释",
+    "可视化方法",
+    "多图组合排版"
+  ],
+  "module_id": "G",
+  "subcat_id": "G.1",
+  "aliases": [
+    "子图布局",
+    "组合排版",
+    "配色"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder",
+    "writer"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "多图组合排版就是在一张大画布上整齐地摆放多张小图，让数据对比更清晰、展示更专业。",
+    "intuition": "想象你要展示四个季节的气温变化：如果分别画四张图贴在墙上，别人要来回对比很麻烦。但如果你把四张图排成2×2的网格，共用同一个横轴（月份）和纵轴（温度），颜色统一，图例放在右上角，一眼就能看出春夏秋冬的差异。这就是多图组合排版——把多个相关图表组织成一个整体，提升信息传达效率。",
+    "when_to_use": "当你需要展示多个相关子图（如不同模型的结果对比、不同时间段的趋势、多变量分布）时，就应该考虑多图组合排版。典型场景包括：论文中并列展示多个实验结果、报告中对比不同地区的数据、仪表板中整合多个指标。",
+    "definition": "多图组合排版是指在一张画布上通过网格、非对称或嵌套布局排列多个子图，并统一配色、图例和坐标轴，以清晰、美观地呈现多维度数据或模型结果的可视化方法。",
+    "math_principle": "多图组合排版不涉及复杂数学推导，其核心是几何布局和视觉比例。布局由子图的行数（nrows）、列数（ncols）和画布尺寸（figsize）决定。每个子图的宽度约为 figsize[0]/ncols，高度约为 figsize[1]/nrows。为保持可读性，建议每个子图宽度4-6英寸、高度3-4英寸。共享坐标轴时，通过 sharex 和 sharey 参数使子图对齐，减少冗余标签。",
+    "step_by_step": [
+      "1. 确定子图数量和排列方式：根据数据维度选择等分网格（如2×2）、非对称布局（如 gridspec）或嵌套布局。",
+      "2. 创建画布和子图：使用 plt.subplots(nrows, ncols, figsize=(width, height), sharex=True, sharey=True) 生成子图对象。",
+      "3. 在每个子图上绘制数据：通过 ax.plot(), ax.scatter() 等函数填充内容。",
+      "4. 统一配色：使用一致的色板（如 seaborn.color_palette()），避免颜色冲突。",
+      "5. 添加图例：将图例放在统一位置（如 'upper right'），或使用 fig.legend() 全局图例。",
+      "6. 调整布局：使用 plt.tight_layout() 或 subplots_adjust() 防止重叠。",
+      "7. 添加全局标签：通过 fig.suptitle() 添加总标题，通过 fig.text() 添加共享轴标签。"
+    ],
+    "worked_example": "假设我们要展示四个城市（北京、上海、广州、成都）2023年每月平均气温。数据如下：北京 = [2,5,10,16,22,27,29,28,23,16,8,3]，上海 = [5,7,12,18,24,28,31,30,26,20,13,7]，广州 = [14,15,19,23,27,30,32,32,29,25,20,16]，成都 = [6,9,14,19,24,27,29,28,24,18,12,7]。使用2×2网格，共享x轴（月份）和y轴（温度），统一使用蓝色系色板，图例放在右上角。代码见 tools 部分。",
+    "pitfalls": [
+      "1. 子图过多导致每个子图太小，失去可读性：建议每行不超过4个子图，总子图数不超过12个。",
+      "2. 忽略共享坐标轴：不共享坐标轴会导致子图之间无法直接对比，且浪费空间。",
+      "3. 颜色冲突：使用过多鲜艳颜色或相近颜色，造成视觉混乱。应使用专业调色板（如 ColorBrewer）。",
+      "4. 图例重复：每个子图单独添加图例会冗余，应使用全局图例。",
+      "5. 布局重叠：未使用 tight_layout() 导致标签或标题重叠。"
+    ],
+    "tools": "Python 的 Matplotlib 库，核心函数为 plt.subplots()。Seaborn 库可辅助配色。最小可运行代码：\n```python\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# 数据\ncities = ['Beijing', 'Shanghai', 'Guangzhou', 'Chengdu']\ndata = [\n    [2,5,10,16,22,27,29,28,23,16,8,3],\n    [5,7,12,18,24,28,31,30,26,20,13,7],\n    [14,15,19,23,27,30,32,32,29,25,20,16],\n    [6,9,14,19,24,27,29,28,24,18,12,7]\n]\nmonths = np.arange(1,13)\n\n# 创建2x2子图，共享x和y轴\nfig, axes = plt.subplots(2, 2, figsize=(10, 8), sharex=True, sharey=True)\ncolors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']  # 统一色板\n\nfor ax, city, temp, color in zip(axes.flatten(), cities, data, colors):\n    ax.plot(months, temp, color=color, marker='o', label=city)\n    ax.set_title(city)\n    ax.legend(loc='upper right')\n\nfig.suptitle('Monthly Average Temperature in 2023')\nfig.text(0.5, 0.04, 'Month', ha='center')\nfig.text(0.04, 0.5, 'Temperature (°C)', va='center', rotation='vertical')\nplt.tight_layout()\nplt.show()\n```"
+  },
+  "formulas": [],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_G05"
+    ],
+    "from_papers": []
+  }
+}

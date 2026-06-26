@@ -1,0 +1,97 @@
+{
+  "schema_version": 3,
+  "concept_id": "prep.missing",
+  "title": "缺失值处理",
+  "taxonomy_path": [
+    "数据预处理与统计分析",
+    "数据预处理",
+    "缺失值处理"
+  ],
+  "module_id": "E",
+  "subcat_id": "E.3",
+  "aliases": [
+    "缺失值",
+    "插补",
+    "MICE",
+    "多重插补"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "缺失值处理就是当数据表格里有些格子是空的时，我们决定是直接删掉整行，还是用一些聪明的方法把空填上，让数据变完整。",
+    "intuition": "想象你有一本同学录，有些人的电话号码没写。如果同学录很厚，你可以直接撕掉那几页；但如果同学录很薄，你就得想办法从其他信息（比如住址）推测电话号码。缺失值处理就是做这个决定：数据多就删，数据少就填。",
+    "when_to_use": "任何时候你拿到数据，发现有些单元格是空的（NaN、null、空白），就需要处理。常见于问卷调查、传感器记录、数据库合并等场景。",
+    "definition": "缺失值处理是指对数据集中因各种原因未记录或丢失的数值进行删除或填充的操作，目的是使数据完整可用，避免影响后续分析。",
+    "math_principle": "删除法直接移除缺失样本；填充法用统计量或模型估计缺失值。常用填充方法：均值填充 $x_{\\text{missing}} = \\frac{1}{n}\\sum_{i=1}^{n} x_i$；中位数填充 $x_{\\text{missing}} = \\text{median}(x)$；线性插值 $x_t = \\frac{x_{t-1} + x_{t+1}}{2}$（时间序列）；回归插补：用其他变量建立线性回归模型 $y = \\beta_0 + \\beta_1 x_1 + \\cdots + \\beta_k x_k$ 预测缺失值。",
+    "step_by_step": [
+      "1. 识别缺失值：检查数据集中哪些位置是空值（NaN、null等）。",
+      "2. 分析缺失模式：统计每个变量缺失比例，判断是随机缺失还是系统缺失。",
+      "3. 决定策略：如果缺失比例小（<5%）且数据量大，考虑删除；否则考虑填充。",
+      "4. 选择填充方法：数值型数据可用均值、中位数、线性插值；分类型数据可用众数；也可用回归或机器学习模型。",
+      "5. 执行填充：用选定的方法计算填充值并替换缺失位置。",
+      "6. 验证效果：检查填充后数据分布是否合理，必要时对比填充前后的统计量。"
+    ],
+    "worked_example": "假设有一组飞行器轨迹数据，时间间隔0.16秒，位置数据如下：t=1: 10.0, t=2: 10.2, t=3: 缺失, t=4: 10.6, t=5: 10.8。由于时间间隔短，运动连续，采用线性插值：t=3位置 = (10.2 + 10.6)/2 = 10.4。填充后序列为10.0, 10.2, 10.4, 10.6, 10.8。",
+    "pitfalls": [
+      "1. 删除过多样本会导致样本量不足，统计检验失效。",
+      "2. 均值填充会降低数据方差，扭曲变量间关系。",
+      "3. 线性插值假设数据线性变化，对非线性数据可能引入偏差。",
+      "4. 回归插补可能过度拟合，且需要其他变量完整。",
+      "5. 填充后应标记哪些值是填充的，避免当作真实值分析。"
+    ],
+    "tools": "Python pandas 库：`df.dropna()` 删除缺失行；`df.fillna(value)` 填充固定值；`df.interpolate()` 线性插值。scikit-learn 的 `SimpleImputer` 可进行均值、中位数、众数填充。示例代码：\n```python\nimport pandas as pd\nfrom sklearn.impute import SimpleImputer\n\ndf = pd.DataFrame({'A': [1, 2, None, 4], 'B': [5, None, 7, 8]})\n# 删除缺失行\ndf_drop = df.dropna()\n# 均值填充\nimputer = SimpleImputer(strategy='mean')\ndf_filled = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)\n# 线性插值\ndf_interp = df.interpolate()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "x_{\\text{missing}} = \\frac{1}{n}\\sum_{i=1}^{n} x_i",
+      "variables": {
+        "x_{\\text{missing}}": "缺失值的填充值",
+        "x_i": "该变量所有已知观测值",
+        "n": "已知观测值的个数"
+      }
+    },
+    {
+      "latex_code": "x_t = \\frac{x_{t-1} + x_{t+1}}{2}",
+      "variables": {
+        "x_t": "t时刻的缺失值",
+        "x_{t-1}": "t-1时刻的观测值",
+        "x_{t+1}": "t+1时刻的观测值"
+      }
+    },
+    {
+      "latex_code": "y = \\beta_0 + \\beta_1 x_1 + \\cdots + \\beta_k x_k",
+      "variables": {
+        "y": "缺失的目标变量",
+        "x_1, \\ldots, x_k": "用于预测的其他变量",
+        "\\beta_0, \\ldots, \\beta_k": "回归系数"
+      }
+    }
+  ],
+  "cases": [
+    "13719",
+    "8554",
+    "8700",
+    "8744",
+    "8992",
+    "9869"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec004_011_02",
+      "lec004_012_01",
+      "lec005_011_01",
+      "lec006_011_01"
+    ],
+    "from_papers": [
+      "13719",
+      "8554",
+      "8700",
+      "8744",
+      "8992",
+      "9869"
+    ]
+  }
+}

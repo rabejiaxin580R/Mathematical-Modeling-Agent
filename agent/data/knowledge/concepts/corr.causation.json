@@ -1,0 +1,80 @@
+{
+  "schema_version": 3,
+  "concept_id": "corr.causation",
+  "title": "相关性与因果性的区别",
+  "taxonomy_path": [
+    "数据预处理与统计分析",
+    "相关性分析",
+    "相关性与因果性的区别"
+  ],
+  "module_id": "E",
+  "subcat_id": "E.1",
+  "aliases": [
+    "相关不等于因果",
+    "因果推断"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "modeler",
+    "writer"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "相关性和因果性就像“一起出现”和“因为所以”的区别：冰淇淋销量和溺水人数相关，但吃冰淇淋不会导致溺水，真正的原因是夏天高温。",
+    "intuition": "想象你看到两个现象总是同时发生：比如公鸡打鸣和太阳升起。它们高度相关，但公鸡打鸣并不会导致太阳升起，真正的原因是地球自转。相关性只是告诉我们两个变量有某种联系，而因果性意味着一个变量直接引起另一个变量的变化。混淆它们会导致错误决策，比如认为吃冰淇淋导致溺水而禁止冰淇淋。",
+    "when_to_use": "当你分析数据发现两个变量有显著相关性时，需要警惕是否真的存在因果关系。在数学建模中，如果题目要求解释现象背后的原因、预测干预效果或提出政策建议，就必须区分相关与因果。常见信号：数据中存在混杂因素（如时间、季节）、反向因果可能（如收入与健康）、或者需要从观察数据中推断因果。",
+    "definition": "相关性（Correlation）是指两个变量之间存在的某种统计关联，通常用相关系数度量，但不意味着一个变量导致另一个变量。因果性（Causality）是指一个变量的变化直接引起另一个变量的变化，需要满足三个条件：时间先后、相关性和排除其他解释。",
+    "math_principle": "相关性通常用皮尔逊相关系数 r 衡量：\n$$ r = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^n (x_i - \\bar{x})^2 \\sum_{i=1}^n (y_i - \\bar{y})^2}} $$\n其中 r 介于 -1 和 1 之间，绝对值越大表示线性相关越强。\n因果性需要更严格的推断，如随机对照试验（RCT）或因果推断方法。Granger因果检验是一种基于时间序列的方法：检验X的滞后项是否有助于预测Y，若显著则称X是Y的Granger原因。其基本模型为：\n$$ Y_t = \\alpha + \\sum_{i=1}^p \\beta_i Y_{t-i} + \\sum_{i=1}^p \\gamma_i X_{t-i} + \\varepsilon_t $$\n检验原假设 H0: γ1=γ2=...=γp=0，若拒绝则X Granger引起Y。注意Granger因果并非真正因果，仅表示预测能力。",
+    "step_by_step": [
+      "1. 计算相关系数：使用皮尔逊或斯皮尔曼相关系数，判断变量间是否存在线性或单调相关。",
+      "2. 绘制散点图：直观观察关系形态，识别异常点或非线性模式。",
+      "3. 考虑混杂因素：列出可能同时影响两个变量的第三方变量（如时间、季节、年龄等）。",
+      "4. 进行偏相关分析：控制潜在混杂变量后，重新计算相关系数。",
+      "5. 若为时间序列数据，可进行Granger因果检验：确定滞后阶数，检验X的滞后项是否显著改善Y的预测。",
+      "6. 若可能，使用因果推断方法：如工具变量、双重差分（DID）、倾向得分匹配等，但需满足相应假设。",
+      "7. 结论：基于以上分析，谨慎表述相关性与因果性，避免过度推断。"
+    ],
+    "worked_example": "假设我们研究冰淇淋销量（X）与溺水人数（Y）的关系。收集夏季每日数据，计算得r=0.9，高度正相关。但常识告诉我们，吃冰淇淋不会导致溺水。考虑混杂因素：温度（Z）。温度升高导致冰淇淋销量增加，同时也导致更多人游泳，从而溺水人数上升。控制温度后，偏相关系数接近0。因此，X和Y是相关而非因果。若用Granger因果检验，可能发现X的滞后项对Y无预测能力，进一步支持非因果。",
+    "pitfalls": [
+      "1. 混淆相关与因果：最常见错误，如认为“喝咖啡的人寿命更长”就推荐喝咖啡，忽略健康意识等混杂因素。",
+      "2. 忽略混杂因素：未考虑第三方变量导致虚假相关。",
+      "3. 反向因果：如“收入高的人更健康”可能是健康好的人收入更高。",
+      "4. 样本选择偏差：只选取特定子集导致相关关系扭曲。",
+      "5. 过度依赖Granger因果：Granger因果仅表示预测关系，并非真正因果，且对滞后阶数敏感。",
+      "6. 忽略非线性关系：皮尔逊相关系数只度量线性相关，非线性相关可能被低估。"
+    ],
+    "tools": "Python中常用库：scipy.stats.pearsonr 计算相关系数；statsmodels.tsa.stattools.grangercausalitytests 进行Granger因果检验。\n最小可运行代码：\n```python\nimport numpy as np\nfrom scipy.stats import pearsonr\nfrom statsmodels.tsa.stattools import grangercausalitytests\n\n# 示例数据：冰淇淋销量和溺水人数\nX = np.array([100, 120, 150, 180, 200, 220, 250, 280, 300, 320])\nY = np.array([5, 7, 10, 13, 15, 18, 22, 25, 28, 30])\n\n# 计算相关系数\nr, p = pearsonr(X, Y)\nprint(f\"皮尔逊相关系数: {r:.3f}, p值: {p:.3f}\")\n\n# Granger因果检验（需要时间序列数据）\ndata = np.column_stack([Y, X])  # Y为因变量，X为自变量\ngc_result = grangercausalitytests(data, maxlag=2, verbose=False)\nfor lag, result in gc_result.items():\n    print(f\"滞后{lag}阶: F统计量={result[0]['ssr_ftest'][0]:.3f}, p值={result[0]['ssr_ftest'][1]:.3f}\")\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "r = \\frac{\\sum_{i=1}^n (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^n (x_i - \\bar{x})^2 \\sum_{i=1}^n (y_i - \\bar{y})^2}}",
+      "variables": {
+        "r": "皮尔逊相关系数",
+        "x_i": "变量X的第i个观测值",
+        "y_i": "变量Y的第i个观测值",
+        "\\bar{x}": "X的均值",
+        "\\bar{y}": "Y的均值",
+        "n": "样本量"
+      }
+    },
+    {
+      "latex_code": "Y_t = \\alpha + \\sum_{i=1}^p \\beta_i Y_{t-i} + \\sum_{i=1}^p \\gamma_i X_{t-i} + \\varepsilon_t",
+      "variables": {
+        "Y_t": "因变量在时间t的值",
+        "\\alpha": "截距项",
+        "\\beta_i": "Y自身滞后项的系数",
+        "\\gamma_i": "X滞后项的系数",
+        "X_{t-i}": "X在时间t-i的值",
+        "\\varepsilon_t": "误差项",
+        "p": "滞后阶数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_E03"
+    ],
+    "from_papers": []
+  }
+}

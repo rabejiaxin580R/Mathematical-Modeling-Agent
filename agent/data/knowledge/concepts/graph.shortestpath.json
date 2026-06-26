@@ -1,0 +1,104 @@
+{
+  "schema_version": 3,
+  "concept_id": "graph.shortestpath",
+  "title": "最短路径算法（Dijkstra、Floyd）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "图论与网络模型",
+    "最短路径算法（Dijkstra、Floyd）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.4",
+  "aliases": [
+    "最短路径",
+    "Dijkstra",
+    "Floyd"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "最短路径算法帮你在一个网络（比如地图、交通网）中找到从起点到终点的最短路线，就像导航软件规划最快到达的路径一样。",
+    "intuition": "想象你在一个陌生的城市，手里有一张地图，上面标有各个路口和它们之间的距离。你想从酒店到景点，希望走的路程最短。你可以从酒店开始，先看看附近的路口，标记出到每个路口的最短距离，然后从这些路口继续探索，不断更新最短距离，直到到达景点。这就是Dijkstra算法的思想。而Floyd算法则像是一次性计算所有路口之间的最短距离，方便你随时查询任意两点之间的最短路径。",
+    "when_to_use": "当问题涉及在图中寻找两点或多点之间的最短路径时，例如：物流配送路线规划、网络路由选择、城市交通导航、机器人路径规划、社交网络中的最短联系路径等。如果图是静态且边权非负，常用Dijkstra；如果需要所有点对之间的最短路径，用Floyd。",
+    "definition": "最短路径问题是在加权图中，寻找两个顶点之间权值和最小的路径。Dijkstra算法用于求解单源最短路径（一个起点到所有其他点），要求边权非负；Floyd-Warshall算法用于求解所有顶点对之间的最短路径，允许负权边但不能有负权环。",
+    "math_principle": "**Dijkstra算法**：维护一个距离数组dist，初始时dist[起点]=0，其余为无穷大。每次从未访问的节点中选择dist最小的节点u，标记为已访问，然后对于u的每个邻居v，如果dist[u] + w(u,v) < dist[v]，则更新dist[v]。重复直到所有节点被访问。\n\n**Floyd-Warshall算法**：使用动态规划，设d[i][j]为i到j的最短路径长度。初始化d[i][j]为直接边的权值，若无边则为无穷大，d[i][i]=0。然后对每个中间节点k，更新d[i][j] = min(d[i][j], d[i][k] + d[k][j])。三重循环后得到所有点对的最短路径。",
+    "step_by_step": [
+      "1. 确定图模型：将实际问题抽象为图，顶点表示位置，边表示路径，边权表示距离、时间或成本。",
+      "2. 选择算法：如果只需要一个起点到其他点的最短路径，用Dijkstra；如果需要所有点对之间的最短路径，用Floyd。",
+      "3. 初始化：Dijkstra中设置起点距离为0，其他为无穷大，并维护一个未访问集合；Floyd中初始化距离矩阵。",
+      "4. 执行算法：Dijkstra重复选择最小距离节点并更新邻居；Floyd三重循环更新所有点对。",
+      "5. 输出结果：Dijkstra得到起点到各点的最短距离；Floyd得到所有点对的距离矩阵。",
+      "6. 应用结果：根据最短路径进行后续决策，如规划路线、计算时间等。"
+    ],
+    "worked_example": "假设有4个区域A、B、C、D，它们之间的旅行时间（分钟）如下：A到B:10，A到C:15，B到C:5，B到D:20，C到D:10。求从A到D的最短时间。\n\n**Dijkstra算法**：\n- 初始：dist[A]=0，dist[B]=∞，dist[C]=∞，dist[D]=∞，未访问={A,B,C,D}。\n- 选择A：更新邻居B:0+10=10，C:0+15=15。dist[B]=10，dist[C]=15。标记A已访问。\n- 未访问中最小dist是B(10)，选择B：更新邻居C:10+5=15（不大于当前15，不更新），D:10+20=30。dist[D]=30。标记B已访问。\n- 未访问中最小dist是C(15)，选择C：更新邻居D:15+10=25 < 30，所以dist[D]=25。标记C已访问。\n- 最后选择D，算法结束。A到D最短时间为25分钟，路径A->B->C->D。\n\n**Floyd算法**：\n- 初始化距离矩阵：\n  |   | A | B | C | D |\n  |---|---|---|---|---|\n  | A | 0 |10 |15 | ∞ |\n  | B |10 | 0 | 5 |20 |\n  | C |15 | 5 | 0 |10 |\n  | D | ∞ |20 |10 | 0 |\n- 以A为中间点：无更新。\n- 以B为中间点：A->C: min(15,10+5)=15；A->D: min(∞,10+20)=30；C->D: min(10,5+20)=10。\n- 以C为中间点：A->D: min(30,15+10)=25；B->D: min(20,5+10)=15。\n- 以D为中间点：无更新。\n- 最终矩阵中A->D=25。",
+    "pitfalls": [
+      "1. 负权边：Dijkstra算法不能处理负权边，否则结果错误。如果图中存在负权边，应使用Bellman-Ford算法。",
+      "2. 负权环：Floyd算法不能处理负权环，因为最短路径不存在（可以无限减小）。",
+      "3. 图规模：Dijkstra算法在稠密图中效率较低，可使用优先队列优化；Floyd算法时间复杂度O(n^3)，适用于顶点数较少的情况。",
+      "4. 路径记录：如果不仅需要距离，还需要具体路径，需要在算法中额外记录前驱节点。",
+      "5. 实际应用中的动态变化：如果边权随时间变化（如交通拥堵），静态最短路径可能不适用，需考虑动态规划或实时更新。"
+    ],
+    "tools": "Python中常用NetworkX库实现最短路径算法。\n\n```python\nimport networkx as nx\n\n# 创建有向图（或无向图）\nG = nx.Graph()\n# 添加带权边\nG.add_edge('A', 'B', weight=10)\nG.add_edge('A', 'C', weight=15)\nG.add_edge('B', 'C', weight=5)\nG.add_edge('B', 'D', weight=20)\nG.add_edge('C', 'D', weight=10)\n\n# Dijkstra算法求A到D的最短路径\npath = nx.dijkstra_path(G, 'A', 'D', weight='weight')\ndistance = nx.dijkstra_path_length(G, 'A', 'D', weight='weight')\nprint(\"最短路径:\", path)  # ['A', 'B', 'C', 'D']\nprint(\"最短距离:\", distance)  # 25\n\n# Floyd-Warshall算法求所有点对最短路径\npredecessors, distances = nx.floyd_warshall_predecessor_and_distance(G, weight='weight')\nprint(\"A到D距离:\", distances['A']['D'])  # 25\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\text{Dijkstra: } d[v] = \\min(d[v], d[u] + w(u,v))",
+      "variables": {
+        "d[v]": "起点到顶点v的当前最短距离",
+        "d[u]": "起点到顶点u的当前最短距离",
+        "w(u,v)": "边(u,v)的权值"
+      }
+    },
+    {
+      "latex_code": "\\text{Floyd: } d[i][j] = \\min(d[i][j], d[i][k] + d[k][j])",
+      "variables": {
+        "d[i][j]": "顶点i到顶点j的最短路径长度",
+        "k": "中间顶点"
+      }
+    }
+  ],
+  "cases": [
+    "2380",
+    "3074",
+    "3180",
+    "3681",
+    "4004",
+    "4155",
+    "4185",
+    "4421",
+    "4498",
+    "6475",
+    "7879",
+    "8206"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec005_011_03",
+      "lec020_001_01",
+      "lec020_001_02",
+      "lec020_001_03",
+      "lec020_002_01",
+      "lec020_003_02",
+      "lec021_001_07",
+      "supp_C14"
+    ],
+    "from_papers": [
+      "2380",
+      "3074",
+      "3180",
+      "3681",
+      "4004",
+      "4155",
+      "4185",
+      "4421",
+      "4498",
+      "6475",
+      "7879",
+      "8206"
+    ]
+  }
+}

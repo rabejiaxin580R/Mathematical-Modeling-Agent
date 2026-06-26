@@ -1,0 +1,72 @@
+{
+  "paper_id": "2881",
+  "meta": {
+    "paper_id": "2881",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2011,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2011\\B\\2881.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.intro",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文以真实案例（Robbie Wood失踪事件）引入问题背景，说明搜救的重要性，并引出研究目标。",
+      "formulas": [],
+      "source_excerpt": "On October 23, 2011, Robbie Wood, an autistic eight year old child, wandered off... After five nights, over 2,000 acres were searched. Robbie was finally found in a shallow creek bed..."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "明确列出针对小物体搜索模型的7条通用假设和模型1的6条特定假设，包括速度、光照、路径宽度等。",
+      "formulas": [],
+      "source_excerpt": "Assumptions for Finding Small Objects (for all Models): 1) The searcher is walking at a constant speed of 4mph. 2) The pen-flashlight used is 20 lumens. ... Assumptions specific for Small Object Model#1: 1. The searcher cannot walk on paved roads, except to cross them. ..."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "借鉴Google PageRank思想，用路径连接数作为权重，计算每个路径段的加权长度，进而得到搜索路径的总权重和概率。",
+      "formulas": [
+        {
+          "latex_code": "P(K) = \\sum_{s \\in K} \\frac{l_s C_s}{\\sum_{i=1}^n l_i C_i}",
+          "variables": {
+            "P(K)": "搜索路径K包含丢失物体的概率",
+            "l_s": "第s段路径的长度",
+            "C_s": "第s段路径的连接路径数",
+            "n": "所有路径段的总数"
+          }
+        }
+      ],
+      "source_excerpt": "The probability of the ring being on the sth segment is equal to l_s multiplied by the popularity measure C_s divided by the sum of the weighted measures of every segment in the park."
+    },
+    {
+      "concept_id": "opt.greedy",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "通过计算每条路径的总权重，优先选择权重高的路径进行搜索，并结合停车场位置规划搜索顺序，在时间限制内最大化搜索概率。",
+      "formulas": [],
+      "source_excerpt": "Our search method allowed for visiting the paths with the highest total weight, which would increase the probability of the object being located... We ended up selecting the parking lot on Dogwood Drive that directly touched the Oval Trail."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "用搜索概率百分比（82.091%）作为模型效果的评价指标，并计算总时间（118.978分钟）验证是否满足2小时限制。",
+      "formulas": [],
+      "source_excerpt": "This model results in an 82.091 percent chance of the object being found... total time taken for this model is 118.978 minutes, which does not exceed the 2 hour time limit."
+    },
+    {
+      "concept_id": "writing.improve",
+      "concept_label": "",
+      "stage": "extend",
+      "how_used": "在模型1后列出优缺点，指出未考虑道路交叉和缺乏实际交通数据，为后续模型改进提供方向。",
+      "formulas": [],
+      "source_excerpt": "Small Objects Model # 1 Critique: Pros - ... Cons - This model does not take into account the crossing of roads. - This model is only an approximation for the popularity of each possible trail, without actual traffic data."
+    }
+  ]
+}

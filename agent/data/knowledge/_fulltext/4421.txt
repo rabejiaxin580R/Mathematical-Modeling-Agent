@@ -1,0 +1,1207 @@
+Summary Sheet: Group 4421 – Problem A
+The patient must be reached before medical attention can be given, making
+minimizing the medical response time to reach a zone of population a societal concern.
+The purpose of this problem is to analyze the average time it takes an ambulance to travel
+from each zone to any zone in the county in order to maximize the population reached in
+the smallest amount of time. Using these results, we will form a plan for the Emergency
+Service Coordinator to direct ambulances.
+Our solutions depend on the number of available ambulances and the number of
+M
+emergencies the county has to deal with at a specific time. When three ambulances are
+available, 11 out of 20 combinations of ambulance placement will result in perfect
+coverage of the entire county within eight minutes. To determine whCich of these
+combinations resulted in optimal coverage we defined a new unit, people-minutes, which
+refers to the total amount of time required to reach every indivMidual given a single
+arrangement of ambulances. Using this unit, we found the average time required to reach
+an individual by finding the total minimum people minutes fior a given ambulance
+arrangement and dividing this by the total population oHf the county. In essence, it
+weighted the time needed to reach different zones by the relative proportion of the
+：
+population in that zone. We wanted to make sure that not only were our ambulances
+quickly reaching citizens, they were also maximizing the number of citizens they could
+reach. We determined that zones 1, 2, and 5 were the optimal locations for ambulance
+号
+placement, as this combination had the lowest average time, only 2.37 minutes. In the
+case where only two ambulances were available, perfect coverage could still be achieved,
+with ambulances in zones 2 an众d 5. With a single ambulance, it was impossible to cover
+every zone in eight minutes. We did determine that zone 2 would be the optimal zone for
+that single ambulance, because it would cover the most people within the time constraint.
+公
+For each of these cases, we also considered situations where conditions may not be ideal
+and looked at the difference in coverage when the average travel time increased by ten
+percent. Our models were all relatively robust as a large proportion of the population
+信
+could still be reached in eight minutes.
+We also wanted to consider other realistic emergencies that could occur. We
+微
+looked at the best plan of action for the ambulances when multiple emergencies occurred
+at once. We saw that people in zones 1 and 2 could be reached quickly while getting to
+zones 5 and 6 was less efficient. Overall, 87.25% of these situations can be successfully
+covered. If there were slowdowns on roadways resultant in an increase in time required to
+travel from zone to zone, two ambulances would not offer coverage within eight minutes
+to all parts of the county. In reference to the ability of three ambulances to respond to a
+disaster affecting multiple areas, we determined three to be insufficient in large-scale
+chaos, though it would be possible to ameliorate the situation by relying on other
+resources. At the end, we advised the Emergency Service Coordinator on what to do,
+especially focusing on the county’s plans in case of a large-scale catastrophe. Our model
+hopes to improve the average county citizen’s life by increasing the number of people
+that can be reached by the ambulances and decreasing the travel time it takes to reach
+them.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 11 ooff 2299
+Problem A: Emergency Medical Response
+Team 4421
+1"""""Introduction"and"Restatement"of"the"Problem"......................................................"2!
+2"""""Definitions,"Variables,"and"General"Assumptions"................................................."3!
+2.1 Definitions............................................................................................................. 3!
+2.2 Variables ........................................................................................M....................... 3!
+2.3 Assumptions .......................................................................................................... 4!
+C
+3"""""Creating"a"Model"..............................................................................................................."6!
+M
+3.1 Three Ambulances ................................................................................................ 6!
+3.1.1!Determining!Optimal!Location!........................................... i ............................................................!6!
+H
+3.1.2!Sensitivity!Analysis!.............................................................................................................................!9!
+：
+3.1.3!Strengths!and!Weaknesses!...........................................................................................................!11!
+3.2 Two Ambulances ................................................................................................ 12!
+号
+3.2.1!Determining!Optimal!Location!....................................................................................................!12!
+3.2.2!Sensitivity!Analysis!..........................................................................................................................!13!
+众
+3.2.3!Strengths!and!Weaknesses!...........................................................................................................!14!
+3.3 One Ambulance .................................................................................................. 14!
+公
+3.3.1!Determining!Optimal!Location!....................................................................................................!14!
+3.3.2!Sensitivity!Analysis!..........................................................................................................................!15!
+信
+3.3.3!Strengths!and!Weaknesses!...........................................................................................................!16!
+微
+4"""""Catastrophic"Events"......................................................................................................"17!
+4.1 Multiple Emergencies and Multiple Zones .......................................................... 17!
+4.2 Planning for an Emergency ................................................................................. 22!
+5"""""Conclusion"......................................................................................................................."25!
+6"""""Letter"to"the"Emergency"Service"Coordinator"....................................................."27!
+7"""""Works"Cited"....................................................................................................................."29!
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 22 ooff 2299
+1 Introduction and Restatement of the Problem
+For some patients, particularly cardiac arrest and shock victims, every minute is
+vital, and just one or two could make the difference between life and death. Therefore,
+the Emergency Medical Services have begun to place emphasis on driving the average
+medical response times to every area under eight minutes; it is a notably high standard to
+live up to but quite possible to achieve when taking into account the rapidMity of the
+situation.
+C
+For this problem, we attempted to determine whether iMt was possible to service
+every zone in a county within eight minutes with different ambulance arrangements. We
+i
+H
+addressed situations in which one, two, and three ambulances were available. If it was
+：
+possible, we sought to ascertain which combination of ambulance placements would
+号
+result in the lowest average time to reach an individual. We then considered the ability of
+three ambulances to respond to widespread disaster in the county. The most important
+众
+factors in determining ambulance placement were the times that the ambulance would
+公
+reach different zones in and the amount of people the ambulance could reach in under
+信
+eight minutes. We finished our paper by writing a letter to the emergency coordinator
+advising him or her on emergency precautions and design ideas to aid ambulances in
+微
+future disaster response.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 33 ooff 2299
+2 Definitions, Variables, and General Assumptions
+2.1 Definitions
+• We were given the Emergency Medical Response data for a county with six
+zones. We assume that this data will form a basis for our projections of
+continued population growth in this area. M
+C
+• The average travel time is calculated as the time taken to get from the center
+M
+of one zone to the edge of another. The emergency is dealt with once the
+i
+H
+ambulance reaches the zone.
+：
+• We will define coverage or号 success as the ambulance being able to reach
+every zone within the time limit of eight minutes.
+众
+公
+• We define the probability of an emergency occurring in a zone as the
+percentage of the population in that zone.
+信
+微
+2.2 Variables
+• ! is the expected average response time of the ambulance in minutes
+• ! is the shortest ambulance response time to the respective zone in minutes
+!
+• ! is the population of the respective zone
+!
+• P is the total population of 270,000 in the county
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 44 ooff 2299
+2.3 Assumptions
+Assumption: Zones are internally uniform.
+Justification: We were given no information on population density or other factors
+affecting the zones. There is no accurate way to predict how ambulances will be affected
+driving from or to the zone.
+M
+C
+Assumption: Each person is independent and equally likely to face an emergency.
+M
+Justification: This assumption provides the basis for our definition of an emergency
+i
+occurring in a specific zone.
+H
+：
+Assumption: Each ambulance can respond to any zone in the city.
+号
+Justification: In order to minimize the time taken to reach each zone, each ambulance
+众
+must be available for travel to every zone that it is able to reach within the time limit. It is
+reasonable to conclude公 that whichever ambulance is available and minimizes the
+response time will be used, without regard to potential future emergencies.
+信
+微
+Assumption: A single emergency will occur at once, and the ambulance sent will have
+returned by the next call.
+Justification: Often, a single ambulance must be responsible for multiple zones in order
+to ensure coverage within eight minutes. Rutherford County in Tennessee has a
+population of 274,454 people, just a few thousand people above from our theoretical
+county. They receive approximately sixty-two calls per day, averaging out to about one
+call every twenty-three minutes when not including factors such as time of day (2). We
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 55 ooff 2299
+assume that this county is representative of our theoretical one and twenty-three minutes
+is ample time for an ambulance to reach the emergency site and return before the next
+emergency.
+Assumption: Each ambulance will be placed in a different zone.
+Justification: The previous assumption eliminates the demand for multiple ambulances
+M
+in one zone because if an ambulance is stationed in a zone, it will always be available to
+C
+address the next emergency for all of the zones it is assigned to.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  66  ooff  2299
+3     Creating a Model
+3.1     Three Ambulances
+  3.1.1 Determining Optimal Location
+In order to create a realistic model for the three ambulances, we looked at all the
+possibilities for three ambulances to be placed in the county. It was imporMtant that
+between the three ambulances, each zone could be reached within eigCht minutes under
+semi-perfect conditions. Below, in Figure 1, we see that there Mare possibilities for each
+zone to be reached within the time limit.
+i
+H
+Figure 1: Average Travel Time in Minutes for an Ambulance to Reach a Zone
+：
+|       |     | Average Travel Time (minutes)  |     |     |     |     |
+| ----- | --- | ------------------------------ | --- | --- | --- | --- |
+| Zone  | 1   | 2  号3                          |     | 4   | 5   | 6   |
+| 1     | 1   | 8                              | 12  | 14  | 10  | 16  |
+| 2     | 8   | 1                              | 6   | 18  | 16  | 16  |
+众
+| 3   | 12      | 18  | 1.5  | 12  | 6   | 4   |
+| --- | ------- | --- | ---- | --- | --- | --- |
+| 4   | 16      | 14  | 4    | 1   | 16  | 12  |
+| 5   | 18 公16  |     | 10   | 4   | 2   | 2   |
+| 6   | 16      | 18  | 4    | 12  | 2   | 2   |
+
+信
+In total, there are  C  possible ways to arrange three ambulances in six zones with
+|     | 6   | 3   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+微
+only one ambulance in each zone. This leaves only twenty different ways to arrange the
+ambulances. We tabulated all twenty different ways to arrange the ambulances. We then
+checked to see which possibilities would cover all six zones in less than eight minutes.
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi  | CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --------- |
+
+Team 4421
+PPaaggee  77  ooff  2299
+Figure 2: All Possible Locations for Three Ambulances
+
+|     |     | Ambulance Zone  |     |     |     |     |     |     |
+| --- | --- | --------------- | --- | --- | --- | --- | --- | --- |
+Uncovered
+| Possibility  | 1   | 2   | 3   | 4   | 5   | 6   | Success  |     |
+| ------------ | --- | --- | --- | --- | --- | --- | -------- | --- |
+Zones
+| 1   |     |     |     |     |     |     | N      | 4     |
+| --- | --- | --- | --- | --- | --- | --- | ------ | ----- |
+|     |     |     |     |     |     |     |        |       |
+| 2   |     |     |     |     |     |     | N      | 5, 6  |
+|     |     |     |     |     |     |     |        |       |
+| 3   |     |     |     |     |     |     | Y      |       |
+|     |     |     |     |     |     |     |        |       |
+| 4   |     |     |     |     |     |     | N      | 4     |
+|     |     |     |     |     |     |     |        |       |
+| 5   |     |     |     |     |     |     | Y      | M     |
+|     |     |     |     |     |     |     |        |       |
+| 6   |     |     |     |     |     |     | Y      |       |
+|     |     |     |     |     |     |     |        |       |
+| 7   |     |     |     |     |     |     | N  C4  |       |
+|     |     |     |     |     |     |     |        |       |
+
+| 8   |     |     |     |     |     |     | Y   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     |     | M   |     |
+| 9   |     |     |     |     |     |     | Y   |     |
+|     |     |     |     |     |     |     |     |     |
+| 10  |     |     |     |     |     |     | Y   |     |
+|     |     |     |     |     |     |     | i   |     |
+
+| 11  |     |     |     |     |     |  H  | Y   |       |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+|     |     |     |     |     |     |     |     |       |
+| 12  |     |     |     |     |     |     | Y   |       |
+|     |     |     |     |     | ：   |     |     |       |
+| 13  |     |     |     |     |     |     | N   | 4     |
+|     |     |     |     |     |     |     |     |       |
+| 14  |     |     |     |     |     |     | Y   |       |
+|     |     |     |     |     |     |     |     |       |
+|     |     |     |     | 号   |     |     |     |       |
+| 15  |     |     |     |     |     |     | Y   |       |
+|     |     |     |     |     |     |     |     |       |
+| 16  |     |     |     |     |     |     | Y   |       |
+|     |     |     |     |     |     |     |     |       |
+| 17  |     |     | 众   |     |     |     | N   | 1, 2  |
+|     |     |     |     |     |     |     |     |       |
+1, 2
+| 18  |     |     |     |     |     |     | N   |       |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+|     |     |     |     |     |     |     |     |       |
+| 19  |     |     |     |     |     |     | N   | 1, 2  |
+|     |     | 公   |     |     |     |     |     |       |
+| 20  |     |     |     |     |     |     | N   | 1, 2  |
+|     |     |     |     |     |     |     |     |       |
+
+信
+  As shown above in Figure 2, there are eleven possible ways to place the
+微
+ambulances in three different zones such that all the zones can be reached within eight
+minutes. Thus, it is possible to reach any member of the population within eight minutes
+of the emergency call.
+  However, we want to find the optimal three zones to place the ambulances in
+order to reach the population in the shortest amount of time. To do this, we created a new
+unit, termed people-minutes, referring to the total amount of time required to a reach each
+individual in the county. To define this variable we determined which ambulance would
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  88  ooff  2299
+have the shortest response time for each of the zones according to each of the twenty
+successful arrangements. After finding this, we multiplied the population by the response
+time. To calculate the average time needed to reach an individual, we divided by the total
+population of the county, 270,000 residents, thus determining the expected response time
+the ambulance would have for a random emergency call based on the population
+distribution in the county.
+M
+!
+|     |     |     | ! ∗! |     | C   |
+| --- | --- | --- | ---- | --- | --- |
+! !
+|     |     |     | ! =!   |     |     |
+| --- | --- | --- | ------ | --- | --- |
+!
+|     |     |     | !!! | M   |     |
+| --- | --- | --- | --- | --- | --- |
+  We calculated the expected average response time if ambulances were placed in
+i
+H
+zones 1, 2, and 5. The italicized and underlined items in the table below show the shortest
+：
+ambulance response time for each zone.
+Figure 3: Average Ambulan号ce Travel Time and Population Per Zone
+|     |     | Average Ambulance Travel Time (minutes)  |     |     |     |
+| --- | --- | ---------------------------------------- | --- | --- | --- |
+众
+| Zone  |     | 1   | 2  3   | 4   | 5  6    |
+| ----- | --- | --- | ------ | --- | ------- |
+| 1     |     | 1   | 8  12  | 14  | 10  16  |
+公8
+| 2   |     |     | 1  6    | 18  | 16  16  |
+| --- | --- | --- | ------- | --- | ------- |
+| 5   |     | 18  | 16  10  | 4   | 2  2    |
+Population   50,000    80,000    30,000    55,000    35,000    20,000
+信
+
+微If we input this data into the formula, we get the following equation
+| 1 50,000 | +1 80,000 | +6  | 30,000 +4 55,000 | +2  | 35,000 +2(20,000) |
+| -------- | --------- | --- | ---------------- | --- | ----------------- |
+! =
+270,000
+This simplifies to give us an expected average response time of 2.37 minutes.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  99  ooff  2299
+Following the same procedure for the other ten possible ambulance arrangements,
+we found the other expected average response times and were able to compare them
+below in Figure 4.
+Figure 4: Expected Average Response Times for Arrangements of Three Ambulances
+| Ambulance  | !          |     |     |
+| ---------- | ---------- | --- | --- |
+| Position   | (minutes)  |     |     |
+| 1, 2, 5    | 2.37       |     | M   |
+| 1, 3, 4    | 4.00       |     |     |
+| 1, 3, 5    | 3.94       | C   |     |
+| 1, 4, 5    | 3.61       |     |     |
+| 1, 4, 6    | 3.61       | M   |     |
+| 1, 5, 6    | 4.22       |     |     |
+| 2, 3, 4    | 3.22       |     |     |
+i
+| 2, 3, 5  | 3.24H  |     |     |
+| -------- | ------ | --- | --- |
+| 2, 4, 5  | 2.83   |     |     |
+：
+| 2, 4, 6  | 2.83  |     |     |
+| -------- | ----- | --- | --- |
+| 2, 5, 6  | 3.44  |     |     |
+  号
+  The data shows that ambulances placed in zones 1, 2, and 5 will provide the
+众
+shortest expected average response time for a member of the population, at only 2.37
+公
+minutes, which is well within the eight-minute limit. Since this arrangement successfully
+reaches all zon信es and maintains the lowest average response time, it is the optimal
+placement of the ambulances.
+微
+  3.1.2 Sensitivity Analysis
+  To determine the robustness of our solutions, we tested what effect a change in
+average travel times would have on the success of the ambulances reaching an emergency
+in time. Because the data given to us represented average travel times under perfect
+conditions, it is reasonable to assume it could take slightly longer for the ambulance to
+reach the location during an actual emergency.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  1100  ooff  2299
+Figure 5: Increased Shortest Travel Times
+|        |      | Average Travel Time (minutes)  |       |       |     |       |
+| ------ | ---- | ------------------------------ | ----- | ----- | --- | ----- |
+| Zones  | 1    | 2                              | 3     | 4     | 5   | 6     |
+| 1      | 1.1# | 8.8#                           | 13.2# | 15.4# | 11# | 17.6# |
+2
+|     | 8.8# | 1.1# | 6.6# | 19.8# | 17.6# | 17.6# |
+| --- | ---- | ---- | ---- | ----- | ----- | ----- |
+3
+|     | 13.2# | 19.8# | 1.65# | 13.2# | 6.6#  | 4.4#  |
+| --- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 4   | 17.6# | 15.4# | 4.4#  | 1.1#  | 17.6# | 13.2# |
+| 5   | 19.8# | 17.6# | 11#   | 4.4#  | 2.2#  | 2.2#  |
+| 6   | 17.6# | 19.8# | 4.4#  | 13.2# | 2.2#  | 2.2#  |
+M
+
+C
+   Figure 5 shows how increasing the times by 10% would render many of our
+M
+earlier possible solutions ineffective. An ambulance in zone 1 is the only one able to
+reach zone 1 in time. Similarly, an ambulance in zone 2 is thie only one able to reach zone
+H
+2 in time and can also reach zone 3 within eigh：t minutes. The only remaining ambulance
+must go in zone 5 to cover zones 4, 5, and 6 in eight minutes or fewer. Other than the
+号
+optimal combination of zones 1, 2 and 5, no combinations can reach each zone in less
+众
+than eight minutes.
+Next, we used the adjusted t  values to calculate a new expected response time.
+公n
+Figure 6: Increased Shortest Travel Times for Ambulances in Zones 1, 2, and 5
+信
+|     | Zone  | 1   | 2  3  | 4   | 5  6  |     |
+| --- | ----- | --- | ----- | --- | ----- | --- |
+Response
+微
+|     | Time  | 1.1  1.1  | 6.6  | 4.4  | 2.2  2.2  |     |
+| --- | ----- | --------- | ---- | ---- | --------- | --- |
+(minutes)
+
+  The ten percent increase did not change the travel times by too much. All of the
+times are still under the eight-minute limit, with the longest travel time being an
+ambulance travelling from zone 2 to 3 in 6.6 minutes.
+  Using the same procedure as we did earlier, we found the new expected average
+response time of the ambulances in our optimal arrangement. It increased slightly to 2.61
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 1111 ooff 2299
+minutes. Changing each of the travel times by 10% caused a 10% increase in the time as
+expected, because t is linearly related to !. This shows our optimal solution to still be
+n
+successful even with a ten percent increase in the travel time.
+Our optimal solution would no longer be valid once a zone cannot be reached
+within eight minutes. Currently, zone 3 takes an the longest to reach under semi-perfect
+conditions, at an average of six minutes. We want to see what percent chaMnge there would
+have to be in the travel times for an ambulance to no longer reach zone 3 within the eight-
+C
+minute limit.
+M
+8!!"#$%&'−6!!"#$%&'
+= 0.3i
+6!!!"#$%& H
+Average travel times would have to inc：rease by over approximately 33% for our
+optimal solution to be unsuccessful.
+号
+3.1.3 Strengths and Weaknesses
+众
+Our optimal location prediction works well because it accounts for the population
+dispersion between the公 zones and the shortest travel time for an ambulance from zone 1,
+2, or 5 to reach the emergency. All of the zones can be reached quickly. Our prediction
+信
+also held up well under a sensitivity analysis. Because the average response time for the
+微
+entire county is linearly related to the average travel times under semi-perfect conditions,
+a small change in the average travel times will not have a large effect on our model.
+However, our model is overly simplistic in some areas. Because we have no
+information about the zones’ population dispersals or sizes, we do not have more realistic
+interpretation to provide. Our model also assumes that there will be only one emergency
+at a time, which may not always be true.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  1122  ooff  2299
+3.2     Two Ambulances
+  3.2.1 Determining Optimal Location
+  There are only  C , or 15, different ways to place two ambulances in different
+|     | 6 2 |     |     |     |     |
+| --- | --- | --- | --- | --- | --- |
+zones. Once again, we tabulated the different possible arrangements.
+Figure 7: All Possible Locations for Two Ambulances
+M
+|     |     | Zones  |     |     |     |
+| --- | --- | ------ | --- | --- | --- |
+CUncovered
+| Possibility  | 1  2  | 3  4  | 5  6  | Success  |     |
+| ------------ | ----- | ----- | ----- | -------- | --- |
+Zones
+M
+| 1   |       |       |       | N   | 4, 5, 6  |
+| --- | ----- | ----- | ----- | --- | -------- |
+| 2   |       |       |       | N   | 4        |
+i
+| 3   |       |       |       | N   | 5, 6  |
+| --- | ----- | ----- | ----- | --- | ----- |
+H
+| 4   |       |       |       | N   | 3   |
+| --- | ----- | ----- | ----- | --- | --- |
+：
+| 5   |       |       |       | N   | 4     |
+| --- | ----- | ----- | ----- | --- | ----- |
+| 6   |       |       |       | N   | 4     |
+| 7   |       |       |       | N   | 5, 6  |
+号
+| 8   |       |       |       | Y   |     |
+| --- | ----- | ----- | ----- | --- | --- |
+| 9   |       |       |       | N   | 4   |
+众
+| 10  |        |       |       | N   | 1, 2     |
+| --- | ------ | ----- | ----- | --- | -------- |
+| 11  |        |       |       | N   | 1, 2     |
+| 12  |    公   |       |       | N   | 1, 2, 4  |
+| 13  |        |       |       | N   | 1, 2     |
+| 14  |        |       |       | N   | 1, 2     |
+信
+| 15  |       |       |       | N   | 1, 2  |
+| --- | ----- | ----- | ----- | --- | ----- |
+
+微
+  There is only one possible arrangement of the two ambulances that covers the
+entire county. The ambulances would have to be in zones 2 and 5 in order to reach every
+resident in eight minutes or less. Again, our optimal solution lies with the assumption that
+the ambulances will only deal with one emergency at a time.
+  We used the shortest travel times from the following data and the earlier
+procedure to calculate the expected average response time of an ambulance from our
+optimal solution.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 1133 ooff 2299
+Figure 8: Average Ambulance Travel Time and Population Per Zone
+Average Ambulance Travel Time (minutes)
+Zone 1 2 3 4 5 6
+2 8 1 6 18 16 16
+5 18 16 10 4 2 2
+Population 50,000 80,000 30,000 55,000 35,000 20,000
+Our ! for the two-ambulance arrangement is 3.67 minutes. Though this is a larger
+M
+average response time than we found with three ambulances, it is still small enough for
+C
+the two ambulances to be labeled successful at handling emergencies.
+M
+3.2.2 Sensitivity Analysis
+i
+H
+Because of the real-world variables involved in the time it would take an
+：
+ambulance to travel to the emergency site, we decided to once-again test the robustness
+号
+of our solution by increasing the travel times by ten percent.
+Figure 9: Increased Shortest Travel Times for Ambulances in Zones 2 and 5
+众
+Zone 1 2 3 4 5 6
+Respon公se
+Time 8.8 1.1 6.6 4.4 2.2 2.2
+(minutes)
+信
+After the increase, we see above in Figure 9 that we no longer have a successful
+微
+solution to respond to all the zones within the eight-minute time limit. The ambulance
+traveling to zone 1 cannot arrive in time. The new expected value of ! is 4.03 minutes,
+meaning that the average citizen can still expect help within eight minutes. Therefore,
+placing ambulances in zones 2 and 5 would still be ideal. With zone 1 not being covered,
+there are 50,000 people who will have to wait an approximate extra forty-eight seconds
+above the eight-minute time limit.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  1144  ooff  2299
+  3.2.3 Strengths and Weaknesses
+  Our model predicts that even under conditions that are not semi-perfect, the
+average citizen in the county can expect to receive aid well before eight minutes. Under
+semi-perfect conditions, our model is the only combination that successfully can reach
+any zone in the county within eight minutes.
+   However, the sensitivity analysis showed how any delay in travelliMng to zone 1
+specifically would cause the average time to increase and the ambulaCnce to fail to arrive
+within eight minutes. These few seconds can be crucial to the Mcitizen’s health.
+
+i
+H
+：
+3.3     One Ambulance
+号
+  3.3.1 Determining Optimal Location
+  If only one ambulance 众were available for use, there is no location from which all
+six zones can be reached within eight minutes by one ambulance. Instead, we found find
+公
+the optimal location for the single ambulance by finding the largest amount of the
+信
+270,000 people that can be reached in the shortest amount of time, seen in Figure 10.
+Figure 10: People Serviced and Average Service Time for Single Ambulance
+微
+|       | People Reached       |            | People Not    | Average Time to  |            |
+| ----- | -------------------- | ---------- | ------------- | ---------------- | ---------- |
+| Zone  | Successfully Within  |            | Reached       | Reach Patient    |            |
+|       |                      | 8 Minutes  | Successfully  |                  | (minutes)  |
+| 1     |                      | 130,000    | 140,000       |                  | 9.22       |
+| 2     |                      | 160,000    | 110,000       |                  | 9.37       |
+| 3     |                      | 85,000     | 185,000       |                  | 11.24      |
+| 4     |                      | 85,000     | 185,000       |                  | 12.50      |
+| 5     |                      | 110,000    | 160,000       |                  | 10.42      |
+| 6     |                      | 85,000     | 185,000       |                  | 11.59      |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  1155  ooff  2299
+Zones 1 and 2 could both be viewed as the optimal location for an ambulance to
+be placed. Although a single ambulance in zone 1 would take less time on average to
+reach an emergency, the average difference is only .15 minutes, or 9 seconds, and an
+ambulance in zone 2 would be able to reach 30,000 more people within eight minutes.
+We decided zone 2 would be the best zone for a single ambulance to be stationed in
+because more people were covered within our time limit and the entire popMulation could
+be reached in nine more seconds.
+C
+
+M
+3.3.2 Sensitivity Analysis
+i
+H
+  As seen in Figure 11 below, a simple ten percent increase causes an ambulance
+：
+starting in zone 1 or 2 to reach less people. It is clear that zone 2 is a better place for the
+号
+ambulance to start as it can reach more than twice the number of people within eight
+minutes, though the average tim众e to reach the entire population is still slightly higher.
+Figure 11: People Reached and Average Response Time with Increased Travel Time
+公
+Average Time to
+| 信People Reached  | People Not Reached  |                |     |
+| ---------------- | ------------------- | -------------- | --- |
+| Zone             |                     | Reach Patient  |     |
+|                  | Successfully        | Successfully   |     |
+(minutes)
+微
+| 1   | 50,000   | 220,000  | 10.14  |
+| --- | -------- | -------- | ------ |
+| 2   | 110,000  | 160,000  | 10.31  |
+| 3   | 85,000   | 185,000  | 12.36  |
+| 4   | 85,000   | 185,000  | 13.75  |
+| 5   | 110,000  | 160,000  | 11.46  |
+| 6   | 85,000   | 185,000  | 12.75  |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 1166 ooff 2299
+3.3.3 Strengths and Weaknesses
+Our solution covers the maximum amount of people in the eight-minute time limit
+that a single ambulance can.
+However, it is not the fastest average time for the entire county and doesn’t cover
+all the zones in the county in less than eight minutes. For these reasons, we encourage the
+Emergency Medical Coordinator to only use this solution in dire cases whMen one
+ambulance is available for the entire county. C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  1177  ooff  2299
+4     Catastrophic Events
+4.1    Multiple Emergencies and Multiple Zones
+  We addressed catastrophic events in the county by looking at the most likely
+scenario: two emergencies occurring at once. We determined the minimal time required
+for two out of the three ambulances in zones 1, 2, and 5 to reach the emergMencies.
+Figure 12: Minimum Travel Time (minutes) to Deal With Simultaneous Emergencies
+C
+| ##  |       | Second'EmergencyM'Zone' |     |     |     |     |
+| --- | ----- | ----------------------- | --- | --- | --- | --- |
+| ##  | ## 1' | 2'                      | 3'  | 4'  | 5'  | 6'  |
+|     | 1' 8# | 1#                      | 6#  | 4#  | 2#  | 2#  |
+i
+|                  | 2' 1# | 8#  | 8#H4# |     | 2#  | 2#  |
+| ---------------- | ----- | --- | ----- | --- | --- | --- |
+| First'Emergency' | 3' 6# | 8#  | 10#   | 6#  | 6#  | 6#  |
+：
+| Zone' | 4' 4# | 4#  | 6#  | 14# | 10# | 14# |
+| ----- | ----- | --- | --- | --- | --- | --- |
+|       | 5' 2# | 2#  | 6#  | 10# | 10# | 10# |
+号
+|     | 6' 2# | 2#  | 6#  | 14# | 10# | 16# |
+| --- | ----- | --- | --- | --- | --- | --- |
+
+众
+Figure 13:  Contour Plot of Minimum Response Times to Simultaneous Emergencies
+公
+M
+i
+|     | n   |     |     |     | 12D16! |     |
+| --- | --- | --- | --- | --- | ------ | --- |
+i
+m
+信
+u
+|     | m   |     |     |     | 8D12! |     |
+| --- | --- | --- | --- | --- | ----- | --- |
+"R
+e 16!
+|     | s   |     |     |     | 4D8! |     |
+| --- | --- | --- | --- | --- | ---- | --- |
+| 微p  | 12! |     |     |     |      |     |
+o
+|     | n 8! |     |     |     | 0D4! |     |
+| --- | ---- | --- | --- | --- | ---- | --- |
+s
+e 4!
+"T
+|     | i 01! ! |     |     | 6!  |     |     |
+| --- | ------- | --- | --- | --- | --- | --- |
+m
+|     | e   |     |     | 5!  |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+"
+|     | 3!  |     |     | 4!  |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+3!
+|     |     | 5!  | 2!  |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+1!
+
+We then plotted this data on a three-dimensional contour graph, as seen in Figure
+13. The x- and y-axes represent the first and second emergency zones, respectively. The
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi  | CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --------- |
+
+Team 4421
+PPaaggee 1188 ooff 2299
+z-axis displays the minimum amount of time, in minutes, it would take under semi-
+perfect conditions to arrive at both scenes of the emergencies.
+We will be able to handle all emergencies that occur in zones 1 or 2. We can also
+handle all emergencies in zone 3 unless both calls come from there. However, we are
+unable to respond with any emergencies within the eight minutes if both calls came from
+zones 4, 5, or 6. M
+Once we assumed that the calls came in at the same time, we found that in seven
+C
+out of the twenty-one possible situations the ambulances were unsuccessful in responding
+M
+to both calls within the eight-minute time limit. If we also assume that each person is
+i
+H
+equally likely to be in an emergency, then we can calculate what the probability of each
+：
+of those seven situations occurring is. We initially calculated what percentage of the total
+号
+population each zone consisted of, seen below in Figure 14.
+Figure 14: Population Divided by Zone
+众
+Zone Percentage of Population
+公
+1 18.5%
+2 29.6%
+信
+3 11.1%
+微 4 20.4%
+5 13.0%
+6 7.4%
+We then found the probability that each of the seven unsuccessful situations
+would occur. We determined this by assuming that the probability of an emergency
+depended solely on the proportion of the population in the respective zone. In essence,
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 1199 ooff 2299
+each person was independent of the other and equally likely to face an emergency. We
+multiplied the population proportions of each zone involved in the situation together.
+Figure 15: Probabilities of Unsuccessful Multiple Emergencies Occurring
+Unsuccessful Situation Probability
+Zones 3, 3 1.23%
+Zones 4, 4 4.16%
+M
+Zones 4, 5 2.65%
+C
+Zones 4, 6 1.51%
+Zones 5, 5 1.69% M
+Zones 5, 6 0.96%
+i
+H
+Zones 6, 6 0.55%
+Total ：12.75%
+号
+If the Emergency Service Coordinator receives two calls at the same time, the
+total probability that the ambu众lances will not be able to reach both emergencies within
+the eight-minute time limit is 12.75%. This also means that the probability that the
+公
+ambulances will reach both emergencies in time is 100%−12.75% = 87.25%, which
+信
+shows that our optimal arrangement of the ambulances is also efficient at handling more
+than on微e call at a time.
+Next, we addressed the question of how to maximize coverage when a catastrophe
+located in one zone affects people from all zones. It does not matter which zone initially
+the catastrophe occurs in, because we focused on how to help the victims in all the zones.
+We used the three ambulances placed in zones 1, 2, and 5 to find the optimal routes for
+each in case of such an emergency. The ambulances would have to cover, between them,
+all six zones. We found two different optimal solutions.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2200 ooff 2299
+Figure 16: Minimum Response Time of Two Different Ambulance Configurations
+Zone 1 Ambulance Zone 2 Ambulance Zone 5 Ambulance
+Total Total Total Minimum
+Zones Zones Zones
+Time Time Time Response
+Covered Covered Covered
+(minutes) (minutes) (minutes) Time
+#1 1, 2 9 3, 6 10 5, 4 6 10 minutes
+#2 1 1 2, 3, 6 11 5, 4 6 11 minutes
+M
+C
+Figure 16, above, shows those two possible solutions and details what routes are
+M
+taken and how much time is required. In option one, the first ambulance would begin in
+i
+zone 1 and address problems in zone 1 and then zone 2. The second ambulance would
+H
+begin in zone 2 but move straight to zone 3 an：d address problems in zone 3 and then zone
+6. The third ambulance would address problems in zone 5, where it started, before
+号
+moving to cover zone 4. The second ambulance takes ten minutes, making it the longest
+众
+route of the solution. This is our minimum response time, assuming that as soon as an
+ambulance reaches a z公one the emergency is completely dealt with, since we cannot
+reasonably estimate how long it would take to help a zone. Option two is similar, with the
+信
+only difference being that the zone 1 ambulance only covers zone 1, while the zone 2
+微
+ambulance covers zone 2 before moving to zone 3. This new route for the zone 2
+ambulance takes eleven minutes because it requires an extra minute to cover zone 2.
+Though both of these minimum response times are over our eight-minute limit, they are
+still very quick when considering a countywide disaster.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee  2211  ooff  2299
+Although the second option requires an extra minute, it covers a larger amount of
+people within the eight-minute time limit, as shown in the following tables, Figures 17
+and 18, where we determined the number of people successfully reached within eight
+minutes.
+Figure 17: Option One’s Coverage Under Eight Minutes
+|     | Coverage  | Under 8  |     | M   |
+| --- | --------- | -------- | --- | --- |
+Zone #
+|     | (minutes)  | min?  |     |     |
+| --- | ---------- | ----- | --- | --- |
+Successfully
+| 1   | 1   | Y   | CoveredC  |     |
+| --- | --- | --- | --------- | --- |
+| 2   | 9   | N   | People    |     |
+M
+| 3   | 6   | Y   |     |     |
+| --- | --- | --- | --- | --- |
+| 4   | 6   | Y   |     |     |
+i
+| 5   | 2   | Y  H170,000  |     |     |
+| --- | --- | ------------ | --- | --- |
+
+| 6   | 10  | N   |     |     |
+| --- | --- | --- | --- | --- |
+：
+
+Figure 18: Option Tw号o’s Coverage Under Eight Minutes
+|     | Coverage  | Under 8  |     |     |
+| --- | --------- | -------- | --- | --- |
+Zone #
+众(minutes)
+min?
+Successfully
+| 1   | 1   | Y   |     |     |
+| --- | --- | --- | --- | --- |
+Covered
+| 2   | 1   | N   | People  |     |
+| --- | --- | --- | ------- | --- |
+公
+| 3   | 7   | Y   |     |     |
+| --- | --- | --- | --- | --- |
+| 4   | 6   | Y   |     |     |
+信
+| 5   | 2   | Y   | 250,000  |     |
+| --- | --- | --- | -------- | --- |
+| 6   | 11  | N   |          |     |
+微
+
+  Though the people in zones three and six will be reached a minute later, option
+two still covers 80,000 more people than option one does. It is for this reason that we
+would suggest the second option as the optimal solution to responding to a catastrophic
+event.
+These figures come from the average response time under semi-perfect
+conditions. It is unlikely that during a catastrophe of such a large magnitude semi-perfect
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2222 ooff 2299
+driving conditions would be achieved. Also, it is unlikely that an ambulance can simply
+solve the emergency by reaching the site of the disaster, and there will probably be a
+large volume of people to treat in one zone before moving onto the next, causing the
+actual times to be much larger than expected. However, our model does provide the basis
+for the residents and officials in the county to assign ambulance vehicles to zones based
+purely on travel times. A higher travel time hurts the victims, because theyM are not able to
+seek medical help until the ambulance arrives. Minimizing travel time encourages the
+C
+quickest medical response.
+M
+i
+H
+4.2 Planning for an Emergency
+：
+If a catastrophic event occurred号 in one location with many people from all zones
+involved, there is no way the Emergency Service Coordinator could cover the situation.
+众
+Even though the three ambulances would be able to reach any of the three zones within
+公
+the time limit of eight minutes, there is no way for only three ambulances to address all
+six zones at on信ce, especially when considering the sheer volume of people that would be
+seeking medical attention at the time. This sudden inflow of emergency response calls is
+微
+not accounted for in our model, which assumes only one call at a time. Within a single
+zone, one ambulance would not be sufficient to cover all of the twenty to eighty thousand
+people in a serious disaster.
+Additionally, many of the roads and highways in the area could be shut down
+after a disaster, especially a flood or an earthquake (1). If these roads were closed down,
+the ambulance response time could be severely increased because the ambulance might
+have to take detours to reach its destination, if it is able to reach its destination at all.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2233 ooff 2299
+In order to maximize survival, the county should institute procedures to carry out in the
+event of an impending disaster (3). Many of the emergency plans in similar-sized cities
+and counties include awareness at the individual level (4). Prior to the occurrence of a
+disaster, individuals are responsible for knowing what to do. For example, they should
+learn the evacuation routes for the area and know how to navigate them (4). Some cities
+even send out calls for evacuation ahead of time in the face of disaster.
+M
+Emergency management teams from neighboring counties also often coordinate
+C
+with each other to align their emergency plans with those of other city departments and
+M
+allied agencies such as the American Red Cross and the Federal Emergency Management
+i
+H
+Agency (5). These organizations should be able to help provide resources to those in need
+：
+of them, and other city departments, such as the police force and the fire department
+should be set up to assist in emergency号 response if the situation deems it necessary (5).
+Volunteers in the community can also be set up beforehand; for large events,
+众
+places such as Rutherford County utilize bicycles to cover medical treatment as well as
+公
+the traditional ambulances, because bicycles are quicker to cover larger crowds and
+transverse roug信h terrain (2). In a catastrophic event, where likely roads would be closed
+down and difficult to cross, a resource such as these bicycles could be key to maximizing
+微
+survival. Additionally, in a large-scale crisis, another important resource would be the
+survivors of the event, and since the Emergency Management Services would not be able
+to reach everyone, the survivors should also be able to rely on each other for help (1).
+If people from the county stay informed and act according to the previously
+instituted county plans, assistance from outside cities and organizations both within and
+outside of the city besides the Emergency Service Coordinator should minimize the city
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2244 ooff 2299
+coverage as much as possible given the current emergency response availability of the
+county. Other ways to help citizens respond to an emergency situation is to increase their
+awareness beforehand and invest in more ambulances, better infrastructure, and
+community volunteer services.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2255 ooff 2299
+5 Conclusion
+To assess in which zones ambulances would be best placed, we attempted to
+maximize the number of people living within zones that were within eight minutes of an
+ambulance. In situations where more than a single combination of zones was possible,
+we minimized the average time required to reach an emergency by weighting the time it
+M
+took to reach the zone by the population of the zone, using the following formula: !
+C
+!
+! ∗!
+! !
+! =!
+M
+!
+!!!
+i
+By focusing on minimizing the travel time and maximizing the proportion of the
+H
+population reached within eight minutes, we w：ere able to come up with an optimal
+solution for placing three, two, and one ambulance. When three ambulances were
+号
+available, they were best placed in zones 1, 2, and 5. If two ambulances were available,
+众
+the only combination that reached all the zones within the time limit placed ambulances
+in zones 2 and 5. Having only a single ambulance for a county of 270,000 seemed
+公
+impractical because it was not possible to reach every single resident within eight
+信
+minutes. We determined that the ambulance would be best placed in zone 2, though this
+微
+would leave 110,000 people that could not be reached in the time limit.
+In the case of a major disaster, even three ambulances would be impractical to
+reach the number of people in need. It is not improbable that there would be two
+emergencies occurring at the same time. We found that out of all possible two-emergency
+situations based on the population distribution, we would only be able to successfully
+reach both emergency sites 87.25% of the time. If a major event occurred that affects
+people from all of the zones assigning each ambulance to two zones at once would result
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2266 ooff 2299
+in many of the response times being well over eight minutes. Instead we suggest sending
+the ambulance in zone 1 cover zone 1, the ambulance in zone 2 to cover zones 2, 3, then
+6, and the ambulance in zone 5 to cover zones 5 then 4. This will successfully cover all of
+the zones in 11 minutes and reach 250,000 people within the eight-minute time limit.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2277 ooff 2299
+6 Letter to the Emergency Service Coordinator
+Dear Emergency Service Coordinator,
+To maximize the protection of your citizens, we recommend stationing
+ambulances in zones 1, 2, and 5. Doing so would allow your ambulances to reach the
+entire population within eight minutes. The average response time for ambulances in
+M
+these zones to service any given individual would be 2.37 minutes, the lowest of any
+C
+combination of three zones. If one of the ambulances is called on an emergency, we
+M
+recommend shifting the ambulances to zones 2 and 5, as this is the only combination that
+i
+covers all parts of the county within eight minutes. If two of the three ambulances are
+H
+occupied, the remaining ambulance would be ：best placed in zone 2. Though a single
+ambulance in zone one would take less time on average to reach an emergency, the
+号
+average difference is only .15 minutes, or 9 seconds, and an ambulance in zone two
+众
+would be able to reach 30,000 more people within eight minutes.
+You may find it necessary to send more than one ambulance out at a time. In this
+公
+case, emergencies in zones 1 and 2 can be dealt with more quickly than in the other
+信
+zones. In the event of a widespread disaster, three ambulances are very likely too few to
+微
+adequately respond to the problem due to the possibility of damaged roads and the large
+number of people that need to be reached by a small number of vehicles. Three
+ambulances also will probably not contain enough equipment to help thousands of
+citizens. To ameliorate this deficiency, roads should be kept in excellent conditions, a
+volunteer bicycle medic force should be set up, other county departments should assist in
+rescue efforts, and the county should also provide guidelines on how to act during a
+disaster to its citizens. If there are only three ambulances available, the citizens must be
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2288 ooff 2299
+prepared to wait an extra minute in order to maximize the population that can be reached.
+We advise you to deploy ambulances from their locations in zones 1, 2, and 5 to first deal
+with emergencies in their respective zones. After that, the ambulance in zone 2 should
+drive to zone 3 and then 6 to assist with emergency response while the ambulance from
+zone 5 should drive to zone 4. Following these given recommendations would maximize
+your offices ability to respond to disasters and help your citizens.
+M
+Sincerely,
+C
+Team 4421
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4421
+PPaaggee 2299 ooff 2299
+7 Works Cited
+1. FloridaDisaster.org. Florida Division of Emergency Management, 2013. Web. 10
+Nov. 2013.
+2. Nunley, Mike. “Rutherford County, TN, Emergency Medical Service.” Rutherford
+County Government OIT, 2013. Web. 10 Nov. 2013.
+M
+3. “Preparedness for Emergency Response.” FEMA, n.d. Microsoft Word document.
+C
+4. St. Johns County Emergency Management. St. John’s County Emergency
+M
+Management, n.d. Web. 10 Nov. 2013.
+i
+5. Turner, Ryan. “Emergency Management.” cityofhenderson.com. City of Henderson,
+H
+NV, 2013. Web. 10 Nov. 2013. ：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

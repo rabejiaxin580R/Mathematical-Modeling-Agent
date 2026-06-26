@@ -1,0 +1,106 @@
+{
+  "schema_version": 3,
+  "concept_id": "meta.ga",
+  "title": "遗传算法",
+  "taxonomy_path": [
+    "模型求解算法",
+    "启发式/元启发式算法",
+    "遗传算法"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.2",
+  "aliases": [
+    "遗传算法",
+    "GA",
+    "交叉变异",
+    "种群进化"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "遗传算法是一种模拟生物进化“优胜劣汰”过程的随机搜索方法，用于求解复杂优化问题，尤其适合传统数学方法难以处理的非线性、多峰或组合优化问题。",
+    "intuition": "想象一个农场里有一群羊，你想让它们变得更肥。你每次选择最肥的几只羊让它们繁殖，后代可能继承父母的优点，偶尔还会发生基因突变。经过很多代，整个羊群的平均体重就会越来越高。遗传算法就是这样：把问题的每个解看作一只“羊”（染色体），通过选择、交叉、变异不断进化，最终找到近似最优解。",
+    "when_to_use": "当你的优化问题具有以下特征时，可以考虑使用遗传算法：\n- 解空间巨大或连续，传统方法（如梯度下降）难以适用；\n- 目标函数不连续、不可导、非线性或存在多个局部最优；\n- 问题属于组合优化（如0-1规划、路径规划、调度问题）；\n- 你只需要一个“足够好”的解，而不必保证全局最优。",
+    "definition": "遗传算法（Genetic Algorithm, GA）是一种受自然选择启发的元启发式算法，通过模拟生物进化过程中的选择、交叉、变异等操作，在解空间中迭代搜索，逐步逼近最优解。它由John Holland于1975年提出。",
+    "math_principle": "遗传算法的核心是模拟达尔文自然选择学说和孟德尔遗传定律。其数学原理可概括为：\n1. **编码**：将问题的解表示为染色体（通常是二进制串）。例如，对于区间[0,10]上的优化问题，若精度要求0.01，则需将区间离散为1001个点，用长度为10的二进制串表示（2^10=1024≥1001）。二进制串到实际值的映射为：\n   $$x = \\frac{b}{2^L - 1} \\times (x_{\\max} - x_{\\min}) + x_{\\min}$$\n   其中b是二进制串对应的十进制数，L是编码长度。\n2. **种群初始化**：随机生成N个染色体作为初始种群。\n3. **适应度评估**：计算每个染色体的适应度函数值，适应度越高表示解越优。\n4. **选择**：根据适应度比例选择父代染色体，常用轮盘赌选择法，个体被选中的概率与其适应度成正比。\n5. **交叉**：以交叉概率P_c对选中的父代进行基因交换，产生子代。例如单点交叉：随机选择一个交叉点，交换两个父代染色体在该点之后的部分。\n6. **变异**：以变异概率P_m对子代染色体的每个基因位进行随机翻转（0变1，1变0）。\n7. **迭代**：用新生成的子代替换部分或全部父代，形成新一代种群，重复步骤3-6直到满足终止条件（如达到最大代数或适应度收敛）。\n\n算法流程可表示为：\n$$\\text{初始化种群} \\rightarrow \\text{评估适应度} \\rightarrow \\text{选择} \\rightarrow \\text{交叉} \\rightarrow \\text{变异} \\rightarrow \\text{新一代种群} \\rightarrow \\text{循环}$$",
+    "step_by_step": [
+      "1. 确定编码方案：将问题的解表示为染色体，常用二进制编码。例如，对于0-1整数规划，每个变量对应一个二进制位。",
+      "2. 初始化种群：随机生成N个染色体（个体），N通常取20-100。",
+      "3. 定义适应度函数：根据目标函数设计适应度函数，适应度值越大表示解越好。对于最小化问题，可令适应度 = 1/(目标函数值+1)。",
+      "4. 选择操作：使用轮盘赌选择法，根据适应度比例选择父代染色体。",
+      "5. 交叉操作：以交叉概率P_c（通常0.6-0.9）对选中的父代进行单点交叉，生成子代。",
+      "6. 变异操作：以变异概率P_m（通常0.01-0.1）对子代染色体的每个基因位进行翻转。",
+      "7. 更新种群：用子代替换父代，形成新一代种群。",
+      "8. 终止判断：若达到最大代数或适应度收敛，则输出最优解；否则返回步骤3。"
+    ],
+    "worked_example": "以论文6129中的逻辑函数参数优化为例：\n- **问题**：拟合逻辑函数 $f(t) = \\frac{L}{1 + e^{-k(t - x_0)}}$ 到预设数据，需要优化参数L, k, x0。\n- **编码**：每个参数用10位二进制编码，总染色体长度30位。例如，L的范围[0,100]，则L的二进制串对应十进制数b，映射为 $L = b/1023 \\times 100$。\n- **适应度函数**：最小化拟合误差，适应度 = 1/(误差+1)。\n- **参数设置**：种群大小N=50，交叉概率0.8，变异概率0.05，最大代数100。\n- **迭代过程**：初始种群随机生成，经过选择、交叉、变异，每代计算适应度。第50代时，最优适应度达到0.95，对应参数L=48.2, k=0.3, x0=10.1，拟合误差小于0.01。\n- **结果**：算法成功找到近似最优参数。",
+    "pitfalls": [
+      "1. 早熟收敛：种群过早陷入局部最优，失去多样性。可通过增大变异概率或使用自适应参数缓解。",
+      "2. 编码长度选择：编码过短导致精度不足，过长则搜索空间过大，收敛缓慢。需根据精度要求合理选择。",
+      "3. 适应度函数设计不当：若适应度函数区分度低，选择压力不足，算法难以收敛。可考虑适应度缩放。",
+      "4. 参数敏感：交叉概率、变异概率、种群大小等参数对性能影响大，需通过实验调整。",
+      "5. 计算成本高：对于大规模问题，每次适应度评估可能耗时，导致整体运行时间长。",
+      "6. 不保证全局最优：遗传算法是随机搜索，可能无法找到全局最优解，尤其对于高度多峰问题。"
+    ],
+    "tools": "Python 中常用 `scipy.optimize.differential_evolution` 或 `deap` 库实现遗传算法。以下是一个使用 `scipy` 求解简单函数最小化的最小代码示例：\n```python\nimport numpy as np\nfrom scipy.optimize import differential_evolution\n\n# 定义目标函数\ndef objective(x):\n    return 10 * np.sin(5 * x[0]) + 7 * abs(x[0] - 5) + 10\n\n# 定义变量范围\nbounds = [(0, 10)]\n\n# 运行遗传算法\nresult = differential_evolution(objective, bounds, strategy='best1bin', maxiter=100, popsize=15, mutation=(0.5, 1), recombination=0.7)\n\nprint('最优解:', result.x)\nprint('最优值:', result.fun)\n```\n对于更复杂的自定义遗传算法，可使用 `deap` 库：\n```python\nimport random\nfrom deap import base, creator, tools, algorithms\n\ncreator.create(\"FitnessMin\", base.Fitness, weights=(-1.0,))\ncreator.create(\"Individual\", list, fitness=creator.FitnessMin)\n\ntoolbox = base.Toolbox()\ntoolbox.register(\"attr_bool\", random.randint, 0, 1)\ntoolbox.register(\"individual\", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=10)\ntoolbox.register(\"population\", tools.initRepeat, list, toolbox.individual)\n\ndef evalOneMax(individual):\n    return sum(individual),  # 适应度函数示例\n\ntoolbox.register(\"evaluate\", evalOneMax)\ntoolbox.register(\"mate\", tools.cxTwoPoint)\ntoolbox.register(\"mutate\", tools.mutFlipBit, indpb=0.05)\ntoolbox.register(\"select\", tools.selTournament, tournsize=3)\n\npopulation = toolbox.population(n=50)\nalgorithms.eaSimple(population, toolbox, cxpb=0.5, mutpb=0.2, ngen=40, verbose=False)\nprint('最优个体:', tools.selBest(population, k=1)[0])\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "x = \\frac{b}{2^L - 1} \\times (x_{\\max} - x_{\\min}) + x_{\\min}",
+      "variables": {
+        "x": "实际变量值",
+        "b": "二进制串对应的十进制数",
+        "L": "编码长度",
+        "x_max": "变量上界",
+        "x_min": "变量下界"
+      }
+    },
+    {
+      "latex_code": "P_i = \\frac{f_i}{\\sum_{j=1}^{N} f_j}",
+      "variables": {
+        "P_i": "个体i被选中的概率",
+        "f_i": "个体i的适应度",
+        "N": "种群大小"
+      }
+    }
+  ],
+  "cases": [
+    "4185",
+    "6129",
+    "6453",
+    "6829",
+    "7211",
+    "7879"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec011_002_04",
+      "lec011_003_01",
+      "lec011_003_02",
+      "lec013_001_02",
+      "lec013_001_03",
+      "lec013_002_03",
+      "lec013_002_04",
+      "lec013_002_06",
+      "lec017_002_03",
+      "lec017_002_04",
+      "lec017_003_01",
+      "lec017_003_02",
+      "lec017_003_03",
+      "lec018_001_03",
+      "lec021_001_02"
+    ],
+    "from_papers": [
+      "4185",
+      "6129",
+      "6453",
+      "6829",
+      "7211",
+      "7879"
+    ]
+  }
+}

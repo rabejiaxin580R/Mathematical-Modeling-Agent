@@ -1,0 +1,924 @@
+Team #: 3594
+Page 1
+
+Fueling Our Economy:
+A Prediction of Gas Prices
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 2
+
+For office use only
+T1 ________________                                                                     F1 ________________
+T2 ________________                                                                     F2 ________________
+T3 ________________                                                                     F3 ________________
+T4 ________________                                                                     F4 ________________
+
+          For office use only
+
+2012
+15th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+
+Team Control Number: 3594
+Problem Chosen: B
+
+Please type a summary of your results on this page. Please remember not to include the
+name of your school, advisor, or team members on this page.
+
+Executive Summary:
+
+Given the constantly fluctuating price of gas, as consumers, we face a challenging
+decision every time we pull up to the pump: to fill or not to the fill.  Without knowledge of what
+the gas prices will do in the coming weeks, we risk spending our money only to watch the gas
+prices drop later.  Our task was to solve this problem by developing a model to instruct a
+consumer on when to buy gas so as to minimize spending.  Specifically, we looked at consumers
+who use a half tank in a week and those who use a quarter tank in a week.  We developed a
+model that could predict future gas prices and determine how much gas a consumer should buy
+in a given week based on whether the price would go up or down in the next couple of weeks.
+Our future gas price predictions were based on the correlation between crude oil price and gas
+price.  Since the process of refining and transporting crude oil to produce gas takes time, the
+current trend of the crude oil prices forecasts the trend in future gas prices.
+
+Once we had a model for predicting prices, we used a decision tree to develop an
+algorithm for how much gas a consumer should buy on a given week in order to be cost efficient.
+Therefore, the consumer only needs to input the crude oil prices for the past three weeks, the
+current gas price, and the current amount of gas in their tank, and our model will tell them
+whether to buy a full tank, half tank, or no gas.  Our model is applicable to large cities across the
+United States, predicts future gas prices with only 1.63% error, and recommends a buying
+pattern that differs only 1% from the ideal spending that would occur if consumers actually knew
+future gas prices.  Therefore, our model is useful as a way for drivers to save money.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 3
+
+Letter to Local Paper:
+
+Dear Reader:
+
+Team #: 3594
+November 7, 2012
+
+Unsure how much gas to buy at the pump? Feel you have wasted money buying gas at its
+
+highest prices? What if you could base your buying patterns on next week’s prices? We have
+developed a way to predict future gasoline prices based on the change in the previous weeks’
+crude oil prices. With this information, you can fill your tank before the gas prices rise, thus
+avoiding paying at the pump during the peak prices. When prices are going to decrease, you can
+wait until the prices hit their low point to fill up again, thus saving the maximum amount of
+money at the pump.
+
+Our system’s method of saving you money is simple. We just make sure you are buying
+
+gas when the prices are lowest. All you have to do is plug in the crude oil prices from the past
+three weeks and the current gas price; our model will calculate whether the price of gas is going
+to trend up or down. It can even tell you how much gas to buy (none, half tank, or full tank)
+based on how much gas you have in your tank now (¾, ½, ¼, or empty) and how much gas you
+use up every week (¼ tank or ½ tank). Once the calculations are done, it will tell you how much
+to buy today or if you should wait for better prices.
+
+This model is incredibly useful for the average commuter; at the beginning of every week,
+
+you can just plug in the information and know within seconds whether you should fill up your
+car on the way in to work or whether you should expect to see gas prices drop and should fill up
+next week. The idea behind the model is that it takes a trend in the crude oil prices and applies it
+to the price of gas right now in order to predict gas prices two weeks out. Once it has that
+information and has determined which week out of the three weeks it predicts has the lowest gas
+prices, then it takes into account how much gas you have at the moment. The idea behind this is
+that you want to purchase as much gas as you can when the price is lowest, so our model will tell
+you how much to fill up (none, half, or full) in order to minimize the amount of gas you have to
+buy on expensive weeks. Would you rather be spending more money and worrying about when
+to fill up your car, or follow our plan and save money easily? Don’t worry, be happy now.
+
+Sincerely,
+Team 3594
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 4
+
+Table of Contents:
+
+Title Page............................................................................................................................1
+
+Executive Summary...........................................................................................................2
+
+Letter...................................................................................................................................3
+
+Introduction........................................................................................................................5
+Restatement of the problem..................................................................................5
+Assumptions and Justifications............................................................................5
+
+The Model...........................................................................................................................7
+Model Building.......................................................................................................7
+Model Testing.........................................................................................................9
+
+Reflections on the Model.................................................................................................10
+Strengths ..............................................................................................................10
+Areas for Improvement.......................................................................................11
+
+Conclusion........................................................................................................................12
+Results...................................................................................................................12
+Extensions.............................................................................................................14
+
+Appendices........................................................................................................................15
+
+Bibliography.....................................................................................................................27
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 5
+
+Introduction:
+
+Restatement of the Problem:
+
+The problem we faced was how to predict what gas prices will look like in the coming
+
+weeks so that consumers could make an educated decision about whether or not to buy gas now.
+Since our model would be used by everyday drivers, we wanted it to be user-friendly and simple
+while still maintaining a high level of accuracy. We looked at two separate types of commuters,
+ones who drove 100 miles per week, and those who drove 200 miles per week. To eliminate
+excessive variables, we chose to set a single car that had a range of 400 miles per tank, which
+means that the driver will empty their tank in either four weeks (100 mile per week commuter),
+or two weeks (200 mile per week commuter). Also, we assumed that a consumer would only buy
+either a half tank, full tank, or no gas and only buy gas once a week. Using these parameters, we
+needed to determine when a consumer should buy gas based on whether prices of gas in the
+coming weeks would trend up or down. Therefore, we needed to predict future gas prices by
+using factors that correlate with gas prices.
+
+Assumptions and Justifications:
+
+Customers will only buy gas in half and full tank increments.
+
+This assumption simplifies our model and was given in the problem statement.  If a buyer
+
+could choose any amount of gas, the amount which the gas price varies would become more
+significant; he would want to buy proportionally to how good of a deal the gas is.  By restricting
+his choices to a few values, the model will not vary greatly based on small changes in the miles
+driven by the customer in a given week.  This makes our model for 200 miles per week and 100
+miles per week relevant with only minor modifications to drivers who drive from 100 to 200
+miles per week. Indeed, the actual number of miles driven is less important than the ratio
+between the amount of miles driven in a week and the number of potential miles in a tank. In our
+case, the tank holds 16 gallons and the car gets 25 mpg allowing the driver to travel 400 miles on
+a single tank. However, any consumer who drives either a ½ or a ¼ of their car’s potential ratios
+every week could use our model without modification.
+
+The historical correlation of crude oil and gas prices will continue.
+The assumption was necessary given the nature of our model. In using prior crude oil prices to
+model future gas prices, we needed to assume that the correlation between crude oil and gas
+would continue. This assumption allows us to assume that data from 2011 and prior, which we
+based our model off of, will still correlate with the data from 2012. This assumption is grounded
+in the basis that since 2011, the method for the refinement of oil to gasoline has not changed
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 6
+
+dramatically, which allows for the correlation that we based our model off of to remain relevant.
+Moreover, we will later test our model to make sure it applies to 2012.
+
+It takes time for the gas market to respond to changes in crude oil prices.
+Since the production of gas is dependent on the production of crude oil, the price of gas depends
+on the price of crude oil. Because of the time lag from the transportation and the refinement
+process, it takes time, one to two weeks according to our calculations, for gas prices to respond
+to changing oil prices.
+
+People would like to minimize their expenditure on gas while still maintaining their desired
+amount of driving.
+A consumer will make a decision on whether or not to buy gas based on trying to pay the least
+amount possible. However, they do not want to ever run out of gas, so the idea is to buy the same
+total amount of gas and run your car at the same level of operation that it is now, but buy the gas
+at more optimal times, thus saving money by purchasing the gas when the price is optimal.
+
+The trend in the average of the Brent and WTI crude oil prices is representative of the
+trends in the price of all crude oil relevant to U.S. gasoline.
+From the data that was given to us at the beginning of the problem, we assumed that the trends in
+the prices of Brent and WTI crude oil are representative of the trends for all sources of crude oil
+used in major U.S. cities. Moreover, when we compared the graphs of the Brent and WTI, we
+found that these two had very similar trends in terms of price changes.  Therefore, we felt
+justified in saying that crude oil price trends are fairly consistent across the industry and do not
+depend heavily on the specific source. We used an average of the Brent and WTI prices as our
+crude oil price.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 7
+
+The Model:
+
+Model Building:
+
+In order to determine how much gas a consumer should buy each week, we had to find a
+method of effectively predicting future gas prices. Our model is constructed to predict gas prices
+based on the past weeks’ crude oil prices. We discovered this correlation by investigating the
+relationships between current gas prices and those factors in the world that would affect the price
+of gas. When we investigated these relationships, we found that time of year, temperature, and
+economic stability all had very low correlation coefficients with gas price (see appendices 2a and
+2b). In contrast, the price of crude oil was very closely related to the price of gas since crude oil
+is refined into gasoline (see appendices 2c and 3a). Additionally, its price takes into account
+economic and natural factors because a recession or natural disaster would affect the price of
+crude oil as well as the price of gas. By using recent oil prices, we can accurately predict what
+the price of gas will be for up two weeks in the future. We knew that due to transporting and
+refining time requirements, there would be a lag between when the crude oil price changed and
+when the gas price experienced the same change. Therefore, we could use crude oil prices from
+past weeks to predict future gas price changes. Next we needed to determine the amount of lag
+between the crude oil and gas prices.
+
+When we graphed scatter plots of crude oil, shifted 1-6 weeks, with the unshifted price of
+
+gas, we found that the strongest correlation between the gas and crude oil occurred when the
+shift was only 1 week. Since this correlation was so strong, it provided a convenient way to
+predict what the future gas prices would be, given only the knowledge of what the price of crude
+oil had done over the past several weeks. However, a 1 week shift only allowed us to predict 1
+week into the future and we needed 2 weeks worth of predictions for reasons explained later (see
+paragraph 6). Since a 2 week shift also produced a very strong correlation, we decided to use this
+relationship as the basis for our model. The recursive equation for finding our new price point for
+gas then followed logically from this shift: P1=(C-2-C-1)+P0  where P1 is next week’s gas price,
+(C-2-C-1) is how much the crude oil price changed between one week ago and two weeks ago,
+and P0 is the current gas price. We modelled this relationship in Excel and then graphed our
+predicted values with the actual gas values. We found that since the price of crude oil had more
+noise than the price of gas, our predicted values also jumped around more, while still following
+the correct overall trend.
+
+We discovered that we could smooth out the graph by using a system of averaging.
+
+Instead of using the actual crude oil price (C0) for a given week, we averaged the real values of
+the week before that week (C-1), the week itself (C), and the week following it (C1) to obtain a
+new value (Ca) for the week (Ca=(C-1+C0+C1)/3). This adjustment of values greatly diminished
+the noise and allowed us to accurately model gas prices with an average percent error of only
+1.63 % (see appendices 4a-b).
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 8
+
+We then moved on to the real question: how to determine whether or not someone should
+buy gas today or wait and buy it later. We started by creating two different option trees for a 200
+miles per week driver (see appendix 1a) and a 100 miles per week driver (see appendix 1b) based
+on the assumption that they could buy a full tank, half tank, or no gas in any given week. This
+assumption reduces the number of options a buyer can choose from to two or less for any given
+week. There are three options total: buy none, buy a half-tank, and buy a full tank.  However, a
+customer will only be able to buy a full tank if they have no gas.  If they have no gas, they would
+not be able to get away with buying no gas. Thus, a customer can never have both the option of
+buying both a full tank and no gas, restricting his options to two at the most.
+
+First we will investigate our model for the 200 miles per week driver. We used the
+equation gt=gt-1+gb-1–1/2, where gt is the fraction filled for the tank at the beginning of the
+current week, gt-1 is the fraction filled at the beginning of the previous week, gb-1 is the fraction
+of a tank bought in the previous week, and a half tank of gas is used each week. We then input a
+series of nested if/then statements, based on whether or not our predicted gas price for the next
+week would be lower or higher than the current price, to determine how much gas a driver
+should buy each week (gb). If the price of gas is increasing, gas should be purchased in the
+maximum quantity as soon as possible so as to avoid paying the peak price for the gas. If the gas
+prices are decreasing, as little gas as possible should be bought so as to be able to save the
+maximum amount when the gas reaches its low point. This means that if the price was expected
+to rise and the driver had no gas, they should buy a full tank, and if they had half a tank, they
+should buy another half tank. If the price was expected to drop and the driver had a half tank,
+they should buy no gas, and if they had no gas they should buy a half tank(see appendix 1a).
+Once we had determined how much gas the driver should buy each week, we could multiply the
+number of gallons by the known gas price for that week to determine how much the driver would
+spend, which should ideally be the lowest price possible with the driving lifestyle they want to
+maintain.
+
+Next we will investigate our model for the 100 miles per week driver. We used the
+equation gt=gt-1+gb-1–1/4, where gt is the fraction filled for the tank at the beginning of the
+current week, gt-1 is the fraction filled at the beginning of the previous week, gb-1 is the fraction
+of a tank bought in the previous week, and a quarter tank of gas is used each week. We used the
+same approach of nested if/then statements to determine gb for a given week. If the driver had no
+gas and the current price was the lowest within the next two weeks, they should buy a full tank,
+but if the current price was not the lowest within the next two weeks, they should buy a half tank.
+If the driver had a quarter tank and the current price was lower than next week’s price, they
+should buy a half tank, but if the current price was not lower, they should not buy gas. If the
+driver had a half tank and the current price was the lowest within the next two weeks, they
+should buy a half tank, but if the current price was not the lowest, they should buy no gas. If the
+driver had a three quarters full tank, they could not buy gas(see appendix 1b). We could then
+calculate the amount a driver spent on gas in the same method as described above.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team #: 3594
+Page 9
+
+Our model was then essentially complete except for one detail. Since the 100 miles per
+week driver model had to predict gas prices two weeks into the future, it used crude oil prices
+from the current week. That meant that using our averaging system, the averaged value for the
+current week would include a future crude oil value that would not be available yet. We solved
+this problem by using the actual crude oil price to predict two weeks out. Our one week
+prediction followed the equation P1=(Ca-1–Ca-2)+P0 and our two week prediction followed the
+equation P2=(C0–Ca-1)+P1. Another difference is that the one week prediction is based on the the
+difference in crude oil price added to the current gas price whereas the two week prediction is
+based on the difference in crude oil price added to the predicted one week gas price.
+
+We originally developed our model using Boston data, and then we applied it to data
+
+from other major US cities(see appendices 5a-5f and 6a-6f).
+
+Model Testing:
+
+The first level of testing for our model was a calculation of the average percent error
+
+between our predicted gas prices and the actual gas prices. Our graphs help to visualize this error
+(see appendices 7a-b). We first calculated the percent error for data from Boston 2003-2011,
+which was the data we had built our model from, and then calculated percent error for 2012. The
+very small errors in both cases demonstrated the accuracy of our model as well as the fact that it
+could be applied to new data.
+
+Boston 2003-2011: 1.63 % average error between predicted and actual gas prices
+Boston 2012: 0.88% average error between predicted and actual gas prices
+
+The next level of testing for our model was a comparison between how much a consumer
+would spend on gas if they followed our model, how much they would spend if they knew future
+gas prices in advance, and how much they would spend if they did the opposite of what our
+model suggested. This 3-way comparison allowed us to see how our predicted spending fit into a
+spectrum from the lowest possible spending to the highest possible spending. In all cases, our
+model instructed the consumer to exercise very similar buying habits to the ideal spending
+pattern. Our model also saved the consumer a significant amount of money from the worst case
+scenario which could occur if a consumer was buying gas on a whim. The usefulness of our
+model was verified by its ability to save a consumer money.
+
+100 miles per week driver-
+Boston 2003-2011: 0.46% difference between model spending and omniscient spending
+
+2.48 % saved from worst case spending
+
+Boston 2012: 0.51 % difference between model spending and omniscient spending
+
+6.08 % saved from worst case spending
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 10
+
+200 miles per week driver-
+Boston 2003-2011: 0.36% difference between model spending and omniscient spending
+
+1.54% saved from worst case spending
+
+Boston 2012:  0.26 % difference between model spending and omniscient spending
+
+ 3.60 % saved from worst case spending
+
+The final level of testing we performed was to see how well our model could be applied
+to other large United States cities: Houston, Los Angeles, San Francisco, New York, Chicago,
+and Denver. We took the model that we had created from our 2004-2011 Boston data and
+applied the same formulas to the new sets. With each set, we created summary graphs that
+plotted our predicted gas prices against the recorded ones in the data(see appendices 5a-5f and
+6a-6f). For almost all the cities, there was less than a 1% difference between our recommended
+spending and the ideal spending, so our model was clearly effective across the United States.
+
+Reflections on the Model:
+
+Our model predicts the change in gas prices based the previous weeks’ crude oil prices.
+
+We account for local gas prices in order to reset our model to the local prices before each
+prediction, in order to not let our model run away from reality. However our recommendation on
+how much gas to buy is only dependent on the predicted change in the prices and not the prices
+themselves. This comes a double edged sword to our model, because our model uses
+international crude oil prices and no local information to predict the change in the prices. The
+advantage of this is that our recommendation on how much gas to buy can be used
+internationally. The disadvantage to this is that any local issues that change in the price of gas
+will go unpredicted.
+
+Another double edged sword that applies to the data that we would be using to generate
+
+the recommendation of whether to buy or not, is the volatility of the gas prices. If the price of gas
+was very volatile than it would be possible to save a lot of money by skipping the nadir of the
+gas price, by buying early. However, given our current model for generating the predictions, if
+the change in price of gas prices became very volatile, our ability to predict the trend would
+decrease dramatically.
+
+STRENGTHS:
+
+●  The cost of buying gas using our Model closely is very similar to the most efficient
+mode of buying gas. Since one of our goals was to generate a model that would predict
+future gas prices in an effort to reduce excessive spending on gas, and this model
+generates a buying plan that closely resembles the ideal pattern, we can conclude that this
+model has succeeded in achieving this aspect of our project.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 11
+
+●  Our model can be used to predict prices throughout the United States. When testing
+this model on data sets from other cities, we saw that our model accurately predicts gas
+prices in other areas as well as Boston.
+
+●  Our model predicts gas prices with only a 1.63 % average percent error. This high
+
+amount of precision allowed us to very accurately determine how much gas the consumer
+should buy in a given week.
+
+●  Our model is easy to use. A user only needs to enter crude oil prices from the last three
+weeks and the current gas price, and our model will not only predict the prices for the
+next two weeks, but also tell the user exactly how much gas to buy for the week and how
+much it will cost.
+
+AREAS FOR IMPROVEMENT:
+
+●  For some cities, our predicted values were slightly shifted from the actual values
+
+when graphed over a shorter time frame. Longer transportation times and other factors
+may mean that the time lag between crude oil prices and gas prices varies from city to
+city.  With more time to investigate individual cities thoroughly, we could adjust our
+model specifically to each city and correct this minor inaccuracy.
+
+●  Separate models are needed for consumers who drive different amounts during the
+week. The more weeks a driver can go without buying gas, the more weeks they need to
+predict in order to buy gas at the best price. While both of our models are accurate, it
+would be more convenient if a user could access both models in one interface.
+
+●  Our model does not accommodate drivers who do not fit the profile given in the
+problem. If someone uses some value other than a quarter or a half of their tank each
+week, the model will not apply to them.
+
+●  If the gas continued at a constant pace, there would be no opportunity for our model
+to save money. The only opportunities to save money are when the gas price reaches its
+local maximum or minimum. Unfortunately, these are the points that are hardest to
+predict using past data. Past data repeatedly predicts the continuation of a trend whether it
+be positive or negative when the gas price rebounds in the other directions. Furthermore,
+the price of crude oil is more volatile than the price of gas often making the model to
+predict more static of noise than is really present. However the model is accurate enough
+to save a consumer money. For example, if our consumer driving 200 miles a week in
+Chicago was to follow our model from the beginning of January 2012 to the end of
+October 2012 they would have saved an estimated $52.50 compared to someone who
+filled up their tank during the most expensive weeks.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 12
+
+    •Results:
+
+Conclusion:
+
+Our model accurately informs the consumer on how much gas they should purchase at
+
+the pumps on a weekly basis. Even in freak events and sudden changes in the price of gas (such
+as the economic recession of 2008, the largest drop in gas prices in our data sets), our model
+remained consistent with real data. The results compare the information that we have to both a
+model where the knowledge of future gas prices was omniscient, and a model where the most
+amount of money possible was spent on gas. Our model consistently ended up very close to the
+ideal purchasing pattern. The reason why %Saved for the 100 mile per week is almost twice that
+of the 200 mile per week, is due to the number of times you have to fill up in that time frame.
+The 200 mile per week model simply uses more gas and as a result has to fill up more often,
+meaning that the amount of money that is able to be saved is proportional to the time frame that
+you are buying gas with. If you buy gas in 2 week increments, the amount of money saved is
+lower than if you buy gas in 4 week increments. The same is true on larger scales; if you were
+buying in 2 month increments, you would save even more than if you were buying in 4 week
+increments. The amount of money is heavily weighted towards the frequency with which you
+have to fill your tank.
+
+1/2/12 - 10/22/12 for the 200 mile a week consumer
+
+City
+
+Total spent
+according to
+our model
+
+Total spent
+ideally
+
+Difference
+between
+predicted
+and ideal
+
+% Difference
+predicted
+and ideal
+
+Total spent
+with worst
+case scenario
+
+Saved
+(compared to
+worst case
+scenario)
+
+% Saved
+(compared to
+worst case
+scenario)
+
+Boston
+
+$1203.15  $1200.11  $3.04
+
+0.26%
+
+$1243.91  $40.76
+
+3.28%
+
+Houston
+
+$1119.42  $1116.82  $2.60
+
+0.23%
+
+$1160.43  $41.02
+
+3.54%
+
+Los
+Angeles
+
+San
+Francisco
+
+New
+York
+
+$1332.53  $1323.10  $9.43
+
+0.71%
+
+$1384.06  $51.53
+
+3.72%
+
+$1323.20  $1315.13  $8.07
+
+0.61%
+
+$1374.14  $50.94
+
+3.85%
+
+$1199.10  $1195.78  $3.32
+
+0.28%
+
+$1240.37  $41.27
+
+3.33%
+
+Chicago
+
+$1259.82  $1252.46  $7.35
+
+0.59%
+
+$1312.40  $52.58
+
+4.01%
+
+Denver
+
+$1133.24  $1128.38  $4.86
+
+0.43%
+
+$1171.55  $38.31
+
+3.27%
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 13
+
+1/2/12 - 10/22/12 for the 100 mile a week consumer
+
+City
+
+Total spent
+according to
+our model
+
+Total spent
+ideally
+
+Difference
+between
+predicted
+and ideal
+
+% Difference
+predicted
+and ideal
+
+Total spent
+with worst
+case scenario
+
+Saved
+(compared to
+worst case
+scenario)
+
+% Saved
+(compared to
+worst case
+scenario)
+
+Boston
+
+$587.38
+
+$584.42
+
+$2.96
+
+0.51%
+
+$622.23
+
+$34.85
+
+5.60%
+
+Houston
+
+$557.65
+
+$555.84
+
+$1.81
+
+0.33%
+
+$594.65
+
+$37.00
+
+6.22%
+
+Los
+Angeles
+
+San
+Francisco
+
+New
+York
+
+$666.78
+
+$660.01
+
+$6.77
+
+1.03%
+
+$709.74
+
+$42.96
+
+6.05%
+
+$659.42
+
+$652.56
+
+$6.86
+
+1.05%
+
+$702.64
+
+$43.22
+
+6.15%
+
+$599.25
+
+$596.56
+
+$2.69
+
+0.45%
+
+$635.15
+
+$35.90
+
+5.65%
+
+Chicago
+
+$627.54
+
+$623.19
+
+$4.35
+
+0.70%
+
+$668.55
+
+$41.01
+
+6.13%
+
+Denver
+
+$569.14
+
+$564.84
+
+$4.30
+
+0.76%
+
+$602.16
+
+$33.02
+
+5.48%
+
+We applied our model to the cases where a driver wanted to travel 100 miles a week or
+
+200 miles a week.  With minor modifications, this model could be applied to distances in
+between the two.  Our model could also be applied to values below 100 miles but in this case, we
+would need to be able to predict gas prices even further in advance, since a consumer could
+choose to drive for longer on a single tank.  However, if you drive more miles than 200 miles a
+week, or, more generally, travel far enough to use up more than a half tank of gas, the problem
+changes significantly.  For example, let’s say you travel 201 miles a week.  The first week you
+must fill up a full tank in order to be able to complete the week’s travel because if you put in a
+half tank, you would only be able to travel 200 miles.  The next week, you would have enough
+gas left to travel 199 miles.  You would need to add more gas to make it through the next week
+and would have to buy another half tank.  This example illustrates that people who drive more
+than 200 miles a week will need to refill their gas tank every week.  Even with a full tank that
+would allow them to drive 400 miles, they would need more gas because they would have less
+than 200 miles left after the first week.  On the other hand, almost every week, they would have
+some gas left in the tank (just never more than ½), which would preclude completely filling the
+tank.  Therefore, customers would buy a ½ tank almost every week.  They would only have the
+additional option of buying a full tank on the weeks where they had nothing in the tank left going
+into the week.  (For example, every 4th week a consumer who drove 250 miles a week would
+have the option of buying a full tank.)  When they need more than half a tank to complete their
+weekly driving, the customer’s choices become so restricted that they have much less need of a
+model like ours.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 14
+
+   •Extensions:
+
+Several extensions that could elaborate on the areas for improvement were identified over
+
+the course of this project. We concluded that if one were to create an Excel or Stella program
+that would take the input of whatever car someone was using (mpg, miles per week, and gas tank
+size), we could accurately describe the choices that the said person would have to face in order to
+minimize his/her spending. Similarly if we had a larger pool of data to model from, we could
+have included some more factors that are not already affecting the crude oil.
+
+While we were looking at the amount of money that our model would save, we
+uncovered an interesting fact about the modeling system that we had created. If for instance we
+were not a commuter buying gas for a single car, but instead a company that was buying gas in
+bulk to resell for profit. The realization that we uncovered was that buying in bulk increases the
+amount one can save. This is true because of the way the price of gas fluctuates. There are peaks,
+and valleys, and if a company that consumes a large quantity of gas were to buy all of their gas
+in one of the valleys then they would be able to save quite a bit of money. We would have to
+expand our model to explore this option, since our prediction window does not extend farther
+than a few weeks with reasonable accuracy.
+
+We set out with a simple goal of telling the commuter whether or not they should buy gas
+
+this week or wait until later. With the results that support our model, and show that in fact our
+model saves money, we are not only taking away the decision of whether to buy gas, and the
+stress associated with it, but also saving you money every time you fill up using our model.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 15
+
+Appendices:
+
+1a: 200 mile per week decision map
+
+1b: 100 mile per week decision map
+
+2a: Regression of DJIA v. Gas Prices (y-axis is in thousands)
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 16
+
+2b: Regression of Season v. Gas Prices
+
+2c: Boston (2003-2011)
+
+3a:
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 17
+
+4a:
+
+4b:
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 18
+
+5a: 200 mile per week model
+
+5b: 200 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 19
+
+5c: 200 mile per week model
+
+5d: 200 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 20
+
+5e: 200 mile per week model
+
+5f: 200 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 21
+
+6a: 100 mile per week model
+
+6b: 100 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 22
+
+6c: 100 mile per week model
+
+6d: 100 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 23
+
+6e: 100 mile per week model
+
+6f: 100 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 24
+
+7a:
+
+7b: 200 mile per week model
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team #: 3594
+Page 25
+
+Bibliography:
+
+“Dow Jones Industrial Average.” Google Finance. N.p., n.d. Web. 7 Nov. 2012.
+
+<https://www.google.com/finance/historical?cid=983582&startdate=Jan%203%2C%202
+
+011&enddate=Dec%2031%2C%202011&num=10&ei=uTGZULC_OcjD0QGNfQ&start
+
+=0>.
+
+“Half Empty Gas Tank.” Dreamstime. N.p., n.d. Web. 7 Nov. 2012.
+
+<http://thumbs.dreamstime.com/thumblarge_277/12128646178a2Ktw.jpg>.
+
+“Spot Prices.” U.S. Energy Information and Administration. U.S. Department of Energy,
+
+n.d. Web. 7 Nov. 2012.
+
+<http://www.eia.gov/dnav/pet/pet_pri_gnd_a_epmr_pte_dpgal_w.htm>.
+
+“Weekly Retail Gasoline and Diesel Prices.” U.S. Energy Information and Administration. U.S.
+
+Department of Energy, n.d. Web. 7 Nov. 2012.
+
+<http://www.eia.gov/dnav/pet/pet_pri_gnd_a_epmr_pte_dpgal_w.htm>.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM

@@ -1,0 +1,1727 @@
+Team #5473 Page 1 of 46
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2015
+M
+18th Annual High School Mathematical Contest in Modeling (HiMCM)
+C
+Summary Sheet
+(Please attach a copy of this page to your MSolution Paper.)
+Team Control Number:5473i
+H
+Problem Chosen:B
+Crimes are permanently something clo：sely associated with the safeness of
+one place, and safeness must be one of the most primary factors that citizens
+号
+concern. It should be apparent that higher crime rate represents less safety; yet
+assigning a certain safety rating to one city cannot be achieved by simply
+众
+considering the amount of crimes. In this paper, we are going to determine a safety
+rating for My City, a metropolis with a population of 2.8 million.
+公
+In the first place, we make attempts to weigh the impact of different crime
+信
+categories by both the level of fear and the cost of crimes. In the fear approach, we
+create an index scale to evaluate the relative level of safety of My City compared
+微
+to other cities in the United States. Using a weighted arithmetic average and results
+of a survey from Mark Warr’s essay Fear of Victimization, we can calculate the
+relative level of fear in My City as a reasonable safety rating of My City. In the
+cost approach, we will use the crime numbers per 1000 people to evaluate the total
+cost of all crimes per 1000 people. In the end, we will compare the two models and
+give a general conclusion for the safety rating in My City.
+Furthermore, a model which used to measure the interior safeness in terms
+of regions inside My City is also developed. We firstly re-divide the entire cities
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 2 of 46
+into 22 regions according to original beats number given by dataset, and then
+combine the fear approach with the probability of the occurrence of a specific
+crime category in order to come up with the danger ratings of each regions.
+Based on these two major models and other basic data analysis, we draw up
+a letter to the mayor of My City in the end of this paper, in order to inform him or
+her about the security circumstance inside city and to provide some advice.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 3 of 46
+Catalogue
+Abstract…………………………………………………………………………..3
+Restatement……………………………………………………………………...4
+Assumption……………………………………………………………………....4
+M
+Variables………………………………………………………………………....6
+C
+The Analysis of Crime Data in My City ……………………………………….7
+M
+Fear Model ……………………………………………………………………..13
+i
+H
+Cost Approach …………………………………………………………………26
+：
+Safety Rating in Terms of Regions……………………………………………31
+号
+Additional Model………………………………………………………………37
+Strength and Weakness……众…………………………………………………..39
+Conclusion……………………………………………………………………...40
+公
+A letter to the Mayor…………………………………………………………..41
+信
+Reference……………………………………………………………………….43
+微
+Appendix………………………………………………………………………..44
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 4 of 46
+Abstract
+Crimes are permanently something closely associated with the safeness of
+one place, and safeness must be one of the most primary factors that citizens
+concern. It should be apparent that higher crime rate represents less safety; yet
+assigning a certain safety rating to one city cannot be achieved by simply
+considering the amount of crimes. In this paper, we are going to determine a safety
+rating for My City, a metropolis with a population of 2.8 million.
+M
+In the first place, we make attempts to weigh the impact of different crime
+C
+categories by both the level of fear and the cost of crimes. In the fear approach, we
+M
+create an index scale to evaluate the relative level of safety of My City compared
+to other cities in the United States. Using a weighted arithmetic average and results
+i
+H
+of a survey from Mark Warr’s essay Fear of Victimization, we can calculate the
+：
+relative level of fear in My City as a reasonable safety rating of My City. In the
+cost approach, we will use the crime numbers per 1000 people to evaluate the total
+号
+cost of all crimes per 1000 people. In the end, we will compare the two models and
+give a general conclusion for the safety rating in My City.
+众
+Furthermore, a model which used to measure the interior safeness in terms
+公
+of regions inside My City is also developed. We firstly re-divide the entire cities
+into 22 regions according to original beats number given by dataset, and then
+信
+combine the fear approach with the probability of the occurrence of a specific
+crime category in order to come up with the danger ratings of each regions.
+微
+Based on these two major models and other basic data analysis, we draw up
+a letter to the mayor of My City in the end of this paper, in order to inform him or
+her about the security circumstance inside city and to provide some advice.
+Keywords: Crime, fear of victimization, cost of crime, safety rating, interior
+safeness
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 5 of 46
+Restatement
+My City is a big international city with 2.8 million of population, which
+also can be impacted by an adjacent metropolitan area that possesses a population
+up to 6 million. In such a densely populated city, safety and crime issues are
+always concerned by not only citizens but also governments. With a detailed crime
+report of My City in 2014 at hand, we are asked to create a mathematical model to
+indicate the safety rating of this city. The crime report we have received contains
+M
+information about date, categories of crimes, detailed description of cases, the
+location, the domestic condition and the beat number. Our safety ratiCng should
+engage consideration of this information provided and represeMnt the degree of
+safety of My City in comparison with other cities in the United States, as well as
+i
+the interior circumstances regarding security in differeHnt beats.
+：
+Assumption 号
+Assumption one: Safety rating is mostly influenced by the more serious and
+众
+damaging crimes.
+公
+Justification:
+There a信re many different types of crime in the data we received. In order to
+simplify the model while still creating a reasonable safety rating of My City, we
+decide 微to pick 8 essential types of crime as the indicator of the safety level. This is
+fairly reasonable because the essential crimes we pick are far more damaging than
+other crimes. They also have much higher costs and level of fear by comparison.
+According to the Uniform Crime Report released annually by the FBI, the numbers
+of Criminal Homicide, Forcible Rape, Robbery, Aggravated Assault,
+Burglary, Larceny theft, Motor vehicle theft, and Arson are the major indicator
+of the safety rating. These crimes are also much better recorded every year and it’s
+easy to make comparison between My City and other cities in the United States.
+Therefore, in this essay, we will adopt the standard of the Uniform Crime Report
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 6 of 46
+and only consider the 8 essential types of crime in the creation of the safety rating
+in My City.
+We will also divide the essential crimes into two groups according to the
+standard of the Uniform Crime Report. Homicide, Rape, Robbery, and Assault are
+considered as violent crimes while Burglary, Larceny theft, Motor vehicle theft,
+and Arson are regarded as property crimes.
+M
+Assumption two: The area of and the police power in each beat region is similar.
+Justification: C
+A beat is a territory that one police officer is able to Mcompletely patrol on
+foot or bicycles in certain amount of time, which indicates that extent of beats will
+i
+not diverge from one another too much. Though beHats in metropolis would be
+relatively small areas but in suburbs much larger, beats in one city tend to possess
+：
+similar size because the population density is relatively even. Simultaneously,
+according to the beats map of several 号American cities and towns as well as to our
+dataset, the quantity of beats with the same first two figures is very close.
+Therefore, we are able to assum众e that the area of each region is similar.
+Since the size of each beats is close according to the first assumptions, the
+公
+time that each police officer take to patrol and numbers of daily shift should be
+fixed. Based what we have stated in the justification of the first assumptions that
+信
+each region will include similar amount of beats, the police power that government
+has allocated to each regions will be close in quantity.
+微
+Assumption three: The domestic situation and arrested situation in a Region have
+minor or little effect on the safety rating of a region.
+Justification:
+The amount of domestic-involved cases can not directly expose whether a
+region is safe or not. Primarily, domestic situation is more likely to happen in
+apartments or residence instead of streets or office building, so the high frequency
+of domestic-involved crimes could be caused by larger amount of apartments in
+one region instead of the low safety rating of this region. Furthermore, most of the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 7 of 46
+citizens pay more attention to public security instead of whether all family in this
+region is harmonious or not. Similarly, the arrested ratio is related to other factors
+as well. For example, the criminals of theft might be easier to arrest than the
+criminal of an arson case. Also, a criminal could be arrested by police officers
+from an adjacent region. In this way, high arrested ratio cannot clearly stand for a
+safe region.
+M
+Variables:
+(cid:1845) The number of a certain type of crime committed in every 100C0 people,
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+M
+(cid:1840) The number of a certain type of crime committed in a year
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+i
+(cid:1835) The relative value of a city on the index scale ofH a certain type of crime
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+：
+(cid:1832) The numerical evaluation of the fear of a certain type of crime according to
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+Mark Warr’s essay
+号
+(cid:1829) The total cost of a certain type of crime in every 1000 people
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+众
+The amount of a certain crime taking place in my city in 13 days
+The amount o公f a certain crime taking place in region in 13 days
+The fear index of a certain crime
+信
+The danger rating of region
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 8 of 46
+Part One: The Analysis of Crime Data in My City
+There were 11162 crimes taking place in My City during the time period of 14
+days, from July 5th to July 18th in 2014. As the data is so large, categorizing and
+analyzing the data will be the first step to gain substantial understanding about the safety
+condition in My City.
+M
+(1) Analysis of Daily Crime
+C
+M
+Amount of Cases (Times)
+960
+i
+H
+920
+880 ：
+840
+800
+号
+760
+720
+众
+7/6 7/7 7/8 7/9 7/10 7/11 7/12 7/13 7/14 7/15 7/16 7/17 7/18
+Chart 1.1 Daily Quantities of Crimes in My City (7/6/2014-7/18/2014)
+公
+For the reason that the quantity of crimes occurred in the first day (7/5/2014) was
+信
+so different (had a magnitude of 202 while all the other day had crimes amount >800)
+from o微ther data, we decide to discard all the data under this date in the following analysis
+and mathematical modeling. Therefore, the average amount of cases was 843/day due to
+the large amount of cases happening in the following days. The fluctuation of cases
+amount in My City was slight according to the Chart 1. Concerned the date July 6th to
+July 18th, over 800 crimes appeared every day in this city with population of 2.8 million,
+which stands for a really high crime frequency compared with the other similar-scale
+cities in America.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 9 of 46
+(2) Analysis of Crime Categories and Arrested Condition
+Among 27 categories of crimes, Theft occurred most frequently with quantity up
+to 2618. Battery, Narcotic and Criminal Damage ranked subsequently, all occurred for
+over 1000 times in two weeks. For 16 crime categories only had the crime amount less
+than 300 times in 7/6/2014-7/18/2014 and could not have vital influence in our data
+analysis, we use “OTHER CATEGORIES” to stand for these categories in the following
+M
+table and chart. Throughout all these crimes, the arrested ratios of each category (arrested
+case/ cases amount) range from 0.067 to 1.000, with the average rCatio of 0.417, which
+means that criminals of 417 cases will be arrested in 1000 cMases. The local police did a
+good job in dealing with Narcotic, Prostitution, Interference with Public Officers,
+i
+Gambling and Liquor Law Violation, all of which cHriminals in these 5 types of crime
+were successfully arrested in two weeks. Yet, Motor Vehicle Theft should be noticed for
+：
+it had the lowest arrested ratio 0.067, though the crime itself would not bring so much
+loss. 号
+(More detailed information about crime categories can be viewed in the appendix)
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     | Categories   |                                       Team #5473                     Page   10 of 46  |     | Cases Amount  |     |     | Arrested Cases  |     |     |
+| --- | ------------ | ------------------------------------------------------------------------------------- | --- | ------------- | --- | --- | --------------- | --- | --- |
+Arrested Ratio
+| (Primary Description)  |                |     |     | (Times) |     |     | (Times) |     |        |
+| ---------------------- | -------------- | --- | --- | ------- | --- | --- | ------- | --- | ------ |
+|                        | THEFT          |     |     | 2618    |     |     |  287    |     | 0.110  |
+|                        | BATTERY        |     |     | 2002    |     |     | 488     |     | 0.244  |
+|                        | NARCOTIC       |     |     | 1153    |     |     | 1152    |     | 0.999  |
+| CRIMINAL DAMAGE        |                |     |     | 1068    |     |     |   85    |     | 0.080  |
+|                        | ASSAULT        |     |     |         |     |     |         |     | 0.258  |
+|                        |                |     |     | 701     |     |     |   181   |     |        |
+|                        | OTHER OFFENSE  |     |     |         |     |     |         |     | 0.228  |
+|                        |                |     |     | 636     |     |     |   145   |     |        |
+|                        | BURGLARY       |     |     | 560     |     |     |   41    |     | 0.073  |
+| DECEPTIVE PRACTICE     |                |     |     | 508     |     |     |   49    |     | 0.096  |
+M
+|     | ROBBERY  |     |     | 394 |     |     |   36 |     | 0.091  |
+| --- | -------- | --- | --- | --- | --- | --- | ---- | --- | ------ |
+C
+| MOTOR VEHICLE THEFT  |     |     |     | 374  |     |     |   25  |     | 0.067  |
+| -------------------- | --- | --- | --- | ---- | --- | --- | ----- | --- | ------ |
+M
+CRIMINAL TRESPASS
+|     |        |     |     | 304  |     |     |   222 |     | 0.730  |
+| --- | ------ | --- | --- | ---- | --- | --- | ----- | --- | ------ |
+|     | OTHER  |     |     | 642  |     |     | 437   | i   | 0.681  |
+CATEGORIES
+H
+|     | Average  |     |     |     |     |     |     |     | 0.417  |
+| --- | -------- | --- | --- | --- | --- | --- | --- | --- | ------ |
+：
+|     |     |     | Table 1.1  Quantity of Crimes Committed in My City.  |     |     |     |     |     |     |
+| --- | --- | --- | ---------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+号
+  3000
+|     |     |     |     | Crime |     |     | Arrested |     |     |
+| --- | --- | --- | --- | ----- | --- | --- | -------- | --- | --- |
+众
+2625
+2250
+公
+1875
+信
+1500
+微
+1125
+750
+375
+0
+|     |     | TH  | BA NA | CD  | AS  | OO  | BU DP | RO MVT | CT OC |
+| --- | --- | --- | ----- | --- | --- | --- | ----- | ------ | ----- |
+Chart 1.2 - Quantity of Crime Categories and Arrested Amount
+NOTE: We use abbreviation in Chart 1.2 to represent each category due to the
+
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 11 of 46
+lack of space. Here is the illustration of every abbreviation.
+TH: Theft BU: Burglary MVT: Motor Vehicle Theft
+BA: Battery DP: Deceptive Practice CT: Criminal Trespass
+NA: Narcotic RO: Robbery OC: Other Crimes
+CD: Criminal Damage AS: Assault OO: Other Offense
+M
+(3)Analysis of Domestic Crime Situation
+C
+Among the totally 10960 crimes, crimes which had domestic situation involved
+M
+occupied about 14.58%, with the amount of 1598. According to the data provided by
+America Bar Association (ABA) the domestic violence made up 20% of all the crime
+i
+H
+experienced last year. Thus, the domestic crime ratio is kind of acceptable in My City.
+：
+Domestic Involved Non-Domestic
+号
+众
+14.58
+%
+公
+信
+85.42
+%
+微
+Chart 1.3 - Ratio of Non-domestic and Domestic-involved Crimes
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+                                      Team #5473                     Page   12 of 46
+(4) Comparison between National Circumstances
+Based on the 2014 America crime rate, we come up with a rough comparison
+between the crime condition in My City and in the whole country. The FBI UCR Annual
+Crime Report only gets 9 items which also exist in our dataset, so our consideration could
+not consider all categories of crime included in the My City dataset. The processed data
+we used to compare is the amount of crimes that occurred in every 100,000 people.
+Generally, the crime condition in My City is worse than that of entire America, especially
+M
+when we notice the large difference in Robbery, Assault and Theft. Only the occurrence
+of Liquor Law Violation is less than that in America, which might deCmonstrate the local
+liquor control, is stricter.   M
+NOTE: We use abbreviation in Chart 1.4 to represent each category due to the
+i
+H
+lack of space. Here is the illustration of every abbreviation.
+：
+LLV: Liquor Law Violation                       HO: Homicide          MVT: Motor Vehicle Theft
+CSA: Crim Sexual Assault      号RO: Robbery                          AS: Assault
+NA: Narcotic                                   BU: Burglary                         TH: Theft
+众
+| Crimes per 100,000  | Crimes per 100,000  |     |
+| ------------------- | ------------------- | --- |
+Crime Category公
+people in My City   people in Entire America
+| Narcotic   | 41.2  | 35.5  |
+| ---------- | ----- | ----- |
+信
+| Liquor Law Violation  | 0.8   | 12.2  |
+| --------------------- | ----- | ----- |
+| 微Homicide             | 0.7   | 0.2   |
+| Crim Sexual Assault   | 1.5   | 0.9   |
+| Robbery               | 14.1  | 3.6   |
+| Assault               | 25    | 8.3   |
+| Burglary              | 20.0  | 19.3  |
+| Theft                 | 93.5  | 65.4  |
+| Motor Vehicle Theft   | 13.4  | 7.7   |
+Table 1.2 Crime occurrences of 9 categories per 100,000 people in My City and in America.
+
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 13 of 46
+100.
+My City America
+75.
+50.
+25.
+0.
+NA LLV HO CSA RO AS BU TH MVT
+Chart 1.4 Differences Between Crime Occurrence per 100,000 People in My City and in America
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 14 of 46
+Part Two: Fear Model – How much are the people afraid of the crime in the city?
+1. Introduction
+When a city is filled with criminals and dangerous illegal activities, people who
+live in the city are afraid. Measuring the fear of victimization is a good way to indicate
+the safety rating in the city. It’s reasonable to use a model that illustrates the level of fear
+to create a safety rating for My City.
+However, this model faces two major challenges. The first is that the level of fear
+M
+people have against different crimes is different. For example, people generally are more
+afraid of rape, assault, and murder. Having your wallet stolen is quiteC annoying, yet it
+does not make you afraid. M
+In order to solve the first challenge, it is necessary to add different weight to
+i
+different crimes. Considering that the crimes don’t oveHrlap with each other and that they
+do not have the same importance, using a weighted arithmetical average is reasonable.
+：
+But how can we decide how much weight we should give to different crimes?
+Mark Warr examined in his pa号per, Fear of Victimization, the cause of group
+difference of the fear to be victim of crimes. He also included a 1983 survey with a
+numerical evaluation of how p众eople are afraid about becoming the victims of several
+types of crime. Using this as the weight, we can effectively evaluate the safety of a city
+公
+by evaluating how fear people feel to be a potential victim of crimes.
+The second challenge the model will certainly face is that the frequencies of
+信
+different crimes are different. In the same time period, the number of theft cases is
+certainly much larger than the number of murder cases. However, people may still be
+微
+more afraid of murder. How do we adjust the frequency of different crimes and combine
+them into a single index?
+In order to solve the second challenge, we will develop an index scale which
+compares My City with other cities in the United States. We will then calculate the
+relative value of My City on the index scale. The comparison between different cities will
+solve the second challenge because the index scale eliminates the difference in numbers
+of crime committed. Although there are much less murders than there are Larceny-thefts,
+both of them will receive a similar comparative index on the index scale. Yet, the index
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 15 of 46
+scale still represents the level of safety of My City since it compares My City with other
+cities.
+In the following model, we will first establish the comparative index scale for the
+different crimes. Then we will add weight to the indices of different crimes and combine
+them into a single safety rating.
+2. Create a comparative index scale
+M
+2.1 Establish the standard of comparison
+In order to create the index scale for different crimes and compare My City with
+C
+other cities, we need to create a standard of comparison. It’s essential to make sure that
+M
+the standard of comparison is the same all across the board. As stated in our assumption,
+we will use only the essential crimes to determine the safetyi rating of My City compared
+H
+to other cities in the United States. The essential crimes include the following:
+：
+Criminal Homicide, Forcible Rape, Robbery, Aggravated Assault,
+Burglary, Larceny theft, Motor vehicle theft, Arson
+号
+(a)
+We will use the numbe众r of crimes committed in every 1000 people, S, as the
+standard of comparison between cities.
+公
+(cid:3021)(cid:3035)(cid:3032) (cid:3041)(cid:3048)(cid:3040)(cid:3029)(cid:3032)(cid:3045) (cid:3042)(cid:3033) (cid:3030)(cid:3045)(cid:3036)(cid:3040)(cid:3032)(cid:3046) (cid:3036)(cid:3041) (cid:3028) (cid:3052)(cid:3032)(cid:3028)(cid:3045)
+S = (cid:3400)1000
+(cid:3021)(cid:3035)(cid:3032) (cid:3043)(cid:3042)(cid:3043)(cid:3048)(cid:3039)(cid:3028)(cid:3047)(cid:3036)(cid:3042)(cid:3041) (cid:3042)(cid:3033) (cid:3047)(cid:3035)(cid:3032) (cid:3030)(cid:3036)(cid:3047)(cid:3052)
+信
+The reason of using S as the standard of comparison is to eliminate the influence
+of popu微lation on the safety rating in the city. For example, New York may have more
+reported crimes every week than Chicago, yet it may be safer to live in New York
+because the population in New York is larger.
+(b)
+We will use the data in the 2014 Uniform Crime Report released annually by the
+Federal Bureau of Investigation for the index scale. The full list of data can be found on
+the website of “FBI – Uniform Crime Report.” We will include the link to the page in the
+Reference page. The data table in the Uniform Crime Report includes the number of the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 16 of 46
+essential crimes that are committed during 2014 for all cities in the United States. Every
+city in the data table has information about its population and the numbers of essential
+crimes committed in 2014. The following is an example of Detroit:
+Motor
+City Population Murder Rape Robbery Aggravated Burglary Larceny- vehicle Arson3
+assault theft theft
+M
+Detroit 684,694 298 557 3,570 9,191 9,177 13,723 10,083 490
+C
+M
+Table 2.1 - The data of Detroit in the 2014 Uniform Crime Report.
+i
+Uniform Crime Report is the compilation of suHch data from all cities in the United
+States. ：
+My City has a population of 2.8 million and is impacted by a metropolitan area of
+号
+6 million. It’s a comparatively large city with dense population and urban environment.
+Therefore, in this essay we will only compare My City with cities that have more than
+众
+100K of population. There are 284 cities in the 2014 Uniform Crime Report that have
+more than 100K of pop公ulation.
+(c)
+信
+Since essential crimes have a larger influence on the safety rating and are better
+微
+recorded, it’s reasonable to use the data of essential crimes to compare the level of safety
+between My City and other cities in the United States.
+Therefore, we will compare My City’s data of essential crimes with that of other
+cities. In order to compare the two sets of data, the categories of crime in the two data
+table have to match. Thus, we pick eight categories in My_City_Crime_Data to match the
+essential crimes data in the 2014 Uniform Crime Report.
+The matches between the categories in My_City_Crime_Data and the essential
+crimes are in the following table:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 17 of 46
+My_City_Crime_Data Uniform Crime Report
+Homicide Murder
+Crim Sexual Assault Rape
+Robbery Robbery
+Assault Aggravated Assault
+Burglary Burglary
+M
+Theft Larceny Theft
+Motor Vehicle Theft Motor VehCicle Theft
+Arson Arson
+M
+i
+H
+Table 2.2 – matches between categories between two crime report
+：
+We assume that standard of data collection under the categories on the left side is
+the same with that under the categories on the right side. For example, we assume that the
+号
+data collected under the definition of Homicide on the left side is the same with that of
+Murder on the right side. In oth众er words, if 10 cases of Homicide are recorded in
+My_City_Crime_Data, the number of Murder in Uniform Crime report will also be 10.
+公
+(d)
+信
+In the 2014 Uniform Data Table, some of the cities are using the legacy definition
+of rape while some other cities are using the new (revised) of rape. In order to make
+微
+comparison of rape numbers between cities, we calculate a conversion ratio between the
+number of rape under legacy definition and that under revised definition. The ratio is
+approximately 1.3, with the equation:
+(cid:1831)(cid:1871)(cid:1872)(cid:1861)(cid:1865)(cid:1853)(cid:1872)(cid:1857)(cid:1856) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1870)(cid:1853)(cid:1868)(cid:1857)(cid:4666)(cid:1870)(cid:1857)(cid:1874)(cid:1861)(cid:1871)(cid:1857)(cid:1856)(cid:4667) (cid:3404) 1.3 (cid:3400)(cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870)(cid:1867)(cid:1858) (cid:1870)(cid:1853)(cid:1868)(cid:1857)(cid:4666)(cid:1864)(cid:1857)(cid:1859)(cid:1853)(cid:1855)(cid:1877)(cid:4667)
+Since the procedure of acquiring the ratio is quite complex, we will put it in the
+Additional Model Part in order to maintain the flow of our essay.
+(e)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 18 of 46
+According to the analysis in Part One, the number of crimes committed every day
+is roughly the same (with the exception of the first day). Therefore, we can assume that
+the number of crimes committed in a year in My City (cid:1840) equals to:
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1855)(cid:1870)(cid:1861)(cid:1865)(cid:1857)(cid:1871) (cid:1861)(cid:1866) (cid:1839)(cid:1877) (cid:1829)(cid:1861)(cid:1872)(cid:1877)
+(cid:1840) (cid:3404) (cid:3400)365
+(cid:1846)(cid:1861)(cid:1865)(cid:1857) (cid:4666)(cid:1835)(cid:1866) (cid:1856)(cid:1853)(cid:1877)(cid:1871)(cid:4667)
+The time period in My City Crime Data is fourteen days. However, as we stated
+in Part One, the data on the first day (July 5th, 2014) is unusual. We therefMore only
+consider the time period from July 6th, 2014 to July 18th, 2014. “365” is the number of
+C
+days in 2014. If (cid:1829) is not an integer, we will round it to the nearest integer.
+(cid:3052)
+M
+The estimated assaults in My City for a whole year are:
+i
+H
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1853)(cid:1871)(cid:1871)(cid:1853)(cid:1873)(cid:1864)(cid:1872)(cid:1871) (cid:1861)(cid:1866) (cid:1839)(cid:1877) (cid:1829)(cid:1861)(cid:1872)(cid:1877)
+(cid:1840) (cid:3404) (cid:3400)365 (cid:3406) 19682
+(cid:3002)(cid:3046)(cid:3046)(cid:3028)(cid:3048)(cid:3039)(cid:3047) (cid:1846)(cid:1861)(cid:1865)(cid:1857) (cid:4666)(cid:1835)(cid:1866) (cid:1856)(cid:1853)(cid:1877)(cid:1871)(cid:4667)
+：
+In the equation, (cid:1840) is the estimated number of assault in My City in a year.
+(cid:3002)(cid:3046)(cid:3046)(cid:3028)(cid:3048)(cid:3039)(cid:3047)
+号
+According to the data in Part One, the number of assaults in My City from July 6th, 2014
+to July 18th, 2014 is 2618. The time period is thirteen days (18(cid:3398)12(cid:3397)1 (cid:3404) 13). We
+众
+round the result of the calculation to the nearest integer.
+公
+Using the same method, we can calculate the estimated number of other crimes in
+My City in a year. We will calculate the value of N (the estimated number of a specific
+信
+crime in 2014) for all essential crimes. We put the result into a table for better viewing
+微
+(cid:2169)(cid:2203)(cid:2200)(cid:2186)(cid:2187)(cid:2200) (cid:2159)(cid:2175)(cid:2157) (cid:2174)(cid:2197)(cid:2184)(cid:2184)(cid:2187)(cid:2200)(cid:2207) (cid:2157)(cid:2201)(cid:2201)(cid:2183)(cid:2203)(cid:2194)(cid:2202) (cid:2158)(cid:2203)(cid:2200)(cid:2189)(cid:2194)(cid:2183)(cid:2200)(cid:2207) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2169)(cid:2197)(cid:2202)(cid:2197)(cid:2200) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2157)(cid:2200)(cid:2201)(cid:2197)(cid:2196)
+(cid:2782)(cid:2780)(cid:2780) (cid:2778)(cid:2778)(cid:2782)(cid:2778) (cid:2778)(cid:2778)(cid:2777)(cid:2783)(cid:2779) (cid:2778)(cid:2786)(cid:2783)(cid:2785)(cid:2779) (cid:2778)(cid:2782)(cid:2784)(cid:2779)(cid:2780) (cid:2784)(cid:2780)(cid:2782)(cid:2777)(cid:2782) (cid:2778)(cid:2777)(cid:2782)(cid:2777)(cid:2778) (cid:2783)(cid:2781)(cid:2783)
+(CSA = Criminal Sexual Assault)
+Table 2.3 - estimated number of different crimes in My City in 2014.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 19 of 46
+2.2 Calculate the standard of comparison S for every city
+In order to create a fair, objective comparison, we will develop an index scale
+according to the data in the 2014 Uniform Crime Report.
+As we stated above, we will use the number of crimes committed every 1000
+people (represented by the symbol S) as the standard of comparison. S is calculated as
+M
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1855)(cid:1870)(cid:1861)(cid:1865)(cid:1857)(cid:1871) (cid:1861)(cid:1866) (cid:1853) (cid:1877)(cid:1857)(cid:1853)(cid:1870)
+S (cid:3404) (cid:3400)100C0
+(cid:1846)(cid:1860)(cid:1857) (cid:1868)(cid:1867)(cid:1868)(cid:1873)(cid:1864)(cid:1853)(cid:1872)(cid:1861)(cid:1867)(cid:1866) (cid:1867)(cid:1858) (cid:1872)(cid:1860)(cid:1857) (cid:1855)(cid:1861)(cid:1872)(cid:1877)
+M
+We will calculate the S value of My City for each of the eight essential crimes.
+i
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1853)(cid:1871)(cid:1871)(cid:1853)(cid:1873)(cid:1864)(cid:1872)(cid:1871) (cid:1861)(cid:1866) (cid:1839)(cid:1877) (cid:1829)(cid:1861)(cid:1872)(cid:1877)H (cid:1861)(cid:1866) 2014
+(cid:1845) (cid:3404) (cid:3400)1000 (cid:3404) 11.5814
+(cid:1846)(cid:1860)(cid:1857) (cid:1868)(cid:1867)(cid:1868)(cid:1873)(cid:1864)(cid:1853)(cid:1872)(cid:1861)(cid:1867)(cid:1866) (cid:1867)(cid:1858) (cid:1839)(cid:1877) (cid:1829)(cid:1861)(cid:1872)(cid:1877)
+：
+S represents the estimated number of assaults committed in My City in 2014 in
+号
+every 1000 people. The estimated number of assaults in My City is 701, as calculated
+before. My City has a population of 2.8 million. Therefore, according to our estimation,
+众
+there will be 11.5814 assaults committed in every 1000 people in My City.
+The similar me公thod can be applied to all other essential crimes. We calculated the
+estimated number of all essential crimes committed in every 1000 people in My City and
+信
+put them into the table below.
+微
+(cid:2169)(cid:2203)(cid:2200)(cid:2186)(cid:2187)(cid:2200) (cid:2174)(cid:2183)(cid:2198)(cid:2187) (cid:2174)(cid:2197)(cid:2184)(cid:2184)(cid:2187)(cid:2200)(cid:2207) (cid:2157)(cid:2201)(cid:2201)(cid:2183)(cid:2203)(cid:2194)(cid:2202) (cid:2158)(cid:2203)(cid:2200)(cid:2189)(cid:2194)(cid:2183)(cid:2200)(cid:2207) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2169)(cid:2197)(cid:2202)(cid:2197)(cid:2200) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2157)(cid:2200)(cid:2201)(cid:2197)(cid:2196)
+0.1903571 0.4110714 3.9507143 7.0292857 5.6153571 26.251786 3.7503571 0.2307143
+Table 2.4 - the value of S for all essential crimes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 20 of 46
+We will also process the data of other cities in 2014 Uniform Crime Report with
+the same method to apply the standard of comparison we established in the former
+section. We will calculate the estimated number of a specific crime in every 1000 people
+in a specific city, just as we calculate those in My City. The equation for the calculation:
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1855)(cid:1870)(cid:1861)(cid:1865)(cid:1857) (cid:1861)(cid:1866) (cid:1872)(cid:1860)(cid:1857) (cid:1829)(cid:1861)(cid:1872)(cid:1877) (cid:1861)(cid:1866) 2014
+(cid:1845) (cid:3404) (cid:3400)1000
+(cid:1842)(cid:1867)(cid:1868)(cid:1873)(cid:1864)(cid:1853)(cid:1872)(cid:1861)(cid:1867)(cid:1866) (cid:1867)(cid:1858) (cid:1872)(cid:1860)(cid:1857) (cid:1829)(cid:1861)(cid:1872)(cid:1877)
+We will calculate all eight categories of essential crimes in the 284M cities we
+select from the Uniform Crime Report. To illustrate this, we will process the data of
+C
+Detroit as an example of what we will do to the data we have in Uniform Crime Report.
+M
+(cid:1846)(cid:1860)(cid:1857) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1839)(cid:1873)(cid:1870)(cid:1856)(cid:1857)(cid:1870) (cid:1861)(cid:1866) (cid:1830)(cid:1857)(cid:1872)(cid:1870)(cid:1867)(cid:1861)(cid:1872) (cid:1861)(cid:1866) 2014
+(cid:1845) (cid:3404) (cid:3400)1000
+(cid:1846)(cid:1860)(cid:1857) (cid:1868)(cid:1867)(cid:1868)(cid:1873)(cid:1864)(cid:1853)(cid:1872)(cid:1861)(cid:1867)(cid:1866) (cid:1867)(cid:1858) (cid:1830)(cid:1857)(cid:1872)(cid:1870)(cid:1867)(cid:1861)(cid:1872) i
+H
+As we can learn from Uniform Crime Report, the number of Murder in Detroit in
+：
+2014 is 298. The population of Detroit is 684694. Therefore, the number of murder in
+every 1000 people in Detroit is: 号
+(cid:2870)(cid:2877)(cid:2876)
+(cid:1845) (cid:3404) (cid:3400)1000 (cid:3404) 0.4352309
+众
+(cid:2874)(cid:2876)(cid:2872)(cid:2874)(cid:2877)(cid:2872)
+Similarly, we can acquire value of S of other crimes in Detroit. In this way, we
+公
+process the data of all cities using the same method and acquire the S for every category
+of crimes in every city. We will create an index scale in the next section and compare the
+信
+S value of My City with those of other cities.
+微
+2.2 Create the index scale for each crime
+Using the S values (the number of crimes committed in every 1000 people)
+calculated from the section above, we can now create an index scale to compare the
+safety level in My City with other cities that have more than 100K population in the
+United States.
+We will set the 1st quartile and the 3rd quartile of the S values (the number of
+crimes committed in every 1000 people) of a certain type of crime in all 284 cities as the
+0 and 1 on our index scale. The benefit of using lower and upper quartile instead of the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 21 of 46
+maximum and minimum value is that we can eliminate the effect of extreme high or low
+S values. It’s possible for the index to be larger than one or smaller than zero if we set the
+lower quartile as the zero point and the upper quartile as the one. However, this does not
+influence the comparison between cities. If the city has an index much larger than one,
+then it means that there are significantly more crimes in the city than the other 75 percent
+of cities. Therefore, the level of fear in the city will be higher. On the other hand, if the
+city has an index much smaller than zero, it means that the city has significantly less
+M
+crime than the other 75 percent of cities. Then the level of fear in the city will be lower.
+C
+0.6
+M
+0.5
+i
+H
+0.4
+：
+0.3 号
+0.2 众
+公
+0.1
+信
+0
+微
+Graph 2.1 - the column chart of S values of murder in all 284 cities
+The graph above depicts the S values of murder in all 284 cities sorted from larger
+values to smaller values. Y axis is the S value of murder in every city. We can see that
+there are some columns that have extremely high S values. Using the 1st quartile and the
+3rd quartile as the 0 and 1 on the index scale can eliminate the effect of these points on the
+index scale.
+1 21 32 43 54 65 76 87 98 001 111 221 331 441 551 661 771 881 991 012 122 232 342 452 562 672
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 22 of 46
+Using Excel, we can find the lower quartile and upper quartile of the S values of
+all categories of crimes in all cities. After acquiring the upper and lower quartile, we can
+calculate the relative value of any city on the index scale with the equation:
+1
+(cid:1835) (cid:3404) (cid:3400)(cid:4666)(cid:1845)(cid:3398)(cid:1838)(cid:1867)(cid:1875)(cid:1857)(cid:1870) (cid:1843)(cid:1873)(cid:1853)(cid:1870)(cid:1872)(cid:1861)(cid:1864)(cid:1857)(cid:4667)(cid:3397)0
+(cid:1847)(cid:1868)(cid:1868)(cid:1857)(cid:1870) (cid:1843)(cid:1873)(cid:1853)(cid:1870)(cid:1872)(cid:1861)(cid:1864)(cid:1857)(cid:3398)(cid:1838)(cid:1867)(cid:1875)(cid:1857)(cid:1870) (cid:1843)(cid:1873)(cid:1853)(cid:1870)(cid:1872)(cid:1861)(cid:1864)(cid:1857)
+In the equation, (cid:1835) is the index of the city on the index scale of the crime. The
+Upper Quartile and Lower Quartile value are the 1st quartile and 3rd quartiMle value of the
+S value of a specific crime in all 284 cities. (cid:1845) is the city’s S value of the crime.
+C
+Using the equation and the value of lower quartile and upper quartile of each set
+M
+U, we are able to calculate the Index of My City on the index scale of each essential
+crime. i
+H
+：
+(cid:2169)(cid:2203)(cid:2200)(cid:2186)(cid:2187)(cid:2200) (cid:2174)(cid:2183)(cid:2198)(cid:2187) (cid:2174)(cid:2197)(cid:2184)(cid:2184)(cid:2187)(cid:2200)(cid:2207) (cid:2157)(cid:2201)(cid:2201)(cid:2183)(cid:2203)(cid:2194)(cid:2202) (cid:2158)(cid:2203)(cid:2200)(cid:2189)(cid:2194)(cid:2183)(cid:2200)(cid:2207) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2169)(cid:2197)(cid:2202)(cid:2197)(cid:2200) (cid:2176)(cid:2190)(cid:2187)(cid:2188)(cid:2202) (cid:2157)(cid:2200)(cid:2201)(cid:2197)(cid:2196)
+号
+2.6392373 0.4584152 2.0973032 2.3880499 0.3232021 0.7137235 0.6580595 0.9999977
+众
+Table 2.5 -公the index I of different crimes in My City on the index scale.
+The data in the table comes from the equation above. We can see that My City has
+信
+indices much higher than one in Murder, Robbery, and Assault. Here it’s reasonable to
+argue that My City is more dangerous than most cities that have a population larger than
+微
+100K in the United States. All data are calculated by computer software.
+In order to compare My City with other cities and analyze the safety level of My
+City, we also apply the same calculation to all other cities that have more than 100K
+population in the United States. In the next section, we will use the indices of different
+cities to calculate the level of fear for each city.
+3 Evaluating the level of fear
+3.1 Calculate the level of fear
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 23 of 46
+The index scale helps us solve the challenge that the number of cases is different
+when the crime is different. All indices show the comparative difference in the number of
+crimes between two crime categories. For example, My City only has 533 murders in
+2014, much less than the number of burglaries in the city. If we multiply the number of
+murder with the fear index, the result is significantly less than that of burglary. However,
+this is far from being true. My City has an index of 2.64 for murder and an index of 0.323
+for burglary. The two indices both represent the relative position of My City in the index
+M
+scale of all cities. The problem of murder in My City is apparently much more severe
+than that of burglary.
+C
+With the indices at hand, we can now add weight to theM different crimes and
+calculate the comparative level of fear. As stated in the introduction, it’s reasonable to
+i
+use weighted arithmetic average for the calculation. AcHcording to Fear of Victimization
+By Mark Warr, the level of fear for each category of crime is
+：
+Murder Rape Robbery Assault Burglary Theft Motor Theft Arson
+号
+3.4 5.6 4.1 4.0 5.9 N/A 3.4 N/A
+众
+Table 2.6 - the numerical evaluation of fear of victimization
+公
+According to Mark Warr’s essay, the numerical evaluation comes from a survey
+done in Seattle信. We choose the closest definition in the essay to match the categories of
+essential crimes. The level of fear, as explained in Mark Warr’s essay, is not only
+influen微ced by the horror of the crime but also by the incidence of the crime. For example,
+the level of fear in Murder is the same with that in Motor Theft. Although the horror of
+being murdered is considerable, the possibility of being murdered is extremely low. This
+leads to the low level of fear in Murder.
+There is no numerical evaluation of fear for Theft and Arson in Mark Warr’s
+essay. Due to the lack of data, we choose to include only Murder, Rape, Robbery, Assault,
+Burglary, and Motor Theft in our calculation of the level of fear.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 24 of 46
+Having obtained the weight of level of fear as well as modified indicator of the
+crimes in each category. A simple arithmetic average would help us see how fear people
+have to the safety problems in a city. We can do the calculation with the following
+formula:
+∑(cid:4666)(cid:1832) (cid:3400)(cid:1835) (cid:4667)
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032) (cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+(cid:1838)(cid:1857)(cid:1874)(cid:1857)(cid:1864) (cid:1867)(cid:1858) (cid:1832)(cid:1857)(cid:1853)(cid:1870) (cid:3404)
+∑(cid:1835)
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+The equation is the weighted arithmetic average of the indices calcMulated from the
+former section. (cid:1835) is the index of a certain type of crime in a specific city. (cid:1832) is
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032) (cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+C
+the numerical evaluation of the fear of a certain type of crime according to Mark Warr’s
+M
+essay. Therefore, the equation of the calculation of the level of fear for My City is
+(cid:1838)(cid:1857)(cid:1874)(cid:1857)(cid:1864) (cid:1867)(cid:1858) (cid:1832)(cid:1857)(cid:1853)(cid:1870) (cid:1861)(cid:1866) (cid:1839)(cid:1877) (cid:1829)(cid:1861)(cid:1872)(cid:1877) (cid:3404)
+∑(cid:4666)(cid:3007)(cid:3252)(cid:3293)
+H
+(cid:3284)(cid:3288)(cid:3280)(cid:3400)(cid:3010)(cid:3252) i (cid:3293)(cid:3284)(cid:3288)(cid:3280)(cid:4667)
+= 1.28
+∑(cid:3010)(cid:3252)(cid:3293)(cid:3284)(cid:3288)(cid:3280)
+：
+All (cid:1835) in the equations are the index of the certain type of crime in My City in
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+2014. Using the index of My City on the index scale and the numerical evaluation of fear
+号
+of different crimes, the level of fear of My City, which is considered as the safety rating
+of My City in this model, is 1.2众8. We will compare the safety rating of My City with
+other cities in the next section.
+公
+3.2 Comparing My City with other major cities in the U.S.
+信
+Using the relative level of fear as the weight to calculate the algorithmic average
+of the indicators of different types of crime, we obtained:
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 25 of 46
+M
+C
+M
+i
+H
+Table 2.7 – The level of fear in My City and other eleven major cities in the U.S.
+：
+The arson and larceny-theft are excluded in the graph due to lack of data. The
+号
+report of Mark Warr’s didn’t include the level of fear of them. These crimes also tend to
+scare people less so it would be much a problem to exclude them.
+众
+The remaining six categories of crimes are calculated to generate this table. Under
+公
+each category, 0 indicates a lower quartile while 1 means an upper quartile. While four
+cities including New York and Los Angeles managed to become the safer half in the 284
+信
+cities with a population of over 100k people, the other big cities perform badly.
+微The median level of fear in the 284 cities is 0.58. Apparently, some cities exceed
+this by a large rate. Five out of 11 cities in the table (excluding My City) has a level of
+fear of over 1.
+My City is also one of the cities that confronts serious problem. It ranks 237 out
+of 284 cities with a level of fear at 1.28. It performs badly in three categories: Murder,
+robbery and aggravated assault. In all three categories, My City is not only in the worst
+quartile but also have in index over 2. At the same time, the other categories fall between
+0 and 1 with relatively mediocre scores. This helps to explain what make people in My
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 26 of 46
+City worry about their security – murder, robbery and aggravated assault. The security
+agencies in My City should definitely work to alleviate the problem.
+4 Conclusion
+In this model, we use the fear level of people to evaluate the level of safety of the
+city. This is a reasonable evaluation since fear level directly influences the daily lives of
+the citizens. The basic idea for the model is very simple: a weighted arithmetic average
+M
+for a numerical evaluation of the level of fear for My City. However, we confronted two
+challenges when calculating the average. The first is the difference inC number of cases
+between different categories of crimes. The second is the diffeMrence in the added weight
+for each category of crimes. We solve the two problems by first creating an index scale
+i
+for all cities that have over 100K population in the UniHted States. We then find the
+relative value of My City on the index scale. Using the result of a survey from Mark
+：
+Warr’s essay, Fear of Victimization, we are finally able to calculate the level of fear for
+My City. In the end, we compare the s号afety rating of My City with eleven major cities in
+the U.S. to gain a further understanding of how safe My City is comparatively.
+According to our mode众l, My City ranks 237 in a list that contains 284 cities that
+have more than 100K of population. The level of fear in My City is 1.28, much higher
+公
+than the median 0.58. The result of our model indicates that My City is quite dangerous
+compared to other cities in the U.S.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 27 of 46
+Part Three: Cost Approach – How much money do crimes cost?
+1. Introduction
+Every crime has costs. In this model we will try to evaluate the total costs of all
+crimes in My City as an indicator of the level of safety. However, crime not only costs
+money; it also has considerable emotional costs. Having your house burnt down is not
+only costly in dollars; it also has large emotional impact. When evaluating the safety
+rating in My City, we have to consider both the real and the emotional cosMt.
+In this model, we will calculate the total costs of all crimes inC My City by
+multiplying the cost of each crime with the crime’s S value (thMe number of a specific
+crime per 1000 people). We will also calculate the total costs in all other cities that have
+i
+more than 100K population to make a comparison betwHeen My City and other cities. In
+the end, we will give a conclusive evaluation of the safety level in My City and give a
+：
+comparison between the cost approach and the fear approach in Part Two.
+号
+2. Calculate the total costs of crimes in every 1000 people
+While it is true that the众 emotional cost of a crime is not direct, it is possible to
+evaluate it. Kathryn E. McCollister and his colleagues in their report The Cost of Crime
+公
+to Society: New Crime-Specific Estimates for Policy and Program Evaluation offers an
+estimate of these costs. Besides the conventional cost as tangible costs including victim
+信
+costs, criminal justice system costs and crime career costs, they defined intangible cost
+as “Indirect losses suffered by crime victims, including pain and suffering, decreased
+微
+quality of life, and psychological distress."
+They calculated the average total cost, intangible or tangible, of each type of
+crime:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+                                      Team #5473                     Page   28 of 46
+
+| Type of Offense       | Tangible Cost |             | Intangible Cost  |              |     | Total Cost  |
+| --------------------- | ------------- | ----------- | ---------------- | ------------ | --- | ----------- |
+| Murder                |               | $1,285,146  |                  | $8,442,000   |     | $8,982,907  |
+| Rape/Sexual Assault   |               | $41,252     |                  | $199,642     |     | $240,776    |
+| Aggravated Assault    |               | $19,472     |                  | $95,023      |     | $107,020    |
+| Robbery               |               | $21,373     |                  | $22,575      |     | $42,310     |
+M
+| Arson   |     | $16,429  |     |     | $5,133   | $21,103  |
+| ------- | --- | -------- | --- | --- | -------- | -------- |
+C
+| Motor Vehicle Theft   |     | $10,534  |     |     | $262   | $10,772  |
+| --------------------- | --- | -------- | --- | --- | ------ | -------- |
+M
+| Stolen Property   |     | $7,974  |     |     | N/A   | $7,974  |
+| ----------------- | --- | ------- | --- | --- | ----- | ------- |
+i
+| Household Burglary   |     | $6,169  | H   |     | $321   | $6,462  |
+| -------------------- | --- | ------- | --- | --- | ------ | ------- |
+：
+| Embezzlement                 |     | $5,480  |     |     | N/A   | $5,480  |
+| ---------------------------- | --- | ------- | --- | --- | ----- | ------- |
+| Forgery and Counterfeiting   |     | $5,265  |     |     | N/A   | $5,265  |
+号
+| Frau   |     | $5,032  |     |     | N/A   | $5,032  |
+| ------ | --- | ------- | --- | --- | ----- | ------- |
+众
+| Vandalism       |     | $4,860  |     |     | N/A   | $4,860  |
+| --------------- | --- | ------- | --- | --- | ----- | ------- |
+| Larceny/Theft   |     | $3,523  |     |     | $10   | $3,532  |
+公
+N/A = not available or not applicable.
+信
+Table 3.1 - Total Per-Offense Cost for Different Crimes in 2008 Dollars
+微The total per-offense cost calculated as the sum of tangible cost (excluding the
+uncorrected risk-of-homicide cost from crime victim cost, when applicable) and
+intangible cost.
+The table provides us the average cost of each crime of different types. Therefore,
+we can use this to estimate the total cost of crimes in every 1000 people in each city.
+While cost in dollar may not represent all aspects of safety, it is certainly an objective and
+important indicator. We denote (cid:1829)  as the average cost of a certain type of crime.
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+The equation for the cost of a certain type of crime in every 1000 people in a city
+is
+
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 29 of 46
+(cid:1829)(cid:1867)(cid:1871)(cid:1872) (cid:1867)(cid:1858) (cid:1853) (cid:1855)(cid:1857)(cid:1870)(cid:1872)(cid:1853)(cid:1861)(cid:1866) (cid:1872)(cid:1877)(cid:1868)(cid:1857) (cid:1867)(cid:1858) (cid:1855)(cid:1870)(cid:1861)(cid:1865)(cid:1857) (cid:3404) (cid:1829) (cid:3400) (cid:1845)
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032) (cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+Therefore, the equation for the total cost of crimes in every 1000 people in a city
+is
+(cid:1846)(cid:1867)(cid:1872)(cid:1853)(cid:1864) (cid:1829)(cid:1867)(cid:1871)(cid:1872) (cid:1867)(cid:1858) (cid:1855)(cid:1870)(cid:1861)(cid:1865)(cid:1857)(cid:1871) (cid:1861)(cid:1866) (cid:1857)(cid:1874)(cid:1857)(cid:1870)(cid:1877) 1000 (cid:1868)(cid:1857)(cid:1867)(cid:1868)(cid:1864)(cid:1857) (cid:3404) (cid:3533)(cid:1829) (cid:3400) (cid:1845)
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032) (cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+(cid:1829) is the total cost of a certain type of crime in every 1000 people. (cid:1845) is
+(cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032) (cid:3004)(cid:3045)(cid:3036)(cid:3040)(cid:3032)
+the number of a certain type of crime in every 1000 people in the city. Using the
+M
+equation, we can calculate the total cost of all crimes in all 284 cities and compare the
+costs of crime in My City with those in other cities in the U.S.
+C
+M
+3. Compare and Analyze
+i
+H
+After calculating the cost of all crimes in every 1000 people in all 284 cities in the
+：
+United States that have more than 100K of population, we sort the data and rank the
+cities, giving the first place to the city with the lowest total cost of crimes. In the
+号
+following table, the numbers under each type of crimes represent the cost of the specific
+crime in every 1000 people in the city. The total cost represents the cost of all crimes in
+众
+every 1000 people. Here we are going to compare My City with other cities in the United
+States to gain insight about the safety level of My City. Since My City is a large city with
+公
+a high population, we choose eleven major cities that have more than 1 million of
+population for the comparison.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 30 of 46
+Motor
+City Murder Rape Robbery Assault Burglary Theft Arson Total Cost Rank
+Theft
+San Diego
+210020 85120 40743 273123 24149 43072 39398 3222 718850 87
+San Jose
+284697 95171 44921 194181 33069 41452 80655 2570 776719 97
+New York
+353000 62226 82788 397318 12137 46727 9818 0 964016 130
+Los Angeles
+597822 69395 86086 269442 24926 49073 38017 6141 1140906 155
+Phoenix
+669379 158329 81641 327177 60469 81869 50696 4317 1433880 183
+San Antonio
+647715 181534 52633 355643 55841 143182 53842 4402 1494795 193
+M
+Dallas
+818940 147788 128220 311539 59343 74779 59642 6385 1606640 203
+Las Vegas
+715863 122676 135008 495568 59727 54060 50464 1943 1635313 206
+C
+Houston
+979247 88070 194136 519110 62959 108389 70083 6806 2028803 236
+Chicago 1355290 118703 152271 492293 34483 78573 M39633 3563 2274813 247
+Philadelphia
+1428911 186404 189152 514828 40179 84714 39576 5400 2489168 255
+My City 1709960 98976 167154 752274 36286 9272i1 40398 4868 2902640 268
+H
+：
+Table 3.2 – The cost of each type of crimes, the total cost, and the rank of the cities
+号
+The table above shows that My City ranks 268, the lowest among the 11 major
+cities. My City has a total cost of crimes of about 2.9 million dollars. The cost of murder
+众
+is over 1.7 million, occupying more than half of the total cost. This is due to the high
+emotional cost of murder estimated in Kathryn E. McCollister’s essay. My City also has
+公
+very high cost in aggravated assault and burglary, indicating that the level of safety in My
+City is low compared to other cities. My City is not bad with property crimes though, as
+信
+the cost of all property crimes are comparatively low. However, since property crime
+seldom微 has much emotional cost, the better safety condition of property crime is not
+represented in the total cost. Overall, My City is quite unsafe in this concern and
+something should be done to alleviate the problem of violent crime.
+The total cost of all crimes in every 1000 people in My City is a reasonable
+indicator of the safety level, as it takes in consideration both the emotional impact and the
+actual property lost in a criminal process. Compared to the fear approach, the cost
+evaluation highlights the emotional impact of violent crimes and takes into consideration
+the real expense of a crime. However, there are some disadvantages as well. For example,
+in the cost approach, the cost of a single murder in every 1000 people outweighs the cost
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 31 of 46
+of any other types of crimes. A city with high murder rates will have much higher cost
+than one with low murder rates and high robbery or rape rates. This sometime can be
+misleading because the actual frequency of murder is very low. People are usually more
+worried about being robbed or raped than about being murdered.
+In the fear approach, the level of fear of murder is not high. The fear model takes
+into consideration the low frequency of murder as people are not really worried about
+being murdered. Another advantage the fear model has is the comparative index scale it
+M
+uses to show the comparative level of safety in different cities. The index scale is better at
+showing the relative level of safety in My City. Simply looking at theC total cost of all
+crimes in every 1000 people in My City cannot give us an ideaM of how safe the city is.
+With the index scale that usually ranges from 0 to 1, we can easily comprehend the level
+i
+of safety of each crime in My City. H
+：
+A notable similarity is that in both approach, most of the big cities have low
+safety ratings. This is reasonable and an expected outcome because the population in a
+号
+city is dense. More social interaction and denser neighborhood will create high crime
+rates. From this perspective, both the cost approach and the fear approach prove to be
+众
+reasonable indicator of the level of safety in My City.
+公
+The fear model and the cost model in our essay are two essentially different
+models. Though sharing the same goal of creating a safety rating for My City, they utilize
+信
+completely different ideas and methods. The results of the two models are similar,
+indicating that they are both reasonable and applicable indicator of the safety level in My
+微
+City. However, there is no better model here. The two approaches are different, and it’s
+impossible to choose a better model when evaluating the level of safety in My City.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 32 of 46
+Part Four: Regarding the Safety Rating in Terms of Regions
+Introduction
+After measuring the safety rating of My City by comparing with other cities, the
+interior safety circumstance should be considered as well. In this part, safety rating inside
+My City is measured through the modeling of danger rating. Therefore, higher danger
+rating implies lower safety rating.
+M
+Instead of the trivial method of dividing the city by every beat number, we divide
+it into totally 22 regions. The rule to stipulate regions is: If two beats possess the same
+C
+first two figures, they belong to the same Region. For instance, beat 2535 and beat 2534
+M
+will both belong to region 25. Our basis of regional division comes from both the maps of
+several cities in America (including Chicago, San Jose, Lonigmont and Modesto) and our
+H
+dataset. These materials suggest that the quantity of beats with the same first two figures
+：
+in their beat number is close in one city. Further justification has been included in the
+previous assumption part.
+号
+As the dataset has already offered us the beat number of each crimes, we are able
+to develop a model to determine the whether a region is securer than other beats.
+众
+Comparing the cost approach and the fear approach, we decide to utilize the fear
+approach in this part to express the dangerous extent of each crime. The reason is that the
+公
+cost index of murder (homicide) is so large that it will definitely affect the result of the
+security of one信 beat in a abnormally way, since a slight increment in amount of homicide
+will highly elevate the danger index of a certain beat. However, the fear approach we will
+微
+use in this part is different from that we have used in the Part 2. Here, we will simply use
+original fear index listed in the essay Fear of Victimization by Mark Warr as the weight
+of each crime categories, but not convert it or use the weighted average in modeling.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 33 of 46
+1. Establishing Model of Regional Danger Rating
+First of all, we define by the following equation, which helps to illustrate
+the of the frequency of the occurrence of a specific crime category
+M
+(Equation a)
+C
+For example, in region 25, theft had taken place for 111 times in these 13days and
+M
+the total amount of theft in the same time period was 2618. Thus,
+i
+H
+：
+(Equation b)
+号
+Secondly, different categories of crime will have distinct impact on the society.
+众
+The more dangerous and fear that people feel towards a certain crime category, the more
+impact this category w公ill exert on the safety rating. Thus, the fear index is used again to
+suggest the dangerous extent of a crime category.
+信
+We denote as the product of and . Thus, the equation will
+be
+微
+(Equation c)
+Therefore, the overall danger rating should be
+(Equation d)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+                                      Team #5473                     Page   34 of 46
+
+  where   refer to a certain crime.
+  The ultimate results based on our model elicited a rank of danger ratings among
+all the 22 regions. From Table x we can see that region 5 and region 6 both obtain danger
+ratings over 3.00, which represents a relatively unsafe circumstance. The most secure
+region should be region 22, as its danger rating is only 0.50. (More detailed information
+can be viewed in the appendix part)
+M
+
+C
+| Region Number  |     | Danger Rating  |     |
+| -------------- | --- | -------------- | --- |
+M
+| 6   |     |     | 3.55  |
+| --- | --- | --- | ----- |
+i
+| 5   |     |     | 3.30  |
+| --- | --- | --- | ----- |
+H
+| 11  |     | ：   | 2.74  |
+| --- | --- | --- | ----- |
+| …   | 号   |     | …     |
+| 12  | 众   |     | 0.95  |
+| 14  |     |     | 0.86  |
+公
+| 18  |     |     | 0.73  |
+| --- | --- | --- | ----- |
+信
+| 16  |     |     | 0.59  |
+| --- | --- | --- | ----- |
+微20  0.50
+
+Table 4.1  Danger Ratings of Each Regions
+
+  Yet,  not  all  the  fear  indexes  of  crime  categories  contained  in  the
+“My_City_Crime_Data”  were  successfully  found  so  several  items  might  be  lost
+unfortunately. The categories lack of fear index also included several significant crime
+with large occurrence: Theft, Criminal Damage, Narcotic, Criminal Trespass and Other
+Offense.
+
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 35 of 46
+2. Secondary Factors Analysis
+Since last parts only discussed some major factors like crime categories and
+quantity, several minor factors including domestic and arrested situation are discussed in
+this part.
+We classify the domestic situation into secondary factors because the amount of
+domestic-involved cases can not directly expose whether this Beat is safe or not.
+M
+Primarily, domestic situation is more likely to happen in apartment or residence instead
+of streets or office building, so the high frequency of domestic-involved crimes could be
+C
+caused by larger amount of apartments in one Beat instead of the low safety rating of this
+M
+Beat. Furthermore, most of the citizens pay more attention to public security but not
+whether all family in this Beat is harmonious or not. i
+H
+Similarly, the arrested ratio is related to other factors as well. For example, the
+：
+criminals of theft might be easier to arrest than the criminal of an arson case. Also, a
+criminal could be arrested by police officers from a adjacent Beat. In this way, high
+号
+arrested ratio cannot clearly stand for a safe Beat.
+Due to the reasons above and the limitation of resources, we are going to make a
+众
+basic analysis on these two factors instead of constructing other mathematical models for
+them.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 36 of 46
+(a)Domestic Situation
+Among all the beats, region 7 possesses the highest domestic-involved ratio,
+which is 24.6%, while region 1 possesses the lowest, which is 3.4%. According to the
+data provided by the America Bar Association (ABA) domestic violence made up 20% of
+all the crimes taking place in 2014. Thus, the domestic-involved ratios of region 7, which
+is 24.6%, and Beat 3, which is 23.7%, have exceeded the national average.
+M
+Domestic-Involved Ratio
+region 1
+C
+region 3
+M
+region 5
+region 7 i
+H
+region 9
+：
+region 11
+region 14
+号
+region 16
+region 18
+众
+region 20
+region 24 公
+0. 0.075 0.15 0.225 0.3
+信
+Chart 4.1 Domestic-Involved Ratios of Regions
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 37 of 46
+(b)Arrested Ratio
+Through all the regions, the Arrested Ratios range from 0.148 to 0.474. Region11
+ranks the first, while region 12 ranks the last. Thus, greater efforts should be made in
+region 12.
+However, region 11 ranks the third in the Danger Rating, which seems to be
+paradoxical to its Arrested Ratio. After further research, we notice that Narcotics, whose
+M
+Arrest Ratio is pointed out in the Part 1 analysis to be one of the highest, make up over
+C
+region 1
+ArreMsted Ratio
+region 3
+region 5 i
+H
+region 7
+：
+region 9
+region 11
+号
+region 14
+region 16
+众
+region 18
+region 20
+公
+region 24
+0. 0.125 0.25 0.375 0.5
+信
+Chart 4.2 Arrested Ratio of Regions
+微
+one-third of crimes cases taking place in region 11. Thus, a great amount of Narcotics
+cases might be credited to the highest Arrested Ratio in region 11.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 38 of 46
+Additional Model: Two definitions of rape
+In Uniform Crime Report, the definition of rape cases is different in different
+cities. The new definition of rape is introduced by the government in 2012 and in effect
+in 2013 to include more cases of sexual violation. This standard, however, is not yet fully
+adopted by all city agencies. Thus, two different types of data are used in the database of
+FBI to indicate the number of rapes. While they indicated similar things, the different
+standard generated a significant change of number that makes direct comparison
+M
+impossible. Therefore, it’s necessary for us to design a procedure to convert the number
+under the old definition into estimation under the new standard. C
+M
+It’s reasonable to assume that the ratio of rape numbers under two definitions is
+the same. This assumption is the foundation of our following rule of conversion
+i
+H
+To convert, we will use data of the cities which use different standard in different
+：
+years. We will follow a detailed procedure to estimate the ratio of rape numbers under
+different standards. In this procedure, 号we consider both the change of different years as
+well as different definitions.
+众
+Procedure to generate the estimated number of Rape (Revised Definition) for the
+cities where only number of Rape (legacy definition) is provided:
+公
+1. Get a list of cities which used the legacy definition in 2012 and revised definition
+信
+in 2013.
+2. 微Calculate the number of all violent crimes except that of rape.
+3. Calculate the percentage of change in the number of all violent crimes except that
+of rape.
+4. Use the percentage of change to predict the number of rapes under the legacy
+definition in 2013.
+5. Calculate the ratio comparing the predicted number of rape under the old
+definition in 2013 and the actual number of rape under the new definition.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 39 of 46
+Having obtained the conversion ratio, it’s possible for us to estimate the number
+of rape (revised definition) with the number of rape (legacy definition) using the
+following conversion equation:
+(cid:1831)(cid:1871)(cid:1872)(cid:1861)(cid:1865)(cid:1853)(cid:1872)(cid:1857)(cid:1856) (cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870) (cid:1867)(cid:1858) (cid:1870)(cid:1853)(cid:1868)(cid:1857)(cid:4666)(cid:1870)(cid:1857)(cid:1874)(cid:1861)(cid:1871)(cid:1857)(cid:1856)(cid:4667) (cid:3404) (cid:1872)(cid:1860)(cid:1857) (cid:1870)(cid:1853)(cid:1872)(cid:1861)(cid:1867) (cid:3400)(cid:1866)(cid:1873)(cid:1865)(cid:1854)(cid:1857)(cid:1870)(cid:1867)(cid:1858) (cid:1870)(cid:1853)(cid:1868)(cid:1857)(cid:4666)(cid:1864)(cid:1857)(cid:1859)(cid:1853)(cid:1855)(cid:1877)(cid:4667)
+So we are able to make comparison of all cities in revised number of rape,
+regardless of which standard they are using.
+M
+The result of our calculation shows that the ratio is approximately 1.3, which we
+used to transform the number of rape cases under legacy definition inCto that under revised
+definition in our model. M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 40 of 46
+Strength and Weakness
+There are both strength and weakness in our two approaches. Our strength makes our
+model reasonable and applicable while we still realize the limitation of some of the
+methods we used in the modeling process.
+Strength:
+1. We formulate two approaches with actual meaning: cost and fear. They are
+M
+directly connected with a concept that evaluates the city safety.
+2. In our fear approach, we used a research that not only evaluaCtes the tangible costs
+but also the intangible cost such as the emotional costM of the victims.
+3. In our fear approach, we use a method to eliminate the effect of the difference in
+i
+number so that we can combine data from diffeHrent categories together.
+4. We compare the safety of My City with the cities with a population of >100
+：
+thousand in the nation to get a better idea how safe/unsafe My City is. We also
+included the 11 cities with m号ost population which are similar to My City in
+population size to have a direct compare in safety rating.
+5. Besides evaluating the众 safety comparing with other cities, we evaluated the safety
+rating within the My City to see the safe and unsafe areas.
+公
+Weakness 信
+1. We ignore the crimes that are not offense, they may still contribute, through
+微
+maybe only a minor part, to the unsafety of the city.
+2. In the fear approach, we used a 1983 survey which may be different from
+people’s opinions now.
+3. The interior of the city is quite limited. We don’t have sufficient data to make
+more reliable analysis of the safety rating in beats.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 41 of 46
+Conclusion
+Through evaluation of the emotional trauma (fear approach) and the property loss
+(cost approach), we have devised two mathematical models to calculate the safety rating
+both in terms of My City and regions inside it.
+After first analyzing the data, we use data from Uniform Crime Report to create
+an index scale for each type of crime in Part two. With the numerical evaluation of fear of
+victimization from Mark Warr’s essay, we calculate the level of fear in eaMch city that has
+more than 100K of population. In the end, by comparing My City with other cities, our
+C
+group gains a general understanding of the level of fear in My City. We use the cost of
+M
+crimes per 1000 people as the indicator of safety in Part three. The cost of crimes
+includes both the emotional toil and the property lost. My City ranks low in both
+i
+H
+approach in comparison with other cities and has very severe crime issues in murder,
+：
+robbery, and assault.
+In Part four, we firstly re-divid号e totally 22 regions inside My City based on the
+original beat number from My_City_Data. Then we applied both fear approach and the
+possibility of each crime categ众ories to generate the danger rating of each region, in order
+to use the extent of danger to represent the safety rating. Consequently, the processed
+公
+data the highest danger rating (the lease safe region) is 3.55, and the lowest (the safest
+region) one is 0.50.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 42 of 46
+A letter to the Mayor
+Mr. Mayor
+We are the mathematical modeling team of the city. Several days ago, we
+received some criminal data from the police department and were asked to create a safety
+rating for My City. We first analyze the data and gain a simple understanding of the city.
+After thorough consideration, we decide to use two different indicators to evaluate the
+level of safety in My City: the cost of the crimes and the fear of victimizatMion in the city.
+We also include analysis for the level of safety inside the different region in My City.
+C
+The result of our mathematical modeling shows that My City is relatively an unsafe city
+M
+in the United States and better crime control policies are needed.
+i
+According to our analysis of the data, Theft, NaHrcotic, Battery, and Criminal
+Damage are among the most frequent crimes taking place in the city. Compared to the
+：
+national average, the crime situation in My City is worse than that of the whole nation.
+The number of Homicide, Robbery, an号d Assault cases per 100,000 people in My City is
+significantly larger than the national average.
+众
+The fear of victimization in My City is also comparatively high. Comparing My
+City with other cities that have a population of more than 100K, My City ranks 237
+公
+among the 284 cities. Our fear model shows that the fear of Murder, Robbery, and
+Assault in My 信City is very high - higher than that of 75 percent of all 284 cities. The fear
+of Rape, Burglary, and Motor Vehicle Theft is reasonable among the citizens.
+微
+The cost of crimes in My City is also high. The cost of crimes includes both the
+property cost and the emotional cost in our model. The result shows that the total cost of
+all crimes per 1000 people is approximately 3 million dollars, ranking 268th among all
+284 cities. The results of the cost approach also indicate that Murder, Robbery, and
+Assault are the most severe criminal problems in My City.
+In the end, our mathematical modeling team also analyzes the level of safety
+inside My City. The result shows that the region in which beat numbers starts with 6 (or
+06) are the most dangerous area in My City. Therefore, it’s reasonable to send more
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 43 of 46
+police power or law enforcement force to that specific area to help with the rampant
+criminal activities there.
+Our analysis and our two different approaches indicate that the level of safety in
+My City is low compared to other cities in the United States. Problem of murder, assault,
+and robbery is especially serious and noteworthy. Inside the city, the region with beat
+numbers start with 6 also has very high fear of victimization and more police force
+should be sent. In conclusion, our team believes that more crime control policy and police
+M
+power is needed to improve the condition.
+C
+Mathematical Modeling Team
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5473 Page 44 of 46
+Reference
+[1]Domestic Violence Statistics, American Bar Association,
+http://www.americanbar.org/groups/domestic_violence/resources/statistics.html
+[2]FBI 2014 Uniform Crime Reports, Federal Bureau of Investigation,
+https://www.fbi.gov/about-us/cjis/ucr/crime-in-the-u.s/2014/crime-in-the-u.s.-2014/cius-
+M
+home
+C
+[3]The Cost of Crime to Society: New Crime-Specific Estimates for Policy and Program
+M
+Evaluation,Kathryn E. McCollister, Michael T. French, Hai Fang,
+http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2835847/
+i
+H
+[4]Fear of Victimization, Mark Warr, http://ropercenter.cornell.edu/public-
+：
+perspective/ppscan/51/51025.pdf
+号
+Appendix
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+                                      Team #5473                     Page   45 of 46
+(1)Crime Amount and Arrested Condition of Each Crime Categories
+Amount
+Arrested Cases
+|     | Crime Categories   |           |          | Arrested Ratio  |
+| --- | ------------------ | --------- | -------- | --------------- |
+|     |                    | (Times)   | (Times)  |                 |
+|     | THEFT              |           |          | 0.110           |
+2618   287
+|                  | BATTERY    | 2002  | 488   | 0.244   |
+| ---------------- | ---------- | ----- | ----- | ------- |
+|                  | NARCOTIC   | 1153  | 1152  | M0.999  |
+| CRIMINAL DAMAGE  |            | 1068  |   85  | 0.080   |
+C
+|     | ASSAULT  | 701  |   181  | 0.258  |
+| --- | -------- | ---- | ------ | ------ |
+M
+| OTHER OFFENSE   |     |      |        | 0.228  |
+| --------------- | --- | ---- | ------ | ------ |
+|                 |     | 636  |   145  |        |
+i
+|                     | BURGLARY   | 560    | H  41  | 0.073  |
+| ------------------- | ---------- | ------ | ------ | ------ |
+| DECEPTIVE PRACTICE  |            | 508  ： |   49   | 0.096  |
+|                     | ROBBERY    | 394    |   36   | 0.091  |
+号
+| MOTOR VEHICLE THEFT  |     | 374  |   25   | 0.067  |
+| -------------------- | --- | ---- | ------ | ------ |
+| CRIMINAL TRESPASS    |     |      |        | 0.730  |
+|                      | 众   | 304  |   222  |        |
+| WEAPON VIOLATION     |     | 139  |   113  | 0.813  |
+公
+| PUBLIC PEACE VIOLATION  |               | 113  |   97  | 0.858  |
+| ----------------------- | ------------- | ---- | ----- | ------ |
+|                         | PROSTITUTION  | 86   |   86  | 1.000  |
+信
+| OFFENSE INVOLVING CHILDREN         |     | 69  |   10  | 0.145  |
+| ---------------------------------- | --- | --- | ----- | ------ |
+| INTERFERENCE微 WITH PUBLIC OFFICER  |     |     |       | 1.000  |
+61    61
+| CRIM SEXUAL ASSAULT   |              | 41  |   3   | 0.073  |
+| --------------------- | ------------ | --- | ----- | ------ |
+|                       | GAMBLING     | 24  |   3   | 0.125  |
+|                       | ARSON        | 23  |   23  | 1.000  |
+|                       | SEX OFFENSE  | 21  |   7   | 0.333  |
+| LIQUOR LAW VIOLATION  |              |     |       | 1.000  |
+21    21
+|     | HOMICIDE    | 19  |   7  | 0.368  |
+| --- | ----------- | --- | ---- | ------ |
+|     | KIDNAPPING  | 11  |   1  | 0.091  |
+|     | STALKING    | 7   |   3  | 0.429  |
+
+关注 HiMCM
+|     |  INTIMIDATION  | 5   |   1  | 0.200  |
+| --- | -------------- | --- | ---- | ------ |
+×+ −÷
+Hi CM 获取更多资讯
+0
+| CONCEALED CARRY LICENSE VIOLATION  |     | 1   |     | 0.000  |
+| ---------------------------------- | --- | --- | --- | ------ |
+
+                                      Team #5473                     Page   46 of 46
+| Region Number  | Unfasten Rating  |       |
+| -------------- | ---------------- | ----- |
+| 6              |                  | 3.55  |
+| 5              |                  | 3.30  |
+| 11             |                  | 2.74  |
+| 7              |                  | 2.73  |
+| 8              |                  | 2.40  |
+M
+| 4   |     | 2.20  |
+| --- | --- | ----- |
+| 3   |     | 1.65  |
+C
+| 10  |     | 1.63  |
+| --- | --- | ----- |
+M
+| 25  |     | 1.59   |
+| --- | --- | ------ |
+| 15  |     | 1i.52  |
+H
+| 22  |     | 1.51  |
+| --- | --- | ----- |
+：
+| 17  |     | 1.40  |
+| --- | --- | ----- |
+| 19  |     | 1.36  |
+号
+| 9     |     | 1.34  |
+| ----- | --- | ----- |
+| 2     | 众   | 1.33  |
+| 24    |     | 1.22  |
+| 1     | 公   | 1.19  |
+| 12    |     | 0.95  |
+| 14  信 |     | 0.86  |
+| 18    |     | 0.73  |
+微
+| 16  |     | 0.59  |
+| --- | --- | ----- |
+| 20  |     | 0.50  |
+
+(2)Danger Rating of Each Regions
+
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯

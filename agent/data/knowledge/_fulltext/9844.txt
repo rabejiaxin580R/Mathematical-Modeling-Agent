@@ -1,0 +1,1826 @@
+Team Control Number
+9844
+Problem Chosen
+A
+2019
+HiMCM
+Summary Sheet
+Increasing Charging Electricity Demands and Reducing the Cost
+M
+in Public Places
+C
+Summary
+M
+The frequent use of electronic devices has led to an increasing demand for charging in public areas. As
+the convenience of charging method, we need to properly analyze the expenditure and the allocation of the
+i
+cost. Mathematical models should be established to describe charging facilities, charging demand and
+H
+equipment cost.
+In part 1, in order to analyze the changes of charging electricity in the public area of the United States,
+：
+electric vehicles (large devices) and mobile phones (small devices) were taken into considered. Then we
+collected data on the number of electric vehicles and mobile phones, battery capacity, charging times, and
+charging frequency in 8 years. Finally, consider号ing the energy loss and the proportion of public charging, we
+calculated the actual electricity consumption in the public area every year in the US. According to the
+population of charging groups in recent years, the Bass model was used to predict the continuous changes in
+the future of electricity consumption众. The results are consistent with the predictions of well-known
+institutions.
+In part 2, different kinds of costs were taken into the economic cost model. We divided the cost of large
+charging facilities into three pa公rts: the land cost in economics, the capital of production tools, and the variable
+cost. Because the construction cost of a small charging socket is relatively low, we do not take into account
+land consumption. One part of the costs is fixed cost; the other part is variable cost. In addition, the economic
+costs of time-cost conv信ersion are discussed in our model.
+In part 3, for the four common public areas, we took Starbucks in New York, New York Airport, Stanford
+University and Macy Supermarket as typical examples. The costs of charging small devices in three areas are
+distributed to 微each cup of coffee, airline ticket, and seller, correspondingly. The cost of charging big devices
+are paid by each user. But for café, there is no large charging facility in the café, so only the loss of the small
+charging device is calculated. School is relatively special, because it bears all the charging cost, including both
+big and small devices.
+In part 4, to reduce the cost of public charging devices, we listed eight options that can change parameters
+from the political and economic point of view. Through parameter sensitivity analysis, we estimated the effect
+of the recommendation in four different occasions
+Key words: Prediction of electricity; Bass model; Cost of public charging; Electric vehicle; Mobile phone
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 1 of 27
+Contents
+1 Introduction ............................................................................................................................ 2
+1.1 Background ................................................................................................................. 2
+1.2 Problem Restatement ................................................................................................... 2
+2 Problem analysis ..................................................................................................................... 2
+3 Assumptions ........................................................................................................................... 3
+4 Calculation of public charging demand (Problem 1) .............................................................. 3
+4.1 Description .................................................................................................................. 3
+4.2 Calculation of public charge calculation model .......................................................... 4
+4.2.1 Calculation model of public charging capacity of electric vehicle ................... 4
+4.2.2 Calculation model of public charging capacity of mobile phone ..................... 5
+4.2.3 Calculation model of total amount of public charging ..................M................... 5
+4.3 Data Collection and Processing ................................................................................... 6
+4.4 Mathematical Model .................................................................................................... 7
+C
+4.5 Statistical Analysis ...................................................................................................... 7
+4.6 Future prediction ......................................................................................................... 8
+M
+4.7 Impacts of increasing electricity demand .................................................................... 9
+5 Cost of charging in public (Problem 2) ................................................................................ 10
+5.1 Electric vehicle charging cost .................................................................................... 10
+i
+5.2 Mobile phone charging cost ..................................H.................................................... 11
+5.3 comprehensive charging cost..................................................................................... 12
+6 Analysis in different scenarios (Problem 3) ....：.................................................................... 12
+6.1 Cafe ........................................................................................................................... 13
+6.1.1 Mathematic model .......................................................................................... 13
+6.1.2 Sample data and results号 .................................................................................. 13
+6.2 Airport ....................................................................................................................... 14
+6.2.1 Mathematical model ....................................................................................... 14
+6.2.2 sample data and results ................................................................................... 14
+众
+6.3 Mall ........................................................................................................................... 15
+6.3.1 Mathematical model ....................................................................................... 15
+6.3.2 Sample data and results .................................................................................. 15
+公
+6.4 School ........................................................................................................................ 16
+6.4.1 Mathematical model ....................................................................................... 16
+6.4.2 Sample data and results .................................................................................. 16
+信
+6.5 Analysis and discussion ............................................................................................. 16
+7 Plans of lowering the cost (Problem 4) ................................................................................ 17
+7.1 Methods ..................................................................................................................... 17
+微7.2 Description of plans ................................................................................................... 18
+7.3 Model modification ................................................................................................... 19
+7.4 Sensitivity analysis .................................................................................................... 19
+8 Strength and weakness ......................................................................................................... 20
+Reference ................................................................................................................................. 20
+News ........................................................................................................................................ 21
+Appendices .............................................................................................................................. 22
+Sensitivity Analysis Results ............................................................................................ 22
+MATLAB Code ............................................................................................................... 22
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 2 of 27
+1 Introduction
+1.1 Background
+In recent years, with the continuous development of technology, people not only use more and
+more electronic products, but also need more and more timely charging in public places. Free
+charging sockets and car charging piles are also used in cafes, airports, schools, shopping malls, and
+other occasions. It is one of the most important problems to analyze the impact of this phenomenon
+and the requirements for the corresponding occasions. The existing charging facilities will cause
+certain consumption and impact. For example, Tesla electric vehicle charging pile provides power
+for users through the power system connecting the parking lot, but it has certain requirements for
+the compatibility and the aging degree of power supply system. The distribution of electric charge
+payment of public charging pile has become one of the problems to be solved. Therefore, what we
+need to do is to analyze the relevant models and optimize them so that this power supply system
+can adapt to more environments and make the distribution of payment more reasonable.
+M
+As the convenience and liquidity of this charging method will also cause higher consumption,
+we need to properly analyze the expenditure and the allocation of the cost of this part, so as to
+minimize capital consumption and make it most acceptable to consumers and suppliers. Since there
+C
+is a certain amount of charging facilities in public places, we need to analyze the consumption and
+payment of facilities and electricity.
+M
+1.2 Problem Restatement
+Question 1: We need to find out how the energy consumed by the public free charging mode
+has changed in recent years, and predict the future changing trend. We need to find out the positive
+i
+and negative impacts of this growing energy and charging demand on the public environment
+H
+providing charging and what changes need to be made in the public environment in order to sustain
+this growth.
+：
+Question 2: Use the impact in the first question and the requirements for the public
+environment to make this "cost model" for the growing energy consumption and demand of
+electricity and discuss the different forms of cost spending and how these costs are caused.
+号
+Question 3: Discuss the changes of "cost model" parameters in the previous question when
+they are applicable to different locations (such as schools, coffee shops, airports, shopping malls,
+etc.).
+Question 4: Find out the m众easures that can reduce the cost of increasing power consumption.,
+How will the parameters in the "cost model" change after these measures are implemented.
+2 Problem analysis
+公
+A schematic overview of the scope of this study is shown in Figure 1. Models will be built to
+sovlve these four quesitons above.
+Question 1: We need to make statistical analysis of the change of the electric energy required
+信
+by this public charging mode in recent years, and predict the changing trend in the future. At the
+same time, we need to identify the positive and negative impact of this growing energy and charging
+demand on the public environment that provides charging. Besides, we divide the public charging
+con微sumption into two categories according to the level of energy needed, and build a model from
+two aspects of mobile phone and electric vehicle charging consumption.
+Question 2: We need to use the impact of this charging mode mentioned in question 1, and
+meet the requirements of this charging mode for the public environment to make a cost model that
+should be able to adapt to the growing energy consumption and demand. We also need to discuss
+the different forms of cost spending and what aspects of costs are made up of. In this regard, we are
+going to start from two aspects: electric vehicle and mobile phone charging cost, whichinclude
+investment cost and time cost. While investment cost can be further divided into land cost,
+construction cost and operation cost., time cost is the time cost for queuing
+Question 3: We need to discuss how the cost model constructed in question 2 can adapt to
+different situations, such as airports, coffee shops, department stores, and schools. According to the
+equation already found in the second question, we will use the cumulative addition to find out the
+investment and time cost of mobile phones and electric vehicles in different situations.
+Question 4: We need to find ways to reduce the increasing cost of increasing power
+consumption due to the popularity of charging among people and analyze how to change the
+parameters in the cost model to reduce the cost most effectively.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 3 of 27
+M
+Figure 1 A schematic overview of the scope of this study C
+3 Assumptions
+M
+Assumption 1: we select the United States as the analysis area. Since the United States is a
+developed country, its charging infrastructure is relatively developed, with the largest free charging
+market and the largest scale of free charging equipment. Additionalliy, the existing data is relatively
+abundant, which makes the data for recent years for statisticHal analysis accessible to propose and
+test the theoretical model.
+Assumption 2: charging will bring energy： loss. Acccording to the principle of physics,
+during the charging process, a small part of energy will not be converted into electric energy, but
+will be converted into thermal energy to be emitted. We use it in the title to show the charge loss
+efficiency.
+号
+Assumption 3: the power consumption of hybrid charging vehicle is not covered. Hybrid
+vehicles can consume both fuel and electricity. The problem only needs us to analyze the power
+consumption, but not the fuel consumption. It is difficult to judge the specific situation in which
+众
+hybrid vehicles will consume fuel and electricity, so the power consumption of hybrid vehicles is
+difficult to estimate.
+Assumption 4: the number of charging piles of electric vehicles can exactly meet the
+charging demand. T公he number of charging piles must meet the charging demand of electric
+vehicles, otherwise it will not maintain a charging market with continuous growth of demand.
+Assumption 5: mobile phone and electric vehicle users will only charge after using all the
+electricity, a信nd will be fully charged at one time. In order to do better quantitative calculation, we
+exclude the situation that the user starts to charge before the battery power is fully consumed and
+stops charging before the battery is fully charged, and assume that all mobile phone and electric
+vehicle users will charge after the battery is completely consumed and will be fully charged each
+微
+time.
+Assumption 6: the cost of electricity generated by charging mobile phones in public places
+is entirely borne by the operator. In order to attract customers, operators (e.g. coffee shops,
+restaurants, etc.) usually set up free charging plugs for customers to use. Although this part of the
+cost will ultimately be allocated to customers' consumption, it is the operators who perform this
+operation. So we classify this part of the cost into the operators' operating cost.
+Assumption 7: laptops are not included among the electrical appliances involved in the
+calculation. People do use laptops to charge in public. But the frequency is low. So the electricity
+consumption caused by laptops should be neglected.
+4 Calculation of public charging demand (Problem 1)
+4.1 Description
+In order to analyze the change of charging demand in public areas in the United States, we
+analyze all charging capacity in public areas in recent years, such as schools, public charging piles,
+airports, coffee shops, etc., and establish a model to predict the change trend of charging capacity
+in public areas in the next few years. Considering the type of charging in public areas, there are
+many kinds of charging equipment such as electric vehicles, e-books, and smart phones [1]. There
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 4 of 27
+are remarkable differences according to the electricity demand. Therefore, the charging equipment
+is mainly divided into large equipment and small equipment. We mainly consider electric vehicles
+for large equipment and smart phones for small equipment. Next, we will carry out
+statistical analysis on the charging capacity of electric vehicles and smart phones in public areas,
+𝐸𝐸an 𝑣𝑣 d 𝑣𝑣ℎ e 𝑖𝑖𝑖𝑖 s 𝑖𝑖 t 𝑣𝑣 ablish a prediction model. Our modeling𝐸𝐸 s 𝑝𝑝 c ℎ h 𝑜𝑜 e 𝑜𝑜 m 𝑣𝑣 e is shown in Figure 2.
+M
+C
+M
+Figure 2 A schematic overview of calculation of public charging demand
+4.2 Calculation of public charge calculation model
+i
+4.2.1 Calculation model of public charging capacity of electric vehicle
+H
+At present, electric vehicles (EVs) in the United States include electric buses, electric taxis,
+special EVs, business EVs, and electric private cars, of which the proportion of electric private cars
+：
+is more than 90%. Hybrid cars are usually charged at home at night and can be refueled in most
+cases. It is assumed that after the hybrid vehicle is charged at home at night, and the part of the
+external power is exhausted outside, oil and gas are used to generate power, and it will not be
+charged in public places, so the power号 consumption of the hybrid vehicle is not considered.
+Therefore, only the charging of electric private cars in the public area is considered in the analysis
+of this problem.
+First of all, we need to calc众ulate the power consumption of a single electric vehicle every day.
+Different kinds of vehicles have different driving mileage corresponding to their energy
+consumption per kilometer. According to the analysis above, we can get the electricity consumption
+equation of a single electric vehicle in a day:
+公
+q
+e = ×d (1)
+vehicle−day
+100
+Among信 them, q is the electric energy consumed for every 100km of driving，d is the
+driving mileage of this type of electric vehicle in a day, and e is the power consumption of
+vehicle−day
+a pure electric vehicle in a day. To calculate the total charge, we can sum it up and multiply it by
+微
+the number of days 365, so the capacity consumed by a single pure electric vehicle in a year is
+e =365×e (2)
+vehicle−year day
+In the course of one year's driving, part of the electric vehicle is charged at home and part of it
+is charged in public. Assuming that the ratio of the times of charging in public to the total times is
+α , the result of charging pure electric vehicle in public isα e . Finally,
+vehicle vehicle vehicle−year
+considering that the electric vehicle will have a very large loss in the charging process, assume that
+the charging loss rate is φ , then the actual power consumption of each electric vehicle in the
+vehicle
+public environment is:
+αe
+e = vehicle−year (3)
+vehicle 1−φ
+vehicle
+The number of electric vehicles is in a dynamic change process. Assuming the number of pure
+electric vehicles in the United States every year is n , then the annual energy consumption of
+vehicle
+charging in the United States is:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 9844   |     |     |         |         |         |     |     |     | Page 5 of 27  |        |
+| ------------- | --- | --- | ------- | ------- | ------- | --- | --- | --- | ------------- | ------ |
+|               |     |     | E =n    |         | ×e      |     |     |     |               |   (4)  |
+|               |     |     | vehicle | vehicle | vehicle |     |     |     |               |        |
+Substituting the above Eq. (1) - (3) into Eq. (4), and finally get the equation:
+|     |         |     | 3.65×n  | ×α  |         | ×q×d |     |     |     |        |
+| --- | ------- | --- | ------- | --- | ------- | ---- | --- | --- | --- | ------ |
+|     | E       | =   | vehicle |     | vehicle |      |     |     |     |   (5)  |
+|     | vehicle |     |         | 1−φ |         |      |     |     |     |        |
+vehicle
+Here, n represents the total amount of pure electric vehicles in the United States every year,
+vehicle
+α is the ratio of times of charging for public occasions to the total times, q is the electric
+vehicle
+energy consumed for every 100km driving, d
+is the driving mileage of this type of electric vehicle
+in a day, andφ
+ is the charging loss rate.
+vehicle
+4.2.2 Calculation model of public charging capacity of mobile phone
+There is a large amount of mobile phone users in the United States. Because tMhe majority of
+users of Apple mobile phone and there is not a significant difference among current mainstream
+mobile phone brands, products, and battery capacity , we use Apple mobile phone as our research
+| goal. Power of a single cell phone  |     | :   |       |     |     |     |     | C   |     |        |
+| ----------------------------------- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | ------ |
+|                                     |     |     | w=C×V |     |     |     |     |     |     |   (6)  |
+𝑤𝑤
+M
+Where   is the battery capacity,   is the standard voltage. Compared with electric cars, mobile
+phones require more times of charging every day. The daily charge of mobile phone is:
+| 𝐶𝐶                                                                                   |     | w𝑉𝑉       | = w×n |     |     |     |     |     |     |        |
+| ------------------------------------------------------------------------------------ | --- | --------- | ----- | --- | --- | --- | --- | --- | --- | ------ |
+|                                                                                      |     |           |       |     |     |     |     |     |     |   (7)  |
+|                                                                                      |     | phone−day |       | day |     | i   |     |     |     |        |
+| Among these variables, wis the electric energy of a single cell phone battery, and n |     |           |       |     | H   |     |     |     |     |        |
+ is the
+day
+number of charges per day. If we want to get  total charging capacity of a mobile phone in a year,
+：
+we can sum it and multiply it by 365 days, then the capacity consumed by a single mobile phone in
+a year is:
+|     |     | w   | = 365×w |     |     |     |     |     |     |     |
+| --- | --- | --- | ------- | --- | --- | --- | --- | --- | --- | --- |
+(8)
+|     |     | phon号e−year |     |     | phone−day |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | --------- | --- | --- | --- | --- | --- |
+In one year's use of mobile phones, part of them are recharged at home and part of them are
+recharged in public. Assuming that the ratio of the times of charging in public to the total times is
+α , the charging result of m众obile phones in public isα w . Finally, considering that
+| phone |     |     |     |     | phone | phone−year |     |     |     |     |
+| ----- | --- | --- | --- | --- | ----- | ---------- | --- | --- | --- | --- |
+there will be a certain amount of energy consumption when charging the mobile phone, assuming
+that the charge loss rate isφ , then the actual power consumption of each mobile phone is:
+phone
+公
+|     |     |     |       | α     | w          |     |     |     |     |        |
+| --- | --- | --- | ----- | ----- | ---------- | --- | --- | --- | --- | ------ |
+|     |     |     | =     | phone | phone−year |     |     |     |     |        |
+|     |     |     | w     |       |            |     |     |     |     |   (9)  |
+|     |     |     | phone | 1−φ   |            |     |     |     |     |        |
+phone
+Assumi 信 ng that the number of mobile phones is n and the number of smart phones in the
+phone
+United States changes dynamically every year, the energy consumption of charging in the United
+States is:
+微
+|     |     |     | E     | =n  | ×w    |       |     |     |     | (10)  |
+| --- | --- | --- | ----- | --- | ----- | ----- | --- | --- | --- | ----- |
+|     |     |     | phone |     | phone | phone |     |     |     |       |
+Substituting the above Eq. (6) - (9) into Eq. (10), and finally get the equation:
+|     |     |       | 365×n |       | ×α    | ×w×n |     |     |     |       |
+| --- | --- | ----- | ----- | ----- | ----- | ---- | --- | --- | --- | ----- |
+|     |     |       |       | phone | phone |      | day |     |     |       |
+|     |     | E     | =     |       |       |      |     |     |     | (11)  |
+|     |     | phone |       | 1−φ   |       |      |     |     |     |       |
+phone
+Among them, w is the electric energy of a single cell phone battery , n is the number of
+|     |     |     |     |     |     |     |     | phone |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+
+cell phones in the United States every year, n  is the number of charges per d ay, α is the
+|     |     |     | day |     |     |     |     |     | phone |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- |
+ratio of the number of charges in public places to the total number of charges, and φ  indicates
+phone
+the charge loss rate of cell phones.
+4.2.3 Calculation model of total amount of public charging
+Based on the above model, the total amount of charging in public areas is mainly composed of
+the power consumption required by electric vehicles - large equipment  and smart phones -
+small equipment . Therefore, the total charging capacity in the public area in one year:
+𝐸𝐸𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣
+|     |     |     |     |     |     | .     |     |     |     | (12)  |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- | ----- |
+𝐸𝐸𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣
+|     |     | 𝐸𝐸𝑎𝑎𝑖𝑖𝑖𝑖 | =𝐸𝐸𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝐸𝐸𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     |     |     |     |     |     |     |
+| --- | --- | -------- | ---------------------------- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team # 9844   |     |     |     |     | Page 6 of 27  |
+| ------------- | --- | --- | --- | --- | ------------- |
+4.3 Data Collection and Processing
+We find the ownership of new energy electric vehicles (including hybrid vehicles, etc.) and the
+market share of BEV in the United States from 2011 to 2018 , as shown in the table below [2].
+
+Table 1 Electric vehicle ownership in the United States
+|     | 2011  2012  | 2013  | 2014  2015  | 2016  2017  | 2018  |
+| --- | ----------- | ----- | ----------- | ----------- | ----- |
+Electric vehicle ownership  22000  75000  170000  290000  400000  550000  740000  1080000
+Proportion of pure electric vehicles  0.52  0.55  0.54  0.57  0.62  0.64  0.53  0.66
+
+From the above table, we can get the ownership of pure electric vehicles in the United States,
+as shown in Figure 3.
+M
+C
+M
+i
+H
+
+Figure 3 Data of pure electric vehicles in the United States
+：
+
+In 2017, pure electric vehicles accounted for 53% and plug-in hybrid vehicles accounted for
+47%. In 2018, the market share of pure electric vehicles (Bev) was the largest, accounting for 66%,
+and the proportion increased. In order to 号solve the results above, we found that only about 7% was
+charged in public, so the ratio of times of charging in public places to total times was set to 7%  [2].
+q refers to the electric energy consumed for every 100km driving and the driving mileage of this
+type of electric vehicle in a d众ay. The actual charge loss rate is φ
+. In terms of technical
+vehicle
+parameters of pure electric vehicle, we take the average value of technical parameters of "micro
+bus" and "Zotye Zhidou" with large number of users as the parameters of pure electric vehicle. The
+daily mileage of electr公ic vehicle is 50km, and the electric energy consumed for every 100km is 18
+kWh (an electricity demand based planning of electric vehicle charging infrastructure). Thus, the
+total power consumption can be calculated. The literature shows that the actual charge rate of loss
+of electric vehicles is between 0.07-0.12. We choose 0.1 as the  rate of  loss of vehicle charging.
+信
+
+Table 2 Smartphone ownership and charging power
+|             | Quantity of  |              | Average  | Charging electric  |     |
+| ----------- | ------------ | ------------ | -------- | ------------------ | --- |
+| 微Parameter  |              | Capacitance  |          |                    |     |
+| Year        | ownership    |              | voltage  | energy             |     |
+source  /mAh
+|                      | /millions  |         | /V   | /mWh     |     |
+| -------------------- | ---------- | ------- | ---- | -------- | --- |
+| 2011  iphone 4/4s    | 92.8       | 1420    | 3.8  | 5396     |     |
+| 2012  iphone  4s/5   | 122        | 1430    | 3.8  | 5434     |     |
+| 2013  iphone 5/5s    | 144.5      | 1500    | 3.8  | 5700     |     |
+| 2014  iphone  5s/6   | 171        | 1685    | 3.8  | 6403     |     |
+| 2015  iphone  6/6s   | 190.64     | 1762.5  | 3.8  | 6697.5   |     |
+| 2016  iphone  6s/7   | 208.61     | 2695    | 3.8  | 10241    |     |
+| 2017  iphone  8/7/6  | 246.6      | 2870.5  | 3.8  | 10907.9  |     |
+| 2018  iphone  8/x    | 257.3      | 3171    | 3.8  | 12049.8  |     |
+
+For small charging devices, we find the number of mobile phones in the United States from
+2011 to 2019 (as shown in Table 2) [3]. Additionally, because the battery capacity of the major
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 9844 Page 7 of 27
+American brands is similar, and the iPhone accounts for the majority, we default the battery capacity
+of the phone to the battery capacity of the iPhone. In addition, considering the life of mobile phones
+and the advancement of technology products, in order to ensure relative accuracy, we take the
+average value of the battery capacity of the latest iPhone and the last cell phone as the battery
+capacity in each year. The lithium battery voltage of mobile phone fluctuates between 3.7 and 4.2V,
+we take 3.8V approximately. Multiplying the battery capacity by the voltage obtains the electric
+energy consumed by the mobile phone when charging once [4]. However, there will be energy
+consumption in the charger and mobile phone when charging. We all calculate 39%, and then
+multiply the energy by the retention to calculate the total energy consumption [5]. According to the
+data, about 51% of the mobile phone's charging power is charged in the public environment, so
+multiplying the calculated total power by 51% gets the power consumed by our final small device
+(mobile phone) every year. The charging capacity of mobile phone is charged in the public
+environment, so the total power calculated before is multiplied by 51% to get the power consumed
+by our final small devices (mobile phone) every year. M
+4.4 Mathematical Model
+C
+To statistically analyze and speculate on how the demand for electric vehicles and cell phones
+in public will continue to change in the future, we can first count and analyze the overall number of
+PEV and phones in the future. After research and comparison, we decMided to adopt the Bass model
+proposed by Frank Bass of the United States, which can be used to predict the quantity of electric
+vehicles and mobile phones. The pre-assumption of the Bass model is that the growth rate of the
+i
+market for electric vehicles and mobile phones in the market mainly comes from two aspects. On
+H
+the one hand, it comes from advertising, marketing and other business activities. On the other hand,
+it comes from the promotion of existing users. That is, there are already behaviors such as the user's
+：
+influence on the potential users. In the Bass model, the source of new users of electric vehicles and
+mobile phones is divided into two types. One is to receive innovative users for marketing and
+promotion, and the other is to imitate users through old users. Definition p is the innovation
+coefficient, which is the growth rate of in号novative users of EV and cell phones. The specific range
+is [0, 1]. The larger the value, the stronger the awareness of innovative users to purchase goods. The
+definition q is the imitation coefficient, and the q value indicates the speed at which the old users of
+EV and phones promote the pro众duct. The value range is also [0, 1]. The larger the value, the easier
+it is for the old users of EV and phones to promote their potential users. The equation for the Bass
+model is shown below:
+公N
+t
+=N
+t–1
++p m–N
+t–1
++q
+Nt–1
+m–N
+t–1
+(12)
+m
+where Nt and Nt – 1 represents the quantity of consumers of EV or phones at the time of t and t –
+( ) ( )
+1, respectively, while m represents the total quantity of consumers of EV or phones (aka maximal
+market potential).
+信
+Eq. (12) can be mathematically transformed into high order equation,
+I t =N–N =pm+ q–p N – q N 2 (13)
+t t – 1 t – 1 m t– 1
+An微d finally we obtain:
+() ( )
+I t =x+yN +zN 2 (14)
+t – 1 t– 1
+This paper imports the Bass model to predict the quantity of electric vehicles and mobile phone
+market, so as to accurately estimate th(e) charging demand of electric vehicles and mobile phones
+under certain conditions. The Bass model was chosen because it has higher versatility, lower
+requirements for hardware equipment and technology, simple model calculation, and more
+reasonable methods than other models in the industry. The Bass model can better estimate the
+charging demand for each time period and each area. When the number of EV in the area changes
+to a large extent, after adjusting the parameters, it can still be accurately estimated [Reference 1].
+4.5 Statistical Analysis
+Based on the above data, we use the Bass model to analyze the electric vehicle (pure EV) data
+from 2011 to 2018. Therefore, the model is:
+=5985.1 + 0.678N + 0.0000018621N 2 (15)
+t –1 t –1
+The fitted curves in terms of electric vehicles are shown in Figure 4.
+𝐼𝐼(𝑡𝑡)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 9844   |     |     |     | Page 8 of 27  |     |
+| ------------- | --- | --- | --- | ------------- | --- |
+
+Figure 4 Fitted curves for the ownership of pure EVs
+M
+
+Likewise, based on the above data, we use the Bass model to analyze the cell phone data from
+2011 to 2018. Therefore, the model is
+C
+2
+|     | I t =16.8313 + 1.1570N |     | – 0.0006N |       | (16)  |
+| --- | ---------------------- | --- | --------- | ----- | ----- |
+|     |                        |     | t –1 t –1 |       |       |
+The fitted curves in terms of cell phones are shown in Figure 5.  M
+()
+i
+H
+：
+号
+
+Figure 5 Fitted curves for the ownership of cell phones
+众
+
+4.6 Future prediction
+For external prediction, we use the Bass model on basis of the data on the number of electric
+vehicles and smartphones from 2011 to 2018, based on past data to predict the development of  公
+electricity consumption in the next few years [6]. In addition, for the future changes in mobile phone
+battery capacity, we calculate the average value of mobile phone battery capacity from 2011 to
+2018, and us信e this value as the future change:
+|     | 8       | Ci+ 1–Ci |         |       |        |
+| --- | ------- | -------- | ------- | ----- | ------ |
+|     | C= i= 1 |          |         |       |  (17)  |
+8
+|     | ∑   | ( ) |     |     |     |
+| --- | --- | --- | --- | --- | --- |
+where C is the average change of mobile phone battery capacity in recent years, and C is the average
+i
+mobile phone battery capacity taken every year since 2011. The calculated average is approximately  微
+250 mAh per year.
+
+Table 3 Prediction of battery capacities
+|     | Year  | Capacity (mAh)  |     |     |     |
+| --- | ----- | --------------- | --- | --- | --- |
+|     | 2019  | 3421            |     |     |     |
+|     | 2020  | 3671            |     |     |     |
+|     | 2021  | 3921            |     |     |     |
+|     | 2022  | 4171            |     |     |     |
+|     | 2023  | 4471            |     |     |     |
+
+Prediction of the average battery capacity of mobile phones in each of the next five years is
+shown in Table 3. Based on the above predictions, the amount of pure electric vehicles and mobile
+phones are obtained, thereby the corresponding overall power consumption calculated. Here we
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 9844 Page 9 of 27
+predict that the number of pure electric vehicles in the United States will be 3.2 million in 2020,
+which is consistent with the value, 3.3 million, predicted from relevant institutions [7].
+Table 4 Prediction of the ownership and power consumption of electric vehicles and smart phones
+Amount of Amount of Smart Power consumption
+Year
+PEVs phones (million) (109 kWh)
+2019 1490 000 271.90 1.14
+2020 3200 000 283.81 1.69
+2021 5390 000 293.34 2.38
+2022 8450 000 300.82 3.30
+M
+2023 11500 000 306.61 4.22
+4.7 Impacts of increasing electricity demand C
+(1) Gradual expand of electricity demand
+Recent years has witnessed the boosting using rate of electronic prModucts with the development
+of electronic product technology. The vast majority of people in American society today have pure
+electric cars and smart phones, so the demand for public free charging is undoubtedly increasing.
+In addition to traditional electronic products, as electric vehicle mianufacturing matures, electric
+H
+vehicles may become a more realistic alternative to gasoline and diesel fuel vehicles. Many electric
+car drivers charge mainly at home or at work. However, a wide range of public infrastructure
+：
+charging facilities are still required for day-off work or when the vehicle is traveling in longer
+distance. For smartphone users, due to the increase in usage, a large number of users often face the
+problem of a shortage of charging places and the inability to charge. As people's demand for
+charging places increases, more free char号ging stations gradually emerge to benefit the wider group
+of people. The charging problem is solved, which in turn improves people's average living
+standards.
+Providing more convenient and efficient battery charging conditions in public places, major
+众
+driving routes, and highways has attracted more visitors to a certain extent. Meeting the needs of
+more people has led to a lot of construction of charging stations. Therefore, we need to consider the
+cost of building charging stations and various public charging equipment.
+公
+(2) Increasing operation and maintenance costs
+In most cases, when installing an electric vehicle charging device, the device of each vehicle
+must have a dedicated circuit available. Sufficient power capacity is expected to flow from the utility
+to the distrib信ution panel at the appropriate voltage to meet the power requirements of the electric
+vehicle's power supply equipment. Meanwhile, deliberate destruction or crossing of wires can cause
+some damage to these public facilities. It is more common to replace damaged parts or to update
+the powered equipment of vehicles featured with advanced function or communication. Considering
+微
+the huge demands and high requirements on equipment, public charging devices need to be
+continuously updated in large quantities, resulting in a significant increase in the cost of
+maintenance. Therefore, we need to include the cost of maintaining the charging station.
+(3) The cost of required electricity
+Advocates of electric vehicles list the feasibility of public charging stations as the primary
+factor and prerequisite for people to become interested in electric vehicles, because the charging
+station provides drivers with a wider choice and flexibility in traveling. With the advent of public
+charging stations, consumers will be more interested in the electric vehicle industry.
+For builders, however, the operation costs of electric vehicle power supply equipment include
+electricity bills and vehicle costs. In addition to the electricity bill based on energy consumption,
+many commercial and industrial facilities may be charged for power control from utility companies
+due to the additional power consumption.
+(4) Land cost
+Many people charge their devices at home, but the charging station can be found in many
+places, from the home of the PEV owner to the workplace, to the parking lot of restaurants, malls
+and airports. Therefore, the construction of the charging station occupies a large amount of land
+resources, the cost of which needs to be considered.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 10 of 27
+(5) Queue time cost
+With the increasing demand for public charging stations, more and more people are facing the
+competition for limited resources. The most prominent problem is the queuing. When the demand
+for charging stations reaches a certain amount, people will face a situation of shortage of supply.
+We want to create a solution that can be globally optimized to properly allocate charging stations
+and limit the amount of time each person uses.
+5 Cost of charging in public (Problem 2)
+Charging equipment mainly includes AC slow charging, AC fast charging and DC fast
+charging [8]. Among them, the AC leve12 charging facilities, which have established a certain scale
+and relatively complete charging network, have the largest number of installations and the widest
+distribution area; the DC fast charger charging facilities, which are mainly located on intercity and
+interstate highways, provide fast power supply services for long-distance driving electric vehicles.
+M
+The layout of electric vehicle charging station is mainly combined with indoor or outdoor parking
+lot to provide charging service while parking. The charging equipment in the United States is mainly
+operated by operators. By 2018, the number of electric vehicle charging stations in the United States
+C
+has reached 72150, an increase of 22.5% [3]. A schematic overview of calculation of charging in
+public is shown in Figure 6.
+M
+i
+H
+：
+号
+众
+Figure 6 A schematic overview of calculation of charging in public
+公
+5.1 Electric vehicle charging cost
+The charging cost of electric vehicle is considered from two dimensions: Builder and user,
+builder and o信peration cost [9]. Users consider their time input cost. Investment cost mainly includes
+land cost, station construction cost and operation cost. The land cost is mainly related to the location
+of the charging station and the floor area, because the price of land in different locations is different,
+and the larger the floor area, the higher the cost. The cost of building a charging station is related to
+微
+the cost of infrastructure and the number of stations. The higher the price of infrastructure, the higher
+the cost of building a station, and the higher the number of stations. The operation cost is closely
+related to the wages of workers, maintenance costs, number of charging stations and operation years.
+The time input cost of users is mainly reflected in queuing. If the electric vehicle station in the public
+area is not set properly, users will spend a lot of time in queuing. The user's capital input cost is
+mainly reflected in the payment of electricity charges. The cost of this part can be converted with
+the operation cost of the charging station, so it will not be discussed here.
+Based on this, this paper not only considers the investment cost of the builder, but also
+considers the queuing time cost of the user.
+(1) Investment cost: land cost
+Electric vehicles belong to new energy vehicles. Compared with traditional vehicles, they are
+more environmentally friendly. Cities that can promote new energy vehicles generally have
+developed economy and relatively precious soil resources. Therefore, in the process of considering
+the investment cost of charging station construction, we should first consider the cost of land. The
+equation of land cost of single charging station is as follows:
+=c (17)
+Here, C represents the land cost of a single charging station (10000$), represents land cost per
+1
+𝐶𝐶1 𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠
+𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 9844   |     |     |     |     |     |     |     |     |     | Page 11 of 27  |
+| ------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+unit area of single charging station (10000 $ / ),   represents the floor area of a single charging
+| station ( | )   |     |     |     |     |     |     |     |     |     |
+| --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+2
+| (2) Investm2 | ent cost: construction cost  |     |     |     | 𝑚𝑚 𝑆𝑆 |     |     |     |     |     |
+| ------------ | ---------------------------- | --- | --- | --- | ----- | --- | --- | --- | --- | --- |
+The𝑚𝑚 construction cost mainly refers to the input cost of charging piles and their supporting
+facilities, which is related to the number of charging piles. The more charging piles in a single
+charging station, the higher the cost of a single charging station. The specific calculation equation
+is as follows:
+|     |     |     |     |     |     |     |     |     |     |   (18)  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------- |
+where, C 2  represents the construction cost of a single charging station (ten thousand yuan); c charge  is
+|     |     |     |     |     | 2 𝑖𝑖 ℎ 𝑎𝑎 | 𝑎𝑎 𝑎𝑎𝑣𝑣 𝑖𝑖 |     |     |     |     |
+| --- | --- | --- | --- | --- | --------- | ---------- | --- | --- | --- | --- |
+the price of a single charging point; n  indica𝐶𝐶t es= th𝑐𝑐e   n u m b𝑛𝑛e r of charging posts in a single charging
+c
+station.
+ (3) Investment cost: operation cost
+The operation cost of the charging pile equipment itself mainly includes the labor cost, the loss
+M
+of supporting facilities, and the cost of daily maintenance, etc., which is generally proportional to
+the construction cost. In addition, part of the operating cost is the electric charge generated by the
+daily charging of the electric vehicle, and the sum of these two parts can get the operating cost of a
+C
+single electric vehicle charging station for 365 days a year:
+|     |     |     |     | E       |     |     |     |     |     |   (19)  |
+| --- | --- | --- | --- | ------- | --- | --- | --- | --- | --- | ------- |
+|     |     |     |     | vehicle |     |     | M   |     |     |         |
+Here, c  represents the unit price of electric vehicle charge in this area; f  is the cost of
+|     | vehicle |     | 𝐶𝐶3 |     | 𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛𝑖𝑖(𝑓𝑓𝑣𝑣+𝑓𝑓𝑖𝑖)𝛽𝛽𝑖𝑖 |     |     |     | e   |     |
+| --- | ------- | --- | --- | --- | ----------------------------------- | --- | --- | --- | --- | --- |
+=
+maintenance equipment; f is the wage paid to the worker when repairing the equipment; β l c  is the
+| maintenance frequency.  |     |     |     |     |     |     | i   |     |     |     |
+| ----------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+(4) Time cost: queuing time cost
+The time cost of users is mainly the time cost of waiting for charging. At present, the charging
+| mode of electric vehicles is generally divided into fast charging and slow charging. Fast charging  |     |     |     |     | ：   |     |     |     |     |     |
+| --------------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+takes 0.5-2h, and slow charging takes 7-8h. For users who need to charge in the public area, they
+usually choose fast charging. Therefore, this paper mainly considers the waiting time of users in the
+process of fast charging. In a single charg号ing station, each fast charging point can be regarded as a
+time cost consuming unit. Based on this, the equation of the total waiting time cost per day for a
+single charging station can be obtained,
+|     |     |     |     |     |     |     |     |     |     |   (20)  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------- |
+众
+Here, T  refers to the total waiting time of users in a single charging station every day (H). N
+|     | w   |     |     | 𝐶𝐶𝑤𝑤 | =𝑇𝑇𝑤𝑤𝑛𝑛𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑡𝑡 |     |     |     |     | vevicle |
+| --- | --- | --- | --- | ---- | ------------------------ | --- | --- | --- | --- | ------- |
+refers to the number of electric vehicles per day at a single charging station(Vehicle). C  represents
+T
+公
+the travel cost per unit time of the user (10000 $ / h).
+The cost model of a single EV charging station can be established by combining the investment
+cost and time cost. Considering that the double objective functions in this paper are all cost, and the
+信
+units are the same, then we use the cumulative addition to merge directly. Combining the land cost,
+construction cost, operation cost and the time cost of users waiting for charging, the cost model of
+365 day electric vehicle fast charging station in a year is obtained. The constraints are as follows:
+|     | 微   |     |     |     |     |     |     |     |     |          |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------- |
+|     |     |     | （E  |     |     |     | ）   |     |     |    (21)  |
+𝐹𝐹𝑖𝑖ve=hicl𝐶𝐶e1+𝐶𝐶2+𝐶𝐶3+𝑇𝑇𝑤𝑤
+The annual cost of a single charging station is shared equally on each electric vehicle it charges,
+=𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠+𝑐𝑐𝑖𝑖ℎ𝑎𝑎𝑎𝑎𝑎𝑎𝑣𝑣𝑛𝑛𝑖𝑖+ 𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛𝑖𝑖(𝑓𝑓𝑣𝑣+𝑓𝑓𝑖𝑖)𝛽𝛽𝑖𝑖 +365𝑇𝑇𝑤𝑤𝑛𝑛𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑡𝑡
+and the shared cost model is as follows:
+
+𝑚𝑚𝑚𝑚𝑛𝑛𝐹𝐹𝑖𝑖
+|     |     |                                 |     | （E  | 𝐴𝐴 𝑖𝑖 =                                |         |                             |     |     |          |
+| --- | --- | ------------------------------- | --- | --- | -------------------------------------- | ------- | --------------------------- | --- | --- | -------- |
+|     |     |                                 |     | ve  | hi cle 365𝑤𝑤𝑖𝑖                         |         | ）                           |     |     |          |
+|     |     |                                 |     |     |                                        |         |                             |     |     |    (22)  |
+|     |     | 𝑖𝑖𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑠𝑠+𝑖𝑖𝑐𝑐ℎ𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑎𝑜𝑜𝑐𝑐+ |     |     | n𝑖𝑖𝑣𝑣𝑎𝑎ℎ𝑖𝑖𝑐𝑐𝑖𝑖×𝑎𝑎+α𝑜𝑜𝑐𝑐(𝑓𝑓𝑎𝑎+𝑓𝑓𝑖𝑖)𝛽𝛽𝑐𝑐 |         | +365𝑇𝑇𝑤𝑤𝑜𝑜𝑣𝑣𝑎𝑎ℎ𝑖𝑖𝑐𝑐𝑖𝑖𝑎𝑎𝑖𝑖𝑡𝑡 |     |     |          |
+|     |     |                                 |     |     | vehicle                                | vehicle |                             |     |     |          |
+=
+| 5.2 Mobile phone charging cost  |     |     |     | 365 |     |     |     |     |     |     |
+| ------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+The charging cost of mobile phone is analyzed from the same two dimensions, builder and
+user. The builder considers its construction cost and operation cost. However, if the mobile phone
+users cannot find the charging socket in the public area, few people will wait for others to charge
+their hands, so the queuing time cost will not be considered in the mobile phone charging cost.
+To sum up, the main cost of mobile phone charging in public areas includes construction cost
+and operation cost. Mobile phone charging mainly depends on hardware facilities such as charging
+关注 HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+| Team # 9844   |     |     |     |     |     |     |     |     |     | Page 12 of 27  |
+| ------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+socket and charging line. Because of the different models of mobile phones, mobile phone users
+usually bring their own charging lines, so we mainly consider the cost of charging sockets in public
+places. Its cost is related to the cost of wiring and the number of charging sockets. The cost of wiring
+and the number of charging sockets can be understood as the infrastructure cost of charging sockets.
+The operation cost of the charging socket is mainly related to the electricity fee (hypothesis 6),
+maintenance cost (including the facility maintenance and labor for maintenance, but because these
+two parts are paid together most of the time, we will calculate them together) and the service life of
+the charging socket and other factors.
+(1) Investment cost: construction cost
+The construction cost mainly refers to the wiring cost of the socket and the number of charging
+sockets. Theoretically, the wiring cost of the socket is also positively related to the number of
+sockets. The more charging sockets in a single public area, the greater the charging cost of mobile
+phones in the public area. The specific calculation equation is as follows:
+|     |     |     |     |     |     |     |     |     |       | M     (23) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ---------- |
+
+Here, P Represents the construction cost of a single public area (10000$); P  represents the price
+|     | 1   |     |     |     | 1   | 𝑖𝑖  | 𝑤𝑤 𝑝𝑝 | ℎ 𝑜𝑜 𝑜𝑜 𝑣𝑣 | C   |     |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ---------- | --- | --- |
+of a single charging plug; P  represents𝑃𝑃  th=e  ( p𝑝𝑝ri ce+ o𝑝𝑝f  th )𝑛𝑛e  c a b l e corresponding to a single charging
+W
+C
+| plug; N |  refers to the number of charging sockets in a single public area.  |     |     |     |     |     |     |     |     |     |
+| ------- | ------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+phone
+(2) Investment cost: operation cost
+M
+The  operation  cost  of  infrastructure  mainly  includes  electricity  cost  (assumption  6),
+maintenance cost, maintenance worker cost, loss of charging socket (due to the long service life of
+charging socket, we do not consider the cost consumption here), which is generally proportional to
+i
+the construction cost. Therefore, the calculation equation of operation cost is as follows
+H
+|     |     |     |     |     | E   |     |     |     |       |     (24)  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | --------- |
+phone
+| Here, P |  presents the operation cost of mobile phone charging socket in a single public area  |     |     |     |     | ：                                      |     |     |     |     |
+| ------- | ------------------------------------------------------------------------------------- | --- | --- | --- | --- | -------------------------------------- | --- | --- | --- | --- |
+|         | 2                                                                                     |     |     | 𝑃𝑃2 |     | 𝑐𝑐𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     |     |     |     |
+=
+(10000$);  c Phone  represents the unit price of electricity used for smart phone charging in the
+region.P  means the combination of the price of the equipment and the price of the workers in the
+1
+repair order (since the appearance is not h号igh, we sum them here). β phone  indicates the maintenance
+frequency of the mobile phone socket;
+Based on the comprehensive construction cost and operation cost, the cost model of mobile
+phone charging socket can be established for 365 days a year.
+众
+|     |     |     |     |     | E   |     |     |     |      |     (25)  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | --------- |
+phone
+|     | 𝐹𝐹𝑝𝑝 =𝑃𝑃1+𝑃𝑃2 | =( 𝑝𝑝𝑖𝑖+3𝑝𝑝6 | 𝑤𝑤  | )𝑛𝑛× 𝑝𝑝 ℎ𝑜𝑜𝑜𝑜𝑣𝑣+×α |     | 𝑝𝑝 ℎ𝑜𝑜 | 𝑜𝑜𝑣𝑣 n+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     |     |           |
+| --- | ------------- | ------------ | --- | ------------------ | --- | ------ | --------------------------------- | --- | --- | --------- |
+|     |               |              |     | 5 n                |     | 𝑐𝑐× w  | ×                                 |     |     |           |
+|     |               | 公            |     | phone              |     | phone  | day                               |     |     |           |
+|     | =             |              |     |                    |     |        |                                   |     |     |     (26)  |
+1−φ
+phone
+(𝑝𝑝𝑖𝑖+𝑝𝑝𝑤𝑤)𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+ 𝑐𝑐𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣
+If the c信ost is allocated to each mobile phone, the cost model of charging socket allocated to
+each mobile phone 365 days a year is as follows:
+
+微
+𝑃𝑃1+𝑃𝑃2
+365×n𝐴𝐴𝑝𝑝
+|     |     |     |     |     |       | =×α                 | ×w×n |     |     |     |
+| --- | --- | --- | --- | --- | ----- | ------------------- | ---- | --- | --- | --- |
+|     |     |     |     |     | phone | 36p5ho𝑤𝑤ne𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |      | day |     |     |
+1−φ
+|     |     | (𝑝𝑝𝑐𝑐+𝑝𝑝𝑤𝑤)𝑜𝑜𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎+ |     |     |     | phone |     | 𝑤𝑤𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎𝑜𝑜𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎  |     |     |
+| --- | --- | ----------------------- | --- | --- | --- | ----- | --- | --------------------------------------- | --- | --- |
+  (27)
+|     |     |     |     |     |     | n       | ×α      |     |     |     |
+| --- | --- | --- | --- | --- | --- | ------- | ------- | --- | --- | --- |
+|     |     |     |     |     |     | vehicle | vehicle |     |     |     |
+=
+| 5.3 comprehensive charging cost  |     |     |     |     | 365 |     |     |     |     |     |
+| -------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Most of the public places include mobile phone charging socket and electric vehicle charging
+pile, so we can use sum to calculate the comprehensive charging cost as follows:
+
+|     | 𝐹𝐹𝑡𝑡𝑜𝑜𝑡𝑡𝑎𝑎𝑖𝑖 | =𝐹𝐹𝑖𝑖+𝐹𝐹𝑝𝑝 | =(𝐶𝐶1+𝐶𝐶2+ |     | （ E | 3 𝑤𝑤)+(𝑃𝑃1+𝑃𝑃2) |     |     | ）   |     |
+| --- | ------------ | ---------- | ---------- | --- | --- | --------------- | --- | --- | --- | --- |
+𝐶𝐶 v+ehic𝑇𝑇le
+=� 𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠+𝑐𝑐 E𝑖𝑖ℎ 𝑎𝑎 𝑎𝑎 𝑎𝑎 𝑣𝑣𝑛𝑛𝑖𝑖+ 𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛    𝑖𝑖(𝑓𝑓𝑣𝑣  +𝑓𝑓𝑖𝑖  )𝛽𝛽𝑖𝑖   +3   65𝑇𝑇𝑤𝑤  𝑛𝑛𝑣𝑣𝑣𝑣ℎ 𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑡𝑡(2 � 8 + )
+ph o n e
+
+|     | [(𝑝𝑝𝑖𝑖+𝑝𝑝𝑤𝑤)𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+ |     |     | 𝑐𝑐𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣] |     |     |     |     |     |     |
+| --- | ------------------------ | --- | --- | --------------------------------------- | --- | --- | --- | --- | --- | --- |
+6 Analysis in different scenarios  (Problem 3)
+Many factors are considered in the cost model of increasing demand and the use of energy in
+public places such as local price, land price, electricity fee, etc., as well as the problems of labor
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 9844 Page 13 of 27
+cost and maintenance in operation [10-12]. In order to analyze, the model needs to be combined
+with the actual scenario. In this paper, we analyze and discuss four specific examples: New York
+Kennedy Airport, New York Starbucks cafe, New York King's Plaza Shopping Center, and Stanford
+University. According to the analysis, we discovered that there will be no time cost for users in the
+different environments analyzed below, so we set the time-cost value of electric vehicle charging
+consumption in all the following scenarios as 0.
+We also evaluate how the charging service provider makes up the cost. We find that the
+charging cost of all the charging vehicles will be made up in the form of parking fee. For the
+charging cost of mobile phones, the school can hardly make up for it; coffee shops will include this
+part of the cost in the price of coffee; airports will include this part of the cost in the price of boarding
+pass; shopping malls will include this part of the cost in the price of goods. The way of solving
+problems is mainly represented in Figure 7.
+M
+C
+M
+i
+H
+：
+Figure 7 A schematic overview of charging in public in different scenarios
+6.1 Cafe 号
+6.1.1 Mathematic model
+As for the café, there is no electricity consumption of the electric vehicle charging pole since
+most coffee shops will not pay t众he corresponding cost for the shopping mall where they are located,
+or the coffee shop may exist independently. Therefore, we assume that the electricity consumption
+cost of the coffee shop is only the cost of the mobile phone charging sockets.
+Thus JC = 0, jphone = 1 the equation as follows:
+公
+Among these variables, F represents the total operating cost of a single coffee shop in a year;
+cafe
+as there𝐹𝐹 a 𝑖𝑖 r 𝑎𝑎 e 𝑓𝑓 m 𝑣𝑣 =any𝐹𝐹𝑝𝑝 pa=ra𝑃𝑃m 1 e+ter𝑃𝑃s 2 in= th (𝑝𝑝e 𝑖𝑖 eq+u𝑝𝑝at 𝑤𝑤 io ) n𝑛𝑛, 𝑝𝑝 o ℎ t 𝑜𝑜 h 𝑜𝑜 e 𝑣𝑣 r +pa𝐸𝐸ra 𝑖𝑖𝑎𝑎 m 𝑓𝑓 e 𝑣𝑣 t − e 𝑝𝑝 r ℎ s 𝑜𝑜 r 𝑜𝑜 e 𝑣𝑣 fe𝑐𝑐r 𝑝𝑝 ℎ to 𝑜𝑜 𝑜𝑜 t 𝑣𝑣 he+ p𝑝𝑝ar 𝑖𝑖𝛽𝛽am 𝑝𝑝ℎ e 𝑜𝑜 t 𝑜𝑜 e 𝑣𝑣 rs𝑛𝑛 i 𝑝𝑝 n ℎ 𝑜𝑜 5 𝑜𝑜 .2 𝑣𝑣 mobile
+信
+phone charging cost (the same below).
+Since we have got the annual operating cost of the coffee shop, we can obtain the allocated
+operating cost of each customer's consumption by dividing the annual flow of customers of the
+cof微fee shop, as shown below:
+𝐹𝐹𝑐𝑐𝑎𝑎𝑐𝑐𝑎𝑎 (𝑝𝑝𝑐𝑐+𝑝𝑝𝑤𝑤)𝑜𝑜𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎+𝐸𝐸𝑐𝑐𝑎𝑎𝑐𝑐𝑎𝑎−𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎𝑖𝑖𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎𝑜𝑜𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑎𝑎
+Among them,
+𝐹𝐹
+F𝑝𝑝p𝑣𝑣e𝑎𝑎r𝑠𝑠so𝑜𝑜n𝑜𝑜a𝑎𝑎l(c𝑖𝑖(a𝑖𝑖fe𝑎𝑎) 𝑓𝑓r𝑣𝑣e)fe
+=
+rs
+3
+t
+6
+o
+5 𝑅𝑅
+th
+𝑝𝑝ℎ
+e
+𝑜𝑜 𝑜𝑜
+a
+𝑎𝑎
+llo
+=
+cated operating c
+3
+o
+65
+s
+𝑅𝑅
+t
+𝑎𝑎
+o
+𝑖𝑖𝑎𝑎
+f
+𝑝𝑝
+e
+𝑜𝑜𝑎𝑎
+a
+𝑡𝑡
+c
+.𝑝𝑝
+h
+ℎ 𝑜𝑜
+p
+𝑜𝑜𝑎𝑎
+erson's consumption
+in the café, and R represents the number of daily customer visits / cups of coffee sold in a
+cafe.phone
+café per day.
+6.1.2 Sample data and results
+We use Amazon's mobile phone charging sockets as representative. The price is 12
+dollars.According to the comparison with Amazon's price, we estimate that the cable price is $20.
+Therefore, P is calculated by:
+1
+First of all, we take Starbucks as the baseline of coffee shop. Since Starbucks can be either
+with two floors and one floor, we take t𝑃𝑃h 1 e =av1er2ag×e 1va×lu(e1, w×i8th+ ea1c2h ×co1ff)ee= sh2o4p0 of 1.5 floors. There
+are high tables and low tables in Starbucks. A high table averagely corresponds to eight sockets
+while a low table averagely corresponds to one socket. And we assume that there are one high table
+and 12 low tables in a single floor.
+Therefore, the equation to calculate n can be expressed by:
+phone
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 9844   |     |     |     |     |     |       |     | Page 14 of 27  |     |
+| ------------- | --- | --- | --- | --- | --- | ----- | --- | -------------- | --- |
+|               |     |     |     |     |     |       |     |                |     |
+Assuming that the coffee shop operates for 17 hours, the utilization rate of the socket is 80%,
+and the output power of the charg𝑛𝑛in 𝑝𝑝 ℎ𝑜𝑜 𝑜𝑜 𝑣𝑣 c=ket1 i.5s (51W×, 8we+ ta1k2e× N1e)w= Y3or0k City as the representative,
+g  s o
+through the data survey, in 2018, the electricity charge of New York City is 19.3 $/ kWh; β phone,
+we assume that the damage frequency of each mobile phone charging socket is once a year.
+Therefore, P2 is calculated as:
+
+|     |     |     |     |       |   − 3 |     |     |     |     |
+| --- | --- | --- | --- | ----- | ----- | --- | --- | --- | --- |
+𝑃𝑃  2 = =P11 +7 P×23 =0 1×628900% + ×2450𝑤𝑤 = ×16356350$×. A19cc.3or×di1n0g to +the( 1m2a+rke2t0 s)it×ua3ti0on, we estimate
+| Since F | cafe |     |     |     |     |     |     |     |     |
+| ------- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+that Starbucks can =sel1l 453070 0dr+in1k9s 2o0r f=oo1d6 w2i9th0in a day
+If we share our electricity bill among all the goods sold in a year, we can get:
+
+|                           |     |     |                              | 16530   |        |     |     | M   |     |
+| ------------------------- | --- | --- | ---------------------------- | ------- | ------ | --- | --- | --- | --- |
+| 6.2 Airport               |     |     | 𝑓𝑓𝑝𝑝𝑣𝑣𝑎𝑎𝑠𝑠𝑜𝑜𝑜𝑜𝑎𝑎𝑖𝑖(𝑖𝑖𝑎𝑎𝑓𝑓𝑣𝑣) |         |        |     |     |     |     |
+|                           |     |     |                              | =       | =0.091 |     |     |     |     |
+| 6.2.1 Mathematical model  |     |     |                              | 500×365 |        |     |     |     |     |
+As for airports, car and mobile phone charging exist at the same time.Therefore, j Cc  = 1 , j phone
+=1. Since the electric vehicles are all paid by consumers, and there is a sharing problem in the
+charging of mobile phone socket, we will separate the two costs. For the charging cost of electric
+M
+vehicles, the equation is shown below:
+
+|     |     |     | （ 𝐹𝐹𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣 |     |     | i   | ）   |     |     |
+| --- | --- | --- | -------------------------------- | --- | --- | --- | --- | --- | --- |
+=
+H
+Further calculation can obtain the loss shared by each visitor in each visit to the airport:
+𝐶𝐶1+𝐶𝐶2+𝐶𝐶3 =𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠+𝑐𝑐𝑖𝑖ℎ𝑎𝑎𝑎𝑎𝑎𝑎𝑣𝑣𝑛𝑛𝑖𝑖+ 𝐸𝐸𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡−𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛𝑖𝑖(𝑓𝑓𝑣𝑣+𝑓𝑓𝑖𝑖)𝛽𝛽𝑖𝑖
+：
+𝐹𝐹𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣
+|     |     | 𝐹𝐹𝑝𝑝𝑣𝑣𝑎𝑎𝑠𝑠𝑜𝑜𝑜𝑜𝑎𝑎𝑖𝑖(𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣) |     | =                             |     |     |     |     |     |
+| --- | --- | -------------------------------------------- | --- | ----------------------------- | --- | --- | --- | --- | --- |
+|     |     |                                              |     | 365𝑅𝑅𝑎𝑎𝑎𝑎𝑖𝑖𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     |     |     |     |     |
+(𝑝𝑝𝑖𝑖+𝑝𝑝𝑤𝑤)𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+𝐸𝐸号𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡−𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑐𝑐𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣+𝑝𝑝𝑖𝑖𝛽𝛽𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣𝑛𝑛𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣
+  Among them=, F represents the annual cost of airport electric vehicle charging; F
+|                                                     |     | airport.c  |     |                                 |                          |     |                    |     | airport.phone  |
+| --------------------------------------------------- | --- | ---------- | --- | ------------------------------- | ------------------------ | --- | ------------------ | --- | -------------- |
+| represents the annual cost of airport mo3b6il5e𝑅𝑅 p |     |            |     | 𝑎𝑎 𝑎𝑎𝑖𝑖 𝑝𝑝 𝑜𝑜 𝑎𝑎 𝑡𝑡. 𝑝𝑝 ℎ 𝑜𝑜 𝑜𝑜 | 𝑣𝑣                       |     |                    |     |                |
+|                                                     |     |            |     | h o n e   c h a r g             | ing; F                   |     | refers tothe cost  |     |                |
+|                                                     |     |            |     |                                 | personal(airport.phone)  |     |                    |     |                |
+allocated to each customer after the annual cost of airport mobile phone charging, and R
+airport.phone
+众
+represents the number of people using airport mobile phone charging every day.
+6.2.2 sample data and results
+C  assumes that JFK Airport has 1000 parking spaces with charging piles, and one parking
+area
+| space is 15m2；S is the price per unit area of JFK airport of $2400/m2. So C |     | 公   |     |     |     |     |     |     |     |
+| --------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+1  is expressed as:
+|                                                 |     |     |     |                    |     |     |     |     |     |
+| ----------------------------------------------- | --- | --- | --- | ------------------ | --- | --- | --- | --- | --- |
+| The price of charge is set at $650; Therefore C |     |     |     | is expressed as:   |     |     |     |     |     |
+2
+|     | 信   |     | 𝐶𝐶1 =1000×15×2400=36000  000  |     |     |     |     |     |     |
+| --- | --- | --- | ----------------------------- | --- | --- | --- | --- | --- | --- |
+Assume that the charging pile of JFK Airport works 12 hours a day and the output power is
+7KW; f assumes that the cost of each m𝐶𝐶2 ai=nte1n0a0n0ce× o6f 5c0ha=rgi6n5g0 p0i0le0 is 1 / 3 of the cost of charging
+e
+pile微; f l  assumes that the cost of each maintenance of single charging pile for workers is $15; β c
+assumes that the maintenance frequency of each charging pile is once a year.
+Therefore, C3 can be expressed as:
+650
+. According to:
+|     | 𝐶𝐶3 =1000×12×7×365+� |     |     | 3 +15�×1×1000=30660000+231660= |     |     |     |     |     |
+| --- | -------------------- | --- | --- | ------------------------------ | --- | --- | --- | --- | --- |
+
+3089W16e6 c0an obtain:
+|     |     |     | 𝐹𝐹𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣 | =𝐶𝐶1+𝐶𝐶2+𝐶𝐶3 |     |     |     |     |     |
+| --- | --- | --- | ------------------------------ | ------------ | --- | --- | --- | --- | --- |
+|     |     |     |                                |              |     |     |     |     |     |
+For the calculation of mobile phone charging socket, we also divide it into P andP ;
+|     |     | 𝑎𝑎 𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎 𝑡𝑡 .𝑣𝑣 | 𝑣𝑣 ℎ 𝑖𝑖 𝑖𝑖𝑖𝑖 𝑣𝑣 |     |     |     | 1    | 2   |     |
+| --- | --- | -------------------- | --------------- | --- | --- | --- | ---- | --- | --- |
+The number o𝐹𝐹f  n   s o c k e t s c=an3 b6e0 0ca0l0cu0l0at+ed6 b5y0 u0s0in0g+ th3e0 n8u9m1b6e6r0 of= bo6a7r5d4in1g6 g6a0tes. JFK has
+phone
+112 boarding gates in total, with each gate corresponding to 7 rows of seats, and each row of seats
+has 6 sockets. Therefore, the number of charging sockets in JFK Airport is calculated as follows:
+|     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Since we assume that the price of cable and charging socket is fixed, we can maintain the data
+| in 6.1.1. The equation P1 can be obtain𝑛𝑛e |     |     | 𝑝𝑝 ℎ | 𝑜𝑜 𝑜𝑜 𝑣𝑣 fo=llo1w1s2: ×7×6=4700 |     |     |     |     |     |
+| ------------------------------------------ | --- | --- | ---- | ------------------------------- | --- | --- | --- | --- | --- |
+|                                            |     |     | d  a | s                               |     |     |     |     |     |
+|                                            |     |     |      |                                 |     |     |     |     |     |
+𝑃𝑃1
+=(12+20)4700=150400
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team # 9844   |     |     |     |     |     |     |     |     |     | Page 15 of 27  |
+| ------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+It is assumed that the operation time of mobile phone charging socket in the airport is 24 hours;
+the utilization rate of mobile phone charging socket in airport is 30%; the output power of charging
+socket is 5kWh. As represented by JFK Airport, the data is the same as that in 6.1.1. In 2018, the
+electricity charge in New York City was $19.3/ kWh. P considers the annual price growth
+l
+(inflation). We assume that the maintenance cost of each charging plug is equal to its total damage;
+Therefore, P2 is calculated as follows:
+−3
+F𝑃𝑃2 =5𝑤𝑤×is2 t4hℎe ×sum30 o%f P×1 3a6n5d ×P24. 7T0h0us×: 19.3$×10 +(12+20)×4700
+airport.phone
+=1191929.4+150400=1342329.4$
+
+In order to obtain the share of electricity cost of each airport visitor in the ticket, we set the
+|     | 𝐹𝐹𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     | =𝑃𝑃1+𝑃𝑃2 | =150400$+1342329.4$=31492729.4$ |     |     |     |     |     |     |
+| --- | ------------------------- | --- | -------- | ------------------------------- | --- | --- | --- | --- | --- | --- |
+parameter F
+personal(airport.phone)
+| According to the survey, we get that 365R |     |     |     |     |     | = 80000000 people;  |     |     |     |     |
+| ----------------------------------------- | --- | --- | --- | --- | --- | ------------------- | --- | --- | --- | --- |
+airport.phone
+M
+| Therefore, the calculation equation of F |     |     |     |     | personal(airport.phone)  |     | is as follows:  |     |     |     |
+| ---------------------------------------- | --- | --- | --- | --- | ------------------------ | --- | --------------- | --- | --- | --- |
+
+|     |     |     |     | 𝐹𝐹𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |     |     |     |     | C   |     |
+| --- | --- | --- | --- | -------------------------- | --- | --- | --- | --- | --- | --- |
+31492729.4$
+6.3 M𝐹𝐹a𝑝𝑝l𝑣𝑣l 𝑎𝑎𝑠𝑠𝑜𝑜𝑜𝑜𝑜𝑜𝑎𝑎𝑖𝑖(𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣) = = =0.394$/𝑐𝑐𝑎𝑎𝑝𝑝𝑚𝑚𝑡𝑡𝑎𝑎
+365𝑅𝑅𝑎𝑎𝑖𝑖𝑎𝑎𝑝𝑝𝑜𝑜𝑎𝑎𝑡𝑡.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣
+| 6.3.1 Mathematical model  |     |     |     |     |     | 80000000 𝑐𝑐𝑎𝑎𝑝𝑝𝑚𝑚𝑡𝑡𝑎𝑎 |     |     |     |     |
+| ------------------------- | --- | --- | --- | --- | --- | --------------------- | --- | --- | --- | --- |
+M
+As for mall, car and mobile phone charging exist at the same time. Therefore, j c  = 1 j phone = 1.
+Mall's consumption calculation method is different from the previous ones since the cost of electric
+vehicles of mall is borne by consumers, while the charging of mobiile phones is entirely borne by
+| the mall. Similarly, we separate them.  |     |     |     |     |     |     | H   |     |     |     |
+| --------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+For electric vehicles, the equation of cost per charge in mall is as follows:
+：
+|     |     |     |     |     |     | （   |     |     |     | ）   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+𝐶𝐶1+𝐶𝐶2+𝐶𝐶3 𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠+𝑐𝑐𝑖𝑖ℎ𝑎𝑎𝑎𝑎𝑎𝑎𝑣𝑣𝑛𝑛𝑖𝑖+ 𝐸𝐸𝑚𝑚𝑎𝑎𝑖𝑖𝑖𝑖−𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛𝑖𝑖(𝑓𝑓𝑣𝑣+𝑓𝑓𝑖𝑖)𝛽𝛽𝑖𝑖
+𝐹𝐹𝑚𝑚𝑎𝑎T𝑖𝑖𝑖𝑖.h𝑣𝑣𝑣𝑣eℎ c𝑖𝑖𝑖𝑖h𝑖𝑖a𝑣𝑣r gin g  c o s t o f   m o b ile phone b orne by mall thr o u g h ou t   t h e  y e ar is  as follows:
+|     | =   |              | =       |     |     |       |             |                    |     |     |
+| --- | --- | ------------ | ------- | --- | --- | ----- | ----------- | ------------------ | --- | --- |
+|     |     | 𝑚𝑚 𝑎𝑎 𝑖𝑖𝑖𝑖 . | 𝑖𝑖𝑎𝑎 𝑎𝑎 | 号   |     |       | 𝑚𝑚 𝑎𝑎 𝑖𝑖 𝑖𝑖 | .𝑣𝑣 𝑣𝑣 ℎ 𝑖𝑖𝑖𝑖 𝑖𝑖𝑣𝑣 |     |     |
+|     | 3   | 6 5 𝑅𝑅       |         |     |     | 3 6 5 | 𝑅𝑅          |                    |     |     |
+Among them, F mall.vehicle  represents the cost of electric vehicle charging each time in the mall;
+| 𝐹𝐹R 𝑚𝑚𝑎𝑎𝑖𝑖𝑖𝑖.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 re=fer𝐹𝐹s                                  | 𝑝𝑝  to= th𝑃𝑃e | 1  n+u𝑃𝑃m | 2 b=er  ( o𝑝𝑝f  𝑖𝑖 v+eh𝑝𝑝ic | 𝑤𝑤 ) s𝑛𝑛 v 𝑝𝑝ℎ | 𝑜𝑜 𝑜𝑜 𝑣𝑣 n+g t𝑐𝑐h | 𝑝𝑝 ℎ 𝑜𝑜𝑜𝑜 𝑣𝑣 ll+ ev𝑝𝑝e | 𝑖𝑖𝛽𝛽ry 𝑝𝑝 ℎ 𝑜𝑜 | 𝑜𝑜 𝑣𝑣 ;𝑛𝑛 F 𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 |                      |     |
+| ----------------------------------------------------------------- | ------------- | --------- | --------------------------- | -------------- | ----------------- | ---------------------- | -------------- | --------------------- | -------------------- | --- |
+|                                                                   |               |           |                             | le is          | i ti              | e  m a                 |   d            | a y                   | represents the cost  |     |
+| mall.vehicle                                                      |               |           |                             |                |                   |                        |                | mall.phone            |                      |     |
+| of mobile phone charging undertaken by mall throughout the year.  |               |           | 众                           |                |                   |                        |                |                       |                      |     |
+6.3.2 Sample data and results
+As for the mall, it is relatively complex to consider the payment of electric vehicle charging,
+so we first analyze the公 cost of mobile phone charging socket.
+First of all, we use Kings Plaza Shopping Center as the representative of all shopping malls
+since it’s also located in New York City. Therefore, we maintain the electricity fee of $19.3/kWh
+and other corresponding costs in 6.2.
+信
+According to the survey, the Kings Plaza Shopping Center covers an area of 309m   256M. It
+is assumed that there is a socket every 10m, and the number of sockets on the single floor is:
+|                                                        |     |     |     |     |     |     |     |     |     | ×     |
+| ------------------------------------------------------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+| 微                                                      |     |     |     |     |     |     |     |     |     | 𝐹𝐹1 = |
+| There are four floors in Kings Plaza Shopping Center:  |     |     |     |     |     |     |     |     |     |       |
+(30+A2ss5u)m×e 2th=at 1t1he0 operation time of the shopping mall is 12 hours. The utilization rate of
+charging socket is 20%. It is known that there are 440 char𝐹𝐹g 4 in=g s1o1c0ke×ts 4fo=r m44o0bile phones, which
+can be obtained as follows:
+|     |     | 𝐹𝐹𝑚𝑚𝑎𝑎𝑖𝑖𝑖𝑖.𝑝𝑝ℎ𝑜𝑜𝑜𝑜𝑣𝑣 | =(12$+20$)×440+(12$+20$)×440 |     |     |     |     |     |     |     |
+| --- | --- | -------------------- | ---------------------------- | --- | --- | --- | --- | --- | --- | --- |
+  −3
+We cannot g+et2 0th%e a×cc1u2rℎate× d5a𝑤𝑤ta ×of4 4th0e ×nu3m65be×r 1of9 .c3h$a×rgi1n0g piles due to the fast update of
+charging piles, so= w2e 8a1ss6u0m$e+ th1a4t 8th,7e7re9 a,8r4e 08$0 =cha1r4g8in,8g1 p6i,l2es4 0fo$r electric vehicles. According to the
+previous assumption, C has 80 charging posts corresponding to 80 parking spaces, each of which
+car
+is known to be 15m2. According to the survey, the land price of Kings Plaza Shopping Center is
+5344 $/m2; electric vehicle charging point price maintains the data in 6.1, 650 $; the data required
+for the calculation of C shall be maintained from the data related to charging point electricity charge
+3
+in 6.2. Assuming that the charging post in Kings Plaza Shopping Center operates for 14 hours, the
+probability of use is 40%. Therefore, the calculation is as follows:
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 9844 Page 16 of 27
+𝐹𝐹𝑚𝑚𝑎𝑎𝑖𝑖𝑖𝑖.𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣
+2 5344$ 19.3$ −3
+80×15𝑚𝑚 × 2 +650$×80+40%×14ℎ×365×80×5𝑤𝑤× ×10
+𝑚𝑚 𝑘𝑘𝑤𝑤ℎ
+=
+365×51278
+6.46 S,4c1h2o,8o0l 0$+52000$+22,091,552$ 28556352$
+= = =0.007$
+6.4.1 Mathema3t6ic5al× m5o1d2e7l 8 365×51278
+The calculation of the school's electric energy consumption will be relatively complex. First,
+we can calculate the total annual consumption equation of electric vehicles. But for the calculation
+of the mobile phone charging plug consumption, we can calculate the school's mobile phone
+charging consumption by multiplying the number of middle buildings, floors, and classrooms of the
+mobile phone university with the number of charging sockets in each classroom. Finally, we can
+calculate the total consumption of the school by summing up. The equation is as follMows:
+𝐹𝐹𝑠𝑠𝑖𝑖ℎ𝑜𝑜𝑜𝑜𝑖𝑖 =𝐹𝐹𝑖𝑖+𝐹𝐹𝑝𝑝 =(𝐶𝐶1+𝐶𝐶2+𝐶𝐶3+𝑇𝑇𝑤𝑤)+ （ (𝑃𝑃1+𝑃𝑃2) C ）
+=�𝑐𝑐𝑎𝑎𝑎𝑎𝑣𝑣𝑎𝑎𝑠𝑠+𝑐𝑐𝑖𝑖ℎ𝑎𝑎𝑎𝑎𝑎𝑎𝑣𝑣𝑛𝑛𝑖𝑖+ 𝐸𝐸𝑠𝑠𝑖𝑖ℎ𝑜𝑜𝑜𝑜𝑖𝑖−𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣𝑐𝑐𝑣𝑣𝑣𝑣ℎ𝑖𝑖𝑖𝑖𝑖𝑖𝑣𝑣+𝑛𝑛𝑖𝑖(𝑓𝑓𝑣𝑣+𝑓𝑓𝑖𝑖)𝛽𝛽𝑖𝑖 �
+Among them, F represents the average annual total electricityM consumption of the school;
+school
+B refers to the n+um[( b𝑝𝑝e 𝑖𝑖 r +of𝑝𝑝 𝑤𝑤 bu )𝑛𝑛il 𝑝𝑝 d ℎ in 𝑜𝑜𝑜𝑜 g 𝑣𝑣 s +in𝐸𝐸 t 𝑠𝑠 h 𝑖𝑖 e ℎ 𝑜𝑜 s 𝑜𝑜 c 𝑖𝑖− h 𝑝𝑝 o ℎ o 𝑜𝑜 l 𝑜𝑜 ; 𝑣𝑣 C𝑐𝑐𝑝𝑝 ℎ re 𝑜𝑜 p 𝑜𝑜 r 𝑣𝑣 e+sen𝑝𝑝t 𝑖𝑖 s𝛽𝛽 𝑝𝑝 th ℎ𝑜𝑜 e 𝑜𝑜 n 𝑣𝑣𝑛𝑛um 𝑝𝑝ℎ b 𝑜𝑜 e 𝑜𝑜 r 𝑣𝑣 ]of classrooms; G
+represents the average number of charging plugs in each classroom;
+6.4.2 Sample data and results i
+H
+For the equipment data in P1, inherits the data in 6.1. According to the survey, there are 600
+classrooms in Stanford University and 20 sockets in each classroom, so n = 12000. This is
+phone
+：
+different from the previous calculation method. We use 18643 mobile phones, multiplied by 0.68
+times / day of charging times of mobile phones in public every day, and assume that each charging
+is charged fully, and the cell phone battery capacity is 12049.8mwh. Therefore, we should multiply
+10-6 at the end of the equation. We obtain号:
+𝐹𝐹𝑝𝑝 =(12$+20$)×12000+众51%×18643×0.68×12 049.8𝑚𝑚𝑤𝑤ℎ×365×
+19.3$
+×10
+−6
+Since we can't get the specific data, in order to calculate the number of ch𝑘𝑘a𝑤𝑤rgℎing piles in
+Stanford University=, w38e 4a,s0s0u0m$e+ th5at4 8th8e1 n2u.9m$b=er 9o3f 2S8ta1n2f.o9r$d University is equal to the number of
+mobile phones, with 3% of them own electric vehicles in the University. So the n value is 550.
+c
+公
+According to the survey, the land cost of Stanford is 10100 $/ m2. It is assumed that the use time of
+charging post in Stanford University is 8h. As each vehicle corresponds to a charging pile, there is
+no low utilization rate, and the utilization rate is 100%. Other data inherit the data in 6.2. We obtain:
+信
+𝐹𝐹𝑖𝑖 =550×15𝑚𝑚
+2
+×
+1010
+2
+0$
++550×650$+365×8ℎ×550×7𝑘𝑘𝑤𝑤ℎ ×
+19.3$
+微As for the school, the total 𝑚𝑚consumption is entirely borne by the school, therefore𝑘𝑘:𝑤𝑤 ℎ
+=83,407,500$+357,500$+216,970,600$=300,735,600$
+6.5 Analysis and discussion
+Accordin𝐹𝐹g 𝑠𝑠𝑖𝑖 ℎ to 𝑜𝑜 𝑜𝑜 t 𝑖𝑖 h=e a𝐹𝐹b 𝑖𝑖 o+ve𝐹𝐹 a 𝑝𝑝 n ℎ a 𝑜𝑜𝑜𝑜 ly 𝑣𝑣 si=s r9e3su2l8ts1,2 w.9e$ s+um3m00a7ri3ze5 6th0e0 $re=sul3ts0 1of6 6it8em41iz2e.9d $cost and total
+cost in each case, as well as how much money per capita needs to pay, so as to facilitate the pricing
+of merchants.
+Table 5 cost details of four scenarios
+$ C1 C2 C3 P1 P2
+coffee shop 240 16290
+airport 36000000 650000 30891660 150400 1342329.4
+mall 6412800 52000 22091552 14080 148793920
+school 83407500 357500 216970600 384000 548812.9
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 17 of 27
+Figure 8 four scenarios charging cost chart
+M
+Figure 8 demonstrates the cost demand of establishing public charging equipment in cafes,
+airports, shopping malls, and schools. In the overall comparison process, it is obvious that the
+funds needed to build mobile phone charging equipment in a coffee shop are Cvery small compared
+with those in other cafes. At the same time, the cost of building mobile phone charging equipment
+required by the school is much, mainly because the school is relatMively large and the required
+charging power supply and cable laying are relatively long, but the rate of electric vehicles used
+by teachers and students in the school is relatively low. The number of charging Posts needed for
+electric vehicles will be relatively small. Because shopping malls iare located in the center of the
+H
+city, the electricity price and land price are relatively high, and the total energy cost will be
+relatively high if the base number is relatively large.
+：
+7 Plans of lowering the cost (Problem 4)
+Nowadays, the energy consumption in public places is increasing. As demand increases, it is
+particularly important to reduce energy c号osts in public places. We first confirmed how to change
+the charging cost of mobile phones and charging cars in different scenarios - cafes, airports,
+shopping malls, schools by changing the parameters in the cost model. Later, we further explained
+the different options that can ch众ange these parameters. Next, we established the models of Fc and
+Fp respectively, and considered how the parameters should change. Finally, we analyzed five
+parameters (x, y, z, m, n) by sensitivity analysis, and built graphs to compare the cost changes caused
+by the change of parameters in four different occasions. Finally, judge the sensitivity of these
+公
+recommendations. The mind map is shown in Figure 9.
+信
+微
+Figure 9 A schematic overview of lowering the cost
+In order to lower the extremely increasing rate of the cost of energy consumption, we can use
+ways listed below to lower the cost.
+7.1 Methods
+Ways to reduce the cost of charging electric cars and charging phones are shown in Table 6
+and Table 7.
+Table 6 ways to reduce the cost of charging electric cars
+café School Mall Airport
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 9844   |     |     |     |     | Page 18 of 27  |
+| ------------- | --- | --- | --- | --- | -------------- |
+|               | A1  | √   | √   | √   | √              |
+|               | A2  |     |     | √   | √              |
+|               | A3  |     | √   |     |                |
+|               | A4  | √   | √   | √   | √              |
+|               | A5  | √   |     | √   | √              |
+|               | A6  |     | √   |     |                |
+Annotation:
+A1: Government tax cuts for pure electric vehicles
+A2: Land cost of car charging pile
+A3: Installation cost of car charging pile
+| A4: Operating costs of car charging pile  |     |     |     |     | M   |
+| ----------------------------------------- | --- | --- | --- | --- | --- |
+A5: Give out free parking coupons to promote consumption of electric
+A6: Solar panel
+|     |     |     |     |     | C   |
+| --- | --- | --- | --- | --- | --- |
+Table 7 ways to reduce the cost of charging phones
+|     |     | Café  | School  | Mall  M | Airport  |
+| --- | --- | ----- | ------- | ------- | -------- |
+|     | A6  |       | √       |         |          |
+|     | A7  |       | √       |   i     |          |
+H
+|              | A8  | √   | √   | √   | √   |
+| ------------ | --- | --- | --- | --- | --- |
+| Annotation:  |     |     | ：   |     |     |
+A7: Installation cost of socket for phone charging
+A8: Operating costs of socket for phone charging
+
+号
+7.2 Description of plans
+Electric vehicle charging cost plans:
+A1: pure electric vehicles use electric energy sources that can reduce the use of fossil energy
+众
+and reduce air pollution. Therefore, for large-scale construction of charging piles, the township
+government can apply for land tax reduction to reduce costs. The policy can contribute to all of the
+mentioned scenarios.
+Building a three-公dimensional parking lot is also an effective way.
+A2: The three-dimensional parking lot of malls and airports can reduce the land cost. We could
+construct a three-dimensional underground. The parking space can be lifted and lowered by electric
+power contro信l to increase the number of vehicles that can be parked as much as possible. The
+number of parking spaces on each floor of the garage can reach two or three times than before, so
+do the cars that stop at the parking lot. The number of cars will also increase. As a result, the total
+amount charged will increase, and effectively making up the high cost of charging.
+微
+A3: On the other hand, because the number of charging guns and the number of parking spaces
+are equal, in the three-dimensional parking lot, the charging pile can be built higher and equipped
+with more charging guns, so the floor space of the electric car charging pile is also It will reach a
+minimum to achieve the goal of reducing land costs.
+A4: The operating cost of the electric car charging pile can be covered by offering the charge
+free to people. Mall and airports can increase the number of customers by issuing free parking
+tickets. As in the assumption of our question, the charging cost of the department store will be
+spread to the rent of each merchant, and the consumption of the customer can increase the rent, and
+it can cover more electricity charges. The airport can also give discounts and services to passengers
+who purchase first class tickets. It can also give free parking coupons and free charging coupons to
+encourage more people to purchase first class tickets. Because the first-class ticket covers the
+charging fee, purchasing more first-class tickets means more electricity bills can be covered.
+A5: At the same time, free parking coupons can be used to reduce costs indirectly. This scheme
+is applicable to all the above scenarios: department stores and airports can increase the number of
+customers by issuing free parking coupons, because merchants must use part of the money earned
+as rent. Handed over to the mall, the rent includes a portion of the electricity bill, so promoting
+consumption can increase the profit of the merchant, and by paying more rent, it can cover more
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 9844 Page 19 of 27
+electricity bills. Thus, by reducing the total cost C, the total cost can be reduced. The airport can
+also give discounts and services to passengers who purchase first class tickets. It can also give free
+parking coupons and free charging coupons to encourage more people to purchase first class tickets.
+A6: Since it is difficult for us to reduce the cost of the unit electricity bill, we can consider
+using solar power that is already very popular. This measure can be applied to various public places.
+For schools only, we can adopt the method of introducing solar panels, which can reduce the school's
+demand for electricity purchase, thereby saving a lot of operating costs. Solar panel is mainly used
+for small equipment ports such as phones. Rich energy will be used to charge electric vehicles.
+Although this proposal will increase equipment costs (C2, P1), it will be more educational as a new
+energy source for schools.
+A7: In terms of the charging cost of phones, considering the current appearance-oriented
+sockets on the market, such as invisible sockets, although the overall environment can be made
+more tidy, the construction cost is much higher and the damage rate is high. Therefore, in order to
+achieve cost reduction, we can reduce the aesthetic considerations for charging sockeMts or charging
+piles, and use ordinary sockets, especially for schools that are more concerned with practicality, and
+can appropriately abandon the beautiful public places, and A high usage rate such as a coffee shop
+C
+leads to a vulnerable place.
+A8: In terms of future operating costs, the mall can cover the cost by distributing the charging
+cost to the rent of each merchant. In other places, the airport can be diMvided equally into the ticket,
+the coffee shop is evenly distributed to each cup of coffee, and the school can apply for education
+funds to cover the cost because most of them do not use the charging fee to realize the profit.
+i
+7.3 Model modification
+H
+For electric cars：
+：
+Where 0 < x , y , z < 1, the case in which the change of land cost is described by the x parameter,
+the case in which the change of instal𝐹𝐹l 𝑖𝑖 at=ion𝑥𝑥 𝐶𝐶c 1 os+t i𝑦𝑦s𝐶𝐶 d 2 e+scr𝑧𝑧i𝐶𝐶b 3 ed by the y parameter, and the case in
+which the change of operating cost is described by the z parameter.
+号
+A1 is an optimized plan for government tax cuts to change land costs, directly affecting x. A2
+is an optimized plan for the land cost of electric cars charging piles, directly affecting x. A3 is an
+optimized plan for the installation cost of electric cars charging piles, directly affecting y. A4 is an
+众
+optimized plan for the operating cost of electric car charging piles, directly affecting z. A5 is an
+optimized plan that promotes consumption by giving out free parking coupons to change operating
+costs, directly affecting z. A6 is an optimized plan for solar panel to reduce land costs, directly
+affecting x. Moreover公, A6 can directly affect C2, because the installation cost of building solar
+panels will be higher than installing charging poles.
+For phones:
+信
+Where 0 < m, n < 1, the case in which the change of installation cost is described by the m
+parameter; the case in which the change o𝐹𝐹f 𝑝𝑝 o=pe𝑚𝑚ra𝑃𝑃ti 1 n+g c𝑛𝑛o𝑃𝑃st 2 is described by the n parameter.
+A6 is an optimized plan for solar cells to reduce installation costs, directly affecting m.
+微
+Moreover, A6 can directly affect P1, because the installation cost of building solar panels will be
+higher than installing charging poles. A7 is an optimized plan for the installation cost of mobile
+phone charging sockets, which directly affects m. A8 is an optimized plan for the operating cost of
+mobile phone charging sockets, directly affecting n. All in all, A6 and A7 affect the parameter m at
+the same time. A6 also directly changes P1. A8 affects the parameter n.
+7.4 Sensitivity analysis
+In response to these suggestions above, we applied sensitivity analysis on different parameters
+to discuss the impact of different plans on cost. In this process, only the cases that share similarities
+are compared. For the parameter selection, we got the table below:
+Table 8 sensitivity analysis
+Plan Number Variables Minimum Maximum Step
+A1 x 0.8 1 0.05
+A2 x 0.6 1 0.05
+A3 y 0.7 1 0.05
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 20 of 27
+A4 z 0.7 1 0.05
+A5 z 0.6 1 0.05
+A6 x , m 0 1 1
+A7 m 0.5 1 0.05
+A8 n 0.7 1 0.05
+The results of the sensitivity analysis are in Appendix A. From the analysis of the results, it
+can be concluded that the advance 1.8 has a great impact on the mall. The advance 3.4.5 has a great
+impact on the airport. The advance 2.6 has a great impact on the school. The advance 7 has a great
+impact on the coffee shop.
+8 Strength and weakness M
+In this study, the energy consumption of charging in recent years was statistically analyzed
+from various data of charging devices of charging cars and mobile phones. We also predicted the
+C
+energy consumption for the next five years through the Bass model. Taking into account the
+principles of economics, a cost model for the investment cost and time cost of charging cars and
+mobile phones was separately established. And based on the big dataM, specific cost was estimated
+by taking four scenes of coffee shop, airport, shopping mall and school as examples. In order to
+reduce the cost brought by the charging device, we give 8 reasonable proposal and propose a
+i
+modified model. Using the sensitivity analysis method combined with the modified model to discuss
+H
+our proposal. Therefore, a series of steady consumption predicting models and economic cost
+models are established to provide theoretical guarantee for the construction of public area charging.
+：
+There are also some of the disadvantages for our modeling. In the model we chose the New
+York city as the typical of our data collection. Because the New York city consuming level is much
+higher than the other area in the US, so the solution we calculated might bigger than the normal
+value. Second, because the revolution of e号lectronic charging devices, we cannot collect some of the
+data, which means our assumptions may render the solutions not so specific. Third, we didn’t add
+the medium size electronic devices like computers which the value is undefined, but proport to the
+value of smart-phone-charging.众 Lastly, we did not use the time cost setting in the question two in
+question three. If these problems are solved, our model will be better.
+Reference
+公
+[1] Miller G C, Weinstein N D. Motion-actuated portable charger: U.S. Patent Application
+13/800,996[P]. 2013-8-1.
+[2] https://charbycharge.com/how-often-should-i-charge-my-phone-to-prolong-the-battery-life /
+信
+[3] https://www.statista.com/statistics/201182/forecast-of-smartphone-users-in-the-us/
+[4] https://support.apple.com/zh cn/specs/iphone
+[5] https://slate.com/technology/2012/03/is-charging-your-cell-phone-overnight-a-major-waste-of-
+微
+energy.html
+[6] Bass F M. Comments on “a new product growth for model consumer durables the bass
+model”[J]. Management science, 2004, 50(12_supplement): 1833-1840.
+[7] http://www.cnelc.com/text/53/190325/AD1008945651.html
+[8] Botsford C, Szczepanek A. Fast charging vs. slow charging: Pros and cons for the new age of
+electric vehicles[C]//International Battery Hybrid Fuel Cell Electric Vehicle Symposium. 2009.
+[9] Richardson D B. Electric vehicles and the electric grid: A review of modeling approaches,
+Impacts, and renewable energy integration[J]. Renewable and Sustainable Energy Reviews, 2013,
+19: 247-254.
+[10] Weiller C. Plug-in hybrid electric vehicle impacts on hourly electricity demand in the United
+States[J]. Energy Policy, 2011, 39(6): 3766-3778.
+[11] Roberts J, Halversen J, Running C, et al. Design and analysis of solar devices in public places
+to help meet energy demand[C]//2016 IEEE Conference on Technologies for Sustainability
+(SusTech). IEEE, 2016: 56-62.
+[12] Ewing R, Rong F. The impact of urban form on US residential energy use[J]. Housing policy
+debate, 2008, 19(1): 1-30.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 21 of 27
+News
+Charging in Public: not a problem anymore
+Do you lose your sense of security when your cell phone is dead? When your
+electric car is running out of power, do you not panic to find a charging point? For the
+serious charging problem in public areas, we once again used the method of establishing
+mathematical model to predict the charging volume of public areas we will use in the
+future, and also helped you to calculate the demand for mobile phone computer
+flashlight socket and charging pile, as well as the investment cost needed in airports,
+shopping malls, cafes and our schools. We hope that our model can let you know the
+specific situation of the amount of charging required in our public areas.
+We have analyzed all the charging capacity of public areas in recent 8 years, such
+as schools, public charging piles, airports, coffee shops, etc., and estabMlished Bass
+model to predict the change trend of charging capacity in public areas in the next few
+years. The results are consistent with those of famous institutions.
+C
+In the economic cost model, the economic loss is added. The large-scale charging
+facilities are divided into three parts: land cost, capital cost aMnd variable cost. We can
+summarize the construction and operation consumption of large-scale charging
+facilities and establish corresponding models. The cost of small-scale charging facilities
+i
+is divided into two parts: the construction cost of small-scale charging socket is
+H
+relatively low and land consumption is not considered, so it is classified as fixed cost;
+the other part is variable cost. Besides, the e：conomic cost of time cost transformation
+is discussed in our model.
+For the four common public occasions, we choose Starbucks in New York City,
+airport of New York City, Stanford 号University, Macy supermarket and other landmark
+buildings and collect data. The cost of charging equipment is calculated and analyzed.
+Because it really needs a lot of capital investment to establish a perfect public
+charging system, here we pu众t forward some ways to reduce costs and share them with
+you. Firstly, because pure electric vehicles use environmental friendly new energy,
+which can reduce air pollution, when building charging piles in large scale, we can
+apply to the govern公ment for local tax relief to reduce costs. Secondly, establishing a
+three-dimensional parking lot in the department store and airport, thus increasing the
+number of parking spaces and charging guns on each floor can reduce the cost of land.
+Thirdly, we信 suggest using ordinary sockets in places where the beauty can be properly
+discarded, especially in schools and cafes. Free parking coupons and charging coupons
+will be issued in department stores to increase the profit of businesses by promoting
+微
+consumption and cover the electricity charge; free parking coupons will be issued in
+airports to encourage more people to buy first-class tickets to cover more electricity
+charge and reduce the total cost. Fourthly, department stores and airports can increase
+the number of customers by issuing free parking tickets, because businesses must pay
+a part of the money they earn as rent to the stores, which includes a part of the electricity
+fee, so promoting consumption can increase the profits of businesses, and then pay
+more rent, which can also cover more electricity fee.
+Finally, we learned a lot about solar cells in the process of learning in school. We
+can use solar energy to generate electricity. Due to the high cost, we hope to introduce
+solar panels into our school to reduce the demand for electricity, thus saving a lot of
+operating costs. The electric energy of solar power generation is mainly used for small
+equipment ports such as mobile phones, and the rich energy will be used for electric
+vehicle charging. We think we would like solar energy to enter our campus. This is our
+understanding of energy in public areas.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 22 of 27
+Appendices
+Sensitivity Analysis Results
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Sensitivity Analysis Results of different class.
+MATLAB Code
+T =[2011,2012,2013,2014,2015,2016,2017,2018];
+EV_all = [22000,75000,170000,290000,400000,550000,740000,1080000];
+portion = [0.52,0.55,0.54,0.57,0.62,0.64,0.53,0.66];
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 23 of 27
+EV_pure = EV_all .* portion
+plot(T,EV_pure,'-or','LineWidth',3)
+grid on
+xlabel('Year')
+ylabel('Ownship of Pure EV ')
+alpha = 0.07;
+q = 18;
+d = 50;
+phi_ev =0.16;
+M
+E_vehicle = 3.65* EV_pure *alpha*q *d/(1-phi_ev);
+E_vehicle
+C
+n_phone=[92.8,122,144.5,171,190.64,208.61,246.6,257.3]; M
+w = [5396,5434,5700,6403,6697.5,10241,10907.9,12049.8];
+i
+alpha_phone = 0.51;
+H
+n_day = 0.68;
+：
+phi_phone = 0.39;
+E_phone = 365*n_phone.*alpha_phone.*w*n_day/(1-phi_phone);
+E_phone 号
+众
+X= EV_pure(1:7);
+Y = EV_pure(2:8);
+公
+p =polyfit(X,Y,2)
+f = polyval(p,X);
+信
+plot(X,Y,'o',X,f,'-','LineWidth',3)
+legend('Ownship of Pure EV ','fit')
+微
+p(1),p(2),p(3)
+X= n_phone(1:7);
+Y = n_phone(2:8);
+p =polyfit(X,Y,2)
+f = polyval(p,X);
+plot(X,Y,'o',X,f,'-','LineWidth',3)
+legend('Ownship of Cell Phones','fit')
+p(1),p(2),p(3)
+%%%predict
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 24 of 27
+EV_pure = [1.49E+06,3.20E+06,5.39E+06,8.45E+06,1.15E+07]
+alpha = 0.07;
+q = 18;
+d = 50;
+phi_ev =0.16;
+E_vehicle = 3.65* EV_pure *alpha*q *d/(1-phi_ev);
+n_phone=[271.9008,283.8188,293.3435,300.824,306.617];
+w = [3421,3671,3921,4171,4471]*3.8;
+M
+alpha_phone = 0.51;
+n_day = 0.68;
+C
+phi_phone = 0.39;
+E_phone = 365*n_phone.*alpha_phone.*w*n_day/(1-phi_phone); M
+E_all = E_vehicle + E_phone
+i
+t = [2019,2020,2021,2022,2023]
+H
+：
+clear;clc;
+x=[1 2 3 4 5 6 7 8];% 号
+% training20_testing50
+% y1=[69 33 90 95 96 94 100 7众3];
+% y2=[94 67 88 93 98 85 100 77];
+公
+% training10_testing50
+y1=[60 51 83 69 96 61 100 61];
+信
+y2=[92 46 63 95 98 54 98 60];
+y_all=[y1;y2]';
+微
+bar(x,y_all)
+title(' 10-Training and 50-Testing')
+xlabel('Class')
+ylabel('Accuracy')
+set(gca,'xticklabel',{'Hyt','Maple','Su','Zm','Bob','Hly','Hhf','Yq'});
+clc;
+x=[2011:2018];
+y=[5396,5434,5700,6403,6697.5,10241,10907.9,12049.8];
+plot(x,y,'r*',x,y,'-r','LineWidth',2);
+grid on
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 25 of 27
+xlabel('Year')
+ylabel('Ownership of Phone')
+%title('name')
+%legend('r*','-r')
+clc;
+x=[2011:2018];
+y=[22000 75000 170000 290000 400000 550000 740000 1080000];
+plot(x,y,'r*',x,y,'-r','LineWidth',2);
+grid on
+xlabel('Year')
+ylabel('Ownership of Pure EV')
+%title('name')
+M
+%legend('r*','-r')
+C
+clear;clc;
+x=[1 2 3];%
+y1=[0,16530,16530,]; M
+y2=[67541660,1492729.4,69034389.4,]
+y3=[28556352,148808000,177364352];
+i
+y4=[300735600,932812.9,301668412.9];
+H
+y_all=[y1;y2;y3;y4]';
+bar(x,y_all)
+：
+title('Cost Difference')
+xlabel('Class')
+ylabel('Cost Amount($)')
+legend('coffee shop','airport','mall','schoo号l');
+set(gca,'xticklabel',{'Phone Charging Cost','Vehicle Charging Cost','Total Cost'});
+众
+clear;clc;
+x=0.8:0.05:1
+y=1;
+z=1; 公
+y2=x*36000000+y*650000+z*308971660;
+%y2=x*
+y3=x*6412800+y*52000+z*22091552;
+信
+y4=x*83407500+y*357500+z*216870600;
+plot(x,y2,'k:',x,y3,'b--',x,y4,'rp')
+title('Cost Difference with A1')
+微
+xlabel('Class')
+ylabel('Cost Amount($)')
+legend('airport','mall','school');
+clear;clc;
+x=0.6:0.05:1
+y=1;
+z=1;
+y2=x*36000000+y*650000+z*308971660;
+%y2=x*
+y3=x*6412800+y*52000+z*22091552;
+y4=x*83407500+y*357500+z*216870600;
+plot(x,y2,'k:',x,y3,'b--',x,y4,'rp')
+title('Cost Difference with A2')
+xlabel('Class')
+ylabel('Cost Amount($)')
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 26 of 27
+legend('airport','mall','school');
+clear;clc;
+x=1;
+y=0.7:0.05:1
+z=1;
+y2=x*36000000+y*650000+z*308971660;
+y3=x*6412800+y*52000+z*22091552;
+y4=x*83407500+y*357500+z*216870600;
+plot(y,y2,'k:',y,y3,'b--',y,y4,'rp')
+title('Cost Difference with A3')
+xlabel('Class')
+ylabel('Cost Amount($)')
+M
+legend('airport','mall','school');
+C
+clear;clc;
+x=1;
+y=1; M
+z=0.7:0.05:1;
+y2=x*36000000+y*650000+z*308971660;
+i
+y3=x*6412800+y*52000+z*22091552;
+H
+y4=x*83407500+y*357500+z*216870600;
+plot(z,y2,'k:',z,y3,'b--',z,y4,'rp')
+：
+title('Cost Difference with A4')
+xlabel('Class')
+ylabel('Cost Amount($)')
+legend('airport','mall','school'); 号
+clear;clc;
+众
+x=1;
+y=1;
+z=0.6:0.05:1;
+y2=x*36000000+y*65公0000+z*308971660;
+y3=x*6412800+y*52000+z*22091552;
+y4=x*83407500+y*357500+z*216870600;
+plot(z,y2,'k:',z,y3,'b--',z,y4,'rp')
+信
+title('Cost Difference with A5')
+xlabel('Class')
+ylabel('Cost Amount($)')
+微
+legend('airport','mall','school');
+clear;clc;
+x=[1 2];%
+y1=[0,0,];
+y2=[67541660,67541660]
+y3=[28556352,28556352];
+y4=[300735600,217328100];
+y_all=[y1;y2;y3;y4]';
+bar(x,y_all)
+title('Cost Difference with A6')
+xlabel('Class')
+ylabel('Cost Amount($)')
+legend('coffee shop','airport','mall','school');
+set(gca,'xticklabel',{'Phone Charging Cost without A7','Phone Charging Cost with A7'});
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 9844 Page 27 of 27
+clear;clc;
+m=1;
+n=0.7:0.05:1;
+p1=m*240+n*16290;
+p2=m*150400+n*1342329.4;
+p3=m*14080+n*148793920;
+p4=m*384000+n*548812.9;
+plot(n,p1,n,p2,'k:',n,p3,'b--',n,p4,'rp')
+title('Cost Difference with A8')
+xlabel('Class')
+ylabel('Cost Amount($)')
+legend('coffee shop','airport','mall','school');
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

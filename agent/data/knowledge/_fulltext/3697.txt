@@ -1,0 +1,663 @@
+Team 3697 Page 1 of 19
+
+Letter to Commissioner of the Department of Wildlife
+
+November 11, 2012
+
+Dear Commissioner of the Department of Wildlife,
+
+As environmentalists ourselves, we enjoyed the opportunity to investigate the efficacy of elk
+reintroduction in the Great Smoky Mountains National Park and determine how to maximize the
+population growth of elk.
+
+We are pleased to report that the Manitoban elk population in the Great Smoky Mountains
+National Park will indeed survive. Our mathematical model is broken down into five smaller
+variables: birth rate, predation, sickness, accidents/unknown deaths, and poaching. The equation
+for each variable was calculated separately with statistical analysis based on both the data
+provided and outside research. When combined, all the variables come together in one
+overarching model for population growth. Over the past ten years, elk population has increased
+from the original 25 to today’s 140. We predict that in the next five hundred years, elk
+population will drastically increase. Since we calculated the current carrying capacity of the
+national park to be 1900 elk, numbers will level out at around 1900 elk.
+
+In order to improve the survival of the elk population, we then analyzed the effects of altering
+each variable and devised a method to increase the carrying capacity of the Great Smoky
+Mountains National Park. We recommend that three preventative measures be taken: to reduce
+sickness, reintroduce elk at intervals, and reduce the number of accidents that occur. First, areas
+where the risk of exposure to parasitic disease is high, especially those located solely in the East
+that the Manitoban elk are vulnerable to, should be fenced off. Second, to reduce inbreeding and
+increase the birth rate, new elk from the West should be introduced periodically. Third, we
+recommend increasing visitor awareness by including a cautionary paragraph in brochures and
+posting this information in visitor centers.
+
+Again, we appreciate this opportunity and hope that you are able to follow our recommendations
+in order to increase the number of elk in the Great Smoky Mountains National Park. If so, we
+fully expect a thriving, permanent elk population in the next 500 years.
+
+Sincerely,
+
+Zi-Ning Choo, Mary Do, Grace Li, and Summer Wu
+Illinois Math and Science Academy
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 2 of 19
+
+Executive Summary
+
+In the winter of 2001, twenty-five Manitoban Elk, native to Canada and the Western
+
+United States, were reintroduced into the Eastern United States. However, because the elk were
+foreign inhabitants in this new region, there are many factors which would affect their survival in
+the new environment. Our task was to analyze the success of reintroducing the elk to the Great
+Smoky Mountains National Park and determine how to optimize the results. If the model predicts
+that the elk population will survive, we would have to consider how to improve the growth of the
+elk population over time, and if the model predicts that the elk population will die out, we would
+have to devise a plan to prevent it
+
+Our method consisted of a two-part solution: first, creating a model to predict the future
+of the elk population and determine whether or not the elk will survive in their new habitat, and
+second, proposing ways to improve the growth of the elk population based on that model. Using
+the data we were given, we formulated an equation to relate the birth rate and total death rate of a
+given year to the population size the previous year. The total death rate function was determined
+by adding up the equations for each of the different causes of death - predation, accidents,
+poaching, sickness, and unknown causes. The function for population growth was found by
+subtracting the total death equation from the birth equation. Population growth is the derivative
+of population with respect to time, so we were left with an unsolvable differential equation.
+Consequently, we used Euler’s method and a step size of 1 year to derive a graph for population
+over time. We used a step size of 1 year because elk can only give birth once a year and the data
+was given in yearly increments.
+
+From our population growth model, we determined that the elk would adjust well to their
+new surroundings and survive in their habitat. It projects that their population will increase until
+leveling off at a carrying capacity of about 1900 elk. From our model for death rate, we
+determined that the two causes that contributed the most to the number of deaths -
+accidents/unknown and sickness - could be limited by 1) lowering the speed limit, 2) increasing
+driver awareness, 3) fencing off areas highly populated with disease-causing agents, and 4)
+administering the appropriate drugs as needed both to prevent and to treat diseases. In addition,
+to limit the harmful effects of inbreeding, we also recommend introducing five Manitoban elk
+from the West to the Great Smoky Mountains National Park population every ten years.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 3 of 19
+
+Table of Contents
+
+Letter to Commissioner of the Department of Wildlife………………………………………1
+Executive Summary…………………………………………………………………………….2
+1. Introduction…………………………………………………………………………………..4
+2. Assumptions and Justifications……………………………………………………………...4
+3. Variables and Parameters…………………………………………………………………...5
+4. Part 1: Population Growth Over Time
+
+4.1 Births………………………………………………………………………………...6
+4.11 Model of Births and Deaths as a Result of Old Age…………………….7
+4.2 Deaths By Poaching………………………………………………………………...8
+4.3 Deaths By Sickness…………………………………………………………………8
+4.4 Unknown Causes of Death and Accidents………………………………………...9
+4.5 Deaths By Predation……………………………………………………………….10
+4.6 Combined Model ………………………………………………………………….11
+4.7 Vensim 500-Year Projection………………………………………………………12
+5. Sensitivity Analysis………………………………………………………………………….13
+6. Part 2: Maximizing Carrying Capacity
+
+6.1 Reducing Sickness………………………………………………………………….14
+6.2 Preventing Inbreeding……………………………………………………………...15
+6.3 Reducing the Number of Accidents……………………………………………….16
+6.4 Preventing the Birth Rate from Decreasing……………………………………....16
+7. Discussion…………………………………………………………………………………….16
+7.1 Strengths…………………………………………………………………………….16
+7.2 Weaknesses………………………………………………………………………….16
+7.3 Topics for Future Study……………………………………………………………17
+8. References…………………………………………………………………………………….17
+9. Appendix ……………………………………………………………………………………..18
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 4 of 19
+
+1. Introduction
+
+In the 1800s, Eastern Elk (Cervus canadensis canadiensis), which once roamed the North
+
+American continent, went extinct as a result of industrialization. Ever since President Theodore
+Roosevelt signed the bill declaring Yellowstone National Park to be the first national park,
+efforts have been made to preserve existing fauna and reintroduce species to their natural habitats.
+In 2001, the Great Smoky Mountains National Park (GSMNP) introduced 25 Manitoban Elk,
+which belong to the same family as Eastern Elk, to its park in order to a) explore the feasibility
+of reestablishing an indigenous species, and b) to establish the presence of a large herbivore in
+order to promote natural ecological processes.1
+
+However, because the Manitoban Elk is native to the Western United States, its
+adaptations in disease tolerances, foods, and environmental preferences differ from those of the
+original Eastern Elk. In this paper, we build a model to evaluate the efficacy of the GSMNP’s
+reintroduction program and propose a plan to maximize the number of elk over the course of 500
+years.
+
+2. Assumptions and Justifications
+
+Assumption: The number of elk that die from unknown causes, sickness, accidents, and
+predation increases as the elk population increases.
+Justification: Even if the elk start developing immunity, pathogens will likewise evolve.
+Moreover, disease transmission increases with population density. Therefore, the number of
+deaths from sickness should increase as population increases. Additionally, the probability that
+an accident or unknown death will occur would naturally increase if there are more elk in the
+same area.  Finally, increases in predator population follow increases in prey population, so more
+elk will die from predation as their numbers grow.
+
+Assumption: The data points from the years that new elk are reintroduced can be ignored.
+Justification: These elk were not part of the local habitat for the entire year; the very first
+reintroduction came in February.15 Furthermore, we do not know what time of year the
+reintroductions in the following years occurred, and whether or not any of the elk were pregnant
+before their reintroduction. Thus, we felt that including data from the years in which elk were
+reintroduced would skew the data.
+
+Assumption: The data points at which no elk died as a result of a specific cause were
+ignored
+Justification: The purpose of this model is to determine whether the elk population will stabilize
+or die out over time. In analyzing the specific causes of death and ignoring the data points at
+which no elk died, we are over counting the number of deaths. If the model predicts that the elk
+will survive over the course of 500 years, despite our overcompensation for deaths, our model
+will have greater credibility.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 5 of 19
+
+Assumption: Accidents and unknown deaths can be combined into one cause.
+Justification: Accidents and unknown deaths are both random, unpredictable occurrences. Since
+they both lack a root cause, they can be combined.
+
+Assumption: An elk will die when it reaches age 13.
+Justification: According to the National Park Service on the Smoky Mountains website16, Elk can
+live as long as 15 years, and typically live an average of 10 to 15 years in the wild. We averaged
+10 and 15, to get 13, and assumed that was the average lifespan of an elk.
+
+Assumption: Once all the possible causes of death are factored in, no elk will die from old
+age.
+Justification: As animals age, they physically weaken, and are more susceptible to factors such as
+sickness and predation.  In the wild, animals typically die from these factors before they can die
+from old age.
+
+Assumption:  There will be no major environmental disasters in the future.
+Justification:  We have no way of predicting such disasters, which can wipe out entire thriving
+populations.
+
+Assumption: Trends in the data with which we were provided are representative of future
+trends.
+Justification: We cannot otherwise create a model to predict future elk population size.
+
+3. Variables and Parameters
+
+P = Elk Population
+t = Time in years
+B(P) = The number of births in a given year as a function of elk population the previous year
+S(P) = The number elk who die of sickness in a given year as a function of elk population the
+previous year
+AU(P) = The number elk who die from unknown or accidental causes in a given year as a
+function of the elk population the previous year
+R(P) = The number of elk who die from predation in a given year as a function of the elk
+population the previous year
+C = The number of elk that are illegally poached each year
+D(P) = The total number of elk that die in a given year as a function of the elk population the
+previous year
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 6 of 19
+
+4. Part I: Population Growth Over Time
+
+4.1 Births
+
+We determined B(P) by finding the Least-Squares Line describing the relationship
+between births, the response variable, and population size, the explanatory variable, obtaining the
+following equation, with R2 = 0.83, implying a moderately strong linear fit:
+
+Our scatterplot and residuals plot (shown in the image below) suggest that a linear model
+
+appears appropriate for the data provided, because there are no trends in the residuals (Fig. 1).
+
+Figure 1. Linear Regression and Residuals Plot for the Projected Birth of Elk.
+
+However, a linear model is in fact not appropriate for describing births with respect to
+population size, because a population with such a birth rate would grow exponentially with no
+carrying capacity. Additionally, as elk are a K-selected species, their birth rate likely declines as
+population density increases. Thus, we decided to reexpress the data by taking the square root of
+population size and again finding the Least-Squares Line, which had R2 = 0.84.
+
+The residuals again showed no trends, suggesting that this model was appropriate for the
+
+data provided (Fig. 2).
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 7 of 19
+
+Figure 2. The Linear Regression and Residuals Plot for Births vs. Square Root of Population.
+
+4.11 Preliminary Model: Considering Births and Deaths as a Result of Old Age
+
+Before factoring in the various causes of death, we created a model that only considered
+
+the number of births and the number of deaths from old age. Previously, the assumption was
+made that the lifespan of an elk is 13 years. We started the model in the year 2011, because by
+using the birth data provided, we would have more accurate numbers for the number of elk that
+would die from old age for the first decade of our model. A recursive program (see appendix)
+was written using the following equation, where Pk is the population k years after 2011:
+
+When the program was run for 175 years, the population was seen to grow, and then level out, as
+shown here:
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 8 of 19
+
+Figure 3. Model of Population vs Time with Just Births and Old Age as Factors.
+
+This preliminary model demonstrates that the elk population will survive and stabilize
+after reaching a carrying capacity of about 5670 elk. Because this model does not account for
+any causes of death besides old age, it sets an upper limit on elk population growth. Once other
+causes of death are incorporated, the elk population must either level off, or die out, and stabilize
+to a size not exceeding 5670 elk.
+
+4.2 Deaths By Poaching
+
+We then created a model accounting for all the causes of elk death. First, we found that in
+
+the given data, the highest number of deaths caused by poaching each year was one. Poaching
+shows an association with neither the population size nor any of the other variables, and it can be
+concluded that the number of poachers should stay the same regardless of population size. Thus,
+we decided that poaching should be accounted for in our model as a constant, which we
+determined by averaging the number of poaching-related deaths (3) over the number of years for
+which we were provided data (11), obtaining the following value:
+
+4.3 Deaths By Sickness
+
+Next, we analyzed the deaths resulting from sickness using linear regression and
+
+generated the scatterplot shown below with R2=0.69, which indicates a moderately strong
+relationship.
+
+When creating the scatterplot for this relationship (Fig. 4), we removed one data point: the
+number of deaths from sickness in 2004. The exceptionally high number of deaths in this year
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 9 of 19
+
+was likely caused by the stress of the elk’s introduction to a new environment and their lack of
+immunity to new diseases. Retaining this point would result in a Least-Squares Line that is not
+representative of future trends in sickness. Because there are no patterns in the residuals plot, the
+linear model appears to be a good fit for the data.
+
+Figure 4. Linear Regression and Residuals Plot for Projected Deaths Caused by Sickness.
+
+4.4 Unknown Causes of Death and Accidents
+
+We then modeled deaths resulting from accidents and unknown causes as a function of
+
+population size, generating the equation shown below, with R2=0.26. Although this value
+indicates a weak correlation, the randomness in the residuals plot suggests that this linear fit was
+appropriate (Fig. 5).
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 10 of 19
+
+Figure 5. Linear Regression and Residuals Plot for Projected Deaths from Accidents and
+Unknown Causes.
+
+4.5 Deaths By Predation
+
+Finally, we found an equation relating the deaths resulting from predation to population
+size, which had R2=0.49, implying a moderately strong correlation between the two variables.
+When performing a linear regression, we eliminated the data point from 2005, during which five
+deaths from predation occurred. According to the National Park Service, newly introduced elk
+tend to be more susceptible to predation because they have not yet developed predator-avoidance
+behaviors.5 We believe that the exceptionally high number of deaths from predators in 2005
+likely resulted from the fact that the elk were newly introduced and had not yet adapted to black
+bear predation in the Smoky Mountains; thus, retaining the data point would result in a
+regression line that does not correspond to overall trends. Our final scatterplot showing deaths by
+predation with respect to population size is displayed below. The randomness of the residuals
+suggests that the linear fit is appropriate (Fig. 6).
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 11 of 19
+
+Figure 6. Linear Regression and Residuals Plot for Projected Deaths by Predation.
+
+4.6 Combined Model
+
+We then modeled the change in population size in a given year as a function of the
+
+population size of the previous year by combining the equations for births and causes of death
+that were previously obtained. First, we compiled the separate equations for each distinct cause
+of death to obtain an all-encompassing equation for elk death:
+
+To make a model for population growth (dP/dt), the birth and total death models were combined.
+Births cause the population to increase and deaths cause the population to decrease, so the
+overall population growth is the number of deaths subtracted from the number of births.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 12 of 19
+
+4.7 Vensim 500-Year Projection
+
+After obtaining equations relating births and causes of death to population size, we
+
+created a model on Vensim (downloaded from www.vensim.com) to simulate how population
+size would change over a 500 year period. The diagram below shows the relationships between
+each of the auxiliary variables and population size (Fig. 7).
+
+Figure 7. Vensim Model for Population Change.
+
+The model essentially predicted population size using the differential equation from 4.6,
+
+which was obtained by subtracting the equations for each of the causes of death from the
+equation for birth. This differential equation predicts that the environment’s current carrying
+capacity is approximately 1900 elk, a value determined by solving for P at dP/dt = 0.
+
+We used Euler’s method with a step size of one year, because the data given to us was
+
+tabulated yearly. We used an initial population value of 86 elk, the size of the elk population
+after the last introduction of elk. After this point, the size of the elk population was subject
+entirely to the factors described in our model. The population size change over a 500-year period
+is depicted in the graph below (Fig. 8).
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 13 of 19
+
+Figure 8. Projected Population Change using Euler’s Method on Vensim.
+
+5. Sensitivity Analysis
+
+We conducted a sensitivity analysis to determine how fluctuations in each of the five
+
+parameters would affect carrying capacity, which is the maximum population size under a set of
+given conditions. We modified our equations for Poaching, Sickness, Accidents, and Predation
+such that rates for each of the causes of death increases by 5%, and the birth rate decreases by
+5%, as shown in the following table:
+
+Figure 9. Changes in Parameters and Their Resulting Equations.
+
+We then found modified differential equations for each parameter change and used these
+new DE’s to determine the percent change in carrying capacity (Km). These data are shown in the
+table below.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 14 of 19
+
+The results of our sensitivity analysis show that our model is very sensitive to
+
+fluctuations in birth rate. A 5% decrease in birth rate produces an 11.2% decrease in Km;
+likewise, a 5% increase in all death rates produces only an 8.5% decrease in Km , but once a 5%
+decrease in birth rate was further introduced, Km  dropped 20.8%, suggesting that birth rate in the
+deer population must be monitored carefully. With regard to fluctuations in poaching, predation,
+and sickness, our model is fairly robust, producing a change in carrying capacity below 5% when
+a 5% increase in any of those parameters was introduced.
+
+6. Part 2: Increasing Carrying Capacity
+
+6.1 Reducing Sickness
+
+According to the Environmental Assessment for the Experimental Release of Elk in the
+Great Smoky Mountains National Park1, because Manitoban Elk are non-native to the Smoky
+Mountains, they are most susceptible to three main diseases.
+
+1. Parelaphostrongylus tenuis
+
+According to the Kentucky Department of Wildlife, Parelaphostrongylus tenuis, a
+parasitic disease which occurs in Eastern regions, killed around 1% of the reintroduced elk
+population1. To reduce this number, we propose fencing off areas of the Smoky Mountains
+National Park with the highest concentrations of snails and slugs, as they have the potential to
+infect elk with the parasites. We also propose that avermectins should be administered to the elk
+during seasons of high snail and slug activity. Avermectins kill snail and slug larvae before they
+can reach the elk’s central nervous system, but should not be given to the elk regularly as the
+parasite may develop a resistance to the drug8.
+
+2. Elaeophora schneideri
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 15 of 19
+
+These parasitic worms impair blood flow to the head and neck, resulting in blindness,
+
+neurological problems, and necrosis of the ears and muzzle. Since the main transmitters of these
+parasites are horseflies, there are no effective preventative measures. Therefore, we suggest
+treatment as the course of action for limiting this disease. Since administering
+diethylcarbamazine would kill off the worms but run the risk of clogging the arteries of the elk
+with the dead worms, we recommend giving piperazine salts instead, which have been found to
+be more effective9,10. However, no treatment is known for the cerebral form of the disease.
+
+3. Babesia odocoilei
+
+Distributed throughout southeastern United States, this parasite causes a malaria-like
+
+disease and is spread by ticks. We recommend administering imidocarb dipropionate, which is a
+drug that has been known to consistently clear the parasite from the blood.11
+
+6.2 Preventing Inbreeding
+
+Elk are polygynous; one male will mate with a harem of up to twenty females. Because
+
+polygynous mating systems are more vulnerable to the harmful effects of genetic inbreeding,
+new elk of breeding age from other populations should be introduced to increase the genetic
+variability the Smoky Mountain population. We propose introducing 5 new elk every ten years.
+An elk is sexually mature at sixteen months and can continue to mate throughout its entire
+lifespan of approximately 13 years16; therefore, a ten year interval is roughly one generation. The
+elk should be introduced before September; the mating season of elk, known as the rut, occurs
+between September and November.15
+
+6.3 Reducing the Number of Accidents
+
+By comparing the elk progress reports on the Smoky Mountains website and the
+accidental death data, it is evident that most, if not all, of the accidental deaths are due to road
+accidents. This year, the number of accidents was abnormally high and by July, three elk had
+already died from car accidents.5 Two possible ways to reduce accidents are to lower the speed
+limit at night and to put up more Elk XING signs on the roads near where the elk live. More
+effective, however, is increasing driver awareness. A short driver awareness article should be
+included in the park brochures and posted in visitor centers. This article should include the
+following:
+
+●  Drive Defensively and Pay Attention!
+●  Most road accidents happen at dusk and dawn - animals are more active, and light levels
+
+are low. Pay more attention during these times.2
+
+●  Pay closer attention during calving season - late spring to early summer - since there are
+
+more inexperienced animals.2
+
+●  Watch the left side of the road. Studies show that drivers typically pay more attention to
+
+the right side of the road.3
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 16 of 19
+
+●  Elk travel in herds; if there is one elk around, chances are there are more in the area.4
+●  Signs of wildlife in the area: movement near the road, shining eyes, flickering headlights
+of oncoming cars or tail lights of cars in front (an animal may have just passed), roadside
+reflectors disappear and reappear.3
+
+6.4 Preventing Birth Rate from Decreasing
+
+Since the sensitivity analysis of our model determined that fluctuations in birth rate
+would exert significant change on carrying capacity, we must carefully monitor the birthrate and
+prevent it from decreasing. One way to do this is to increase the effective population size, which
+is determined by how many breeding males (Nm) and females (Nf) exist in a population and is
+calculated as follows:
+
+If the essential population size remains above the minimum viable population (MVP), the
+
+population’s survival is guaranteed, barring inbreeding and genetic drift. Therefore, we propose
+monitoring the number of male and female breeding elk, and introducing new breeding elk as
+necessary.12
+
+Additionally, because birthing females tend to isolate themselves from the herd, we
+
+should reduce predators from areas frequented by the elk during calving season, which occurs
+during late spring and early summer.15
+
+7. Discussion
+
+7.1 Strengths
+
+●  Our model breaks the overall equation for population equation into five separate variables,
+
+each of which can be analyzed independently to determine its effect on population
+●  Our model analyzes the effect of each variable and uses the information to maximize the
+
+growth of elk population
+
+●  Our model overcompensates for the number of elk that die every year
+●  Our model predicts the projected elk population over 500 years in addition to determining
+
+whether the elk will survive
+
+●  To compensate for our assumptions, we tested the accuracy of our model with sensitivity
+
+analysis
+
+●  The R^2 value for every variable is feasible
+●  Our model corresponds to the calculated carrying capacity of elk in the GSMNP
+
+7.2 Weaknesses
+
+●  Due to the short time span for which data is available, we made many assumptions in
+
+order to project future numbers
+
+●  Our model does not account for the effects of genetic drift
+●  The carrying capacity predicted by our model is sensitive to fluctuations in birth rate
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 17 of 19
+
+7.3 Topics for future study
+
+●  Future models should create an optimization plan that consider a greater number of data
+
+points
+
+●  Accordance with the population trends of predators, prey, and the remainder of the
+
+ecosystem should be taken into consideration.
+
+●  Future studies should take into account population dispersal in the Great Smoky
+
+Mountains National Park. For example, the edge effect could affect the variables we have
+analyzed in order to determine elk population growth.
+
+8. References
+
+1. Great Smoky Mountains National Park. (2000, June). Environmental assessment for
+
+experimental release of elk (Cervus elaphus) in the Great Smoky Mountains National
+Park. Retrieved from http://www.nps.gov/grsm/parkmgmt/upload/GRSM_ElkEA_
+AppendicesB_C.pdf
+
+2. Wildlife Collision Prevention Program. (2004). When do collisions with wildlife occur?
+
+Retrieved from http://www.wildlifeaccidents.ca/when.htm
+
+3. Wildlife Collision Prevention Program. (2004). Hints for the highway. Retrieved from
+
+http://www.wildlifeaccidents.ca/hints.htm
+
+4. Turner, B. (2012, October 17). Deer crossing: Avoid roadkill Disaster. Retrieved from
+
+http://www.globalanimal.org/2012/10/17/avoid-hitting-deer-this-fall-with-these-tips/
+21324/
+
+5. National Park Service. (2012, November 8). Elk progress report, July 2012. Retrieved from
+
+http://www.nps.gov/grsm/naturescience/elk-progress-report-49.htm
+
+6. Yarkovich, J. (2012, November 8). Elk progress report, July 2011. Retrieved from
+
+http://www.nps.gov/grsm/naturescience/elk-progress-report-48.htm
+
+7. Rocky Mountains Elk Foundation. Elk restoration. (n.d.). Retrieved from
+
+http://www.rmef.org/Conservation/HowWeConserve/ElkRestoration.aspx
+
+8. McElderry-Maxwell, J. (2010, March). Meningeal worm literature review with implications
+for
+
+alpaca owners. Retrieved from http://www.bagendsuris.com/?page_id=269
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 18 of 19
+
+9. (2012, September 13). Elaeophora schneideri. Retrieved from http://en.wikipedia.org/wiki/
+
+Elaeophora_schneideri
+
+10. Foster, A. O. (2000). Chemotherapeutic agents for internal parasites. Retrieved from
+
+http://animal-health.library4farming.org/Animal-Parasites-Cattle/PREVENTION-AND-
+TREATMENT/Chemotherapeutic-Agents.html
+
+11. Vial, H. J., & Gorenflot, A. (2006, February 24). Chemotherapy against babesiosis. Retrieved
+
+from http://lib.bioinfo.pl/paper:16504402
+
+12. Morin, P. J. (2011). Community ecology. New Brunswick, New Jersey: Wiley-Blackwell.
+
+13. Schultz, A. (n.d.). Elk. Retrieved from http://www.caveslime.org/kids/cavejourney/
+
+SpeciesAccounts/Elk.html
+
+14. McLean, P. K., & Pelton, M. R. (1994). Estimates of population density and growth of black
+bears in the Smoky Mountains. Bears: Their Biology and Management, 9. Retrieved from
+http://www.jstor.org/stable/3872709
+
+15. Great Smoky Mountains Association. (2012). Elk. Retrieved from
+
+http://smokiesinformation.org/nature-wildlife/elk
+
+16. National Park Service. (2012, November 8). Elk. Retrieved from
+
+http://www.nps.gov/grsm/naturescience/elk.htm
+
+Appendix
+Program Old Age and Births Model (written in Python)
+from visual import *
+from visual.graph import *
+from math import *
+
+pop=140
+def birth(x):
+    return ((x**.5)-6.13)/(.169)
+f=gcurve(color=color.cyan)
+
+old=[25,27,0,4,2,10,8,10,13,19,19,19,25,19]
+
+t=0
+while t<175:
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team 3697 Page 19 of 19
+
+    x=pop
+    pop=pop+birth(x)-old[0]
+    old.pop(0)
+    old.append(birth(x))
+    t=t+1
+    f.plot(pos=(t,pop))
+    print(t)
+    print(pop)
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM

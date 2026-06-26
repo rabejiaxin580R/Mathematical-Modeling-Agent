@@ -1,0 +1,95 @@
+{
+  "paper_id": "4100",
+  "meta": {
+    "paper_id": "4100",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2013,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2013\\B\\4100.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "stoch.queue",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将银行排队问题建模为离散时间 G/G/1 队列，使用 Lindley 方程的离散时间等价形式推导等待时间分布。",
+      "formulas": [
+        {
+          "latex_code": "W(x) = \\int_{0-}^{\\infty} U(x - y) dW(y), \\quad x \\geq 0",
+          "variables": {
+            "W(x)": "第 n 个顾客等待时间不超过 x 分钟的概率（n 趋于无穷）",
+            "U(x)": "前一个顾客服务时间与第 n 个顾客到达时间之差小于等于 x 的概率",
+            "dW(y)": "第 n 个顾客等待恰好 y 分钟的无穷小概率"
+          }
+        },
+        {
+          "latex_code": "W_n(w) = \\begin{cases} \\sum_{i=0}^{\\max\\{w_{n-1}\\}} W_{n-1}(i) U(w - i) & \\text{if } w > 0 \\\\ \\sum_{i=0}^{\\max\\{w_{n-1}\\}} \\left( W_{n-1}(i) \\sum_{j=0}^{\\max\\{w_{n-1}\\}} U(-i - j) \\right) & \\text{if } w = 0 \\end{cases}",
+          "variables": {
+            "W_n(w)": "第 n 个顾客等待时间等于 w 分钟的概率",
+            "U(·)": "服务时间与到达时间之差的概率质量函数",
+            "max{w_{n-1}}": "第 n-1 个顾客的最大可能等待时间"
+          }
+        }
+      ],
+      "source_excerpt": "We derive a discrete-time equivalent of this equation to find the theoretical waiting time distribution of any given customer. ... The following formula summarizes our relation:"
+    },
+    {
+      "concept_id": "stoch.montecarlo",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "编写计算机模拟算法，模拟银行日常运营，通过多次试验得到平均等待时间和队列长度的近似值，并与理论结果对比验证。",
+      "formulas": [],
+      "source_excerpt": "We created an algorithm to simulate the bank’s day-to-day operations and then tested our simulation by running multiple trials and comparing the resulting frequency distributions with the theoretical probability distributions."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "比较理论平均等待时间与模拟平均等待时间，相对误差仅为 0.164%，验证了模拟的准确性。",
+      "formulas": [],
+      "source_excerpt": "We found that the average waiting times derived from the two approaches agreed to within 0.164 percent."
+    },
+    {
+      "concept_id": "viz.modelcompare",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "通过对比不同方案（单服务器、双服务器、紧急服务器）的平均等待时间、队列长度和服务器空闲时间，选择最优方案。",
+      "formulas": [],
+      "source_excerpt": "By modifying the bank’s system to use two servers simultaneously, we were able to decrease the average wait time to about 6 seconds ... By adding an emergency server ... we were able to reduce the wait time to 1.46 minutes and the queue length to 0.55 customers while keeping the idle time to a more reasonable 62 minutes."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "明确列出六条假设，包括顾客按分钟到达、先到先服务、服务器连续工作、单服务器初始配置、多服务器同速率、紧急服务器响应延迟2分钟。",
+      "formulas": [],
+      "source_excerpt": "Assumptions: Customers only arrive at the bank and are served at exact minute intervals. ... Customers are served in the order they arrive. ... Servers work continuously until all 150 customers have been served. ... The service time data provided corresponds to the rate of service of a single server. ... Multiple servers work at the same rate. ... The time for an emergency server to begin servicing customers is two minutes."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "",
+      "stage": "notation",
+      "how_used": "定义了关键术语和符号，如顾客编号、队列、服务器、紧急服务器、q_enter（触发紧急服务器的队列长度）、PMF（概率质量函数）。",
+      "formulas": [],
+      "source_excerpt": "For the purposes of our model, we will also define the following: Customers are numbered from 1 to 150 ... The queue is the line ... A server is a person ... An emergency server is a server that only begins working whenever the queue length exceeds a predetermined limit ... q_enter is the length of the queue before an emergency server begins ... A probability mass function, or PMF, is the discrete-time equivalent of a probability density function."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过调整紧急服务器的触发阈值（队列长度）和服务器数量，分析不同配置对平均等待时间、队列长度和服务器空闲时间的影响。",
+      "formulas": [],
+      "source_excerpt": "We tested two ways to reduce the mean wait time, choosing to also measure server idle time ... By adding an emergency server who would only begin serving customers when the queue reached 3 customers, however, we were able to reduce the wait time to 1.46 minutes and the queue length to 0.55 customers while keeping the idle time to a more reasonable 62 minutes."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用 IMRaD 结构：Introduction（问题背景）、Problem Restatement（问题重述）、Assumptions（假设）、Designing the Mathematical Model（模型设计，含理论部分和模拟部分）、Results（结果）、Conclusion（结论）。",
+      "formulas": [],
+      "source_excerpt": "Introduction ... Problem Restatement ... Assumptions ... Designing the Mathematical Model ... Purely Theoretical Approach ... Computational Approach ..."
+    }
+  ]
+}

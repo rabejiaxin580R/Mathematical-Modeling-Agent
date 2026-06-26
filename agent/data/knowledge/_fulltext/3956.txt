@@ -1,0 +1,1111 @@
+Page 1 of 24 Team #3956
+Queueing in a Bank
+Queueing in a Bank
+Summary
+Queueing system is a common model in our life. This time, our goal is to build a
+mathematical model of a 150-people queueing system which meets the manager’s requirement
+of an average queue length less than 2 people and an average waiting time less than 2 minutes
+to improve customer satisfactory.
+To analyze this queueing system, we put forward two models which can verify each other,
+they are: the mathematical model and the simulation model. In the mathematical model we use
+the knowledge of probability theory, hoping to figure out a recursion formula about the
+probability of the state of queue at a certain time. In order to reach this goal, we perfectly
+described the state of queue at a certain time by defining several variables. UsinMg this model,
+we can figure out the two important parameters, which are the average length of queue and the
+average waiting time.
+C
+Then we put forward a simulation model. In the given situation, we put forward an
+algorithm which can simulate and measure the whole process of how the 150 customers come
+M
+and leave. Using Monte Carlo method, we simulated the process for many times and then got
+the average length of queue as well as the average waiting time.
+After comparison, the average queue length and waiting timie got from the two models
+H
+coincided with each other perfectly, the average waiting time is about 4.9 minutes while the
+average queue length is about 2.4 people. Since the simulation model calculated faster, we
+decided to take it as the only used analyzing mod：el in the following discussions.
+Results above showed that the current situation couldn’t meet the manager’s requirement,
+so we put forward several solutions from different perspectives to meet the manager’s
+号
+requirement and improve customers’ satisfaction, such as improving the service efficiency
+through training to change the probability distribution of service time; establishing online bank
+to lower the everyday customer flow to increase time between arrivals; we can also establish a
+new service window. For each so众lution, we discussed the minimal change to meet our goal.
+At last, we gathered all our model results, and take several reasonable ones of them as the
+suggestion to the manager, in which way he can choose one according to the actual condition of
+his bank. 公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 2 of 24 Team #3956
+Queueing in a Bank
+Introduction
+The queue management system of a bank is vital to whether customers are satisfied with the
+bank service or not. Given the statistics of service time and time between arrivals, we used a
+variety of measurement techniques which predicted and measured queue lengths and waiting
+times and provided management information to help service levels and resource deployment.
+Then we determined whether the current one was satisfactory to the manager guidelines, which
+expected an average queue length under 2 persons and an average waiting time under 2 minutes.
+To accomplish the manager's goal, we put forward several technical and non-technical
+solutions which required the minimal changes for servers and wrote a letter to the manager of
+our best solutions.
+M
+General Assumptions
+C
+ The probabilities in the two given tables are discrete ones.
+M
+We analyzed the two tables and considered minute as our minimal time unit. In this
+situation, continuous probability makes no sense in our model.
+i
+ Arrival time distribution of the customers is balanced, which means there doesn’t exist
+H
+such peak hours.
+The common working hour of banks in： China is around 8 hours a day, as is the result
+of our investigating the four major banks1 in China. What’s more, since in most cases,
+people have to ask for leave from their work to come to the bank, it’s meaningless to
+consider such peak hours.
+号
+ The current service policy is FCFS2.
+FCFS is the mostly used service policy which is reasonable while making our model
+simplified. 众
+ There is only one service window.
+公
+The number of windows is not mentioned in the problem. Since more windows will
+make the model complex, we started from only one window.
+信
+微
+1The four major banks in China are the Industrial and Commercial Bank of China (ICBC), the Agricultural Bank of China (ABC),
+the Bank of China (BOC) and the China Construction Bank (CCB). In most cases, their working hours starts from 8 a.m. to 5p.m.
+2 First-Come, First-Served: a service policy whereby the requests of customers or clients are attended to in the order that they
+arrived, without other biases or preferences.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 3 of 24 Team #3956
+Queueing in a Bank
+The Models
+Basic Model A: A Mathematical Model
+Introduction
+We used five variables to describe a state, and found out the recursion formula of the states.
+In this way, we gave out a rigorous mathematical model to find out answers.
+Assumption
+M
+ There is only one service window.
+C
+Model Description
+M
+The Queue
+
+i
+Terminology
+ H
+Terminology Description
+：
+Queue In computer science, a queue is a particular kind of abstract data
+type or collection in which the entities in the collection are kept in
+order and the principal (or only) operations on the collection are the
+号
+addition of entities to the rear terminal position, known as enqueue,
+and removal of entities from the front terminal position, known as
+dequeue. This makes the queue a First-In-First-Out (FIFO) data
+structure3.
+众
+Head The first element in current queue, which is the Premier-came
+of all the elements in current queue.
+Tail The last element in current queue, which is the newest-came of
+公
+all the elements in current queue.
+Table 1
+Variables
+
+信
+Variable Description
+𝒉𝒆𝒂𝒅 The number of the head element in current queue
+微
+𝒕𝒂𝒊𝒍 The number of the tail element in current queue
+Table 2
+Graphic expression of a queue
+
+Figure 1
+3 In a FIFO data structure, the first element added to the queue will be the first one to be removed. This is equivalent to the
+requirement that once a new element is added, all elements that were added before have to be removed before the new element can
+be removed. Often a peek or front operation is also entered, returning the value of the front element without dequeuing it.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 4 of 24                                                                                             Team #3956
+Queueing in a Bank
+Variables
+
+| Variable  |                                                  |     | Description  |     |     |     |     |
+| --------- | ------------------------------------------------ | --- | ------------ | --- | --- | --- | --- |
+| 𝑻         |   The current time, in the unit of minute        |     |              |     |     |     |     |
+| 𝒏         |   The number of customers in the waiting queue,  |     |              |     |     |     |     |
+including the one being served at present, which is the
+head of the waiting queue.
+| 𝒕𝟏  |   The last arrived customer arrived                     |     |     |                              | 𝒕𝟏 minutes ago  |     |     |
+| --- | ------------------------------------------------------- | --- | --- | ---------------------------- | --------------- | --- | --- |
+| 𝒕𝟐  |   The present customer being served, which is the head  |     |     |                              |                 |     |     |
+|     | of the queue, needs another                             |     |     | 𝒕𝟐 minutes to be served and  |                 |     |     |
+then leaves.
+M
+| 𝑵   |   The number of the total served and already-came  |     |     |     |     |     |     |
+| --- | -------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+customers, which is also the number of the tail customer
+C
+in the queue
+𝑷𝑻     The probability of having  𝒏 customersM in the waiting
+𝒏,𝒕𝟏,𝒕𝟐,𝑵
+|     | queue, the last arrived customer arrived         |     |     |     | 𝒕𝟏 minutes ago,  |     |     |
+| --- | ------------------------------------------------ | --- | --- | --- | ---------------- | --- | --- |
+|     | the present customer being served needs another  |     |     |     |                  | 𝒕𝟐  |     |
+minutes to leave while the number of thei total served and
+H
+|     | already-came customers is  |     |     | 𝑵  at time  | 𝑻. (𝟎≤𝒏≤𝟏𝟓𝟎  |     |     |
+| --- | -------------------------- | --- | --- | ----------- | ------------ | --- | --- |
+𝟎≤𝑵≤𝟏𝟓𝟎 , 𝟏≤𝒕𝟏≤：𝟓 , 𝟏≤𝒕𝟐≤𝟒)
+
+Table 3
+  Constants
+号
+| Constant  |                                                       |     | Description  |     |     |     |     |
+| --------- | ----------------------------------------------------- | --- | ------------ | --- | --- | --- | --- |
+| 𝒂         |   The pr众obability of some people will come when the  |     |              |     |     |     |     |
+𝒕𝟏
+|      | last-came customer came               |     |     | 𝒕𝟏  minutes ago.  |     |     |     |
+| ---- | ------------------------------------- | --- | --- | ----------------- | --- | --- | --- |
+| 𝑪𝑨   |   Time between arrival is t minutes.  |     |     |                   |     |     |     |
+𝒕
+公
+𝑪𝑺     The service time of the head customer in the queue is t
+𝒕
+minutes.
+  信
+Table 4
+Arrival times
+
+微
+| Time between arrival(min.)  |     |     | 0     | 1      | 2     | 3     | 4  5        |
+| --------------------------- | --- | --- | ----- | ------ | ----- | ----- | ----------- |
+| Constant                    |     |     | 𝑪𝑨    |   𝑪𝑨   | 𝑪𝑨    | 𝑪𝑨    | 𝑪𝑨   𝑪𝑨     |
+|                             |     |     | 𝟎     | 𝟏      | 𝟐     | 𝟑     | 𝟒 𝟓         |
+| Probability/Value           |     |     | 0.10  | 0.15   | 0.10  | 0.35  | 0.25  0.05  |
+
+|     |     | Table 5  |     |     |     |     |     |
+| --- | --- | -------- | --- | --- | --- | --- | --- |
+
+Service Time
+
+| Service time(min.)  |     | 1        | 2     | 3     |       | 4   |     |
+| ------------------- | --- | -------- | ----- | ----- | ----- | --- | --- |
+| Constant            |     | 𝑪𝑺       | 𝑪𝑺    |   𝑪𝑺  |   𝑪𝑺  |     |     |
+|                     |     | 𝟏        | 𝟐     |       | 𝟑     | 𝟒   |     |
+| Probability/Value   |     | 0.25     | 0.20  | 0.40  | 0.15  |     |     |
+|                     |     | Table 6  |       |       |       |     |     |
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Page 5 of 24 Team #3956
+Queueing in a Bank
+The calculation of 𝐚
+
+𝐭
+Conditional Probability
+
+ Terminology
+Terminology Description
+𝑷 T he probability of event A occurs.
+𝑨
+𝑷 The probability of event A and B occur at the same time
+𝑨 ⋂ 𝑩
+The conditional probability of A given B, which is the
+𝑷 probability that event A will occur when event B is known to
+𝑨 | 𝑩
+occur or to have occurred.
++= a+=b means a:=a+b M
+Table 7
+ Axiom of probability
+C
+𝑷 = 𝑷 · 𝑷
+𝑨 ⋂𝑩 𝑨 | 𝑩 𝑩
+M
+Although mathematically equivalent, this may be preferred philosophically. Since it
+is common knowledge in probability theory, we did not prove it in mathematics here.
+i
+ The calculation of 𝐚
+𝐭𝟏 H
+We defined event A as: At time 𝑻 some people came. And then defined event B
+：
+as: t1 minutes’ no-one-came situation exists. In this case,
+According to the axiom above, we got the following equations.
+号
+𝑷 = 𝑷 · 𝑷
+𝑨 ⋂𝑩 𝑨 |𝑩 𝑩
+That is, 𝑷 = 𝑷𝑨 ⋂𝑩
+𝑨 | 𝑩 ············· ( 1 )
+众 𝑷𝑩
+According to our definition, it is obvious that
+𝑷 = 𝒂
+公 𝑨 | 𝑩 𝒕𝟏
+,which is what we wanted to solve out through the following calculations.
+P means the probability of having waited for t1 minutes for another customer to
+B信
+come, cases that arrival time are longer than t1 are concerned, or another customer has
+already came some time before. In those cases, the current t1 means the time between
+current time 𝑻 and the time when the second last customer in the waiting queue came,
+微
+which contradicts with the definition of t1.
+Therefore, we get the following equation:
+𝟓
+𝑷 = ∑ 𝑪𝑨 ············· ( 2 )
+𝑩 𝒊
+𝒊=𝒕𝟏
+P means the probability of we have already waited for t1 minutes and
+A ⋂B
+new customers came at current time T, that is to say, time between arrival is t1
+minutes, obviously, we got the following equation:
+𝑷 𝑨 ⋂𝑩 = 𝑪𝑨 𝒕𝟏 ············· ( 3 )
+Then put (3),(2) into (1) and finally we solved 𝒂 :
+𝒕𝟏
+𝑪𝑨
+𝒕𝟏
+𝒂 =
+𝒕𝟏 𝑪𝑨 𝟓
+𝒕𝟏𝟏𝟏𝟏𝟏𝟏𝟏𝟏
+∑ 𝑪𝑨 关注 HiMCM
+𝒊
+𝒊=𝒕𝟏 Hi
+×+ −÷
+CM 获取更多资讯
+
+Page 6 of 24                                                                                             Team #3956
+Queueing in a Bank
+
+|   The value of  |     | 𝐚   |     |     |     |     |
+| ---------------- | --- | --- | --- | --- | --- | --- |
+𝐭𝟏
+|     | i   | 1   | 2        | 3   | 4   | 5   |
+| --- | --- | --- | -------- | --- | --- | --- |
+|     |     | 𝟏   | 𝟐        | 𝟕   | 𝟓   |     |
+|     | 𝒂   |     |          |     |     |     |
+|     | 𝒊   |     | 𝟏𝟓       |     |     |     |
+|     |     | 𝟔   |          | 𝟏𝟑  | 𝟔   | 𝟏   |
+|     |     |     | Table 8  |     |     |     |
+The recursion formula
+
+| The Recursion formula in most cases:  |     |     |     |     | 𝒏   | ≠ 𝟎  |
+| ------------------------------------- | --- | --- | --- | --- | --- | ---- |
+
+When given a state  𝑷𝑻 ,( 𝒏 ≠ 𝟎) We would like to find out aMll the
+𝒏,𝒕𝟏,𝒕𝟐,𝑵
+| 𝑷𝑻+𝟏          |  states which can be transited from  |     |     |     | 𝑷𝑻        | .   |
+| ------------- | ------------------------------------ | --- | --- | --- | --------- | --- |
+| 𝒏′,𝒕𝟏′,𝒕𝟐′,𝑵′ |                                      |     |     |     | 𝒏,𝒕𝟏,𝒕𝟐,𝑵 |     |
+C
+|   𝒕𝟐 | ≠ 𝟏:  A Simple case  |     |     |     |     |     |
+| ----- | -------------------- | --- | --- | --- | --- | --- |
+Since 𝒕𝟐 ≠ 𝟏 and  𝟏 ≤ 𝒕𝟐 ≤ 𝟒, that is to say the serMvice has not finished yet and
+the customer being served the next minute will still be this customer. But we do not
+know how many people will come the next minute. There are two cases:
+i
+|    | No one come the next minute  |     |     |     | H   |     |
+| --- | ---------------------------- | --- | --- | --- | --- | --- |
+ Then at time T+1, the number of customers in the waiting queue would still
+：
+be n, the number of customers already came and even left would remain to be N,
+since time was put forward, the time that the last customer came would be t1+1
+and the remaining service 号time required for the current customer would be
+reduced to t2-1. Since the probability of someone came is  𝒂 , the probability of
+𝒕𝟏
+no one came would be (1-𝒂 )𝑷𝑻 , which can be described as  𝑷𝑻+𝟏
+𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 𝒏,𝒕𝟏+𝟏,𝒕𝟐−𝟏,𝑵
+众
+So we have:
+|     |     |     | 𝑷𝑻+𝟏 |     |     | )𝑷𝑻 |
+| --- | --- | --- | ---- | --- | --- | --- |
++= (1-𝒂
+|     |                                     |     | 𝒏,𝒕𝟏+𝟏,𝒕𝟐−𝟏,𝑵 |     |     | 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 |
+| --- | ----------------------------------- | --- | ------------- | --- | --- | ------------ |
+|    | Some people come the next minute  公 |     |               |     |     |              |
+𝑷𝑻
+Since the probability of someone comes at time T is  𝒂  , let us
+𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵
+f信irst look into the case that only one person comes the next minute. According to
+the data given, the probability of time between arrival =0 is 0.1, that is to say
+more than one person comes, which is not what we wanted. To have only one
+微person come the next time, the time-between-arrival of the next customer should
+be more than 1min. So we got the following equations:
+Probability of only one person comes at T+1:
+|     |                            |     |     | 𝟎.𝟗·𝒂 | ·𝑷𝑻          |     |
+| --- | -------------------------- | --- | --- | ----- | ------------ | --- |
+|     |                            |     |     |       | 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 |     |
+|     | Which can be described as  |     |     | 𝑷𝑻+𝟏  |              |     |
+𝒏+𝟏,𝟏,𝒕𝟐,𝑵
+
+Probability of more than one person comes at T+1:
+|     |     |     |     | 𝟎.𝟏·𝒂 | ·𝑷𝑻          |     |
+| --- | --- | --- | --- | ----- | ------------ | --- |
+|     |     |     |     |       | 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 |     |
+Let’s take a further consideration in the situation of more than one person
+comes. If only two person comes, similarly like how we get the probability of
+only one person comes, multiply the probability of more than one person comes
+at T+1 by a 0.1 would lead us to the result. Now let’s go a step further, the
+probability of i people come will be
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Page 7 of 24 Team #3956
+Queueing in a Bank
+𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵
+Which can be described as 𝑷𝑻+𝟏
+𝒏+𝒊,𝟏,𝒕𝟐−𝟏,𝑵+𝒊
+But we should notice that N+i has a upper bound of 150. When N+i = 150, the state
+transition from 𝑷𝑻 will be different: Since when N+i = 150, no one will come the
+𝒏,𝒕𝟏,𝒕𝟐,𝑵
+next minute, so the situation of N+i+1 will not exist. In this cases, 0.9 should not be
+multiplied.
+So we got the following equations:
+When 𝑛 ≠ 0 and 𝑡2 ≠ 1, state 𝑷𝑻 can transit to the following states:
+𝒏,𝒕𝟏,𝒕𝟐,𝑵
+𝑷𝑻+𝟏 += (1−𝒂 )𝑷𝑻
+𝒏,𝒕𝟏+𝟏,𝒕𝟐−𝟏,𝑵 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵
+{𝑷𝑻+𝟏 += 𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻 M
+𝒏+𝒊,𝟏,𝒕𝟐−𝟏,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+𝑷𝑻+𝟏 += 𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏+𝒊,𝟏,𝒕𝟐−𝟏,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝒕𝟐,𝑵 𝑵+𝒊=𝟏𝟓𝟎
+C
+ 𝒕𝟐 = 𝟏:
+In these cases, when T+1, the present head of the queuMe has left and the service
+provided to a new customer starts. There are four cases: This customer needs a service of
+1,2,3,4 minutes. Similarly to how we analyzed such t2≠1 and n ≠ 0 cases, following
+i
+states can be transited to: H
+𝑷𝑻+𝟏 += 𝟎.𝟐𝟓·(1−𝒂 )𝑷𝑻
+𝒏−𝟏,𝒕𝟏+𝟏,𝟏,𝑵 ：𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵
+𝑷𝑻+𝟏 += 𝟎.𝟐𝟓·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟏,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+𝑷𝑻+𝟏 += 𝟎.𝟐𝟓·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟏,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊=𝟏𝟓𝟎
+号
+𝑷𝑻+𝟏 += 𝟎.𝟐·(1−𝒂 )𝑷𝑻
+𝒏−𝟏,𝒕𝟏+𝟐,𝟏,𝑵 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵
+𝑷𝑻+𝟏 += 𝟎.𝟐·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟐,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+众
+𝑷𝑻+𝟏 += 𝟎.𝟐·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟐,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊=𝟏𝟓𝟎
+𝑷
+𝒏
+𝑻+
+−
+𝟏
+𝟏,𝒕𝟏+𝟏,𝟑,𝑵
++= 𝟎.𝟒·(1−𝒂
+𝒕𝟏
+)𝑷
+𝒏
+𝑻
+,𝒕𝟏,𝟏,𝑵
+𝑷𝑻+𝟏 公+= 𝟎.𝟒·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟑,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+𝑷𝑻+𝟏 += 𝟎.𝟒·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟑,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊=𝟏𝟓𝟎
+信𝑷𝑻+𝟏 += 𝟎.𝟏𝟓·(1−𝒂 )𝑷𝑻
+𝒏−𝟏,𝒕𝟏+𝟏,𝟒,𝑵 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵
+𝑷𝑻+𝟏 += 𝟎.𝟏𝟓·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟒,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+微{𝑷𝑻+𝟏 += 𝟎.𝟏𝟓·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒏−𝟏+𝒊,𝟏,𝟒,𝑵+𝒊 𝒕𝟏 𝒏,𝒕𝟏,𝟏,𝑵 𝑵+𝒊=𝟏𝟓𝟎
+The Recursion formula in most cases: 𝐧 = 𝟎 cases
+
+𝑷𝑻+𝟏 += (1−𝒂 )𝑷𝑻
+𝟎,𝒕𝟏+𝟏,𝟏,𝑵 𝒕𝟏 𝟎,𝒕𝟏,𝟏,𝑵
+𝑷𝑻+𝟏 += 𝟎.𝟐𝟓·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒊,𝟏,𝟏,𝑵+𝒊 𝒕𝟏 𝟎,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+𝑷𝑻+𝟏 += 𝟎.𝟐·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒊,𝟏,𝟐,𝑵+𝒊 𝒕𝟏 𝟎,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+𝑷𝑻+𝟏 += 𝟎.𝟒·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒊,𝟏,𝟑,𝑵+𝒊 𝒕𝟏 𝟎,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+{𝑷𝑻+𝟏 += 𝟎.𝟏𝟓·𝟎.𝟗·𝒂 ·𝟎.𝟏𝒊−𝟏 ·𝑷𝑻
+𝒊,𝟏,𝟒,𝑵+𝒊 𝒕𝟏 𝟎,𝒕𝟏,𝟏,𝑵 𝑵+𝒊<𝟏𝟓𝟎
+The Initial Value
+
+𝑷𝟎 = 𝟏
+𝟎,𝟏,𝟏,𝟎
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 8 of 24 Team #3956
+Queueing in a Bank
+Data Process
+
+With the recursion formulas, we could figure out all the states 𝑷𝑻 . With these
+𝒏,𝒕𝟏,𝒕𝟐,𝑵
+data, we can figure out the following data:
+𝑻 =754
+𝒎𝒂𝒙
+∑
+𝑻𝒎𝒂𝒙∑ 𝟏𝟓𝟎
+[𝑷
+𝒋
+×(𝒊−𝟏)]
+𝒋=𝟎 𝒊=𝟏 𝒊,𝒕𝟏,𝒕𝟐,𝑵
+The average waiting time:
+𝟏𝟓𝟎
+𝑻 𝒋
+The average total covered length of time:𝑻 = ∑ 𝒎𝒂𝒙𝑷 M× 𝒋
+𝒂𝒗𝒆𝒓𝒂𝒈𝒆 𝒋=𝟎 𝟎,𝟎,𝟏,𝟏𝟓𝟎
+∑
+𝑻𝒎𝒂𝒙∑ 𝟏𝟓𝟎
+(𝑷
+𝒋
+×𝒊)
+𝒋=𝟏 𝒊=𝟏 𝒊,𝒕𝟏,𝒕𝟐,𝑵C
+The average length of waiting queue:
+𝑻
+𝒂𝒗𝒆𝒓𝒂𝒈𝒆
+M
+Result
+i
+H
+We used computer to calculate and got the following data:
+：
+ The average length of waiting queue: 2.2936 persons.
+ The average waiting time: 4.74 minutes
+号
+The current model doesn’t satisfy the requirement of the manager in that the average waiting
+time is far more than 2 minutes.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 9 of 24 Team #3956
+Queueing in a Bank
+Basic Model B: A Simulation Model
+Introduction
+Monte Carlo Method4 refers to those methods that repeat simulations to generate the
+average value, in this way to solve the problem, which is a good way to solve our problem. In
+model B, we built up our simulation model and got the data we need.
+Algorithm Description
+Terminology
+
+M
+Terminology Description
+C
+Queue In computer science, a queue is a particular kind of abstract data
+type or collection in which the entities in the collection are kept in
+order and the principal (or only) operMations on the collection are the
+addition of entities to the rear terminal position, known as enqueue,
+and removal of entities from the front terminal position, known as
+i
+dequeue. This makes the queue a First-In-First-Out (FIFO) data
+H
+structure5.
+Head The first element： in current queue, which is the Premier-came
+of all the elements in current queue.
+Tail The last element in current queue, which is the newest-came of
+号
+all the elements in current queue.
+Table 9
+众
+Graphic expression of a queue
+
+公
+信
+微
+Figure 2
+4 Monte Carlo methods (or Monte Carlo experiments) are a broad class of computational algorithms that rely on repeated
+random sampling to obtain numerical results; i.e., by running simulations many times over in order to calculate those same
+probabilities heuristically just like actually playing and recording your results in a real casino situation: hence the name. They are
+often used in physical and mathematical problems and are most suited to be applied when it is impossible to obtain a closed-form
+expression or infeasible to apply a deterministic algorithm. Monte Carlo methods are mainly used in three distinct problems:
+optimization, numerical integration and generation of samples from a probability distribution. Monte Carlo methods are especially
+useful for simulating systems with many coupled degrees of freedom, such as fluids, disordered materials, strongly coupled solids,
+and cellular structures (see cellular Potts model). They are used to model phenomena with significant uncertainty in inputs, such as
+the calculation of risk in business. They are widely used in mathematics, for example to evaluate multidimensional definite
+integrals with complicated boundary conditions. When Monte Carlo simulations have been applied in space exploration and oil
+exploration, their predictions of failures, cost overruns and schedule overruns are routinely better than human intuition or
+alternative "soft" methods. —From Wikipedia
+5 In a FIFO data structure, the first element added to the queue will be the first one to be removed. This is equivalent to the
+requirement that once a new element is added, all elements that were added before have to be removed before the new element can
+be removed. Often a peek or front operation is also entered, returning the value of the front element without dequeuing it. From Wikipedia
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 10 of 24 Team #3956
+Queueing in a Bank
+Variables
+
+Variable Description
+𝜯 The current time, in the unit of minute
+𝒊 We use number i to express the ith customer, 𝟏 ≤ 𝒊 ≤ 𝟏𝟓𝟎
+𝒉𝒆𝒂𝒅 The number of the head element in current queue
+𝒕𝒂𝒊𝒍 The number of the tail element in current queue
+𝒂𝒓𝒓𝒊𝒗𝒆 The time when customer i arrived
+𝒊
+𝒍𝒆𝒂𝒗𝒆 The time when customer i left
+𝒊
+𝒔𝒆𝒓𝒗𝒆 The left required length of time to serve customer i
+𝒊
+M
+𝒍 The length of the queue at 𝜯
+𝑻
+Table 10
+We put forward an algorithm, in this way we can stimulate the wChole process and get
+the expected data.
+M
+Algorithm Description
+
+i
+1. Judge if the 150 people have all arrived and the queue is empty?
+H
+If Yes→ Turn to 11
+If .No→ Turn to 2 ：
+2. Τ= Τ+1
+3. Judge if a new customer has arrived at this moment?
+号
+If Yes→ Turn to 4
+If .No→ Turn to 5
+4. Add the new customer 𝒕𝒂𝒊𝒍众+𝟏 to the end of the queue and record the arrival time of him,
+which is 𝒂𝒓𝒓𝒊𝒗𝒆 . The required service time 𝒔𝒆𝒓𝒗𝒆 is generated by the program according
+𝒊 𝒕𝒂𝒊𝒍+𝟏
+to the given probability
+5. Judge if the curren公t queue is empty?
+If Yes→ Turn to 9
+If .No→ Turn to 6
+信
+6. Reduce the left required service time of the head element in he queue by 1, that is 𝒔𝒆𝒓𝒗𝒆 =
+𝒉𝒆𝒂𝒅
+𝒔𝒆𝒓𝒗𝒆 −𝟏
+𝒉𝒆𝒂𝒅
+7. Judge if the service towards the head customer in the queue has ended? That is, is 𝒔𝒆𝒓𝒗𝒆 =
+𝒉𝒆𝒂𝒅
+𝟎 ?微
+If Yes→ Turn to 8
+If .No→ Turn to 9
+8. The head customer leaves, that is dequeue 𝒉𝒆𝒂𝒅. Record the leaving time of 𝒉𝒆𝒂𝒅, that is
+𝒍𝒆𝒂𝒗𝒆 = 𝑻.
+𝒉𝒆𝒂𝒅
+𝒉𝒆𝒂𝒅= 𝒉𝒆𝒂𝒅+𝟏
+9. Record current length of queue 𝒍 = 𝒕𝒂𝒊𝒍−𝒉𝒆𝒂𝒅+𝟏
+𝑻
+10. Turn to 1
+11. End
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 11 of 24 Team #3956
+Queueing in a Bank
+Data processing
+
+The algorithm provides the arrival time and the leaving time of every customer. With
+these data, we can figure out the following data:
+𝑻
+∑ 𝒍
+𝒕=𝟏 𝒕
+The average length of the waiting queue =
+𝑻
+𝟏𝟓𝟎
+∑ (𝒍𝒆𝒂𝒗𝒆 −𝒂𝒓𝒓𝒊𝒗𝒆 )
+𝒊=𝟏 𝒊 𝒊
+The average waiting time =
+𝟏𝟓𝟎
+Program M
+We used Matlab6 to realize our algorithm. The program is shown below(Four matlab
+C
+documents are included: serve.m,cust.m, queue.m, queue_sum.m):
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 3-The Program
+6 MATLAB (matrix laboratory) is a numerical computing environment and fourth-generation programming language.
+Developed by MathWorks, MATLAB allows matrix manipulations, plotting of functions and data, implementation of algorithms,
+creation of user interfaces, and interfacing with programs written in other languages, including C, C++, Java, and Fortran.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 12 of 24 Team #3956
+Queueing in a Bank
+Two examples of the statistics we simulate
+One which simulates small results
+
+𝒍 /
+𝑻 person
+M
+C
+M
+i
+H
+𝑻/
+min
+Figure 4
+：
+The average length of waiting queue: 1.99 persons
+The average waiting time:3.84 minutes.
+号
+One which simulates large results
+
+众
+𝒍 /
+𝑻 person
+公
+信
+微
+𝑻/
+min
+Figure 5
+The average length of waiting queue: 3.84 persons
+The average waiting time: 8.52 minutes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 13 of 24 Team #3956
+Queueing in a Bank
+By generating randomized data and following the algorithm we put forward, we repeat the
+process for 10000 times and the result we got is shown below:
+Result
+ The average length of waiting queue: 2.3778 persons.
+ The average waiting time: 4.91 minutes
+The current model doesn’t satisfy the requirement of the manager in that the average waiting
+time is far more than 2 minutes.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 14 of 24 Team #3956
+Queueing in a Bank
+Evaluation and Comparison Between Model A and Model B
+As we can see, the results we got from this two models coincided with each other.
+Our Model A is one based on a recursion formula model while Model B is one based on
+computer simulation. The Model A is a very rigorous mathematical model which can provide
+accurate answers, which is its advantage. But since this model is complex and has poor
+portability, we almost have to change all recursions when trying to add some small changes,
+which are its disadvantages and adds heavy work to us. What’s more, the time complexity of it is
+very high; therefore we only applied it in analyzing the current situation.
+Meanwhile, Model B is one based on computer simulation. It’s an easy-understanding one
+of high portability, showing what it wants to do and how it does clearly, which is its advantages
+and provides great convenience to us. However, it’s not a rigorous mathematicaMl model and
+needs huge amounts of simulation to improve its accuracy, which is its disadvantage.
+Since Model B is much more portable, we decided to use Model B inC the following part of
+this paper.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 15 of 24 Team #3956
+Queueing in a Bank
+Minimal Changes
+Introduction
+We put forward 4 solutions to enhance the service efficiency.
+Solutions
+ A suggestion: A non-technical solution but must be useful
+M
+Offering services like drinks, newspapers can be a very useful and satisfactory according
+to several psychological researches on queuing psychology. In this way, the current situation of
+an average waiting time for 4.9 minutes can be more satisfactory according to the customers.
+C
+ Solution A: More service windows
+M
+We used computer to simulate the situation of 2 service windows. The algorithm of it is
+based on the one in Model B, the difference between them is that the condition of dequeuing is
+changed. i
+H
+ Program
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 16 of 24 Team #3956
+Queueing in a Bank
+ Result
+With two service windows working at the same time, we got the following data:
+Figure 8
+The average length of the waiting queue: 0.5083 people.
+The average waiting time: 0.1136 minutes.
+The average covered length of time: 402.618 minutes.
+As is shown above, one more service window can perfectly meet the manger’s
+requirement. Meanwhile, we should consider the cost of adding a service window,
+including the salary of the extra clerk, device expenses, etc. If the manager can afford
+these changes, it would be an excellent solution.
+M
+ Several Simulated Examples
+C
+Q Length Q Length
+M
+i
+H
+：
+号
+众 T T
+Figure 10
+Figure 9
+公
+ About the Result
+The expected arrival time is 2.65 minutes while the expected service time is 2.45
+minut信es according to the original given data. Since they were very close to each other,
+it’s very easy for the bank to fall into the situation of “Accumulating customers”. In this
+way, the waiting time increased greatly.
+微However, when two service windows are available, such “Accumulating customers”
+situations reduces sharply, that is why the result of two-service-window differs from
+only-one-service-window greatly.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 17 of 24 Team #3956
+Queueing in a Bank
+ Solution B: Offering online service
+Offering online services can finish some work beforehand such as filling up forms, in this
+way the amount of everyday customers is reduced so the time between arrivals is increased
+overall.
+ The Original Data
+Time between arrival(min.) 0 1 2 3 4 5
+Probability/Value 0.10 0.15 0.10 0.35 0.25 0.05
+Table 13
+With the establishment of online bank, we assume that the customer fMlow is reduced to (1-
+m) of the original one, since the customer flow should be distributed to those arrivals between
+0,1,2,3,4,5 minutes according to their original proportion, we assume that this reduced
+probability would be add to next minute’s probability, that is: C
+M
+ The New Data
+Time between i
+Probability H
+arrival(min)
+0 𝟎.𝟏(𝟏−𝒎) ：
+1 𝟎.𝟏𝟓(𝟏−𝒎)+𝟎.𝟏𝒎
+2 𝟎.𝟏(𝟏−𝒎)+𝟎.𝟏𝟓𝐦
+号
+3 𝟎.𝟑𝟓(𝟏−𝒎)+𝟎.𝟏𝐦
+4 𝟎.𝟐𝟓(𝟏−𝒎)+𝟎.𝟑𝟓𝐦
+众
+5 𝟎.𝟎𝟓(𝟏−𝒎)+𝟎.𝟐𝟓𝒎
+6 𝟎.𝟎𝟓𝒎
+公
+Table 14
+ The Result
+信
+We enumerated the smallest 𝒎 which meets the manager’s requirement of an average
+queue length under 2 persons and an average waiting time under 2 minutes. The result is shown
+below:
+微
+m = 0.34
+The average length of waiting queue: 1.1167 people.
+The average waiting time: 1.9015 minutes
+The average covered total length of time: 300.8 minutes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 18 of 24 Team #3956
+Queueing in a Bank
+ Solution C: Improving the Service Efficiency by investing money
+In this solution, we intend to change the service efficiency by investing money, that is to
+say, change the service time probability when M thousand dollars are invested.
+ The Original Data
+Service Time
+
+Service time(min.) 1 2 3 4
+Probability/Value 0.25 0.20 0.40 0.15
+Table 15
+ Qualitative Analysis
+M
+ When M is small
+When M is small, with the growth of invested money,C the probability of
+4-minute-service reduces while those 1(2,3)-minute-service increases. What’s more,
+the 3-minute enjoys a faster growth than that of 1 orM 2.
+ When M is large
+i
+When M is large, with the growth of inHvested money, even the probability of
+3-minute-service also reduces while those 1(2)-minute-service increases. What’s
+：
+more, the 3-minute-service enjoys a faster reduction than that of 4-minute-service;
+The 1-minute-service enjoys a faster growth than that of 2-minute-service.
+号
+ Quantitative Analysis
+Now we’d like to express this process quantitatively. We assume that M ranges from 0 to
+众
+10. We put forward the following equations:
+0.25+0.002 𝑀, 0 ≤ 𝑀 ≤ 1
+𝑃 = {
+公1 0.231+0.021𝑀, 1 ≤ 𝑀 ≤ 10
+0.2+0.003 𝑀, 0 ≤ 𝑀 ≤ 1
+𝑃 = {
+2 0.189+0.014𝑀, 1 ≤ 𝑀 ≤ 10
+信0.4+0.01 𝑀, 0 ≤ 𝑀 ≤ 1
+𝑃 = {
+3 0.43−0.02𝑀, 1 ≤ 𝑀 ≤ 10
+𝑃 = 0.15−0.015𝑀 0 ≤ 𝑀 ≤ 10
+4
+微
+Figure 11
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 19 of 24 Team #3956
+Queueing in a Bank
+ Result
+We use computer to simulate and found that when M=5， it meets the manager’s
+requirement of an average queue length under 2 persons and an average waiting time under
+2 minutes. The result is shown below:
+Service Time
+
+Service time(min.) 1 2 3 4
+Probability/Value 0.336 0.259 0.33 0.075
+Table 16
+The average length of waiting queue: 1.1552 people.
+The average waiting time: 1.9174 minutes
+The average covered total length of time: 404.1235 minutes. M
+ Tips
+C
+This result is not very accurate. When the probability of service is around what is
+given above, it would be enough to meet the manager’s requirement.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 20 of 24 Team #3956
+Queueing in a Bank
+Sensitivity Analysis
+——Sensitivity Analysis of the number of customers
+About the length of queue
+
+Amount of customers(person) 50 100 150 200 250 300
+Average length of queue(person) 1.78 2.16 2.37 2.51 2.59 2.65
+Table 11
+M
+C
+M
+i
+H
+：
+号
+Figure 6
+众
+About the waiting time
+
+公
+Amount of customers(person) 50 100 150 200 250 300
+Average waiting time(min) 3.45 4.38 4.91 5.25 5.46 5.59
+信
+Table 12
+微
+Figure 7
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 21 of 24 Team #3956
+Queueing in a Bank
+Conclusion
+
+We can infer from the two graphs that when n is small, the impact on the average length
+of queue and the average waiting time is obvious. When n approaches infinite, the impact
+gradually decreases. Since the number we considered 150 is a small number, it do has
+some impact on the result.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 22 of 24 Team #3956
+Queueing in a Bank
+Strengths and Weakness
+Strengths
+
+ Model A: High Mathematical Rigor
+In Model A, we gave the complete process of how we infer the recursion formulas
+and provided a very detailed classification of all the states. Model A enjoys a high
+mathematical rigor, which is important in mathematical modeling.
+ Model B: Strong Portability and Clearness
+In Model B, we gave a detailed description of our algorithm used to stimulate the
+process. Since Model B is a Monte Carlo Method, generating randomized data and
+figuring out our objective data for huge amounts of time can improveM the accuracy of
+it greatly. Model B is a highly portable one which played an extremely important role
+in part Minimal Changes in our paper. Its easy- understanding and easy-maintaining
+brought great convenience to us. C
+ Model A and B:Consistence
+M
+The result we got from the mathematical model and the simulation model
+coincided with each other, this provided solid evidence that our models are correct.
+i
+ Model A and B: Universality H
+Since our models are universal ones based on general data, any given probability
+distribution of arrival time and service t：ime can figure out a reasonable answer by
+using our models.
+ Solutions: Diversity
+号
+In part Minimal Changes in our paper, we put forward several technical and
+non-technical solutions which look into the problem from different angles. All of them
+improved the current situation to some extent. We gave detailed analyses on all of
+众
+them, in this way, our solutions are clear and rigorous.
+公
+Weakness
+
+信
+ Model A: Low Portability and High Time Complexity
+Since Model A exhausted all the possible states, the high time complexity of it
+and the complicated situations kept us from applying it to variable situations. Thus,
+微
+such a rigorous model is wasted, which is a pity.
+ Number of Service Windows
+In fact, at the very start, we considered the amounts of window as a very
+important factor. However, since making number of service windows variable would
+make it almost impossible for us to build the model, we only considered the situation
+of one window in building the calculating model, which is our weakness.
+ Discrete Probability
+Since the probability given in the problem was discrete, our model is based on
+discrete probability, which is not very suitable for those continuous probability
+queueing problems.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 23 of 24 Team #3956
+Queueing in a Bank
+Reference
+1. Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein.
+Introduction to Algorithms. MIT press. 1990 (first edition).
+2. Michael Mitzenmacher and Eli Upfal. Probability and Computing. Cambridge University
+Press. 2005-01-31.
+3. Giuliano Casale, Ningfang Mi, and Evgenia Smirni. Bound Analysis of Closed Queueing
+Networks with Nonrenewal Service. SIGMETRICS Perform. Eval. Rev. June 2008.
+4. YIN Chao, PANG Ji-ming, QI Jun-hong. The analysis and design of bank queuing business
+simulation system based on queue structure. Journal of Shandong University of Technology
+(Sci & Tech). Nov.2006. M
+5. Qiang Guo, Jianguo Liu, and Xingwen Chen. Optimization model And Simulation of The
+Queuing System With Quickpass. The Sixth World Congress on Intelligent Control and
+C
+Automation. October 2006.
+6. PENG Ping, SUN Shui-ling. Compute simulation of bank cMlient service based on priority
+queue. Computer Engineering and Design. Nov. 2007.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Page 24 of 24 Team #3956
+Queueing in a Bank
+The Letter
+Dear bank management
+Hello. We’re a group of students who loves mathematical models. We knew about the
+arrival and service times of your bank as well as your requirement that the average waiting
+time should be less than 2 minutes and the average length of queue should be less than 2
+persons. As a result, we build a model about your bank. Unfortunately, we find that the
+average waiting time is about 4.9 minutes and the average length of queue if about 2.4 people.
+In order to meet your requirement, we provide four solutions.
+1. Since your ultimate model is to improve customer satisfaction, you may provide the
+customers with different ways to entertain so that they may feel not so depressed to wait for
+4.9 minutes.
+M
+2. If your bank is big enough, you may establish a new service window. One extra
+window is enough, thus reducing the average waiting time and the average length of queue
+dramatically, to about 0.11 minutes and 0.51 people.
+C
+3. You may also establish online bank service if possible so that some customers will
+choose the online service, thus lowering the everyday customer flow and also increase time
+M
+between arrivals. Judging from our models, you have to make about 35% of your customers
+choose online service. That is about 51 customers.
+4. The bank clerk may be trained to improve the service efficiency. It can meet with your
+i
+requirement if you’re able to finish 50% of the serviceH which used to take up 4 minutes within
+3 minutes, 36% of the service which used to take up 3 minutes within 2 minutes and 15% of
+the 2-minute service within 1 minute. Of course, other similar changes will also make sense.
+：
+Of course, not all solutions are fit for your bank. You can choose one solution, or you
+may use the solutions together according to your bank’s situation. It’s best only when it fits
+you.
+号
+Yours sincerely,
+A group of HiMCM lovers.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

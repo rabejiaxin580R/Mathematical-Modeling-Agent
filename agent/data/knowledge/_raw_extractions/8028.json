@@ -1,0 +1,104 @@
+{
+  "paper_id": "8028",
+  "meta": {
+    "paper_id": "8028",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2017,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2017\\A\\8028.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "math.matrix",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用3D坐标矩阵表示所有无人机的位置，并通过矩阵运算实现平移、旋转等动作。",
+      "formulas": [
+        {
+          "latex_code": "\\mathbf{P} = \\begin{bmatrix} x_1 & y_1 & z_1 \\\\ x_2 & y_2 & z_2 \\\\ \\vdots & \\vdots & \\vdots \\\\ x_n & y_n & z_n \\end{bmatrix}",
+          "variables": {
+            "\\mathbf{P}": "所有无人机的位置矩阵",
+            "x_i, y_i, z_i": "第i架无人机的三维坐标"
+          }
+        }
+      ],
+      "source_excerpt": "We used matrices to implemented the representation of positions of drones in 3D space, and implemented the translation of image as a whole, and rotation of image as a whole about arbitrary axis in a few matrix operations."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "极坐标角度匹配法",
+      "stage": "solve",
+      "how_used": "将无人机位置转换为极坐标，按角度升序匹配初始图像和目标图像中的无人机，以减少飞行距离。",
+      "formulas": [
+        {
+          "latex_code": "\\theta_i = \\arctan\\left(\\frac{y_i}{x_i}\\right), \\quad r_i = \\sqrt{x_i^2 + y_i^2}",
+          "variables": {
+            "\\theta_i": "第i架无人机的极角",
+            "r_i": "第i架无人机的极径",
+            "x_i, y_i": "第i架无人机的平面坐标"
+          }
+        }
+      ],
+      "source_excerpt": "It came to our mind that polar form might be helpful, because it was easier to find proper matches for all the drone by considering the angles and distance from the center than using x-y coordinates. ... to match the angles of drones in the polar form in ascending order."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "角度分组匹配法",
+      "stage": "solve",
+      "how_used": "在极坐标角度匹配基础上，将无人机按角度分组，组内按距离匹配，进一步优化飞行距离。",
+      "formulas": [
+        {
+          "latex_code": "\\text{Group } k: \\{ i \\mid \\theta_i \\in [\\frac{2\\pi(k-1)}{m}, \\frac{2\\pi k}{m}) \\}",
+          "variables": {
+            "k": "组号",
+            "m": "分组数",
+            "\\theta_i": "第i架无人机的极角"
+          }
+        }
+      ],
+      "source_excerpt": "We split drone onto a few groups based on the sorted angles, and within a group, drones were actually match to each other based on the distance from the center."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "多层避碰法",
+      "stage": "solve",
+      "how_used": "将无人机分配到不同高度层飞行，减少碰撞风险。",
+      "formulas": [],
+      "source_excerpt": "We provided two approaches, multi-layer approach, in which drone were flying in multiple layers; and a time delay approach, in which one of the colliding drones may wait until the other drone pass by."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "时间延迟避碰法",
+      "stage": "solve",
+      "how_used": "当两架无人机可能碰撞时，让其中一架延迟飞行，等待另一架通过。",
+      "formulas": [],
+      "source_excerpt": "a time delay approach, in which one of the colliding drones may wait until the other drone pass by."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "使用图表展示不同分组大小对总飞行距离的影响，以及碰撞次数等结果。",
+      "formulas": [],
+      "source_excerpt": "We made some experiments on the group size, and found that when the group size was selected properly, the overall performance could be greatly improved."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过改变分组大小参数，测试对总飞行距离的影响，进行灵敏度分析。",
+      "formulas": [],
+      "source_excerpt": "Testing the Influence of the Group Size in the Image Transforming method"
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：Introduction, Methods, Results, Discussion，包含摘要、引言、模型、验证、结论等部分。",
+      "formulas": [],
+      "source_excerpt": "1 Introduction ... 2 Problem Restatement ... 3 Asumptions ... 4 Modeling the Motion ... 5 Modeling the Three Images ... 6 Model Verification ... 7 Safety consideration ... 8 Advantages and Disadvantages ... 9 Memo to the Mayor ... 10 appendix"
+    }
+  ]
+}

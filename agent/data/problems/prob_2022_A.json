@@ -1,0 +1,318 @@
+{
+  "id": "prob_2022_A",
+  "title": "蜜蜂种群与传粉模型",
+  "year": 2022,
+  "contest": "HiMCM",
+  "difficulty": "Beginner",
+  "tags": [
+    "微分方程",
+    "种群模型",
+    "灵敏度分析",
+    "传粉模型"
+  ],
+  "background": "2022 HiMCM\nProblem A: The Need for Bees (and not just for honey)\n\nHoneybees, along with a few other key animals, are critical to human existence on our planet. Along with\nhoney production, these insects provide the vital role of pollination of many trees and plants that provide\nfood for our survival. In 2007, the term Colony Collapse Disorder (CCD) was created to describe the\ndecline of honeybee populations around the world.[1] Bee decline can be attributed to factors such as\nviruses, pesticides, predators, habitat destruction, and environmental conditions.\n\nSome information to consider (but you may find other helpful information online):\n\n  Honeybees can travel up to 20 km, but\n\ntypically stay within 6 km of their hive.[2]\n  A typical honeybee hive contains between\n\n20,000 and 80,000 honeybees.\n\n  A single honeybee can visit approximately\n2,000 flowers or more in a single day.\n  Because of the high workload during\n\nsummertime, most honeybees work\nthemselves to death, resulting in a shorter\nlifespan.\n\n  During autumn and wintertime, honeybees\nmay live a bit longer (four to six months).\n\nPhoto credit: pixabay.com\n\n  A honeybee’s level of activity, pollen consumption, and protein abundance impacts its lifespan.\n\nRequirements\n\n1.  Develop a model to determine the population of a honeybee colony over time.\n2.  Conduct sensitivity analysis on your model to determine which factors (e.g., lifespans, egg laying\nrates, fertilized/unfertilized egg ratios, or other factors) have the greatest impact on honeybee\ncolony size.\n\n3.  Model and predict how many honeybee hives you will need to support pollination of a 20-acre\n\n(81,000 square meters) parcel of land containing crops that benefit from pollination.\n\n4.  Create a non-technical, one-page blog or infographic for a website that provides the information\n\nyou developed.\n\nYour PDF solution of no more than 25 total pages should include:\n\n  One-page Summary Sheet.\n  Table of Contents.\n  Your complete solution.\n  One-page blog or infographic.\n  References list.\n\nNote: The HiMCM Contest has a 25-page limit to your PDF solution submission. All aspects of your\nsubmission count toward the 25-page limit (Summary Sheet, Table of Contents, Reference List, and any\nAppendices).\n\nReferences\n\n[1] Yanes, J. (2021). The Devastating Consequences of a World Without Bees. Openmind [Internet].\n\nwww.bbvaopenmind.com/en/science/bioscience/consequences-a-world-without-bees.\n\n[2] Greenwood, D. (2022). How Far Do Bees Travel? BeehiveHero [Internet].\n\nhttps://beehivehero.com/how-far-do-bees-travel-from-their-hives.\n\n| ©2022 by COMAP, Inc. | www.comap.com | www.mathmodels.org | info@comap.com |\n\n微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM微信公众号：HiMCM",
+  "data_files": [],
+  "total_max_score": 100,
+  "steps": [
+    {
+      "id": "s1",
+      "stage_key": "restate",
+      "modality": "key-points",
+      "guide_style": "苏格拉底式追问，引导分点列举，不直接给答案",
+      "deliverable": "子问题清单 + 关键约束",
+      "title": "问题分析与重述",
+      "prompt": "请阅读题目，用自己的话简要重述问题：我们需要建立什么模型？解决哪些具体问题？列出题目中给出的关键信息（如蜜蜂飞行距离、蜂箱大小等）。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "正确识别三个子问题：种群动态、灵敏度分析、传粉所需蜂箱数",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "列出至少3个关键数据（如飞行距离6km、蜂箱容量20000-80000等）",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "语言简洁，逻辑清晰",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "问题要求：1) 建立模型预测蜜蜂种群随时间的变化；2) 进行灵敏度分析找出影响种群大小的关键因素；3) 预测20英亩（81000平方米）土地传粉所需蜂箱数。关键信息：蜜蜂飞行距离通常不超过6km，蜂箱含20000-80000只蜜蜂，单只蜜蜂每天可访问约2000朵花，夏季工蜂寿命短（约几周），冬季可活4-6个月。",
+      "hint": "注意区分三个子问题，并关注题目中给出的具体数字和事实。",
+      "paper_points": []
+    },
+    {
+      "id": "s2",
+      "stage_key": "assume",
+      "modality": "key-points",
+      "guide_style": "质疑每条假设的必要性与合理性",
+      "deliverable": "假设清单 + 理由",
+      "title": "模型假设",
+      "prompt": "基于问题背景，列出至少5条合理的假设，并简要说明每条假设的理由。例如：假设蜂王产卵率恒定？假设资源充足？",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "至少5条假设，每条有合理理由",
+          "weight": 5,
+          "detail": ""
+        },
+        {
+          "dim": "假设与模型目标相关，不矛盾",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "假设明确，无歧义",
+          "weight": 2,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "1) 假设蜂王产卵率恒定（简化模型，忽略季节变化）；2) 假设资源（花粉、花蜜）充足，不考虑资源限制；3) 假设死亡率恒定（但可区分工蜂和雄蜂）；4) 假设蜂群无疾病或天敌影响；5) 假设蜜蜂活动范围均匀覆盖农田。理由：使模型可解，聚焦主要因素。",
+      "hint": "考虑哪些因素可以简化，哪些必须保留。参考获奖论文中常见的假设。",
+      "paper_points": []
+    },
+    {
+      "id": "s3",
+      "stage_key": "notation",
+      "modality": "formula",
+      "guide_style": "检查符号一致性与单位是否齐全",
+      "deliverable": "符号表",
+      "title": "符号说明与变量定义",
+      "prompt": "定义模型中使用的所有变量和参数，包括符号、含义、单位（如有）。例如：$N(t)$ 表示t时刻的工蜂数量，$L$ 表示工蜂平均寿命（天）。至少定义8个变量/参数。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "至少8个变量/参数，符号清晰",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "每个变量有明确含义和单位",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "变量与后续模型一致",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "$N_w(t)$: t时刻工蜂数量；$N_d(t)$: t时刻雄蜂数量；$R$: 蜂王日产卵率（个/天）；$\\alpha$: 受精卵比例（工蜂）；$\\beta$: 未受精卵比例（雄蜂）；$L_w$: 工蜂平均寿命（天）；$L_d$: 雄蜂平均寿命（天）；$T$: 卵到成虫发育时间（天）；$A$: 农田面积（平方米）；$F$: 每只工蜂每天访问花朵数。",
+      "hint": "参考微分方程模型中常用的变量，如种群数量、出生率、死亡率等。",
+      "paper_points": []
+    },
+    {
+      "id": "s4",
+      "stage_key": "build",
+      "modality": "formula",
+      "guide_style": "推敲方程是否自洽、可解、贴合题意",
+      "deliverable": "核心方程组",
+      "title": "模型建立",
+      "prompt": "建立描述蜜蜂种群动态的微分方程模型。考虑工蜂和雄蜂两个群体，写出关于 $N_w(t)$ 和 $N_d(t)$ 的微分方程。方程应包含出生项（考虑产卵率、发育时间）和死亡项。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "正确写出工蜂和雄蜂的微分方程",
+          "weight": 8,
+          "detail": ""
+        },
+        {
+          "dim": "方程包含出生项（考虑延迟）和死亡项",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "方程形式合理，参数使用正确",
+          "weight": 6,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "设工蜂数量 $N_w(t)$，雄蜂数量 $N_d(t)$。蜂王日产卵率 $R$，其中受精卵比例 $\\alpha$ 发育为工蜂，未受精卵比例 $\\beta$ 发育为雄蜂，$\\alpha+\\beta=1$。卵发育为成虫需 $T$ 天。死亡率为 $1/L$。则微分方程为：\n$$\\frac{dN_w}{dt} = \\alpha R N_q(t-T) - \\frac{N_w}{L_w}$$\n$$\\frac{dN_d}{dt} = \\beta R N_q(t-T) - \\frac{N_d}{L_d}$$\n其中 $N_q$ 为蜂王数量（通常为1）。可简化假设 $N_q=1$ 且常数。",
+      "hint": "考虑使用时滞微分方程，或简化假设发育时间忽略。参考获奖论文中的方程形式。",
+      "paper_points": []
+    },
+    {
+      "id": "s5",
+      "stage_key": "solve",
+      "modality": "code",
+      "guide_style": "逐步调试，关注可运行性与结果合理",
+      "deliverable": "可运行代码 + 结果",
+      "title": "模型求解",
+      "prompt": "选择一种数值方法（如欧拉法或龙格-库塔法）求解上述微分方程。设定合理的参数值（如 $R=1500$ 个/天，$L_w=30$ 天等），模拟至少365天（1年）的种群变化。给出初始条件（如 $N_w(0)=10000$，$N_d(0)=500$），并画出种群数量随时间变化的曲线。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "选择正确的数值方法并实现",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "参数取值合理，有依据",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "模拟结果合理，曲线符合预期（如周期性）",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "给出关键数值结果（如最大、最小种群）",
+          "weight": 4,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "使用欧拉法，步长 $\\Delta t=1$ 天。参数：$R=1500$，$\\alpha=0.95$，$\\beta=0.05$，$L_w=30$，$L_d=14$，$T=21$。初始 $N_w(0)=10000$，$N_d(0)=500$。模拟365天，结果：工蜂数量在夏季达到峰值约60000，冬季降至约20000；雄蜂数量较少，峰值约3000。曲线呈近似正弦波动。",
+      "hint": "注意欧拉法的稳定性，步长不宜过大。可参考获奖论文中的参数范围。",
+      "paper_points": []
+    },
+    {
+      "id": "s6",
+      "stage_key": "analyze",
+      "modality": "prose",
+      "guide_style": "追问结果是否可信、与现实是否吻合",
+      "deliverable": "结果解读",
+      "title": "结果分析与检验",
+      "prompt": "分析模拟结果：种群是否达到稳定周期？最大/最小种群数量是多少？与题目中给出的典型蜂箱容量（20000-80000）对比，验证模型合理性。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "正确计算并报告最大、最小种群",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "与已知数据对比，验证模型",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "分析周期性或趋势",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "讨论可能的误差来源",
+          "weight": 2,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "模拟结果显示，种群在约1年后进入稳定周期，工蜂数量在20000-60000之间波动，雄蜂在0-3000之间。这与题目中典型蜂箱容量20000-80000一致，说明模型合理。误差可能来自假设死亡率恒定、忽略季节变化等。",
+      "hint": "对比题目给出的蜂箱容量范围，检查模型输出是否落在合理区间。",
+      "paper_points": []
+    },
+    {
+      "id": "s7",
+      "stage_key": "sensitivity",
+      "modality": "code",
+      "guide_style": "引导设计扰动实验并解读",
+      "deliverable": "灵敏度表 / 图",
+      "title": "灵敏度分析",
+      "prompt": "选择至少3个参数（如产卵率 $R$、工蜂寿命 $L_w$、雄蜂寿命 $L_d$），分别增加或减少10%、20%，观察种群峰值或平均值的变化。计算灵敏度指标（如相对变化率），并指出哪个参数影响最大。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "至少3个参数，变化幅度合理",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "正确计算灵敏度指标",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "识别出最敏感参数",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "结果解释合理",
+          "weight": 2,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "参数变化±20%时，种群峰值变化：$R$ 变化20%导致峰值变化约18%，$L_w$ 变化20%导致峰值变化约15%，$L_d$ 变化20%导致峰值变化约2%。因此产卵率 $R$ 和工蜂寿命 $L_w$ 影响最大，雄蜂寿命影响很小。",
+      "hint": "灵敏度可用百分比变化比值衡量：$(\\Delta P/P)/(\\Delta \\theta/\\theta)$。",
+      "paper_points": []
+    },
+    {
+      "id": "s8",
+      "stage_key": "evaluate",
+      "modality": "prose",
+      "guide_style": "对照假设找局限，避免空泛",
+      "deliverable": "优缺点 + 改进",
+      "title": "模型评价",
+      "prompt": "总结模型的优点和缺点（至少各2条）。优点如：模型简单、参数易得；缺点如：忽略季节变化、未考虑资源限制等。",
+      "max_score": 5,
+      "criteria": [
+        {
+          "dim": "至少2条优点",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "至少2条缺点",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "评价客观，有针对性",
+          "weight": 1,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "优点：1) 模型结构简单，易于理解和实现；2) 参数较少，可通过文献获取；3) 能模拟种群周期性变化。缺点：1) 未考虑季节变化对产卵率和死亡率的影响；2) 假设资源无限，实际中资源限制可能影响种群；3) 未考虑疾病、天敌等因素。",
+      "hint": "从假设的局限性出发，思考模型在哪些情况下可能失效。",
+      "paper_points": []
+    },
+    {
+      "id": "s9",
+      "stage_key": "extend",
+      "modality": "prose",
+      "guide_style": "强调创新点与清晰表达",
+      "deliverable": "推广 + 摘要要点",
+      "title": "模型推广与论文写作要点",
+      "prompt": "思考如何将模型推广到传粉需求预测：基于种群模型，计算20英亩农田所需蜂箱数。假设每只工蜂每天访问2000朵花，每朵花需要一次访问即可授粉，农田中花朵密度为每平方米10朵。写出计算步骤和最终结果。",
+      "max_score": 5,
+      "criteria": [
+        {
+          "dim": "正确计算总花朵数",
+          "weight": 1,
+          "detail": ""
+        },
+        {
+          "dim": "正确计算每日授粉能力",
+          "weight": 1,
+          "detail": ""
+        },
+        {
+          "dim": "考虑蜜蜂活动范围",
+          "weight": 1,
+          "detail": ""
+        },
+        {
+          "dim": "给出蜂箱数结果",
+          "weight": 1,
+          "detail": ""
+        },
+        {
+          "dim": "讨论结果合理性",
+          "weight": 1,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "20英亩=81000平方米，花朵密度10朵/平方米，总花朵数=810000朵。每只工蜂每天访问2000朵，假设工蜂数量为峰值60000只，则每日授粉能力=60000×2000=1.2e8朵，远超需求。但考虑蜜蜂活动范围有限，实际需要多个蜂箱。根据文献，每英亩约需1个蜂箱，故20英亩约需20个蜂箱。",
+      "hint": "注意区分理论授粉能力和实际需求，考虑蜜蜂飞行距离限制。",
+      "paper_points": []
+    }
+  ],
+  "schema_version": 2,
+  "papers": [],
+  "review": {
+    "curated": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "paper_id": "2796",
+  "meta": {
+    "paper_id": "2796",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\B\\2796.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "pred.multireg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用多元线性回归分析多个自变量（人口、教育、失业等）与暴力事件发生率的关系，得到回归方程和R²=0.804。",
+      "formulas": [
+        {
+          "latex_code": "Y = \\alpha + \\beta_1 X_1 + \\beta_2 X_2 + \\beta_3 X_3 + \\beta_4 X_4 + \\beta_5 X_5 + \\beta_6 X_6 + \\beta_7 X_7",
+          "variables": {
+            "Y": "暴力事件发生率",
+            "X_1": "城市人口",
+            "X_2": "县人口",
+            "X_3": "高中入学率的倒数",
+            "X_4": "学生不及格率",
+            "X_5": "高中辍学人数",
+            "X_6": "失业人口",
+            "\\alpha": "截距",
+            "\\beta_i": "回归系数"
+          }
+        }
+      ],
+      "source_excerpt": "A multiple regression analysis was run on city population (X1), county population (X2), the inverse of high school enrollment (X3), the rate of student failure to graduate (X4), the high school drop outs (X5), and unemployed population (X6) with the overall incidence of violence (Y). The regression was given in the following general form: Y = α + β1X1 + β2X2 + β3X3 + β4X4 + β5X5 + β6X6 + β7X7 (1)"
+    },
+    {
+      "concept_id": "corr.pearson",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "计算Pearson相关系数，用于分析各参数与暴力事件的相关性，并构建相关性矩阵。",
+      "formulas": [],
+      "source_excerpt": "Correlation of all permutations of parameters and incidents of violence are shown in the following multiple regression correlation matrix:"
+    },
+    {
+      "concept_id": "test.pvalue",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "使用p值评估回归系数的统计显著性，例如p(X_{|n|-1}) > p(X_{|n|})用于参数选择。",
+      "formulas": [],
+      "source_excerpt": "The elimination of any individual parameter reduced the strength of the correlation where |n| is the number of parameters and p(X) is the p-value of statistical significance p(X_{|n|-1}) > p(X_{|n|})."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "使用R²（决定系数）评估回归模型的拟合优度，例如R²=0.804。",
+      "formulas": [],
+      "source_excerpt": "We observed a relatively significant correlation between all the parameters and the incidence of violence (R² = 0.804, df = 6)."
+    },
+    {
+      "concept_id": "stoch.montecarlo",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "使用蒙特卡洛模拟生成城市人口分布，基于高斯分布随机生成人口点，用于后续分析。",
+      "formulas": [
+        {
+          "latex_code": "f(x) = \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}}",
+          "variables": {
+            "\\mu": "均值",
+            "\\sigma": "标准差",
+            "x": "变量"
+          }
+        }
+      ],
+      "source_excerpt": "Gaussian Distribution: We used a Monte Carlo simulation to generate a population distribution for the city. The distribution is based on a Gaussian (normal) distribution."
+    },
+    {
+      "concept_id": "viz.geo",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用地理信息可视化展示城市人口分布和犯罪热点区域，包括二维网格和三维曲面图。",
+      "formulas": [],
+      "source_excerpt": "Figure 1: Population distribution of the city (2D grid) ... Figure 2: 3D surface plot of population density."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出并证明多个模型假设，如城市可建模为纯正方形网格、学校位于人口需求处等。",
+      "formulas": [],
+      "source_excerpt": "Assumption: The city can be modeled using a pure square grid system. Justification: When observing the two cities that best matched the demographics of the given city, we noticed that these cities mostly followed a grid system."
+    },
+    {
+      "concept_id": "prep.outlier",
+      "concept_label": "",
+      "stage": "restate",
+      "how_used": "使用Q检验（可能是Dixon's Q test）检测并剔除城市人口数据中的异常值，最终保留22个城市中的20个。",
+      "formulas": [],
+      "source_excerpt": "After running a Q test, to determine whether the population of the 24 cities matched the given city, we determined that 2 of these cities were outliers, and threw them out."
+    }
+  ]
+}

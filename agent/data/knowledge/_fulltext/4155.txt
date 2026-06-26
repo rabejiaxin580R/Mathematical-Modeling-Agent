@@ -1,0 +1,2323 @@
+Team #4155 page 1 of 46
+Summary
+The first quintessential problem we face is to determine the shortest time it takes to
+commute between different zones, which we solved by employing both the Dijkstra's
+Algorithm and the Floyd–Warshall Algorithm, favoring the latter in practice.
+Having reasoned that an ambulance arrangement that effectively covers the whole
+county is one that maximizes the population coverage, we applied the Tree Traversal
+programming method to Questions 1&2, and obtained solutions that succeeded in
+covering the entire region. We then analyzed the given data and answered Question 3
+by putting 1 ambulance in the location with the largest population coverage and
+calculated the number of people left without coverage. M
+We optimized the basic model from 2 different angles, building matrixes and making
+accurate mathematic calculations to achieve both the most efficientC way to cover the
+population and the fastest way to respond to emergency calls. We concluded that if
+M
+ambulances are arranged in such a way so that the regions they cover overlap, they
+can provide more secure care in case one of them is dispatched, while the shorter the
+average time it takes an ambulance to reach designated areias is, the faster its response.
+H
+Therefore we came up with 2 optimization plans, one to increase coverage overlap,
+and another to ensure fastest contact. We ：used standard deviation as a method of
+determining the best solutions among the optimized ones.
+To solve the problem concerning catastrophic scenarios we approached it from 3
+号
+perspectives depending on the nature of the catastrophe, and proceeded to discuss 3
+different plans on how to station the ambulances so that they most substantially boost
+rescue rates. In case of sporadic outbreaks in random areas, we applied the
+众
+aforementioned plan with large area overlaps so that enough ambulances will be on
+standby once 1 has been dispatched to deal with a crisis case. Our second plan is to
+have the ambulanc公es repeatedly dispatched and retrieved all over the county, but
+found that this does not provide satisfactory coverage. Most notably, in cases where 3
+ambulances are involved and needs to reach all areas as fast as possible, we used the
+信
+method of overall planning to determine several ways to station ambulances so that
+they can travel through all 6 zones within 8 minutes.
+We微 also went into specifics in the catastrophic scenario, and discussed 2 types of
+possible calamities in detail: the Radiation Model, in which a crisis erupts in a single
+location and spread throughout the county, downgrading in intensity as it spread, and
+the Diffusive Model, in which a crisis does not decrease in intensity but rather
+disseminate. We chose earthquakes to represent our Radiation Model and epidemics
+to represent our Diffusive Model. Using formulas from Richter's Magnitude Scale
+and the SIR Model we compiled 2 constructive plans on how to deal with these
+disasters.
+Having put these specific samples under minute examination, we concluded our
+models and factor models into a well-organized plan that can be elaborated to
+determine the best solution for counties and cities, regardless of their land area.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 2 of 46
+Wee Woo Wee Woo
+M
+C
+Ambulance Response Mechanism
+M
+Group #4155
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 3 of 46
+Contents
+1. Introduction ...................................................................................................................... 4
+2. Breaking down the problem .......................................................................................... 5
+3. Assumptions ...................................................................................................................... 6
+4. Variables Clarification ................................................................................................... 7
+5. Model I – Standard Condition ...................................................................................... 8
+5.1 Graphic Analysis ..................................................................................................................... 8
+5.2 Main Models ........................................................................................................M................. 10
+5.2.1 Dijkstra Algorithm Model .......................................................................................................... 10
+5.2.2 Floyd Algorithm Model ..............................................................................C................................ 11
+5.2.3 Traversing Tree Model ................................................................................................................ 12
+5.2.4 Maximum Coverage of Population .........................................
+M
+................................................ 17
+5.2.5 Conclusion ....................................................................................................................................... 18
+5.3 Optimization ............................................................................i............................................. 20
+H
+5.3.1 Repeated Coverage ....................................................................................................................... 20
+5.3.2 Fastest Response ............................................................................................................................ 21
+：
+6. Model II – Catastrophic Condition ........................................................................ 24
+6.1 General Model ...................................................................................................................... 24
+号
+6.1.1 Overlap Coverage .......................................................................................................................... 24
+6.1.2 Come-and-Go ................................................................................................................................. 25
+6.1.3 Three Ambulances C众overage .................................................................................................... 26
+6.2 Intensity Distribution .......................................................................................................... 30
+6.2.1 Radiation Model ............................................................................................................................ 30
+公
+6.3.2 Epidemic Model ............................................................................................................................. 33
+7. Analysis and Application ............................................................................................ 38
+信
+7.1 Model Analysis ..................................................................................................................... 38
+7.1.1 Strengths Analysis ......................................................................................................................... 38
+7.1.2 Improvement Analysis ................................................................................................................. 38
+微
+7.2 Application ............................................................................................................................ 39
+8. Recommendation Memo ............................................................................................. 40
+9. Appendix ........................................................................................................................ 42
+9.1 Reference ............................................................................................................................... 42
+9.2 Matlab Code ...................................................................................................................... 42
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 4 of 46
+1. Introduction
+When some people are enjoying lives with their healthy bodies, others are suffering
+from illness and pains. In cases of severe injuries and acute diseases, the efficiency of
+emergency medical response plays a decisive role in saving lives, which is the reason
+why governments are starting to pay great attention to the establishment of
+highly-efficient emergency response mechanisms. However, there are still cases
+where people die from the lack of in-time medical assistance, especially the late
+arrivals of ambulances. The emergency response mechanism of ambulances is in need
+M
+of improvement.
+C
+Ambulances are vehicles used for the transportation of the sick or injured to, from or
+between places of treatment and are required in a variety of emergency situations, all
+M
+of which potentially life threatening, including but not limited to unconsciousness,
+heart attacks, uncontrollable bleeding, burns, choking, convulsions, strokes, and
+i
+extreme allergic reactions. H
+：
+However, according to the Daily Mail, although UK possesses one of the fastest
+emergency medical response mechanisms, only three of UK's 32 ambulance services
+reach a large majority of “immediately life-threatening” call-outs within 8 minutes,
+号
+and thousands of people lost their lives because their ambulances took longer than
+necessary to reach them.
+众
+Thus building an effective short-range mechanism to combat crisis should be
+considered one of the top priorities in the medical field. An optimization of the system
+公
+would require better preparedness, faster response and more efficient operation.
+More impo信rtantly, where the ambulances are geographically stationed is of great
+importance in determining the time it takes for the rescue crew to reach the designated
+area. A well-situated ambulance station helps to maximize the number of residents
+微
+that can be reached within a short time of an emergency call.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 5 of 46
+2. Breaking down the problem
+The overarching problem is to find the best locations of ambulances so as to provide
+emergency medical responses most efficiently.
+In this problem we have 2 variables, the population and the area (zones). In order to
+lessen our variables, we make a logical assumption that if the positioning of the
+ambulances allows them to cover the whole county, then the population coverage
+must also at its maximum. This means that in an ideal situation, all the 6 zones, and
+M
+therefore all residents, are covered with available ambulance(s). Only when available
+ambulance(s) are unable to cover all zones do demographic differences need to be
+C
+taken into discussion. We can accordingly simplify our model to contain only one
+variable: the zones the ambulances cover.
+M
+Thus when approaching the problem, we prioritize solutions that cover all zones, and
+i
+then approach solutions that are based on demographiHc density.
+We make a hypothesis that 3 ambulances, if positioned fittingly, can cover all zones,
+：
+and proceed to find the possible solutions.
+We divided the four problems into two parts:
+号
+(1) Question 1, 2 and 3 ask about the best locations of ambulances under a standard
+situation, which are con众sidered the same in nature and thus can be dealt with in
+the same approach;
+公
+(2) Question 4 asks about the distribution and placement of ambulances when a
+catastrophic event occurs, which means wider involvement and more urgent need
+of ambu信lances.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 6 of 46
+3. Assumptions
+(1) As to the "semi-perfect" condition mentioned in the problem, we assume that it is
+a condition in which no traffic, weather, or any objective hazards obstruct the
+ambulances, and in which all ambulances and related personnel are working under
+perfect condition and the capacity of emergency treatment departments is adequate to
+meet all the medical response requirement.
+(2) We assume that the population of each zone remains relatively stable, i.e. in a
+M
+state of dynamic balance, and that under no circumstances will massive changes
+occur.
+C
+(3) The "8 minutes" given means eight 60-second minutes, i.e. 480 seconds in all.
+M
+(4) Under a catastrophic condition concerning epidemics, which will later be
+i
+discussed in detail as an example of catastrophic Hoccurrence, we assume that the
+disease transmission process begins instantly.
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     | 	   | page	  7	  of	  46	   |     |
+| ----------------- | --- | ---- | ------------------------- | --- |
+
+4. Variables Clarification
+| Variable Name  | Explanation                                      |     |     |     |
+| -------------- | ------------------------------------------------ | --- | --- | --- |
+| i              | The zone where the first ambulance is located.   |     |     |     |
+| j              | The zone where the second ambulance is located.  |     |     |     |
+| k              | The zone where the third ambulance is located.   |     |     |     |
+h(x)  A logic discriminant array consists of six numbers，the
+initial value being 1.
+| shuju  | A matrix whose rows and columns correspond to the  |     |     |     |
+| ------ | -------------------------------------------------- | --- | --- | --- |
+M
+rows and columns of Table 1 respectively, while i, j, k
+are all included in its rows.
+C
+| s   | An independent logic discriminant.    |     |     |     |
+| --- | ------------------------------------- | --- | --- | --- |
+| P   | The total population of the couMnty.  |     |     |     |
+t
+| P   | The  overlap  | of  the  population  | covered  by  | the  |
+| --- | ------------- | -------------------- | ------------ | ---- |
+r
+ambulance(s).
+i
+| P   | The population covered | H  by the xth ambulance.  |     |     |
+| --- | ---------------------- | ------------------------- | --- | --- |
+(x)
+| P u   | The population left without coverage.  |     |     |     |
+| ----- | -------------------------------------- | --- | --- | --- |
+：
+| t   | The least time possible it takes to reach Zone X.  |     |     |     |
+| --- | -------------------------------------------------- | --- | --- | --- |
+(x)
+| T   | The average time needed to reach each zone when the  |     |     |     |
+| --- | ---------------------------------------------------- | --- | --- | --- |
+ijk
+ambu号lances are stationed in particular zones.
+| R   | The overlap rate of the coverage.  |     |     |     |
+| --- | ---------------------------------- | --- | --- | --- |
+p
+| d   | The distance from Zone 1 to another arbitrary zone.  |     |     |     |
+| --- | ---------------------------------------------------- | --- | --- | --- |
+众
+| M   | Local magnitude.  |     |     |     |
+| --- | ----------------- | --- | --- | --- |
+L
+| v   | Fatality rate.  |     |     |     |
+| --- | --------------- | --- | --- | --- |
+S  公Earthquake intensity.
+| E[L]  | The expected number of fatalities.                     |     |     |     |
+| ----- | ------------------------------------------------------ | --- | --- | --- |
+| x(t)  | A continuous and differentiable function representing  |     |     |     |
+  信
+the number of affected people at a certain time.
+| 𝜆   | The average effective contact per person.  |     |     |     |
+| --- | ------------------------------------------ | --- | --- | --- |
+
+| N 微 | The whole population of certain area.  |     |     |     |
+| --- | -------------------------------------- | --- | --- | --- |
+
+| s(t)  | The ratio of the susceptible population number to the  |     |     |     |
+| ----- | ------------------------------------------------------ | --- | --- | --- |
+total population at a certain time.
+i(t)  The ratio of the infected population number to the total
+population at a certain time.
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  8	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | ------------------------- | --- |
+
+5. Model I – Standard Condition
+The standard condition refers to a situation in which no wide-scale catastrophe is
+involved and all emergency responses are carried out according to normal procedures.
+
+5.1 Graphic Analysis
+M
+As given in the problem settings, the county is divided into 6 zones, and the average
+time required to travel between each zone under semi-perfect condition is listed as
+| below:  |     |     |     |     | C   |     |
+| ------- | --- | --- | --- | --- | --- | --- |
+
+M
+| 	        |       | Average	  Travel	  Times	  (min.)	   |       |              |     |       |
+| --------- | ----- | ---------------------------------------- | ----- | ------------ | --- | ----- |
+| Zones	   | 1	   | 2	                                      | 3	   | 4	   i5	   |     | 6	   |
+H
+| 1	   | 1	   | 8	   | 12	   | 14	   | 10	   | 16	   |
+| ----- | ----- | ----- | ------ | ------ | ------ | ------ |
+：
+| 2	   | 8	    | 1	    | 6	     | 18	   | 16	   | 16	   |
+| ----- | ------ | ------ | ------- | ------ | ------ | ------ |
+| 3	   | 12	   | 18	   | 1.5	   | 12	   | 6	    | 4	    |
+号
+| 4	   | 16	   | 14	   | 4	    | 1	   | 16	   | 12	   |
+| ----- | ------ | ------ | ------ | ----- | ------ | ------ |
+| 5	   | 18	   | 16	   | 10	   | 4	   | 2	    | 2	    |
+众
+| 6	   | 16	   | 18	   | 4	      | 12	   | 2	   | 2	   |
+| ----- | ------ | ------ | -------- | ------ | ----- | ----- |
+|       | 公      |        | Table 1  |        |       |       |
+
+The question setting requires that the ambulances arrive within 8 minutes of a 911 call,
+信
+thus by circling out the average times below 8, we can obtain the zones which each
+location of ambulance(s) can reach within 8 minutes.
+
+微
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #4155 page 9 of 46
+The population of each zone is varied and listed below:
+Zones Population
+1 50,000
+2 80,000
+3 30,000
+4 55,000
+M
+5 35,000
+C
+6 20,000
+M
+Total 270,000
+i
+Table 2
+H
+Through analyzing the data about the population each ambulance can cover when
+placed in each location, we can build up a co：nclusion about whether the ambulance(s)
+can cover all population when positioned in a certain way. Thus establishing the
+fundamental model on which further analysis can be made.
+号
+Going over Table 1 given in the Problem, we can induce the time required to travel
+directly from one zone to 众another. For example, it takes 16 minutes to go directly
+from Zone 1 to Zone 6. However, unlike what some might suppose, the direct path
+may not be the shortest one we can take to commute between different zones.
+公
+Due to the influence of variables like the layout of the city, highways and bus-way
+planning, e信tc., it might be more efficient not to draw a straight line from Zone 1 to
+Zone 6 and take that path, but to take a highway that may wind through Zone 2 along
+the way but offer much smoother travel. This is a perfectly probable assumption,
+微
+and we set out to analyze our data to find out the real shortest time to get from one
+zone to another.
+This idea of more vertexes (i.e. intersections) bringing faster travel is exemplified in
+the reasoning above. Notably, we did consider the fact that the more vertexes, the
+more intersections in the pathways, and hence the higher the possibility of traffic
+accidents. High chances for accidents, however, still does not pose a large threat to
+the model as a whole, because road accidents in general have slight occurrences and
+therefore will not undermine the accountability of the model.
+Our findings later will correspond with our assumption: the time shown on Table 1 is
+not the shortest time it takes to commute between Zones, and we will present here
+further results of our analysis.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 10 of 46
+5.2 Main Models
+Since the purpose is to maximize the people who can be reached within 8 minutes, the
+most ideal situation is that all the 6 zones are covered by the available ambulance(s),
+which means the whole population of the county is within reach of
+8-minute-emergency medical response.
+In order to make sure whether the average travel times given in Table 1 are in terms
+of the most efficient routes, and if not, obtain the real shortest times, we employ
+Floyd Algorithm Model and Dijkstra Algorithm Model to make further anMalysis.
+C
+5.2.1 Dijkstra Algorithm Model
+M
+To calculate the real shortest distance between two Zones, we apply Dijkstra's
+i
+algorithm. This is an algorithm commonly used in roHuting processes, and is therefore
+directly applicable to our problem.
+：
+Using this algorithm, we first define a starting point and an ending point, i.e. the two
+Zones involved, and then trace different pathways expanding outward from the
+号
+starting point, labeling each intersection we pass along the way. Through a process of
+screening we repeatedly look for every intersection that is closer to the starting point
+until we reach the destinatio众n. Though the amount of calculation involved makes it a
+relatively slow process, there is no denying that this algorithm can ultimately help us
+find the shortest path.
+公
+Here are the detailed steps we used to attain the results:
+信
+(1) Let l(u ) = 0, while v≠u , let l(u ) =∞,S={ u }, i=0.
+0 0 0 0 0
+微
+(2) For each v∈ 𝑆𝚤 (𝑆𝚤 = V – S ), replace l(v) with:
+i
+min{𝑙 𝑣 ,𝑙 𝑢 + 𝑤(𝑢𝑣)}
+!∈!"
+mark this minimum u , and deem that S =S∪{u }.
+i+1 i+1 i i+1
+(3) Stop when i=|V|-1, if i<|V|-1, replace i with i+1, and turn to (ii).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 11 of 46
+5.2.2 Floyd Algorithm Model
+To apply the Floyd Algorithm, we can start with any single unilateral path. The
+distance between two pinpoints is the weight of the path between them. If 2 points do
+not have a path connecting them, the weight becomes infinitely large.
+Suppose we have a pair of vertices u and v. If there is a vertex w so that the path from
+u to w and then to v is shorter than the known path we replace our figures.
+Next we manifest our thinking with an adjacent matrix, matrix G. If weM can trace a
+path between points V and V, then G[i,j] has a value, which we will deem as d, where
+i j
+d represents the distance between i and j; if we cannot trace a path between V and V
+Ci j
+then G[i,j] becomes infinitely large.
+M
+We use a matrix D to record the points we insert into the paths. D[i,j] represents the
+points we have to cross when going from V
+i
+to V
+j
+, withi the initial value of D[i,j]
+H
+being j. After we start inserting points into the matrix, we compare the distance after
+we have inserted a point to the original distance. Let G[i,j]=min(G[i,j], G[i,k]+ G[k,j]).
+：
+If the value of G[i,j] decreases, then we deem D[i,j]=k. In Matrix G we can find
+information about the distance between two given points, while in Matrix D we have
+information about the shortest path. 号
+Suppose, for example, that we want to trace a path from V to V . Referring to Matrix
+众 5 1
+D, if D =3 then the path from V to V pass through point V . The path is {V , V ,
+(5,1) 5 1 3 5 3
+V }. If D =3, then V and V are directly connected. If D =1, then V and V are
+1 (5,3) 5 3 (3,1) 3 1
+directly connected. 公
+The Floyd Algorithm is applicable to all APSP(All Pairs Shortest Paths) Problems. It
+信
+is a dynamic programming algorithm with best graph effects and weights that can
+either be positive or negative. This algorithm is simple and effective. Since the triple
+cyc微le structure is very compact, the effectiveness of this algorithm greatly surpass that
+of the Dijkstra’s Algorithm, which has to undergo calculation |V| times. It can use
+simple codes to determine the shortest path between any two arbitrary spots.
+Therefore we favored the Floyd Algorithm Model over the Djkstra’s method and used
+it to get our results.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  12	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | -------------------------- | --- |
+
+Thus we establish Table 3 as below, illustrating the relation between Zones and the
+shortest average travel times.
+
+| 	        |        | Shortest	  Average	  Travel	  Times	  (min.)	   |         |        |        |        |
+| --------- | ------ | ---------------------------------------------------- | ------- | ------ | ------ | ------ |
+| Zones	   | 1	    | 2	                                                  | 3	     | 4	    | 5	    | 6	    |
+| 1	       | 1	    | 8	                                                  | 12	    | 14	   | 10	   | 12	   |
+| 2	       | 8	    | 1	                                                  | 6	     | 16	   | 12	   | 10	   |
+| 3	       | 12	   | 18	                                                 | 1.5	   | 10	   | 6	    | 4	    |
+M
+| 4	   | 16	   | 14	   | 4	   | 1	   | 10	   | 8	   |
+| ----- | ------ | ------ | ----- | ----- | ------ | ----- |
+| 5	   | 18	   | 16	   | 6	   | 4	   | C2	   | 2	   |
+| 6	   | 16	   | 18	   | 4	   | 6	   | 2	    | 2	   |
+M
+Table 3
+
+i
+By listing the corresponding population and coveredH zones of each location, we can
+combine  the  above  two  tables  and  establish  a  new  table  as  below,  showing  the
+：
+population coverage according to the different locations of ambulances:
+
+Ambulance	  Location	   号Covered	  Zone	   Covering	  Population
+|     | 1	   |     | 1,2	     |     | 130,000	   |     |
+| --- | ----- | --- | --------- | --- | ----------- | --- |
+|     | 2	   |     | 1,2,3	   |     | 160,000	   |     |
+众
+|     | 3	     |     | 3,5,6	     |     | 85,000	    |     |
+| --- | ------- | --- | ----------- | --- | ----------- | --- |
+|     | 4	     |     | 3,4,6	     |     | 105,000	   |     |
+|     | 5	   公 |     | 3,4,5,6	   |     | 140,000	   |     |
+|     | 6	     |     | 3,4,5,6	   |     | 140,000	   |     |
+
+信
+5.2.3 Traversing Tree Model
+微
+To solve the first 2 questions we decide to employ the Traversing Tree model, which
+is one of the most explicit and inclusive approaches to solving such questions.
+
+The tree traversal refers to "the process of visiting each node in a tree data structure,
+exactly once, in systematic way", and we apply it to our questions by the following
+steps:
+
+Suppose we put an ambulance in Zone 1. This ambulance covers Zone 1 & 2, and
+therefore we need to place ambulances so that they cover Zones other than 1 & 2. The
+solutions branch out into Zone 2,3,4 and 6. If we put the second ambulance in Zone 2,
+then we have covered Zones 1, 2 and 3. We need one more ambulance covering
+Zones 4, 5, 6, so we put the third ambulance in Zone 5. We have now come up with
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   | page	  13	  of	  46	   |
+| ----------------- | --- | --- | ---- | -------------------------- |
+
+our first set of solution: putting the ambulances in Zones 1, 2 and 5.
+The following diagram showcases part of the thought process:
+4
+3
+5
+1
+M
+|     |     |     | 2   | 5   |
+| --- | --- | --- | --- | --- |
+C
+M
+
+Diagram 1  i
+H
+
+Based on this search method, we can build： a Traversing Tree Model that helps us
+enumerate all of the possible locations of the 3 ambulances.
+
+号
+| (1, 2, 5)  |       (1, 2, 6)   |       (1, 3, 4)  |     |     |
+| ---------- | ----------------- | ---------------- | --- | --- |
+| (1, 3, 5)  |       (1, 3, 6)众  |       (1, 4, 5)  |     |     |
+| (1, 4, 6)  |       (1, 5, 6)   |       (2, 3, 4)  |     |     |
+公
+| (2, 4, 5)  |       (2, 4, 6)  |       (2, 3, 5)  |     |     |
+| ---------- | ---------------- | ---------------- | --- | --- |
+信
+| (2, 5, 6)  |       (2, 3, 6)  |       (1, 5, 5)  |     |     |
+| ---------- | ---------------- | ---------------- | --- | --- |
+微
+| (1, 1, 5)  |       (1, 6, 6)  |       (1, 1, 6)  |     |     |
+| ---------- | ---------------- | ---------------- | --- | --- |
+| (2, 5, 5)  |       (2, 2, 5)  |       (2, 6, 6)  |     |     |
+(2, 2, 6)
+
+*The last 8 positioning methods are practicable, but not suggested, since we judge
+that in a Standard Condition, positioning 2 ambulances in the same zone is not
+effective. Although these methods can help ambulances reach designated areas within
+8  minutes,  they  are  less  efficient  compared  with  a  wider  spread  ambulance
+distribution.
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     |     | page	  14	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | --- | -------------------------- | --- |
+
+This means that under the last 8 circumstances, only 2 ambulances are needed. Thus
+the  last  8  solutions  are  better  fit  as  the  answers  to  question  two  where  only  2
+ambulances are available.
+
+We hereby list all the possibilities of the ambulance locations where all the 6 zones
+are within 8-minute-reach of the emergency medical response:
+(The         represents the zone covered by each ambulance, wile the  ※ represents
+the location of each ambulance.)
+
+Solution 1
+M
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |     |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | --- |
+C
+| No.1	   | ※	   | 	   | 	   | 	   | 	   | 	   | 	   |
+| -------- | ----- | ---- | ---- | ---- | ---- | ---- | ---- |
+270,000
+| No.2	   | 	   | ※	   | 	   | 	   | 	  M	   |      |     |
+| -------- | ---- | ----- | ---- | ---- | --------- | ---- | --- |
+| No.3	   | 	   | 	    | 	   | 	   | ※	       | 	   |     |
+i
+
+H
+Solution 2
+| 	   |     | Covered	  Zone	  &	  Location	   | ：   |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |             |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | ----------- |
+| No,1	        | ※	   | 	    | 号	   | 	    | 	    | 	    | 	          |
+|               |       |       | ※	   |       |       |       | 270,000	   |
+| No.2	        | 	    | 	    |       | 	    | 	    | 	    |             |
+| No.3	        | 	    | 众	   | 	    | ※	   | 	    | 	    |             |
+
+Solution 3
+公
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |     |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | --- |
+信
+| No.1	   | ※	   | 	   | 	   | 	   | 	   | 	   | 	   |
+| -------- | ----- | ---- | ---- | ---- | ---- | ---- | ---- |
+270,000
+| No.2	   | 	   | 	   | ※	   | 	   | 	    | 	   |     |
+| -------- | ---- | ---- | ----- | ---- | ----- | ---- | --- |
+| 微        |      |      |       |      | ※	   |      |     |
+| No.3	   | 	   | 	   | 	    | 	   |       | 	   |     |
+
+Solution 4
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |     |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | --- |
+※
+| No.1	   |      | 	   | 	   | 	    | 	    | 	   | 	          |
+| -------- | ---- | ---- | ---- | ----- | ----- | ---- | ----------- |
+| No.2	   | 	   | 	   | 	   | ※	   | 	    | 	   | 270,000	   |
+| No.3	   | 	   | 	   | 	   | 	    | ※	   | 	   |             |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     |     | page	  15	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | --- | -------------------------- | --- |
+
+Solution 5
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |      |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | ---- |
+| No.1	        | ※	   | 	    | 	    | 	    | 	    | 	    | 	   |
+270,000
+| No.2	   | 	   | 	   | 	   | ※	   | 	   | 	    |     |
+| -------- | ---- | ---- | ---- | ----- | ---- | ----- | --- |
+| No.3	   | 	   | 	   | 	   | 	    | 	   | ※	   |     |
+
+Solution 6
+	   Covered	  Zone	  &	  Location	   	   	   Total
+M
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |      |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | ---- |
+| No.1	        | 	    | ※	   | 	    | 	    | 	    | 	    | 	   |
+C
+| No,2	   | 	   | 	   | ※	   | 	   | 	   | 	   | 270,000	   |
+| -------- | ---- | ---- | ----- | ---- | ---- | ---- | ----------- |
+M
+| No.3	   | 	   | 	   | 	   | ※	   | 	   | 	   |     |
+| -------- | ---- | ---- | ---- | ----- | ---- | ---- | --- |
+
+i
+Solution 7
+H
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+：
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+| No.1	   | 	   | ※	   | 	   | 	    | 	   | 	   | 	          |
+| -------- | ---- | ----- | ---- | ----- | ---- | ---- | ----------- |
+|          |      |       | 号    |       |      |      | 270,000	   |
+| No.2	   | 	   | 	    | 	   | ※	   | 	   | 	   |             |
+※
+| No.3	   | 	   | 	   | 	   | 	   |     | 	   |     |
+| -------- | ---- | ---- | ---- | ---- | --- | ---- | --- |
+| 	       |      | 众    |      |      |     |      |     |
+Solution 8
+| 	   | 公Covered	  Zone	  &	  Location	   |     |     |     |     |     | Total	   |
+| ---- | ------------------------------------- | --- | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |     |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | --- |
+※
+| No.1	   | 	   |     | 	   | 	   | 	   | 	   | 	   |
+| -------- | ---- | --- | ---- | ---- | ---- | ---- | ---- |
+信
+| No.2	   | 	   | 	   | 	   | ※	   | 	   | 	    | 270,000	   |
+| -------- | ---- | ---- | ---- | ----- | ---- | ----- | ----------- |
+| No.3	   | 	   | 	   | 	   | 	    | 	   | ※	   |             |
+微
+
+Solution 9
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+| No.1	   | 	   | ※	   | 	   | 	   | 	   | 	   | 	   |
+| -------- | ---- | ----- | ---- | ---- | ---- | ---- | ---- |
+270,000
+| No.2	   | 	   | 	   | ※	   | 	   | 	    | 	   |     |
+| -------- | ---- | ---- | ----- | ---- | ----- | ---- | --- |
+| No.3	   | 	   | 	   | 	    | 	   | ※	   | 	   |     |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     |     | page	  16	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | --- | -------------------------- | --- |
+
+Solution 10
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |      |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | ---- |
+| No.1	        | 	    | ※	   | 	    | 	    | 	    | 	    | 	   |
+270,000
+| No.2	   | 	   | 	   | 	   | 	   | ※	   | 	    |     |
+| -------- | ---- | ---- | ---- | ---- | ----- | ----- | --- |
+| No.3	   | 	   | 	   | 	   | 	   | 	    | ※	   |     |
+
+Solution 11
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+M
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |      |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | ---- |
+| No.1	        | ※	   | 	    | 	    | 	    | 	    | 	    | 	   |
+C
+| No.2	   | 	   | 	   | 	   | 	   | ※	   | 	   | 270,000	   |
+| -------- | ---- | ---- | ---- | ---- | ----- | ---- | ----------- |
+M
+| No.3	   | 	   | 	   | 	   | 	   | 	   | ※	   |     |
+| -------- | ---- | ---- | ---- | ---- | ---- | ----- | --- |
+
+i
+Solution 12
+H
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+：
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+| No.1	   | ※	   | 	   | 	    | 	   | 	   | 	   | 	          |
+| -------- | ----- | ---- | ----- | ---- | ---- | ---- | ----------- |
+|          |       |      | 号     |      |      |      | 270,000	   |
+| No.2	   | 	    | 	   | ※	   | 	   | 	   | 	   |             |
+※
+| No.3	   | 	   | 	   | 	   | 	   | 	   |     |     |
+| -------- | ---- | ---- | ---- | ---- | ---- | --- | --- |
+| 	       |      | 众    |      |      |      |     |     |
+Solution 13
+| 	   | 公Covered	  Zone	  &	  Location	   |     |     |     |     |     | Total	   |
+| ---- | ------------------------------------- | --- | --- | --- | --- | --- | --------- |
+Population
+| Ambulance	   | 1	   | 2	   | 3	   | 4	   | 5	   | 6	   |     |
+| ------------- | ----- | ----- | ----- | ----- | ----- | ----- | --- |
+※
+| No.1	   |     | 	   | 	   | 	   | 	   | 	   | 	   |
+| -------- | --- | ---- | ---- | ---- | ---- | ---- | ---- |
+信
+| No.2	   | 	   | ※	   | 	   | 	   | 	   | 	    | 270,000	   |
+| -------- | ---- | ----- | ---- | ---- | ---- | ----- | ----------- |
+| No.3	   | 	   | 	    | 	   | 	   | 	   | ※	   |             |
+微
+
+Solution 14
+| 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     | Total	   |
+| ---- | --- | ------------------------------------ | --- | --- | --- | --- | --------- |
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+| No.1	   | 	   | ※	   | 	   | 	   | 	   | 	   | 	   |
+| -------- | ---- | ----- | ---- | ---- | ---- | ---- | ---- |
+270,000
+| No.2	   | 	   | 	   | ※	   | 	   | 	   | 	    |     |
+| -------- | ---- | ---- | ----- | ---- | ---- | ----- | --- |
+| No.3	   | 	   | 	   | 	    | 	   | 	   | ※	   |     |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     |     |     | 	   |     |     | page	  17	  of	  46	   |     |
+| ----------------- | --- | --- | --- | --- | ---- | --- | --- | -------------------------- | --- |
+
+Solution 15
+| 	   |     |     | Covered	  Zone	  &	  Location	   |     |     |     |     |     | Total	   |
+| ---- | --- | --- | ------------------------------------ | --- | --- | --- | --- | --- | --------- |
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+|     | No,1	   | ※	   | 	   | 	   |     | 	   | 	   | 	   | 	   |
+| --- | -------- | ----- | ---- | ---- | --- | ---- | ---- | ---- | ---- |
+270,000
+|     | No.2	   | 	   | 	   | 	   |     | 	   | ※	   | 	   |     |
+| --- | -------- | ---- | ---- | ---- | --- | ---- | ----- | ---- | --- |
+
+Solution 16
+|     | 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     |     | Total	   |
+| --- | ---- | --- | ------------------------------------ | --- | --- | --- | --- | --- | --------- |
+Ambulance	   1	   2	   3	   4	   5	   6	   Population
+M
+|     | No,1	   | ※	   | 	   | 	   |     | 	   | 	   | 	     | 	          |
+| --- | -------- | ----- | ---- | ---- | --- | ---- | ---- | ------ | ----------- |
+|     |          |       |      |      |     |      |      | C※	   | 270,000	   |
+|     | No.2	   | 	    | 	   | 	   |     | 	   | 	   |        |             |
+
+M
+Solution 17
+|     | 	   |     | Covered	  Zone	  &	  Location	   |     |     |     |     |     | Total	   |
+| --- | ---- | --- | ------------------------------------ | --- | --- | --- | --- | --- | --------- |
+i
+Population
+| Ambulance	   |     | 1	   | 2	   | 3	   |     | 4	   | H5	   | 6	   |     |
+| ------------- | --- | ----- | ----- | ----- | --- | ----- | ------ | ----- | --- |
+※
+|     | No,1	   | 	   |     | 	   |     | 	   | 	   | 	   | 	   |
+| --- | -------- | ---- | --- | ---- | --- | ---- | ---- | ---- | ---- |
+：
+|     | No.2	   | 	   | 	   | 	   |     | 	   | ※	   | 	   | 270,000	   |
+| --- | -------- | ---- | ---- | ---- | --- | ---- | ----- | ---- | ----------- |
+
+号
+Solution 18
+|               | 	       |       | Covered	  Zone	  &	  Location	   |       |     |       |       |       | Total	        |
+| ------------- | -------- | ----- | ------------------------------------ | ----- | --- | ----- | ----- | ----- | -------------- |
+|               |          |       | 众                                    |       |     |       |       |       | Population	   |
+| Ambulance	   |          | 1	   | 2	                                  | 3	   |     | 4	   | 5	   | 6	   |                |
+|               | No,1	   | 	    | ※	                                  | 	    |     | 	    | 	    | 	    | 	             |
+270,000
+|     | No.2	   | 	   公	   |     | 	   |     | 	   | 	   | ※	   |     |
+| --- | -------- | ---------- | --- | ---- | --- | ---- | ---- | ----- | --- |
+
+As shown in the tables above, there are 18 possibilities altogether.
+信
+
+Thus we come to the conclusion that in the cases of 3 and 2 ambulances available, the
+ide微al locations which all the 6 zones are covered are (1,2,5), (1,2,6), (1,3,4), (1,3,5),
+(1,3,6), (1,4,5), (1,4,6), (1,5,6), (2,3,4), (2,4,5), (2,4,6), (2,3,5), (2,5,6), (2,3,6) and
+(1,5), (1,6), (2,5), (2,6) respectively.
+5.2.4 Maximum Coverage of Population
+Based on the facts given, we can reason that the optimal zone to place an ambulance
+is one in which it maximizes the population it can reach within 8 minutes. Since we
+have already come to the conclusion that one ambulance cannot effectively cover all
+zones in 8 minutes in our previous models, we examine the "location-population"
+diagram again to find out how many people an ambulance can cover when placed in
+each respective zone. The zone where the ambulance maximizes its coverage is the
+| one where it is best placed in.  |     |     |     |     |     |     |     |     |     |
+| -------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  18	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | -------------------------- | --- |
+
+We draw up the following diagram:
+
+Location	  -­‐	  Population
+180,000
+160,000
+ noitalupoP	  derevoC
+140,000
+120,000
+100,000
+| 80,000	   |     |     |     |     | M   |     |
+| ---------- | --- | --- | --- | --- | --- | --- |
+60,000
+| 40,000	   |     |     |     | C   |     |     |
+| ---------- | --- | --- | --- | --- | --- | --- |
+20,000
+M
+0
+|     | 1	   | 2	   | 3	                    | 4	   | 5	   | 6	   |
+| --- | ----- | ----- | ---------------------- | ----- | ----- | ----- |
+|     |       |       | Ambulance	  Location  | i     |       |       |
+H
+
+Diagra：m 2
+
+As is shown in the diagram above, Zone 2 is the optimum choice of location when
+| only one ambulance is available.  |     | 号   |     |     |     |     |
+| --------------------------------- | --- | --- | --- | --- | --- | --- |
+
+However, although Zone 2 is already the best position, we are still unable to cover the
+众
+whole  county.  Using  the  model  below,  we  obtain  the  population  left  without
+coverage:
+|     | 公   |        |       |     |     |     |
+| --- | --- | ------ | ----- | --- | --- | --- |
+|     |     | P  = P | -P    |     |     |     |
+|     |     | u      | t (2) |     |     |     |
+信
+= 270,000-160,000
+  微
+Thus we obtain the result that the uncovered population equals 110,000.
+
+5.2.5 Conclusion
+(1) When 3 ambulances are available, it is possible to cover everyone in the county
+within the 8-minute response range, which is also the maximum number of people
+who can be reached. The locations for the three ambulances have 22 different
+solutions listed as follows:
+
+关注 HiMCM
+×+
+−÷
+|     |     |     |     |     | Hi  | CM  |
+| --- | --- | --- | --- | --- | --- | --- |
+获取更多资讯
+
+Team #4155 page 19 of 46
+(1,2,5), (1,2,6), (1,3,4), (1,3,5), (1,3,6), (1,4,5), (1,4,6), (1,5,6), (2,3,4),
+(2,4,5), (2,4,6), (2,3,5), (2,5,6), (2,3,6), (1,5,5), (1,1,5), (1,6,6), (1,1,6),
+(2,5,5), (2,2,5), (2,6,6), (2,2,6)
+(2) After one ambulance has been set aside for an emergency call, leaving two
+ambulances available, we can still ensure that everyone be reached within the 8-
+minute window, the four locations being:
+M
+(1,5), (1,6), (2,5), (2,6)
+C
+M
+(3) When two ambulances have both been dispatched, leaving only one ambulance
+available, the remaining ambulance should be posted at location 2, so as to
+i
+H
+maximize the number of people within the 8-minute reach. In this case, we can
+not cover everyone, and the populati：on left without coverage accounts for
+110,000
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     | 	   | page	  20	  of	  46	   |
+| ----------------- | --- | ---- | -------------------------- |
+
+5.3 Optimization
+5.3.1 Repeated Coverage
+When we look at the data given, we find that both ambulances stationed in Zone 1 and
+Zone 2 can effectively cover Zone 1 and Zone 2. The same occurs with ambulances
+stationed in Zone 2 and Zone 3, where both can effectively cover Zone 3, and so on.
+The overlaps in the model means that an afflicted area can have more than 1
+ambulance covering it, and in situations where more than 1 ambulance is needed, an
+M
+effective back-up can be provided. Thus the higher the overlap rates between
+population coverage of the ambulances, the more fail-proof their combination.
+C
+
+We used the following equation to determine an optimized plMan:
+
+!!!!!!!!!!!
+i
+H= R
+  p
+!!
+：
+
+Where P , P , and P  represent respectively the population covered by the 3
+1 2 3
+ambulances, P represents the total p号opulation of the whole county, and R represents
+| t   |     |     | p   |
+| --- | --- | --- | --- |
+the overlap rate of the coverage.We thus conclude that the higher the value of R p , the
+more efficient the plan is.
+众
+
+The  results  of  this  model  are  listed  as  below  (Table  4  shows  the  3-ambulance
+occasion while Table 5 represents the 2-ambulance occasion):
+公
+Locations(3 ambulances)  Overlap Rates of the Coverage
+|     | (1, 2, 5)  |     | 59.3%  |
+| --- | ---------- | --- | ------ |
+信
+|     | (1, 2, 6)  |     | 59.3%  |
+| --- | ---------- | --- | ------ |
+|     | (1, 3, 4)  |     | 18.5%  |
+| 微   | (1, 3, 5)  |     | 31.5%  |
+|     | (1, 3, 6)  |     | 31.5%  |
+|     | (1, 4, 5)  |     | 38.9%  |
+|     | (1, 4, 6)  |     | 38.9%  |
+|     | (1, 5, 6)  |     | 51.9%  |
+|     | (2, 3, 4)  |     | 29.6%  |
+|     | (2, 4, 5)  |     | 50.0%  |
+|     | (2, 4, 6)  |     | 50.0%  |
+|     | (2, 3, 5)  |     | 42.6%  |
+|     | (2, 5, 6)  |     | 63.0%  |
+|     | (2, 3, 6)  |     | 42.6%  |
+Table 4
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #4155 page 21 of 46
+Locations (2 ambulances) Overlap Rates of the Coverage
+(1, 5) 00.0%
+(1, 6) 00.0%
+(2, 5) 11.1%
+(2, 6) 11.1%
+Table 5
+By comparing the overlap rates of the coverage, and circling out the locations with the
+highest overlap rates, we come to the conclusion that the best locations are:
+M
+3 ambulances – (2, 5, 6)
+C
+2 ambulances – (2, 5) & (2, 6)
+M
+i
+5.3.2 Fastest Response H
+：
+We build a matrix, Matrix Shuju, which directly corresponds with Table 1 given in
+the Problem. Variables i, j, k which head their horizontal lines correspond with the
+号
+horizontal lines in Table 1 in representing a zone number. The variable x, which heads
+its perpendicular line also represents a zone number. In effect, the matrix almost
+exactly resembles Table 1.
+众
+We first enumerate possible combinations of i, j, k with each variable taking on a
+value from one to s公ix. With each combination of i, j and k, we also enumerate x from
+1 to 6. Then we calculate the numerate values of Shuju(i,x), Shuju(j,x), and Shuju(k,x)
+and determine whether any on these are smaller than 8.
+信
+If Shuju(A,B) is smaller than 8, then we can logically assume that an ambulance
+located in Zone A can reach Zone B in 8 minutes, which means effective coverage of
+Zo微ne B is achieved. This means if one of Shuju(i,x), Shuju(j,x) and Shuju(k,x) has a
+value smaller than 8, than the area x is successfully covered with combination i, j and
+k.
+Assume that we station 3 ambulances in Zones i, j and k. From the aforementioned
+Matrix shuju we can get the data about how fast each zone can be reached.
+We can infer that for Zone X, the smallest value amongst shuju(i,x), shuju(j,x) and
+shuju(k,x) represents the least time possible it takes to reach Zone X when the
+ambulances are stationed in Zone i, j and k. We deem this value t .
+(x)
+If we add up the data of all 6 zones and divide the sum by 6, we get an average
+number. Comparing this average time of each i, j and k combination can give us an
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 22 of 46
+optimized plan of the basic model: the smaller the sum, the less time it takes to reach
+the affected population, and therefore the more efficient the plan is.
+So we come to the following equation:
+T =[t +t +t +t +t +t ]/6
+ijk (1) (2) (3) (4) (5) (6)
+Where T represents the average time needed to reach each zone when the
+ijk
+ambulances are stationed in particular zones (i, j, k). By comparing the values of all T
+and selecting the smallest, we get an optimized plan with time efficiency iMn
+consideration.
+C
+M
+i
+H
+：
+号
+众
+公
+Diagram 3
+信
+The above diagram shows the average response time of each location when 3
+ambulances are available.
+微
+Thus we can easily observe that in terms of response time, the most efficient locations
+are:
+(1, 2, 5) (1, 2, 6)
+Meanwhile, supposing that the response time is the same, we should bear in mind that
+the standard deviation of the shortest time it takes to reach each Zone must be small.
+Since a smaller standard deviation means that the ambulances can reach all Zones
+relatively quickly, rather than spending a lot of time getting to some locations while
+reaching other locations in no time.
+We use these equations to calculate the standard deviations:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     |     |     |     | 	   |     |     |     | page	  23	  of	  46	   |
+| ----------------- | --- | --- | --- | --- | ---- | --- | --- | --- | -------------------------- |
+
+Square Deviation:
+|     |     |     | !   |     |     | !    |     | !   |     |
+| --- | --- | --- | --- | --- | --- | ---- | --- | --- | --- |
+|     | (!  | !!) | !(! |     | !!) | !⋯(! | !!) |     |     |
+|     | 2   | !   |     | !   |     |      | !   |     |     |
+|     | s = |     |     |     |     |      |     |     |     |
+!!!
+
+Where x represents the average.
+
+Standard Deviation:
+
+!
+|     |      |     |     | 2   |      | 2   |     |     | M   |
+| --- | ---- | --- | --- | --- | ---- | --- | --- | --- | --- |
+|     |      | 𝑥   | −𝑥  | +   | 𝑥 −𝑥 | +⋯  | 𝑥   | −𝑥  | 2 ! |
+|     |      |     | 1   |     | 2    |     | 𝑛   |     | ]   |
+| s = | 𝑠!=[ |     |     |     |      |     |     |     |     |
+𝑛−1
+C
+
+M
+Since the standard division is the same for the 2 solutions, they are both optimum
+solutions for the question.
+|     |     |     |     |     |     |     | i   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+In terms of 2 ambulances, the problem solving procedure is similar. Assume that 2
+ambulances are stationed in Zones i and j. A：pply it to the shuju matrix shown above,
+we arrive at the model as below:
+
+号
+|     | T =[t |     | +t  | +t  | +t  | +t  | +t ]/6 |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | ------ | --- | --- |
+|     | ij    | (1) | (2) | (3) | (4) | (5) | (6)    |     |     |
+
+众
+And then we developed the following Table 6:
+
+公
+| Location	          | (1,5)	   |     |     | (1,6)	   |     |     | (2,5)	   |     | (2,6)	   |
+| ------------------- | --------- | --- | --- | --------- | --- | --- | --------- | --- | --------- |
+| Average	  Time	   | 3.833	   |     |     | 3.833	   |     |     | 3.833	   |     | 3.833	   |
+| 信                   |           |     |     | Table 6   |     |     |           |     |           |
+
+From the above table, we can see that when 2 ambulances are available, all the four
+微
+| locations have the same average response time.  |     |     |     |     |     |     |     |     |     |
+| ----------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+Thus all four are optimum solutions:
+|     | (1, 5)  |     |   (1, 6)  |     |   (2, 5)  |     | (2, 6) |     |     |
+| --- | ------- | --- | --------- | --- | --------- | --- | ------ | --- | --- |
+
+As with plans involving 3 ambulances, we also calculated the standard deviation of
+these 4 solutions and, finding them to be the same, decides that all four are optimum
+solutions.
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #4155 page 24 of 46
+6. Model II – Catastrophic Condition
+Catastrophic condition stands as an extreme out of the Standard Condition. When a
+catastrophe occurs, which mainly includes natural disasters such as earthquakes,
+tsunami, and infectious diseases, usually more population and wider areas are
+involved, which means a much more intensive need for emergency medical response
+of ambulances than under the Standard Condition is expected.
+In this case, the placement and dispatch mechanism of ambulances needs
+M
+readjustment and more factors should be taken into consideration.
+C
+6.1 General Model M
+In a catastrophic situation in which a massive populatiion has been affected, the
+H
+symptoms of distress may break out all at once in all parts of the county and among
+all the population, or they might spring up f：rom a central spot and proceed to spread
+throughout the area, or perhaps they just start cropping up in random places
+sporadically.
+号
+6.1.1 Overlap Cover众age
+As we have mentio公ned earlier on, in several ambulance arrangements the population
+coverage of the ambulances overlap with one another. This overlap becomes
+extremely useful in a catastrophic situation where victims appear sporadically and in
+信
+random places.
+Since no general outbreak is expected, the ambulances will be alert on standby. Once
+微
+one of the three responds to a call and goes into action, the other two will hopefully
+still maintain effective coverage of the whole county, so that they can also give
+immediate response once another case erupts in a different place.
+In this case, the solutions we give above for the optimized model of repeated coverage
+is also the optimum solution for this type of catastrophic situation.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  25	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | -------------------------- | --- |
+
+| 6.1.2 Come-and-Go  |     |     |     |     |     |     |
+| ------------------ | --- | --- | --- | --- | --- | --- |
+Another way to cover the situation is by the repeated dispatching and returning, i.e.
+coming back and forth, of the three ambulances so as to accommodate the need of as
+many people as possible.
+
+Referring  to  Table  3,  by  adding  up  the  average  traveling  time  accordingly,  we
+establish the following table, showing the average time needed traveling back and
+forth for once between two zones:
+|                |     |     |     |     | M   |     |
+| -------------- | --- | --- | --- | --- | --- | --- |
+| Zones/Average  | 1   | 2   | 3   | 4   | 5   | 6   |
+Traveling time
+C
+(min)
+| 1   | 2   | 16  | 24  | 30  M28  |     | 28  |
+| --- | --- | --- | --- | -------- | --- | --- |
+| 2   |     | 2   | 24  | 30       | 28  | 28  |
+| 3   |     |     | 3   | 14i      | 12  | 8   |
+H
+| 4   |     |     |     | 2   | 14  | 14  |
+| --- | --- | --- | --- | --- | --- | --- |
+| 5   |     |     | ：   |     | 4   | 4   |
+| 6   |     |     |     |     |     | 4   |
+Table 7-1
+号
+
+Since we are required to respond within 8 minutes of all emergency calls, any solution
+with an average traveling t众ime of over 8 minutes is not effective. We replace those
+solutions with the sign “∞” to give a more explicit illustration.
+
+公
+| Zones/Average  | 1   | 2   | 3   | 4   | 5   | 6   |
+| -------------- | --- | --- | --- | --- | --- | --- |
+Traveling time
+(min)信
+| 1   | 2   | ∞   | ∞   | ∞   | ∞   | ∞   |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2   |     | 2   | ∞   | ∞   | ∞   | ∞   |
+微
+| 3   |     |     | 3   | ∞   | ∞   | 8   |
+| --- | --- | --- | --- | --- | --- | --- |
+| 4   |     |     |     | 2   | ∞   | ∞   |
+| 5   |     |     |     |     | 4   | 4   |
+| 6   |     |     |     |     |     | 4   |
+Table 7-2
+
+By analyzing Table 7-2, we listed all the possible come-and –go routes and the other
+zones that can be covered after the ambulance return from each route accordingly.
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  26	  of	  46	   |     |
+| ----------------- | --- | --- | ---- | --- | -------------------------- | --- |
+
+| Possible Route (Zone⇌Zone)  |      |     | Supplementary Coverage (Zone)     |         |     |     |
+| --------------------------- | ---- | --- | --------------------------------- | ------- | --- | --- |
+|                             | 1⇌1  |     |                                   | N/A     |     |     |
+|                             | 2⇌2  |     |                                   |         | 3   |     |
+|                             | 3⇌3  |     |                                   |         | 3   |     |
+|                             | 4⇌4  |     |                                   |         | 6   |     |
+|                             | 5⇌5  |     |                                   |         | 3   |     |
+|                             | 6⇌6  |     |                                   | 4 or 6  |     |     |
+|                             | 3⇌6  |     |                                   | 3 or 5  |     |     |
+|                             | 5⇌6  |     | (when originally located in 5) 4  |         |     |     |
+(when originally located in 6) 3
+M
+Table 7-3
+
+C
+Using the aforementioned traversing tree model, we search for the solutions that can
+cover all 6 zones within the effective response time (in our caMse the given 8 minutes).
+We conclude that it is impossible to cover all zones in the come-and –go situation
+with 3 ambulances.
+i
+H
+
+：
+6.1.3 Three Ambulances Coverage
+号
+In case of extreme catastrophic situation where massive destruction erupts all over the
+county, we need to get all 3众 ambulances on spot as soon as possible. More than that,
+we had better make sure that an ambulance, when stationed in an appointed area and
+travelling along an appointed path, can go through all 6 Zones within 8 minutes to
+公
+constructively boost rescue chances.
+
+| 	        | 信     | Average	  Travel	  Times	  (min.)	   |       |       |       |       |
+| --------- | ----- | ---------------------------------------- | ----- | ----- | ----- | ----- |
+| Zones	   | 1	   | 2	                                      | 3	   | 4	   | 5	   | 6	   |
+微
+| 1	   | 1	   | 8	   | ∞	     | ∞	   | ∞	   | ∞	   |
+| ----- | ----- | ----- | ------- | ----- | ----- | ----- |
+| 2	   | 8	   | 1	   | 6	     | ∞	   | ∞	   | ∞	   |
+| 3	   | ∞	   | ∞	   | 1.5	   | ∞	   | 6	   | 4	   |
+| 4	   | ∞	   | ∞	   | 4	     | 1	   | ∞	   | 8	   |
+| 5	   | ∞	   | ∞	   | 6	     | 4	   | 2	   | 2	   |
+| 6	   | ∞	   | ∞	   | 4	     | 6	   | 2	   | 2	   |
+Table 8-1
+Table 8-1 showcases the average time to commute between Zones. For the sake of
+clear illustration we have replaced all time more than 8 minutes with the infinity sign
+∞,	  and	  these are expelled from consideration because of their evident ineffectiveness.
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     | 	   |     |     | page	  27	  of	  46	   |
+| ----------------- | --- | ---- | --- | --- | -------------------------- |
+
+| Location	   | Route	  Plan	   |     | Time	   | Total	  Time	   |       |
+| ------------ | ----------------- | --- | -------- | ----------------- | ----- |
+| 1	          | 1→2	             |     | 8	      |                   | 8	   |
+| 2	          | 2→1	             |     | 8	      |                   | 8	   |
+|              | 2→3	             |     | 6	      |                   | 6	   |
+3→5→6
+| 3	   |           |     | 6+2	   |        | 8	    |
+| ----- | --------- | --- | ------- | ------ | ------ |
+|       | 3→6→5	   |     | 4+2	   |        | 6	    |
+| 4	   | 4→6	     |     | 8	     |        | 8	    |
+|       | 4→3→6	   |     | 4+4	   |        | 8	    |
+| 5	   | 5→4→3	   |     | 4+4	   |        | M8	   |
+|       | 5→3	     |     | 6	     |        | 6	    |
+|       | 5→6→4	   |     | 2+6	   | C8	   |        |
+5→6→3
+|     |     |     | 2+4	   |     | 6	   |
+| --- | --- | --- | ------- | --- | ----- |
+M
+| 6	   | 6→3	   |     | 4	   |     | 4	   |
+| ----- | ------- | --- | ----- | --- | ----- |
+|       | 6→4	   |     | 6	   |     | 6	   |
+i
+H
+|     | 6→5→3	   |     | 2+6	   |     | 8	   |
+| --- | --------- | --- | ------- | --- | ----- |
+6→5→4
+|     |     | ：2+4	   |     |     | 6	   |
+| --- | --- | -------- | --- | --- | ----- |
+Table 8-2
+In Table 8-2 we list all routes between Zones that can be completed in 8 minutes.
+号
+These chunks of route plans allow us to get a clearer picture about how to effectively
+plan an overall course for the ambulances, so that they can traverse through all Zones
+within 8 minutes.
+众
+
+公
+
+信
+
+  微
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     | 	   | page	  28	  of	  46	   |
+| ----------------- | --- | ---- | -------------------------- |
+
+| Ambulance  | Route Plan     |     | Average Time  |
+| ---------- | -------------- | --- | ------------- |
+| 1,2,5      | 1→2,2→3,5→6→4  |     | 7.33          |
+| 1,2,6      | 1→2,2→3,6→5→4  |     | 6.66          |
+|            | 1→2,3→5→6,6→4  |     | 7.33          |
+|            | 1→2,3→6→5,6→4  |     | 6.66          |
+1,3,4
+|     | 1→2,3→5→6,6→5→4  |     | 7.33   |
+| --- | ---------------- | --- | ------ |
+|     | 1→2,3→6→5,6→5→4  |     | 6.66   |
+|     | 1→2,3→5→6,5→4→3  |     | 8.00   |
+|     | 1→2,3→6→5,5→4→3  |     | 7.3M3  |
+1,3,5
+|     | 1→2,3→5→6,5→6→4  |     | 8.00   |
+| --- | ---------------- | --- | ------ |
+|     | 1→2,3→6→5,5→6→4  |     | C7.33  |
+|     | 1→2,3→5→6,6→4    |     | 7.33   |
+M
+|     | 1→2,3→6→5,6→4  |     | 6.66  |
+| --- | -------------- | --- | ----- |
+1,3,6
+|     | 1→2,3→5→6,6→5→4  |     | 7.33  |
+| --- | ---------------- | --- | ----- |
+i
+H
+|     | 1→2,3→6→5,6→5→4  |     | 6.66  |
+| --- | ---------------- | --- | ----- |
+|     | 1→2,4→6,5→：4→3   |     | 8.00  |
+|     | 1→2,4→6,5→3      |     | 7.33  |
+|     | 1→2,4→6,5→6→3    |     | 7.33  |
+号
+| 1,4,5  | 1→2,4→3→6,5→6→4  |     | 8.00  |
+| ------ | ---------------- | --- | ----- |
+|        | 1→2,4→3→6,5→6→3  |     | 7.33  |
+众
+|     | 1→2,4→3→6,5→3    |     | 7.33  |
+| --- | ---------------- | --- | ----- |
+|     | 1→2,4→3→6,5→4→3  |     | 8.00  |
+公
+|        | 1→2,4→6,6→5→3    |     | 8.00  |
+| ------ | ---------------- | --- | ----- |
+| 1,4,6  | 1→2,4→3→6,6→5→3  |     | 8.00  |
+信
+|     | 1→2,4→3→6,6→5→4  |     | 7.33  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,3→5→6,4→6    |     | 8.00  |
+| 微   | 2→1,3→5→6,4→3→6  |     | 8.00  |
+2,3,4
+|     | 2→1,3→6→5,4→6    |     | 7.33  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,3→6→5,4→3→6  |     | 7.33  |
+|     | 2→1,3→5→6,5→4→3  |     | 8.00  |
+|     | 2→1,3→5→6,5→6→4  |     | 8.00  |
+2,3,5
+|     | 2→1,3→6→5,5→4→3  |     | 7.33  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,3→6→5,5→6→4  |     | 7.33  |
+|     | 2→1,3→5→6,6→4    |     | 7.33  |
+|     | 2→1,3→5→6,6→5→4  |     | 7.33  |
+2,3,6
+|     | 2→1,3→6→5,6→4    |     | 6.66  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,3→6→5,6→5→4  |     | 6.66  |
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     | 	   | page	  29	  of	  46	   |
+| ----------------- | --- | ---- | -------------------------- |
+
+|        | 2→1,4→6,5→4→3    |     | 8.00   |
+| ------ | ---------------- | --- | ------ |
+|        | 2→1,4→6,5→6→3    |     | 7.33   |
+|        | 2→1,4→6,5→3      |     | 7.33   |
+| 2,4,5  | 2→1,4→3→6,5→4→3  |     | 8.00   |
+|        | 2→1,4→3→6,5→3    |     | 7.33   |
+|        | 2→1,4→3→6,5→6→4  |     | 8.00   |
+|        | 2→1,4→3→6,5→6→3  |     | 7.33   |
+|        | 2→1,4→6,6→5→3    |     | 8.00   |
+| 2,4,6  | 2→1,4→3→6,6→5→3  |     | 8.0M0  |
+|        | 2→1,4→3→6,6→5→4  |     | 7.33   |
+|        | 2→1,5→4→3,6→3    |     | C6.66  |
+|        | 2→1,5→4→3,6→4    |     | 7.33   |
+M
+|     | 2→1,5→4→3,6→5→3  |     | 8.00  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,5→4→3,6→5→4  |     | 7.33  |
+i
+H
+|     | 2→1,5→3,6→4  |     | 6.66  |
+| --- | ------------ | --- | ----- |
+2,5,6
+|     | 2→1,5→3,6→：5→4   |     | 6.66  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,5→6→4,6→3    |     | 6.00  |
+|     | 2→1,5→6→4,6→5→3  |     | 8.00  |
+号
+|     | 2→1,5→6→3,6→4    |     | 6.66  |
+| --- | ---------------- | --- | ----- |
+|     | 2→1,5→6→3,6→5→4  |     | 6.66  |
+众
+Table 8-3
+
+This final graph, T公able 8-3, is our final response to the problem. On the left side we
+list the probable solutions, where the ambulances can be stationed, to be exact, while
+in the middle we draw out the respective paths that these ambulances can trace in an
+信
+emergency so that they can course through all 6 zones within 8 minutes. On the right
+side we give the corresponding time to each path plan. The optimum plan for any
+cat微astrophic occurrence can therefore be determined using this graph despite their
+geographical differences.
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #4155 page 30 of 46
+6.2 Intensity Distribution
+As for the most extreme catastrophic condition, where the three ambulances are all
+obliged to be dispatched at the same time, we need to place and dispatch the
+ambulances according to the influence intensity so as to build up the most effective
+and efficient ambulance response system.
+Since spreading patterns and intensity difference vary according to the types of the
+disasters, we break down the discussion into two respective conditions.
+M
+6.2.1 Radiation Model C
+M
+The radiation model applies to disasters that spread its impact in a radiation way,
+which means the center of the occurrence has the most casualty rates and therefore
+i
+needs the most ambulances, while the intensity of othHer areas decrease progressively.
+：
+The most typical case in the radiation model is earthquakes, thus we hereby take
+earthquakes as an example to establish the model.
+号
+Disregarding factors like road planning, we assume that the time it takes to travel
+between two Zones is directly proportional to the distance between them.
+众
+Suppose an earthquake happens in Zone 1, and the distance from Zone 1 to another
+arbitrary Zone (for the sake of the hypothesis we will use Zone 2 as an example) is d.
+公
+The distance from Zone 1 to the other 4 Zones becomes accordingly K d, K d, K d
+1 2 3
+and K d.
+4
+信
+In comes the Richter Magnitude Scale.
+微
+The Richter magnitude of an earthquake is determined from the logarithm of
+the amplitude of shock waves recorded by seismographs.
+The original formula is:
+M = log A – log A (𝛿) =log [A/A (𝛿)],
+L 10 10 0 10 0 (1)
+Where A is the maximum excursion of the Wood-Anderson seismograph, the
+empirical function A depends only on the epicentral distance of the station 𝛿, and M
+0 L
+stands for the Local Magnitude.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 31 of 46
+Using this equation we come to the following results:
+M = log A
+1
+M = log A – log A (d)
+2 0
+While for the other 4 Zones we have:
+The constant A, which needs inputting, is the magnitude of the earthquake at the
+epicenter. Since the logA (d) in all M equations are equal in value, theM earthquake
+0 k
+magnitude in different Zones can be thought of as a ratio between 2 constants minus
+different known numbers. C
+M
+The second equation we consult deals with the earthquakes’ shaking intensity and
+their corresponding fatality rates. This is the Empirical Fatality Rate Equation
+developed by Jaiswal et al (2009), a new global empirical miodel where the fatality
+H
+rate (v), which is the function of shaking intensity (S), can be expressed in terms
+of a two-parameter lognormal distribution fu：nction as follows:
+! !
+v(S)号 =Φ[ ln( )]
+(2)
+! !
+众
+Where Φ is the standard normal cumulative distribution function. The fatality rate dep
+ends on the two free parameters of the cumulative distribution function of the logno
+rmal distribution na公mely, θ and β.
+Because most parameters involved are constants, the ratio of fatality rate between
+信
+different zones can be conversed into ratios of their respective (lnS-lnθ), where S
+represents the intensity of the earthquake.
+微
+Suppose all factors beyond the shaking intensity remains constant all over the county,
+then the ratio between the shaking intensity is the ratio between the magnitudes.
+This means that if the earthquake magnitude in Zone A is k times the magnitude in
+Zone B, the fatality rate in Zone A is larger than that of Zone B by lnk.
+After we figure out the ratio of fatality rates, i.e. the ratio of v, we can use Model 3 to
+determine the fatality rates in each Zone.
+E [L]≈ 𝑣 (S ) P (S )
+i ! i j i j (3)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 32 of 46
+Where P(S) denotes an estimated population exposed to shaking intensity S for an
+i j j
+event i. Then the expected number of fatalities E[L] can be denoted as the above.
+From all the points above we can come to the conclusion that the nearer a place is to
+the epicenter, the higher the casualty rate, which is to say that the nearer a place is to
+the center of the earthquake, the higher its demand for ambulances. The optimum
+solution in this case is one that can get the ambulances to our affected areas as fast as
+possible.
+Remember the Fastest Response section we did on our optimization plans? Now we
+can go back and use that model again. M
+Returning to Matrix shuju, we can infer that for Zone X, the smalleCst value amongst
+shuju(i,x), shuju(j,x) and shuju(k,x) represents the least time possible it takes to reach
+M
+Zone X when the ambulances are stationed in Zone i, j and k. We deem this value t(x).
+For each combination of i, j and k, we calculate their respecitive t(1), t(2) , t(3), t(4),
+H
+t(5) and t(6). The combination that can get to X in the shortest time is the solution that
+we are looking for. ：
+Thus we arrive at the solutions as follows:
+号
+Occurrence Location Ambulance Location
+众
+1 1,2,6(1,2,3)
+2 2,3,6(2,3,6)
+公
+3 1,3,5;1,3,6(3,6,5)
+信
+4 1,3,4(4,3,6)
+5 5,4,1(5,6,3)
+微
+6 6,4,1(6,5,4)
+Table 9
+In Table 8, solutions without “()” are the optimum solutions which can arrive the
+fastest at the Zones in the most need of help, while ensuring a whole-county coverage;
+those solutions with “()” are the solutions which only achieve the fastest reach to the
+major disaster area, however without covering the whole county.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 33 of 46
+6.3.2 Epidemic Model
+Define x(t) as a continuous and differentiable function, representing the number of
+affected people at a certain time t. Assume that the disease transmission begins
+immediately.
+Use λ to represent the average effective contact per person (the number of people
+infected through contacts).
+To examine the increase of patient number between t to t+∆t, we eMstablish the
+following model:
+C
+x(t+∆t)-x(t)=𝜆x(t)∆t
+M
+i
+H
+!(!!∆!)!!(!)
+⟹ = 𝜆x(t)
+：
+∆! (1)
+If t=0, let the number of patients 号be x . When ∆t →0, we come to the following
+0
+differential equation:
+众
+!"
+= 𝜆𝑥
+!"
+公
+𝑥 0 = 𝑥
+!
+信
+!"
+⟹ x(t)=x 𝑒
+微
+0
+(2)
+According to the above model, x(t) keeps increasing to an infinite degree, which is not
+possible in reality. Notice that only healthy people can be taken into the susceptible
+pool, and the number of healthy people is in a process of gradual declining. Thus we
+modify the above model.
+Divide the whole population into two groups, namely the susceptible and the infected.
+Let the number of the whole population be N, and the ratio of the susceptible
+population number to N and the infected population number to N at certain time be s(t)
+and i(t).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team	  #4155	   |     |     | 	   |     | page	  34	  of	  46	   |
+| ----------------- | --- | --- | ---- | --- | -------------------------- |
+
+The number of healthy people infected by each infected person should thus be:  λs(t);
+and the total number of newly infected healthy people each day would be:  λNs(t)i(t).
+Thus we come to the modified model as follow:
+
+𝑑𝑖
+|     |     | 𝑁   | = 𝜆𝑁𝑠 | 𝑡 𝑖(𝑡) |     |
+| --- | --- | --- | ----- | ------ | --- |
+𝑑𝑡
+
+|     |     | 𝑠 𝑡 | + 𝑖 𝑡 | = 1 |     |
+| --- | --- | --- | ----- | --- | --- |
+|     |     | 𝑖   | 0 = 𝑖 |     |     |
+!
+|     |     |     |     |     | M   |
+| --- | --- | --- | --- | --- | --- |
+!"
+|     |     | =   | 𝜆𝑖 𝑡 [1 | − 𝑖 𝑡 ] |     |
+| --- | --- | --- | ------- | ------- | --- |
+C
+|     | ⟹   | !"  |     |     |     |
+| --- | --- | --- | --- | --- | --- |
+M
+|     |     |     | 𝑖 0 = | 𝑖   |     |
+| --- | --- | --- | ----- | --- | --- |
+!
+|     |     |     |     | i   |     |
+| --- | --- | --- | --- | --- | --- |
+H
+!
+
+：
+⟹    i(t) =
+!
+|     |     |     |      | !!" (3)	   |     |
+| --- | --- | --- | ---- | ----------- | --- |
+|     |     | !!( | !!)! |             |     |
+!
+!
+号
+
+!" 众
+
+| When i = 0.5,	   | reaches its maximum, and  |     |     |     |     |
+| ----------------- | ------------------------- | --- | --- | --- | --- |
+!"
+公
+!
+|     |     | t =𝜆-1ln( | −   | 1)   |     |
+| --- | --- | --------- | --- | ---- | --- |
+|     |     | m         |     | (4)  |     |
+!
+!
+信
+
+This is when the increase of infected people is at its peak. Local hospitals and the
+gov微ernment should be paying special attention at this point!
+
+𝜆 indicates the sanitary condition of the county. Since t  is inversely proportional to
+m
+𝜆,  the  lower  𝜆 is,  the  better  the  sanitary  condition  is.  Improving  the  sanitary
+condition can serve to postpone the peak of infection.
+
+Notice that in the above Model 4, when t→ ∞, i→1, which means the whole county is
+to be infected. This is very unlikely to happen in reality. In order to make the model
+more practical, we take the recovered population into consideration, and come to the
+following adaptation:
+
+Assume the recovered people accounts for  𝜇 of the total infected population, where
+𝜇 is a constant. The recovered people is eligible to second-time infection afterwards.
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team	  #4155	   |     |     |     | 	   |     |     | page	  35	  of	  46	   |
+| ----------------- | --- | --- | --- | ---- | --- | --- | -------------------------- |
+
+!
+| Thus the average transmission period of this type of disease is  |     |     |     |     |     | .   |     |
+| ---------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
+!
+The modified model is as follows:
+
+𝑑𝑖
+|     |     | 𝑁   | = 𝜆𝑁𝑠 | 𝑡 𝑖 | 𝑡 − 𝜇𝑁𝑖(𝑡) |     |     |
+| --- | --- | --- | ----- | --- | ---------- | --- | --- |
+𝑑𝑡
+
+|     |     |     | 𝑠 𝑡 | + 𝑖 | 𝑡 = 1 |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- |
+|     |     |     | 𝑖   | 0 = | 𝑖     |     |     |
+!
+M
+
+|     | !"  |     |      |     |     | C       |     |
+| --- | --- | --- | ---- | --- | --- | ------- | --- |
+|     |     | =   | 𝜆𝑖 𝑡 | 1 − | 𝑖 𝑡 | − 𝜇𝑖(𝑡) |     |
+| ⟹   | !"  |     |      |     |     | M       |     |
+|     |     |     | 𝑖    | 0   | = 𝑖 |         |     |
+!
+i
+H
+
+|     |     | !   | !   | ! ： |       |     |                 |
+| --- | --- | --- | --- | --- | ----- | --- | --------------- |
+|     |     |     |     |     | ! !!! | !!  |                 |
+|     | [   | +   | −   |     | 𝑒     | ]   |           𝜆 ≠ 𝜇 |
+|     | !!! |     | !   | !!! |       |     |                 |
+!
+⟹  i(t) =
+号
+! )!!                                                                            𝜆 (5)
+|     | (𝜆𝑡 | +   |     |     |     |     | = 𝜇 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+!
+!
+众
+
+Let  𝜎 = 𝜆/𝜇, thus  𝜎 represents the average number of effective contacts of each
+infected person with公in one infection period.
+
+Model 5 can thus be modified as follows:
+信
+
+| !"  |     |     |      |     |       | !   |     |
+| --- | --- | --- | ---- | --- | ----- | --- | --- |
+|     | =   | −𝜆𝑖 | 𝑡 [𝑖 | 𝑡   | − 1 − | ]   |     |
+微
+(6)
+| !"  |     |     |     |     |     | !   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+
+Contact number  𝜎 is a domain value. When  𝜎 >1, the increase and decrease of i(t)
+!
+depends on the value of i , but its limit i(∞)=1-  increases if  𝜎 increases; if  𝜎 ≤ 1
+|     |     | 0   |     |     | !   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+then i(t), the ratio of the infected, decreases and gets closer to zero. This explains why
+during an epidemic the number of people infected can never exceed the number of
+original patients.
+
+Most epidemic diseases like smallpox, influenza, hepatitis and measles make the
+patient immune to them once he or she has recovered from it. The recovered patients
+are therefore neither healthy nor infected. They are, in effect, totally separated from
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #4155 page 36 of 46
+the whole system. This brings more complications, as we will discuss in the following
+paragraphs.
+Assume that while the disease is spreading, the total population in the given area
+remains stable. Neither births and deaths nor immigration and emigration are taken
+into account. We categorize the population into those who are healthy, those who are
+infected, and those who have successfully recovered from and thus will remain
+immune to the disease. Deem their respective portion in the total population as s(t),
+i(t), and r(t); daily contact rate of the infected will be constant 𝜆, daily recovery rate
+𝜇, and 𝜎 = 𝜆/𝜇 the contact number during the epidemic.
+M
+From the assumption we induce that s(t)+i(t)+r(t)=1. For the number those who have
+successfully recovered we can use the following equation: C
+M
+!"
+N =𝜇Ni(t)
+!" (7)
+i
+H
+Deem the initial ratio of the healthy populati：on and the infected population as s
+0
+and i
+0
+respectively, and the initial number of recovered patients r =0. We thus can get the
+0
+following differential equation:
+号
+!"
+= 𝜆𝑠 𝑡 𝑖 𝑡 − 𝜇𝑖 𝑡 , 𝑖 0 = 𝑖
+众 !
+!"
+!" (8)
+= −𝜆𝑠 𝑡 𝑖 𝑡 , 𝑠 0 = 𝑠
+公
+!
+!"
+信
+The above equation is what we will center our model on. Because we cannot
+determine the analytic solutions of s(t) and i(t), we can only use numerical evaluations,
+alth微ough that can be remedied in practice by employing mathematic software, or we
+can analyze the relationship between s and t in an s-t plane.
+In this model, 𝜎 = 𝜆/𝜇 should be recognized as a very important parameter. Since
+the equation has no analytic solutions, the values of both 𝜆 and 𝜇 are hard to
+estimate. However after an epidemic outbreak we can gather the value of s and s∞
+0
+to calculate 𝜎 with this model:
+!"! !!"!
+𝜎 = ! !
+! !! (9)
+! !
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 37 of 46
+When similar epidemics hit again, presuming that 𝜆 and 𝜇 does not go through too
+much change, we can use this value of 𝜎 to determine the process of the epidemic
+transmission.
+With the above models, we establish the following diagram.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+Diagram 4
+信
+Using the models above, we conclude that the optimum solution under this
+circumstances is
+微
+(1, 2, 5)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 38 of 46
+7. Analysis and Application
+7.1 Model Analysis
+7.1.1 Strengths Analysis
+Using our basic models and all factor models, we can generate several solutions about
+M
+where to station ambulances in different scenarios. Since our models cover both
+standard and catastrophic occurrences, and expand on several specific cases in the
+catastrophic categories, it is reasonable to conclude that they are boCth comprehensive
+and adequately effective. All our answers are products of careful analysis and
+M
+induction: some of the answers, in fact, are produced by using different models on the
+same questions, therefore they are trustworthy and fault-proof.
+i
+H
+Not only are they reliable, the models also present room for further elaboration, in
+that they can also be applied to counties a：nd cities in a broader sense, and are not
+limited only to the questions dealt with in the problems. Several models have been
+optimized a number of times, and the calculation processes involved are as simple and
+号
+direct as we can make them.
+众
+7.1.2 Improvement Analysis
+公
+However, as with all models, we did not forget that important assumptions have been
+made during the building of those models, especially with the standard models
+信
+concerning Question 1,2&3, where the condition is "semi-perfect". Sifting carefully
+through the whole emergency response mechanism, we can see that there are still
+many variables and uncertainties left out of consideration, and, in fact, cannot
+微
+possibly be added into calculation since they are so varied and erratic.
+We still have our minds on, for example, the call taking time, the delays that might
+occur in dispatching processes, the time period between the dispatching of the crew
+and the start of the vehicle, the health and capability of the crew members, whether
+extreme road and weather conditions are present, or whether government policies
+change in times to crisis...and the list goes on. These, however, we recognize to be the
+icing on the cake. Due to time limits, these variables had to be left out in the modeling
+process, though we plan to expand on them in the future.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 39 of 46
+7.2 Application
+We build a final model that can be utilized in any scenario where 3 ambulances are on
+standby. Once we insert our figures about the time it takes to commute between all
+zones into a matrix, an instant optimum result of where to station the 3 ambulances
+can be obtained. In this optimized version of Model 1, the variable of h(x) can also be
+self-defined, which means that the Zone number does not necessarily needs to be 6.
+The model therefore, is not solely applicable to this county, but can also be used with
+any other region, with however many Zones involved depending on the actual
+situation. M
+We deem h(x) as a logic discriminant array consisting of six numbers，with its the
+C
+initial value being 1.
+M
+If Zone X can be covered by the combination of i,j and k, then we multiply h(x) by 1,
+so h(x) remains 1. If Zone X cannot be covered by this comibination then we multiply
+H
+h(x) by 0, so h(x) becomes 0.
+：
+We deem s as :
+号
+s=h(1)*h(2)*h(3)*h(4)*h(5)*h(6)*……*h(x)
+众
+If all values from h(1) to h(x) are 1, then s=1, in which case we conclude that the
+combination of locating ambulances in Zones i, j, and k can reach all x zones. If one
+of the values is 0, 公then s=0, which means that the combination cannot reach all x
+zones. This combination is therefore not an effective solution and subsequently then
+discarded.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 40 of 46
+8. Recommendation Memo
+Dear Sir/Madam:
+Looking over the data concerning ambulance distribution and emergency control in
+your county, we realize that a more effective short-range mechanism to combat
+regional crisis is needed. We believe that better situated ambulance stations can help
+maximize the number of residents that can be reached after emergency calls, and
+having built several mathematic models that helped us gain fair conceptions as to how
+M
+to improve arrangements, we put the following information and advice at your
+disposal:
+C
+Under normal conditions, we propose the following two ways of arranging your three
+M
+ambulances so as to maximize the population they can reach in 8 minutes:
+i
+Plan One H
+If you prefer the most fail-proof arrangement, which means you can cover all the
+：
+population in your county at all times to the highest degree, then plan 1 is what you
+would be looking for. The detailed station plan is as follows:
+1. When all the 3 ambulances are available, station them at (2, 5, 6). Thus you can
+号
+cover all the zones of your county, and the overlap coverage rate (OCR) in terms
+of the population is 63%, which means 63% of the people in your county have
+more than 1 ambulance 众that can reach them within 8 minutes.
+2. When 1 ambulance has already been dispatched, and there are 2 ambulances
+available, place them at (2, 5) or (2, 6). All zones are covered with both location
+公
+arrangements offer the OCR of 11%. (This also means that the first ambulance to
+be dispatched should be the one stations at 5 or 6.)
+3. When 2信 ambulances have been dispatched, and only 1 ambulance is left available,
+unfortunately, it is impossible to cover all the zones. However, the best location
+for the last ambulance is 2, with 160,000 people within the 8-minute reach.
+微
+Plan Two
+If you regard the response speed or efficiency as priority, then you might want to
+consider Plan Two. The detailed station plan is as follows:
+1. When all the 3 ambulances are available, station them at (1, 2, 5) or (1, 2, 6), since
+these two arrangements have the shortest average respond time among all the
+arrangements that are able to cover the whole county.
+2. When 1 ambulance has already been dispatched, and there are 2 ambulances
+available, place them at (1, 5), (1, 6), (2, 5) or (2, 6). They all have the shortest
+average respond time among all the arrangements that are able to cover the whole
+county.
+3. When 2 ambulances have been dispatched, and only 1 ambulance is left available,
+the situation is the same with Plan One, the best location is 2, and 160,000 people
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 41 of 46
+are within the 8-minute reach.
+In other rare cases, such as when a catastrophe occurs, we have developed another set
+of models to design the optimum arrangement of the three ambulances. However,
+since the situation varies according to different types of diseases and different major
+disaster locations, we are unable to list all of the possible arrangements here. You are
+welcomed to contact us at any time for more information if you are interested.
+The model we used to gather all these data is a scientifically sound and logically
+refined one, built out of detailed analysis and careful observation.
+M
+Through our proposal, we hope to increase the outreach of the ambulances, strengthen
+their coordination, and accelerate the process from receiving emCergency calls to
+giving fast and appropriate responses. If these can be achieved then the capacity of
+M
+rescue missions can be increased, and rescue approaches will be more tailored to the
+specific needs of the local population.
+i
+H
+We also suggest you consider other measures to boost your emergency response
+mechanism. We strongly recommend you in：vest more capital in the whole system and
+upgrade your ambulance arrangement by keeping more standby vehicles on hand so
+as to ensure effective coverage of the whole county.
+号
+For more extensive optimizations, we also suggest engrafting more strategically
+planned capital-intensive infrastructure such as smart grids and traffic networks on a
+众
+regional basis. Perhaps large-scale emergency drills can be put into practice so that
+local communities are involved early in planning and all details are taken into
+consideration at the公 designing stage.
+It is our sincere hope that our models can be of good reference. Thank you for your
+信
+attention.
+Be微st regards.
+Sincerely,
+HIMCM Team #4155
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 42 of 46
+9. Appendix
+9.1 Reference
+(1) PAUL W. RENO, Factors Involved in the Dissemination of Disease in Fish
+Populations, Journal of Aquatic Animal Health 10:160–171, 1998
+(2) K.S. Jaiswal1 D.J. Wald2 P.S. Earle2 K.A. Porter3 and M. Hearne, Earthquake
+M
+Casualty Models Within the USGS Prompt Assessment of Global Earthquakes for
+Response (PAGER) System, University of Cambridge UK June.15-16, 2009
+C
+(3) http://en.wikipedia.org/wiki/Dijkstra's_Algorithm
+M
+(4) http://en.wikipedia.org/wiki/Richter's_Magnitude_Scale
+i
+H
+(5) http://en.wikipedia.org/wiki/Tree_traversal
+：
+(6) JOSE´ BADAL,w, MIGUEL VA´ ZQUEZ-PRADA and A ´LVARO GONZA´
+LEZ, Physics of the Earth, University of Zaragoza, Sciences B, Pedro Cerbuna 12,
+号
+50009 Zaragoza,Spain,Preliminary Quantitative Assessment of Earthquake
+Casualties and Damages
+众
+(7) http://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
+公
+9.2 M信atlab Code
+（1微）
+#dijkstra#
+clear;
+M=10000;
+a(1,:)=[2,16,18,4,12,2];
+a(2,:)=[zeros(1,1),1,8,12,14,10];
+a(3,:)=[zeros(1,2),1,6,18,16];
+a(4,:)=[zeros(1,3),1.5,12,6];
+a(5,:)=[zeros(1,4),1,6];
+a(6,:)=[zeros(1,5),2];
+a=a+a';
+pb(1:length(a))=0;pb(1)=1;
+index1=1;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 43 of 46
+index2=ones(1,length(a)); d(1:length(a))=M;d(1)=0;
+temp=1;
+while sum(pb)<length(a)
+tb=find(pb==0);=
+d(tb)=min(d(tb),d(temp)+a(temp,tb));
+tmpb=find(d(tb)==min(d(tb)));
+temp=tb(tmpb(1));
+pb(temp)=1;
+index1=[index1,temp];
+index=index1(find(d(index1)==d(temp)-a(temp,index1)));
+if length(index)>=2 M
+index=index(1);
+end C
+index2(temp)=index;
+M
+end
+d, index1, index2
+i
+H
+（2）
+：
+h=zeros(1,6);
+data=[1,8,12,14,10,12;8,1,6,16,12,10;12,18,1.5,10,6,4;16,14,4,1,10,8;18,16,6,4,2,2;16
+号
+,18,4,6,2,2];
+for i=1:1:6
+for j=1:1:6
+众
+for k=1:1:6
+for x=1:1:6
+if da公ta(i,x)<=8 || data(j,x)<=8 || data(k,x)<=8
+h(x)=h(x)*1;
+else h(x)=h(x)*0;
+信
+end
+end
+微 s=h(1)*h(2)*h(3)*h(4)*h(5)*h(6);
+if s==1 && i~=j && j~=k && i~=k
+i;
+j;
+k;
+s=0;
+su=su+1;
+end
+h=ones(1,x);
+end
+end
+end
+su
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 44 of 46
+（3）
+#fast response#
+i=1;
+sum=0;
+min=zeros(1,6);
+data=[1,8,12,14,10,12;8,1,6,16,12,10;12,18,1.5,10,6,4;16,14,4,1,10,8;18,16,6,4,2,2;16
+,18,4,6,2,2];
+a=input('ambulance1=');
+b=input('ambulance2=');
+c=input('ambulance3=');
+for i=1:1:6 M
+if data(a,i)<=data(b,i)
+min(i)=data(a,i); C
+else min(i)=data(b,i);
+M
+if min(i)>data(c,i)
+min(i)=data(c,i);
+end i
+H
+end
+end ：
+min
+for i=1:1:6
+号
+sum=min(i)+sum;
+end
+aver=sum/6
+众
+（4） 公
+#ill#
+function y=ill(t,x)
+信
+a=1;
+b=0.3;
+y=微[a*x(1)*x(2)-b*x(1);-a*x(1)*x(2)];
+[t,x]=ode45('ill',ts,x0);
+plot(t,x(:,1),t,x(:,2)), grid,pause
+plot(x(:,2),x(:,1)),grid on;
+end
+（5）
+# ambulance situation#
+function ambulance
+for i=1:1:x
+for j=1:1:x
+for k=1:1:x
+for x=1:1:x
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 45 of 46
+if shuju(i,x)<=8 || shuju(j,x)<=8 || shuju(k,x)<=8
+h(x)=h(x)*1;
+else h(x)=h(x)*0;
+end
+end
+s=h(1)*h(2)*h(3)*h(4)*h(5)*h(6);
+if s==1 && i~=j && j~=k && i~=k
+i;
+j;
+k;
+s=0; M
+su=su+1;
+end C
+h=ones(1,x);
+M
+end
+end
+end i
+H
+su
+：
+（6）
+号
+#8 minutes#
+clear;
+M=10000;
+众
+a(1,:)=[1,8,M,M,M,M];
+a(2,:)=[8,1,6,M,M,M];
+a(3,:)=[M,M,1.5,M公,6,4];
+a(4,:)=[M,M,4,1,M,8];
+a(5,:)=[M,M,6,4,2,2];
+信
+a(6,:)=[M,M,4,6,2,2];
+a=a+a';
+pb(微1:length(a))=0;pb(1)=1;
+index1=1;
+index2=ones(1,length(a));
+d(1:length(a))=M;d(1)=0;
+temp=1;
+while sum(pb)<length(a)
+tb=find(pb==0);
+d(tb)=min(d(tb),d(temp)+a(temp,tb));
+tmpb=find(d(tb)==min(d(tb)));
+temp=tb(tmpb(1));
+pb(temp)=1;
+index1=[index1,temp];
+index=index1(find(d(index1)==d(temp)-a(temp,index1)));
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4155 page 46 of 46
+if length(index)>=2
+index=index(1);
+end
+index2(temp)=index;
+end
+d, index1, index2
+（7）
+#Floyd#
+D=A; M
+n=length(D);
+for i=1:n C
+for j=1:n
+M
+R(i,j)=i;
+end
+end i
+H
+for k=1:n
+for i=1:n ：
+for j=1:n
+if D(i,k)+D(k,j)<D(i,j)
+号
+D(i,j)=D(i,k)+D(k,j);
+R(i,j)=R(k,j);
+End
+众
+End
+End
+hl=0; 公
+for i=1:n
+if D(i,i)<0
+信
+hl=1;
+break;
+微 end
+end
+if(hl==1)
+fprintf('minus')
+break;
+end
+end
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

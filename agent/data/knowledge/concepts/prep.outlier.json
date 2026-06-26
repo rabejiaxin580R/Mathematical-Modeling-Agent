@@ -1,0 +1,91 @@
+{
+  "schema_version": 3,
+  "concept_id": "prep.outlier",
+  "title": "异常值检测",
+  "taxonomy_path": [
+    "数据预处理与统计分析",
+    "数据预处理",
+    "异常值检测"
+  ],
+  "module_id": "E",
+  "subcat_id": "E.3",
+  "aliases": [
+    "异常值",
+    "箱线图",
+    "IQR",
+    "3sigma",
+    "Z-score"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "异常值检测就是找出数据中那些“格格不入”的离群点，避免它们干扰分析结果。",
+    "intuition": "想象一个班级里大部分同学身高在1.5米到1.8米之间，突然出现一个3米高的“巨人”，那这个数据很可能就是异常值。异常值可能是测量错误、录入错误，或者是真实但罕见的事件。在数学建模中，如果不处理这些异常值，模型可能会被它们“带偏”，就像平均值被一个极端值拉高一样。",
+    "when_to_use": "当你拿到数据，发现某些数值明显偏离其他数据时；或者数据分布不对称、有长尾时；或者需要做回归、聚类等对异常值敏感的模型时，就应该先做异常值检测。常见场景包括：传感器数据（如无人机轨迹）、经济数据（如房价）、生物统计（如身高体重）等。",
+    "definition": "异常值（outlier）是指数据集中与大多数数据显著不同的观测值，它们可能由测量误差、数据录入错误或稀有事件引起。异常值检测就是识别这些点的过程。",
+    "math_principle": "常用的异常值检测方法基于统计或密度。\n\n1. **Z-score法**：假设数据近似正态分布，计算每个点的Z-score：\n   $$z_i = \\frac{x_i - \\mu}{\\sigma}$$\n   其中 $\\mu$ 为均值，$\\sigma$ 为标准差。通常认为 $|z_i| > 3$ 的点为异常值（3σ原则）。\n\n2. **箱线图法（IQR）**：基于四分位数。下四分位数 $Q1$ 为第25百分位数，上四分位数 $Q3$ 为第75百分位数，四分位距 $IQR = Q3 - Q1$。异常值定义为低于 $Q1 - 1.5 \\times IQR$ 或高于 $Q3 + 1.5 \\times IQR$ 的值。\n\n3. **DBSCAN聚类法**：基于密度，将高密度区域划分为簇，低密度区域中的点视为噪声（异常值）。核心参数：邻域半径 $\\varepsilon$ 和最小点数 $MinPts$。若点 $p$ 的 $\\varepsilon$-邻域内点数 $< MinPts$，则 $p$ 为噪声点。",
+    "step_by_step": [
+      "1. 理解数据：查看数据分布、范围，初步判断哪些值可能异常。",
+      "2. 选择方法：根据数据特点选择Z-score（正态分布）、IQR（偏态分布）或DBSCAN（多簇数据）。",
+      "3. 计算阈值：对于Z-score，设定阈值（如3）；对于IQR，计算Q1、Q3和IQR。",
+      "4. 标记异常：将超出阈值的点标记为异常值。",
+      "5. 处理异常：根据上下文决定删除、修正（如用均值/中位数替换）或保留（如异常值代表真实事件）。",
+      "6. 验证效果：检查处理后数据分布是否合理，模型性能是否提升。"
+    ],
+    "worked_example": "假设有一组城市人口数据（单位：万）：[10, 12, 11, 13, 15, 14, 100, 12, 11, 13]。其中100明显异常。使用IQR法：\n- 排序：[10,11,11,12,12,13,13,14,15,100]\n- Q1 = 第2.5个位置 ≈ 11（取第2和第3的平均，实际为11）\n- Q3 = 第7.5个位置 ≈ 14（取第7和第8的平均，实际为13.5？更精确：位置=0.25*(10+1)=2.75，Q1=11+0.75*(11-11)=11；位置=0.75*(10+1)=8.25，Q3=14+0.25*(15-14)=14.25？简化：Q1=11，Q3=14，IQR=3，下限=11-4.5=6.5，上限=14+4.5=18.5，100>18.5，故为异常值。",
+    "pitfalls": [
+      "1. 异常值可能是真实事件，盲目删除会丢失重要信息。例如，金融欺诈数据中，异常交易正是要检测的目标。",
+      "2. Z-score法对正态分布假设敏感，若数据本身偏态，可能误判。",
+      "3. IQR法对样本量敏感，小样本时四分位数不稳定。",
+      "4. 多次检测可能导致过度清洗，使数据失去变异性。"
+    ],
+    "tools": "Python中常用`scipy.stats.zscore`计算Z-score，`pandas`的`describe()`和`boxplot`辅助IQR，`sklearn.cluster.DBSCAN`进行密度聚类。\n\n```python\nimport numpy as np\nimport pandas as pd\nfrom scipy import stats\n\n# 示例数据\ndata = [10, 12, 11, 13, 15, 14, 100, 12, 11, 13]\ndf = pd.DataFrame({'value': data})\n\n# Z-score法\nz_scores = np.abs(stats.zscore(df['value']))\noutliers_z = df[z_scores > 3]\nprint('Z-score异常值:', outliers_z)\n\n# IQR法\nQ1 = df['value'].quantile(0.25)\nQ3 = df['value'].quantile(0.75)\nIQR = Q3 - Q1\nlower = Q1 - 1.5 * IQR\nupper = Q3 + 1.5 * IQR\noutliers_iqr = df[(df['value'] < lower) | (df['value'] > upper)]\nprint('IQR异常值:', outliers_iqr)\n\n# DBSCAN法（需二维数据，这里用一维reshape）\nfrom sklearn.cluster import DBSCAN\nX = np.array(data).reshape(-1, 1)\nclustering = DBSCAN(eps=3, min_samples=2).fit(X)\noutliers_db = df[clustering.labels_ == -1]\nprint('DBSCAN异常值:', outliers_db)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "z_i = \\frac{x_i - \\mu}{\\sigma}",
+      "variables": {
+        "x_i": "第i个数据点",
+        "\\mu": "样本均值",
+        "\\sigma": "样本标准差",
+        "z_i": "Z-score值"
+      }
+    },
+    {
+      "latex_code": "IQR = Q3 - Q1",
+      "variables": {
+        "Q1": "下四分位数（第25百分位数）",
+        "Q3": "上四分位数（第75百分位数）",
+        "IQR": "四分位距"
+      }
+    }
+  ],
+  "cases": [
+    "2796",
+    "3681",
+    "5473",
+    "6770",
+    "8554",
+    "8700"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec002_017_02",
+      "lec003_002_02",
+      "lec004_012_02",
+      "lec006_011_02",
+      "supp_E11"
+    ],
+    "from_papers": [
+      "2796",
+      "3681",
+      "5473",
+      "6770",
+      "8554",
+      "8700"
+    ]
+  }
+}

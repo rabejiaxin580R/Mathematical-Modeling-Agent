@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "concept_id": "grad.newton",
+  "title": "牛顿法与拟牛顿法",
+  "taxonomy_path": [
+    "模型求解算法",
+    "梯度类方法",
+    "牛顿法与拟牛顿法"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.3",
+  "aliases": [
+    "牛顿法",
+    "拟牛顿",
+    "Hessian",
+    "BFGS"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "牛顿法和拟牛顿法是两种利用二阶导数信息（或近似）来加速优化求解的迭代算法，适用于需要快速收敛的连续可微优化问题。",
+    "intuition": "想象你要下山，最速下降法（梯度下降）只靠脚底感觉坡度，每次迈一小步，方向是当前最陡的方向，但可能绕路。牛顿法则像你不仅知道坡度，还知道前方地形的弯曲程度（二阶导数），能直接预测最低点的位置，一步跨到谷底附近。拟牛顿法则像你懒得每次精确测量弯曲程度，而是根据走过的路径不断修正一个估计，既快又省力。",
+    "when_to_use": "当目标函数是二阶连续可微的，且你希望收敛速度比梯度下降快（尤其是接近最优解时），同时问题规模中等（牛顿法）或大规模（拟牛顿法）时使用。如果Hessian矩阵容易计算且问题规模小，选牛顿法；如果Hessian矩阵计算昂贵或不可得，选拟牛顿法。",
+    "definition": "牛顿法是一种利用目标函数的梯度向量和Hessian矩阵（二阶导数矩阵）构造迭代方向（牛顿方向）的优化算法，具有二阶收敛速度。拟牛顿法通过构造Hessian矩阵或其逆矩阵的近似，避免直接计算二阶导数，同时保持超线性收敛速度。",
+    "math_principle": "牛顿法：在点 $x_k$ 处对目标函数 $f(x)$ 进行二阶泰勒展开：$f(x) \\approx f(x_k) + \\nabla f(x_k)^T (x - x_k) + \\frac{1}{2} (x - x_k)^T H(x_k) (x - x_k)$。令梯度为零，得到 $\\nabla f(x_k) + H(x_k)(x - x_k) = 0$，解得 $x_{k+1} = x_k - H(x_k)^{-1} \\nabla f(x_k)$。\n\n拟牛顿法：构造近似矩阵 $B_k \\approx H(x_k)$ 或 $D_k \\approx H(x_k)^{-1}$，并利用梯度差 $y_k = \\nabla f(x_{k+1}) - \\nabla f(x_k)$ 和位移 $s_k = x_{k+1} - x_k$ 更新。常见更新公式：BFGS（$B_{k+1} = B_k + \\frac{y_k y_k^T}{y_k^T s_k} - \\frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}$）和DFP（$D_{k+1} = D_k + \\frac{s_k s_k^T}{s_k^T y_k} - \\frac{D_k y_k y_k^T D_k}{y_k^T D_k y_k}$）。",
+    "step_by_step": [
+      "1. 初始化：选择初始点 $x_0$，设定精度阈值 $\\epsilon$，令 $k=0$。",
+      "2. 计算梯度 $g_k = \\nabla f(x_k)$，若 $\\|g_k\\| < \\epsilon$，则停止，输出 $x_k$。",
+      "3. 牛顿法：计算Hessian矩阵 $H_k$，求解线性方程组 $H_k d_k = -g_k$ 得到牛顿方向 $d_k$。拟牛顿法：利用近似矩阵 $B_k$ 或 $D_k$ 计算方向 $d_k = -B_k^{-1} g_k$ 或 $d_k = -D_k g_k$。",
+      "4. 线搜索：沿方向 $d_k$ 确定步长 $\\alpha_k$（如Armijo条件），更新 $x_{k+1} = x_k + \\alpha_k d_k$。",
+      "5. 拟牛顿法：计算 $s_k = x_{k+1} - x_k$，$y_k = g_{k+1} - g_k$，并更新近似矩阵（如BFGS公式）。",
+      "6. 令 $k = k+1$，转步骤2。"
+    ],
+    "worked_example": "考虑简单二次函数 $f(x) = \\frac{1}{2} x^T A x - b^T x$，其中 $A$ 对称正定。牛顿法：梯度 $\\nabla f(x) = A x - b$，Hessian $H = A$。迭代公式 $x_{k+1} = x_k - A^{-1}(A x_k - b) = A^{-1}b$，一步收敛到精确解。拟牛顿法（BFGS）：初始 $B_0 = I$，$x_0 = [0,0]^T$，$b=[1,2]^T$，$A=[[2,0],[0,4]]$。第一次迭代：$g_0 = [-1,-2]^T$，$d_0 = -B_0^{-1}g_0 = [1,2]^T$，步长 $\\alpha=1$（精确线搜索），$x_1 = [1,2]^T$。计算 $s_0 = [1,2]^T$，$g_1 = [1,6]^T$，$y_0 = [2,8]^T$。更新 $B_1 = B_0 + \\frac{y_0 y_0^T}{y_0^T s_0} - \\frac{B_0 s_0 s_0^T B_0}{s_0^T B_0 s_0} = [[2,0],[0,4]]$，恰好等于 $A$。第二次迭代：$d_1 = -B_1^{-1}g_1 = -A^{-1}[1,6]^T = [-0.5,-1.5]^T$，步长 $\\alpha=1$，$x_2 = [0.5,0.5]^T$，即精确解 $A^{-1}b = [0.5,0.5]^T$。",
+    "pitfalls": [
+      "牛顿法要求Hessian矩阵正定，否则方向可能不是下降方向；拟牛顿法通过更新保持正定性，但初始矩阵需正定。",
+      "牛顿法每次迭代需计算Hessian并求解线性方程组，计算量大，不适合大规模问题；拟牛顿法只需存储近似矩阵，但内存仍随维度平方增长（L-BFGS可缓解）。",
+      "当初始点远离最优解时，牛顿法可能不收敛，需结合线搜索或信赖域。",
+      "拟牛顿法的收敛性依赖于精确线搜索或Wolfe条件，否则可能失效。"
+    ],
+    "tools": "Python中可使用SciPy的optimize模块：牛顿法用`scipy.optimize.minimize(method='Newton-CG')`，拟牛顿法用`method='BFGS'`或`method='L-BFGS-B'`。\n```python\nimport numpy as np\nfrom scipy.optimize import minimize\n\ndef rosen(x):\n    return sum(100.0*(x[1:]-x[:-1]**2.0)**2.0 + (1-x[:-1])**2.0)\n\nx0 = np.array([1.3, 0.7, 0.8, 1.9, 1.2])\nres_newton = minimize(rosen, x0, method='Newton-CG', jac=True, hessp=lambda x, p: ...)  # 需提供Hessian向量积\nres_bfgs = minimize(rosen, x0, method='BFGS', jac=True)\nprint(res_bfgs.x)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "x_{k+1} = x_k - H(x_k)^{-1} \\nabla f(x_k)",
+      "variables": {
+        "x_k": "第k次迭代点",
+        "H(x_k)": "目标函数在x_k处的Hessian矩阵",
+        "\\nabla f(x_k)": "梯度向量"
+      }
+    },
+    {
+      "latex_code": "B_{k+1} = B_k + \\frac{y_k y_k^T}{y_k^T s_k} - \\frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k}",
+      "variables": {
+        "B_k": "第k次迭代的Hessian近似矩阵",
+        "s_k": "x_{k+1} - x_k",
+        "y_k": "\\nabla f(x_{k+1}) - \\nabla f(x_k)"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_D11"
+    ],
+    "from_papers": []
+  }
+}

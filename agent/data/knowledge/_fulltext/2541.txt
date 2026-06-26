@@ -1,0 +1,2229 @@
+Team #2541 Page 1 of 51
+For office use only For office use only
+F1 ________________
+T1 ________________
+F2 ________________
+T2 ________________
+F3 ________________
+T3 ________________
+F4 ________________
+T4 ________________
+M
+2010
+C
+13th Annual High School Mathematical Contest in Modeling (HiMCM)
+Summary Sheet M
+(Please attach a copy of this page to each copy of your Solution Paper.)
+i
+Team Control Number: H2541
+Problem Chosen: A
+：
+Please type a summary of your results on this page. Please remember not to include
+号
+the
+name of your school, advisor, or team members on this page.
+众
+Our model is 5-year plan for the development of bicycle-sharing programs in Chicago, Denver
+and Des Moines, aiming to popularize a new means of transport and to relieve the city center of
+traffic overflow. 公
+The basis of the model is a database of roads, bike lanes, buildings, facilities and existing
+信
+bike-rental stations in the three cities. All sites of buildings, facilities and existing rental stations
+are marked with accurate longitudes and latitudes. With this database, we define the city center for
+eve微ry city. According to our analysis, we should set up an initial network of bicycle-sharing
+program (including bicycle rental stations and bike lanes) in Des Moines and Chicago, where the
+existing bicycle service is far from enough. Especially, in Chicago, a metropolis covered with a
+developed subway system, we should place bicycle rental stations near subway stations. In Denver,
+a city already covered with a bicycle-sharing network, we may directly embark on improvements.
+The five-year program comes in three parts. The first part is a two-year initial plan for Chicago
+and Des Moines, with which we build an initial network of bicycle rental stations and lanes in
+these two cities. When looking for ideal positions to place new stations, we divide the
+buildings/facilities in the city center into several types and then apply the analytic hierarchy
+process (AHP) to quantize the different significance of these types. Afterwards, we weigh the
+significance values of buildings with the distance between the buildings and the new station so as
+to find the ideal location of the rental station. When building bike lanes, we apply linear regression
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 2 of 51
+to find a line such that the total distance between stations and this line is minimized. Then we fit
+the line into actual streets with appropriate linkage to existing lanes.
+The second part is an additional plan to improve the initial bicycle-sharing program in the cities
+and thus includes all three cities. We deal with addition of new stations and lanes. We apply the
+Central Place Theory and find out the initial service range of every existing bicycle rental station.
+With the increase in demand for bicycles, the service range of each station will decrease year by
+year, and some “blind areas” will be left out of the coverage of the program. New stations should
+be built in these areas to maintain coverage of service and new lanes should be built if these new
+stations are far away from existing lanes.
+M
+The third part is the discussion on allocation of bicycles and regulation of bicycles according to
+the change in demand. We apply the Markov Chain Model to decide the diffeCrent status change of
+bicycle stations on working days and work-free days, and distribute bicycles according to the
+M
+steady state of the Markov Chain.
+Finally, we put all the results together and make annual plans for eiach city, and prepare a letter to
+H
+the mayor recommending our plan.
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 3 of 51
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Team # 2541
+关注 HiMCM
+Problem×+ − ÷ A
+Hi CM 获取更多资讯
+
+Team #2541 Page 4 of 51
+Contents
+1. Introduction………………………………………………..……5
+2. Assumptions and Basic Analysis……………….………………5
+2-1 Assumptions……………………………………………….……..5
+2-2 Basic Analysis…………………………………...…….…………6
+M
+3. Methods…………………………………………………..…….10
+C
+3-1 Basic Ideas and Concerns of Modeling……………………….11
+M
+3-2 Application of the Model………………………………………18
+i
+4. Discussion………………………………H……………….……..31
+：
+4-1 Result………………………………………….………….……..31
+4-2 Assessment of the Model…………………………........……….44
+号
+5. Letter to Mr. /Mrs. Mayor……………………………….……45
+众
+6. Reference………………………………………………….…...47
+公
+7. Appendix: MATLAB Code…………………………….……..48
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 5 of 51
+1. Introduction
+The United States is a great country – both in terms of number of highways and
+frequency of traffic jams. Counter-urbanization has flooded the city center with
+private vehicles transporting people to and from the distant residential areas –
+particularly during rush hours. The decreasing efficiency of driving cars, in a way,
+creates a good opportunity for the introduction of bicycle renting programs in
+downtown areas. Bikes provide flexible and swift rides inside the city. They are
+inexpensive and, if equipped with a carefully designed network and proper layout of
+rental stations and bicycle lanes, more convenient than any other means of transport.
+M
+Our goal is to give a general model of planning a complete bicycle rental system in
+the city centers of Des Moines, Chicago and Denver. The model includes a detailed
+C
+approach to determining the best locations of rental stations, an analysis of bicycle
+allocation, plans for bike lane and future station construction and, and a 5-year
+M
+development strategy wrapped up with a short letter to the mayor. We believe one day
+Americans will ride to work and enjoy ham in the office, rather than jam on the road.
+i
+H
+：
+2. Assumptions and Basic Analysis
+号
+2-1 Assumptions
+(1.) In one year, the numbe众r of rentals and returns at each bicycle station on any
+working day does not change. Since most people go to work during a fixed period
+on weekdays, the number of bicycles that are taken away and returned to stations
+公
+does not change much from day to day. The slight difference in status change can
+therefore be neglected.
+信
+(2.) In one year, the number of rentals and returns at each bicycle station on any
+work-free day (including weekends and public holidays) does not change. Most
+微people stay away from their work at weekends and on public holidays. They tend
+to visit museums, go to the theatre or hang out with friends. The difference in
+bicycle usage between work-free days is negligible.
+(3.) Everyone that takes a short bike-trip to commute to work takes round trips. Since
+most people come back from work in the same way as they go, bicycles that are
+taken away from the station for someone to get to work will be returned at the end
+of the day.
+(4.) During working days, 50% of the bike renters use the bicycle to commute to work.
+This value will be extremely important when we determine how to allocate
+bicycles at different stations. We are not able to determine the exact value of this
+percentage since this value may vary from place to place, so we make this
+assumption.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 6 of 51
+(5.) If a bike renter does not commute to work with the bicycle, then the possibility that
+he/she visits any building/facility in the city center is the same.
+(6.) The annual growth in bicycle demand at any place in Des Moines, Chicago and
+Denver is 30%.
+(7.) In one year, all rental stations in the same city share the same service radius
+(range). This assumption will be of vital importance when discussing where and
+how to add new stations to the program, and will be further discussed in the
+chapter three.
+(8.) The average number of bicycles at each station is ten. Currently in Des Moines,
+M
+Chicago and Denver, each rental station in use has approximately ten bicycles on
+average. According to our model, we will not make great changes in the number
+C
+of bicycles, and we assume that the average number of bicycles at each station
+remains ten throughout the program.
+M
+2-2 Basic Analysis
+i
+H
+(1.) A Brief Model Overview
+：
+We are required to develop a model that can be applied to the five-year development
+strategy of bike-sharing programs in Chicago, Denver and Des Moines. What we need
+号
+to do is to make the program both effective and efficient. A well-built model should:
+(i.) Take the existing bicycle rental stations and bicycle lanes into consideration,
+众
+(ii.) Make the bicycle rental program accessible to every citizen in the city who may
+need it,
+公
+(iii.) Provide a clear layout of locations of new rental stations and lanes to be built in
+the five-year program in chronological order, and
+信
+(iv.) Ensure stability and self-support of the program after the five-year program is
+completed.
+微
+(2.) Facts that we should know
+Fact 1. In medium-sized American cities, driving private cars is more favored than
+taking public transportation (that is generally made up of bus lines) – waiting for no
+less than a quarter of an hour for a tortuous bus ride wastes far too much time. These
+cities are thus equipped with abundant parking facilities. In some of the cities, parking
+lots surround the city center (as in Des Moines), whereas in other cities parking lots
+permeate the entire downtown area (as in Denver).
+Fact 2. In metropolises (like Chicago), city centers are often overcrowded with
+high-rises. These office blocks makes the city center more compact since each block
+occupies less space than buildings with ordinary heights, which results in considerable
+traffic pressure in the narrow streets. Fortunately, large cities are often armed with
+mass transit railways (like the CTA Trains in Chicago, and – even in Denver, the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 7 of 51
+RTD). These railways link residential areas to the city center more efficiently than any
+surface transport, and they are relatively inexpensive – but their coverage is
+sometimes not wide enough. Since the distance between mass transit stations are
+greater than that between bus stops, some of the passengers have to travel a longer
+distance to ride the trains. So we can install bicycle stations around these stations and
+at various destinations in the city, so as to make these transit stations more accessible.
+This would encourage more people to adopt Bike + Ride and therefore relieve the city
+of traffic stress.
+(3.) Different features of Des Moines, Chicago and Denver M
+(a.) Des Moines, IA
+C
+For medium-sized cities like Des Moines (with a city center covering about 4 km2),
+M
+where private cars dominate public transportation (primarily consisting of bus routes),
+there is ample supply of parking spaces around the downtown area. This is evident
+through satellite maps obtained by Google Earth™, whiere we can see a sharp
+H
+difference between dense blocks of buildings and extensive parking spaces
+surrounding them. However, while a lot of r：esidents drive directly into the downtown
+area (sometimes causing slow traffic inside the very compact city), these precious
+parking spaces are not used to their full extent. Getting stuck in traffic jams is indeed
+号
+annoying and time-consuming. It is thus desirable that, if we could take full advantage
+of those parking lots by setting up bicycle stations around them and inside the city
+center, people would tend to choose Park + Bike as their favored way when heading
+众
+for the city center, if they feel what they have to pay for the bicycles is well worth the
+loss of time.
+公
+信
+微
+Fig. 2-2-1. Google Earth™: Downtown Des Moines
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 8 of 51
+Currently, there are four bicycle rental stations in the downtown area. We will build
+many more new stations in this city so as to meet the needs of people.
+M
+C
+M
+i
+H
+：
+号
+众
+Fig.2-2-2. B-cycle: Current Rental Stations of Des Moines
+公
+(b.) Chicago, IL
+Chicago is the third largest metro city in the United States. Various subway lines,
+信
+which are crucial to the city’s public transportation system, stretch throughout the city.
+The downtown area of Chicago is an area that is often nicknamed as “the Loop”,
+wh微ich refers to an area rounded by several busiest subway lines in the east of the city.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 9 of 51
+Fig. 2-2-3 Google Earth™: “The Loop” in Chicago (Colored Lines Stand for Subway Lines; Blue M
+Icons Stand for Subway Stations)
+M
+C
+M
+i
+H
+：
+Fig. 2-2-4 The Subway Nut: The Loop is a Combination of the Busiest Subway Lines in Chicago
+号
+The city of Chicago stretches far beyond the Loop. Most of the residential areas are
+miles away from the Loop, and are connected to the center by a number of subway
+众
+lines. Most of the commutations within the Loop are achieved by subway. We decide
+that bicycle stations should serve as a supplement to the subway system (e.g. Bike +
+Ride). Currently, th公ere are five bicycle rental stations, two of which are out of use;
+one is far away from city center, which cuts the actual number of bicycle stations in
+use to two. We will analyze the transport usage and subway system of this city to see
+信
+where new rental stations should be built.
+微
+(c.) Denver, CO
+Denver is the largest city in the state of Colorado. More than twenty existing bicycle
+rental stations have already covered most of the city. The dense distribution of
+existing bicycle stations will have a great impact on the future plan of the bicycle
+rental program in the future.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 10 of 51
+M
+C
+Fig. 2-2-5. Big Green Boulder: A Partial Map of the Bicycle Rental Stations in Denver
+M
+There is a unique and well-developed network of light-rail in the city center of Denver.
+This undoubtedly should be taken into consideration when iplanning the 5-year
+H
+bike-sharing program. We will take the light-rail system of Denver into consideration
+when placing new bicycle stations and lanes.
+：
+号
+众
+公
+信
+微
+Fig. 2-2-6 Google Earth™: Downtown Denver (Blue Icons Stand for Light-rail Stations)
+3. Methods
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 11 of 51
+3-1 Basic Ideas and Concerns of Modeling
+We use a flow diagram to streamline our modeling process.
+The Bicycle Sharing Program
+Initial Plan (Including Locations of
+Additional Plan (Including Locations of
+Bicycle Rental Stations and Bicycle
+New Stations and Lanes to be built year
+Lanes built in the 1st and 2nd year;
+by year)
+M
+does not apply to Denver)
+C
+Stations and Lanes of Stations and Lanes of Stations and Lanes of Des
+Chicago (Five-year Denver (Five-year Moines (Five-year
+M
+development layout) development layout) development layout)
+i
+H
+Allocation of Bicycle at each Station and
+：
+Regulations between Stations
+Fig. 3-1-1. 号Flow Diagram of Modeling
+众
+(1.) Initial Plan for Cities
+The initial plan is to be implemented in the first two years of the five-year program,
+aiming to improve 公the current bicycle-sharing system in the three cities so as to meet
+the basic needs of the citizens.
+This plan c信onsists of two parts – (1.) building new stations, and (2.) constructing new
+bike lanes.
+(a.微) Building new Stations
+Unlike those in Denver, bicycle stations in Chicago and Des Moines are far from
+enough (four in Des Moines, two in Chicago). Therefore, the first step of the initial
+plan is to construct a fundamental network of rental stations in Des Moines and
+Chicago.
+We need to find out the ideal places for bicycle stations. This is mostly affected by
+different values of significance of the buildings and facilities nearby. We decide to
+calculate the values of significance of buildings in an area, and then find out the best
+point to place the rental station according to these values. It is reasonable to place the
+rental stations closer to buildings with larger values significance than those with
+smaller values.
+(i.) Calculating the Significance of Buildings and Facilities
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 12 of 51
+Quantizing the significance of different buildings and facilities without personal
+preference is implausible. In order to successfully and scientifically determine the
+values of significance of buildings and facilities which directly affects the location of
+rental stations, we decide to apply an analytic method invented by T. L. Saaty, which
+is a part of the famous analytic hierarchy process (AHP)[1].
+Suppose we need to build one bicycle station in an area with n major buildings (n∈
+N*). We assign different significance values to different types of buildings and
+facilities. Let s denote the value of significance for the i-th building (i=1, 2, … , n).
+i
+We compare the buildings in the area with each other by finding out the ratio (m ) of
+ij
+the significance of the i-th building to the j-th building: M
+s
+i
+m ij = s C
+j
+M
+When discussing the ratio of s to s, we apply Saaty’s 9-point importance scale to
+i j i
+determine the value of m . Saaty’s 9-point scaleH features numerical grading of
+ij
+significance comparison.
+：
+Value of m or What the value stands for
+ij 号
+s:s
+i j
+The i-th and the j-th buildings/facilities are of the same
+众
+1
+significance.
+3 The i-th is relatively more significant than the j-th.
+公
+5 The i-th is clearly more significant than the j-th
+信
+7 The i-th is obviously more significant than the j-th.
+9 The i-th is undoubtedly more significant than the j-th.
+微
+2, 4, 6, 8 Levels in between
+Tbl. 3-1-1: Saaty’s 9-point importance scale with description
+When we finish the process, we can get n2 results (m to m ) with which we build
+11 nn
+matrix M, an n×n pairwise comparison matrix (here also a positive reciprocal
+matrix)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #2541  |     |     |     |     |     |     |     |     |     | Page 13 of 51  |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+|             |     |     |     |     |     |     |     | s s | s   | s              |
+|             |     |     |     |     |     |     |     | 1   | 1 1 | 1              |
+⋯
+|     |     | m   | m   | m   | ⋯   | m   |     | s s | s   | s   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | 11  | 12  | 13  |     | 1n  |     | 1   | 2 3 | n   |
+
+|     |     |      |     |     |     |     |     | s s  | s     | s     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | ---- | ----- | ----- |
+|     |     | m    | m   | m   | ⋯   | m   |     | 2    | 2 2   | 2     |
+|     |     |   21 | 22  | 23  |     | 2n  |     |      | ⋯     |       |
+|     |     |      |     |     |     |     |     | s s  | s     | s     |
+|     |     |      |     |     |     |     |     |   1  | 2 3   | n     |
+|     |     |      |     |     |     |     |     |      |       |       |
+|     | M   | = m  | m   | m   | ⋯   | m   | =   | s s  | s     | s     |
+|     |     |   31 | 32  | 33  |     | 3n  |     |   3  | 3 3 ⋯ | 3     |
+|     |     |      |     |     |     |     |     |  s s | s     | s     |
+|     |     | ⋮    | ⋮   | ⋮   | ⋮   | ⋮   |     | 1    | 2 3   | n     |
+|     |     |      |     |     |     |     |     |   ⋮  | ⋮ ⋮   | ⋮ ⋮   |
+|     |     |  m   | m   | m   | ⋯   | m   |     | s s  | s     | s     |
+|     |     | n1   | n2  | n3  |     | nn  |     | n    | n n   | n     |
+⋯
+|     |     |     |     |     |     |        |     |  s s | s   | s   |
+| --- | --- | --- | --- | --- | --- | ------ | --- | ---- | --- | --- |
+|     |     |     |     |     |     |        |     | 1    | 2 3 | n   |
+|     |     |     |     |     |     | where  |     |      |     | M   |
+|     |     |     |     |     | m   | = m−1  |     |      | C   |     |
+|     |     |     |     |     |     | ij     | ji  |      |     |     |
+M
+If we were perfectly rational and reasonable when we determine these values, we
+should have
+i
+H
+|     |     |     |     |     | a   | ∙a = | a   |     |     |     |
+| --- | --- | --- | --- | --- | --- | ---- | --- | --- | --- | --- |
+|     |     |     |     |     | ij  | jk   | ik  |     |     |     |
+：
+For example, if the value of significance of an office building is twice that of a
+residential site, while the value of significance of a subway station is three times that
+of the office building, then the ratio of s 号  to s  should be six. Ideally,
+|     |     |     |     |     |     | subway station |     | residential site |     |     |
+| --- | --- | --- | --- | --- | --- | -------------- | --- | ---------------- | --- | --- |
+every ratio that appears in M should follow this rule – in that case the matrix M
+attains conformity. With the feature vector about the maximum positive eigenvalue
+众
+of the conformity matrix, we can determine, from those previously assigned pairwise
+comparison values, the significance of every building/facility in the area.
+公
+It is, however, conceivable that this would not be the usual case, since different people
+have different judgments for any two of these factors, and that those judgments may
+not be perfe信ctly interrelated numerically. To ensure the accuracy of the final result, we
+have to limit the inconformity of the matrix to a certain level; therefore we have to
+perform a series of tests on the matrix and make adjustments thereafter. Later on in
+微
+Chapter 3-2, we will provide details of these tests.
+(ii.) Finding  the  Best  Location  of  Rental Stations  by  Weighing  Distance  and
+Significance
+(iii.)Let B represent a possible spot to locate the station and r the distance from B to
+i
+the i-th building. At the best location of the bicycle station, (B*), the parameter
+n
+|     |     |     |     |     | G   | =  s | r   |     |     |     |
+| --- | --- | --- | --- | --- | --- | ---- | --- | --- | --- | --- |
+i i
+i=1
+should reach a minimum. In that case, the distance between the bicycle station and
+each building is weighted by the different significance of buildings/facilities. For
+example, in a certain area, the bicycle station should be built closer to a busy subway
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #2541 Page 14 of 51
+station or a popular tourist attraction (say, a museum), whose s values are relatively
+i
+larger, than an ordinary bus stop or an unused office building, whose s values are
+i
+small.
+(b.) Constructing new Bike Lanes
+Rome was not built in a day, just as bicycle lanes have to be constructed step by step.
+To make full use of existing lanes and to work out an optimized plan for bike lane
+construction are also among the concerns of a well-developed bicycle renting program.
+Some cities may already have quite a few lanes while others only have one or two
+M
+lanes that run around the city center (like those in Des Moines and Chicago). These
+lanes do not help much if most of the stations are set up inside the city center (as
+C
+presented later in the application of model). Therefore, constructing new lanes inside
+the city is necessary. It would be even better if these new lanes can be connected to
+M
+those existing ones, thus forming a consistent network that will benefit more people.
+We can tell that, at the beginning of the plan, customers haive to walk a short distance
+H
+with their bicycles before they reach the bicycle lane. To maximize the efficiency of
+those lanes, we have to carefully decide w：here to construct new lanes in the initial
+plan so that the total distance that the renters have to walk with their bicycles is
+minimized, i.e. we should find a number of existing streets and roads such that the
+号
+extent to which all the stations diverge from these streets is the smallest.
+These all lead to a simple method called Linear Regression (with Least Squares)[2],
+which involves finding a 众regression (straight) line of a group of points on an
+xOy-plane.
+Suppose we have 公set up a plane rectangular coordinate system on the map, and
+determined the locations of the n bicycle stations (B , B , … , B ) with coordinates (x ,
+1 2 n 1
+y ), (x , y ), … , x , y ). Let y represent the y-coordinates of all the points on the
+1 2 2信n n i
+regression line that correspond with points (x, y), and let Q= n (y −y ). The
+i i i=1 i i
+regression line is one that makes Q reach its minimum value. In this model,
+mi微nimizing the value of Q means to minimize the total distance between the stations
+and the bicycle lanes, thus reducing the “walking distance” of renters.
+Using least squares, the regression line for these points is given by
+y=𝑎 +𝑏 𝑥
+where
+n x −x (y −y )
+b =
+i=1 i i
+n (x −x )2
+i=1 i
+a = y −b x
+The three cities that we analyzed all have streets that are very close to straight lines.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 15 of 51
+We can fit the regression lines fit them into actual streets, and we will be able to
+figure out which of the streets, if equipped with bicycle lanes, will provide the best
+accessibility for renters.
+There is yet another thing – minimizing the walking distance does not necessarily
+mean utmost convenience for all renters, since these points may not display a very
+strong linear relationship, and may diverge drastically from the regression line.
+Therefore we decided to group the points so that each group demonstrates strong
+linear relationship. Thus the outcome consists of more than a single bicycle lane – a
+good start for building up a bicycle lane network. Meanwhile, to ensure a better
+connection with existing networks, adjustments will be manually made to link these
+M
+new lanes with older ones.
+(2.) Additional Plan C
+Since the demand for bicycles grows year by year, the city will gradually “outgrow”
+M
+the initial plan, and we need to add new bicycles and lanes to the program year by
+year. The additional plan aims to make the bike-sharing program in the three cities
+i
+more mature, and will be implemented over a threHe-year period (for Denver, five,
+since the city does not need the two-year initial plan)
+：
+(a.) Adding new Stations
+号
+We will not bring any changes to the number of bicycles at each station. Instead, more
+stations will be built to shorten the distance that people need to walk to access the
+众
+rental stations.
+Here we adapt one part of the famous Central Place Theory[3][4] to suit our model. At
+公
+the end of the initial plan, we have a number of bicycle stations serving customers in
+the city. Each station has its specific circular service area, called the range. The initial
+value of th信e radii of these ranges should be the smallest value such that the bicycle
+stations built during the initial plan can cover the whole downtown area. As the
+demand for bicycle rentals increases, the city embarks on the additional plan to
+微
+determine the locations of new stations, and then the range of each station should
+decrease. The percentage of such decrease should be related to the 30% rise in bicycle
+demand. Suppose that each bicycle rental station offers bike-sharing service for
+citizens that live within a circle centered at the station with service radius R.
+Fig. 3-1-2. Google Earth™: A Brief Demonstration
+of Service Radius, R (All Circles can together
+cover every place of this part of the city center)
+According to assumption (6.), the demand
+for bicycles will grow by 30% at every
+place in the three cities annually. Since the
+number of bicycles at each station will
+remain unchanged, the number of people
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 16 of 51
+that each station can serve will also be similar to that of the previous years. Thus,
+when new stations are added to the program, there must be:
+(1.) A 30% per year growth in the total number of bicycles available, and
+1
+(2.) A 1− × 100% per year decrease in the range of each station.
+1+30%
+According to assumption (7.), all the stations in the same city share the same range in
+a certain year. Let R(0) denote the service radius of each bicycle rental station just
+after the initial plan is fulfilled (for Denver, the service radius at the beginning of the
+five-year program). Since the service area will decrease by 1−
+1M
+× 100%
+1+30%
+each year, the service radius, R, will decrease annually by
+C
+M
+1
+∆% = 1− × 100% .
+1+30% i
+H
+Therefore, the service radius of each station ：after n years, which is denoted by R(n), is
+given by
+号 n
+1
+R n = R 0 × 1− × 100%
+1+30%
+众
+Since R is the smallest radius that enables all the service areas to cover the whole
+downtown, when R公 is decreased each year, some areas of the city center will no
+longer be within the coverage of rental stations. New bicycle stations will be built in
+these uncovered areas.
+信
+(b.) Adding new Lanes
+Wh微en new stations are constructed, we need to see if there are any stations far away
+from existing bicycle lanes. If there are such stations, then we should build new lanes
+to connect these stations with existing lanes. If all stations are no more than
+100-metres away from existing lanes, then no extra lanes will be needed.
+(3.) Allocation and Regulation of Bicycles between Rental Stations
+Virtually nobody could expect that the number of bicycles at each station remains the
+same at the end of each day. Since the total number of bicycles at the station will
+change, it is necessary to transport bicycles between stations in order to maintain a
+balanced service of bicycles. Thus, the number of bicycles to place at each station
+should be carefully planned so that we can minimize the need to transport bicycles
+between stations.
+In order to estimate the number of bicycles going out of and coming into the station
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #2541  |     |     |     |     |     |     |     |     |     | Page 17 of 51  |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+every  day,  we  should  predict  the  possible  demand  of  bicycles  at  each  station
+according to the properties and functions of different buildings/facilities nearby.
+We apply the Markov Chain Model[5] the change in total number of bicycles at each
+station. Suppose there are k bicycle stations in a certain area (k∈N*) numbered as 1, 2,
+3, …, k. Bicycles can run freely between any two of the stations in this area. Suppose
+the initial number of bicycles at each station is a(0) ( i=1, 2, …, k ). Thus, the initial
+i
+status of all bicycle stations can be expressed as follows with the matrix A(0).
+
+|     |     |     | A 0  |      |  0  |  0  |        |  0 )  |     |     |
+| --- | --- | --- | ---- | ---- | --- | --- | ------ | ----- | --- | --- |
+|     |     |     |      | = (a | a   |     | …    a |       |     |     |
+|     |     |     |      | 1    |     | 2   |        | k     |     | M   |
+
+C
+Assume that in one hour, the probability that a bicycle runs from station i to station j
+is p . If i=j, then p  stands for the probability that a bicycle remains at the original
+| ij  |     | ij  |     |     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+place. Thus, after one hour, the numbers of bicycles at each station are
+i𝑘
+H
+|     | 𝑎  1  | = 𝑎 |  0 𝑝 | +𝑎  0 𝑝 |     | +⋯+𝑎 |  0 𝑝 | =  𝑎 |  0 𝑝 |     |
+| --- | ----- | --- | ---- | ------- | --- | ---- | ---- | ---- | ---- | --- |
+|     | 1     |     | 1 11 | 2       | 21  |      | 𝑘    | 𝑘1   | 𝑖    | 𝑖1  |
+|     |       |     |      |         |     | ：    |      | 𝑖=1  |      |     |
+𝑘
+|     | 𝑎  1  | = 𝑎 |  0 𝑝 | +𝑎   | 号0 𝑝 | +⋯+𝑎 |  0 𝑝 | =  𝑎 |  0 𝑝 |     |
+| --- | ----- | --- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | --- |
+|     | 2     |     | 2 12 | 2    | 22   |      | 𝑘    | 𝑘2   | 𝑖    | 𝑖2  |
+𝑖=1
+⋮
+众
+𝑘
+|     | 𝑎  1  | = 𝑎 |  0 𝑝 | +𝑎  0 𝑝 |     | +⋯+𝑎 |  0 𝑝 | =  𝑎 |  0 𝑝 |     |
+| --- | ----- | --- | ---- | ------- | --- | ---- | ---- | ---- | ---- | --- |
+|     | 𝑘     | 公𝑘  | 1𝑘   | 2       | 2𝑘  |      | 𝑘    | 𝑘𝑘   | 𝑖    | 𝑖𝑘  |
+𝑖=1
+
+信
+| If we build a matrix P with values of p |     |     |     |     | ,   |     |     |     |     |     |
+| --------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+ij
+| 微   |     |     |      | p   | p     | p   | ⋯   | p   |     |     |
+| --- | --- | --- | ---- | --- | ----- | --- | --- | --- | --- | --- |
+|     |     |     |      |     | 11 12 | 13  |     | 1k  |     |     |
+|     |     |     |      | p   | p     | p   | ⋯   | p   |     |     |
+|     |     |     |      |     | 21 22 | 23  |     | 2k  |     |     |
+|     |     |     |      |     |       |     |     |     |     |     |
+|     |     |     |    P | = p | p     | p   | ⋯   | p   |     |     |
+|     |     |     |      |     | 31 32 | 33  |     | 3k  |     |     |
+|     |     |     |      |     |       |     |     |     |     |     |
+|     |     |     |      |     | ⋮ ⋮   | ⋮   | ⋮   | ⋮   |     |     |
+|     |     |     |      |  p  | p     | p   | ⋯   | p   |     |     |
+|     |     |     |      |     | k1 k2 | k3  |     | kk  |     |     |
+Then the status of each bicycle station after an hour, if represented by A(1), can be
+written as
+|     | A 1  | =   |  a  1  | a  1  | a  1  | …   | a   |  1   = A(0)× |     | P   |
+| --- | ---- | --- | ------ | ----- | ----- | --- | --- | ------------ | --- | --- |
+|     |      |     | 1      | 2     | 3     |     | k   |              |     |     |
+Assume that P is only affected by the different functions of buildings and does not
+change overtime. Then the status of bicycle stations can be regarded as a regular chain
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #2541 Page 18 of 51
+where the status after n hours, A(n), can be found by
+A n = A(0)× Pn
+According to the properties of a regular chain, we know that, given enough time, the
+change in number of bicycles at each station will become smaller and smaller. That
+means A(n) has a limit, W, which is not affected by the initial value A(0) but is only
+related to P:
+W = a (final) a (final) a (final) ⋯ a (final)
+1 2 3 k
+M
+C
+W = lim A n = A(0)× lim Pn = A(0)× P∞
+n→∞ n→∞
+M
+According to the definition of limits, multiplying W once aigain by P does not affect
+H
+its value:
+：
+W = W× P
+号
+W is the steady state of the Markov Chain. We can minimize the need to transport
+众
+bicycles between stations if we allocate the bicycles at each station according to the
+results of matrix W, i.e., put a (final) bicycles at the i-th station. If bicycles are
+i
+allocated this way, 公we can predict that there will not be a great change in the number
+of bicycles at each station over a period of time.
+信
+3-2 Application of the Model
+微
+(1.) Initial Plan for Cities
+As we have mentioned in the previous paragraphs, the initial plan of building rental
+stations and lanes basically aims to help the cities that do not have fundamentals of a
+bicycle sharing program. Therefore, Denver, a city already equipped with more
+than 20 stations, is not included in this initial plan. In the following paragraphs, we
+will focus on how to arrange initial plans in Des Moines and Chicago to enlarge the
+coverage of the bicycle-sharing program.
+(a.) Building new Stations ( in Des Moines and Chicago)
+We will show how we determine the locations of stations in downtown Des Moines in
+the following paragraph so as to give an example of our computation. Detailed reulsts
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #2541             |     |     |     |     |     |     |     | Page 19 of 51  |
+| ---------------------- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+| will be given in 4-1.  |     |     |     |     |     |     |     |                |
+For convenience of discussion, we divide the city center of Des Moines into small
+separate sections, such that, while assuring diversity of buildings and facilities in each
+section, the stretch of each section is slightly beyond “walking distance”, i.e., every
+major building/facility in a section can easily be accessed on foot, while a bicycle will
+M
+C
+M
+i
+H
+：
+号
+be an ideal choice if one wishes to travel from one section to another.
+Fig. 3-2-1 Google众 Earth™: Downtown Des Moines divided into sections
+| Therefore, we decide to place one bicycle station in each area.  |     |     |     |     |     |     |     |     |
+| ---------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+Before we start to focus on certain sections, we need to analyze the significance of all
+types of buildings/facilities within the city center. Basically, there are five sorts of
+buildings/fa信cilities in downtown Des Moines, namely, office buildings, entertainment
+facilities, parking lots, tourist attractions and residential sites. We first compare them
+pairwise to get the initial ratio of significance with the 9-point importance scale.
+微
+|                |         | Office    | Entertainment  |           |     | Residential  | Parking  | Tourist     |
+| -------------- | ------- | --------- | -------------- | --------- | --- | ------------ | -------- | ----------- |
+|                |         | Building  |                | Facility  |     | Site         | Lot      | Attraction  |
+|                | Office  |           |                |           |     |              | 1        |             |
+|                |         | 1         |                | 3         |     | 2            |          | 8           |
+| Building       |         |           |                |           |     |              | 3        |             |
+| Entertainment  |         | 1         |                |           |     | 1            | 1        |             |
+|                |         |           |                | 1         |     |              |          | 5           |
+Facility
+|              |     | 3   |     |     |     | 2   | 7   |     |
+| ------------ | --- | --- | --- | --- | --- | --- | --- | --- |
+| Residential  |     | 1   |     |     |     |     | 1   |     |
+|              |     |     |     | 2   |     | 1   |     | 7   |
+Site
+|              |     | 2   |     |     |     |     | 5   |     |
+| ------------ | --- | --- | --- | --- | --- | --- | --- | --- |
+| Parking Lot  |     | 3   |     | 7   |     | 5   | 1   | 9   |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team #2541  |     |     |     |     | Page 20 of 51  |
+| ----------- | --- | --- | --- | --- | -------------- |
+| Tourist     | 1   | 1   | 1   | 1   |                |
+|             |     |     |     |     | 1              |
+| Attraction  | 8   | 5   | 7   | 9   |                |
+Tbl. 3-2-1: Pairwise comparison on the 9-point scale
+And then we use the method with which we find the ideal location of bicycle stations
+in Des Moines to place stations in Chicago. The results are marked on Fig. 3-2-1.
+Fig. 3-2-2: Google Earth™:
+Example Section
+In the section above, there
+M
+|     |     |     | are                    | three  | major  |
+| --- | --- | --- | ---------------------- | ------ | ------ |
+|     |     |     | buildings/facilities:  |        | an     |
+C
+|     |     |     | office  | building   | (the  red   |
+| --- | --- | --- | ------- | ---------- | ----------- |
+|     |     |     | icoMn,  | which  is  | the  first  |
+building), a café (the pink
+|     |     |     | icon, which is  |     | the second  |
+| --- | --- | --- | --------------- | --- | ----------- |
+i
+Hbuilding) and a residential
+site (the green icon, which
+：
+is the third building).
+From the table above, we build the following pairwise comparison matrix for the three
+号
+buildings in the area.
+|     |     | 1 3 | 2   |     |     |
+| --- | --- | --- | --- | --- | --- |
+众
+|     |     | 1     | 1   |     |     |
+| --- | --- | ----- | --- | --- | --- |
+|     |     |   1   |     |     |     |
+|     |     | M = 3 | 2   |     |     |
+|     |     |       |     |     |     |
+1
+|     | 公   | 2   | 1   |     |     |
+| --- | --- | --- | --- | --- | --- |
+|     |     |  2  |     |     |     |
+
+信
+Obviously, this is not a conformity matrix. We will perform several tests on M to see
+if its inconformity is small enough to be allowed. First of all, we need to find out the
+微
+maximum eigenvalue and the feature vector of M via the following transformation:
+|     |     | 1 3     | 2     |     |     |
+| --- | --- | ------- | ----- | --- | --- |
+|     |     | 1       | 1     |     |     |
+|     |     |   1     |       |     |     |
+|     |     | M =   3 | 2     |     |     |
+1
+|     |     | 2   | 1   |     |     |
+| --- | --- | --- | --- | --- | --- |
+|     |     |  2  |     |     |     |
+↓normalization along the column
+|     |            | 0.545 0.500 | 0.571   |     |     |
+| --- | ---------- | ----------- | ------- | --- | --- |
+|     | M =  0.182 | 0.167       | 0.143   |     |     |
+1
+|     |     | 0.273 0.333 | 0.286 |     |     |
+| --- | --- | ----------- | ----- | --- | --- |
+↓addition along the row
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team #2541  |     |     |     |     |     |     |     | Page 21 of 51  |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+1.616
+|     |     |     |     | M   | =  0.492   |     |     |     |
+| --- | --- | --- | --- | --- | ---------- | --- | --- | --- |
+2
+0.892
+ ↓normalization
+0.539
+w =  0.164 , which is the feature vector of M about the maximum eigenvalue
+0.297
+|     |     |     |      |     | ↓multiply M by w  |     |     |     |
+| --- | --- | --- | ---- | --- | ----------------- | --- | --- | --- |
+M
+1.625
+|     |     |     |     | M× w | =  0.4921   |     |     |     |
+| --- | --- | --- | --- | ---- | ----------- | --- | --- | --- |
+C
+0.8945
+M
+And then we know that the maximum eigenvalue of M is:
+|     |     |     | 1 1.625 | 0.4921 | 0.8945 |            |     |     |
+| --- | --- | --- | ------- | ------ | ------ | ---------- | --- | --- |
+|     |     | λ = |         | +      | +      |   =i3.009  |     |     |
+|     |     |     | 3 0.539 | 0.164  | 0.297H |            |     |     |
+Saaty’s theory states that the vector w can b：e directly viewed as the weight value that
+can demonstrate the values of significance of the office building, the café and the
+residential area. However, we need to test its conformity beforehand.
+号
+Saaty defined a consistency index (CI)
+𝛌−n
+众
+|     |     |     |     | CI  | =   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+n−1
+and a random conformity index (RI) which, together with CI, determines whether
+公
+the inconformity of M is allowed. The random index of a n×n matrix is presented in
+Tbl. 3-2-2
+信
+| n   | 1   | 2   | 3     | 4     | 5     | 6  7        |       | 8  9  |
+| --- | --- | --- | ----- | ----- | ----- | ----------- | ----- | ----- |
+| RI  | 0   | 0   | 0.58  | 0.90  | 1.12  | 1.24  1.32  | 1.41  | 1.45  |
+微
+Tbl. 3-2-2: Random index
+Obviously, the random index of M, a 3×3 matrix, should be 0.58; the CI of M is
+| CI = 𝛌−n | = 3.009−3 | = 4.5× | 10−3. The ratio of CI to RI is  |     |     |     |     |     |
+| -------- | --------- | ------ | ------------------------------- | --- | --- | --- | --- | --- |
+| n−1      | 3−1       |        |                                 |     |     |     |     |     |
+10−3
+|     |     |     | CI  | 4.5× |        |        |     |     |
+| --- | --- | --- | --- | ---- | ------ | ------ | --- | --- |
+|     |     |     | =   |      | = 0.08 | < 0.1  |     |     |
+|     |     |     | RI  | 0.58 |        |        |     |     |
+CI
+Saaty proposes that the inconformity of M can be neglected if  < 0.1. Therefore,
+RI
+the inconformity of M is slight enough to be neglected. w, the feature vector of M, ,
+can serve as the weight vector. Since
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #2541 Page 22 of 51
+0.539
+w = 0.164 ,
+0.297
+the values of significance of the three buildings/facilities in this area are:
+s = s = 0.539
+office building 1
+s = s = 0.164
+café 2
+fs = s = 0.297
+residential site 3
+M
+In finding the best point to place the new rental station, we will weigh these values
+with their distance to the station. First we set up a plane rectangular coordinate system
+C
+xOy in the area.
+M
+Fig. 3-2-3: Google Earth™: Coordinate system
+xOy
+i
+The loHngitude and latitude of the three
+buildings/facilities and the origin of
+：
+xOy are:
+O (41º35′29.75″N, 93º38′24.3″W)
+号
+Office Building (41º35′38.55″ N,
+93º38′25.77″ W)
+众
+Café (41º35′37.63″ N, 93º38′35.46″ W)
+Residential Site (41º35′33.14″N, 93º38′33.05″W)
+公
+Around 40 º N, one second (1″) change in longitude means a 30.82-meter surface
+distance, and one second (1″) change in latitude, a 20.2867-meter surface distance. If
+信
+we transfer the longitude and latitude of these points into x-y coordinates, regarding
+1-meter as 1 unit length, we have:
+微
+O (0, 0)
+Office Building (29.8214, 271.216)
+Café (226.3991, 242.8616)
+Residential Site (177.5083, 104.4798)
+In the previous chapter, we have concluded that the rental station should be placed
+where the parameter G, given by
+n
+G = s r
+i i
+i=1
+reaches a minimum. Suppose that the ideal location of the new rental station is found
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 23 of 51
+at (x , y ), so r is given by
+0 0 i
+r = (x −x )2 +(y −y )2.
+i i 0 i 0
+Therefore, the ideal point is found when
+n
+G = s (x −x )2 +(y −y )2
+i i 0 i 0
+i=1
+reaches a minimum, the ideal point is found. Eventually, the coordinate of the ideal
+location of the bicycle rental station is B*(29.9214, 271.1798), as shown inM Fig. 3-2-4.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Fig. 3-2-4: Google Earth™: Location of new rental station in this section (B1)
+With similar method, we can find the best location for the station in all the sections in
+微
+downtown Des Moines.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 24 of 51
+Fig. 3-2-5: Google Earth™: New rental stations in Des Moines (green icons)
+Note that:
+(1.) Two sections (on the bottom left-hand corner) are not equipped with stations
+because most area of these sections is covered by public parks.
+(2.) As we have mentioned in the previous chapters, the locations of parking lots
+should be a crucial concern when we decide where to place bike stations. Since
+most people park their cars at public parking facilities during the day, parking lots
+are given the highest values of significance among all facilities. Therefore, some
+of the bicycle rental stations are placed right beside parking lots in downtown Des
+M
+Moines.
+(b.) Bicycle Lane Construction Plan C
+It would be too good for bike riders to have all of the streets converted into bicycle
+M
+lanes – which is not possible. However, relying merely on the few existing lanes
+would not suffice if the city is to build around twenty rental stations. Now we will
+i
+apply the linear regression model on the three citiesH. Detailed discussion about Des
+Moines serves as an example. Detailed results will be given in 4-1.
+：
+When building lanes in Des Moines, basically we group the stations so that each set of
+points demonstrate a relatively stronger linear relationship. Fig. 3-2-6 shows how it
+号
+looks when rental stations B1 through B4 and B11 through B14 have been completed
+in Des Moines:
+众
+公
+信
+微
+Fig. 3-2-6: Google Earth™: Rental stations B1 through B14
+By setting up a plane rectangular coordination system and finding the coordinates of
+these eight points, we can calculate the formula of the regression line, y = a +b x.
+Fig. 3-2-7 is the map with the regression line:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 25 of 51
+M
+Fig. 3-2-7: Google Earth™: Map with regression line
+C
+Then we fit this line into actual streets to determine the final plan of the new bicycle
+M
+lane.
+i
+H
+：
+号
+众
+公
+Fig. 3-2-8: Google Earth™: Adjusted bicycle lane
+信
+Using the same approach, we can find regression lines and adjusted construction plan
+for the whole downtown
+微
+area.
+Fig. 3-2-9: Google Earth™:
+Regression lines (yellow) of the
+four groups of rental stations. We
+take care to group these stations so
+that each group demonstrates
+stronger linear relationship.
+After we adjust the
+construction plan for the city according to the regression lines we have obtained, we
+will have several separate bicycle lanes stretching throughout the city center. In order
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 26 of 51
+to make the bicycle lanes work more efficiently, we need to link them with each other
+so as to form an integrated network.
+M
+C
+M
+i
+H
+Fig. 3-2-10: Google Earth™: Map of all bike lanes o：f Des Moines, with existing lanes (red), adjusted
+plan for new lanes (blue and yellow). Blue lines are adaptations of the four regression lines, while
+yellow lines are manually added linking lanes. Please note that all new lanes are well connected with
+号
+old lanes.
+众
+(2.) Additional Plan
+As we have mentioned in the previous paragraphs, we will implement the additional
+公
+plan to add new stations and lanes to the program so as to meet the growing demands
+of citizens. In Des Moines and Chicago, the additional plan will be launched in the 3rd
+year of the信 program, right after the initial plan is finished; in Denver where no initial
+plan is implemented, the additional plan will start at the beginning of the 1st year. In
+the following paragraphs, we will take the additional plan in Des Moines in the 3rd
+微
+year as an example to show how we work on the problem. For other cities and other
+periods, we will demonstrate the final results in 4-1.
+As we have mentioned, the initial plan in Des Moines will be completed within the
+first two years of the program. After the initial plan is finished, there will be 24 rental
+stations in use in the city center of Des Moines. According to our calculation1, the
+initial service radius, R(0), of each station is approximately 500.88-m.
+1 We calculate the service radius with Matlab and relevant code will be given in the appendices.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 27 of 51
+M
+C
+M
+i
+H
+：
+Fig. 3-2-11: Google Earth™: Initial range for all stations
+号
+When we implement the additional plan in Des Moines in the third year, the service
+1
+radius should be decreased by 1− × 100%, and the new radius, R(1) is
+众
+1+30%
+given by
+公
+1
+1
+R 1 = R 0 × 1− × 100%
+信 1+30%
+微
+As we can see from the picture above, if the radius is reduced, then two parts of the
+city will be kept out of the coverage of the bicycle stations. New bicycle stations
+should be built in these two “blind areas” to satisfy the citizens. We place one new
+rental station at the center of each “blind area” to assure an all-round coverage of the
+program.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 28 of 51
+M
+C
+M
+i
+H
+：
+Fig. 3-2-12: Google Earth™: “Shrunk” ranges after one year
+号
+Locations of the new rental stations are shown in the following picture.
+众
+公
+信
+微
+Fig. 3-2-13: Google Earth™: Three new rental stations
+Since both new stations are within 100-metres to the nearest existing lane, there will
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 29 of 51
+be no need to build new bicycle lanes in the third year in Des Moines.
+(3.) Allocation and Regulation of Bicycles between Rental Stations
+As mentioned in 3-1, we apply the Markov Chain Model to decide how to allocate the
+bicycles according to different buildings and facilities nearby. We use the bicycle
+allocation and regulation plan in Des Moines in the second year (after the initial plan
+is completed) as an example to show our computations.
+Just as what we have discussed in 3-1, we will allocate bicycles according to the
+steady state we achieve with the Markov’s chain. Since the limit is only relevant to the
+matrix P (see 3-1), we need to determine every element in P, that is, p .
+ij M
+Obviously, the value of p on working days is different from that of work-free days.
+ij
+We will discuss them separately. C
+(i.) Working Days
+M
+According to assumption (4.), 50 percent of bike renters commute to work by bicycle.
+Since all these trips are considered to be round trips, all theise bikes will eventually go
+H
+back to their original locations at the end of the day. Therefore, we have
+：
+p = 0.5 (i = j)
+ij
+号
+According to assumption (5.), the possibility that a renter visits the i-th bicycle station
+is proportional to the number of buildings/facilities near the station. With this method,
+we can determine the matrix P which applies to the condition on working days.
+众
+(ii.) Work-free Days
+On weekends and 公official holidays, people visit tourist attractions or entertainment
+facilities rather than go to work, so there will be no need to take the working trips into
+consideration.
+信
+With this approach, we will be able to find out the matrix P that applies to the
+conditions on work-free days.
+微
+According to assumption (4.), each station has 10 bicycles on average. Since the limit
+is irrelevant to the values of a(0), the original number of bicycles at the i-th station,
+i
+we can assume that a(0) is equal to 10 for every station. Therefore we can calculate
+i
+the limit, W, for A n = a n a n a n … a n .
+1 2 3 k
+W = lim A n = A(0)× lim Pn = A(0)× P∞
+n→∞ n→∞
+Now we have two different steady states for working days and work-free days, for
+which we make two different allocation plans. Shifts between plans should require
+regulation of bicycles between stations should be made on every Friday evening (or
+on the last evening before an official holiday) and on every Sunday evening (or on the
+last day of each holiday).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     | Team #2541  |     |     |     | Page 30 of 51  |     |     |
+| --- | ----------- | --- | --- | --- | -------------- | --- | --- |
+The final result of bike allocation and regulation of Des Moines in the 2nd year is
+presented in Tbl. 3-2-3.
+|     | Bikes  needed |     |     | Bikes  need |     |     |     |
+| --- | ------------- | --- | --- | ----------- | --- | --- | --- |
+Station  Regulations  to  be  made  on  Regulations  to  be  made  on
+|         |  on  working  |          |     | ed  on  work |          |     |     |
+| ------- | ------------- | -------- | --- | ------------ | -------- | --- | --- |
+| Number  |               | Fridays  |     |              | Sundays  |     |     |
+|         | days          |          |     | -free days   |          |     |     |
+1  3  receive 1 bike from station 2  4  give 1 bike to station 2
+2  8  give 1 bike to station 1  7  receive 1 bike from station 1
+3  6  receive 1 bike from station 12  7  give 1 bike to station 12
+4  5  receive 6 bikes from station 22  11  give 6 bikes to station 22
+5  3  receive 4 bikes from station 22  7  give 4 bikes to station 22
+M
+| 6   | 2   | does not change  |     | 2   | does not change  |     |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- | --- |
+receive 4 bikes from station 22  give 4 bikes to station 22
+C
+7  6  receive 4 bikes from station 8  16  give 4 bikes to station 8
+|     |     | receive 3 bikes from station 9  |     |     | give 3 bikes to station 9  |     |     |
+| --- | --- | ------------------------------- | --- | --- | -------------------------- | --- | --- |
+M
+8  8  give 4 bikes to station 7  4  receive 4 bikes from station 7
+9  5  give 3 bikes to station 7  2  receive 3 bikes from station 7
+i
+|     |     |     |     |     | receive 5 bikes from  |     | station  |
+| --- | --- | --- | --- | --- | --------------------- | --- | -------- |
+H
+|     |     | give  5  bikes  | to  station  | 17   |     |     |     |
+| --- | --- | --------------- | ------------ | ---- | --- | --- | --- |
+17 receive 1 bike from station
+| 10  | 22  | give  1  bike  | to  station  | 20  1 6  |                                 |     |     |
+| --- | --- | -------------- | ------------ | -------- | ------------------------------- | --- | --- |
+|     |     |                | ：            |          | 20 receive 1 bike from station  |     |     |
+give 1 bike to station 16
+16
+11  15  receive 7 bikes from station 24  22  give 7 bikes to station 24
+号
+12  2  give 1 bike to station 3  1  receive 1 bike from station 3
+13  8  receive 3 bikes from station 23  11  give 3 bikes to station 23
+| 14  | 2   | does no众t change  |     | 2   | does not change  |     |     |
+| --- | --- | ----------------- | --- | --- | ---------------- | --- | --- |
+receive 1 bike from station 15  give  1  bike  to  station  15
+| 15  | 11  |                                 |     | 16  |                             |     |     |
+| --- | --- | ------------------------------- | --- | --- | --------------------------- | --- | --- |
+|     |     | receive 4 bike from station 19  |     |     | give 4 bikes to station 19  |     |     |
+公
+receive 1 bike from station 10  give  1  bike  to  station  10
+receive 1 bike from station 24  give  1  bike  to  station  24
+| 16  | 6   |     |     | 11  |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+信receive 1 bike from station 18  give  1  bike  to  station  18
+|     |     | receive 2 bikes from station 19  |     |     | give 2 bikes to station 19  |     |     |
+| --- | --- | -------------------------------- | --- | --- | --------------------------- | --- | --- |
+17  11  receive 5 bikes from station 10  16  give 5 bikes to station 10
+微
+18  36  give 1 bike to station 16    35  receive 1 bike from station 16
+|     |     |                 |              |       | receive 2 bikes from  |           | station  |
+| --- | --- | --------------- | ------------ | ----- | --------------------- | --------- | -------- |
+|     |     | give  2  bikes  | to  station  | 16    |                       |           |          |
+| 19  | 8   |                 |              | 2     | 16  receive           | 4  bikes  | from     |
+give 4 bikes to station 15
+station 15
+20  21  receive 1 bike from station 10  22  give 1 bike to station 10
+| 21  | 2   | does not change  |     | 2   | does not change  |     |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- | --- |
+give  6  bikes  to  station  4      receive 6 bikes from station 4
+22  21  give  4  bikes  to  station  5  7    receive 4 bikes from station 5
+|     |     | give 4 bikes to station 7  |              |      | receive 4 bikes from station 7  |     |          |
+| --- | --- | -------------------------- | ------------ | ---- | ------------------------------- | --- | -------- |
+|     |     |                            |              |      | receive 3 bikes from            |     | station  |
+|     |     | give  3  bikes             | to  station  | 13   |                                 |     |          |
+| 23  | 16  |                            |              | 12   | 13 receive 1 bike from station  |     |          |
+give 1 bikes to station 15
+15
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #2541 Page 31 of 51
+receive 7 bikes from station
+give 7 bikes to station 11
+24 13 5 11 receive 1 bike from station
+give 1 bike to station 16
+16
+Tbl. 3-2-3: Final allocation plan
+In the years to come, more and more stations will be added to the program. Please
+note that the allocation and regulations of bikes at new rental stations do not interfere
+with the plan in the previously-built stations.
+4. Discussion
+M
+4-1 Results
+C
+(1.) Location of Bicycle Stations and Lanes
+M
+(i.) Des Moines, IA
+i
+H
+：
+号
+众
+公
+信
+ Locations of rental stations in the second year (after the initial plan is completed)
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 32 of 51
+M
+C
+M
+i
+H
+：
+ Locations of rental stations in the third year (red icons marked with “3”)
+号
+众
+公
+信
+微
+ Locations of rental stations in the fourth year (red icons marked with 4)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 33 of 51
+M
+C
+M
+i
+H
+：
+ Locations of rental stations in the fifth year (red icons marked with “5”)
+号
+众
+公
+信
+微
+ Map of Lanes (Completed in the 2nd year, no changes made thereafter)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 34 of 51
+M
+C
+M
+i
+H
+：
+ Map of Des Moines after program is completed
+号
+(ii.) Chicago, IL
+众
+公
+信
+微
+ Location of Stations in the second year (after initial plan is completed)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 35 of 51
+M
+C
+M
+i
+H
+：
+ New Stations added in the third year (red icons marked with “3”)
+号
+众
+公
+信
+微
+ New Stations added in the fourth year (red icons marked with “4”)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 36 of 51
+M
+C
+M
+i
+H
+：
+ New Stations added in the fifth year (red icons marked with “5”)
+号
+众
+公
+信
+微
+ Map of Bike Lanes (part of the initial plan; completed in the second year, no
+changes made thereafter)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 37 of 51
+M
+C
+M
+i
+H
+：
+ Map after Program Completed
+号
+(iii.)Denver, CO
+众
+公
+信
+微
+ Location of new Stations in the first year (red icons marked with “1”)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 38 of 51
+M
+C
+M
+i
+H
+：
+ Locations of new Stations in the second year (red icons marked with “2”)
+号
+众
+公
+信
+微
+ Location of new Stations in the third year (red icons marked with “3”)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 39 of 51
+M
+C
+M
+i
+H
+：
+ Location of new Stations in the fourth year (red icons marked with “4”)
+号
+众
+公
+信
+微
+ Location of new Stations in the fifth year (red icons marked with “5”)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     | Team #2541  |     |     |     | Page 40 of 51  |     |     |
+| --- | ----------- | --- | --- | --- | -------------- | --- | --- |
+M
+C
+M
+i
+H
+
+：
+ Map after Program Completed
+|     |     | 号   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+(2.) Allocation and Regulation of Bicycles
+众
+(i.)  Des Moines, IA
+
+公
+Bikes needed
+| Station  | Bikes needed o  |                                    |     |              | Regulations  | to  be  made  | on  |
+| -------- | --------------- | ---------------------------------- | --- | ------------ | ------------ | ------------- | --- |
+|          |                 | Regulations to be made on Fridays  |     |  on work-fre |              |               |     |
+| Number   | n working days  |                                    |     |              | Sundays      |               |     |
+|          | 信               |                                    |     | e days       |              |               |     |
+1  3  receive 1 bike from station 2  4  give 1 bike to station 2
+2  8  give 1 bike to station 1  7  receive 1 bike from station 1
+微
+3  6  receive 1 bike from station 12  7  give 1 bike to station 12
+4  5  receive 6 bikes from station 22  11  give 6 bikes to station 22
+5  3  receive 4 bikes from station 22  7  give 4 bikes to station 22
+| 6   | 2   | does not change  |     | 2   | does not change  |     |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- | --- |
+receive 4 bikes from station 22  give 4 bikes to station 22
+7  6  receive 4 bikes from station 8  16  give 4 bikes to station 8
+|     |     | receive 3 bikes from station 9  |     |     | give 3 bikes to station 9  |     |     |
+| --- | --- | ------------------------------- | --- | --- | -------------------------- | --- | --- |
+8  8  give 4 bikes to station 7  4  receive 4 bikes from station 7
+9  5  give 3 bikes to station 7  2  receive 3 bikes from station 7
+give 5 bikes to station 17    receive  5  bikes  from  station  17
+10  22  give 1 bike to station 20     16  receive  1  bike  from  station  20
+|     |     | give 1 bike to station 16  |     |     | receive 1 bike from station 16  |     |     |
+| --- | --- | -------------------------- | --- | --- | ------------------------------- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     | Team #2541  |     |     |     |     | Page 41 of 51  |
+| --- | ----------- | --- | --- | --- | --- | -------------- |
+11  15  receive 7 bikes from station 24  22  give 7 bikes to station 24
+12  2  give 1 bike to station 3  1  receive 1 bike from station 3
+13  8  receive 3 bikes from station 23  11  give 3 bikes to station 23
+| 14  | 2   | does not change  |     | 2   | does not change  |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- |
+receive  1  bike  from  station  15  give 1 bike to station 15
+| 15  | 11  |                                 |     | 16  |                             |     |
+| --- | --- | ------------------------------- | --- | --- | --------------------------- | --- |
+|     |     | receive 4 bike from station 19  |     |     | give 4 bikes to station 19  |     |
+receive  1  bike  from  station  10  give 1 bike to station 10
+receive  1  bike  from  station  24  give 1 bike to station 24
+| 16  | 6   |     |     | 11  |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+receive  1  bike  from  station  18  give 1 bike to station 18
+|     |     | receive 2 bikes from station 19  |     |     | give 2 bikes to station 19  |     |
+| --- | --- | -------------------------------- | --- | --- | --------------------------- | --- |
+M
+17  11  receive 5 bikes from station 10  16  give 5 bikes to station 10
+18  36  give 1 bike to station 16   35  receive 1 bike from station 16
+C
+give 2 bikes to station 16   give 4  receive  2  bikes  from  station  16
+| 19  | 8   |                      |     | 2   |                                  |     |
+| --- | --- | -------------------- | --- | --- | -------------------------------- | --- |
+|     |     | bikes to station 15  |     |     | receive 4 bikes from station 15  |     |
+M
+20  21  receive 1 bike from station 10  22  give 1 bike to station 10
+| 21  | 2   | does not change  |     | 2   | does not change  |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- |
+i
+give 6 bikes to station 4     give  receive  6  bikes  from  station  4
+H
+22  21  4 bikes to station 5    give 4 bikes  7  receive  4  bikes  from  station  5
+|     |     | to station 7  | ：   |     | receive 4 bikes from station 7  |     |
+| --- | --- | ------------- | --- | --- | ------------------------------- | --- |
+give 3 bikes to station 13  give 1  receive  3  bikes  from  station  13
+| 23  | 16  |                      |     | 12  |                                 |     |
+| --- | --- | -------------------- | --- | --- | ------------------------------- | --- |
+|     |     | bikes to station 15  |     |     | receive 1 bike from station 15  |     |
+号
+give 7 bikes to station 11   give 1  receive  7  bikes  from  station  11
+| 24  | 13  |                     |     | 5   |                                 |     |
+| --- | --- | ------------------- | --- | --- | ------------------------------- | --- |
+|     |     | bike to station 16  |     |     | receive 1 bike from station 16  |     |
+众
+ Plan for the Stations constructed in the Initial Plan
+
+公
+25  12  receive 1 bike from station 26  13  give 1 bike to station 26
+26  8  give 1 bike to station 25  7  receive 1 bike from station 25
+信
+ Plan for the Stations added in the third year
+
+微
+27  10  give 2 bikes to station 29  8  receive 2 bikes from station 29
+| 28  | 9   | does not change  |     | 9   | does not change  |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- |
+29  11  receive 2 bikes from station 27  13  give 2 bikes to station 27
+ Plan for the Stations added in the fourth year
+
+30  8  receive 2 bikes from station 33  10  give 2 bikes to station 33
+| 31  | 11  | does not change  |     | 11  | does not change  |     |
+| --- | --- | ---------------- | --- | --- | ---------------- | --- |
+| 32  | 11  | does not change  |     | 11  | does not change  |     |
+33  10  give 2 bikes to station 30  8  receive 2 bikes from station 30
+ Plan for the Stations added in the fifth year
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     | Team #2541  |     |     |     | Page 42 of 51  |
+| --- | ----------- | --- | --- | --- | -------------- |
+
+(ii.)  Chicago, IL
+
+1  10  receive 1 bike from station 6  11  give 1 bike to station 6
+| 2   | 10  | does not change  |     | 10  | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+| 3   | 23  | does not change  |     | 23  | does not change  |
+4  2  receive 1 bike from station 5  3  give 1 bike to station 5
+5  6  give 1 bike to station 4  5  receive 1 bike from station 4
+give 1 bike to station 1     give 3 bikes to  receive 1 bike from station 1
+| 6   | 26  |     |     | 22  |     |
+| --- | --- | --- | --- | --- | --- |
+M
+|     |     | station 11  |     |     | receive 11 bikes from station 11  |
+| --- | --- | ----------- | --- | --- | --------------------------------- |
+give 1 bike to station 8      give 1 bike to  receive 1 bike from station 8
+| 7   | 23  |            |     | 21  | C                              |
+| --- | --- | ---------- | --- | --- | ------------------------------ |
+|     |     | station 9  |     |     | receive 1 bike from station 9  |
+8  10  receive 1 bike from station 7  11  give 1 bike to station 7
+M
+9  6  receive 1 bike from station 7  7  give 1 bike to station 7
+receive 1 bike from station 13 receive 1 bike  give 1 bike to station 13
+| 10  | 8   |     |     | 10  |     |
+| --- | --- | --- | --- | --- | --- |
+i
+|     |     | from station 14  |     |     | give 1 bike to station 14  |
+| --- | --- | ---------------- | --- | --- | -------------------------- |
+H
+receive  1  bike  from  station  12  receive  3  give 1 bike to station 12
+| 11  | 4   |                       |     | 8   |                            |
+| --- | --- | --------------------- | --- | --- | -------------------------- |
+|     |     | bikes from station 6  | ：   |     | give 3 bikes to station 6  |
+12  8  give 1 bike to station 11  7  receive 1 bike from station 11
+13  2  give 1 bike to station 10  1  receive 1 bike from station 10
+号
+14  2  give 1 bike to station 10  1  receive 1 bike from station 10
+ Plan for the Stations constructed in the Initial Plan
+众
+
+15  14  receive 2 bikes from station 16  16  give 1 bike to station 16
+公
+16  6  give 1 bike to station 15  4  receive 2 bikes from station 15
+ Plan for the Stations added in the third year
+信
+
+17  12  receive 4 bikes from station 19  16  give 4 bikes to station 19
+微
+| 18  | 4   | does not change  |     | 4   | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+19  14  give 4 bikes to station 17  10  receive 4 bikes from station 17
+ Plan for the Stations added in the fourth year
+
+give 2 bike to station 22     give 1 bike to  receive  2  bikes  from  station  22
+| 20  | 5   |             |     | 2   |                                 |
+| --- | --- | ----------- | --- | --- | ------------------------------- |
+|     |     | station 23  |     |     | receive 1 bike from station 23  |
+21  3  give 1 bike to station 23  2  receive 1 bike from station 23
+22  16  receive 2 bikes from station 20  18  give 2 bikes to station 20
+receive 1 bike from station 20 receive 1 bike  give 1 bike to station 20     give 1
+| 23  | 16  |                  |     | 18  |                     |
+| --- | --- | ---------------- | --- | --- | ------------------- |
+|     |     | from station 21  |     |     | bike to station 21  |
+ Plan for the Stations added in the fifth year
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     | Team #2541  |     |     |     | Page 43 of 51  |
+| --- | ----------- | --- | --- | --- | -------------- |
+
+(iii.)  Denver, CO
+| 1   | 2   | does not change  |     | 2   | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+2  12  give 4 bikes to station 24  8  receive 4 bikes from station 24
+| 3   | 16  | does not change  |     | 16  | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+| 4   | 5   | does not change  |     | 5   | does not change  |
+5  12  give 3 bikes to station 10  9  receive 3 bikes from station 10
+give 2 bikes to station 7      receive 2 bikes from station 7
+give 1 bike to station  11       receive 1 bike from station 11
+| 6   | 12  |     |     | 6   |     |
+| --- | --- | --- | --- | --- | --- |
+give 2 bikes to station 13      receive 2M bikes from station 13
+|     |     | give 1 bike to station 23  |     |     | receive 1 bike from station 23  |
+| --- | --- | -------------------------- | --- | --- | ------------------------------- |
+7  12  receive 2 bikes from station 6  14  give 2 bikes to station 6  C
+| 8   | 12  | does not change  |     | 12  | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+9  9  give 4 bikes to station 11  5  Mreceive 4 bikes from station 11
+10  23  receive 3 bikes from station 5  26  give 3 bikes to station 5
+receive 4 bikes from station 9   igive 4 bikes to station 9
+| 11  | 9   |                                |     | H14  |                           |
+| --- | --- | ------------------------------ | --- | ---- | ------------------------- |
+|     |     | receive 1 bike from station 6  |     |      | give 1 bike to station 6  |
+12  6  receive 2 bikes from station 14  8  give 2 bikes to station 14
+：
+13  19  receive 2 bikes from station 6  21  give 2 bikes to station 6
+14  19  give 2 bikes to station 12  17  receive 2 bikes from station 12
+号
+| 15  | 9   | does not change  |     | 9   | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+| 16  | 16  | does not change  |     | 16  | does not change  |
+17  4  give 2 bikes to station 20      2  receive 2 bikes from station 20
+众
+18  7  give 1 bike to station 20  6  receive 1 bike from station 20
+19  6  give 1 bike to station 29  5  receive 1 bike from station 29
+公
+receive 2 bikes from station 17   give 2 bikes to station 17
+| 20  | 6   |     |     | 9   |     |
+| --- | --- | --- | --- | --- | --- |
+receive 1 bike from station 18   give 1 bike to station 18
+21  9  receive 3 bikes from station 27   12  give 3 bikes to station 27
+信
+22  7  receive 1 bike from station 27   8  give 1 bike to station 27
+23  4  receive 1 bike from station 6  5  give 1 bike to station 6
+微
+24  6  receive 4 bikes from station 2  10  give 4 bikes to station 2
+25  9  give 1 bike to station 29  8  receive 1 bike from station 19
+| 26  | 7   | does not change  |     | 7   | does not change  |
+| --- | --- | ---------------- | --- | --- | ---------------- |
+give 1 bike to station 22      receive 1 bike from station 22
+| 27  | 13  |     |     | 9   |     |
+| --- | --- | --- | --- | --- | --- |
+give 3 bikes to station 21  receive 3 bikes from station 21
+28  6  give 1 bike to station 29  5  receive 1 bike from station 29
+receive 1 bike from station 28   give 1 bike to station 28
+29  13  receive 1 bike from station 25   16  give 1 bike to station 25
+receive 1 bike from station 19   give 1 bike to station 19
+ Plan for Existing Stations
+
+30  8  receive 2 bikes from station 33  10  give 2 bikes to station 33
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #2541 Page 44 of 51
+31 11 receive 2 bikes from station 33 13 give 2 bikes to station 33
+32 12 receive 2 bikes from station 33 14 give 2 bikes to station 33
+give 2 bikes to station 30 receive 2 bikes from station 30
+33 9 give 2 bikes to station 31 3 receive 2 bikes from station 31
+give 2 bikes to station 32 receive 2 bikes from station 32
+ Plan for the Stations added in the first year
+34 9 give 1 bike to station 35 8 receive 1 bike from station 35
+receive 1 bike from station 34 receive 4 give 1 bike to station 34
+35 9 14 M
+bikes from station 36 give 4 bikes to station 36
+36 12 give 4 bikes to station 35 8 receive 4 bikes from station 35
+C
+Plan for the Stations added in the second year
+M
+37 8 give 3 bikes to station 40 5 receive 3 bikes from station 40
+i
+38 20 give 2 bikes to station 41 18 receive 2 bikes from station 41
+H
+39 8 give 3 bikes to station 40 5 receive 3 bikes from station 40
+：
+receive 3 bikes from station 37 give 3 bikes to station 37
+40 12 18
+receive 3 bikes from station 39 give 3 bikes to station 39
+41 2 receive 2 bikes from station 38 4 give 2 bikes to station 38
+号
+ Plan for the Stations added in the third year
+众
+42 10 does not change 10 does not change
+43 10 does not change 10 does not change
+公
+ Plan for the Stations added in the fourth year
+信
+44 6 receive 2 bikes from station 48 8 give 2 bikes to station 48
+45 12 receive 1 bike from station 46 13 give 1 bike to station 46
+微
+46 14 give 1 bike to station 45 13 receive 1 bike from station 45
+47 12 does not change 12 does not change
+48 6 give 2 bikes to station 44 4 receive 2 bikes from station 44
+ Plan for the Stations added in the fifth year
+4-2 Assessment of the Model
+Our model has the following strengths and weaknesses:
+Strengths
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 45 of 51
+□ All of the models we applied to the problem are mature models from various
+fields (mathematics, statistics, human geography, etc.) and are properly adjusted
+and adapted.
+□ (The best of all strengths) we fitted our bicycle-sharing program into the large
+picture of the city’s public transportation network (primarily through building
+rental stations at subway stations and near bus stops), increasing the coverage of
+subway stations and bus routes. We believe this will encourage more people to
+choose public transportation over private cars, thereby expanding the relieving
+effect on the traffic.
+□ We have taken the construction of new bicycle lanes into consideratMion so as to
+support the growing program.
+C
+□ We provided detailed annual plan for each of the three cities, taking their actual
+situation into account.
+M
+□ The application of Markov chain theory made it unnecessary to conduct
+large-scale bicycle transport every day, but only at weeikends, thereby cutting the
+H
+cost of the company.
+：
+Weaknesses
+■ Given more time, we should consider construction cost and pricing, and try to find
+号
+a balance between these two factors.
+■ We did not provide a plan for bicycle docks at each station – it would be annoying
+for customers if they a众rrive at their destination only to find that there are not
+enough docks.
+■ Our definition 公of “city center” may diverge from the actual bounds of the city
+centers, since we do not have enough data of the buildings and facilities.
+■ Becaus信e of lack of information, we may have made mistakes in defining the
+category of some buildings/facilities.
+微
+5. Recommendation – Letters to Mr./Ms. Mayor
+Dear Sir/ Madam,
+We are a group of high school students who aim to make a 5-year plan for the
+development of bike-sharing programs in Chicago, Denver and Des Moines. Our plan
+has included the locations of new bicycle rental stations and bicycle lanes to be built
+within the coming five years, the allocation of bicycles at each station and the
+regulation of bicycles between stations. We believe that if this plan can be put into use,
+the bicycle-sharing program in Chicago, Denver and Des Moines will be greatly
+improved and will definitely be able to serve many more citizens in the city center.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 46 of 51
+When we make our plan, we have taken the existing public transport systems
+and other usage of transport in the city center into our consideration. We have made
+the bicycle-sharing program a perfect complement to the existing transport system,
+and we are sure that it will bring great convenience to a lot of people. The United
+States is known as “a nation on the wheels”, which clearly conveys the idea that cars
+dominate the transportation system of the country. However, the overuse of cars
+frequently cause traffic jams in city centers. Therefore, it is time to turn “car wheels”
+into “bike wheels”. We expect the bicycle –sharing program to be accepted by more
+and more people, and therefore relieve the stress of transportation in the city center of
+America.
+M
+Team #2541
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 47 of 51
+Reference
+[1] Q. Y. Jiang et al. 《数学模型（第三版）》 Mathematics Modeling, 3rd Edition.
+Higher Educatioon Press. 2003. Page 224~230
+[2] Y. J. Tan et al. 《高中应用数学选讲》 Lecture Series on Mathematics Modeling
+for High School Students. Fudan Press. 2008. Page 16~19.
+[3] J. R. Rubenstein. The Cultural Landscape: An Introduction to Human Geography
+8th Edition. Pearson Education.
+M
+[4] Central Place Theory. Wikipedia.
+http://en.wikipedia.org/wiki/Central_place_theory, last modified on 25 October 2010
+C
+at 16:32
+M
+[5] D. Y. Chen et al. 《数学建模》 Mathematics Modeling. Science Press. 2007. Page
+108~116.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 48 of 51
+Appendix: Matlab Code
+1、
+（1）
+% Conformity test for the positive reciprocal matrix
+A=xlsread('AHP_Denver.xlsx','0','B2:G7');%input the positive reciprocal matrix
+C=xlsread('AHP_Denver.xlsx','0','B2:G7');
+a=length(A);
+w=0;
+v=0;
+t=0;
+for b=1:a;
+for c=1:a;
+w=w+A(c,b);
+M
+end
+for d=1:a;
+A(d,b)=A(d,b)/w;
+C
+end
+end
+B=zeros(a,1); M
+for e=1:a;
+for f=1:a;
+B(e)=B(e)+A(e,f);
+i
+end
+H
+end
+for g=1:a;
+v=v+B(g); ：
+end
+for h=1:a;
+B(h)=B(h)/v;
+end 号
+D=C*B;
+for i=1:a;
+t=t+D(i)/B(i);
+end 众
+m=t/a;
+n=(m-a)/(a-1);
+E=xlsread('AHP_Denver.xlsx','0','B15:K16');
+j=E(2,a); 公
+k=n/j;
+if k<0.1;
+fprintf('OK,%f',k);
+else 信
+fprintf('Retry, %f',k);
+end
+xlswrite('AHP_Denver.xlsx',B,'A21:A26');
+微
+（2）
+% Finding best locations of rental stations in each section
+a=30.922*cos((49/180)*pi);
+A=xlsread('AHP_Chicago.xlsx','0','A21:F21'); %weight matrix
+B=xlsread('AHP_Chicago.xlsx','14'); %latitude and longitude of sites
+C=xlsread('AHP_Chicago.xlsx','14','A5:A6'); %defin
+e the origin of the xy plain (one for each section)
+[u,w]=size(B);
+D=zeros(2,w);
+D(1,:)=(B(2,:)-C(1))*30.82;%turn latitude into distance measured with meters
+D(2,:)=(B(3,:)-C(2))*a;%turn longitude into distance measured with meters
+a1=max(D(1,:));a2=min(D(1,:));
+b1=max(D(2,:));b2=min(D(2,:));
+d=1000000000000;t=1;q=1;
+x=0;
+E=zeros(1,w);
+o=0;
+for j=1:w;
+k=B(1,j);
+E(j)=A(k);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 49 of 51
+end
+for l=1:w;
+o=o+E(l);
+end
+for p=1:w;
+E(p)=E(p)/o;
+end
+for m=a2:0.1:a1;%calculate the ideal location of bicycle station in each section
+for n=b2:0.1:b1;
+for v=1:w;
+x=x+E(v)*(((D(2*v-1)-m)^2+(D(2*v)-n)^2)^(1/2));
+end
+if x<d;
+d=x;
+t=m; M
+q=n;
+end
+x=0;
+C
+end
+end
+F=zeros(1,3); M
+F(1)=d;
+F(2)=(t/30.82)+C(1);%turn distance back into latitude
+F(3)=(q/a)+C(2);%turn distance back into longitude
+i
+xlswrite('AHP_Chicago_E.xlsx',F,'A14:C14');%input the results into Excel
+H
+fprintf('OK');
+：
+2、
+% Group the rental stations (preparatory step for finding regression lines)& Find
+the regression lines for all of the rental stations -- new bicycle lanes
+A=xlsread('AHP_Denver_E.xlsx','G1:K22');
+号
+B=xlsread('AHP_Denver_E.xlsx','M1:Q29');
+C=xlsread('AHP_Denver_E.xlsx','S7:V7');
+D=zeros(22,3);
+E=zeros(29,3);
+众
+F=zeros(1,2);
+b=1;c=1;d=1;e=1;
+DA=zeros(11,2);
+DB=zeros(16,2);
+公
+DC=zeros(14,2);
+DD=zeros(5,2);
+for a=1:29;
+if a<=2信2;
+D(a,1)=A(a,2)+(A(a,1)-C(1))*60-C(2);
+D(a,2)=A(a,4)+(A(a,3)-C(3))*60-C(2);
+D(a,3)=A(a,5);
+微 end
+E(a,1)=B(a,2)+(B(a,1)-C(1))*60-C(1);
+E(a,2)=B(a,4)+(B(a,3)-C(3))*60-C(2);
+E(a,3)=B(a,5);
+if a<=22;
+switch D(a,3)
+case 1
+DA(b,1)=D(a,1);
+DA(b,2)=D(a,2);
+b=b+1;
+case 2
+DB(c,1)=D(a,1);
+DB(c,2)=D(a,2);
+c=c+1;
+case 3
+DC(d,1)=D(a,1);
+DC(d,2)=D(a,2);
+d=d+1;
+case 4
+DD(e,1)=D(a,1);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 50 of 51
+DD(e,2)=D(a,1);
+e=e+1;
+end
+end
+switch E(a,3)
+case 1
+DA(b,1)=E(a,1);
+DA(b,2)=E(a,2);
+b=b+1;
+case 2
+DB(c,1)=E(a,1);
+DB(c,2)=E(a,2);
+c=c+1;
+case 3
+DC(d,1)=E(a,1); M
+DC(d,2)=E(a,2);
+d=d+1;
+case 4
+C
+DD(e,1)=E(a,1);
+DD(e,2)=E(a,1);
+e=e+1; M
+end
+end
+DAA=polyfit(DA(:,1),DA(:,2),1);
+i
+DBA=polyfit(DB(:,1),DB(:,2),1);
+H
+DCA=polyfit(DC(:,1),DC(:,2),1);
+DDA=polyfit(DD(:,1),DD(:,2),1);
+：
+3、
+（1）
+A=xlsread('AHP_Des_Moines_LA.xlsx','0_1');%total number of buildings
+a=A(26,7);%total number of buildings
+号
+b=A(26,2);%total number of office buildings
+B=zeros(24,24);
+for x=1:24;%Calculate the state transit matrix
+c=(a-A((x+1),7))/23;
+众
+B(x,x)=A((x+1),7)/(A((x+1),7)+c);
+for y=1:24;
+if y~=x;
+B(x,y)=(公1-B(x,x))*A((y+1),7)/(a-A((x+1),7));
+end
+end
+end
+（2） 信
+format long
+P=xlsread('AHP_Des_Moines_LA.xlsx','0_1','A31:X54');%state transition matrix
+of Markov Chain
+x=1微00;%time of transition
+[m,n]=size(P);
+A=zeros(x,n);
+A(1,1)=240;%original number of bicycle, 240 in all
+for i=2:x;%the application of Markov Chain
+A(i,:)=A(i-1,:)*P;
+end
+4、
+% Determining the initial range (service area) for the stations
+A=xlsread('CT_Des_Moines.xlsx','G1:H24'); %Latitude of all stations
+B=xlsread('CT_Des_Moines.xlsx','J1:K24'); %Longitude of all stations
+C=xlsread('CT_Des_Moines.xlsx','A1:B4'); %Lati+Longitude of all four corner
+[m,n]=size(A);
+D=zeros(m,n);
+E=zeros(2,2);
+F=zeros(24,1);
+G=[1000,2000];
+I=xlsread('CT_Des_Moines.xlsx','A13:B14');
+I(:,1)=(I(:,1)-49.16)*30.82;
+I(:,2)=(I(:,2)-46.88)*(30.922*cos((49/180)*pi));
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #2541 Page 51 of 51
+J=xlsread('CT_Des_Moines.xlsx','A22:B23');
+J(:,1)=(J(:,1)-49.16)*30.82;
+J(:,2)=(J(:,2)-46.88)*(30.922*cos((49/180)*pi));
+K=xlsread('CT_Des_Moines.xlsx','A32:B33');
+K(:,1)=(K(:,1)-49.16)*30.82;
+K(:,2)=(K(:,2)-46.88)*(30.922*cos((49/180)*pi));
+for a=1:24;
+D(a,1)=A(a,2)+(A(a,1)-C(1,1))*60;
+D(a,2)=B(a,2)+(B(a,1)-C(3,1))*60;
+end
+D(:,1)=(D(:,1)-49.16)*30.82;
+D(:,2)=(D(:,2)-46.88)*(30.922*cos((49/180)*pi));
+E(1,1)=C(1,2);
+E(1,2)=C(3,2);
+E(2,1)=C(2,2)+(C(2,1)-C(1,1))*60; M
+E(2,2)=C(4,2)+(C(4,1)-C(3,1))*60;
+E(:,1)=(E(:,1)-49.16)*30.82;
+E(:,2)=(E(:,2)-46.88)*(30.922*cos((49/180)*pi));
+C
+H=zeros(17,35);
+f=1;
+g=1; M
+x=input('Enter year');
+i=0;
+u=500*((1-(1/(1.3))^(1/2))^x);
+i
+for b=E(1,1):100:E(2,1);
+H
+for c=E(1,2):100:E(2,2);
+switch 1
+case ((b>=I(1,1)) & (b<=I(2,1)：)) & ((c>=I(1,2)) & (c<=(I(2,2))));
+y=0;
+case ((b>=J(1,1)) & (b<=J(2,1))) & ((c>=J(1,2)) & (J<=(J(2,2))));
+y=0;
+号
+case ((b>=K(1,1)) & (b<=K(2,1))) & ((c>=K(1,2)) & (c<=(K(2,2))));
+y=0;
+otherwise
+for d=1:24;
+众
+F(d,g)=(((D(d,1)-b)^2+(D(d,2)-c)^2)^(1/2));
+end
+end
+if min(F)>u;
+公
+M(g,2*f-1)=b/30.82+49.6;
+M(g,2*f)=c/(30.922*cos((49/180)*pi))+46.88;
+i=i+1;
+end
+信
+g=g+1;
+end
+H=min(F);
+[m,n]=size(H);
+微
+g=1;
+L(f)=max(H);
+f=f+1;
+end
+a=max(L);
+fprintf('%f',a)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

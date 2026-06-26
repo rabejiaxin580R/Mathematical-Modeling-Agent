@@ -1,0 +1,104 @@
+{
+  "paper_id": "5473",
+  "meta": {
+    "paper_id": "5473",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2015,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2015\\B\\5473.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.abstract",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文摘要概述了问题、方法（恐惧模型和成本模型）和结果，并给出了关键词。",
+      "formulas": [],
+      "source_excerpt": "Abstract ... In this paper, we are going to determine a safety rating for My City ... In the first place, we make attempts to weigh the impact of different crime categories by both the level of fear and the cost of crimes. ... Furthermore, a model which used to measure the interior safeness in terms of regions inside My City is also developed."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了三条假设：1) 安全评级主要受严重犯罪影响；2) 每个巡逻区面积和警力相似；3) 家庭情况和逮捕情况对安全评级影响小。每条假设都有合理性论证。",
+      "formulas": [],
+      "source_excerpt": "Assumption one: Safety rating is mostly influenced by the more serious and damaging crimes. ... Assumption two: The area of and the police power in each beat region is similar. ... Assumption three: The domestic situation and arrested situation in a Region have minor or little effect on the safety rating of a region."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在恐惧模型中，使用加权算术平均计算安全评级，权重来自Mark Warr调查的恐惧值。",
+      "formulas": [
+        {
+          "latex_code": "S = \\frac{\\sum_{i} w_i \\cdot I_i}{\\sum_{i} w_i}",
+          "variables": {
+            "S": "安全评级",
+            "w_i": "第i类犯罪的恐惧权重",
+            "I_i": "第i类犯罪的指数值"
+          }
+        }
+      ],
+      "source_excerpt": "Using a weighted arithmetic average and results of a survey from Mark Warr’s essay Fear of Victimization, we can calculate the relative level of fear in My City as a reasonable safety rating of My City."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在成本模型中，使用线性回归将13天的犯罪数据外推至全年，以计算每千人犯罪成本。",
+      "formulas": [
+        {
+          "latex_code": "N_{crime}^{year} = N_{crime}^{13days} \\times \\frac{365}{13}",
+          "variables": {
+            "N_{crime}^{year}": "全年犯罪数",
+            "N_{crime}^{13days}": "13天犯罪数"
+          }
+        }
+      ],
+      "source_excerpt": "In the cost approach, we will use the crime numbers per 1000 people to evaluate the total cost of all crimes per 1000 people."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文使用折线图展示每日犯罪数量变化，并剔除异常值（第一天数据）。",
+      "formulas": [],
+      "source_excerpt": "Chart 1.1 Daily Quantities of Crimes in My City (7/6/2014-7/18/2014) ... For the reason that the quantity of crimes occurred in the first day (7/5/2014) was so different ... we decide to discard all the data under this date."
+    },
+    {
+      "concept_id": "prep.outlier",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在数据分析中，发现第一天犯罪数量异常（202起），与其他天（>800起）差异巨大，因此剔除该日数据。",
+      "formulas": [],
+      "source_excerpt": "For the reason that the quantity of crimes occurred in the first day (7/5/2014) was so different (had a magnitude of 202 while all the other day had crimes amount >800) from other data, we decide to discard all the data under this date in the following analysis and mathematical modeling."
+    },
+    {
+      "concept_id": "writing.threeline",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文使用三线表展示各类犯罪的案件数量和逮捕情况。",
+      "formulas": [],
+      "source_excerpt": "| Categories | Cases Amount | Arrested Cases | Arrested Ratio | ... | THEFT | 2618 | 287 | 0.110 | ..."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在区域安全模型中，结合恐惧值和犯罪发生概率计算各区域的危险评级。",
+      "formulas": [
+        {
+          "latex_code": "D_r = \\sum_{c} F_c \\cdot P_{c,r}",
+          "variables": {
+            "D_r": "区域r的危险评级",
+            "F_c": "犯罪c的恐惧指数",
+            "P_{c,r}": "区域r中犯罪c发生的概率"
+          }
+        }
+      ],
+      "source_excerpt": "combine the fear approach with the probability of the occurrence of a specific crime category in order to come up with the danger ratings of each regions."
+    }
+  ]
+}

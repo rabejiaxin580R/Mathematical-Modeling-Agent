@@ -1,0 +1,72 @@
+{
+  "schema_version": 3,
+  "concept_id": "ts.var",
+  "title": "VAR 与 Granger 因果检验",
+  "taxonomy_path": [
+    "常用建模方法",
+    "时间序列分析",
+    "VAR 与 Granger 因果检验"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.2",
+  "aliases": [
+    "VAR模型",
+    "向量自回归",
+    "Granger因果",
+    "格兰杰因果检验"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "VAR（向量自回归）模型用来分析多个时间序列之间的动态关系，Granger因果检验则判断一个序列是否有助于预测另一个序列。",
+    "intuition": "想象你同时记录每天的降雨量和冰淇淋销量。VAR模型就像同时看这两个序列的过去值来预测它们的未来，而Granger因果检验就是问：昨天的降雨量能帮助预测今天的冰淇淋销量吗？如果能，就说降雨量是冰淇淋销量的Granger原因。",
+    "when_to_use": "当你有多组时间序列数据，想研究它们之间的相互影响（比如宏观经济指标、金融资产价格），或者想用一组变量预测另一组变量时，可以考虑VAR和Granger因果检验。",
+    "definition": "VAR(p)模型：一个k维时间序列向量Y_t，其p阶VAR模型为Y_t = c + Φ_1 Y_{t-1} + ... + Φ_p Y_{t-p} + ε_t，其中Φ_i是系数矩阵，ε_t是白噪声。Granger因果检验：在VAR框架下，检验一个变量的滞后项是否对另一个变量有显著影响。",
+    "math_principle": "VAR模型通过最小二乘法或极大似然估计每个方程。Granger因果检验通常使用F检验或卡方检验，原假设为“变量x不是y的Granger原因”，即所有x的滞后项系数为零。",
+    "step_by_step": [
+      "1. 数据准备：确保所有时间序列平稳（若不平稳，差分或取对数）。",
+      "2. 确定滞后阶数p：使用AIC、BIC等信息准则选择最优p。",
+      "3. 估计VAR(p)模型：对每个方程分别用OLS估计。",
+      "4. 模型检验：检查残差是否为白噪声（如Ljung-Box检验）。",
+      "5. Granger因果检验：对每个变量对，检验一个变量的滞后项是否联合显著。",
+      "6. 解释结果：若p值小于显著性水平（如0.05），则拒绝原假设，认为存在Granger因果关系。"
+    ],
+    "worked_example": "假设有GDP和消费两个序列（季度数据，共100期）。先检验平稳性，发现一阶差分后平稳。用AIC选择滞后阶数p=2。估计VAR(2)模型，得到消费方程中GDP滞后项的系数。Granger因果检验：原假设“GDP不是消费的Granger原因”，F统计量=4.23，p=0.018，拒绝原假设，认为GDP Granger引起消费。",
+    "pitfalls": [
+      "1. 变量必须平稳，否则可能伪回归。",
+      "2. 滞后阶数选择不当会影响结果。",
+      "3. Granger因果不是真正因果，只是预测能力。",
+      "4. 模型对异常值敏感。",
+      "5. 变量个数不宜过多，否则参数过多。"
+    ],
+    "tools": "Python: statsmodels.tsa.vector_ar.var_model.VAR 和 statsmodels.tsa.stattools.grangercausalitytests。示例代码：\n```python\nimport pandas as pd\nfrom statsmodels.tsa.vector_ar.var_model import VAR\nfrom statsmodels.tsa.stattools import grangercausalitytests\n\ndata = pd.read_csv('data.csv', index_col=0, parse_dates=True)\nmodel = VAR(data)\nresults = model.fit(ic='aic')\nprint(results.summary())\ngrangercausalitytests(data, maxlag=4, verbose=True)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "Y_t = c + \\Phi_1 Y_{t-1} + \\cdots + \\Phi_p Y_{t-p} + \\varepsilon_t",
+      "variables": {
+        "Y_t": "k维时间序列向量",
+        "c": "常数向量",
+        "\\Phi_i": "系数矩阵 (k×k)",
+        "\\varepsilon_t": "白噪声误差向量"
+      }
+    },
+    {
+      "latex_code": "H_0: \\text{变量 } x \\text{ 不是 } y \\text{ 的 Granger 原因}",
+      "variables": {
+        "H_0": "原假设",
+        "x": "候选原因变量",
+        "y": "结果变量"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [],
+    "from_papers": []
+  }
+}

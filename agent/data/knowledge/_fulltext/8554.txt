@@ -1,0 +1,1444 @@
+Team 8554 1 / 25
+For office use only Team Control Number For office use only
+8554
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ Problem Chosen F3 ________________
+A
+T4 ________________ F4 ________________
+2018
+HiMCM
+Summary Sheet
+(Your team's summary should be included as the first page of your electronic submission.)
+Type a summary of your results on this page. Do not include the name of your school, advisor,
+or team members on this page. M
+Summary
+C
+There are various kinds of roller coaster around the world, which appeal to many fans.
+In order to recommend special roller coasters to fans, some onliMne ranking of roller coasters
+come out in different website. Those ranking are based on either specific objective indicator
+or subjective experience results. therefore, we should create a quantitative algorithm with
+i
+multiple objective indicators and build a new ranking of roller coaster, compare our ranking
+H
+with two other online ranking systems. In addition, as the APPs have embedded in our lives,
+so we also should design a friendly APP which c：an recommend different roller coaster to fans
+based on their preferences.
+In the database of COMAP_RollerCoasterData_2018.xlsx, we find that a small amount
+of data doesn’t fit the facts and some号 indicators have more missing data, so we should
+process the data. Firstly, we correct the wrong data, secondly, we divide the sample into
+different categories by cluster analysis, and then we made up for the missing data by the
+mean value of those categories.众
+For creating a quantitative algorithm, we should set several assumptions. The roller
+coaster is operating normally, the ticket price of the roller coaster and the weather does not
+公
+affect our ranking, the height, speed, length, the number of inversions, duration, G force and
+vertical angle are directly proportion to the fans’ experience. We rank the roller coaster with
+entropy weight method. According to the character of the indicator in the database, we
+信
+construct five indexes, including ups and downs index, vertigo index, sustainability index,
+stimulation index and nostalgia index. After our calculation, Steel Dragon 2000, Smiler,
+Kinda Ka, Leviathan, Fury 325, Millennium Force, Top Thrill Dragster, Intimidator305,
+微
+Fujiyama and Steel Vengeance rank top 10, Our ranking are partly identical to the other
+online ranking, and finally, we cut the last 100 roller coasters in our ranking, and calculate
+the ranking again, we find the result is very identical with our original ranking, which means
+our result is robustness.
+According to our classification and ranking, we design a friendly APP to recommend the
+roller coaster. We classify five indexes into excitement, intensity and vertigo, and then we
+take the fans’ preference into account. The fans can input his preference into our APP, he will
+find the roller coaster which rank the top.
+We have three advantages, including the correction of error data and supplement of
+missing data, entropy weight method based on the preference, and friendly app design. Surely,
+a coin has two sides, our disadvantages include the supplement of missing data leading to the
+results bias, and the results depending on our preference.
+Keyword: Cluster Analysis, Entropy Weight Method, Personalized Comprehensive
+Evaluation Model
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 2 / 25
+Rank it! Go to it! Ride it!
+Have you been feeling the blood pumping in your heart, eager to find a roller coaster to
+let epinephrine wake you up? Have you had night that you couldn’t sleep, thinking about
+flying in the sky, hearing the screaming howling? Or have you been disappointed by those
+dull, low-quality roller coasters, wanting to say good-bye to the most exciting game in this
+world? Forget about those subjective assessed roller coaster ranking websites. Rank&Roll, a
+newly published app with the latest algorithm, will provide you with the most objective
+M
+ranking in the world!
+To meet the personal preferences of the users, Duncan’s team has designed an
+C
+application to help each individual to get personal roller coaster ranking list. When first
+M
+signed up, clients will complete the following processes in order to provided information to
+sort out the most suitable list.
+i
+H
+They have already given out a top 10 list of roller coasters, as shown below:
+：
+Name Score
+Steel Dragon 2000 5.05
+号
+Smiler 4.00
+Kingda Ka 3.88
+众Leviathan 3.70
+Fury 325 3.68
+Millennium Force 3.50
+公
+Top Thrill Dragster 3.26
+Intimidator 305 3.25
+信 Fujiyama 3.05
+Steel Vengeance 2.96
+微
+How well will this app perform? I expect it will be quite popular among roller coaster
+fans. Let’s wait and see.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 3 / 25
+Get Ready for Scream
+Content
+1. Introduction ............................................................................................................................ 4
+2. Assumptions and Justifications .............................................................................................. 4
+3 Index Needed .......................................................................................................................... 5
+4. Data Analysis and Processing ................................................................................................ 5
+M
+4.1 Screening and Revision of Erroneous Data .................................................................... 5
+4.2 Estimation of Missing Data for a Few Speed and Length .............................................. 5
+C
+4.3 Estimation of Missing Data for Drop, Duration, G force and Vertical angle ................. 6
+M
+4.3.1 Estimation of Missing Data for Roller Coaster Made of Wood ........................... 6
+4.3.2 Estimation of Missing Data for Roller Coaster Made of Steel ............................. 7
+i
+5. Evaluation Based on Entropy Weight Method ...............H........................................................ 8
+5.1 Analysis and Quantification of Characteri：stics ............................................................... 8
+5.2 Evaluation Feature Extraction ......................................................................................... 9
+5.2.1 Ups and Downs Index .......号.................................................................................... 9
+5.2.2 Vertigo Index ...................................................................................................... 10
+5.2.3 Sustainability Inde众x ............................................................................................. 10
+5.2.4 Stimulation Index ................................................................................................ 11
+5.2.5 Nostalgia 公Index ................................................................................................... 11
+5.3 Establishment and Solution of Evaluation Model ......................................................... 11
+信
+5.3.1 Comprehensive Evaluation Model Based on Passengers’ Preference Degree ... 11
+5.3.2 The Ranking Result and Comparison with Online Rankings ............................. 12
+微
+5.3.3 Comparison with Online Ranking ....................................................................... 12
+6. Sensitivity Analysis .............................................................................................................. 13
+7. Design for the App ............................................................................................................... 14
+7.1 Explanation of the Ranking System in App .................................................................. 14
+7.2 Qualification for the Design .......................................................................................... 16
+8. Strength and Weakness of the model ................................................................................... 19
+8.1 Strength ......................................................................................................................... 19
+8.2 Weakness....................................................................................................................... 19
+9. Conclusion ........................................................................................................................... 19
+10. Reference ........................................................................................................................... 20
+11.Appendix: The Ranking of All Roller Coaster .................................................................... 21
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 4 / 25
+1. Introduction
+Technology is booming. After going through a boom in electronic devices, people
+gradually get used to it. Thus, groups of people return to theme parks, seeking thrills in places
+such as roller coasters. Roller coaster lovers naturally want to find the most appropriate roller
+coaster. Because there is no objective ranking, they can only be based on the Internet-given
+rankings. However, the online ranking is usually given by individual evaluators according to
+their personal feelings or it's just formed by a bunch of subjective votes.
+In order to solve this problem, our group decided to use a series of algorithms to obtain
+the ranking based on the main objective data of roller coaster. Then to justify the objectivity
+of the rank we have worked out, we will compare and discuss the ratMing results and
+descriptions from your team's algorithm with two other ranking systems found online. We
+will design and develop the concept of a user-friendly application Cin order to meet the
+personal preference of each individual. The application will base on our previous algorithm
+M
+and apply screening system thus provide a personal roller coaster ranking. At last, our team
+will write a one-page non-technical News Release describing our new algorithm, results, and
+i
+app. H
+When making the ranking of roller coasters, we have to fill in the information first. We
+：
+decide to use cluster analysis to use the data of similar roller coasters to approximate the
+information. After the completion of information, we used entropy method with two layers of
+indexes to make the ranking list. To de号sign the app, we also used the two-layer structure to
+rank the roller coasters. The options are designed in this way to enhance users’ experience.
+We also used the collaborative filtering to give recommendation to old users, whose long-
+众
+term preference has been saved by the app. To achieve the fixed amount of roller coasters to
+recommend, we used k-nearest-neighbor method to get the recommended roller coasters.
+公
+2. Assumptions and Justifications
+信
+Assumption 1: No accident will happen when the roller coasters are operating. That is
+to say, all the roller coasters are absolutely safe, so safety factors will not be considered in
+微
+our ranking system.
+Justification: The possibility that a roller coaster has an accident is approximately one
+in 250 million, which is so small. Plus, safety factor is not included in the database, so we
+have no way to take them into consideration.
+Assumption 2: Our ranking system do not consider the price of the tickets for the roller
+coasters.
+Justification: In our ranking system, only factors related riders’ experience will be
+taken into consideration.
+Assumption 3: Weather factors is not included in the ranking system.
+Justification: As roller coasters are everywhere around the world, the climate at their
+locations may vary drastically, which might also affect the riding experience. However, it is
+extremely hard for us to collect so much data in such a short period of time. So, we decide
+not to consider the climate in the ranking system.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 5 / 25
+Assumption 4: A rise in height, speed, length, the number of inversions, duration, G
+force and vertical angle will all increase the riders’ excitement without causing any
+unpleasantness.
+Justification: In the Entropy Method we use, all the variables and final score is
+positively correlated, because we assume that people ride the roller coasters to look for
+excitement.
+3 Index Needed
+Table 1 Index Needed
+Index Meaning of the indexes
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+s
+i
+ups and downs index of the ith roller coaster， i  1 , , 3 0 0 .
+vertigo index of the ith roller coaster
+n
+i
+h
+i
+sustainability index of the ith roller coaster
+t
+i
+stimulation index of the ith roller coaster
+Y
+i
+nostalgia index of the ith roller coaster
+a
+j
+preference coefficient of the jth index， j  1 , , 5 .
+4. Data Analysis and Processing
+4.1 Screening and Revision of Erroneous Data
+By classifying and screening the data in COMAP_RollerCoasterData_2018, there are
+eight types, among which wood and steel are the same as construction. There are three roller
+coasters involved. After checking on the Internet, the error data can be modified as shown in
+Table 2. In the process of consulting the data, we find that there are differences in very few
+numerical data. Since it is impossible to verify all the data, we use
+COMAP_RollerCoasterData_2018 in the later calculation.
+Table 2 Correction of Erroneous Type Data
+Name Original Type After modification
+Terminator Salvation Wood Sit down
+Cedar Creek Mine Ride Steel Sit down
+Corkscrew（1976） Steel Sit down
+4.2 Estimation of Missing Data for a Few Speed and Length
+Through the analysis of the data, we find that there are a lot of missing data are drop,
+duration, G force and vertical angle data, and only a few speed and length data are missing.
+For the missing data of speed and length, we use the "approximate complement" method to
+estimate.
+Let's assume that the speed of roller coaster A is missing. Choose the speed data of roller
+coaster B, whose height and length data is closest to roller coaster A, with the same type and 关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 6 / 25
+construction of roller coaster A as the estimated value of speed data of A. Set
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+h
+0
+, l
+0
+for value
+of the height and length of roller coaster A and h
+m
+, l
+m
+for data of all roller coasters with the
+same types and construction of roller coaster A. The roller coaster which meets the following
+formula
+2 2
+h h  l l 
+min  k 0   k 0  (1)
+k  h   l 
+0 0
+is B, and its corresponding speed value is v . The estimated value of speed for A is
+B
+v =v .
+0 B
+Similarly, missing length data can be estimated. If the length data l of roller coaster
+B
+meets the following formula,
+m ik n
+ h
+k
+
+h
+0
+h
+0
+
+2
+
+ v
+k
+
+v
+0
+v
+0
+
+2
+(2)
+the missing data can be estimated as
+l
+0
+ l
+B
+.
+4.3 Estimation of Missing Data for Drop, Duration, G force and Vertical angle
+Wooden roller coaster is often built along the hillside with rarely inversion. By
+analyzing the data of fifty groups of wooden roller coasters in
+COMAP_RollerCoasterData_2018, there are only 5 of them have inversions, and the number
+of inversions is not more than 3. Because people always think that wood is not as strong as
+steel in their subjective impression, the stimulation of insecurity of wooden roller coaster in
+riding is unmatched by steel. At the same time, because of the construction along the hillside,
+the feeling of ups and downs is much more intense than that of steel, when people ride a
+wooden roller coaster. However, the dizziness caused by inversion and rotation of wood is
+not comparable to that of steel. Therefore, the gap between these two kinds of construction
+roller coaster is still very obvious.
+4.3.1 Estimation of Missing Data for Roller Coaster Made of Wood
+Although the construction process of roller coaster is developing over time, the physical
+principles are the same. Therefore, ignoring the construction time factor, we selected 50 roller
+coasters with construction as wood, and carry out cluster analysis of roller coasters with
+height, speed and length as basic features. Fifty roller coasters' clustering maps are obtained
+as shown in Figure 1. We believe that the size and structure of roller coasters in the same
+category are similar, and their characteristic attributes should also be similar
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 7 / 25
+M
+Figure 1 Cluster Graph of 50 Wood Roller Coasters
+C
+Of the 50 roller coasters, 18 are missing drop data, and the number of roller coasters
+missing data is less than the number of those not missing dataM. For roller coaster A with
+missing data, select in category with A the most similar roller coaster B with drop data, and
+use drop data of B to estimate that of A. If there are more thani one such B, the average value
+H
+of multiple drop data is used to estimate. The more the number of roller coasters not missing
+data is, the more detailed the clustering can be：, and the closer the estimated value is to the
+real value.
+For duration data, there are 14 roller coasters missing data. The situation is similar to
+号
+that of drop data, and the data supplement method is the same as drop data.
+There are 28 roller coasters missing data of vertical angle data, and the number of roller
+coasters with missing data is m众ore than the number of those without missing data. It may
+appear that the roller coasters similar to the A in category are all missing vertical angle data.
+Therefore, we can consider to increase the number of roller coasters of the same kind as A by
+公
+rough classification, so as to make roller coaster B without missing data as possible, which
+enables vertical angle data to be estimated. But this may increase the estimation error.
+信
+Only 7 of the 50 roller coasters have G force data, so it doesn’t work to estimate with
+known data of the same category after cluster analysis. Because the 7 data may be a cluster,
+we sho微uld drop it. If the data is missing, it can be estimated according to the known data.
+Otherwise, other methods shall be used. By consulting relevant information on the internet,
+the G force of roller coaster will not exceed 2.5G without considering the car's own
+acceleration system. Because G force is an important indicator of the performance of roller
+coaster, it should be open data. If there is no relevant data or relevant data is difficult to find,
+it is reasonable that the roller coaster carriage does not have an acceleration system. In that
+case, its G force will not exceed 2.5G, and we might as well assume that it is 2G.
+4.3.2 Estimation of Missing Data for Roller Coaster Made of Steel
+The same method used for roller coasters made of wood can be used when estimating
+the missing data of roller coasters made of steel. We find from the data that 136 of 250 roller
+coasters made of steel have inversions and 114 not, so we should divide them into two parts
+according to whether they have inversions or not. For each part, the missing data can be
+estimated according to the method in Section 4.3.1.
+When the roller coaster is built without inversion, we use height, speed, length as the
+three basic features for cluster analysis, while we use height, speed, length, number of 关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 8 / 25
+Inversion as the four basic features for cluster analysis, when it is built with inversion. The
+two-part cluster analysis schematic diagram is shown in Figure 2 and Figure 3, in which we
+only show the clustering results of the first 30 roller coasters in each part.
+M
+C
+Figure 2 Cluster Diagram with InversMion
+i
+H
+：
+号
+众
+公
+Figure 3 Cluster Diagram without Inversion
+5. Evaluatio信n Based on Entropy Weight Method
+5.1 Analysis and Quantification of Characteristics
+微
+Through the method of section 4, we have revised and supplemented the data. For 300
+roller coasters, each evaluation object contains 12 characteristics: type, construction,
+Year/Date, speed, length, inversions, number of inversions, drop, duration, G force and
+vertical angle. By consulting the relevant literature, passengers' ride experience varies when
+there are reversions or not. Roller coaster without inversions tend to use the alternating
+transformation of overweight and weightlessness caused by rapid changes of acceleration as
+the main stimulation. While those with inversions tend to use inversions and the vertigo
+caused by rotation as the main stimulation. The inversions characteristic can be ‘yes’
+quantized to 1, and the ‘no’ quantification is 0.
+Through the information online and the analysis of data, roller coasters made of wood
+rarely have inversions, while steel-made roller coaster does not. By comparing 50 wood-
+made roller coasters and 114 steel-made roller coasters which don’t have inversions, The
+average data of height, speed and length are obtained in Table 3.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 9 / 25
+Table 3 Comparison of Mean Values Between the Both
+Construction Height（feet） Speed（mph） Length（feet）
+Wood 110.22 56.045 3726.77
+Steel 140.48 59.90 3040.80
+Basically, these data can be found on the Internet, not estimated. As you can see from
+table 3, those steel-made roller coasters without inversions are higher and faster than wood-
+made ones, thus the average degree of stimulation is higher. The length data of wood-made
+roller coaster is higher than steel-made, which means that the average duration of stimulation
+from wood-made roller coaster is longer. The degree of Steel-made ones higher than the
+wood-made can be depicted by the following formula:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+ 1 4 0 . 4
+1
+8
+1
+
+0 .
+1
+2
+1
+2
+0 . 2 2
+
+5 9 . 9
+5
+
+6 .
+5
+0
+6
+4
+.
+5
+0 4 5 
+2 = 0 . 1 7 2 (3)
+So when we quantify ‘steel’ to 1, the quantization value of ‘wood’ is 0.828.
+According to the information on the internet, the sensation intensity of human body is
+different when choosing different types of roller coasters, even under the same level of
+stimulation. This is because the ability to control our body when experiencing different types
+of roller coasters varies a lot. According to the intensity of sensory strength from weak to
+strong, the arrangement and quantitative rules of the 6 types can be seen in Table 4.
+Table 4 Quantization of These 6 Types
+Type Sit down Stand up Wing Flying Suspended Inverted
+Quantization 1 2 3 4 5 6
+5.2 Evaluation Feature Extraction
+5.2.1 Ups and Downs Index
+According to the analysis of 5.1, we know that when roller coaster does not have
+inversions, the stimulation mode for passengers is mainly the alternating transformation of
+overweight and weightlessness caused by rapid change of acceleration. Therefore, we define
+the index of ups and downs, which can be characterized by characteristic speed, drop, G force
+and vertical angle. These four characteristics are positively correlated with this index.
+Entropy represented, as we know, the overall degree of disorder of the whole system.
+The larger entropy is, the more information it would carry, which means a larger degree of
+disorder. Thus, a large entropy would mean a greater uncertainty of an index. Thus, a smaller
+entropy would mean a greater accuracy and contribution to the whole model. With this
+method, we can determine the factors that contribute most to the assessment equation,
+allowing us to work out the weight of each factor. At last, we can use the equation to give an
+overall assessment of the roller coasters.
+When the system may be in several different states and the probability of each state is p
+i
+（ i  1 , 2 , , m ）, the entropy of the system can be defined：
+1 m
+e p lnp (4)
+lnm i i
+i1
+Entropy weight method is an objective weighting method. In the specific use process, the
+entropy weight method calculates the entropy weight of each feature according to the degree
+of variation of each feature, and then amends the weight of each feature through the entropy 关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554                                                                                                                                                                        10 / 25
+weight,  thus  objectively  obtaining  the  weight  of  each  feature.  We  set  j  1 , , 4
+
+corresponding to characteristics: speed, drop, G force and vertical angle.  p represents the
+ij
+proportion of the ith roller coaster about the jth characteristic:
+|     |     | a    |        |           |                |       |                         |     |     |
+| --- | --- | ---- | ------ | --------- | -------------- | ----- | ----------------------- | --- | --- |
+|     | p   |  ij | ,  i  | 1 , 2 , , | 3 0 0 ,  j  1 | , , 4 |                         |     | (5) |
+ij 300
+a
+ij
+i1
+Where,  a  represents the original data of the ith roller coaster’s jth characteristic.
+ij
+Calculate the entropy of the jth characteristic:
+|     |     |     |     |     |     |                          |     |     |     |
+| --- | --- | --- | --- | --- | --- | ------------------------ | --- | --- | --- |
+1 300
+|     |     | e  | p    | lnp | ,       |     |     |     | (6) |
+| --- | --- | ---- | ----- | --- | ------- | --- | --- | --- | --- |
+|     |     |      |       |     | j  1 , | , 4 |     |     |     |
+|     |     | j    | ln300 | ij  | ij      |     |     |     |     |
+i1
+Calculate coefficient of variation of the jth characteristic:
+|     |     |     |        |        |                               |     |     | M   |     |
+| --- | --- | --- | ------ | ------ | ----------------------------- | --- | --- | --- | --- |
+|     |     |     | g 1e | ,  j  | 1 , , 4                       |     |     |     | (7) |
+|     |     |     | j      | j      |                               |     |     |     |     |
+Thus the weight of the jth characteristic:  C
+|     |     |     | g   |      |                               |     |     |     |      |
+| --- | --- | --- | --- | ---- | ----------------------------- | --- | --- | --- | ---- |
+|     |     |     | j   | ,    |                               |     |     |     | (8)  |
+|     |     | w   |    | j1, | ,4                            |     |     |     |      |
+|     |     |     | j 4 |      |                               |     | M   |     |      |
+j1 g
+j
+So we can get the ith roller coaster's index of ups and downs:
+i
+|     |     |     |     |     |                              | H   |     |     |     |
+| --- | --- | --- | --- | --- | ---------------------------- | --- | --- | --- | --- |
+4
+|     |     | s  j | w p  | ,  i  1 , | 2 , , 3 0 0 |     |     |     | (9) |
+| --- | --- | ------- | ---- | ---------- | ----------- | --- | --- | --- | --- |
+|     |     | i       | j ij |            |             |     |     |     |     |
+|     |     |         | 1    | ：          |             |     |     |     |     |
+After calculation, the weight coefficient of speed, drop, G force and vertical angle is
+0.1864,0.5489,0.1967,0.0680 respectively, therefore
+|            |          |     | 号        |     |          |     |          |        |      |
+| ---------- | -------- | --- | -------- | --- | -------- | --- | -------- | ------ | ---- |
+| s 0.1864p | 0.5489p |     | 0.1967p |     | 0.0680p |     | , i1,2, | ,300   | (10) |
+| i          | i1       |     | i2       |     | 13       |     | 14       |        |      |
+From the weight coefficient, we can see that drop feature plays the most important role in
+the ups and downs index.  众
+5.2.2 Vertigo Index
+Those roller coasters with inversions tend to use inversions and the vertigo caused by
+公
+rotation as the main stimulation. Thus we define the index of vertigo which can be described
+by characteristics inversions and number of inversion. But these two characteristics have
+信
+strong  correlation.  As  long  as  number  of  inversions  is  not  zero,  inversions  must  be  1.
+Otherwise, as long as number of inversions is 0, inversions must be 0, so only inversions
+微 n
+index can be adopted. We need to normalize the number of inversions. The vertigo index  i
+standardized from the ith roller coaster’ number of inversions is calculated as follows:
+|     |     |     | n   | minn |                                                                 |     |     |     |     |
+| --- | --- | --- | --- | ----- | --------------------------------------------------------------- | --- | --- | --- | --- |
+|     |     |     | i   |       | i                                                               |     |     |     |     |
+|     |     | n   | =   | i     |                                                           (11)  |     |     |     |     |
+i
+|     |     |     | maxn | minn |     |     |     |     |     |
+| --- | --- | --- | ---- | ----- | --- | --- | --- | --- | --- |
+|     |     |     |      | i     | i   |     |     |     |     |
+|     |     |     | i    |       | i   |     |     |     |     |
+Where  n  is the number of inversions of the ith roller coaster.
+i
+5.2.3 Sustainability Index
+People who like roller coaster often like to pursue stimulation, and an important aspect of
+pursuing stimulation is the duration of stimulation, which is closely related to the scale of
+roller coaster. Therefore, the index can be characterized by height, length and duration, and
+the sustainability index is in positive phase with the three characteristics.
+As the calculation of the ups and downs index, the value of the ith roller coaster’s
+
+sustainability index h can be obtained by using the Entropy Weight Method.
+i
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi  | CM  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+获取更多资讯
+
+Team 8554                                                                                                                                                                        11 / 25
+After  calculation,  the  weight  coefficient  of  height,  length  and  duration  is
+0.0057,0.0032,0.9911 respectively, therefore
+
+h  0 . 0 0 5 7 p  0 . 0 0 3 2 p  0 . 9 9 1 1 p ,  i  1 , 2 , , 3 0 0 (12)
+|     | i   |     | i1  | i2  |     | 1 3 |
+| --- | --- | --- | --- | --- | --- | --- |
+From the weight coefficient, we can see that duration feature plays the most important
+role in the sustainability index.
+5.2.4 Stimulation Index
+Through the analysis of 5.1, we can see that when people ride roller coaster made of
+wood or steel, their subjective feelings are different. At the same time, when people choose
+different types of roller coasters, their subjective feelings of stimulus are different even when
+the  other  conditions  are  the  same.  Therefore,  the  stimulation  index  is  depicted  by
+characteristics construction and type.
+M
+According  to  the  quantitative  feature  of  type,  the  greater  the  value,  the  higher  the
+corresponding stimulus sensitivity. In order to facilitate calculation, we need to normalize the
+C
+type data. The type standardized data of roller coaster is calculated as follows:
+|     |     |     | t  m | i ni t |     |     |
+| --- | --- | --- | ----- | ------ | --- | --- |
+M
+|     |     |     | i   | i   |       |                                                              |
+| --- | --- | --- | --- | --- | ----- | ------------------------------------------------------------ |
+|     |     | t = |     | ，   | i  1 | , , 3 0 0 .                                            (13)  |
+i
+|     |     |     | m a xi t  | m i ni t |     |     |
+| --- | --- | --- | ---------- | -------- | --- | --- |
+|     |     |     | i          | i        |     |     |
+i
+| t   |     |     |     |     |     | H c |
+| --- | --- | --- | --- | --- | --- | --- |
+Where  i  represents the type of the ith roller coaster. Set  i  as the construction data of the ith
+| roller coaster .Through  |     | the Entropy Weight Method, we can get the ith roller coaster’s  |     | ：   |     |     |
+| ------------------------ | --- | --------------------------------------------------------------- | --- | --- | --- | --- |
+.
+| stimulation index  | ri   |     |     |     |     |     |
+| ------------------ | ---- | --- | --- | --- | --- | --- |
+号
+5.2.5 Nostalgia Index
+These  300  roller  coasters  are  from  1924  to  2018.  The  time  span  is  94  years.  The
+众
+y y i  2 0 1 8  y
+construction  time  of  the  ith  roller  coaster  is  indicated  by  .Set  ,and  the
+i i
+nostalgia index is :
+公
+|     |     |     | ymin     | y  |        |                                                            |
+| --- | --- | --- | ---------- | --- | ------ | ---------------------------------------------------------- |
+|     |     | Y  | i          | i i |  ， i  | 1 , , 3 0 0 .                                        (14)  |
+|     |     | i   | max ymin | y  |        |                                                            |
+|     |     |     | i          | i   |        |                                                            |
+| 信   |     |     | i          | i   |        |                                                            |
+This is a very personalized index.
+5.3 Establishment and Solution of Evaluation Model
+微
+5.3.1 Comprehensive Evaluation Model Based on Passengers’ Preference Degree
+Section 5.2 proposes five evaluation indexes and the comprehensive evaluation here is
+based  on  these  five  aspects.  We  can  design  preference  coefficient  to  match  different
+preference levels and the comprehensive evaluation index of 300 roller coasters is:
+f as a n a h a r aY , i1, ,300.                                (15)
+|     |     | i 1 i | 2 i 3 | i 4 | i 5 | i   |
+| --- | --- | ----- | ----- | --- | --- | --- |
+Where coefficients  a , ,a  represent  preferences for different  indexes.  a , ,a 0 and
+1 5 1 5
+5
+a 1. The larger the value of a , the more important its corresponding index is in the
+| i   |     |     | i   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+i1
+
+evaluation system. In order to  eliminate the influence of dimension, it is necessary to
+s
+normalize the data before calculating the comprehensive evaluation index.  i is normalized
+s
+from  i:
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554                                                                                                                                                                        12 / 25
+|     | s        |  m i n s  |              |                                                            |
+| --- | -------- | ---------- | ------------ | ---------------------------------------------------------- |
+|     | i        | i          |              |                                                            |
+|     | s       | i          |              |                                                            |
+|     | i m ai x | s  m ii n | s            |                                                            |
+|     |          | i          | i ,  i  1 , | , 3 0 0 .                                             (16) |
+
+When  evaluating  300  roller  coasters,  the  larger  the  value  of  f ,  the  higher  the
+i
+
+corresponding roller coaster ranks. Based on the preference coefficient, we can make a
+personalized ranking scheme according to the different preferences of different passengers,
+which provides operational feasibility for us to design apps.
+However, when we do not consider the personalized ranking scheme with preference
+degree and only hope to rank by characteristic data of roller coaster, we can still use the
+entropy weight method to determine the objective weighting coefficients of five indicators.
+So that the five indicators can be combined into a comprehensive evaluation index, ranking
+by calculating their comprehensive scores.  M
+5.3.2 The Ranking Result and Comparison with Online Rankings
+C
+Using the entropy weight method to determine the weighting coefficient of the 5 indexes,
+we  get  a  comprehensive  evaluation  index.  After  calculation,  300  roller  coasters'
+M
+comprehensive index scores are obtained, among which the top 10 roller coasters are listed in
+Table 5.
+i
+
+H
+Table 5 Overall Ranking of Roller Coasters
+|     |     | Name  | Score  |     |
+| --- | --- | ----- | ------ | --- |
+：
+|     | Steel Dragon 2000  |     | 5.04881085  |     |
+| --- | ------------------ | --- | ----------- | --- |
+|     | Smiler             |     | 4.00226545  |     |
+号
+|     | Kingda Ka            |     | 3.88475056  |     |
+| --- | -------------------- | --- | ----------- | --- |
+|     | Leviathan            |     | 3.70368266  |     |
+|     | 众 Fury 325           |     | 3.68319054  |     |
+|     | Millennium Force     |     | 3.50044987  |     |
+|     | Top Thrill Dragster  |     | 3.26340141  |     |
+公
+|     | Intimidator 305  |     | 3.25427553  |     |
+| --- | ---------------- | --- | ----------- | --- |
+|     | Fujiyama         |     | 3.05363808  |     |
+| 信   | Steel Vengeance  |     | 2.96345454  |     |
+
+5.3.3 Comparison with Online Ranking
+微
+We found two online roller coaster rankings and made a comparison with our ranking, as
+shown in Table 6.
+Table 6 Result and Comparison with Online Rankings
+| Rank  Online1  |     | Online2  |     | Ours  |
+| -------------- | --- | -------- | --- | ----- |
+1  Millennium Force
+|                         |     | Kingda Ka            |     | Steel Dragon 2000  |
+| ----------------------- | --- | -------------------- | --- | ------------------ |
+| 2  Steel Vengeance      |     |                      |     |                    |
+|                         |     | Dodonpa              |     | Smiler             |
+|                         |     |                      |     |                    |
+| 3  Top Thrill Dragster  |     | X2                   |     | Kingda Ka          |
+|                         |     |                      |     |                    |
+| 4  Maverick             |     | Top Thrill Dragster  |     | Leviathan          |
+|                         |     |                      |     |                    |
+| 5  El Toro              |     | Steel Dragon 2000    |     | Fury 325           |
+|                         |     |                      |     |                    |
+| 6  Fury 325             |     | Tower of Terror      |     | Millennium Force   |
+ Millennium Force
+| 7  Intimidator 305    |     |                  |     |   Top Thrill Dragster  |
+| --------------------- | --- | ---------------- | --- | ---------------------- |
+| 8  The Voyage         |     | Intimidator      |     |   Intimidator 305      |
+| 9  Kingda Ka          |     | Thunder Dolphin  |     |   Fujiyama             |
+| 10  Apollo's Chariot  |     | Eejanaika        |     |   Steel Vengeance      |
+Note: two groups of online ranking data are derived from reference s.  关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554 13 / 25
+After applying the algorithm presented in the previous text, we have made the following
+ranking.
+To justify our ranking’s reliability, we have searched several ranking systems online and
+have picked the two most authentic ranking to make comparison with our ranking.
+The first ranking we will present is from the roller coaster system in “Ranker”
+community. Ranker as a ranking community, let people vote for everything, so the ranking on
+its web will be rather reliable and representative for the people who voted.
+In the two rankings, there are 5 repetitions in the “top 10”, which are Fury 325,
+Millennium Force, Kingda Ka, Intimidator 305 and Top Thrill Dragster. In our ranking, the
+order of those 5 from front to back is Kingda Ka, Fury 325, Millennium Force, Top Thrill
+Dragster and Intimidator 305. In another ranking, the sequence is MillennMium Force, Top
+Thrill Dragster, Fury 325, Intimidator 305 and Kingda Ka.
+The sequences of those two quite correspond except Kingda Ka. C
+Our second reference is from “THE TOP 10s”. The same as “Ranker”, “THE TOP 10s”
+M
+is a ranking system which allows people to vote. As a result, this source is respectively
+reliable and Have reference value.
+i
+In the two rankings, there are 5 repetitions in the “top 10”, which are Millennium Force,
+H
+Kingda Ka, Intimidator 305, Steel Dragon 2000 and Top Thrill Dragster. In our ranking, the
+：
+order of those 5 from front to back is Steel Dragon 2000, Kingda Ka, Millennium Force, Top
+Thrill Dragster and Intimidator 305. In another ranking, the sequence is Kingda Ka, top Thrill
+Dragster, Steel Dragon 2000, Millennium Force and intimidator 305.The sequences of those
+号
+two quite correspond except Kingda Ka.
+Moreover, as shown in our form, there are three repetitions which are Millennium Force,
+众
+Top Thrill Dragster and Kingda Ka in the two ranking lists found online. This means that the
+repeated three roller coasters are confirmed to be eligible to be put in such high rankings. The
+three, furthermore, can公 all be found in our top lists, so a further confirmation that justify our
+objectivity is made.
+Then comes the question: How can we explain the difference between the votes and our
+信
+list? To answer this question, we have come up several possible explanations.
+First, the ranking is based on the voters’ personal experience. As we all know, different
+positio微ns in the roller coaster can lead to different experiences. The more you sit back, the
+bigger the thrill. We have mentioned in our assumption that we would not consider the
+influence of positions of seats, so this might be a factor which lead the difference.
+Moreover, the price of the tickets might also be an influential factor which may affect the
+votes. Sometimes a good roller coaster may not receive much votes for its high price.
+Likewise, we have mentioned that the price of the roller coaster will not make any influence
+in the assumption. This may also be a possible factor that causes the difference.
+6. Sensitivity Analysis
+In the above analysis, we have got the Roller coaster ranking by the comprehensive
+evaluation of multiple index with objective weight. For testing the robustness of our result,
+we use the new sample which drops the last 100 Roller coasters of our ranking, and then we
+calculate it again. the comparative result is shown in Table 7.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 14 / 25
+Table 7 The Outcome of Two Different Samples
+300 Samples 200 Samples
+Name Rank Score Name Rank Score
+Steel Dragon 2000 1 5.05 Steel Dragon 2000 1 5.03
+Smiler 2 4.00 Kingda Ka 2 4.03
+Kingda ka 3 3.88 Smiler 3 3.96
+Leviathan 4 3.70 Leviathan 4 3.76
+Fury 325 5 3.68 Fury 325 5 3.69
+Millennium Force 6 3.50 Millennium Force 6 3.51
+Top Thrill Dragster 7 3.26 Top Thrill Dragster 7 3.40
+Intimidator 305 8 3.05 Intimidator 305 8 3.32
+Fujiyama 9 2.96 Fujiyama 9 3.05
+M
+Steel Vengeance 10 2.95 Coaster Through the Clouds 10 2.99
+C
+Through the comparison, we find that the ranking of two samples is rather identical, so
+our method is robust and convincing. M
+7. Design for the App i
+H
+7.1 Explanation of the Ranking System in App：
+In Section 5, our evaluation algorithm fully considers the individual ranking
+requirements of roller coaster for different passengers because of their different preferences.
+号
+To this end, we design the app to achieve personalized recommendation based on the
+preferences of passengers. Users only need to fill in a few related preferences, then we can
+personalize the sorting accordin众g to the algorithm and give the recommended roller coaster.
+Considering that some passengers may have some very special preferences, for example,
+some passengers are paranoid about taking roller coaster made of wood, while others only
+公
+take steel. The comprehensive evaluation model we have established is not focused on the
+distinction, so it can be listed as an option alone. It can be embodied in the following aspects.
+信
+1. Do you prefer wood to steel? There are three options -- wood, steel and both.
+If the passenger chooses wood, then we will choose in the 50 roller coasters made of
+wood. If the passenger chooses steel, then we will choose in the 250 roller coasters made of
+微
+steel. If passengers choose “both”, then we will choose in all 300 roller coaster.
+2. Which type of roller coaster do you prefer? There are two options -- sit down and
+others.
+This is because 240 of the 300 roller coasters are sit down, up to 80%. If passengers
+choose sit down, we will further select the roller coasters which meets the first option and
+whose type is sit down. If the passenger chooses others, we will choose in the other 60 roller
+coaster.
+3. Do you have nostalgia? Do you prefer the old roller coaster to the modern one? There
+are three options -- ancient, modern and both.
+a
+If the passenger chooses the old one, his nostalgia degree is higher, and the parameter 5
+can take a larger value. Because this index is not an important index when evaluating roller
+a
+coaster, its value should not more than 0.5. If the passenger chooses modern, the value of 5
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 15 / 25
+is smaller. If passengers choose “both”, it means that the index has little impact on passengers,
+thus
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+a
+5 = 0.
+4. Do you have any request for the ride time of the roller coaster? The three option is
+longer, shorter, and no demanding.
+If the passenger chooses a longer time, then the passenger pursues the persistence in the
+stimulation process, and the value of the parameters
+a
+3 can be larger; if the passenger
+chooses a shorter time, it can be smaller; if the passenger does not require it, then
+a
+3 = 0.
+Although this index is important, its size should not larger than the parameters of ups and
+downs index and vertigo index.
+5. Do you prefer fast alternating A for weightlessness and overweight caused by ups and
+downs, to B for vertigo caused by inversions and rotation? The three options are A, B and
+both.
+If the passenger chooses “both”, the parameter is
+a
+1
+ a
+2 , if the passenger chooses A,
+then there is
+a
+2
+ 0
+, if the passenger chooses B, then there is
+a
+1
+= 0
+.
+After sorting out the selected roller coasters screened through 1 and 2, the evaluation
+model is
+f
+j
+ a
+1
+s
+j
+ a
+2
+n
+j
+ a
+3
+h
+j
+ a
+5
+Y
+j
+Where the non-negative parameters
+a
+1
+, a
+2
+, a
+3
+, a
+5 may be 0 either, and only need to satisfy
+j
+the condition that their sum is 1. is the jth object of our roller coaster.
+According to the calculation results, the individualized sorting of the selected roller
+coasters can be realized, and the best recommendation can be made to the passengers. For the
+simplicity of UI design interface and better customer self-evaluation, we classify ups and
+downs index, vertigo index, sustainability index, stimulation index and nostalgia index into
+tree feelings (excitement, intensity, vertigo), and the result of classification is in figure 4.
+F e e lin g s
+E E x c
+In
+V
+it
+t e
+e
+e m e n
+n s it y
+r t ig o
+t
+N
+U
+o s t a g ia
+S u s t a n a b ilit
+p s a n d D o w
+S t im u la t io n
+V e r t ig o
+y
+n s
+Figure 4 The Classification of Five Feeling Indexes
+Our thinking figure of UI design is shown in Figure 5.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 16 / 25
+Users
+Feelings
+Excitement Intensity Vertigo
+M
+C
+Results
+M
+i
+Construction Type Style THime Inversion
+：
+●Wood ●Sit down ●Ancient ●Long ●Yes
+●Steel ●Others ●号 Modern ●Short ●No
+●Both ●Both ●Random
+众
+Figure 5 Option Design
+7.2 Qualification for t公he Design
+We define “User Friendly” as the clarity of the options, the numbers of options, and the
+speed a user can find the options. So, we follow the rules set by ISO (International
+信
+Organization for Standardization) to determine the usability.
+1.Learnability: How easy is it for users to accomplish basic tasks the first time they
+微
+encounter the design?
+2.Efficiency: Once users have learned the design, how quickly can they perform tasks?
+3.Memorability: When users return to the design after a period of not using it, how easily
+can they re-establish proficiency?
+4. Satisfaction: How pleasant is it to use the design?
+We will follow the rules set above to qualify our design of app.
+1.Learnability: Our app has only two major layers: a layer of feelings and a layer of
+construction and type. When the user sets his final preference, our app would provide an auto
+ranking, with almost no cost of learning.
+2.Efficiency: Again, with only two major layers, the only thing to do to generate an auto
+ranking is two click of hand. Sometimes a user is not very sure what kind of feelings he
+wants to experience in the riding, so we also provide an overall choice, making them decide
+less and increasing their efficiency.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 17 / 25
+3.Memorability: Our structure of options is clear and involves many properties of roller
+coaster, so with a clear instruction, when a user see the app, he would instantly understand
+and re-establish proficiency.
+4.Satisfaction: Though every user has his objective opinion of what is essential for a
+roller coaster to be satisfactory, our option design includes all the properties of roller coasters,
+which can satisfy almost every user with all the combinations possible.
+7.3 UI Design of the App
+We use a free UI designing web to create a simple UI design, as shown below in Figure 6.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 6 Graphs of UI Design
+Note: all the graphs come from Internet search
+Examples of rankings after choosing preference, see Figure7-Figure 9.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 18 / 25
+M
+C
+Figure 7 Excitement + Steel + Sit Down
+M
+i
+H
+：
+号
+众
+公
+信
+Figure 8 Vertigo + Wood + All Types
+微
+Figure 9 Overall + Steel + Stand Up
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 19 / 25
+These three examples show how will the app generate the ranking based on personal
+preference.
+8. Strength and Weakness of the model
+8.1 Strength
+When handling with the missing information, we didn’t just delete them. Instead, we use
+cluster analysis to approximate the missing information. When handling with the missing
+information, we didn’t just delete them. Instead, we use cluster analysis to approximate the
+missing information. M
+We use known data in the same category to estimate unknown data. Before clustering,
+we cluster according to different roller coaster characteristics of diCfferent constructions,
+which improves the accuracy of clustering, so the accuracy of missing data estimation is
+M
+improved.
+When establishing the evaluation model, we put forward five first-level indicators,
+i
+among which there are several second-level indicators uHnder the three indicators of ups and
+downs, sustainability and stimulation index. We use an entropy weight method to determine
+：
+the weight coefficients of the second-level indicators. The weight coefficients determined by
+the entropy weight method are objective. These five indicators reflect the characteristics and
+performance of roller coaster from va号rious aspects. Finally, a comprehensive evaluation
+index is established by preference coefficient. The preference coefficients in the model vary
+from person to person, which provides a feasible option for us to design apps to meet the
+众
+individual needs of passengers.
+8.2 Weakness
+Although we have公 found a good way to supplement the missing data, there is a certain
+gap between the missing data and the real data, which will make the evaluation results
+inaccurate, especially in the G force data supplement. Because we build an algorithm through
+信
+preference coefficients to facilitate the realization of passengers' personalized needs in apps,
+the ranking of 300 roller coasters is largely dependent on our preferences. Therefore, there
+微
+will be great changes in results of sorting, when we focus on different angles, or the degree of
+preference for the same angle is different.
+9. Conclusion
+We built a function to assess the roller coaster with entropy method. When handling the
+incomplete information, we used cluster analysis and successfully filled the incomplete
+information. The clustering process is a fairly good cluster, with a cophenetic coefficient
+close to 1. The entropy method is an efficient way to determine whether an index is accurate
+and the contribution to the system. We also designed a app that perfectly fit the ISO standard
+of usability, with a visual UI on the phone. Of course, the model is far from perfect, with a
+positive coefficient for G force, since some people will have a comfortlessness under high g
+force condition.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554 20 / 25
+10. Reference
+[1]. https://www.ranker.com/crowdranked-list/best-roller-coasters?ref=lzyrltdlstszerg_rr
+[2]. https://www.thetoptens.com/most-extreme-roller-coasters/
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8554                                                                                                                                                                        21 / 25
+
+11.Appendix: The Ranking of All Roller Coaster
+| Rank  | Name  | Score  | Rank  | Name  | Score  |
+| ----- | ----- | ------ | ----- | ----- | ------ |
+1  Steel Dragon 2000  5.05   34  Superman/ la Atracción de  2.27
+Acero
+| 2  Smiler               |     | 4.00   | 35  Kraken               |     | 2.26    |
+| ----------------------- | --- | ------ | ------------------------ | --- | ------- |
+| 3  Kingda Ka            |     | 3.88   | 36  Bizarro              |     | 2.25    |
+| 4  Leviathan            |     | 3.70   | 37  Intimidator          |     | 2.13    |
+| 5  Fury 325             |     | 3.68   | 38  Katun                |     | 2.11    |
+| 6  Millennium Force     |     | 3.50   | 39  Goliath              |     | 2.05    |
+| 7  Top Thrill Dragster  |     | 3.26   | 40  Diamondback          |     | 1.92    |
+| 8  Intimidator 305      |     | 3.25   | 41  Desperado            |     | M1.88   |
+| 9  Fujiyama             |     | 3.05   | 42  Valravn              |     | 1.83    |
+| 10  Steel Vengeance     |     | 2.96   | 43  Superman el ÚltiCmo  |     | 1.83    |
+Escape
+11  Coaster Through the Clouds  2.95   44  10 Inversion Roller  1.81
+M
+Coaster
+| 12  Viper       |     | 2.95   | 45  Colossus                |     | 1.81   |
+| --------------- | --- | ------ | --------------------------- | --- | ------ |
+| 13  Alpengeist  |     | 2.91   | 46  Supermian: Escape from  |     | 1.80   |
+H
+Krypton
+| 14  Dragon Mountain  |     | 2.89   | 47  Dragon's Run  |     | 1.79   |
+| -------------------- | --- | ------ | ----------------- | --- | ------ |
+：
+| 15  Medusa         |     | 2.87    | 48  Vortex     |     | 1.78   |
+| ------------------ | --- | ------- | -------------- | --- | ------ |
+| 16  Banshee        |     | 2.79    | 49  Monster    |     | 1.77   |
+| 17  Formula Rossa  |     | 号2.76   | 50  Takabisha  |     | 1.76   |
+| 18  Titan          |     | 2.69    | 51  Pyrenees   |     | 1.73   |
+| 19  Scream!        |     | 2.64    | 52  Mamba      |     | 1.68   |
+众
+| 20  Dragon Khan               |     | 2.61   | 53  Big One      |     | 1.68   |
+| ----------------------------- | --- | ------ | ---------------- | --- | ------ |
+| 21  Soaring Dragon & Dancing  |     | 2.58   | 54  Steel Force  |     | 1.66   |
+Phoenix
+公
+| 22  GateKeeper         |     | 2.55   | 55  Eejanaika        |     | 1.65   |
+| ---------------------- | --- | ------ | -------------------- | --- | ------ |
+| 23  Silver Star        |     | 2.53   | 56  Incredible Hulk  |     | 1.64   |
+| 24  Riddler's Revenge  |     | 2.52   | 57  Nitro            |     | 1.62   |
+信
+| 25  Montu                     |     | 2.47   | 58  Superman the Ride      |     | 1.59   |
+| ----------------------------- | --- | ------ | -------------------------- | --- | ------ |
+| 26  Kumba                     |     | 2.44   | 59  Wild Thing             |     | 1.58   |
+| 27  微 Hyperion                |     | 2.41   | 60  Tower of Terror II     |     | 1.53   |
+| 28  Shambhala                 |     | 2.38   | 61  Beast                  |     | 1.52   |
+| 29  Superman Krypton Coaster  |     | 2.34   | 62  Phaethon               |     | 1.52   |
+| 30  Helix                     |     | 2.33   | 63  Schwur des Kärnan      |     | 1.48   |
+| 31  Altair                    |     | 2.31   | 64  Raptor                 |     | 1.43   |
+| 32  Crazy Coaster             |     | 2.31   | 65  Flight of the Phoenix  |     | 1.42   |
+| 33  Velikolukskiy             |     | 2.31   | 66  Red Force              |     | 1.40   |
+Myasokombinat-2
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554                                                                                                                                                                        22 / 25
+
+(Continued Table)
+
+| Rank  Name       | Score  | Rank  Name               | Score  |
+| ---------------- | ------ | ------------------------ | ------ |
+| 67  Flying Aces  | 1.39   | 104  Goliath             | 0.60   |
+| 68  Afterburn    | 1.37   | 105  OCT Thrust SSC1000  | 0.59   |
+69  Big Apple Coaster  1.36   106  Batman - The Dark Knight  0.57
+| 70  Gao                | 1.35   | 107  Jupiter            | 0.53   |
+| ---------------------- | ------ | ----------------------- | ------ |
+| 71  Silver Bullet      | 1.35   | 108  Goliath            | 0.51   |
+| 72  Behemoth           | 1.34   | 109  T Express          | 0.44   |
+| 73  Hydra the Revenge  | 1.33   | 110  Talon              | 0.39   |
+| 74  Flash              | 1.29   | 111  Incredicoaster     | 0.35   |
+| 75  Cannibal           | 1.29   | 112  Phantom's Revenge  | 0.33   |
+M
+| 76  Hyper Coaster  | 1.27   | 113  iSpeed        | 0.31   |
+| ------------------ | ------ | ------------------ | ------ |
+| 77  Wildfire       | 1.26   | 114  Iron Rattler  | 0.28   |
+C
+| 78  Dinoconda    | 1.25   | 115  Fly the Great Nor'Easter  | 0.27   |
+| ---------------- | ------ | ------------------------------ | ------ |
+| 79  Happy Angel  | 1.23   | 116  LightningM Rod            | 0.27   |
+| 80  Raging Bull  | 1.21   | 117  Batman The Ride           | 0.26   |
+| 81  Rougarou     | 1.19   | 118  Batman The Ride           | 0.26   |
+i
+| 82  X2             | 1.18   | 119  BHatman The Ride  | 0.26   |
+| ------------------ | ------ | ---------------------- | ------ |
+| 83  Ride of Steel  | 1.12   | 120  Ultimate          | 0.25   |
+：
+| 84  Twisted Colossus          | 1.09    | 121  Batman The Ride  | 0.23   |
+| ----------------------------- | ------- | --------------------- | ------ |
+| 85  Superman - Ride Of Steel  | 1.09    | 122  Swarm            | 0.19   |
+| 86  Voyage                    | 号0.99   | 123  Maverick         | 0.18   |
+| 87  Griffon                   | 0.96    | 124  El Toro          | 0.14   |
+| 88  Goudurix                  | 0.92    | 125  Goliath          | 0.11   |
+众
+| 89  Magnum XL-200    | 0.87   | 126  Stunt Fall    | 0.10   |
+| -------------------- | ------ | ------------------ | ------ |
+| 90  Tatsu            | 0.86   | 127  Blue Hawk     | 0.10   |
+| 91  Thunder Dolphin  | 0.83   | 128  Storm Runner  | 0.09   |
+公
+92  blue fire Megacoaster  0.83   129  Extreme Rusher  0.07
+| 93  Velikolukskiy  | 0.82   | 130  Hades 360  | 0.05   |
+| ------------------ | ------ | --------------- | ------ |
+My信asokombinat
+| 94  Mako                  | 0.82   | 131  Quimera          | 0.03   |
+| ------------------------- | ------ | --------------------- | ------ |
+| 95  Do-Dodonpa            | 0.81   | 132  Batman The Ride  | 0.01   |
+| 9微6  Apollo's Chariot     | 0.80   | 133  Wicked Cyclone   | -0.01  |
+| 97  Firehawk              | 0.75   | 134  Goliath          | -0.04  |
+| 98  Manta                 | 0.73   | 135  Great White      | -0.05  |
+| 99  Patriot               | 0.69   | 136  Skyrush          | -0.05  |
+| 100  Batwing              | 0.68   | 137  Outlaw Run       | -0.06  |
+| 101  Fahrenheit           | 0.61   | 138  Batman the Ride  | -0.06  |
+| 102  Bullet Coaster       | 0.60   | 139  Desafio          | -0.06  |
+| 103  Soaring with Dragon  | 0.60   | 140  Firewhip         | -0.06  |
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554                                                                                                                                                                        23 / 25
+
+(Continued Table)
+
+| Rank  Name        | Score  Rank  | Name            | Score  |
+| ----------------- | ------------ | --------------- | ------ |
+| 141  Kong         | -0.06  174   | Full Throttle   | -0.59  |
+| 142  Limit        | -0.06  175   | GhostRider      | -0.59  |
+| 143  Mind Eraser  | -0.06  176   | New Revolution  | -0.61  |
+144  Mind Eraser  -0.06  177  Rock 'n' Roller Coaster  -0.62
+| 145  MP-Xpress              | -0.06  178  | Time Traveler  | -0.63  |
+| --------------------------- | ----------- | -------------- | ------ |
+| 146  Raptor                 | -0.06  179  | Stealth        | -0.65  |
+| 147  Riddler Revenge        | -0.06  180  | Flight Deck    | -0.65  |
+| 148  Flight of Fear         | -0.06  181  | Storm Chaser   | -0.66  |
+| 149  Batman: Arkham Asylum  | -0.10  182  | Steel Eel      | -0.67  |
+M
+| 150  Flight Deck     | -0.13  183  | Twister II      | -0.67  |
+| -------------------- | ----------- | --------------- | ------ |
+| 151  American Eagle  | -0.15  184  | Saw - The Ride  | -0.70  |
+C
+| 152  Joker                    | -0.15  185  | Demon     | -0.71  |
+| ----------------------------- | ----------- | --------- | ------ |
+| 153  Medusa Steel Coaster     | -0.16  186  | Demon M   | -0.73  |
+| 154  Wodan Timbur Coaster     | -0.16  187  | Gemini    | -0.74  |
+| 155  Python in Bamboo Forest  | -0.20  188  | Montezum  | -0.75  |
+i
+| 156  Shock Wave  | -0.21  189  | HFlight of Fear  | -0.78  |
+| ---------------- | ----------- | ---------------- | ------ |
+157  Star Wars Hyperspace  -0.22  190  Temple of the Night  -0.80
+| Mountain: Rebel Mission  | ：           | Hawk           |        |
+| ------------------------ | ----------- | -------------- | ------ |
+| 158  New Texas Giant     | -0.23  191  | Montana  Rusa  | -0.83  |
+159  Journey to Atlantis  -0.30  192  Colorado Adventure  -0.85
+号
+| 160  Boss  | -0.31  193  | Coaster Express  | -0.86  |
+| ---------- | ----------- | ---------------- | ------ |
+161  Mr. Freeze Reverse Blast  -0.34  194  Big Thunder Mountain  -0.86
+| 162  Mr. Freeze Reverse Bl众ast  | -0.34  195  | Legend     | -0.86  |
+| ------------------------------- | ----------- | ---------- | ------ |
+| 163  Big Loop                   | -0.40  196  | Corkscrew  | -0.89  |
+164  Snow Mountain Flying  -0.40  197  Fluch von Novgorod  -0.91
+Dragon  公
+165  Expedition GeForce  -0.43  198  Tonnerre de Zeus  -0.93
+166  Superman - Ultimate Flight  -0.43  199  Invertigo  -0.93
+信
+| 167  Nemisis Inferno  | -0.43  200  | Steel Venom  | -0.95  |
+| --------------------- | ----------- | ------------ | ------ |
+| 168  RailBlazer       | -0.50  201  | Corkscrew    | -0.95  |
+| 169  Taron            | -0.51  202  | Boomerang    | -0.96  |
+微
+| 170  Black Mamba     | -0.51  203  | Boomerang  | -0.96  |
+| -------------------- | ----------- | ---------- | ------ |
+| 171  Boulder Dash    | -0.52  204  | Boomerang  | -0.96  |
+| 172  Poltergeist     | -0.53  205  | Boomerang  | -0.96  |
+| 173  Wicked Twister  | -0.58  206  | Boomerang  | -0.96  |
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554                                                                                                                                                                        24 / 25
+
+(Continued Table)
+
+| Rank            | Name  | Score  | Rank                       | Name  | Score  |
+| --------------- | ----- | ------ | -------------------------- | ----- | ------ |
+| 207  Boomerang  |       | -0.96  | 237  Big Thunder Mountain  |       | -1.43  |
+Railroad
+| 208  Boomerang  |     | -0.96  | 238  Sky Wheel  |     | -1.45  |
+| --------------- | --- | ------ | --------------- | --- | ------ |
+| 209  Boomerang  |     | -0.96  | 239  Mammut     |     | -1.47  |
+| 210  Boomerang  |     | -0.96  | 240  Prowler    |     | -1.48  |
+211  Boomerang Coast to Coaster  -0.96  241  Mystic Timbers  -1.49
+| 212  Flashback   |     | -0.96  | 242  Wild One               |     | -1.49  |
+| ---------------- | --- | ------ | --------------------------- | --- | ------ |
+| 213  Apocalypse  |     | -0.97  | 243  V2: Vertical Velocity  |     | -1.53  |
+| 214  Balder      |     | -0.98  | 244  Jungle Trailblazer     |     | -1.55  |
+M
+| 215  Grizzly     |     | -1.00  | 245  Anaconda      |     | -1.55  |
+| ---------------- | --- | ------ | ------------------ | --- | ------ |
+| 216  Doble Loop  |     | -1.01  | 246  Alpina Blitz  |     | -1.62  |
+C
+| 217  Abismo  |     | -1.05  | 247  Bocaraca  |     | -1.64  |
+| ------------ | --- | ------ | -------------- | --- | ------ |
+218  Eurosat Can Can Coaster  -1.07  248  Super Tornado  -1.64
+M
+| 219  Timber Drop  |     | -1.08  | 249  Tornado  |     | -1.64  |
+| ----------------- | --- | ------ | ------------- | --- | ------ |
+220  Green Lantern Coaster  -1.10  250  Whirl Wind Looping  -1.64
+Coasteir
+221  Adrenaline Peak  -1.11  251  H Terminator Salvation: The  -1.65
+Coaster
+| 222  Nemesis            |     | -1.17  | ： 252  Boardwalk Bullet  |     | -1.66  |
+| ----------------------- | --- | ------ | ------------------------ | --- | ------ |
+| 223  Timber Wolf        |     | -1.19  | 253  Sky Scream          |     | -1.67  |
+| 224  Vertical Velocity  |     | -1.19  | 254  Furius Baco         |     | -1.68  |
+号
+| 225  Journey to Atlantis    |         | -1.21  | 255  Ranier Rush   |     | -1.69  |
+| --------------------------- | ------- | ------ | ------------------ | --- | ------ |
+| 226  Joker                  |         | -1.27  | 256  Renegade      |     | -1.71  |
+| 227  Comet                  | 众-1.27  |        | 257  Montana Rusa  |     | -1.71  |
+| 228  Star Mountain          |         | -1.28  | 258  Stampida      |     | -1.74  |
+| 229  Atlantica SuperSplash  |         | -1.28  | 259  Giant Dipper  |     | -1.75  |
+公
+| 230  Xcelerator  |     | -1.28  | 260  Titan Cascabel  |     | -1.77  |
+| ---------------- | --- | ------ | -------------------- | --- | ------ |
+231  Crazy Bird  -1.29  261  Timberhawk: Ride of Prey  -1.81
+232  Te信xas Tornado  -1.30  262  Cedar Creek Mine Ride  -1.84
+| 233  Apocalypse the Ride  |     | -1.35  | 263  Viper        |     | -1.85  |
+| ------------------------- | --- | ------ | ----------------- | --- | ------ |
+| 234  Racer                |     | -1.39  | 264  Mine Blower  |     | -1.87  |
+微
+235  Nessie Superrollercoaster  -1.39  265  Montana Rusa  -1.88
+| 236  Katapul  |     | -1.41  | 266  Ravine Flyer II  |     | -1.91  |
+| ------------- | --- | ------ | --------------------- | --- | ------ |
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 8554                                                                                                                                                                        25 / 25
+
+(Continued Table)
+|     | Rank                       | Name  | Score    |     |
+| --- | -------------------------- | ----- | -------- | --- |
+|     | 267  El Toro               |       | -1.91    |     |
+|     | 268  Half Pipe             |       | -1.91    |     |
+|     | 269  Iron Dragon           |       | -1.93    |     |
+|     | 270  Bandit                |       | -1.93    |     |
+|     | 271  Spatiale Experience   |       | -1.97    |     |
+|     | 272  Bat                   |       | -1.98    |     |
+|     | 273  Montezooma's Revenge  |       | -2.02    |     |
+|     | 274  Cyclone               |       | -2.03    |     |
+|     | 275  Raven                 |       | -2.03    |     |
+|     | 276  Oblivion              |       | -2.04    | M   |
+|     | 277  Phoenix               |       | -2.07    |     |
+|     | 278  Ninja                 |       | -2.08  C |     |
+|     | 279  Screamer              |       | -2.08    |     |
+|     | 280  Coaster Thrill Ride   |       | -2.1M2   |     |
+|     | 281  Wild Thing            |       | -2.17    |     |
+|     | 282  SpeedSnake FREE       |       | -i2.21   |     |
+|     | 283  Whizzer               | H     | -2.27    |     |
+|     | 284  Giant Dipper          |       | -2.30    |     |
+：
+|     | 285  Piraten                   |     | -2.34  |     |
+| --- | ------------------------------ | --- | ------ | --- |
+|     | 286  Revenge of the Mummy the  |     | -2.34  |     |
+Ride
+号
+|     | 287  Kawazemi             |     | -2.35  |     |
+| --- | ------------------------- | --- | ------ | --- |
+|     | 288  Road Runner Express  |     | -2.36  |     |
+|     | 289  众Blue Streak         |     | -2.49  |     |
+|     | 290  Pandemonium          |     | -2.53  |     |
+|     | 291  Desert Race          |     | -2.54  |     |
+公
+|       | 292  Judge Roy Scream  |     | -2.61  |     |
+| ----- | ---------------------- | --- | ------ | --- |
+|       | 293  Sidewinder        |     | -2.68  |     |
+| 信294  | HeiBe Fahrt            |     | -2.73  |     |
+|       | 295  Manta             |     | -2.74  |     |
+|       | 296  Taunusblitz       |     | -2.78  |     |
+微
+|     | 297  Force One              |     | -2.85  |     |
+| --- | --------------------------- | --- | ------ | --- |
+|     | 298  Winjas                 |     | -2.95  |     |
+|     | 299  Pandemonium            |     | -3.51  |     |
+|     | 300  Backlot Stunt Coaster  |     | -3.59  |     |
+
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯

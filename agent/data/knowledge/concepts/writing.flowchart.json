@@ -1,0 +1,70 @@
+{
+  "schema_version": 3,
+  "concept_id": "writing.flowchart",
+  "title": "流程图绘制规范",
+  "taxonomy_path": [
+    "论文写作与学术规范",
+    "图表与公式规范",
+    "流程图绘制规范"
+  ],
+  "module_id": "A",
+  "subcat_id": "A.2",
+  "aliases": [
+    "流程图",
+    "算法流程图"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "writer"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "流程图就是用标准图形符号把解决问题的步骤画出来，让复杂过程一目了然。",
+    "intuition": "想象你要教朋友做一道菜：先准备食材（输入），然后切菜（处理），如果菜太辣就加糖（判断），最后装盘（输出）。把这些步骤用方框、菱形和箭头画出来，就是流程图。它就像一张地图，告诉你每一步该做什么、怎么走。",
+    "when_to_use": "当你需要清晰展示一个算法、模型求解过程或工作流程时，比如在数学建模论文中说明数据预处理、模型迭代、结果分析等步骤，或者解释程序逻辑。",
+    "definition": "流程图是一种用标准图形符号（如矩形、菱形、圆角矩形等）表示算法或处理步骤的图示方法，遵循顺序、选择和循环三种基本结构。",
+    "math_principle": "流程图本身不涉及数学公式，但其设计基于结构化编程原理：顺序结构（步骤依次执行）、选择结构（根据条件分支）和循环结构（重复执行直到条件满足）。例如，迭代算法可用循环结构表示：初始化变量 $x_0$，在菱形判断条件 $|x_{n+1} - x_n| < \\epsilon$ 下循环执行处理框 $x_{n+1} = f(x_n)$，直到满足条件后输出结果。",
+    "step_by_step": [
+      "1. 明确流程的起点和终点：确定开始和结束步骤。",
+      "2. 列出所有主要步骤：将过程分解为顺序、选择和循环结构。",
+      "3. 选择标准符号：圆角矩形（开始/结束）、矩形（处理）、菱形（判断）、平行四边形（输入/输出）、箭头（流向）。",
+      "4. 按逻辑顺序连接符号：用箭头表示流程方向，确保每个符号有进有出。",
+      "5. 检查完整性和清晰度：确保没有遗漏步骤，分支和循环正确闭合。"
+    ],
+    "worked_example": "以牛顿迭代法求方程根为例：开始 -> 输入初始值 $x_0$ 和精度 $\\epsilon$ -> 计算 $x_{n+1} = x_n - f(x_n)/f'(x_n)$ -> 判断 $|x_{n+1} - x_n| < \\epsilon$？是则输出 $x_{n+1}$ 并结束，否则令 $x_n = x_{n+1}$ 并返回计算步骤。",
+    "pitfalls": [
+      "1. 符号使用不规范：比如用矩形表示判断，导致读者误解。",
+      "2. 箭头混乱：交叉过多或方向不统一，降低可读性。",
+      "3. 缺少开始/结束符号：流程不完整。",
+      "4. 循环结构未正确闭合：没有返回箭头，导致无限循环或逻辑错误。"
+    ],
+    "tools": "常用工具：draw.io（在线免费）、Microsoft Visio（付费）、Python的graphviz库。最小可运行代码片段：\n```python\nfrom graphviz import Digraph\n\ndot = Digraph(comment='牛顿迭代法流程图')\ndot.node('start', '开始', shape='ellipse')\ndot.node('input', '输入 x0, eps', shape='parallelogram')\ndot.node('calc', 'x1 = x0 - f(x0)/f\\'(x0)', shape='box')\ndot.node('decision', '|x1-x0| < eps?', shape='diamond')\ndot.node('output', '输出 x1', shape='parallelogram')\ndot.node('end', '结束', shape='ellipse')\ndot.node('update', 'x0 = x1', shape='box')\n\ndot.edge('start', 'input')\ndot.edge('input', 'calc')\ndot.edge('calc', 'decision')\ndot.edge('decision', 'output', label='是')\ndot.edge('output', 'end')\ndot.edge('decision', 'update', label='否')\ndot.edge('update', 'calc')\n\ndot.render('newton_flowchart', format='png', view=True)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "|x_{n+1} - x_n| < \\epsilon",
+      "variables": {
+        "x_n": "第n次迭代的近似值",
+        "x_{n+1}": "第n+1次迭代的近似值",
+        "\\epsilon": "预设的精度阈值"
+      }
+    }
+  ],
+  "cases": [
+    "13719",
+    "2541",
+    "4093",
+    "8992"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_A09"
+    ],
+    "from_papers": [
+      "13719",
+      "2541",
+      "4093",
+      "8992"
+    ]
+  }
+}

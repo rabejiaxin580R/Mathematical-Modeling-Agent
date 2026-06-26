@@ -1,0 +1,69 @@
+{
+  "schema_version": 3,
+  "concept_id": "opt.greedy",
+  "title": "贪心算法与集合覆盖",
+  "taxonomy_path": [
+    "模型求解算法",
+    "数学规划求解方法",
+    "贪心算法与集合覆盖"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.1",
+  "aliases": [
+    "贪心算法",
+    "集合覆盖",
+    "greedy"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "贪心算法是一种在每一步都选择当前最优解，从而希望得到全局最优的简单策略，常用于解决集合覆盖等优化问题。",
+    "intuition": "想象你要用最少的硬币凑出一定金额，每次都选面值最大的硬币——这就是贪心。虽然不一定完美，但通常很快且接近最优。",
+    "when_to_use": "当问题具有最优子结构（局部最优能导致全局最优）或需要快速近似解时，如集合覆盖、最小生成树、任务调度等。",
+    "definition": "贪心算法（Greedy Algorithm）是一种在每一步选择中都采取当前状态下最好或最优（即最有利）的选择，从而希望导致结果是全局最好或最优的算法。",
+    "math_principle": "贪心算法不依赖严格的数学推导，其核心是贪心选择性质：即通过一系列局部最优选择，最终能产生全局最优解。对于集合覆盖问题，贪心策略是每次选择覆盖最多未覆盖元素的集合。设全集为 $U$，集合族为 $S$，算法如下：\n1. 初始化 $covered = \\emptyset$，$selected = \\emptyset$。\n2. 重复直到 $covered = U$：\n   - 选择 $s \\in S$ 使得 $|s \\setminus covered|$ 最大。\n   - 将 $s$ 加入 $selected$，$covered = covered \\cup s$。\n该算法近似比为 $\\ln|U|+1$。",
+    "step_by_step": [
+      "1. 明确问题：确定需要覆盖的元素全集和可选集合。",
+      "2. 初始化：已覆盖集合为空，已选集合为空。",
+      "3. 迭代选择：每次从剩余集合中选出能覆盖最多未覆盖元素的集合。",
+      "4. 更新：将该集合加入已选集合，更新已覆盖元素。",
+      "5. 终止：当所有元素都被覆盖时停止，输出已选集合。"
+    ],
+    "worked_example": "药盒宽度匹配问题：有5个药盒宽度 [2,3,4,5,6]，可选槽宽 [2,3,4,5,6]。每个药盒可放入宽度≥其宽度的槽。目标：最少槽宽种类覆盖所有药盒。\n- 初始未覆盖药盒：{2,3,4,5,6}\n- 计算每个槽宽能覆盖的药盒：\n  - 槽宽2：覆盖{2}\n  - 槽宽3：覆盖{2,3}\n  - 槽宽4：覆盖{2,3,4}\n  - 槽宽5：覆盖{2,3,4,5}\n  - 槽宽6：覆盖{2,3,4,5,6}\n- 第一次选择：槽宽6覆盖5个，最多，选6，覆盖{2,3,4,5,6}，全部覆盖。\n- 结果：只需槽宽6一种。实际最优也是1种（选6即可）。",
+    "pitfalls": [
+      "1. 贪心不一定得到全局最优，如找零问题中硬币面值1,3,4，凑6元时贪心选4+1+1（3枚），最优为3+3（2枚）。",
+      "2. 需要验证问题是否满足贪心选择性质，否则可能得到很差解。",
+      "3. 对于大规模问题，贪心速度快但近似比可能较高，需权衡。"
+    ],
+    "tools": "Python 中可直接实现，无需特定库。示例代码：\n```python\ndef greedy_set_cover(universe, subsets):\n    elements = set(universe)\n    covered = set()\n    selected = []\n    while covered != elements:\n        best = max(subsets, key=lambda s: len(s - covered))\n        selected.append(best)\n        covered |= best\n    return selected\n\n# 示例\nuniverse = [1,2,3,4,5]\nsubsets = [{1,2}, {2,3,4}, {4,5}]\nprint(greedy_set_cover(universe, subsets))\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\text{选择 } s \\in S \\text{ 使得 } |s \\setminus covered| \\text{ 最大}",
+      "variables": {
+        "S": "所有可选集合的集合",
+        "covered": "当前已覆盖的元素集合"
+      }
+    }
+  ],
+  "cases": [
+    "2881",
+    "6475",
+    "6829"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec010_012_01",
+      "lec010_013_01"
+    ],
+    "from_papers": [
+      "2881",
+      "6475",
+      "6829"
+    ]
+  }
+}

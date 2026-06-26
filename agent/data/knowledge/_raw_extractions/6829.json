@@ -1,0 +1,102 @@
+{
+  "paper_id": "6829",
+  "meta": {
+    "paper_id": "6829",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2016,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2016\\B\\6829.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了4条假设（如忽略不可抗力、城市无差异、每日相同、ZIP码可获取），每条附有合理性说明。",
+      "formulas": [],
+      "source_excerpt": "1. Assumption: Inevitable factors and accidents do not exist in this model... 2. Assumption: Each city is considered the same without functional difference. 3. Assumption: Everyday in a year is considered the same. 4. Assumption: ZIP Codes Retrieval."
+    },
+    {
+      "concept_id": "tool.crawler",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用网络爬虫从UPS网站提取地面运输时间地图数据，并转换为像素点坐标。",
+      "formulas": [],
+      "source_excerpt": "3.1.1 Web Crawler Implementation... 3.1.2 Pixel-Point Extraction"
+    },
+    {
+      "concept_id": "opt.integer",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将仓库选址问题建模为0-1整数规划，目标是最小化仓库数量，覆盖所有区域。",
+      "formulas": [
+        {
+          "latex_code": "\\min \\sum_{j=1}^{n} x_j \\quad \\text{s.t.} \\sum_{j=1}^{n} a_{ij} x_j \\geq 1, \\forall i, x_j \\in \\{0,1\\}",
+          "variables": {
+            "x_j": "是否在第j个候选点建仓库",
+            "a_{ij}": "候选点j是否覆盖区域i",
+            "n": "候选点数量"
+          }
+        }
+      ],
+      "source_excerpt": "3.2 Data Analysis: A 0-1 Programming Model"
+    },
+    {
+      "concept_id": "meta.ga",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "尝试使用遗传算法求解0-1规划，但论文指出由于数据量大，遗传算法未能成功。",
+      "formulas": [],
+      "source_excerpt": "4.1 An NP-Hard 0-1 Matrix: Failed... Search(IDA*): Failed"
+    },
+    {
+      "concept_id": "opt.greedy",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "采用贪心近似算法，每次选择覆盖最大新增面积的候选点，复杂度从O(n!·n)降至O(n²·log n)。",
+      "formulas": [
+        {
+          "latex_code": "O(n! \\cdot n) \\to O(n^2 \\cdot \\log n)",
+          "variables": {
+            "n": "候选点数量"
+          }
+        }
+      ],
+      "source_excerpt": "4.3 Approximation Algorithm: Succeeded... algorithm complexity can decrease from O(n!·n) to O(n^2·log n)"
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "使用土地覆盖率（Land Cover Rate）作为模型评价指标，计算覆盖面积占总面积的比例。",
+      "formulas": [
+        {
+          "latex_code": "\\text{Land Cover Rate} = \\frac{\\text{covered area}}{\\text{total area}} \\times 100\\%",
+          "variables": {
+            "covered area": "所有仓库覆盖的陆地面积",
+            "total area": "美国陆地总面积"
+          }
+        }
+      ],
+      "source_excerpt": "6.1 Land Cover Rate... table 3"
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用地图可视化展示仓库位置和覆盖区域，并配合表格列出仓库编号、位置和覆盖面积。",
+      "formulas": [],
+      "source_excerpt": "The locations can be seen in figure 4.3.1 and table 2."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：摘要、引言、假设、模型描述、算法、模型分析、测试与结论、附录。",
+      "formulas": [],
+      "source_excerpt": "Contents: 1 Introduction... 2 Simplifying Assumptions... 3 Model Description... 4 Algorithms... 5 Model Analysis... 6 Model Testing and Conclusion... 7 Appendixes"
+    }
+  ]
+}

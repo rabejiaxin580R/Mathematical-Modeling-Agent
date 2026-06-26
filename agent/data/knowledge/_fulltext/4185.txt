@@ -1,0 +1,2112 @@
+Team #4185 1 / 50
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2013
+16th Annual High School Mathematical Contest in Modeling (HiMCM)
+M
+Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+Team Control Number: 4185 C
+Problem Chosen: A
+M
+Summary
+The goal of our model is to help Emergency Service Cooirdinator (ESC) maximize the
+H
+number of residents in the six population zones that can be reached within 8 minutes of an
+emergency call in a country by determining whe：re the county should station its ambulances.
+At first, we determined the best location to place one, two or three ambulances by
+using the Boolean model, which assigns a “true” or “false” property for an ambulance’s
+号
+ability to reach a zone in 8 minutes. Then by examining the combinations closely, we obtain
+the maximum value of population coverage: there were 11 solutions for total coverage with 3
+ambulances, a unique solution f众or total coverage with 2 ambulances, and a maximum of
+160,000 people covered with only one. This model is useful due to its zero-tolerance
+restrictions on the solutions, but cannot differentiate between acceptable solutions.
+公
+Second, we improved our model by minimizing transit time, while taking population
+into consideration. This model uses weighted averages to find the average amount of time a
+system of ambulances takes to rescue a random patient from any zone, which are more likely
+信
+to come from populous zones. We obtained the most optimal locations for different situations:
+a lone ambulance is best stationed in zone 2, a pair of ambulances are best stationed in zones
+2 and 5微, and three ambulances are best stationed in zones 1, 2, and 5.
+Third, we created two models to examine the optimal solution for dealing with
+catastrophic situations, where many people from different zones make 911 calls. The first
+method was the nearest neighbor method, in which we create a near-optimal route shared by
+3 ambulances, passing through all zones. Then in this route, we placed hospitals at every
+other point. Using this method, we can on average rescue a person every 2.722 minutes.
+The second method, split-cycle method, takes a more complicated approach: it divides
+the six zones evenly into three areas, with one ambulance responsible for one area. By
+comparing different combinations produced, we are able to find an optimal solution where
+ambulances are stationed in zones 2, 4, and 5. This method is both more effective and
+practical: it averaged only 2.118 minutes to rescue a person.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 2 / 50
+M
+C
+M
+i
+H
+Emergency： Medical
+号
+Response
+众
+2013 HiMCM Problem A
+公
+Team #4185
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 3 / 50
+
+Table of Contents
+Table of Contents
+3
+| 1.0 Introduction         |     |     | 4   |
+| ------------------------ | --- | --- | --- |
+| 1.1 General Assumptions  |     |     | 5   |
+| 2.0 The Models           |     |     | 8   |
+| 2.1 Approach             |     |     | 8   |
+2.2 The Boolean Model  M8
+| 2.2.1 Solution                                    |     |     | 9   |
+| ------------------------------------------------- | --- | --- | --- |
+| 2.2.2 Strengths and Weaknesses for Boolean Model  |     | C   | 11  |
+| 2.3 Weighted Average Model                        |     |     | 12  |
+M
+| 2.3.1 Solutions  |     |     | 20  |
+| ---------------- | --- | --- | --- |
+2.3.2 Strengths and Weaknesses for Weighted Average Model  25
+| 2.4 General Conclusion  |     | i   | 25  |
+| ----------------------- | --- | --- | --- |
+H
+| 2.5 Summary  |     |     | 26  |
+| ------------ | --- | --- | --- |
+：
+3.0 Catastrophic event
+27
+| 3.1 Approach  |     |     | 27  |
+| ------------- | --- | --- | --- |
+号
+| 3.2 The Nearest Neighbor Model      |     |     | 27  |
+| ----------------------------------- | --- | --- | --- |
+| 3.2.1 Solution                      |     |     | 29  |
+| 3.2.2 Strengths and Weaknesses      | 众   |     | 31  |
+| 3.3 The Split Cycle Model           |     |     | 31  |
+| 3.3.1 Solution                      |     |     | 32  |
+| 3.3.2 Stren公gth and Weaknesses      |     |     | 33  |
+| 3.4 General Conclusion and Summary  |     |     | 34  |
+| 3.5 Real World Situation            |     |     | 34  |
+信
+| 4.0 Sensitivity Notes                           |     |     | 37  |
+| ----------------------------------------------- | --- | --- | --- |
+| 微4.1 Sensitivity of the Boolean Model           |     |     | 37  |
+| 4.2 Sensitivity test of weighted average model  |     |     | 37  |
+| 4.2.1 Transit time                              |     |     | 37  |
+| 4.2.2 Population                                |     |     | 39  |
+| 4.3 Overall remarks                             |     |     | 40  |
+| 5.0 Memo to ESC                                 |     |     | 42  |
+| 6.0 Appendix                                    |     |     | 44  |
+| 6.1 Bibliography                                |     |     | 44  |
+| 6.2 Java                                        |     |     | 45  |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 4 / 50
+1.0 Introduction
+Throughout history, human beings have long been plagued by diseases and
+disorders that are often accompanied with unbearable sufferings and serious
+consequences if they are not met with appropriate treatment promptly. Therefore,
+countries will often face major challenges to protect their populations from an
+increasing number of potential health threats. Despite the differences in each
+country’s method, they all share a common goal of maximizing the number of people
+who can be saved in the shortest amount of time. Consequently, preparedness and
+prevention have great practical uses and will play a significant role in ensuring an
+efficient response to a disaster, since a well-designed placement of ambulaMnces and
+hospitals can be more comprehensive.
+C
+For this purpose, Emergency Service Coordinates system forms an integral
+M
+part of the public health care system, as their function is to deliver emergency medical
+care in response to emergency calls. The development of Emergency Service
+Coordinates successfully provides security to residents. Curirently, there are 27 EU
+H
+countries which are implementing the Emergency Service Coordinates1, and there is
+continually growing awareness of the import：ance of emergency medical response.
+Eight minutes is set as a common standard for medical responses since it is considered
+both practical and ideal to maximize the survival chances of the patients. Research has
+号
+shown that for patients with a response time ≥8 minutes, 7.1% died, compared with
+6.4% for patients with a response time ＜8. From this information, we can see that
+众
+the risk difference is 0.7%, and those who died ＜8 minutes is 10% less than those
+who died ≥8 minute公s2. This also indicates the importance of the concept of time that
+we will consider in our model.
+信
+Our model seeks to mimic the purpose of Emergency Service Coordinates,
+based on the ability of a defined population to obtain or receive medical aid during an
+em微ergency. The main focus is how to maximize the efficiency of the ambulances and
+cover as many people as possible during an emergency. The most crucial factor is the
+geological location of the ambulances since it directly determines the effectiveness of
+medical response, mobility of the ambulances, and the time needed to reach the site
+(the closer it is, the less time needed). It is also proven in many countries that a
+well-designed placement of ambulances and hospitals can be more comprehensive.
+1
+"Emergency Medical Service Systems." World Health Organization, 2008. Web. 10 Nov. 2013.
+<https://ec.europa.eu/digital‐agenda/sites/digital‐agenda/files/WHO.pdf>.
+2
+NCBI. Emergency medical services response time and mortality in an urban setting. Nation Institutes of Health, 25 Oct.
+2011. Web. 10 Nov. 2013. <http://www.ncbi.nlm.nih.gov/pubmed/22026820>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 5 / 50
+Research has shown that for patients with a response time ≥8 minutes, 7.1% died,
+compared with 6.4% for patients with a response time ＜8. From this information, we
+can see that the risk difference is 0.7%, and those who died ＜8 minutes is 10% less
+than those who died ≥8 minutes3. This also indicates the importance of the concept of
+time that we will consider in our model. In any cases, the shorter the time the better
+since there is a higher possibility that the patient will be saved.
+M
+1.1 General Assumptions
+1. The model takes semi-perfect conditions as uneventful situCations and sees
+the given transit times as the average transit times when there are no unexpected
+M
+obstacles.
+Explanation：Obstacles or accidents are highly unpredictable, and taking them
+i
+H
+into account not only would complicate our models, but also would not affect the
+solution, as such accidents can occur no mat：ter what route is taken.
+2. Maximizing covered population has the highest priority.
+号
+Explanation：Although from a moral perspective, each human life is valued
+equally, but in case for an emergency, our model must consider how to maximize the
+众
+number of people who are being covered, if it is indeed impossible to cover the entire
+population.
+公
+3. Ambulances only pick up patients at one location and must drop them off
+at a hospital before responding to other patients.
+信
+Explanation：In real life, at least one ambulance is sent to one affected area, but
+not微 many ambulances travel to another patient before returning to the hospital. Taking
+into account multiple patients would complicate our model and doing so would entail
+delaying the rescue of the first patient.
+4. Prior to receiving emergency calls, the ambulances remain in their hosting
+hospitals. These hospitals are located in the center of a zone, instead of being
+between zones.
+Explanation：An emergency call cannot be predicted and passively moving from
+location to location is not always helpful. There also might not be infrastructure to
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 6 / 50
+build hospitals in less populated in-between areas.
+5. When traveling between different zones, the centers of the two zones are
+used.
+Explanation：We assume the location of a patient in a zone is a distribution
+within the zone where the average location is the center. That way when traveling
+between zones, some patients are closer than the zone center while some patients are
+equally further. But when traveling within a zone, the average distance between
+patient and hospital is nonzero.
+M
+6. When an ambulance reaches a patient, they are considered saved.
+C
+Explanation：We assume the ambulances are equipped with adequate medical
+M
+supply for emergency aid at the site, such that they can begin treatment immediately
+after pickup. Thus when only one patient is involved, the only transit time that needs
+to be considered is the time to takes to reach them. i
+H
+Exception：However, in catastrophic emergencies, the return time is still a
+：
+significant delay before reaching the next patient, so it is also considered.
+号
+7. Only hospitals hosting ambulances can receive ambulances and an
+ambulance can use any such hospital interchangeably.
+众
+Explanation：Our model cannot be made if the number of ambulance-receiving
+hospitals is unknown, yet in real life emergency scenarios do not call for distinction
+between hospitals. 公
+8. People will not call for emergency aid in close succession, except in the
+信
+catastrophic event.
+Explanation：In other words, all ambulances are idle when a call is made and
+微
+only one rescue attempt is made at a time. It is rare to find two patients independently
+requiring emergency, and in many such cases different ambulances from a 3
+ambulance system are to be sent anyway.
+Exception：But in the catastrophic scenario people from all zones call nearly
+simultaneously, resulting in an incessant stream of calls
+9. The time needed to prepare an ambulance is not considered.
+Explanation：This is because preparation time can be highly variable – whether a
+previous call occurred recently, whether the call occurred during day or night, and
+whether the hosting hospital is well staffed. Taking these into consideration is
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 7 / 50
+impractical, so we find it acceptable to assume all ambulances are vigilant and
+prepared for any scenario at all times.
+10. The frequency of 911 calls per zone is proportional to the zone’s
+population.
+Explanation: We assume that there are little differences between residents of
+each zone, so the number of potential patients is proportional to the zone’s population.
+The exact characteristics of each zone are not known, nor do their populations differ
+enough to introduce population-related problems only in certain zones. Thus the
+distribution of 911 calls should match the population distribution.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 8 / 50
+
+2.0 The Models
+2.1 Approach
+The question asks us whether we can “cover” certain zones or not. Rather than
+simply looking at the travel times between two zones, however, we applied the
+Boolean method, which determines if we can reach a certain zone in 8 minutes or not,
+and outputs a simple yes/no answer. Since we also need to calculate how many, if any,
+people are left uncovered, we later merged the two graphs to determine the population
+of zones covered by an ambulance stationed at a certain zone.
+  Of course, in reality time is an important factor in rescuing patientsM; therefore,
+we considered another method which distinguished between different time values
+rather than just “true/false” conditions, so we created a weighted aveCrage method.
+  The weighted average method calculates the average time spent saving a
+M
+random patient, and compares combinations of zones to find a position which
+minimizes this value. Obviously, this method is more informative than the Boolean
+method, but when it comes to a decision, the Boolean modeil results take higher
+H
+priority. This method is useful for differentiating between equally attractive solutions.
+：
+2.2 The Boolean Model
+Our first model was concerned about whether an ambulance could reach a zone
+号
+within 8 minutes and “cover it” or not, and our goal was to maximize the number of
+people “covered”. We took a Boolean approach, and assigned values of “T” to a zone
+| if it could be reached in less than 8 minutes; if it couldn’t be reached, then “F” was  | 众   |     |     |     |     |     |
+| --------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+assigned. When multiple ambulances were considered, we merged the “T”s, meaning
+that a zone is covered as long as one ambulance can reach it within 8 minutes.
+|     | 公   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+Table 1: Boolean Property of Zone 1 to Zone 6
+| Zones  | 1   | 2   | 3   | 4   | 5   | 6   |
+| ------ | --- | --- | --- | --- | --- | --- |
+信
+| 1   | T   | T   | F   | F   | F   | F   |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2   | T   | T   | T   | F   | F   | F   |
+微
+| 3   | F   | F   | T   | F   | T   | T   |
+| --- | --- | --- | --- | --- | --- | --- |
+| 4   | F   | F   | T   | T   | F   | F   |
+| 5   | F   | F   | F   | T   | T   | T   |
+| 6   | F   | F   | T   | F   | T   | T   |
+
+T: The average travelling time ≤ 8 minutes
+F: The average travelling time > 8 minutes
+
+The table shows the results if the only ambulance is placed separately from zone
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi  | CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --------- |
+
+Team #4185 9 / 50
+1 to zone 6. Since the ambulance has to arrive at the site within 8 minutes, any time
+greater than 8 is dismissed and deemed as “false”, while the time less than or equal to
+8 is accepted as “true” and desirable.
+The total number of people who can be covered is determined by the sum of the
+corresponding values of “T”s.
+Example working for zone 1
+If the ambulance is at zone 1, it can only reach zone 1 and zone 2 within 8
+minutes, but not zone 3, zone 4, zone 5, and zone 6. Therefore the sum is calculated
+by M
+Population of zone 1 + Population of zone 2 = 50,000 + 80,0C00 = 130,000
+M
+(For zone 2 to zone 6, follow the same procedure.)
+Table 2: The population covered by 1 ambulancei in Zone 1 to Zone 6
+H
+Zone Population Covered
+1 ：130,000
+2 160,000
+3 号85,000
+4 85,000
+5 众 110,000
+6 85,000
+公
+2.2.1 Solution
+信
+1. Determine the locations for the three ambulances which would maximize
+the number of people who can be reached within 8 minutes of a 911 call.
+微
+Can we cover everyone? If not, then how many people are left without
+coverage?
+When the number of ambulance available = 3, all zones can be covered in
+multiple ways. Since 2 ambulances are sufficient to solve the problem (shown below),
+as long as all zones are covered, we no longer distinguish between different methods.
+To specify our method, we considered all possible combinations of the 3
+ambulances that can reach a total population covered 270,000, and also taking into
+account the possibility of overlapping.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 10 / 50
+
+Conclusion: I. All zones can be covered.
+II. There are in total 11 solutions that can result in all zones being
+covered.
+
+Table 3: 11 Solutions for combination of 3 ambulances covering total population
+| Zone  | 1  2  | 3   | 4   | 5   | 6   |
+| ----- | ----- | --- | --- | --- | --- |
+/Solution
+| Solution 1  | ✓  ✓  |     |     | ✓   |     |
+| ----------- | ----- | --- | --- | --- | --- |
+| Solution 2  |   ✓   | ✓   |     | ✓   |     |
+| Solution 3  |   ✓   |     | ✓   | ✓   |     |
+M
+| Solution 4  |   ✓  |     |     | ✓   | ✓   |
+| ----------- | ---- | --- | --- | --- | --- |
+| Solution 5  | ✓    | ✓   | ✓   |     |     |
+C
+| Solution 6  | ✓    | ✓   |     | ✓   |     |
+| ----------- | ---- | --- | --- | --- | --- |
+| Solution 7  | ✓    |     | ✓   |     | ✓   |
+M
+| Solution 8  | ✓    |     |     | ✓   | ✓   |
+| ----------- | ---- | --- | --- | --- | --- |
+| Solution 9  | ✓    |     | ✓   | ✓   |     |
+i
+| Solution 10  |   ✓  | ✓   | ✓   |     |     |
+| ------------ | ---- | --- | --- | --- | --- |
+H
+| Solution 11  |   ✓  |     | ✓   |     | ✓   |
+| ------------ | ---- | --- | --- | --- | --- |
+：
+
+2.  We now have only two ambulances since one has been set aside for an
+号
+emergency call; where should we put them to maximize the number of
+people who can be reached within the 8 minute window? Can we cover
+everyone? If not众, then how many people are left without coverage?
+
+When number of ambulance available = 2, the situation becomes more difficult,
+公
+and only one combination can satisfy the conditions: two ambulances placed in zones
+2 and 5. The ambulance in zone 2 covers zones 1, 2, and 3, whereas the one in zone 5
+covers zone信s 4, 5, and 6. Through this combination, all of the population is covered.
+The answer is obtained using the similar method of testing combinations and
+checking if all population zones can be covered.
+微
+
+| Conclusion:   | I. All zones can be covered.  |     |     |     |     |
+| ------------- | ----------------------------- | --- | --- | --- | --- |
+II. There is a unique solution: specifically, two ambulances are
+positioned at zones 2 and 5, respectively
+
+3.  Two  ambulances  are  now  no  longer  available;  where  should  the
+remaining ambulance be posted? Can we cover everyone? If not, then
+how many people are left without coverage?
+
+By referring to Table 2: The population covered by 1 ambulance in Zone 1 to
+Zone 6, when the number of ambulance available = 1, the maximum population
+covered in this case is when the ambulance is at zone 2, which corresponds to a value
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 11 / 50
+of 160,000.
+The total population is 270,000, but 160,000 < 270,000, therefore it cannot
+cover everyone.
+population left without coverage = total population – population who are covered
+= 270,000 – 160,000
+= 110,000
+Conclusion: I. The remaining ambulance should be posted at zone 2
+II. Not everyone can be covered
+III. 110,000 people are left without coverage M
+A brute force program confirms our conclusion: C
+Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+M
+Uncovered: 0 (1m) 0 (1m) 0 (6m) 0 (4m) 0 (2m) 0 (2m)
+Chose 1, 2 and 5. Total uncovered = 0. i
+H
+Total number of solutions with 3 ambulances = 11, with 2 ambulances = 1,
+with 1 ambulance = 0 ：
+This program shows a solution for 3 ambulances, and the numbers of solutions.
+号
+2.2.2 Strengths and Weaknesses (Boolean Model)
+众
+Strengths:
+1. It is efficient to calculate the results since we only need to consider “true” and
+“false” by comparin公g the average travelling with a standard of 8 minutes then find the
+corresponding values
+信
+2. It allows us to completely evaluate all sets or collections and pick the best system
+with certainty. A perfect solution is readily identifiable.
+微
+3. It gives a hard-cut standard and harshly punishes results that cannot fulfill the
+minimum requirement. Real life situations often allow zero tolerance, especially in
+situations of life and death, where assistance within 8 minutes is a mandatory standard.
+This makes the acceptable solutions stand out from the near-misses.
+Weaknesses:
+1. By only considering “true” and “false”, the model neglects the relative importance
+of time, that is, the shorter the better. In other words, the model is simply concerned
+with the range of time. It does not differentiate time periods within the same range.
+For example, although a 3 minute arrival time is more preferred compared to a 6
+minute arrival time, they are valued equally in the Boolean Model as “true”.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 12 / 50
+
+2.3 Weighted Average Model
+Transit times (T)  Zone 1  Zone 2  Zone 3  Zone 4  Zone 5  Zone 6
+| Ambulance in Zone 1  |     |     | 1   | 8   | 12  |     | 14  | 10  |     | 16  |
+| -------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ambulance in Zone 2  |     |     | 8   | 1   |     | 6   | 18  | 16  |     | 16  |
+| Ambulance in Zone 3  |     |     | 12  | 18  | 1.5 |     | 12  |     | 6   | 4   |
+M
+| Ambulance in Zone 4  |     |     | 16  | 14  |     | 4   | 1   | 16  |     | 12  |
+| -------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+C
+| Ambulance in Zone 5  |     |     | 18  | 16  | 10  |     | 4   |     | 2   | 2   |
+| -------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+| Ambulance in Zone 6  |     |     | 16  | 18  |     | 4   | 12  |     | 2   | 2   |
+| -------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+H
+Zo：ne 3
+| Population (P)  |         | Zone 1  |        | Zone 2  |       | Zone 4  |       | Zone 5  | Zone 6  |       |
+| --------------- | ------- | ------- | ------ | ------- | ----- | ------- | ----- | ------- | ------- | ----- |
+|                 | 270000  |         | 50000  | 80000   | 30000 |         | 55000 | 35000   |         | 20000 |
+号
+Contribution to wAvg (C)  Zone 1  众Zone 2  Zone 3  Zone 4  Zone 5  Zone 6  wAvg = Sum
+Ambulance in Zone 1  0.185185  2.37037 1.333333 2.851852 1.296296  1.185185 9.222222222
+公
+Ambulance in Zone 2  1.481481  0.296296 0.666667 3.666667 2.074074  1.185185 9.37037037
+信
+Ambulance in Zone 3  2.222222  5.333333 0.166667 2.444444 0.777778  0.296296 11.24074074
+微
+Ambulance in Zone 4  2.962963  4.148148 0.444444 0.203704 2.074074  0.888889 10.72222222
+Ambulance in Zone 5  3.333333  4.740741 1.111111 0.814815 0.259259  0.148148 10.40740741
+Ambulance in Zone 6  2.962963  5.333333 0.444444 2.444444 0.259259  0.148148 11.59259259
+Deviation from min C (ΔC )  Zone 1  Zone 2  Zone 3  Zone 4  Zone 5  Zone 6
+Ambulance in Zone 1  0  2.074074 1.166667 2.648148 1.037037  1.037037
+Ambulance in Zone 2  1.296296  0 0.5 3.462963 1.814815  1.037037
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4185 13 / 50
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+This model takes both timing and population under consideration. It uses these
+M
+tables to help calculate and minimize the weighted average transit time for any
+system. It is necessary to first explain these tables, before going into the approach
+C
+T is the amount of time an ambulance spends to reach a destination.
+M
+P is the population of each zone. The first cell shows the total population.
+C represents the absolute contribution to the weighted average time for an ambulance
+i
+at each departure location. It is equal to
+H
+(cid:1842)(cid:4666)(cid:2192)(cid:4667)
+(cid:1829)(cid:4666)(cid:2191),(cid:2192)(cid:4667) (cid:3404) (cid:3400)(cid:1846)(cid:4666)(cid:2191),(cid:2192)(cid:4667)
+(cid:1842)(cid:4666)(cid:1872)(cid:1867)(cid:1872)：(cid:1853)(cid:1864)(cid:4667)
+Where i represents the departure zone, and j represents the destination zone.
+号
+The sum of each zone’s contribution is the weighted average time an ambulance
+spends reaching a destination. The magnitudes of the contributions represent their
+impact on the weighted ave众rage – the higher their contribution, the more they hurt the
+weighted average time.
+公
+An absolute contribution value is used because the final goal is independent of
+the weighted average time one specific ambulance spends to reach all other zones. As
+the formula shows, the ambulance’s performance in other zones does not affect this
+信
+value – it is only related to the population and time needed to reach a specific zone.
+Because of this, these values can also be used on a system that sends different
+am微bulances to different zones. The weighted average transit time of the system is still
+the sum of each zone’s absolute contribution.
+The weighted average is used because population is an important consideration
+when designing emergency health care transportation. Zones with higher population
+are more likely to call ambulances. A weighted average takes distance and population
+into consideration: populous, distant zones show higher absolute contribution than
+less populated, nearby zones. This value represents the average time needed to save a
+random patient; it is much more likely to come across a patient from populous zones.
+ΔC compares the contribution of a destination zone between departure zones. A
+value of 0 represents the departure-destination pair with the lowest contribution to the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 14 / 50
+weighted average out of all other pairs with the same destination. Each destination
+zone must have at least 1 departure location most suited for that zone. It is not
+surprising that the ambulances traveling within their departure zones are the ones that
+display aΔC of 0.
+The remaining values display their difference in contribution from the minimum.
+A low value represents a departure-destination pair that is a good alternative for the
+minimum, while a high value represents a pair that is much worse than the minimum.
+The smallest nonzero cell isΔC (3,6). The T table shows that an ambulance traveling
+M
+from zone 3 to zone 6 only takes 2 minutes more than an ambulance traveling within
+zone 6 – the smallest positive difference in the table. Transit within Czone 5 and 6 is as
+easy as transit between the two, which is why theΔC for both
+M
+is 0.
+i
+H
+Ideal Weighted Average Process
+The overall goal is to find a set of 3 ：ambulances that when chosen aptly, will
+result in the lowest weighted average time for the system of 3. The weighted average
+is the sum of the contributions from each destination zone, and for a system of
+号
+multiple ambulances, the most suitable departure zone is used for each destination. A
+perfect system would include an ambulance at each zone so that no ambulance has to
+leave their zone. The weighted average rescue time for this perfect system is
+众
+(cid:1829)(cid:4666)(cid:2778),(cid:2778)(cid:4667)(cid:3397)(cid:1829)(cid:4666)(cid:2779),(cid:2779)(cid:4667)(cid:3397)(cid:1829)(cid:4666)(cid:2780),(cid:2780)(cid:4667)(cid:3397)(cid:1829)(cid:4666)(cid:2781),(cid:2781)(cid:4667)(cid:3397)(cid:1829)(cid:4666)(cid:2782),(cid:2782)(cid:4667)(cid:3397)(cid:1829)(cid:4666)(cid:2783),(cid:2783)(cid:4667) (cid:3404) 1.259259 minutes
+which is reasonable because the most populous zones – 2, 4, 1 – all take 1 minute on
+average for an ambu公lance to transverse within the zone.
+The weighted average transit time for a system of 3 ambulances can be calculated
+by finding信 the minimumΔC values among the three departure zones for each
+destination zone, and adding their sum to the ideal transit time. The system with the
+low微est weighted average is the best system of 3 in terms of transit time. We created
+the cross and minimize process that can help find the minimal solution:
+1. Discard the diagonal line of 0’s inΔC table
+2. Find the destination zone with the smallest minimum value in their column.
+3. Check the row corresponding to the destination zone. If previously marked cells
+are not already in the row, then mark the cell holding the minimum value, then
+cross out the entire column and row corresponding to the destination zone.
+3b. Otherwise, compare the next column minimum with the next smallest
+uncrossed value in a conflicting cell’s column. Repeat for each conflicting cell.
+Move the conflicting cells if the increase inΔC is small, otherwise attempt step 3
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 15 / 50
+on the next column minimum, considering the increase between the minimums.
+4. Repeat step 3 three times.
+4b. If two departure zones compete for minimum, then separately try both cases.
+5. The three ambulances should originate from the rows that haven’t been crossed
+out. The sum of the marked cells should be minimal.
+5b. If multiple cases must be considered, the minimal case is the one whose
+sum of the marked cells is the least
+This method uses the assumption that traveling within a zone is no slower than
+traveling between zones. Thus theΔC for 3 zones hosting 3 ambulances is
+M
+automatically 0. The remaining cells are chosen to have the smallest availableΔC. The
+C
+procedure finds these minimum values, and crosses out columns to help locate the
+M
+next-smallest minimum; the rows that are crossed out are the 3 zones the ambulance
+will not depart from (and thus are not automatically 0). The process tries to make sure
+ambulances depart from zones that are difficult to reach, wihile they can quickly reach
+H
+the remaining zones. It assumes that there are enough ambulances to include the best
+sets of closely linked zones. If step 3b is n：ever needed, then it will find the optimal
+solution. Step 3b simply decides the best changes to make given the current progress
+if it encounters an error. But if the number of ambulances is too limiting, then step 3b
+号
+will be called too often, and not many column minimums will remain.
+For questions 1, 2, and 3, we compared a brute force program with the results of
+众
+this process. This process is more practically feasible when the number of zones to
+consider increases, because this process runs on polynomial time while the brute force
+algorithm runs on e公xponential time. But the brute force algorithm guarantees the ideal
+solution. We will demonstrate that the above process is very accurate and efficient
+when the number of ambulances is comparable to the number of zones.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 16 / 50
+Demonstrating the process
+We will demonstrate the cross and minimize process for three ambulances
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+M
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+C
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+M
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+i
+H
+First, the diagonal 0’s are removed. The three ambulances chosen should be
+responsible for their own zone, so three tr：ansit times are automatically minimized.
+Now we are interested in minimizing the transit times to the three other zones.
+Next, find the zone with the smallest column minimum. Both zones 5 and 6 have
+号
+a column minimum of 0, so both will be separately tested. For this example, we select
+zone 6. Mark the column minimum cell.
+众
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+公
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone信 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+微
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Cross out both the row and the column for zone 6, unless this crosses out a
+marked cell from a different step. This act means we have decided not to have an
+ambulance in zone 6, since a different ambulance can reach this location quickly as
+well. Repeat until a marked cell from a previous step is in the way.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 17 / 50
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+M
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+C
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+M
+The next column minimum is located in zone 3, with a value of 0.277778. We
+checked the zone 3 row. There are no marked squares fromi previous steps in this row,
+H
+so we are given the clear to cross out both the row and column for zone 3. Crossing
+out a previously marked cell is not allowed： because it represents both allowing and
+disallowing an ambulance to come from the crossed out zone, which is a
+contradiction.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 18 / 50
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+M
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+C
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+M
+The next column minimum is from zone 4, with a value of 0.611111 (red cell).
+But crossing out the zone 4 row will cross out the markied cell for zone 3, as the
+H
+dotted lines show. We have two choices – move the zone 3 cell to the next smallest in
+the column (the purple cell) or skip zone ：4 and go to the next column minimum
+(green).
+Moving involves an increase in value, from 0.5 to 0.2777778, a difference of
+号
+0.222222. Skipping involves giving up the current column minimum (0.611111), and
+instead choosing a new one (1.296296), a 0.685105 increase.
+众
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+公
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone信 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+微
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Moving makes a smaller change, so we choose to move the marked cell. Then
+there are no longer conflicts in the zone 4 row, so we can finalize it. Sometimes more
+than one cell has conflicts. Sometimes moving to another zone also introduces
+conflicts. But in this case there are no more issues. In the end, the purple and the red
+cells are marked.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 19 / 50
+With three iterations, the cross and minimize process is now done. The solution is
+the set of zones that are not crossed out – 1, 2 and 5.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 20 / 50
+2.3.1 Solutions
+Three ambulances
+We ran the whole process on the two possible starting positions – zone 5 or zone
+6. We then compared these two to find the starting position that yields a shorter time.
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+M
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+C
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+M
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+i
+Ambulance in Zone 5 3.148148 4.444444 0.94H4444 0.611111 0 0
+：
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Sum of marked squares = 1.574074. Uncrossed rows = 2, 4, 6
+号
+Zone 6 skipped for zone 1. Less costly than moving cell in zone 5.
+Zone 6 crossed out first:
+众
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+公
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+信
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+微
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Sum of marked squares = 1.111111. Uncrossed rows = 1, 2, 5
+Cell was moved to cross out zone 4. Less costly than skipping to zone 1.
+The second approach gave a smaller result, so the best combination of ambulance
+departure zones will be Zone 1, Zone 2, and Zone 5.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 21 / 50
+To find the weighted average transit time of the system, recall that weighted
+average is the sum of the absolute contributions from the 6 zones, and thatΔC is the
+difference between the absolute contribution and the column minimum.
+Thus the weighted average is the sum of the 6ΔC’s and the 6 column minimums.
+The sum of the column minimums is 1.259259 minutes, while the sum of the
+ΔC’s is equal to the three marked squares (as well as 3 automatic 0’s). Thus
+(cid:1849)(cid:1857)(cid:1861)(cid:1859)(cid:1860)(cid:1872)(cid:1857)(cid:1856) (cid:1827)(cid:1874)(cid:1857)(cid:1870)(cid:1853)(cid:1859)(cid:1857) (cid:3404) (cid:4666)1.259259(cid:3397)1.111111(cid:4667) minutes (cid:3404) 2.370370M minutes
+The brute force algorithm tried all combinations of three. It outpCuts
+3 Ambulances:
+M
+The best departure zones are 1, 2 and 5; the combination's weighted average is 2.370370.
+Thus confirming the accuracy of the process
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 22 / 50
+Two ambulances
+The same process on theΔC graph can be used, except the third step must be done
+4 times. Again, zone 5 and 6 compete for minimum.
+Zone 5 crossed out first:
+Deviation from min C (ΔC ) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+M
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+C
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+M
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+i
+H
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+：
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+号
+Sum of marked squares = 4.129630. Uncrossed rows = 2, 4
+Zone 6 skipped, used zone 1. Less costly than moving cell in zone 5.
+Cell was moved to cross out zone 6. Skipping to zone 4 or 2 involves costly
+众
+moving of cells in zones 3/5/6 or in zone 1.
+Zone 6 crossed公 out first:
+Deviation from min 信C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+微
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Sum of marked squares = 2.407407. Uncrossed rows = 2, 5
+Cell was moved to cross out zone 4. Less costly than skipping to zone 1.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 23 / 50
+Skipped zone 5 for zone 1. Less costly than moving cells in zone 4 and 6.
+The two ambulances should depart from zones 2 and 5.
+Weighted average:
+(cid:1849)(cid:1857)(cid:1861)(cid:1859)(cid:1860)(cid:1872)(cid:1857)(cid:1856) (cid:1827)(cid:1874)(cid:1857)(cid:1870)(cid:1853)(cid:1859)(cid:1857) (cid:3404) (cid:4666)1.259259(cid:3397)2.407407(cid:4667) minutes (cid:3404) 3.666667 minutes
+The brute force program outputs
+2 Ambulances:
+M
+The best departure zones are 2 and 5; the combination's weighted average is 3.666667.
+Again consistent with the output of the cross and minimize procCess.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 24 / 50
+One ambulance
+Again, the same process on theΔC graph can be used, except the third step must
+be done 5 times. Only 1 zone will remain uncrossed.
+Zone 5 crossed out first:
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+M
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+C
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+M
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+i
+H
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+：
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+号
+Sum of marked squares = 8.111111. Uncrossed row = 2
+Zone 6 skipped, used zone 1. Less costly than moving cell in zone 5.
+众
+Cell was moved to cross out zone 6. Skipping to zone 4 or 2 involves costly
+moving of cells in zones 3/5/6 or in zone 1.
+Cells were mo公ved to cross out zone 4. Skipping to zone 2 involves costly
+moving of cells in zone 1.
+信
+Zone 6 crossed out first:
+微
+Deviation from min C (ΔC) Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Ambulance in Zone 1 0 2.074074 1.166667 2.648148 1.037037 1.037037
+Ambulance in Zone 2 1.296296 0 0.5 3.462963 1.814815 1.037037
+Ambulance in Zone 3 2.037037 5.037037 0 2.240741 0.518519 0.148148
+Ambulance in Zone 4 2.777778 3.851852 0.277778 0 1.814815 0.740741
+Ambulance in Zone 5 3.148148 4.444444 0.944444 0.611111 0 0
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 25 / 50
+Ambulance in Zone 6 2.777778 5.037037 0.277778 2.240741 0 0
+Sum of marked squares = 8.111111. Uncrossed row = 2
+Cell was moved to cross out zone 4. Less costly than skipping to zone 1.
+Skipped zone 5 for zone 1. Less costly than moving cells in zone 4 and 6.
+Cells were moved to cross out zone 5. Skipping to zone 2 involves costly
+moving of cells in zones 1/3.
+The brute force algorithm simply compared the weighted average of each row
+1 Ambulance:
+M
+The best departure zone is 1; its weighted average time is 9.222222.
+A direct comparison of the weighted averages states that the best departure zone
+is not zone 2. As the diagram shows, the cross and minimize prCocess is not very
+practical on 1 ambulance. There were many cell swaps, and the column minimums
+M
+were skipped or moved many times. Zone 2 was the second-best choice, though, at
+9.370370 minutes.
+i
+2.3.2 Strengths and Weaknesses (WeiHghted Average Model)
+Strengths: ：
+1. It considers the relative importance of both time and population, weighing both
+factors into calculation. The weighted average is a very realistic and important value,
+号
+representing the average amount of time it takes to respond to a 911 call in general.
+2. The process has a good众 chance of finding the optimal answer, being especially
+accurate where the number of ambulances is close to the number of zones. Doing a
+brute force test on such conditions can take much more processing power.
+公
+Weaknesses:
+1. The calculation process is rather intricate and complicated. This method is less
+信
+efficient than the Boolean model, while obtaining similar results.
+2. 微The result of the cross and minimize process is less reliable when the number of
+ambulances is much less than the number of zones – conditions where brute force
+takes less computing power.
+2.4 General Conclusion
+I. Using the weighted-average model, we are able to obtain a much more
+accurate optimal solution for all solutions: for 3 ambulances, the best solution
+is to place ambulances at zones 1, 2, and 5; for 2 ambulances, the optimal
+position is zones 2 and 5; for one ambulance, the best position is at zone 2.
+II. For each ambulance removed, the average weighted time increased
+disproportionally: when there were three ambulances, the weighted average
+was 2.370 minutes; when one ambulance was removed, the time only
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 26 / 50
+increased to 3.667 minutes, yet when another is removed, the time increased
+drastically to 9.222 minutes.
+2.5 Summary
+According to our assumptions, we prioritize covering the whole population. The
+Boolean model offers a hard cut pass-fail test for any combination of 3 ambulances.
+According to this model, 11 combinations of 3 ambulances and 1 combination of 2
+ambulances are capable of accomplishing this. A lone ambulance should be stationed
+in zone 2. Only if a combination passes the Boolean test will it be eligible for analysis
+from the weighted Average Model, which seeks to minimize the average tiMme taken to
+rescue a patient. The solution for 3 and for 2 ambulances is included within the
+Boolean solution set, proving they are best combinations. The one amCbulance solution
+was zone 1, which is more efficient but covers less population. Thus we chose to stick
+M
+with zone 2 instead, prioritizing population over transit time.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 27 / 50
+3.0 Catastrophic event
+4. (1) If a catastrophic event occurs in one location with many people from all
+zones involved, could the ESC cover the situation?
+3.1 Approach
+Every ambulance has a duty to pick up patients and bring them to a hospital as
+soon as possible. Thus they must alternate between hospitals and patients. Our goal is
+to find the best routes in case multiple ambulances must be dispatched simMultaneously
+to respond to an emergency situation.
+If the ESC has 3 ambulances available, it’s best to always run 3 rCescue operations
+simultaneously. To ensure that every zone has an ambulance nearby, the three
+M
+ambulances should ideally be placed far from each other. If two ambulances operate
+in the same or in nearby zones, then their coverage areas will overlap with each other,
+and their efficiency will be reduced. Thus after reaching ani uncovered zone, all three
+H
+ambulances may choose to either return to their original stations or may each proceed
+to a different one. ：
+Under these criteria, there are two main approaches to designing these routes:
+designing a circuitous route through all zones, or partitioning the county into three
+号
+independent areas. We used to Nearest Neighbor Model to tackle the former approach,
+and the Split Cycle Model to approach the latter.
+众
+3.2 The Nearest Neighbor Model
+When a catastrop公hic event occurs, we must guarantee that each zone is covered by
+multiple ambulances, to cope with a situation where several people from different
+zones require medical aid. Thus, we thought of using the nearest-neighbor model to
+信
+create a circuitous route, a fairly decent approximation of the optimal solution.
+The nearest-neighbor approach basically chooses the immediate minimum cost
+cho微ice without considering long-term consequences. A path is laid from nearest
+neighbor to nearest neighbor until all zones are visited; then it returns to the beginning
+point. Although this may not produce the best result, it has the advantage of being
+easy to calculate, so we can experiment with the method multiple times and choose
+the best starting point and route. It is not rare for this path to be the most optimal path,
+especially in a situation where only 6 points are involved.
+Since “catastrophic events” are emphasized, we assume that: 1) multiple people
+from multiple zones require assistance; 2) ambulances are allowed to stop at different
+hospitals (“bases”) to drop off patients.
+Below is a graph of the distribution of the six zones
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 28 / 50
+M
+C
+M
+i
+H
+：
+号
+In this graph, the values represent the transit times between zones. Some routes
+众
+have two numbers written; the first is the time taken to from the lesser numbered zone
+to the greater numbered zone, and second is the time taken for the opposite route.
+Between zones 1 an公d 5, 10 represents the time from zone 1 to 5, and 18 represents the
+same from zone 5 to 1. This graph helps see the relative proximity between zones.
+In an emergency situation, an ambulance stationed in a zone (zone 1, for instance)
+信
+has two options: to save patients in nearby zones first, or to save distant patients in
+need first. There are also various options considering which route to take in order to
+ens微ure maximum efficiency. To find these routes, we may apply methods used to
+solve the travelling salesperson problem, such as the nearest-neighbor method.
+The nearest-neighbor method is used for approximating the minimum length of a
+Hamiltonian cycle (a route which goes through all points in a graph and returns to the
+starting point). Basically, it operates on a greedy basis, taking the shortest path
+possible without considering its consequences.
+We take Zone 1 as an example. If we start at Zone 1, the closest other zone is
+Zone 2, 8 minutes away. We then go to Zone 2, and find that Zone 3 is closest one
+(which we haven’t been to yet) from there. At Zone 3, Zone 6 is closest—and so on,
+until we return to Zone 1. In this way, we are able to complete a Hamiltonian cycle
+starting from Zone 1, and we can calculate that its length is 40 (minutes). Likewise,
+all the Hamiltonian cycles starting from points 2~6 can be calculated.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 29 / 50
+3.2.1 Solution
+These sets of tables show the length of all the Hamiltonian cycles.
+Average Travel Time (mins)
+Zone
+1 2 3 4 5 6
+1 1 8 12 14 10 16
+2 8 1 6 18 16 16
+3 12 18 1.5 12 6 4
+M
+4 16 14 4 1 16 12
+5 18 16 10 4 2 2
+C
+6 16 18 4 12 2 2
+M
+Starting
+Zone/Step 1 2 3 4 5 6
+i
+Start in 1 Go to 2 Go to 3 Go to 6 HGo to 5 Go to 4 Go to 1
+Start in 2 Go to 3 Go to 6 Go to 5 Go to 4 Go to 1 Go to 2
+：
+Start in 3 Go to 6 Go to 5 Go to 4 Go to 1 Go to 2 Go to 3
+Start in 4 Go to 3 Go to 6 Go to 5 Go to 2 Go to 1 Go to 4
+号
+Start in 5 Go to 6 Go to 3 Go to 1 Go to 2 Go to 4 Go to 5
+‐ ‐ ‐ Go to 4 Go to 2 Go to 1 Go to 5
+众
+Start in 6 Go to 5 Go to 4 Go to 3 Go to 1 Go to 2 Go to 6
+Zone 公
+/Step 1 2 3 4 5 6 Total (Mins)
+1 8 6 4 2 4 16 40
+信
+2 6 4 2 4 18 8 42
+3 4 2 4 14 8 12 44
+微4 4 4 2 16 8 14 48
+5 2 4 12 8 18 16 60
+6 2 4 4 12 8 16 46
+It seems the fastest Hamiltonian cycle starts at Zone 1, goes along 1-2-3-6-5-4-1,
+and takes 40 minutes to complete a roundabout.
+However, we must also remember that to complete a cycle and return back to its
+base, an ambulance must follow a hospital-patient…-hospital route. Since the shortest
+cycle is 40, as shown above, we may position hospitals as to allow this cycle to form;
+specifically, position hospitals at 1, 3, and 5 as to allow ambulances to pick up
+patients between hospitals.
+Now, since we have positioned our first ambulance (and hospital), the
+locations of all three hospitals are now known – Zones 1, 3 and 5. This corresponds to
+the positions of the three ambulances; we then only need to decide their routes, which
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 30 / 50
+is quite simple; given that they are all on the shortest Hamiltonian cycle, the
+ambulances only need to follow it. For example, if an ambulance has picked up
+someone at Zone 2, it can follow the path shown below to the next hospital at Zone 3.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+However, we cannot ignore the patients from Zones 1, 3 or 5.
+信
+At full capacity, the three ambulances travel 40 minutes through the entire circuit,
+but they also spend an additional 9 minutes rescuing patients next to the hospitals. In
+tho微se 49 minutes, the ambulances save 18 patients from all 6 zones, for an average of
+2.7222 minutes per patient.
+Since there are catastrophic situations, however, some ambulances may be forced
+to take a detour to rescue other patients. When this occurs, we should locate the
+closest hospital to it (requiring least time to get from hospital to patient), find the
+ambulance closest to that hospital, and make a detour to rescue this patient. For
+instance, if there is a patient in Zone 4 requiring assistance, we can locate the nearest
+hospital, which is at Zone 5, and let the nearest ambulance with patients nearby to
+drop them off at Zone 5, and go to assist the patient in Zone 4. Of course, if there are
+ambulances with no patients onboard, they may assist the patient in Zone 4, and drop
+him off at the closest hospital from the patient (which is at Zone 3). Throughout the
+process, we are using the nearest-neighbor method to determine who goes and where
+to go.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 31 / 50
+3.2.2 Strengths and Weaknesses (Nearest Neighbor Model)
+Strengths:
+1. The model was easy to calculate and gave us a “best route” with specific directions,
+therefore determining the suitable positions for the ambulances (and hospitals).
+2. The route is open, allowing entry and exit from any point, which is helpful when
+ambulances receive emergency calls while running the route.
+Weaknesses:
+1. The model is only an approximation of the optimal solution; to get the bMest answer
+still requires more complex methods. Consequently, in some situations the
+ambulances may not be running at maximum efficiency, taking moreC time than needed
+M
+3.3 The Split Cycle Model
+The nearest-neighbor approach attempts to find a quicki, universal path for all
+H
+three ambulances in the form of one closed loop. However, the Split-Cycle method
+finds 3 small routes, each traveling between ：2 of the 6 zones. The 3 routes are
+independent of one another, so the ease or difficulty of transportation in one zone will
+not hamper the rescue attempts of an unrelated cycle, whereas every zone affects the
+号
+time needed to complete a Hamiltonian cycle.
+Each of the 3 cycles operates between two zones, one of which hosts a hospital.
+众
+Ambulances leave their hospital to rescue patients in both zones. If the ambulances
+save patients from each of the two zones alternatively to save an equal number of
+patients in each, it w公ill move in a cycle. The amount of time it takes to complete one
+cycle is equal to double the amount of time taken to move within the hospital’s zone,
+plus the time needed to move back and forth between the two zones. For example, if a
+信
+hospital was established in zone 3, with the intent to rescue patients in both zone 2
+and 3, then under emergency situations an ambulance can rescue 2 patients in 27
+mi微nutes.
+Zone 2
+6 min
+18 min
+Zone 3
+3 min
+Whereas each ambulance in the Nearest-Neighbor path moves to a different
+hospital, the ambulances in this cycle return to their original hospital. As long as every
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 32 / 50
+pair of zones contains one hospital, the three cycles can work independently. However,
+no two cycles can both include the same zone, otherwise some zones will be
+excluded.
+To maximize the efficiency of the Split-Cycle method, the three cycles must have
+the smallest period. The above case is inefficient because of the slow transit time
+when traveling from zone 3 to 2.
+3.3.1 Solution
+We made a program that automated the calculation process between all 6 points,
+and output the length of one period in a table:
+M
+Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Zone 1 18 26 32 30 34
+Zone 2 18 26 34 34 C36
+Zone 3 27 27 19 19 11
+M
+Zone 4 32 34 18 22 26
+Zone 5 32 36 20 24 8
+Zone 6 36 38 12 28 i 8
+H
+Only results between differing zones are displayed, explaining the blank spots.
+When one pair of zones is chosen, all ot：her pairs that contain either of the two
+zones are no longer available. It is not possible to go around this limitation – choosing
+one point necessarily prevents choosing other points, and vice versa. The order also
+号
+does not matter, because unrelated pairs never eliminate one another. Thus the best
+method to pick the optimal pairs is to simply pick the smallest value available, and
+accept the fact that other favorable pairs may be eliminated. Selecting the pairs like
+众
+thus, the 3 pairs chosen are (5,6), (4,3), and (2,1). Their periods are 8, 18, and 18
+respectively. Note that (5,6) is identical to (6,5), and (2,1) is identical to (1,2). The
+first in the pair repr公esents the location of the hospital, and the second represents the
+other zone the hospital is responsible for. The table shows that the hospitals can be
+established on zones 1/2, zone 4, and zone 5/6.
+信
+In an emergency scenario, the 3 cycles work constantly and independently. The
+periods sync with one another every 72 minutes, where the 8 minute cycle completes
+9 t微imes and the 18 minute cycles complete 4 times each, a total of 17 cycles. Each
+cycle rescues 2 patients, so in the catastrophic scenario, 34 patients are rescued every
+72 minutes for an average of 2.118 minutes per patient.
+While the table shows that a hospital can be set in either zones 1 or 2, and in
+either zones 5 or 6, it is possible to find the better of the two. When more and more
+patients are rescued, eventually all the patients in one zone will be taken to hospitals
+and the zone is no longer in emergency. The number of patients is likely correlated to
+population, yet the Split-Cycle saves the same number of patients in all zones. There
+are two areas where this is significant:
+It is very possible that the ambulance in charge of the 8 minute cycle finishes its
+job before any of the other two. In this case, the idle ambulance can participate in one
+of the 18 minute cycles. It is possible for two instances of the cycle to run
+simultaneously, assuming that the local hospital in the cycle can cater to the doubled
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 33 / 50
+demand. Zone 4 is an attractive choice if the ambulance originates from zone 5, while
+zone 3 is equally attractive for ambulances from zone 6; both 4 pairs are minutes apart.
+But zone 4 is more populous than zone 3, so normally more patients are still awaiting
+rescue in the former. Thus the hospital in the 8 minute cycle should be built in zone 5.
+Similarly, in the zone 2 – zone 1 cycle, there should be more patients in zone 2.
+An ambulance in zone 2 can reach these patients in 1 minute, while a similar
+ambulance in zone 1 needs 8 minutes. Thus the hospital should be built in zone 2
+rather than zone 1
+Considering the table and the ease of assistance from zone 5, the three hospitals
+should be built in zones 2, 4 and 5, taking responsibility for their own zones as well as
+zones 1, 3, and 6 respectively. The ambulance operating in zone 5 should aMssist zone 4
+when possible. At highest capacity, a patient can be saved every 2.118 minutes.
+C
+3.3.2 Strength and Weaknesses
+M
+Strengths:
+1. The method uses the optimal 3 pairs, and considers eachi ambulance to be “assigned”
+H
+to 2 zones, without interdependence on other ambulances, thereby better utilizing the
+advantage of having 3 ambulances over 6 zo：nes.
+2. The plan is simple to execute, effective, and treats each zone equally. Moreover,
+号
+difficulties or delays in one cycle do not affect the other two, and when a cycle is
+prematurely complete, it is still capable of assisting the other cycles. Therefore, it is
+likely to be applied in real life.
+众
+Weaknesses:
+1. If one area is affe公cted more severely and requires more ambulances to help,
+ambulances may have difficulty reaching there. Thus there may be latency before a
+zone receives additional assistance. After assistance, there is another latent period
+信
+before the extra ambulances return to their stations, where they cannot respond to
+other patients.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 34 / 50
+3.4 General Conclusion and Summary
+I. Although the nearest-neighbor method requires less calculation and
+construction, it gives a less efficient result, on average requiring 2.72 minutes
+to save one person. In addition, all three ambulances are engaged in the same
+route but with different bases. This requires ambulances to maintain
+equilibrium with one another and to be as far from each other as possible in
+the loop, to ensure maximum efficiency and minimize the time required for
+patients to receive medical aid. Therefore, applying this method requires
+synchronization and coordination between ambulances.
+II. The split cycle method requires programming and extensive designM to derive
+an answer, but not only is it more efficient (average 2.12 minutes to save one
+person), it is also easier to follow. Ambulances are assigned tCwo zones
+each—one with a hospital, and one without. The ambulance then follows this
+M
+cycle: hospital-nearby patient-hospital-far patient. Thus, the 3 ambulances
+work separately and do not require coordination with each other. However, if
+one area has many patients waiting for an ambulancie, the two ambulances
+H
+require more time to respond and need to make major changes to their routes.
+Overall, it is an easier and more effec：tive way of putting ambulances into use.
+3.5 Real World Situation
+号
+4. (2) How do counties or cities design for those rare but catastrophic events?
+众
+According to National Response Framework (NRF), a catastrophic incident is
+defined as any natu公ral or manmade incident, including terrorism that results in
+extraordinary levels of mass casualties, damage or disruption severely affecting the
+population, infrastructure, environment, economy, national morale, and/or
+信
+government functions4. In general, the immediate response to a catastrophic event is
+on a local level, by the local government/state government. However, when the need
+of 微medical support exceeds the ability of local level and the local governments are
+unable to sustain a dependable structure of response system, federal assistance can
+augment medical supplies and can accelerate recuperation. In the case of the United
+States of America, FEMA (Federal Emergency Management Agency) plays the role in
+preparing for, preventing, and minimizing the effects of catastrophic incidents, which
+also makes contracts with other minor agencies to prevent, respond, and recover the
+situation as effectively as possible. For example, when Hurricane Dean hit the south
+of Texas in August of 2007, with limited medical supplies on the local level, the state
+officials of Texas requested Federal assistance with evacuation. Thus, the government
+4 Catastrophic Incident Annex. Department of Homeland Secuirty, Nov. 2008. Web. 10 Nov. 2013.
+<http://www.fema.gov/pdf/emergency/nrf/nrf_CatastrophicIncidentAnnex.pdf>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 35 / 50
+asked AMR (American Medical Response) to provide immediate help with more
+medical supply. AMR deployed 300 ground ambulances, aircraft and paratransit
+vehicles from 30 states5 to handle this catastrophic event and soon it was taken care
+of.
+Other than FEMA, there are still various agencies, which take care of
+different jobs that help, respond and support any catastrophic incident presented.
+Mass Care DHS/FEMA
+Mass Evacuation DHS/FEMA
+M
+Search and Rescue DHS/FEMA, DOD, U.S. Coast
+Guard, Department of the interior
+Decontamination DHS, EPA C
+Public Health and Medical HHS
+M
+Support:
+Medical Equipment and Supplies HHS
+i
+Patient Movement HHS, DOD
+H
+Mass Fatality HHS
+Housing ：DHS, HUD
+Public and Incident DHS
+Communications
+号
+Transportation DOT
+Private-Sector Support DHS
+Logistics 众 DHS
+CIKR Support DHS
+公
+DOD: Department of Defense
+DHS: Department of Homeland Security
+EPA: En信vironmental Protection Agency
+HHS: Department of Health and Human Services
+HUD: Department of Housing and Urban Development
+微
+DOT: Department of Transportation6
+FEMA also encourage precautious preparations by building on and expanding
+existing organizations and by creating stronger ones, which will contribute to a more
+stabilized emergency management community. To prevent catastrophic events, the
+5 "FEMA Federal Emergency Medical Services Contract." Overview of AMR. Federal Emergency Medical Services, 28 Oct.
+2013. Web. 10 Nov. 2013. <http://www.amr.net/Files/PDFs/DRT-Companies/AMR-FEMA-contract-overview.aspx>.
+6
+Catastrophic Incident Annex. Department of Homeland Secuirty, Nov. 2008. Web. 10 Nov. 2013.
+<http://www.fema.gov/pdf/emergency/nrf/nrf_CatastrophicIncidentAnnex.pdf>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 36 / 50
+government also fosters precautions, discourages manmade disasters, implements
+awareness through education/propagandas, and takes precautionary measures.
+Other actions regard network of communication. The government ensures
+efficient communication between different departments to avoid overlapping of
+resource allocation, which is also emphasized in our model.
+Another main system is called The National Preparedness System, which is
+responsible for organizing preparedness activities and programs. The desired end-state
+of the National Preparedness System is to achieve and sustain coordinated capabilities
+to prevent, protect against, respond to, and recover from all hazards in a wMay that
+balances risk with resources. 7
+C
+M
+i
+H
+：
+号
+众
+公
+Assessment and Reporting
+信 Involves assessments based on
+established readiness metrics and
+reporting on progress and
+微
+effectiveness of efforts.
+7 National Preparedness Guidelines. Home Land Security, Sept. 2007. Web. 10 Nov. 2013.
+<http://www.fema.gov/pdf/emergency/nrf/National_Preparedness_Guidelines.pdf>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 37 / 50
+4.0 Sensitivity Notes
+4.1 Sensitivity of the Boolean Model
+The Boolean Model has two extreme sensitivity values. It has an extremely high
+sensitivity when there is a change in average travelling time that crosses the threshold
+of 8 minutes. For example, if 3 ambulances are used and the average travelling time
+from zone 2 to zone 1 is changed from 8 minutes to 8.1 minutes, there suddenly will
+be 5 fewer solutions. However, if the change in travelling time does not cross the
+threshold, then this model will have zero sensitivity. For example, when 3 ambulances
+are used and the average travelling time between two certain zones changeMs from 10
+minutes to 100 minutes, the number of solutions remains the same. Therefore, we
+decided to forgo the sensitivity test, as the lack of sensitivity when nCot crossing the
+threshold and the infinitely high sensitivity when crossing it rendered all tests as
+M
+uninformative.
+i
+4.2 Sensitivity test of weighted averHage model
+There are two sets of variables that can b：e changed: transit time and population.
+Each variable has a different effect on the model, but overall it takes great and
+numerous changes to significantly hurt the results.
+号
+4.2.1 Transit time
+众
+We first made a large change on the transit time from zone 3 to 5, a random entry.
+Transit time from zone 3 to zone 5 changed from 6 (cid:198) 20
+公
+1 Ambulance:
+The best departure zone is 1; its weighted average time is 9.222222.
+2 Ambulances:
+信
+The best departure zones are 2 and 5; the combination's weighted average is
+3.666667.
+3 A微mbulances:
+The best departure zones are 1, 2 and 5; the combination's weighted average is
+2.370370.
+There was absolutely no change. This follows our expectations because the cell we
+edited corresponded to an ambulance departure zone that was already excluded from
+the solutions. The optimal solutions did not need ambulances departing from zone 3
+because zone 3 already performed more poorly than other zones. Making the
+performance of this cell any worse won’t change anything.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 38 / 50
+Then we changed the transit time between zone 1 and the relatively distant zone 4.
+Transit time from zone 1 to zone 4 changed from 14 (cid:198) 19
+1 Ambulance:
+The best departure zone is 2; its weighted average time is 9.370370.
+2 Ambulances:
+The best departure zones are 2 and 5; the combination's weighted average is
+3.666667.
+3 Ambulances:
+The best departure zones are 1, 2 and 5; the combination's weighted average is
+2.370370.
+M
+The optimal solution for 1 ambulance changed, but none of the others changed. We
+expected there to be little change, because in a system, only the most suited departure
+zones are used for each destination. However, in the 1 ambulance caCse there is no
+other departure zone that can make up for a slow transit time, so the program decided
+M
+to switch to departure from zone 2 instead. Because each zone can take the place of
+others, one would need to change the transit times for multiple cells in order to change
+the optimal solution by a large amount. i
+H
+Next we slightly decreased the time needed t：o move from zone 2 to 3
+Transit time from zone 2 to 3 changed from 6 (cid:198) 4.5
+1 Ambulance:
+号
+The best departure zone is 2; its weighted average time is 9.203704.
+2 Ambulances:
+The best departure zones 众are 2 and 5; the combination's weighted average is
+3.500000.
+3 Ambulances:
+公
+The best departure zones are 1, 2 and 5; the combination's weighted average is
+2.203704.
+The weighted average for all three fell. This decrease was enough to make zone 2
+信
+the most optimal departure location for one ambulance. This is because zone 2’s
+relatively short transit time to reach zone 3 is better than the same value for most
+oth微er ambulances, causing the weighted average to be sensitive to this value. We call
+this value an important value.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 39 / 50
+4.2.2 Population
+We brought the population of zone 3 very high to see how it would become very
+significant to the solutions sets and change the average time results
+Population of zone 3 changed from 30000 (cid:198) 300000
+1 Ambulance:
+The best departure zone is 3; its weighted average time is 6.370370.
+2 Ambulances:
+The best departure zones are 2 and 3; the combination's weighted average is
+3.481481.
+M
+3 Ambulances:
+The best departure zones are 2, 3 and 5; the combination's weighted average is
+2.333333. C
+Now the weighted average of all three solutions has fallen, and each solution includes
+M
+zone 3. This is because much of the population now lives in zone 3. Many
+emergencies occur there, thus more ambulances pick up patients there. It would be
+most beneficial to travel within zone 3 to pick up these patiients, which takes 1.5
+H
+minutes. Thus these solutions all include zone 3, and the average times will fall until
+it reaches 1.5 minutes at the extreme case wi：th every emergency occurring in zone 3.
+Obviously, if one zone has a high population, then it will be important. However, we
+号
+increased the population of zone 3 to match zone 2 in order to see how the two
+compare when their population is the same.
+Population of zone 3 chan众ged from 30000 (cid:198) 80000
+1 Ambulance:
+The best departure zone is 2; its weighted average time is 8.843750.
+公
+2 Ambulances:
+The best departure zones are 2 and 5; the combination's weighted average is
+4.031250.
+信
+3 Ambulances:
+The best departure zones are 2, 3 and 5; the combination's weighted average is
+2.9微06250.
+Despite their equality in population, zone 2 still seems to have greater importance in
+the solution set. No overall trend occurs in the average times because the values
+change for different reasons. Since zone 3 is more important now, the comparatively
+small distance from zone 2 to zone 3 starts to become visible in the 1 ambulance
+solution. However, zone 3 remains harder to reach than other zones, so in a
+combination of ambulances, the increased importance of zone 3 hurts the averages.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 40 / 50
+We know that zone 1 plays an important role in the optimal solution. We made the
+population of zone 1 equal to zone 3 to see what role population plays in this fact.
+Population of zone 1 changed from 50000 (cid:198) 30000
+1 Ambulance:
+The best departure zone is 2; its weighted average time is 9.480000.
+2 Ambulances:
+The best departure zones are 2 and 5; the combination's weighted average is
+3.320000.
+3 Ambulances:
+The best departure zones are 2, 4 and 5; the combination's weighted average is
+M
+2.420000.
+Zone 3 is an average-sized zone, and when zone 1’s population is reduced to zone 3’s
+population, suddenly no solutions used it. Instead they preferred zonCe 4 because it is
+the next best choice after zones 2, 5, and the former zone 1. The changes in the
+M
+optimal times shift a bit due to differences between solution sets, but again there is no
+overall increase or decrease.
+i
+H
+4.3 Overall remarks
+：
+The three tests on transit times show that this model’s sensitivity to transit time
+depends more heavily on the importance of the changes and availability of close
+号
+alternatives, rather than the magnitude of the change. In the first test, we increased the
+transit time of a cell by a large amount, and found no change in the solution. In the
+third test, a small decrease to one cell decreased all weighted average values.
+众
+In general, when a transit time value loses its importance in minimizing the
+shortest route, any further changes to it will no longer affect the optimal solution. The
+threshold beyond w公hich a different solution becomes more viable depends on the
+similarity between rivaling routes – if close alternatives are available, the model is
+more sensitive to the change. These two factors determine the model’s sensitivity to
+信
+transit time, but changing one value can only change the results so much.
+To analyze the role of population, we considered these three factors that
+con微tribute to the importance of a zone in minimizing weighted average:
+1. The average proximity of the zone to other zones
+2. The population of the zone itself
+3. The populations of the zone’s closest and furthest neighbors
+We can use a table of average transit time from each zone to all others to quantify
+the geographical proximity score for each zone.
+Average Time/Zone Average time to reach other zones (mins)
+Zone 1 10.16666667
+Zone 2 10.83333333
+Zone 3 8.916666667
+Zone 4 10.5
+Zone 5 8.666666667
+Zone 6 9
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 41 / 50
+The sensitivity of the model to population is determined by the complicated
+interaction between these three factors. A change in population may cause multiple
+factors to constructively or destructively influence the solution. We can explain the
+interactions within the 3 population sensitivity tests, and how they determine the
+sensitivity of the weighted average model.
+In the first test, all optimal solutions times fall and tend to 1.5 as population rises.
+Yet in the second test the average times for multiple ambulances rise, and the times
+for 1 ambulance falls. Both are effects of the second factor. When zone 3 becomes
+more important, solutions that include zone 3 become more favorable due to the short
+transit time for travel within zone 3. Solutions that exclude zone 3 could become
+either more or less favorable. Either way, as population increases, solutionMs including
+zone 3 will eventually catch up and become most optimal. The model’s sensitivity to
+zone 3’s population increases abruptly once this point is reached, andC can even change
+sign from a positive to a negative correlation.
+M
+In the second test, zone 3 remained inferior to zone 2 even though the two have
+the same population. And ignoring population, zone 3 is more closely linked to all
+other zones than zone 2. This discrepancy can be explainedi by the third factor – zone
+H
+3’s closest neighbors all have low population, whereas the remaining zones are distant
+and populous. Thus the model has less sensit：ivity to population in this situation.
+The third test shows that the model is very sensitive to a decrease in zone 1’s
+population. This is an effect constructively caused by all three factors. First, the
+号
+relative isolation of zone 1 makes it a bad candidate when its population is made
+average-sized. Second, the reduced population reduces the need for hospitals to be
+built in zone 1. Lastly, the reduced population weakens its negative impact on the
+众
+zones that cannot easily reach zone 1 as well as its positive impact on those that can.
+The results of the latter two tests show average times similar to the solution to the
+original problem. A公s the table above shows, the zones in general have similar
+geographical proximity scores, on the order of 9 to 11, so population distributions
+similar to the current distribution should not differ too much in optimal average times.
+信
+Only the large change in test one made a marked difference.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 42 / 50
+5.0 Memo to ESC
+Dear ESC,
+We are high school students who are sincerely concerned about maximizing
+the number of residents who can be covered within 8 minutes of an emergency call in
+the country. We understand that there are limited number of ambulances and a great
+population to be covered. Therefore, we analyzed the given statistics with different
+models to produce a desirable solution to each situation.
+M
+When there are 3 ambulances available, we produced the following results
+with two different models. First, considering how to maximize the pCopulation covered,
+our first model produced 11 different combinations that can cover everyone within 8
+M
+minutes of an emergency call. Since they can all cover the total population, we then
+continued to consider the combinations with higher efficiency and shorter transit time
+because they lead to a higher chance of survival for the patiients. Through the use of
+H
+the improved model, out of the 11 solutions, we found out that the combination of
+zone 1, zone 2 and zone 5, has the highest ef：ficiency. Therefore, we recommend you
+to put the location of your ambulances in zone 1, zone 2, and zone 5.
+号
+For the situation of having only 2 ambulances, we discovered that there is only
+one possible solution to cover all six population zones within eight minutes of an
+emergency call. The two different models produced the same result, a combination of
+众
+zone 2 and zone 5, which confirms that this solution is the only solution and the
+optimal solution. Therefore, we recommend the bases to be in zone 2 and zone 5
+when there are only公 two ambulances available.
+For the situation of having only 1 ambulance, no matter what zone the ambulance
+信
+is placed, it is impossible to cover all the population. In this case, the only ambulance
+should be placed at zone 2, since it covers the most population compared to others.
+Th微e population that can be covered is 160,000, and the population left uncovered is
+110,000. Although according to the other model it does not have the highest
+efficiency, we are more concerned of covering the maximum population, since this is
+the primary goal of ESC.
+As for a catastrophic event, although it is rare, it is necessary to consider how to
+prepare for such events, because such events have higher potential of chaos and
+massive damages. We understand your difficulty of preparing for a catastrophic event
+because one has to cope with the problem when there are many calls from different
+population zones simultaneously. Thus, for a thorough and precautionary back-up, we
+have considered such situations and designed two models for you to consider. First,
+our first model designed a path that crosses all six zones. We concluded that the
+ambulances should be stationed in zones 1, 3, and 5, and they should all take the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 43 / 50
+common route in emergency. However, with an improved model, we designed 3 small
+routes that are independent of each other. With these routes, the most optimal
+locations to station ambulances would be zones 2, 4, and 5. Ambulances there should
+respond to calls from their own zone as well as from zones 1, 3, and 6 respectively.
+Considering efficiency (average time required to save a person), we highly
+recommend you to follow the results of the second model and arrange the ambulances
+in zones 2, 4, and 5.
+At last, we highly recommend you to make sure there are always at least 2
+ambulances available in order to cover the whole population. We hope that you can
+take our recommendations seriously. And we ensure you that our recommMended
+solutions and arrangements will allow you to not only maximize the people covered,
+but also reach the highest efficiency at the same time. C
+M
+i Thank you
+H
+： Sincerely,
+Team #4185
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 44 / 50
+6.0 Appendix
+6.1 Bibliography
+1. "Emergency Medical Service Systems." World Health Organization, 2008.
+Web. 10 Nov. 2013.
+<https://ec.europa.eu/digital-agenda/sites/digital-agenda/files/WHO.pdf>.
+2. NCBI. Emergency medical services response time and mortality in an urban
+setting. Nation Institutes of Health, 25 Oct. 2011. Web. 10 Nov. 2013.
+<http://www.ncbi.nlm.nih.gov/pubmed/22026820>. M
+3. Catastrophic Incident Annex. Department of Homeland SecuiCrty, Nov. 2008.
+Web. 10 Nov. 2013.
+M
+<http://www.fema.gov/pdf/emergency/nrf/nrf_CatastrophicIncidentAnnex.pdf>.
+4. "FEMA Federal Emergency Medical Services Contriact." Overview of AMR.
+H
+Federal Emergency Medical Services, 28 Oct. 2013. Web. 10 Nov. 2013.
+<http://www.amr.net/Files/PDFs/DRT-Comp：anies/AMR-FEMA-contract-overview.as
+px>.
+号
+5. National Preparedness Guidelines. Home Land Security, Sept. 2007. Web. 10
+Nov. 2013.
+<http://www.fema.gov/pdf/emergency/nrf/National_Preparedness_Guidelines.pdf>.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 45 / 50
+
+6.2 Java
+This program is the brute force program used to confirm the results of the
+Boolean Method. It gives one optimal solution for 3 ambulances and finds the
+number of solutions for 1, 2 or 3 ambulances.
+public class BooleanSum {
+  public static final double oo = Double.POSITIVE_INFINITY;
+M
+  public static final double[][] TRANSIT_TIMES = {{1,8,12,14,10,16},
+|     |        |       |       |     {8,1,6,18,16,16},     |
+| --- | ------ | ----- | ----- | ------------------------- |
+|     |        |       |       |     {12,18,1.5C,12,6,4},  |
+|     |        |       |       |     {16,14,4,1,16,12},    |
+M
+|     |        |       |       |     {18,16,10,4,2,2},       |
+| --- | ------ | ----- | ----- | --------------------------- |
+|     |        |       |       |     {16,18,4,12,2,2},       |
+|     |        |       |       |     {oio,oo,oo,oo,oo,oo}};  |
+H
+  public static final int[] POPULATION =
+{50000,80000,30000,55000,35000,20000}; ：
+
+  public static void main(String[] args) {
+号
+    int min[] = {0,0,0,numUncovered(0,0,0)}; //Location A, Location B,
+Location C, uncovered population
+|     | int solutions3 = 0;  | 众   |     |     |
+| --- | -------------------- | --- | --- | --- |
+    int solutions2 = 0;
+    int solutions1 = 0;
+for (int i公 = 0; i < 6; i++) {
+
+|     |   for (int j = i+1; j < 6; j++) {    |     |     |     |
+| --- | ------------------------------------ | --- | --- | --- |
+|     |     for (int k = j+1; k < 6; k++) {  |     |     |     |
+信
+|      |                                      | if (numUncovered(i,j,k) < min[3]) {  |     |     |
+| ---- | ------------------------------------ | ------------------------------------ | --- | --- |
+|      |                                      |   min[0]=i;                          |     |     |
+|   微  |                                      |   min[1]=j;                          |     |     |
+|      |                                      |   min[2]=k;                          |     |     |
+|      |                                      |   min[3]=numUncovered(i,j,k);        |     |     |
+|      |                                      | }                                    |     |     |
+|      |                                      | if (numUncovered(i,j,k) == 0) {      |     |     |
+|      |                                      |   solutions3+=1;                     |     |     |
+|      |                                      | }                                    |     |     |
+|      |     }                                |                                      |     |     |
+|      |     if (numUncovered(i,j,6) == 0) {  |                                      |     |     |
+|      |                                      | solutions2+=1;                       |     |     |
+|      |     }                                |                                      |     |     |
+|      |   }                                  |                                      |     |     |
+|      |   if (numUncovered(i,6,6) == 0) {    |                                      |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 46 / 50
+
+|     |     solutions1+=1;  |     |
+| --- | ------------------- | --- |
+|     |   }                 |     |
+    }
+    System.out.println("           Zone 1     Zone 2     Zone 3     Zone 4
+Zone 5     Zone 6");
+    System.out.printf("Uncovered: ");
+    for (int i = 0; i < 6; i++) {
+|     |   double d = Math.min(TRANSIT_TIMES[min[0]][i],  |     |
+| --- | ------------------------------------------------ | --- |
+Math.min(TRANSIT_TIMES[min[1]][i],TRANSIT_TIMES[min[2]][i]));
+|     |   if (d > 8) {  |     |
+| --- | --------------- | --- |
+M
+|     |     System.out.printf("%‐6d",POPULATION[i]);  |     |
+| --- | --------------------------------------------- | --- |
+|     |   }                                           |     |
+|     |   else {                                      | C   |
+|     |     System.out.print("0     ");               |     |
+M
+|     |   }                                 |     |
+| --- | ----------------------------------- | --- |
+|     |   System.out.printf("(%.0fm) ",d);  |     |
+    }  i
+H
+    System.out.printf("\n\nChose %d, %d and %d. Total uncovered = %d.
+\nTotal number of solutions with 3 ambula：nces = %d, with 2 ambulances = %d, with
+1 ambulance = %d", min[0]+1, min[1]+1, min[2]+1, min[3], solutions3, solutions2,
+solutions1);
+号
+  }
+
+  public static int numUncovered(int A, int B, int C) {  众
+    int sum = 0;
+    for (int i = 0; i < 6; i++) {
+double公 d = Math.min(TRANSIT_TIMES[A][i],
+
+Math.min(TRANSIT_TIMES[B][i],TRANSIT_TIMES[C][i]));
+|     |   if (d > 8) {  |     |
+| --- | --------------- | --- |
+信
+|     |     sum += POPULATION[i];  |     |
+| --- | -------------------------- | --- |
+|     |   }                        |     |
+  微  }
+    return sum;
+  }
+
+}
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 47 / 50
+
+This program is used in the weighted average model. It calculates the C table
+and tests all combinations of 1, 2 or 3 ambulances for the lowest weighted
+average.
+
+public class Checker {
+  public static final double[][] TRANSIT_TIMES = {{1,8,12,14,10,16},
+|     |       |       |       |      {8,1,6,18,16,16},  |
+| --- | ----- | ----- | ----- | ----------------------- |
+M
+|     |       |       |       |      {12,18,1.5,12,6,4},  |
+| --- | ----- | ----- | ----- | ------------------------- |
+|     |       |       |       |      {16,14,4,1,16,12},   |
+|     |       |       |       |      {18,16,10C,4,2,2},   |
+|     |       |       |       |      {16,18,4,12,2,2}};   |
+M
+  public static final double[] POPULATION =
+{50000,80000,30000,55000,35000,20000};
+|   public static int TotalPopulation = 0;  |     |     |     | i   |
+| ----------------------------------------- | --- | --- | --- | --- |
+H
+  public static double[][] CTable = new double[6][6];
+|     |     |     | ：   |     |
+| --- | --- | --- | --- | --- |
+  public static void main(String[] args) {
+    GenerateContributionsTable();
+号
+
+    //Check the best combination for one
+|     | int minOne = 0;  | 众   |     |     |
+| --- | ---------------- | --- | --- | --- |
+    for (int i = 0; i < 6; i++) {
+|     |   if (wAvgOfOne(i) < wAvgOfOne(minOne)) {  |     |     |     |
+| --- | ------------------------------------------ | --- | --- | --- |
+mi公nOne = i;
+|     |      |     |     |     |
+| --- | ---- | --- | --- | --- |
+|     |   }  |     |     |     |
+    }
+信
+
+    //Check the best combination for two
+  微  int[] minTwo = new int[2];
+    for (int i = 0; i < 6; i++) {
+|     |   for (int j = 0; j < 6; j++) {  |     |     |     |
+| --- | -------------------------------- | --- | --- | --- |
+        if (wAvgOfTwo(i,j) < wAvgOfTwo(minTwo[0],minTwo[1])) {
+|     |        | minTwo[0]=i;  |     |     |
+| --- | ------ | ------------- | --- | --- |
+|     |        | minTwo[1]=j;  |     |     |
+|     |     }  |               |     |     |
+|     |   }    |               |     |     |
+    }
+
+    //Check the best combination for three
+    int[] minThree = new int[3];
+    for (int i = 0; i < 6; i++) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 48 / 50
+
+|     |   for (int j = 0; j < 6; j++) {    |                           |
+| --- | ---------------------------------- | ------------------------- |
+|     |     for (int k = 0; k < 6; k++) {  |                           |
+|     |                                    | if (wAvgOfThree(i,j,k) <  |
+wAvgOfThree(minThree[0],minThree[1],minThree[2])) {
+|     |        |   minThree[0]=i;  |
+| --- | ------ | ----------------- |
+|     |        |   minThree[1]=j;  |
+|     |        |   minThree[2]=k;  |
+|     |        | }                 |
+|     |     }  |                   |
+|     |   }    |                   |
+M
+    }
+
+    System.out.printf("1 Ambulance:\n"  C
+            + "The best departure zone is %d; its weighted average
+M
+time is %f.\n"
+|     |       |   + "2 Ambulances:\n"                              |
+| --- | ----- | -------------------------------------------------- |
+|     |       |   + "The best departure zones aire %d and %d; the  |
+H
+combination's weighted average is %f.\n"
+|     |       |   + "3 Ambulances:：\n"  |
+| --- | ----- | ----------------------- |
+            + "The best departure zones are %d, %d and %d; the
+combination's weighted average is %f.\n",
+号
+|                                  |       |   minOne+1,wAvgOfOne(minOne),                 |
+| -------------------------------- | ----- | --------------------------------------------- |
+|                                  |       |   minTwo[0]+1, minTwo[1]+1,                   |
+| wAvgOfTwo(minTwo[0],minTwo[1]),  |       | 众                                             |
+|                                  |       |   minThree[0]+1,minThree[1]+1,minThree[2]+1,  |
+wAvgOfThree(minThree[0],minThree[1],minThree[2]));
+公
+  }
+
+  public static void GenerateContributionsTable() {
+信
+    for (int i = 0; i < 6; i++) {
+|     |   TotalPopulation += POPULATION[i];  |     |
+| --- | ------------------------------------ | --- |
+  微  }
+    for (int i = 0; i < 6; i++) {
+|     |   for (int j = 0; j < 6; j++) {  |     |
+| --- | -------------------------------- | --- |
+
+  CTable[i][j]=TRANSIT_TIMES[i][j]*POPULATION[j]/TotalPopulation;
+|     |   }  |     |
+| --- | ---- | --- |
+    }
+  }
+
+  public static double wAvgOfThree(int A, int B, int C) {
+    double wAvg = 0;
+    for (int i = 0; i < 6; i++) {
+      wAvg += Math.min(Math.min(CTable[A][i], CTable[B][i]),
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 49 / 50
+CTable[C][i]);
+}
+return wAvg;
+}
+public static double wAvgOfTwo(int A, int B) {
+double wAvg = 0;
+for (int i = 0; i < 6; i++) {
+wAvg += Math.min(CTable[A][i], CTable[B][i]);
+}
+M
+return wAvg;
+}
+C
+public static double wAvgOfOne(int A) {
+M
+double wAvg = 0;
+for (int i = 0; i < 6; i++) {
+wAvg += CTable[A][i]; i
+H
+}
+return wAvg; ：
+}
+}
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4185 50 / 50
+
+This program is used to quickly generate the cycle periods between 2 zones in the
+split-cycle model.
+public class OptimalHospital{
+  public static final double[][] TRANSIT_TIMES = {{1,8,12,14,10,16},
+|     |        |       |       |     {8,1,6,18,16,16},    |
+| --- | ------ | ----- | ----- | ------------------------ |
+|     |        |       |       |     {12,18,1.5,12,6,4},  |
+|     |        |       |       |     {16,14,4,1,16,12},   |
+|     |        |       |       |     {18,16,10,4,2,2},    |
+M
+|     |        |       |       |     {16,18,4,12,2,2}};  |
+| --- | ------ | ----- | ----- | ----------------------- |
+  public static void main(String[] args) {
+    System.out.println("         Zone 1  Zone 2  Zone 3  ZCone 4  Zone 5
+Zone 6");
+M
+    for (int i = 0; i < 6; i++) {
+|     |   System.out.print("Zone "+ (i+1) + "  ");  |     |     |     |
+| --- | ------------------------------------------- | --- | --- | --- |
+|     |   for (int j = 0; j < 6; j++) {             |     |     | i   |
+H
+|     |     if (i != j) {  |                                                  |     |     |
+| --- | ------------------ | ------------------------------------------------ | --- | --- |
+|     |                    | System.out.printf("%：8.0f",emergencyTime(i,j));  |     |     |
+|     |     }              |                                                  |     |     |
+|     |     else {         |                                                  |     |     |
+号
+|     |                          | System.out.print("        ");  |     |     |
+| --- | ------------------------ | ------------------------------ | --- | --- |
+|     |     }                    |                                |     |     |
+|     |   }                      | 众                              |     |     |
+|     |   System.out.println();  |                                |     |     |
+    }
+公
+  }
+
+  public static double emergencyTime(int a, int b) {
+信
+    double intraA = TRANSIT_TIMES[a][a];
+    double betweenAB = TRANSIT_TIMES[a][b];
+  微  double betweenBA = TRANSIT_TIMES[b][a];
+    return 2*intraA + betweenAB + betweenBA; //circuit length
+  }
+}
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

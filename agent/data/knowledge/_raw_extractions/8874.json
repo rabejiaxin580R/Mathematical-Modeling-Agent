@@ -1,0 +1,143 @@
+{
+  "paper_id": "8874",
+  "meta": {
+    "paper_id": "8874",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2018,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2018\\A\\8874.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "eval.entropy",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用熵权法计算各评价指标的客观权重，基于数据变异程度确定权重。",
+      "formulas": [
+        {
+          "latex_code": "e_j = -\\frac{1}{\\ln n} \\sum_{i=1}^n p_{ij} \\ln p_{ij}",
+          "variables": {
+            "e_j": "第j个指标的熵值",
+            "n": "评价对象个数",
+            "p_{ij}": "第i个对象在第j个指标上的比重"
+          }
+        },
+        {
+          "latex_code": "w_j = \\frac{1 - e_j}{\\sum_{k=1}^m (1 - e_k)}",
+          "variables": {
+            "w_j": "第j个指标的熵权",
+            "m": "指标个数"
+          }
+        }
+      ],
+      "source_excerpt": "The other set of weighing values were calculated through entropy weight analysis."
+    },
+    {
+      "concept_id": "eval.fuzzy",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "采用对数模糊偏好规划（LFPP）方法，基于用户调查数据计算主观权重，实现主观与客观权重的结合。",
+      "formulas": [
+        {
+          "latex_code": "\\min J = \\sum_{i=1}^{n-1} \\sum_{j=i+1}^n (\\delta_{ij}^2 + \\eta_{ij}^2) \\\\ \\text{s.t.} \\\\ \\ln w_i - \\ln w_j - \\lambda \\ln (l_{ij}/u_{ij}) + \\delta_{ij} \\ge \\ln l_{ij}, \\\\ -\\ln w_i + \\ln w_j - \\lambda \\ln (l_{ij}/u_{ij}) + \\eta_{ij} \\ge -\\ln u_{ij}, \\\\ \\delta_{ij}, \\eta_{ij} \\ge 0, \\\\ \\sum_{i=1}^n w_i = 1, \\\\ w_i > 0",
+          "variables": {
+            "w_i": "第i个因素的权重",
+            "l_{ij}": "模糊判断矩阵中第i行第j列的下界",
+            "u_{ij}": "模糊判断矩阵中第i行第j列的上界",
+            "\\lambda": "参数",
+            "\\delta_{ij}, \\eta_{ij}": "松弛变量"
+          }
+        }
+      ],
+      "source_excerpt": "two concepts, entropy weight and a logarithmic fuzzy preference programming methodology"
+    },
+    {
+      "concept_id": "eval.combweight",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将熵权法得到的客观权重与LFPP得到的主观权重进行组合，形成最终的综合权重。",
+      "formulas": [
+        {
+          "latex_code": "w_j = \\alpha w_j^{sub} + (1-\\alpha) w_j^{obj}",
+          "variables": {
+            "w_j": "第j个指标的综合权重",
+            "w_j^{sub}": "主观权重",
+            "w_j^{obj}": "客观权重",
+            "\\alpha": "组合系数（0≤α≤1）"
+          }
+        }
+      ],
+      "source_excerpt": "all these weighing values were combined together to form the final weighing value of each factor."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "采用加权求和法计算每个过山车的综合评分，将各指标得分乘以对应权重后求和。",
+      "formulas": [
+        {
+          "latex_code": "S_i = \\sum_{j=1}^m w_j x_{ij}",
+          "variables": {
+            "S_i": "第i个过山车的综合评分",
+            "w_j": "第j个指标的权重",
+            "x_{ij}": "第i个过山车在第j个指标上的标准化得分"
+          }
+        }
+      ],
+      "source_excerpt": "the final comprehensive evaluation system"
+    },
+    {
+      "concept_id": "prep.normalize",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "对原始数据进行归一化处理，消除量纲影响，采用极差归一化方法。",
+      "formulas": [
+        {
+          "latex_code": "x_{ij}' = \\frac{x_{ij} - \\min(x_j)}{\\max(x_j) - \\min(x_j)}",
+          "variables": {
+            "x_{ij}": "原始数据",
+            "x_{ij}'": "归一化后的数据",
+            "\\min(x_j)": "第j个指标的最小值",
+            "\\max(x_j)": "第j个指标的最大值"
+          }
+        }
+      ],
+      "source_excerpt": "when normalizing the data of roller coasters, the upper and lower limits were set floor for all kinds of values"
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过改变组合系数α的值，观察排名结果的变化，分析模型对权重组合的敏感性。",
+      "formulas": [],
+      "source_excerpt": "sensitive analysis"
+    },
+    {
+      "concept_id": "corr.spearman",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "使用Kendall tau距离（秩相关系数）比较模型排名与现有权威排名的一致性。",
+      "formulas": [
+        {
+          "latex_code": "\\tau = \\frac{2}{n(n-1)} \\sum_{i<j} \\text{sgn}(r_i - r_j) \\text{sgn}(s_i - s_j)",
+          "variables": {
+            "\\tau": "Kendall tau相关系数",
+            "n": "排名对象个数",
+            "r_i, s_i": "两个排名中第i个对象的秩次"
+          }
+        }
+      ],
+      "source_excerpt": "Kendall tau distance model"
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "明确列出三条模型假设，包括数据准确性、排除儿童过山车、在线排名不变，并给出解释。",
+      "formulas": [],
+      "source_excerpt": "Assumption (1): All the data in the chart is correct and didn’t change for couple years. ... Assumption (2): There is no children / family roller coaster in the data we already have. ... Assumption (3): The evaluation system of the online ranking list will not change in two years"
+    }
+  ]
+}

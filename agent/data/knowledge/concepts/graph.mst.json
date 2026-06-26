@@ -1,0 +1,69 @@
+{
+  "schema_version": 3,
+  "concept_id": "graph.mst",
+  "title": "最小生成树（Prim、Kruskal）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "图论与网络模型",
+    "最小生成树（Prim、Kruskal）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.4",
+  "aliases": [
+    "最小生成树",
+    "MST",
+    "Prim",
+    "Kruskal"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "最小生成树帮你在一个网络中，用最短的总长度（或最低总成本）把所有节点连接起来，就像用最少的电线给所有房子通电。",
+    "intuition": "想象你要在几个村庄之间铺设水管，让所有村庄都能通水，且总水管长度最短。你从任意一个村庄开始，每次选择离已通水村庄最近的那个未通水村庄，连接它（Prim算法）；或者把所有可能的水管长度从小到大排序，依次选择，只要不形成环路就选，直到所有村庄都连通（Kruskal算法）。两种方法都能得到最短总长度的水管网络。",
+    "when_to_use": "当问题需要连接所有节点（如城市、基站、传感器），且连接成本与距离或权重相关，目标是总成本最小时，就该想到最小生成树。常见场景：通信网络布线、交通路线规划、管道铺设、聚类分析中的最小生成树聚类。",
+    "definition": "给定一个连通加权无向图 G=(V,E)，其中 V 是顶点集，E 是边集，每条边 e 有非负权重 w(e)。最小生成树（MST）是 G 的一个子图 T，满足：T 是一棵树（连通且无环），包含所有顶点，且所有边的权重之和 ∑_{e∈T} w(e) 最小。",
+    "math_principle": "最小生成树基于贪心策略，核心是割性质和环性质。\n- **割性质**：对于任意将顶点集分成两部分的割 (S, V\\S)，权重最小的跨越该割的边一定属于某个 MST。\n- **环性质**：对于任意环，环中权重最大的边一定不属于任何 MST。\n\n**Prim算法**：从任意顶点开始，维护已选顶点集 S，每次选择连接 S 与 V\\S 的最小权重边，将对应顶点加入 S，重复直到 S=V。时间复杂度 O(m log n)（使用优先队列）。\n\n**Kruskal算法**：将所有边按权重升序排序，初始化每个顶点为一个连通分量。依次检查每条边，若边的两个端点属于不同连通分量，则加入该边并合并分量，直到加入 n-1 条边。时间复杂度 O(m log m)（排序）。",
+    "step_by_step": [
+      "**Prim算法步骤**：\n1. 选择任意顶点作为起始点，标记为已访问。\n2. 维护一个优先队列，存储所有连接已访问顶点集与未访问顶点集的边，按权重排序。\n3. 每次从队列中取出最小权重的边，若其未访问端点未被访问，则将该边加入MST，标记该端点为已访问，并将该端点的所有出边加入队列。\n4. 重复步骤3，直到所有顶点都被访问。",
+      "**Kruskal算法步骤**：\n1. 将图中所有边按权重从小到大排序。\n2. 初始化一个并查集，每个顶点自成一个集合。\n3. 依次遍历排序后的边：若边的两个端点属于不同集合，则将该边加入MST，并合并两个集合。\n4. 重复步骤3，直到MST中包含 n-1 条边。"
+    ],
+    "worked_example": "假设有4个村庄A、B、C、D，距离（权重）如下：AB=1, AC=3, AD=4, BC=2, BD=5, CD=6。求最小生成树。\n\n**Prim算法（从A开始）**：\n- 初始S={A}，边：AB(1), AC(3), AD(4)。最小边AB(1)，加入B，S={A,B}。\n- 新边：BC(2), BD(5)。当前边集：AC(3), AD(4), BC(2), BD(5)。最小边BC(2)，加入C，S={A,B,C}。\n- 新边：CD(6)。当前边集：AD(4), BD(5), CD(6)。最小边AD(4)，加入D，S={A,B,C,D}。\n- MST边：AB(1), BC(2), AD(4)，总权重=7。\n\n**Kruskal算法**：\n- 排序边：AB(1), BC(2), AC(3), AD(4), BD(5), CD(6)。\n- 初始化：{A},{B},{C},{D}。\n- AB(1)：A和B不同集合，加入，合并{A,B}。\n- BC(2)：B和C不同集合，加入，合并{A,B,C}。\n- AC(3)：A和C同集合，跳过。\n- AD(4)：A和D不同集合，加入，合并{A,B,C,D}。\n- 已有3条边（n-1=3），停止。MST边：AB(1), BC(2), AD(4)，总权重=7。",
+    "pitfalls": [
+      "图必须连通：若图不连通，MST不存在，算法会得到森林（最小生成森林）。",
+      "权重必须非负：若存在负权边，MST定义仍有效，但Prim和Kruskal仍适用（贪心性质依然成立）。",
+      "边数过多时Kruskal排序可能慢：对于稠密图，Prim（用堆）更优；对于稀疏图，Kruskal更优。",
+      "注意环检测：Kruskal中需高效判断是否形成环，常用并查集实现。"
+    ],
+    "tools": "Python 中可使用 NetworkX 库的 minimum_spanning_tree 函数，或手动实现 Prim/Kruskal。\n\n```python\nimport networkx as nx\n\n# 创建图\nG = nx.Graph()\nG.add_weighted_edges_from([('A','B',1), ('A','C',3), ('A','D',4),\n                           ('B','C',2), ('B','D',5), ('C','D',6)])\n\n# 计算最小生成树（默认Prim算法）\nmst = nx.minimum_spanning_tree(G)\nprint(mst.edges(data=True))  # 输出边及权重\n```\n\n手动实现Kruskal（并查集）：\n```python\nclass UnionFind:\n    def __init__(self, n):\n        self.parent = list(range(n))\n        self.rank = [0]*n\n    def find(self, x):\n        if self.parent[x] != x:\n            self.parent[x] = self.find(self.parent[x])\n        return self.parent[x]\n    def union(self, x, y):\n        rx, ry = self.find(x), self.find(y)\n        if rx == ry: return False\n        if self.rank[rx] < self.rank[ry]:\n            self.parent[rx] = ry\n        elif self.rank[rx] > self.rank[ry]:\n            self.parent[ry] = rx\n        else:\n            self.parent[ry] = rx\n            self.rank[rx] += 1\n        return True\n\ndef kruskal(edges, n):\n    edges.sort(key=lambda x: x[2])\n    uf = UnionFind(n)\n    mst = []\n    for u,v,w in edges:\n        if uf.union(u,v):\n            mst.append((u,v,w))\n            if len(mst) == n-1:\n                break\n    return mst\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\text{MST} = \\arg\\min_{T \\subseteq E} \\sum_{e \\in T} w(e) \\quad \\text{s.t. } T \\text{ 是树且覆盖所有顶点}",
+      "variables": {
+        "T": "选中的边集",
+        "E": "所有边的集合",
+        "w(e)": "边 e 的权重",
+        "V": "顶点集"
+      }
+    }
+  ],
+  "cases": [
+    "2239",
+    "3192",
+    "4155"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_C15"
+    ],
+    "from_papers": [
+      "2239",
+      "3192",
+      "4155"
+    ]
+  }
+}

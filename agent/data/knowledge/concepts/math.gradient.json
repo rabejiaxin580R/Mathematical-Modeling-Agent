@@ -1,0 +1,72 @@
+{
+  "schema_version": 3,
+  "concept_id": "math.gradient",
+  "title": "梯度与方向导数",
+  "taxonomy_path": [
+    "数学基础",
+    "数学工具与基础",
+    "梯度与方向导数"
+  ],
+  "module_id": "J",
+  "subcat_id": "J.1",
+  "aliases": [
+    "梯度",
+    "方向导数",
+    "多元函数优化"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "梯度告诉你，在山上哪个方向最陡，方向导数告诉你沿某个方向走有多陡。",
+    "intuition": "想象你站在一座山上，梯度就是指向最陡上坡方向的箭头，它的长度表示有多陡。方向导数则是你沿着任意方向（比如斜着走）的坡度。梯度方向是方向导数最大的方向，也就是最陡的方向。",
+    "when_to_use": "当需要知道函数在某点沿哪个方向变化最快（如最速上升或下降），或者需要计算沿特定方向的变化率时，就应该想到梯度和方向导数。常见于优化问题、物理中的势场、地形分析等。",
+    "definition": "方向导数是多元函数沿某一方向的变化率。梯度是一个向量，其方向是函数增长最快的方向，模等于最大方向导数。",
+    "math_principle": "设函数 f(x1,x2,...,xn) 在点 P 处可微，则沿单位向量 u = (u1,u2,...,un) 的方向导数为 D_u f(P) = ∇f(P)·u，其中 ∇f(P) = (∂f/∂x1, ∂f/∂x2, ..., ∂f/∂xn) 是梯度。梯度方向是方向导数最大的方向，最大值为 ||∇f(P)||。",
+    "step_by_step": [
+      "1. 确定函数 f 和点 P。",
+      "2. 计算梯度 ∇f(P)：求所有偏导数。",
+      "3. 确定方向向量 u，并归一化为单位向量。",
+      "4. 计算方向导数：D_u f(P) = ∇f(P)·u。",
+      "5. 梯度方向即 ∇f(P) 方向，最大方向导数为 ||∇f(P)||。"
+    ],
+    "worked_example": "考虑地形函数 f(x,y) = x^2 + y^2，在点 P(1,1) 处。梯度 ∇f = (2x, 2y)，在 P 处为 (2,2)。沿方向 u = (1,0)（正 x 方向）的方向导数为 (2,2)·(1,0)=2。沿梯度方向 u = (1/√2, 1/√2) 的方向导数为 (2,2)·(1/√2,1/√2)=4/√2=2√2≈2.828，这是最大值。",
+    "pitfalls": [
+      "1. 方向导数要求函数在该点可微，否则梯度可能不存在。",
+      "2. 方向向量必须归一化，否则方向导数值会随长度变化。",
+      "3. 梯度为零的点（驻点）处方向导数为零，无法指示最陡方向。"
+    ],
+    "tools": "Python 中可用 sympy 计算梯度和方向导数。示例：\n```python\nimport sympy as sp\nx, y = sp.symbols('x y')\nf = x**2 + y**2\ngrad = [sp.diff(f, var) for var in (x, y)]\n# 在点 (1,1) 处\npoint = {x:1, y:1}\ngrad_at_point = [g.subs(point) for g in grad]\nprint(grad_at_point)  # [2, 2]\n# 方向导数沿 u=(1,0)\nu = sp.Matrix([1, 0])\ndir_deriv = sum(g.subs(point)*ui for g, ui in zip(grad, u))\nprint(dir_deriv)  # 2\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "D_{\\mathbf{u}} f(P) = \\nabla f(P) \\cdot \\mathbf{u}",
+      "variables": {
+        "D_{\\mathbf{u}} f(P)": "函数 f 在点 P 沿单位向量 u 的方向导数",
+        "\\nabla f(P)": "函数 f 在点 P 的梯度向量",
+        "\\mathbf{u}": "单位方向向量"
+      }
+    },
+    {
+      "latex_code": "\\nabla f(P) = \\left( \\frac{\\partial f}{\\partial x_1}, \\frac{\\partial f}{\\partial x_2}, \\dots, \\frac{\\partial f}{\\partial x_n} \\right)",
+      "variables": {
+        "\\nabla f(P)": "梯度向量",
+        "\\frac{\\partial f}{\\partial x_i}": "函数 f 对第 i 个变量的偏导数"
+      }
+    }
+  ],
+  "cases": [
+    "8201"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_J04"
+    ],
+    "from_papers": [
+      "8201"
+    ]
+  }
+}

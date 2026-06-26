@@ -1,0 +1,69 @@
+{
+  "schema_version": 3,
+  "concept_id": "viz.3d",
+  "title": "三维可视化",
+  "taxonomy_path": [
+    "结果可视化与解释",
+    "可视化方法",
+    "三维可视化"
+  ],
+  "module_id": "G",
+  "subcat_id": "G.1",
+  "aliases": [
+    "三维图",
+    "曲面图",
+    "等高线图"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "三维可视化就是把有 x、y、z 三个维度的数据画成立体图形，让你一眼看出数据的形状、趋势和规律。",
+    "intuition": "想象你手里有一个橡皮泥，你可以把它捏成各种形状。三维可视化就像把这个橡皮泥放在一个透明的盒子里，从各个角度观察它。比如，你有一张地形图，x 和 y 是经纬度，z 是海拔高度，三维可视化就能让你看到山脉和山谷的立体样子，而不是只看平面上的颜色深浅。",
+    "when_to_use": "当你的数据有三个维度（比如两个自变量和一个因变量，或者三个空间坐标），并且你想直观展示它们之间的关系、分布或趋势时，就该用三维可视化。常见场景：绘制二元函数的曲面、展示三维空间中的点云、分析地形或气象数据。",
+    "definition": "三维可视化是利用计算机图形学技术，将三维数据（通常由三个坐标轴 x, y, z 定义）以图形方式呈现的方法，包括曲面图、等高线图和三维散点图等，帮助分析数据的空间分布和趋势。",
+    "math_principle": "三维可视化基于三维坐标系，通常使用投影变换将三维点映射到二维屏幕。曲面图通过网格点 (x_i, y_j) 和对应的 z_{ij} 值绘制曲面，常用公式 z = f(x,y)。等高线图通过等值线表示曲面高度，等值线方程为 f(x,y) = c。三维散点图直接绘制点 (x_i, y_i, z_i)。在数学建模中，常用参数方程或函数生成数据。",
+    "step_by_step": [
+      "1. 准备数据：确定三个维度的数据，例如 x 和 y 是自变量，z 是因变量，或者直接有 (x,y,z) 坐标点。",
+      "2. 选择可视化类型：根据数据特点选择曲面图（连续函数）、等高线图（强调高度变化）或散点图（离散点）。",
+      "3. 生成网格或点集：对于曲面图，在 x 和 y 的范围内生成网格点，计算对应的 z 值。",
+      "4. 绘制图形：使用绘图库（如 Matplotlib）创建三维坐标系，将数据绘制成相应图形。",
+      "5. 调整视角和样式：设置观察角度、颜色、标签等，使图形清晰易懂。",
+      "6. 添加辅助元素：如颜色条、标题、坐标轴标签，帮助解释图形。"
+    ],
+    "worked_example": "假设我们要可视化函数 z = sin(sqrt(x^2 + y^2)) 在 x ∈ [-5,5], y ∈ [-5,5] 上的曲面。\n1. 生成网格：x = np.linspace(-5,5,50), y = np.linspace(-5,5,50), X,Y = np.meshgrid(x,y)。\n2. 计算 Z = np.sin(np.sqrt(X**2 + Y**2))。\n3. 使用 Matplotlib 的 mplot3d 工具包，创建 figure 和 3D axes，调用 plot_surface(X,Y,Z)。\n4. 设置颜色映射（如 cmap='viridis'），添加颜色条，设置坐标轴标签。\n5. 调整视角：ax.view_init(elev=30, azim=45)。\n6. 显示图形。",
+    "pitfalls": [
+      "1. 数据点过少会导致曲面不平滑，过多则可能渲染缓慢。",
+      "2. 视角选择不当可能隐藏重要特征，建议交互式旋转或提供多个视角。",
+      "3. 颜色映射使用不当可能误导读者，应选择感知均匀的色图。",
+      "4. 三维图形在二维屏幕上存在遮挡，需注意透明度或网格线的使用。"
+    ],
+    "tools": "Python 的 Matplotlib 库（mplot3d 工具包）和 Plotly 库。最小可运行代码：\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom mpl_toolkits.mplot3d import Axes3D\n\nx = np.linspace(-5, 5, 50)\ny = np.linspace(-5, 5, 50)\nX, Y = np.meshgrid(x, y)\nZ = np.sin(np.sqrt(X**2 + Y**2))\n\nfig = plt.figure()\nax = fig.add_subplot(111, projection='3d')\nsurf = ax.plot_surface(X, Y, Z, cmap='viridis')\nfig.colorbar(surf)\nax.set_xlabel('X')\nax.set_ylabel('Y')\nax.set_zlabel('Z')\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "z = f(x, y)",
+      "variables": {
+        "x": "自变量（横坐标）",
+        "y": "自变量（纵坐标）",
+        "z": "因变量（高度或函数值）"
+      }
+    },
+    {
+      "latex_code": "f(x, y) = c",
+      "variables": {
+        "c": "等值线常数",
+        "f(x,y)": "二元函数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_G03"
+    ],
+    "from_papers": []
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "paper_id": "2543",
+  "meta": {
+    "paper_id": "2543",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\A\\2543.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出10条假设，包括数据充分性、财富非决定因素、租金优势、地图准确性、景点等权重、市政中心大小代表受欢迎程度、未使用站点忽略、季节不影响、年增长率30%、其他因素忽略，每条附有合理性说明。",
+      "formulas": [],
+      "source_excerpt": "Assumptions with Rationale/Justification\n1. The information provided within the zip code of the bike station provides sufficient data and accurately reflects the stations’ surroundings.\n..."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "",
+      "stage": "notation",
+      "how_used": "定义变量：R（评分）、C（市政中心平均面积）、T（旅游景点密度）、P（人口与雇员联合密度）、S（学生密度）、y（现有站点数）、Efficiency、Bike paths、Bike usage、Bike Station Limit。",
+      "formulas": [],
+      "source_excerpt": "Variables and Terms Defined\n- R = the rating of the suitability of a bike station at a given location\n- C = the average area (per square mile) of all the civic centers in the zip code area\n- T = the density (per square mile) of the tourist attractions in each zip code area\n- P = the combined density of people (including the population density and the density of employees) in each zip code area\n- S = the density of the student population in each zip code area\n- y = number of current existing bike stations in each zip code area\n- Efficiency: the ability to maximize the usage of resources\n- Bike paths: the shortest distance one can take on a bike\n- Bike usage: the demand for bikes as a transportation tool\n- Bike Station Limit (Limit): the recommended maximum number of bike stations per zip code"
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "通过散点图观察各变量与站点数的关系，采用指数函数拟合C与y的关系（y = 3.1964e^(3.6396C)），并类似地处理其他变量，最终组合成加权评分系统。",
+      "formulas": [
+        {
+          "latex_code": "R = 3.1964e^{3.6396C} + T + (3.926285282 \\times 10^{-5})(1.0000709285)^P + 0.0067125S",
+          "variables": {
+            "R": "站点位置评分",
+            "C": "市政中心平均面积（每平方英里）",
+            "T": "旅游景点密度",
+            "P": "人口与雇员联合密度",
+            "S": "学生密度"
+          }
+        }
+      ],
+      "source_excerpt": "After deriving and combining the functions, we were able to arrive at a final rating system:\nR = 3.1964e^{3.6396C} + T + (3.926285282 * 10^{-5})(1.0000709285)^P + 0.0067125S"
+    },
+    {
+      "concept_id": "prep.normalize",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "由于各变量量纲不同，在组合前通过除以土地面积得到密度（如人口密度、雇员密度、学生密度），使不同区域可比。",
+      "formulas": [],
+      "source_excerpt": "Since each zip code covers a different area of land, in order to compare the working populations, we will divide the total number of employees in each zip code by the land area of each zip code."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用散点图展示各变量（如雇员数、人口密度等）与现有站点数的关系，以确定拟合函数形式。",
+      "formulas": [],
+      "source_excerpt": "Graph 1: Number of Stations vs. Number of Employees (in each zip code)"
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "论文未明确提及灵敏度分析，但通过假设年增长率30%并应用模型预测未来五年站点布局，隐含了参数变化的影响。",
+      "formulas": [],
+      "source_excerpt": "After developing a model, we will assume that the bike usage increases at an annual rate of 30%, and then demonstrate how to implement our model to build new bike stations for the coming five years."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：摘要（Summary）、问题重述（Restatement）、假设（Assumptions）、变量定义（Variables）、模型设计与论证（Model Design and Justification）、结果（通过评分系统给出推荐zip codes）。",
+      "formulas": [],
+      "source_excerpt": "Summary\nRestatement Clarification of the Problem\nAssumptions with Rationale/Justification\nVariables and Terms Defined\nModel Design and Justification"
+    },
+    {
+      "concept_id": "writing.figcaption",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "图表均有编号和标题，如Figure 1: Dividing Bike Stations into Zip Codes、Table 1: Total Number of Employees、Graph 1: Number of Stations vs. Number of Employees。",
+      "formulas": [],
+      "source_excerpt": "Figure 1: Dividing Bike Stations into Zip Codes\nTable 1: Total Number of Employees\nGraph 1: Number of Stations vs. Number of Employees (in each zip code)"
+    }
+  ]
+}

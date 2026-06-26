@@ -1,0 +1,76 @@
+{
+  "schema_version": 3,
+  "concept_id": "meta.pso",
+  "title": "粒子群优化（PSO）",
+  "taxonomy_path": [
+    "模型求解算法",
+    "启发式/元启发式算法",
+    "粒子群优化（PSO）"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.2",
+  "aliases": [
+    "粒子群",
+    "PSO",
+    "群体智能"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "粒子群优化（PSO）是一种模拟鸟群觅食行为的智能算法，通过群体协作逐步找到问题的最优解。",
+    "intuition": "想象一群鸟在寻找食物，每只鸟知道自己的位置和离食物多远，它们会记住自己找到的最好位置，同时也会留意整个群体中其他鸟找到的最好位置。每只鸟根据这两个信息调整自己的飞行方向和速度，最终整个群体逐渐聚集到食物所在的位置。PSO 就是模仿这种群体智慧来求解优化问题。",
+    "when_to_use": "当优化问题具有连续搜索空间、目标函数复杂（如非线性、多峰、不可导）且无法用传统梯度方法求解时，PSO 是一个很好的选择。常见于工程优化、机器学习参数调优、路径规划等领域。",
+    "definition": "粒子群优化（Particle Swarm Optimization, PSO）是一种基于群体智能的随机优化算法，通过维护一群候选解（粒子），每个粒子在搜索空间中飞行，并利用个体历史最优位置和全局历史最优位置来更新自身速度和位置，从而逐步逼近全局最优解。",
+    "math_principle": "设搜索空间为 D 维，粒子群有 N 个粒子。第 i 个粒子的位置为 $\\mathbf{x}_i = (x_{i1}, x_{i2}, \\dots, x_{iD})$，速度为 $\\mathbf{v}_i = (v_{i1}, v_{i2}, \\dots, v_{iD})$。每个粒子记录其历史最优位置 $\\mathbf{p}_i$，群体记录全局最优位置 $\\mathbf{g}$。在每次迭代 t 中，速度和位置更新如下：\n速度更新：$\\mathbf{v}_i^{(t+1)} = w \\mathbf{v}_i^{(t)} + c_1 r_1 (\\mathbf{p}_i - \\mathbf{x}_i^{(t)}) + c_2 r_2 (\\mathbf{g} - \\mathbf{x}_i^{(t)})$\n位置更新：$\\mathbf{x}_i^{(t+1)} = \\mathbf{x}_i^{(t)} + \\mathbf{v}_i^{(t+1)}$\n其中 w 是惯性权重，控制全局与局部搜索；c1、c2 是学习因子，分别代表个体认知和社会影响；r1、r2 是 [0,1] 之间的随机数。",
+    "step_by_step": [
+      "1. 初始化：设置粒子数 N、维度 D、最大迭代次数 T、惯性权重 w、学习因子 c1、c2。随机初始化每个粒子的位置和速度。",
+      "2. 评估适应度：计算每个粒子的目标函数值（适应度）。",
+      "3. 更新个体最优：如果当前适应度优于该粒子的历史最优，则更新个体最优位置 p_i。",
+      "4. 更新全局最优：如果当前适应度优于全局历史最优，则更新全局最优位置 g。",
+      "5. 更新速度和位置：根据公式更新每个粒子的速度和位置。",
+      "6. 检查终止条件：如果达到最大迭代次数或满足精度要求，则停止；否则返回步骤2。"
+    ],
+    "worked_example": "假设我们要最小化函数 f(x) = x^2，搜索范围 [-10, 10]。取 N=3，D=1，w=0.5，c1=c2=1，最大迭代次数=10。\n初始化：粒子1位置 x1=2，速度 v1=0.5；粒子2位置 x2=-3，速度 v2=-0.2；粒子3位置 x3=5，速度 v3=0.1。\n初始适应度：f(2)=4，f(-3)=9，f(5)=25。个体最优：p1=2，p2=-3，p3=5。全局最优：g=2（最小适应度4）。\n第一次迭代：\n粒子1：v1_new = 0.5*0.5 + 1*0.3*(2-2) + 1*0.6*(2-2) = 0.25，x1_new = 2+0.25=2.25，f=5.0625，不更新个体最优。\n粒子2：v2_new = 0.5*(-0.2) + 1*0.8*(-3-(-3)) + 1*0.4*(2-(-3)) = -0.1 + 0 + 0.4*5 = -0.1+2=1.9，x2_new = -3+1.9=-1.1，f=1.21，优于个体最优9，更新p2=-1.1；全局最优更新为-1.1（适应度1.21）。\n粒子3：v3_new = 0.5*0.1 + 1*0.2*(5-5) + 1*0.9*(2-5) = 0.05 + 0 + 0.9*(-3) = -2.65，x3_new = 5-2.65=2.35，f=5.5225，不更新。\n继续迭代，最终粒子会逐渐靠近0。",
+    "pitfalls": [
+      "1. 容易陷入局部最优：对于多峰函数，PSO 可能过早收敛到局部最优，需要调整参数或引入变异机制。",
+      "2. 参数敏感：惯性权重 w、学习因子 c1、c2 对性能影响大，需要根据问题调参。",
+      "3. 高维问题效率下降：随着维度增加，搜索空间指数增长，PSO 可能收敛缓慢。",
+      "4. 无严格收敛保证：PSO 是启发式算法，不保证找到全局最优解。"
+    ],
+    "tools": "Python 中常用 scipy.optimize 的 differential_evolution 或自己实现。最小可运行代码：\n```python\nimport numpy as np\n\ndef pso(f, bounds, n_particles=30, max_iter=100, w=0.5, c1=1, c2=1):\n    dim = len(bounds)\n    lb = np.array([b[0] for b in bounds])\n    ub = np.array([b[1] for b in bounds])\n    # 初始化\n    x = np.random.uniform(lb, ub, (n_particles, dim))\n    v = np.random.uniform(-1, 1, (n_particles, dim))\n    p = x.copy()\n    p_best = f(p.T) if dim==1 else np.array([f(xi) for xi in p])\n    g = p[np.argmin(p_best)]\n    g_best = np.min(p_best)\n    for _ in range(max_iter):\n        r1, r2 = np.random.rand(n_particles, dim), np.random.rand(n_particles, dim)\n        v = w * v + c1 * r1 * (p - x) + c2 * r2 * (g - x)\n        x = x + v\n        # 边界处理\n        x = np.clip(x, lb, ub)\n        # 评估\n        fitness = np.array([f(xi) for xi in x])\n        # 更新个体最优\n        better = fitness < p_best\n        p[better] = x[better]\n        p_best[better] = fitness[better]\n        # 更新全局最优\n        if np.min(fitness) < g_best:\n            g_best = np.min(fitness)\n            g = x[np.argmin(fitness)]\n    return g, g_best\n\n# 示例：最小化 f(x)=x^2\nf = lambda x: x[0]**2\nbounds = [(-10, 10)]\nbest_x, best_f = pso(f, bounds)\nprint(best_x, best_f)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\mathbf{v}_i^{(t+1)} = w \\mathbf{v}_i^{(t)} + c_1 r_1 (\\mathbf{p}_i - \\mathbf{x}_i^{(t)}) + c_2 r_2 (\\mathbf{g} - \\mathbf{x}_i^{(t)})",
+      "variables": {
+        "\\mathbf{v}_i^{(t)}": "第 i 个粒子在第 t 次迭代的速度",
+        "w": "惯性权重",
+        "c_1": "个体学习因子",
+        "c_2": "社会学习因子",
+        "r_1, r_2": "[0,1] 之间的随机数",
+        "\\mathbf{p}_i": "第 i 个粒子的历史最优位置",
+        "\\mathbf{g}": "全局最优位置",
+        "\\mathbf{x}_i^{(t)}": "第 i 个粒子在第 t 次迭代的位置"
+      }
+    },
+    {
+      "latex_code": "\\mathbf{x}_i^{(t+1)} = \\mathbf{x}_i^{(t)} + \\mathbf{v}_i^{(t+1)}",
+      "variables": {
+        "\\mathbf{x}_i^{(t+1)}": "第 i 个粒子在第 t+1 次迭代的位置",
+        "\\mathbf{x}_i^{(t)}": "第 i 个粒子在第 t 次迭代的位置",
+        "\\mathbf{v}_i^{(t+1)}": "第 i 个粒子在第 t+1 次迭代的速度"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_D07"
+    ],
+    "from_papers": []
+  }
+}

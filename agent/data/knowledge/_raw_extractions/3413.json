@@ -1,0 +1,114 @@
+{
+  "paper_id": "3413",
+  "meta": {
+    "paper_id": "3413",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2012,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2012\\B\\3413.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "ts.arima",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用时间序列分析建立汽油价格预测模型，采用自回归形式，包含滞后项和原油价格作为外生变量。",
+      "formulas": [
+        {
+          "latex_code": "\\hat{G}_{t+1} = \\alpha_1 g_t + \\alpha_2 g_{t-1} + \\alpha_3 g_{t-2} + \\alpha_4 g_{t-3} + \\cdots + \\alpha_{n+1} g_{t-n} + \\beta_1 c_t + \\beta_2 c_{t-1} + \\beta_3 c_{t-2} + \\beta_4 c_{t-3} + \\cdots + \\beta_{n+1} c_{t-n} + \\hat{\\varepsilon}",
+          "variables": {
+            "\\hat{G}_{t+1}": "预测的下周汽油价格",
+            "g_t": "本周汽油价格",
+            "c_t": "本周原油价格",
+            "\\alpha_i, \\beta_i": "回归系数",
+            "\\hat{\\varepsilon}": "误差项"
+          }
+        }
+      ],
+      "source_excerpt": "Time series analysis is a frequently-used method to expect the gasoline price trend. It can be expressed as: ... Equation ②"
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "利用2011年数据通过最小二乘法估计预测模型中的系数，得到具体数值。",
+      "formulas": [
+        {
+          "latex_code": "\\hat{G}_{t+1} = 0.0398 + 1.6002 g_t - 0.7842 g_{t-1} + 0.1207 g_{t-2} + 0.4147 c_t - 0.5107 c_{t-1} + 0.1703 c_{t-2} + \\hat{\\varepsilon}",
+          "variables": {
+            "\\hat{G}_{t+1}": "预测的下周汽油价格",
+            "g_t": "本周汽油价格",
+            "c_t": "本周原油价格",
+            "\\hat{\\varepsilon}": "误差项"
+          }
+        }
+      ],
+      "source_excerpt": "By adopting the data obtained from 2011and the comparison in different aspects, we can obtain the gas price prediction model: Ĝ = 0.0398+1.6002g +−0.7842g +0.1207g i+ 0.4147g − 0.5107g +0.1703g +ε̂."
+    },
+    {
+      "concept_id": "ts.ma",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "利用两周和四周的平均价格进行预测，构建了基于平均价格的预测模型。",
+      "formulas": [
+        {
+          "latex_code": "\\hat{G}_{(t+1,t+2)} = y_{(t-1,t)} + y_{(t-3,t-2)} + y_{(t-5,t-4)}",
+          "variables": {
+            "\\hat{G}_{(t+1,t+2)}": "预测的下两周平均汽油价格",
+            "y_{(t-1,t)}": "上周和本周的平均价格"
+          }
+        },
+        {
+          "latex_code": "\\hat{G}_{(t+1,t+4)} = y_{(t-3,t)} + y_{(t-7,t-4)} + y_{(t-11,t-8)}",
+          "variables": {
+            "\\hat{G}_{(t+1,t+4)}": "预测的下四周平均汽油价格",
+            "y_{(t-3,t)}": "过去四周的平均价格"
+          }
+        }
+      ],
+      "source_excerpt": "We innovatively utilize the average prices of the continuous two weeks to predict the next two week’s average price; similarly, employ the four-week-long average prices to forecast the average price of four weeks later."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "通过比较预测成本与实际历史成本，计算最低总成本来验证模型的有效性。",
+      "formulas": [],
+      "source_excerpt": "we had calculated the lowest cost of filling up in 2012 when traveling 100 miles a week is 637.24 dollars ... while the lowest cost when traveling 200 miles a week is 1283.5 dollars. These two values are very close to the ideal value of cost on the basis of the historical figure, which are 635.24 dollars and 1253.5 dollars respectively."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用流程图展示加油决策过程，帮助读者理解模型逻辑。",
+      "formulas": [],
+      "source_excerpt": "The process for decision can be shown through the following flow chart. Chart 1"
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "明确列出了5条模型假设，包括消费者理性、忽略汽油重量差异等。",
+      "formulas": [],
+      "source_excerpt": "1. Assumption a) Assume the consumer always buy gasoline according to the rule of minimum cost. b) Ignore the difference of the gasoline weight. c) Ignore the oil wear on the way to gas stations. d) Assume the tank is empty at the beginning of the following models. e) Apply the past data of crude oil price to predict the future price of gasoline."
+    },
+    {
+      "concept_id": "tool.matlab",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "使用MATLAB进行模型求解和成本计算，附录中提供了主要程序代码。",
+      "formulas": [],
+      "source_excerpt": "we had calculated the lowest cost of filling up in 2012 when traveling 100 miles a week is 637.24 dollars with the help of MATLAB"
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：摘要、重述、假设、模型建立、求解、检验、总结。",
+      "formulas": [],
+      "source_excerpt": "Catalogue Abstract, Restatement, Assumption, Definitions of Variables and Models, Train and Test Model by 2011 dataset, etc."
+    }
+  ]
+}

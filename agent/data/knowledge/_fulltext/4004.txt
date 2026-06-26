@@ -1,0 +1,3569 @@
+Team #4004, Problem A - Emergency Medical Response
+Page 1 / 73
+M
+C
+M
+i
+H
+：
+号
+Based on the given information of time taken to travel from one zone to another, we created a model of
+the optimum configurations of three, two, and one ambulances in the county, and determined whether the ESC
+could cover a catastrophe. We started by setting definitions, assumptions, and variables, and then started
+众
+analyzing the given data to see which ambulances could reach which zones within 8 minutes, to see which
+configurations could actually cover all 6 zones of the county. Following, with the 13 configurations that could
+cover the whole county, we analyzed each one based the ambulances’ coverage of people within time
+公
+constraints, based on data from emergency calls per day and time spent travelling to provide services to the
+person. With the remaining three ambulances that we determined to cover the same amount of people, we
+decided the optimum configuration through comparing the spare minutes of each ambulance, with the
+信
+configuration being placing ambulances in zones 2, 4, and 6, with 97.7% of the people being covered and 6250
+people left uncovered. However at the end, because not everyone was covered, three ambulances would not
+be able to cover everyone. Next, we repeated the process for two ambulances and one ambulance, and
+微
+determined the configuration to be in zones 2 and 5, and in zone 2 respectively. Two ambulances covered
+77.55% of the people and left 60,615 uncovered, and thus could not cover everyone. One ambulance covered
+45.83% of the people and left 146,259 people uncovered and thus also could not cover everyone. We
+continued by trying multiple methods for three ambulances to tackle disasters, and we discovered that the best
+way to operate the ambulances in its stations was to use the “disaster-saver” method where an ambulance
+would go to a closest zone and operate there until all calls were dealt with before returning to its original zone.
+This method covered up to 94.1% of the people but left at least 16,045 people uncovered, so we determined
+that the ESC alone would not be able to cover a catastrophic event did occur. Although as a whole the county
+may be fine after the catastrophe, it will most likely have received much help from the state or country it is in. In
+addition, with the information gathered from researching case studies in places including Japan, Cuyahoga of
+Ohio, and San Diego, we discovered methods for the county or state to be prepared for catastrophes including
+floods, earthquakes, and hurricanes. Finally, we ended by writing a memo outlining our recommendations from
+our model and analysis finding for the ESC.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 2 / 73
+M
+C
+M
+i
+H
+：
+TEAM # 4004 - 2013 Math Modeling
+号
+Problem A - Emergency Medical Response
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 3 / 73
+Restatement of the Problem:
+Given information about the time required by an ambulance to travel between any two
+districts, and a table of population in each zone, we will find out which zones ambulances
+should be stationed in to cover as much of the population as possible within 8 minutes. We will
+model the locations of ambulances with one, two, and three ambulances available. We will also
+calculate how many people can and cannot be covered with one, two or three ambulances
+within 8 minutes of their call. Based on this, we will choose a final model that will cover the most
+people possible. We will also model a catastrophic situation involving all zones, and simulate
+how the Emergency Services Coordinator (ESC) should react. We will also reMsearch how real
+life counties respond to such catastrophic events. Lastly, we will prepare a 1-2 page memo
+summarizing our findings to provide to the Emergency Services CoordinCator.
+Summary: M
+Based on the given information of time taken to travel from one zone to another, we
+i
+created a model of the optimum configurations of three, two, and one ambulances in the county,
+H
+and determined whether the ESC could cover a catastrophe. We started by setting definitions,
+assumptions, and variables, and then started ana：lyzing the given data to see which ambulances
+could reach which zones within 8 minutes, to see which configurations could actually cover all 6
+zones of the county. Following, with the 13 configurations that could cover the whole county, we
+号
+analyzed each one based the ambulances’ coverage of people within time constraints, based on
+data from emergency calls per day and time spent travelling to provide services to the person.
+With the remaining three ambulances that we determined to cover the same amount of people,
+众
+we decided the optimum configuration through comparing the spare minutes of each ambulance,
+with the configuration being placing ambulances in zones 2, 4, and 6, with 97.7% of the people
+being covered and 6250 p公eople left uncovered. However at the end, because not everyone was
+covered, three ambulances would not be able to cover everyone. Next, we repeated the process
+for two ambulances and one ambulance, and determined the configuration to be in zones 2 and
+信
+5, and in zone 2 respectively. Two ambulances covered 77.55% of the people and left 60,615
+uncovered, and thus could not cover everyone. One ambulance covered 45.83% of the people
+and left 14微6,259 people uncovered and thus also could not cover everyone. We continued by
+trying multiple methods for three ambulances to tackle disasters, and we discovered that the
+best way to operate the ambulances in its stations was to use the “disaster-saver” method
+where an ambulance would go to a closest zone and operate there until all calls were dealt with
+before returning to its original zone. This method covered up to 94.1% of the people but left at
+least 16,045 people uncovered, so we determined that the ESC alone would not be able to
+cover a catastrophic event did occur. Although as a whole the county may be fine after the
+catastrophe, it will most likely have received much help from the state or country it is in. In
+addition, with the information gathered from researching case studies in places including Japan,
+Cuyahoga of Ohio, and San Diego, we discovered methods for the county or state to be
+prepared for catastrophes including floods, earthquakes, and hurricanes. Finally, we ended by
+writing a memo outlining our recommendations from our model and analysis finding for the ESC.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 4 / 73
+Outline of the Paper
+Part 1) Assumptions with Justification, Variables, Terms Defined, and Given Resources
+Part 2) Operation under 3 ambulances
+● Demonstrates which configuration best suits the positions of 3 ambulances, and how
+effective it is in catering citizens
+Part 3) Operation under 2 ambulances M
+● Demonstrates which configuration best suits the positions of 2 ambulances, and how
+effective it is in catering citizens C
+Part 4) Operation under 1 ambulances M
+● Demonstrates which configuration best suits the positions of 1 ambulance, and how
+effective it is in catering citizens i
+H
+Part 5) Operation under a catastrophic event
+：
+● Analyzes the action plan of other areas, declares an optimal method of operating under
+a rare but catastrophic event, and observes how effective it is in catering citizens
+号
+Part 6) Non-technical memo
+● Provides a brief outline suggesting our model and plan.
+众
+Part 7) Bibliography
+● Provides list of sou公rces.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 5 / 73
+Part 1
+Assumptions with Justification, Variables, Terms Defined, and Given Resources
+Variables and Terms Defined:
+Variables
+● Configuration of ambulances: As we need to know the locations of theM three ambulances
+at a given time, we put three values in a configuration, with each value showing the
+current zone of each ambulance. C
+● Number of ambulances
+M
+● Number of emergency calls (controlled)
+● Population (controlled)
+● Travel time between zones (controlled) i
+H
+Terms
+：
+● ESC: Emergency Services Coordinator
+● Catastrophe: A harmful event causing personal injury that affects all zones of the county.
+● A, or Ambulance A: An ambulance号
+● B, or Ambulance B: An ambulance
+● C, or Ambulance C: An ambulance
+众
+● x,y,z: A set of three numbers classifying a configuration of ambulances in zones x, y and
+z
+● CBO: Community B公ased Organization
+● NGO: Non-Governmental Organization
+● Average Day: A typical day, not the average of all days
+信
+● Call: A phone call for an ambulance
+● Covered: A person is covered if his call for an ambulance can be responded to within 8
+min微utes. Our models find the percentage of population covered, or the percentage of the
+population whose calls for ambulances will be responded to within 8 minutes.
+● As individual numbers in data tables:
+● 1: Zone 1
+● 2: Zone 2
+● 3: Zone 3
+● 4: Zone 4
+● 5: Zone 5
+● 6: Zone 6
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 6 / 73
+Assumptions with Justification:
+1. Table 1 given in the problem reads with the right-most column indicating the starting
+zone, and the uppermost row indicating the finishing zone. The conventions of reading
+and creating tables leads our team to conclude that to find the average travel time from
+one zone to another, the right-most column is the starting zone and the upper-most
+column indicates the finishing zone.
+2. The location of an ambulance within a zone does not matter, it only mMatters that the
+ambulance is within a zone.
+There is no way to determine what the zones will be like, or whaCt areas they will be
+covering, with the information provided. Since no county name was provided, it is
+impossible to do further research to gain more insight as tMo what the zones look like.
+There are simply too many possibilities and assumptions that are required in order to
+form a map of the zones in order to fully flesh out the scienario properly, factors such as
+H
+streets, traffic jams etc. would need to be figured out. After making assumptions for all of
+this, the margin of error would be so high as to make this unrealistic. Therefore, the
+：
+location of the ambulance within the zone can be assumed irrelevant.
+3. This scenario occurs in a county in号 the United States of America.
+Given that this is a primarily American contest, it is most likely that the situation
+addresses a county in America. This is also reasonable given how Emergency Service
+众
+Coordinators primarily exist in the United States, and not other countries.
+4. There is a hospital公 in every zone.
+There are 5,724 registered hospitals in the United States and 314 million people in the
+United States. This gives 1 hospital per 54,856 people. For our county, this is slightly
+信
+below 5 hospitals. Since there are 6 zones in our county, and because it is very likely
+that a zone could have one more hospital than average. Since it would be best for a
+hospital to have maximum distribution of services and maximum access to the people, it
+微
+would make sense for the hospitals to be positioned in locations that can be quickly
+accessed by the general population. This means six hospitals, one in each zone.
+5. Only hospitals are capable of taking care of the patients rescued by the ambulances.
+We assume that doctor’s clinics and the like are incapable of treating people in genuine
+need of an ambulance. As a result ambulances must go to hospitals, and will go to the
+hospital in the zone or the hospital from the ambulances’ point of origin. This makes
+sense, as normal doctors clinics are not equipped with the resources to handle genuine
+ambulance calls.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 7 / 73
+6. Calls are equally distributed by population and over time.
+As the only information provided is travel times, we have no way of knowing the
+population density or crime rates of zones. We also cannot know the crime or injury rate
+per day of that county, or . As a result, we assume that everyone has an equal chance of
+calling the ambulance regardless of what zone they are in or what time it is.
+7. Ambulances take calls and attend to calls 24/7, and operate with maximum efficiency.
+We assume that in this county, as in most of the US, emergency rooms and ambulances
+operate constantly. It would not be feasible to precisely model how quMickly an
+ambulance would be able to shift people, refuel, restock, and do other necessary
+functions. We are further assuming that patients can be instantly loaded and unloaded
+C
+on and off the ambulance, in order to maximize efficiency.
+M
+8. Ambulances attend all calls, even illegitimate ones.
+Many calls for ambulances are not legitimate. We assume that at the time of calling it is
+i
+impossible to tell the difference between a legitimaHte call and someone faking pain in a
+prank call, and that therefore the ambulance will attend every call.
+：
+9. Ambulances return to their station before going after a new call.
+As assumption 6 states that calls a号re evenly distributed across population, it would not
+be possible to determine if an ambulance would receive a call while moving out or not.
+Therefore, it would be best to assume that an ambulance must move back to where its
+众
+stationed in order to restock and reorient itself before moving out to assist another call.
+10. Any catastrophe that occurs affects the whole county equally, harming the same
+公
+percentage of citizens in each zone.
+Problem requirements say that the catastrophe affects many people from all zones,
+which mea信ns it must be a countywide disaster. Again, since the exact size and shape of
+the zones is not and can not be known, it is safest to assume that the catastrophe
+affects all citizens equally, by harming the same percentage of citizens in each zone.
+微
+11. During catastrophe scenarios, the only support from other parties other than the ESC
+will be guaranteed government support.
+As no information about the county is provided besides travel times and population, we
+have no information on the NGOs or traveling doctors that might be in the town. As a
+result, the safest assumption is that only the most basic government aid will be provided.
+12. More population means larger area occupied.
+While travel times between zones are provided, travel speed is not, and so it is not
+possible to calculate the area of the county. With the information provided, the safest
+assumption is that a higher population means a larger area, and that the ratio of our
+county’s area to the average US county’s area is the same as the ratio of our county’s
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 8 / 73
+population to the average US county’s population.
+
+13. Catastrophes occur immediately at the beginning of the day.
+It is impossible to predict when a catastrophe could happen. As a result, an arbitrary
+time for the catastrophe must be chosen. Since problem requirements ask whether the
+ESC could handle the catastrophe, it makes sense to give the ESC the most time to
+respond to the catastrophe, which means having the catastrophe occur at the start of the
+day.
+
+M
+14. There are 24 hours in a day.
+Although days are not exactly 24 hours worth of seconds, it is safest to assume that
+C
+there are exactly 24 hours in a day, as the number of minutes in a day can change.
+|     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+Given Resources:
+|                                      |     |     |     | i   |     |     |
+| ------------------------------------ | --- | --- | --- | --- | --- | --- |
+| Table 1. Average Travel Time (min.)  |     |     |     | H   |     |     |
+
+| Zone  | One  | Two  | Three  ：Four  |     | Five  | Six  |
+| ----- | ---- | ---- | ------------- | --- | ----- | ---- |
+| One   | 1    | 8    | 12            | 14  | 10    | 16   |
+号
+| Two    | 8   | 1   | 6    | 18  | 16  | 16  |
+| ------ | --- | --- | ---- | --- | --- | --- |
+| Three  | 12  | 18  | 1.5  | 12  | 6   | 4   |
+众
+| Four  | 16  | 14   | 4   | 1   | 16  | 12  |
+| ----- | --- | ---- | --- | --- | --- | --- |
+| Five  | 18  | 公16  | 10  | 4   | 2   | 2   |
+| Six   | 16  | 18   | 4   | 12  | 2   | 2   |
+信
+
+Table 2. Population by zone
+| Zone  微 |     | Population  |     |     |     |     |
+| ------- | --- | ----------- | --- | --- | --- | --- |
+| 1       |     | 50,000      |     |     |     |     |
+| 2       |     | 80,000      |     |     |     |     |
+| 3       |     | 30,000      |     |     |     |     |
+| 4       |     | 55,000      |     |     |     |     |
+| 5       |     | 35,000      |     |     |     |     |
+| 6       |     | 20,000      |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 9 / 73
+Part 2
+Operation under 3 ambulances
+We begin by determining which zones an ambulance can reach within 8 minutes. Zones
+that an ambulance can reach in 8 minutes from a given zone are covered if there is an
+ambulance in the given zone and the ambulance has enough time to reach a person there. The
+zones the ambulance is able to serve, based on the zone the ambulance is inM, is shown below:
+Table 3. Zones covered by an ambulance in a zone (travel time less than 8 minutes)
+C
+Zone with ambulance Zones served
+M
+1 1 and 2
+i
+2 1, 2 and 3
+H
+3 3, 5 and 6
+：
+4 3 and 4
+5 4, 5 and 6 号
+6 3, 5 and 6
+众
+Given the travel times between zones and zone population, we are to find the best way
+of placing three ambulanc公es to maximize the number of people that can be covered by an
+ambulance. Since no information about how exactly the ambulance goes about picking people
+up, we had to deduce a logical way for ambulances to pick people up. Ambulances can only
+信
+pick people up within 8 minutes, as stated in the problem. Then, they would have to spend the
+average travel time within the zone to travel back to the zone’s hospital (As stated in
+assumption 4, there is a hospital in every zone.) Lastly, the ambulance must travel back to its
+微
+original location before picking up a call, as stated in assumption 9. This is demonstrated in
+figure 1.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 10 / 73
+M
+C
+M
+i
+H
+：
+号
+Figure 1. Ambulance paths to zones
+众
+In figure 1, the ambulance is stationed in zone 2. From zone 2, the ambulance can reach
+zones 1 and 3 within 8 minutes, the problem’s maximum time to reach a patient. As a result, the
+公
+ambulance cannot cover zones 4, 5 and 6 at all. This diagram shows how the ambulance would
+respond to a call from each zone. Green lines represent the ambulance going out to a call,
+yellow lines the ambulance taking the call’s patient to the zone’s hospital, and red lines the
+信
+ambulance returning to its station. For a call in its own zone, an ambulance only needs to spend
+double the travel time within its zone. For other zones, it takes the time there, the time back, and
+the time in微 the zone per patient. Now that we have figured out how the ambulance picks up
+patients, we can look at optimum ambulance configurations.
+As there are 6 zones, we start with 216 permutations of where ambulances can be: 6
+possibilities for A, 6 possibilities for B, and 6 possibilities for C. However, A, B, and C are
+physically the same, so there is no distinction between having A in zone 1, B in zone 1 and C in
+zone 2 and having A in zone 2, B in zone 1, and C in zone 1. Therefore, we are looking for
+configurations, not permutations. The equation for configurations is as follows:
+Figure 2. Equation for Combinations
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 11 / 73
+Using the equation for combinations, we can narrow down the 216 permutations of three
+ambulances to just 56. We can then analyze the zones covered by three ambulances based on
+their configuration. The values for the second, third and fourth columns were determined by
+checking the ambulance’s location in table 3. The total zones covered were all the zones
+covered by ambulances, without any repeats. The number of people covered was found by
+checking the population of each zone covered in table 2. Finally, rows with configurations that
+cover all zones, and at least theoretically cover all people, were bolded and highlighted yellow.
+
+Table 4. Zones and People Covered by Three Ambulances' Location
+M
+|                       |        |        |        | Total Zones  | People  |
+| --------------------- | ------ | ------ | ------ | ------------ | ------- |
+| Configuration (A, B,  | Zones  | Zones  | Zones  |              |         |
+C)  covered by A  covered by B  covered by C  CovereCd  Covered
+| 1,1,1  | 1,2  | 1,2  | 1,2  | 1,2  | 130000  |
+| ------ | ---- | ---- | ---- | ---- | ------- |
+M
+| 1,1,2  | 1,2  | 1,2  | 1,2,3  | 1,2,3  | 160000  |
+| ------ | ---- | ---- | ------ | ------ | ------- |
+i
+| 1,1,3  | 1,2  | 1,2  | 3,5,6  H1,2,3,5,6  |            | 215000  |
+| ------ | ---- | ---- | ------------------ | ---------- | ------- |
+| 1,1,4  | 1,2  | 1,2  | ：3,4               | 1,2,3,4    | 215000  |
+| 1,1,5  | 1,2  | 1,2  | 4,5,6              | 1,2,4,5,6  | 240000  |
+号
+| 1,1,6  | 1,2  | 1,2    | 3,5,6  | 1,2,3,5,6  | 215000  |
+| ------ | ---- | ------ | ------ | ---------- | ------- |
+| 1,2,2  | 1,2  | 1,2,3  | 1,2,3  | 1,2,3      | 160000  |
+众
+| 1,2,3  | 1,2          | 1,2,3  | 3,5,6  | 1,2,3,5,6    | 215000  |
+| ------ | ------------ | ------ | ------ | ------------ | ------- |
+| 1,2,4  | 1,2  公1,2,3  |        | 3,4    | 1,2,3,4      | 215000  |
+| 1,2,5  | 1,2          | 1,2,3  | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+信
+| 1,2,6  | 1,2  | 1,2,3  | 3,5,6  | 1,2,3,5,6  | 215000  |
+| ------ | ---- | ------ | ------ | ---------- | ------- |
+| 1,3,3  | 1,2  | 3,5,6  | 3,5,6  | 1,2,3,5,6  | 215000  |
+微
+| 1,3,4  | 1,2  | 3,5,6  | 3,4    | 1,2,3,4,5,6  | 270000  |
+| ------ | ---- | ------ | ------ | ------------ | ------- |
+| 1,3,5  | 1,2  | 3,5,6  | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+| 1,3,6  | 1,2  | 3,5,6  | 3,5,6  | 1,2,3,5,6    | 215000  |
+| 1,4,4  | 1,2  | 3,4    | 3,4    | 1,2,3,4      | 215000  |
+| 1,4,5  | 1,2  | 3,4    | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+| 1,4,6  | 1,2  | 3,4    | 3,5,6  | 1,2,3,4,5,6  | 270000  |
+| 1,5,5  | 1,2  | 4,5,6  | 4,5,6  | 1,2,4,5,6    | 240000  |
+| 1,5,6  | 1,2  | 4,5,6  | 3,5,6  | 1,2,3,4,5,6  | 270000  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 12 / 73
+| 1,6,6  | 1,2    | 3,5,6  | 3,5,6  | 1,2,3,5,6    | 215000   |
+| ------ | ------ | ------ | ------ | ------------ | -------- |
+| 2,2,2  | 1,2,3  | 1,2,3  | 1,2,3  | 1,2,3        | 160000   |
+| 2,2,3  | 1,2,3  | 1,2,3  | 3,5,6  | 1,2,3,5,6    | 215000   |
+| 2,2,4  | 1,2,3  | 1,2,3  | 3,4    | 1,2,3,4      | 215000   |
+| 2,2,5  | 1,2,3  | 1,2,3  | 4,5,6  | 1,2,3,4,5,6  | 270000   |
+| 2,2,6  | 1,2,3  | 1,2,3  | 3,5,6  | 1,2,3,5,6    | M215000  |
+| 2,3,3  | 1,2,3  | 3,5,6  | 3,5,6  | 1,2,3,5,6    | 215000   |
+C
+| 2,3,4  | 1,2,3  | 3,5,6  | 3,4  | 1,2,3,4,5,6  | 270000  |
+| ------ | ------ | ------ | ---- | ------------ | ------- |
+M
+| 2,3,5  | 1,2,3  | 3,5,6  | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+| ------ | ------ | ------ | ------ | ------------ | ------- |
+| 2,3,6  | 1,2,3  | 3,5,6  | 3,5,6  | i 1,2,3,5,6  | 215000  |
+H
+| 2,4,4  | 1,2,3  | 3,4  | 3,4  | 1,2,3,4  | 215000  |
+| ------ | ------ | ---- | ---- | -------- | ------- |
+：
+| 2,4,5  | 1,2,3  | 3,4          | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+| ------ | ------ | ------------ | ------ | ------------ | ------- |
+| 2,4,6  | 1,2,3  | 3,4  号3,5,6  |        | 1,2,3,4,5,6  | 270000  |
+| 2,5,5  | 1,2,3  | 4,5,6        | 4,5,6  | 1,2,3,4,5,6  | 270000  |
+众
+| 2,5,6  | 1,2,3  | 4,5,6  | 3,5,6  | 1,2,3,4,5,6  | 270000  |
+| ------ | ------ | ------ | ------ | ------------ | ------- |
+| 2,6,6  | 1,2,3  | 3,5,6  | 3,5,6  | 1,2,3,5,6    | 215000  |
+公
+| 3,3,3  | 3,5,6    | 3,5,6  | 3,5,6  | 3,5,6    | 85000   |
+| ------ | -------- | ------ | ------ | -------- | ------- |
+| 3,3,4  | 信 3,5,6  | 3,5,6  | 3,4    | 3,4,5,6  | 140000  |
+| 3,3,5  | 3,5,6    | 3,5,6  | 4,5,6  | 3,4,5,6  | 140000  |
+微
+| 3,3,6  | 3,5,6  | 3,5,6  | 3,5,6  | 3,5,6    | 85000   |
+| ------ | ------ | ------ | ------ | -------- | ------- |
+| 3,4,4  | 3,5,6  | 3,4    | 3,4    | 3,4,5,6  | 140000  |
+| 3,4,5  | 3,5,6  | 3,4    | 4,5,6  | 3,4,5,6  | 140000  |
+| 3,4,6  | 3,5,6  | 3,4    | 3,5,6  | 3,4,5,6  | 85000   |
+| 3,5,5  | 3,5,6  | 4,5,6  | 4,5,6  | 3,4,5,6  | 140000  |
+| 3,5,6  | 3,5,6  | 4,5,6  | 3,5,6  | 3,4,5,6  | 85000   |
+| 3,6,6  | 3,5,6  | 3,5,6  | 3,5,6  | 3,5,6    | 85000   |
+| 4,4,4  | 3,4    | 3,4    | 3,4    | 3,4      | 85000   |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 13 / 73
+| 4,4,5  | 3,4    | 3,4    | 4,5,6  | 3,4,5,6  | 140000   |
+| ------ | ------ | ------ | ------ | -------- | -------- |
+| 4,4,6  | 3,4    | 3,4    | 3,5,6  | 3,4,5,6  | 140000   |
+| 4,5,5  | 3,4    | 4,5,6  | 4,5,6  | 3,4,5,6  | 140000   |
+| 4,5,6  | 3,4    | 4,5,6  | 3,5,6  | 3,4,5,6  | 140000   |
+| 4,6,6  | 3,4    | 3,5,6  | 3,5,6  | 3,4,5,6  | 140000   |
+| 5,5,5  | 4,5,6  | 4,5,6  | 4,5,6  | 4,5,6    | M110000  |
+C
+| 5,5,6  | 4,5,6  | 4,5,6  | 3,5,6  | 3,4,5,6  | 140000  |
+| ------ | ------ | ------ | ------ | -------- | ------- |
+M
+| 5,6,6  | 4,5,6  | 3,5,6  | 3,5,6  | 3,4,5,6  | 140000  |
+| ------ | ------ | ------ | ------ | -------- | ------- |
+| 6,6,6  | 3,5,6  | 3,5,6  | 3,5,6  | 3,5,6    | 85000   |
+i
+H
+
+|   In determining which configuration of ambulances would work best, we can eliminate  |     |     | ：   |     |     |
+| ------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- |
+configurations that do not cover all zones, as those do not even have a chance at covering a
+significant amount of the population. Configurations that cover all zones are as follows:
+|        |         | 号       |     |         |         |
+| ------ | ------- | ------- | --- | ------- | ------- |
+| 1,2,5  | 1,3,4   | 1,3,5   |     | 1,4,5   | 1,4,6   |
+众
+| 1,5,6  | 2,2,5   | 2,3,4   |     | 2,3,5   | 2,4,5   |
+| ------ | ------- | ------- | --- | ------- | ------- |
+| 2,4,6  | 2,5,5   | 2,5,6   |     |         |         |
+公
+
+This is a total of 13 configurations. Next, we determined that the probability of an
+average person ca信lling the ambulance on a given day. In doing this we took the number of
+ambulance calls on a day in the United States, 500,000, and divided it by the number of
+counties, 3,007, yielding 166.27 calls in the county per day. This amount of calls is for the
+微
+average county with a population of 104,000, however, and given how our county has a
+population of 270,000, this means that the number of calls per day is proportionally increased to
+432.3 calls per day, which we will round to 432 calls in the county per day. In mathematical
+format, this is:
+
+500,000 calls in US = 166.27 calls *270,000 ppl/county = 432.3 calls≈432 calls per day
+   3007 counties             104,000 ppl/county average
+
+Since assumption 6 says calls come equally from all zones by population, table 5 below
+shows both the percentage of population per zone and the percentage of total calls per zone.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 14 / 73
+Table 5. Percent of Total Population per Zone
+| Zone  | % Population  | Number of Calls  |
+| ----- | ------------- | ---------------- |
+| 1     | 18.5185185%   | 80               |
+| 2     | 29.6296296%   | 128              |
+| 3     | 11.1111111%   | 48               |
+| 4     | 20.3703704%   | 88               |
+M
+| 5   | 12.9629630%  | 56  |
+| --- | ------------ | --- |
+C
+| 6   | 7.40740741%  | 32  |
+| --- | ------------ | --- |
+  M
+The number of calls per zone is determined by multiplying the percentage of population
+in a given zone by the number of calls that the entire county gets, 432. It is necessary to round
+i
+these numbers as there cannot be part of a call each day.H Even though these fractions are
+rounded, they still sum to 432 calls, which means that the rounding worked correctly and did not
+：
+substantially affect the overall results of this model.
+
+| Table 6. Number of Calls per Zone  |                  | 号   |
+| ---------------------------------- | ---------------- | --- |
+| Zone                               | Number of Calls  |     |
+众
+| 1   | 80   |     |
+| --- | ---- | --- |
+| 2   | 128  |     |
+公
+| 3   | 48   |     |
+| --- | ---- | --- |
+| 4   | 8信8  |     |
+| 5   | 56   |     |
+微
+| 6   | 32  |     |
+| --- | --- | --- |
+
+  We then analyzed Table 1, our provided resource on travel times, and adjusted the
+travel times to be more useful in our calculations. In table 7 below, the time to go from the zone
+on the right to the zone on the top and back is listed, while as our provided table 1 is simply the
+time from the zone on the left to the zone on the top, as stated in assumption 1.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 15 / 73
+Table 7. Travel Times, Combined Going and Returning (minutes)
+| Zone    | Zone 1  | Zone 2  | Zone 3  | Zone 4  | Zone 5  | Zone 6  |
+| ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| Zone 1  | 2       | 16      | 24      | 30      | 28      | 32      |
+| Zone 2  | 16      | 2       | 24      | 32      | 32      | 34      |
+| Zone 3  | 24      | 24      | 3       | 16      | 16      | 8       |
+M
+| Zone 4  | 30  | 32  | 16  | 2   | 20    | 24  |
+| ------- | --- | --- | --- | --- | ----- | --- |
+| Zone 5  | 28  | 32  | 16  | 20  | 4 C4  |     |
+| Zone 6  | 32  | 34  | 8   | 24  | 4     | 4   |
+M
+
+Table 8 below is similar to Table 7 above, except that thie time taken to deliver a patient
+to the hospital is now incorporated. This amount of time isH equivalent to the amount of time
+needed to travel within a zone, since as stated in assumption 4 there is a hospital within each
+：
+zone, and it takes this amount of time to deliver a patient. The additional of “hospital delivery
+time” is not necessary when we do intra-zonal deliveries as the destination of the ambulance,
+the hospital, is where the patients will also号 end up, therefore removing the need for the patients
+to be dropped off at another location, and reducing the time needed to suitably address a call.
+
+众
+Table 8. Travel Times, Combined Going, Delivering to Hospital, and Returning (minutes)
+| Zone  | Zone 1  | Zone 2  | Zone 3  | Zone 4  | Zone 5  | Zone 6  |
+| ----- | ------- | ------- | ------- | ------- | ------- | ------- |
+公
+| Zone 1  | 2   | 17  | 25.5  | 31  | 30  | 34  |
+| ------- | --- | --- | ----- | --- | --- | --- |
+| Zone 2  | 17  | 2   | 25.5  | 33  | 34  | 36  |
+信
+| Zone 3  | 25  | 25  | 3   | 17  | 18  | 10  |
+| ------- | --- | --- | --- | --- | --- | --- |
+微
+| Zone 4  | 31  | 33  | 17.5  | 2   | 22  | 26  |
+| ------- | --- | --- | ----- | --- | --- | --- |
+| Zone 5  | 29  | 33  | 17.5  | 21  | 4   | 6   |
+| Zone 6  | 33  | 35  | 9.5   | 25  | 6   | 4   |
+
+  With the necessary background information laid out in tables 5 through 8, we now direct
+our attention back to ambulance configurations. In table 9 below the ambulance configurations
+that covered all zones are listed as they were in table 4. There is also the additional column of
+zone overlap, which will be needed to figure out how ambulances cover zones.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 16 / 73
+
+Table 9. Ambulance locations that cover all regions
+| Zones  | Zones covered for 1st  |     | Zones    | Zones    | Extra    | People   |
+| ------ | ---------------------- | --- | -------- | -------- | -------- | -------- |
+|        | region                 |     |          |          |          | Covered  |
+|        |                        |     | covered  | covered  | Zones    |          |
+|        |                        |     | for 2nd  | for 3rd  | Covered  |          |
+|        |                        |     | region   | region   |          |          |
+| 1,2,5  | 1,2                    |     | 1,2,3    | 4,5,6    | 1,2      | 270000   |
+| 1,3,4  | 1,2                    |     | 3,5,6    | 3,4      | 3M       | 270000   |
+| 1,3,5  | 1,2                    |     | 3,5,6    | 4,5,6    | 5,6      | 270000   |
+C
+| 1,4,5  | 1,2  |     | 3,4  | 4,5,6  | 4   | 270000  |
+| ------ | ---- | --- | ---- | ------ | --- | ------- |
+M
+| 1,4,6  | 1,2  |     | 3,4    | 3,5,6   | 3    | 270000  |
+| ------ | ---- | --- | ------ | ------- | ---- | ------- |
+| 1,5,6  | 1,2  |     | 4,5,6  | i3,5,6  | 5,6  | 270000  |
+H
+| 2,2,5  | 1,2,3  |     | 1,2,3  | 4,5,6  | 1,2,3  | 270000  |
+| ------ | ------ | --- | ------ | ------ | ------ | ------- |
+：
+| 2,3,4  | 1,2,3  |         | 3,5,6  | 3,4    | 3,3    | 270000  |
+| ------ | ------ | ------- | ------ | ------ | ------ | ------- |
+| 2,3,5  | 1,2,3  | 号3,5,6  |        | 4,5,6  | 3,5,6  | 270000  |
+| 2,4,5  | 1,2,3  |         | 3,4    | 4,5,6  | 3,4    | 270000  |
+众
+| 2,4,6  | 1,2,3  |     | 3,4    | 3,5,6  | 3,3    | 270000  |
+| ------ | ------ | --- | ------ | ------ | ------ | ------- |
+| 2,5,5  | 1,2,3  |     | 4,5,6  | 4,5,6  | 4,5,6  | 270000  |
+公
+| 2,5,6  | 1,2,3  |     | 4,5,6  | 3,5,6  | 3,5,6  | 270000  |
+| ------ | ------ | --- | ------ | ------ | ------ | ------- |
+
+信
+After finding which ambulance configurations cover all zones, the logical next step is to
+calculate how much time each ambulance configuration would take, and thus determine
+whether it 微would be possible to cover every single person on an average day in a given
+ambulance configuration. To do this, we first determined which zones each ambulance should
+cover in cases of overlap. We then determined the amount of time necessary to get to a zone,
+take a patient to a hospital, and return to the initial starting point per call, and then calculated the
+total amount of time spent per zone for a given ambulance in a given ambulance configuration.
+We then calculated the theoretical total time spent by each ambulance, and subtracted it from
+the number of minutes in a day to calculate how much left-over time or overtime each
+ambulance had. If the ambulance did not go over-time, then the time allocated per zone would
+be the amount of time spent, as stated before, with the actual calls taken identical to the number
+of calls received.
+
+关注 HiMCM
+|     |     |     |     |     |     | ×+ −÷        |
+| --- | --- | --- | --- | --- | --- | ------------ |
+|     |     |     |     |     |     | Hi CM 获取更多资讯 |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 17 / 73
+However, if the ambulance did go over-time, then the time allocated for each zone would
+be determined by the time it takes an ambulance to recover a patient in a given zone. This is the
+only logical way of handling an excess of calls, as answering the closest calls will answer the
+most calls and save the most lives. This inevitably resulted in situations where a zone was left
+completely uncovered, which is unfortunate, but there is no other way around this if we wish to
+maximize efficiency of time. This was done both in unique and non-unique regions to maximize
+efficiency of the limited number of minutes in a day. As a result of this, the ambulance would not
+go over-time, sticking to its 24 hour schedule, but it would not be able to handle all the calls. The
+number of calls that would actually be taken would then be less than the numMber of calls
+received.
+Next, we took non-unique zones and distributed the amount of time through these zones
+C
+to maximize the number of cases handled. To reduce the total amount of time spent on
+overlapping zones, we prioritized ambulances that operated in theMir own zone. If an ambulance
+is already over-time, then it is not capable of handling non-unique zones. This entire process
+was done with every configuration that would be able to reach all the zones, namely those listed
+i
+in table 9. The results table beneath each configuration suHmmarizes the results of each
+configuration.
+：
+What follows is sequence of tables for each configuration listed in table 9. In each set of
+configurations, there are three tables. The first table of each configuration details what occurs
+under circumstances where the population号 of unique zones that can be covered is covered by
+the ambulances assigned to such zones. The second table of each configuration details what
+occurs when the population of non-unique zones that can be covered is covered by the
+众
+ambulances assigned to such zones. The third table of each configuration summarizes the
+results of the configuration, outlining the percentage of the population covered, the number of
+calls that can be responded to suitably, and the actual population that is covered. Essentially,
+公
+these are a series of tables that find the percentage of population covered for each configuration
+listed in table 9. This information is in tables 10 through 48. As this would be ungainly to read, it
+is summarized in t信able 49, where this explanation continues.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 18 / 73
+Ambulances in Zones 1, 2, 5
+
+Table 10. Ambulance covering zones that don’t overlap in 1, 2, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 3   | 48  | 25.5  |              |            |     |          | 48  |
+| --- | --- | --- | ----- | ------------ | ---------- | --- | -------- | --- |
+|     |     |     |       | 48 * 25.5 =  | 1440-1224  |     | 1224     |     |
+|     |     |     |       | 1224         | = 216      |     | minutes  |     |
+M
+|     |     |     |     | minutes  | minutes   |     |     |     |
+| --- | --- | --- | --- | -------- | --------- | --- | --- | --- |
+5  4,5,6  88, 56, 32  21, 4, 6  88*21+56*4 1440-2264  C1024, 224,  49, 56, 32
+|     |     |     |     | +32*6 =  | = 824      |     | 192,   |     |
+| --- | --- | --- | --- | -------- | ---------- | --- | ------ | --- |
+|     |     |     |     | 2264     | minutes    | M   |        |     |
+|     |     |     |     | minutes  | overtime   |     |        |     |
+
+i
+Table 11. Ambulance covering zones that do overlap iHn 1, 2, 5 configuration
+Zones covered   Ambulanc Calls from  Time ：Total time  Excess  Time  Calls
+e #   the zone  spent per  spent  time  Allocated   Actually
+|     |     |     |     |            | (minutes)  |            |     | Taken  |
+| --- | --- | --- | --- | ---------- | ---------- | ---------- | --- | ------ |
+|     |     |     |     | journey    |            | remaining  |     |        |
+|     |     |     |     | (minutes)  |            | (minutes)  |     |        |
+号
+| 1 (until no time left)  |     | 1   | 80  | 2   |           |           |          | 80  |
+| ----------------------- | --- | --- | --- | --- | --------- | --------- | -------- | --- |
+|                         |     |     |     |     | 80 * 2 =  | 1440-160  | 160      |     |
+|                         |     |     |     |     | 160       | = 1280    | minutes  |     |
+众
+|     |     |     |     |     | minutes  | minutes  |     |     |
+| --- | --- | --- | --- | --- | -------- | -------- | --- | --- |
+2 (until no time left)  2  128  2  128*2 =  216-256=  216  108
+|     |     | 公   |     |     | 256  | 40  |     |     |
+| --- | --- | --- | --- | --- | ---- | --- | --- | --- |
+minutes
+minutes
+overtime
+信
+| 2 (after 2 ran out)  |     | 1   |          | 17  |            |            |          | 20  |
+| -------------------- | --- | --- | -------- | --- | ---------- | ---------- | -------- | --- |
+|                      |     |     | Remainin |     | 17*20=34   | 1280-340   | 340      |     |
+|                      |     |     | g: 20    |     | 0 minutes  | minutes =  | minutes  |     |
+940
+微
+minutes
+
+Table 12. Results of ambulance covering zones for 1, 2, 5 configuration
+| Total Calls Taken                  |     |     | 48 + 49 + 56 + 32 + 80 +108 + 20 = 393  |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------------------------------- | --- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                                     |     |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 90.97%                                  |     |     |     |     |     |
+| Population                         |     |     |  245,625 people covered                 |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 19 / 73
+Ambulances in Zones 1, 3, 4
+
+Table 13. Ambulance covering zones that don’t overlap in 1, 3, 4 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 1   | 1,2  | 80,128  | 2, 17  |            |            | 554, 886  | 80, 75  |
+| --- | ---- | ------- | ------ | ---------- | ---------- | --------- | ------- |
+|     |      |         |        | 80*2+128*1 | 1440-2336  |           |         |
+|     |      |         |        | 7 = 2336   | = 896      |           |         |
+M
+|     |     |     |     | minutes  | minutes  |     |     |
+| --- | --- | --- | --- | -------- | -------- | --- | --- |
+overtime
+C
+3  5,6  56,32  18, 10  56*18+32*1 1440-1328=  1008, 320  56, 32
+|     |     |     |     | 0 = 1328    | 112  M         |      |     |
+| --- | --- | --- | --- | ----------- | -------------- | ---- | --- |
+|     |     |     |     | minutes     | minutes        |      |     |
+| 4   | 4   | 88  | 2   | 88*2 = 176  | 14 i 40-176 =  | 176  | 88  |
+H
+|     |     |     |     | minutes  | 1264  |     |     |
+| --- | --- | --- | --- | -------- | ----- | --- | --- |
+minutes
+：
+
+Table 14. Ambulance covering zones that do overlap in 1, 3, 4 configuration
+号
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+covered   #   the zone  per journey  spent  time  Allocated   Actually
+|     |     |     | 众(minutes)  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | ----------- | ---------- | ---------- | --- | ------ |
+(minutes)
+3 (until no  3   48  3  48*3 = 144  112-144 =  112  37 calls
+公
+| time left)  |     |     |     | minutes  |     | minutes  |     |
+| ----------- | --- | --- | --- | -------- | --- | -------- | --- |
+32 minutes
+overtime
+| 3 (after    | 4  信 | Remaining:  | 17  | 11*17 =   | 1264-187 =  | 187      | 11  |
+| ----------- | ---- | ----------- | --- | --------- | ----------- | -------- | --- |
+| ambulance   |      | 11          |     | 187       | 1077        | minutes  |     |
+| 3 ran out)  |      |             |     | minutes   | remaining   |          |     |
+微
+
+Table 15. Results for ambulance covering zones for 1, 3, 4 configuration
+| Total Calls Taken                  |     |     | 80+75+56+32+88+37+11 = 379  |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------------------- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                         |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 87.73%                      |     |     |     |     |
+| Population covered                 |     |     | 236871                      |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 20 / 73
+Ambulances in Zones 1, 3, 5
+
+Table 16. Ambulance covering zones that don’t overlap in 1, 3, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 1   | 1,2  | 80,128  | 2, 17  |            |            | 160, 1280  | 80, 75  |
+| --- | ---- | ------- | ------ | ---------- | ---------- | ---------- | ------- |
+|     |      |         |        | 80*2+128*1 | 1440-2336  |            |         |
+|     |      |         |        | 7 = 2336   | = 896      |            |         |
+M
+|     |     |     |     | minutes  | minutes  |     |     |
+| --- | --- | --- | --- | -------- | -------- | --- | --- |
+overtime
+C
+| 3   | 3   | 48  | 3   | 48*3 = 144  | 1440-144=  | 144      | 48  |
+| --- | --- | --- | --- | ----------- | ---------- | -------- | --- |
+|     |     |     |     | minutes     |            | minutes  |     |
+1296  M
+minutes
+| 5   | 4   | 88  | 21  | 88*21 =  | 14 i 40-1848  | 1440  | 69   |
+| --- | --- | --- | --- | -------- | ------------- | ----- | ---- |
+H
+|     |     |     |     | 1848     | = 509    |     |     |
+| --- | --- | --- | --- | -------- | -------- | --- | --- |
+|     |     |     |     | minutes  | minutes  |     |     |
+：
+overtime
+
+Table 17. Ambulance covering zones th号at do overlap in 1, 3, 5 configuration
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+| covered   | #   | the zone  |                |            |            | Allocated   |           |
+| --------- | --- | --------- | -------------- | ---------- | ---------- | ----------- | --------- |
+|           |     |           | 众 per journey  | spent      | time       |             | Actually  |
+|           |     |           | (minutes)      | (minutes)  | remaining  |             | Taken     |
+(minutes)
+公
+| 6   | 3   | 3 2  | 10  | 32*10 =  | 1296-320 =  | 320      | 32  |
+| --- | --- | ---- | --- | -------- | ----------- | -------- | --- |
+|     |     |      |     | 320      | 976         | minutes  |     |
+|     |     |      |     | minutes  | minutes     |          |     |
+信
+| 5   | 3   | 56  | 18   | 56*18 =  | 976-1008 =  | 187  | 11  |
+| --- | --- | --- | ---- | -------- | ----------- | ---- | --- |
+minutes
+|     |     |     |     | 1008      | 32 minutes  |     |     |
+| --- | --- | --- | --- | --------- | ----------- | --- | --- |
+|     | 微   |     |     | minutes   | over        |     |     |
+
+Table 18: Results for ambulance covering zones for 1, 3, 5 configuration
+| Total Calls Taken                  |     |     | 80+75+48+69+32+11 = 315  |     |     |     |     |
+| ---------------------------------- | --- | --- | ------------------------ | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                      |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 72.9%                    |     |     |     |     |
+| Population covered                 |     |     | 196,875 people           |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 21 / 73
+Ambulances in Zones 1, 4, 5
+
+Table 19. Ambulance covering zones that don’t overlap in 1, 4, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 1   | 1, 2  | 80, 128  | 2, 17  |           |              |     | 160, 1280  | 80, 75  |
+| --- | ----- | -------- | ------ | --------- | ------------ | --- | ---------- | ------- |
+|     |       |          |        | 2*80 +    | 1440 - 2336  |     |            |         |
+|     |       |          |        | 128*17 =  | = 896        |     |            |         |
+M
+|     |     |     |     | 2336  | minutes  |     |     |     |
+| --- | --- | --- | --- | ----- | -------- | --- | --- | --- |
+over
+C
+| 4   | 3   | 48  | 17.5   | 48 * 17.5 =  | 1440 - 840  |     | 840  | 48  |
+| --- | --- | --- | ------ | ------------ | ----------- | --- | ---- | --- |
+|     |     |     |        | 840          | = 600       |     |      |     |
+M
+5  5, 6  56, 32  4, 6  56 * 4  + 32  14 i 40 - 416  224, 192  56, 32
+H
+|     |     |     |     | * 6 = 416  | = 1024  |     |     |     |
+| --- | --- | --- | --- | ---------- | ------- | --- | --- | --- |
+：
+
+Table 20. Ambulance covering zones that do overlap in 1, 4, 5 configuration
+号
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+e #   the zone  spent per  spent  time  Allocated   Actually
+|     |     |     | 众journey  |            | (minutes)  | remaining  |      | Taken  |
+| --- | --- | --- | --------- | ---------- | ---------- | ---------- | ---- | ------ |
+|     |     |     |           | (minutes)  |            | (minutes)  |      |        |
+| 4   |     | 4   | 88        | 2          | 88 * 2 =   | 600 - 176  | 176  | 88     |
+公
+|     |     |     |     |     | 176  | = 424  |     |     |
+| --- | --- | --- | --- | --- | ---- | ------ | --- | --- |
+
+Table 21. Results信 for ambulance covering zones for 1, 4, 5 configuration
+| Total Calls Taken  |     |     | 80 + 75 + 48 +56 + 32+ 88 = 379  |     |     |     |     |     |
+| ------------------ | --- | --- | -------------------------------- | --- | --- | --- | --- | --- |
+微
+| Calls made in the county           |     |     | 432             |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     | 87.73%          |     |     |     |     |     |
+| Population covered                 |     |     | 236,875 people  |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 22 / 73
+Ambulances in Zones 1, 4, 6
+
+Table 22. Ambulance covering zones that don’t overlap in 1, 4, 6 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 1   | 1, 2  | 80, 128  | 2, 17  |           |              |     | 160, 1280  | 80, 75  |
+| --- | ----- | -------- | ------ | --------- | ------------ | --- | ---------- | ------- |
+|     |       |          |        | 2*80 +    | 1440 - 2336  |     |            |         |
+|     |       |          |        | 128*17 =  | = 896        |     |            |         |
+M
+|     |     |     |     | 2336  | minutes  |     |     |     |
+| --- | --- | --- | --- | ----- | -------- | --- | --- | --- |
+over
+C
+| 4   | 4   | 88  | 2   | 88*2 = 176  | 1440-176 =  |     | 176  | 88  |
+| --- | --- | --- | --- | ----------- | ----------- | --- | ---- | --- |
+minutes
+|     |     |     |     |     | 1264  | M   |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+minutes
+6  5, 6  56, 32  6, 4  6 * 56 + 32  14 i 40 - 464  336, 128  56, 32
+H
+|     |     |     |     | * 4 = 464  | = 976  |     |     |     |
+| --- | --- | --- | --- | ---------- | ------ | --- | --- | --- |
+minutes
+：
+
+Table 23. Ambulance covering zones that do overlap in 1, 4, 6 configuration
+号
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+e #   the zone  spent per  spent  time  Allocated   Actually
+|     |     |          | 众journey  |            | (minutes)   | remaining  |      | Taken  |
+| --- | --- | -------- | --------- | ---------- | ----------- | ---------- | ---- | ------ |
+|     |     |          |           | (minutes)  |             | (minutes)  |      |        |
+| 3   |     | 4, 6 (6  | 48        | 9.5        | 9.5 * 48 =  | 976 - 456  | 456  | 48     |
+公
+|     |     | used)  |     |     | 456  | = 520  |     |     |
+| --- | --- | ------ | --- | --- | ---- | ------ | --- | --- |
+
+Table 24. Results信 for ambulance covering zones for 1, 4, 6 configuration
+| Total Calls Taken  |     |     | 80 + 75 + 88 + 56 + 52 + 48 = 399  |     |     |     |     |     |
+| ------------------ | --- | --- | ---------------------------------- | --- | --- | --- | --- | --- |
+微
+| Calls made in the county           |     |     | 432             |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     | 92.36 %         |     |     |     |     |     |
+| Population covered                 |     |     | 249,375 people  |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 23 / 73
+Ambulances in Zone 1, 5, 6
+
+Table 25. Ambulance covering zones that don’t overlap in 1, 5, 6 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 1   | 1, 2  | 80, 128  | 2, 17  |           |              | 160, 1280  | 80, 75  |
+| --- | ----- | -------- | ------ | --------- | ------------ | ---------- | ------- |
+|     |       |          |        | 2*80 +    | 1440 - 2336  |            |         |
+|     |       |          |        | 128*17 =  | = 896        |            |         |
+M
+|     |     |     |     | 2336  | minutes  |     |     |
+| --- | --- | --- | --- | ----- | -------- | --- | --- |
+over
+C
+| 5   | 4   | 88  | 21  | 88 * 21 =  | 1440 - 1848  | 1440  | 69  |
+| --- | --- | --- | --- | ---------- | ------------ | ----- | --- |
+1848
+= 408  M
+minutes
+overtime
+i
+| 6   | 3   | 48  | 9.5  | 48 * 9.5 = H1440 - 456  |        | 456  | 48  |
+| --- | --- | --- | ---- | ----------------------- | ------ | ---- | --- |
+|     |     |     |      | 456                     | = 984  |      |     |
+：
+
+Table 26. Ambulance covering zones th号at do overlap in 1, 5, 6 configuration
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+| covered   | #   | the zone  |                |            |            | Allocated   |           |
+| --------- | --- | --------- | -------------- | ---------- | ---------- | ----------- | --------- |
+|           |     |           | 众 per journey  | spent      | time       |             | Actually  |
+|           |     |           | (minutes)      | (minutes)  | remaining  |             | Taken     |
+(minutes)
+公
+| 6   | 6       | 3 2  | 4   | 4 * 32 =  | 984-128 =    | 128  | 32  |
+| --- | ------- | ---- | --- | --------- | ------------ | ---- | --- |
+|     |         |      |     | 128       | 856          |      |     |
+| 5   | 6  信56  |      | 6   | 6 * 56 =  | 856 - 336 =  | 336  | 56  |
+|     |         |      |     | 336       | 520          |      |     |
+
+微
+Table 27. Results for ambulance covering zones for 1, 5, 6 configuration
+| Total Calls Taken                  |     |     | 80 + 75 + 69 + 48 + 32 + 56 = 360  |     |     |     |     |
+| ---------------------------------- | --- | --- | ---------------------------------- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                                |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 83.3%                              |     |     |     |     |
+| Population covered                 |     |     | 225,000 people                     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 24 / 73
+Ambulances in Zones 2, 2, 5
+
+Table 28. Ambulance covering zones that don’t overlap in 2, 2, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 5   | 4, 5, 6  | 88, 56, 32  | 21, 4, 6  |              |              |             | 49, 56, 32  |
+| --- | -------- | ----------- | --------- | ------------ | ------------ | ----------- | ----------- |
+|     |          |             |           | 1848 +  224  | 1440 - 2264  | 1024, 224,  |             |
+|     |          |             |           | +  192 =     | = 824        | 192         |             |
+M
+|     |     |     |     | 2264  | minutes  |     |     |
+| --- | --- | --- | --- | ----- | -------- | --- | --- |
+overtime
+C
+
+Table 29. Ambulance covering zones that do overlap in 2, 2, 5 configuration
+M
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+covered   #   the zone  per journey  spent  time  Allocated   Actually
+i
+|     |     |     | (minutes)  | (minutes)  | Hremaining  |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | ----------- | --- | ------ |
+(minutes)
+：
+| 2   | 2   | 128  | 2   | 256  | 1440-256 =  | 256  | 128  |
+| --- | --- | ---- | --- | ---- | ----------- | ---- | ---- |
+1
+1184
+号
+| 1 (until no  | 2   | 80  | 17  | 1360  | 1184 - 1360  | 1184  | 70  |
+| ------------ | --- | --- | --- | ----- | ------------ | ----- | --- |
+1
+time left)
+= 176
+minutes
+众
+overtime
+| 1 (after   | 2 2   | Remaining:  | 17  | 170  | 1440 - 170  | 170  | 10  |
+| ---------- | ----- | ----------- | --- | ---- | ----------- | ---- | --- |
+| ambulance  |       | 1公0         |     |      | = 1270      |      |     |
+ ran out)
+2 1
+| 3   | 2   信48  |     | 25.5  | 1224  | 1270 - 1224  | 1224  | 48  |
+| --- | -------- | --- | ----- | ----- | ------------ | ----- | --- |
+2
+= 46
+
+微
+Table 30. Results for ambulance covering zones for 2, 2, 5 configuration
+| Total Calls Taken                  |     |     | 49 + 56 + 32 +128 + 70 + 10 + 48 = 393  |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------------------------------- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                                     |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 90.97%                                  |     |     |     |     |
+| Population covered                 |     |     | 245,625 people                          |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 25 / 73
+Ambulances in Zones 2, 3, 4
+
+Table 31. Ambulance covering zones that don’t overlap in 2, 3, 4 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1, 2,  | 80, 128  |  17, 2  |             |              | 1184, 256  | 70, 128  |
+| --- | ------ | -------- | ------- | ----------- | ------------ | ---------- | -------- |
+|     |        |          |         | 1360 + 256  | 1440 - 1616  |            |          |
+|     |        |          |         | = 1616      | = 176        |            |          |
+M
+minutes
+overtime
+C
+3  5, 6  56, 32  18, 10  1008 + 320  1440 - 1328  1008, 320  56, 32
+|     |     |     |     | = 1328  | = 112  |     |     |
+| --- | --- | --- | --- | ------- | ------ | --- | --- |
+M
+| 4   | 4   | 88  | 2   | 88*2 = 176  | 14 i 40-176 =  | 176  | 88  |
+| --- | --- | --- | --- | ----------- | -------------- | ---- | --- |
+H
+|     |     |     |     | minutes  | 1264  |     |     |
+| --- | --- | --- | --- | -------- | ----- | --- | --- |
+minutes
+：
+
+Table 32. Ambulance covering zones that do overlap in 2, 3, 4 configuration
+号
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+covered   #   the zone  per journey  spent  time  Allocated   Actually
+|     |     |     | 众(minutes)  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | ----------- | ---------- | ---------- | --- | ------ |
+(minutes)
+| 3 (until no  | 3   | 48  | 3   | 144  | 112 - 144 =  | 112  | 37  |
+| ------------ | --- | --- | --- | ---- | ------------ | ---- | --- |
+公
+time left)
+32 minutes
+overtime
+| 3 (after    | 4  信 | 11  | 17.5  | 192.5  | 1264 -   | 192.5  | 11  |
+| ----------- | ---- | --- | ----- | ------ | -------- | ------ | --- |
+| ambulance   |      |     |       |        | 192.5 =  |        |     |
+| 3 ran out)  |      |     |       |        | 1071.5   |        |     |
+微
+
+Table 33. Results for ambulance covering zones for 2, 3, 4 configuration
+| Total Calls Taken                  |     |     | 70+128+56+32+88+37+11 = 422  |     |     |     |     |
+| ---------------------------------- | --- | --- | ---------------------------- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                          |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 97.7%                        |     |     |     |     |
+| Population covered                 |     |     | 263,750 people               |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 26 / 73
+Ambulances in Zone 2, 3, 5
+
+Table 34. Ambulance covering zones that don’t overlap in 2, 3, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1, 2,  | 80, 128  |  17, 2  |             |              |     | 1184, 256  | 70, 128  |
+| --- | ------ | -------- | ------- | ----------- | ------------ | --- | ---------- | -------- |
+|     |        |          |         | 1360 + 256  | 1440 - 1616  |     |            |          |
+|     |        |          |         | = 1616      | = 176        |     |            |          |
+M
+minutes
+overtime
+C
+| 5   | 4   | 88  | 21  | 88*21 =  | 1440-1848  |     | 1440  | 69   |
+| --- | --- | --- | --- | -------- | ---------- | --- | ----- | ---- |
+|     |     |     |     | 1848     | = 509      | M   |       |      |
+|     |     |     |     | minutes  | minutes    |     |       |      |
+overtime
+i
+
+H
+Table 35. Ambulance covering zones that do overlap in 2, 3, 5 configuration
+：
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+|     |     | e #   | the zone  |            |            |            | Allocated   |           |
+| --- | --- | ----- | --------- | ---------- | ---------- | ---------- | ----------- | --------- |
+|     |     |       |           | spent per  | spent      | time       |             | Actually  |
+|     |     |       |           | journey    | (minutes)  | remaining  |             | Taken     |
+号
+|     |     |     |     | (minutes)  |      | (minutes)  |      |     |
+| --- | --- | --- | --- | ---------- | ---- | ---------- | ---- | --- |
+| 3   |     | 3   | 48  | 3          | 144  | 1440 -     | 144  | 48  |
+众
+144 =
+1296
+| 6   |     | 3 公32  |     | 10  | 320  | 1296 -  | 320  | 32  |
+| --- | --- | ------ | --- | --- | ---- | ------- | ---- | --- |
+320 =
+976
+信
+| 5   |     | 3   | 56  | 18  | 1008  |     | 976  | 54  |
+| --- | --- | --- | --- | --- | ----- | --- | ---- | --- |
+976 -
+1008 = 32
+minutes
+微
+overtime
+
+Table 36. Results for ambulance covering zones for 2, 3, 5 configuration
+| Total Calls Taken                  |     |     | 70+128+69+48+32+54 = 401  |     |     |     |     |     |
+| ---------------------------------- | --- | --- | ------------------------- | --- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                       |     |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 92.8%                     |     |     |     |     |     |
+| Population covered                 |     |     | 256,194 people            |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 27 / 73
+Ambulances in Zones 2, 4, 5
+
+Table 37. Ambulance covering zones that don’t overlap in 2, 4, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1, 2  | 80, 128  | 17, 2  |             |              | 1184, 256  | 70, 128  |
+| --- | ----- | -------- | ------ | ----------- | ------------ | ---------- | -------- |
+|     |       |          |        | 1360 + 256  | 1440 - 1616  |            |          |
+|     |       |          |        | = 1616      | = 176        |            |          |
+M
+minutes
+overtime
+C
+5  5, 6  56, 32  4, 6  56 * 4  + 32  1440 - 416  224, 192  56, 32
+|     |     |     |     | * 6 = 416  | = 1024  |     |     |
+| --- | --- | --- | --- | ---------- | ------- | --- | --- |
+M
+
+i
+Table 38. Ambulance covering zones that do overlap in 2, 4, 5 configuration  H
+Zones  Ambulance  Calls from  Time spent  ：Total time  Excess  Time  Calls
+covered   #   the zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | ---------- | --- | ------ |
+(minutes)
+号
+| 3   | 4   | 48  | 17.5  | 840  | 1440 - 840  | 840  | 48  |
+| --- | --- | --- | ----- | ---- | ----------- | ---- | --- |
+= 600
+众
+| 4   | 4   | 88  | 2   | 196  | 600 - 196 =  | 196  | 88  |
+| --- | --- | --- | --- | ---- | ------------ | ---- | --- |
+404
+公
+
+Table 39. Results for ambulance covering zones for 2, 4, 5 configuration
+信
+| Total Calls Taken         |     |     | 70+128+56+32+48+88 = 422  |     |     |     |     |
+| ------------------------- | --- | --- | ------------------------- | --- | --- | --- | --- |
+| Calls made in the county  |     |     | 432                       |     |     |     |     |
+微
+| Percentage of calls taken/covered  |     |     | 97.7%            |     |     |     |     |
+| ---------------------------------- | --- | --- | ---------------- | --- | --- | --- | --- |
+| Population covered                 |     |     | 263,750  people  |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 28 / 73
+Ambulances in Zones 2, 4, 6
+
+Table 40. Ambulance covering zones that don’t overlap in 2, 4, 6 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1, 2  | 80, 128  | 17, 2  |             |              |     | 1184, 256  | 70, 128  |
+| --- | ----- | -------- | ------ | ----------- | ------------ | --- | ---------- | -------- |
+|     |       |          |        | 1360 + 256  | 1440 - 1616  |     |            |          |
+|     |       |          |        | = 1616      | = 176        |     |            |          |
+M
+minutes
+overtime
+C
+| 4   | 4   | 88  | 2   | 176  | 1440 - 176  |     | 176  | 88  |
+| --- | --- | --- | --- | ---- | ----------- | --- | ---- | --- |
+|     |     |     |     |      | = 1264      | M   |      |     |
+minutes
+6  5, 6  56, 32  6, 4  336 + 128 =  14 i 40 - 464  336, 128  56, 32
+H
+|     |     |     |     | 464  | = 976  |     |     |     |
+| --- | --- | --- | --- | ---- | ------ | --- | --- | --- |
+minutes
+：
+
+Table 41. Ambulance covering zones that do overlap in 2, 4, 6 configuration
+号
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+e #   the zone  spent per  spent  time  Allocated   Actually
+|     |     |     | 众journey  |            | (minutes)  | remaining  |      | Taken  |
+| --- | --- | --- | --------- | ---------- | ---------- | ---------- | ---- | ------ |
+|     |     |     |           | (minutes)  |            | (minutes)  |      |        |
+| 3   |     | 6   | 48        | 9.5        | 456        | 976 - 456  | 456  | 48     |
+公
+= 520
+
+Table 42. Results信 for ambulance covering zones for 2, 4, 6 configuration
+| Total Calls Taken  |     |     | 70+128+88+56+32+48 = 422  |     |     |     |     |     |
+| ------------------ | --- | --- | ------------------------- | --- | --- | --- | --- | --- |
+微
+| Calls made in the county           |     |     | 432              |     |     |     |     |     |
+| ---------------------------------- | --- | --- | ---------------- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     | 97.7%            |     |     |     |     |     |
+| Population covered                 |     |     | 263,750  people  |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 29 / 73
+Ambulances in Zones 2, 5, 5
+
+Table 43. Ambulance covering zones that don’t overlap in 2, 5, 5 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1,2,3  | 80, 128, 48  | 17, 2, 25.5  |            |            | 1184,256,0  | 70,128,0  |
+| --- | ------ | ------------ | ------------ | ---------- | ---------- | ----------- | --------- |
+|     |        |              |              | 80*17+128* | 1440-      |             |           |
+|     |        |              |              | 2+48*25.5= | 2840=1400  |             |           |
+M
+|     |     |     |     | 2840     | minutes   |     |     |
+| --- | --- | --- | --- | -------- | --------- | --- | --- |
+|     |     |     |     | minutes  | overtime  |     |     |
+C
+
+Table 44. Ambulance covering zones that do overlap in 2, 5, 5 configuration
+M
+Zones  Ambulance  Calls from  Time spent  Total time  Excess  Time  Calls
+covered   #   the zone  per journey  spent  time  Allocated   Actually
+i
+|     |     |     | (minutes)  | (minutes)  | Hremaining  |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | ----------- | --- | ------ |
+(minutes)
+：
+| 5   | 5   | 56  | 4   | 224  | 1440 - 224  | 224  | 56  |
+| --- | --- | --- | --- | ---- | ----------- | ---- | --- |
+1
+= 1216
+号
+| 6   | 5   | 32  | 6   | 192  | 1216 - 192  | 192  | 32  |
+| --- | --- | --- | --- | ---- | ----------- | ---- | --- |
+1
+= 1024
+众
+| 4   | 5   | 88  | 21  | 1848  | 1024 - 1848  | 1024  | 49  |
+| --- | --- | --- | --- | ----- | ------------ | ----- | --- |
+1
+= 824
+minutes
+|     |        | 公          |     |      | overtime    |      |     |
+| --- | ------ | ---------- | --- | ---- | ----------- | ---- | --- |
+| 4   |        |            | 21  | 819  |             | 819  | 39  |
+|     | 5 2    | Remaining  |     |      | 1440 - 819  |      |     |
+|     | 信= 39  |            |     |      | = 621       |      |     |
+
+Table 45. Results for ambulance covering zones for 2, 5, 5 configuration
+微
+| Total Calls Taken                  |     |     | 70+128+0+56+32+49+39 = 374  |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------------------- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                         |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 86.6%                       |     |     |     |     |
+| Population covered                 |     |     | 233,750 people              |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 30 / 73
+Ambulances in Zones 2, 5, 6
+
+Table 46. Ambulance covering zones that don’t overlap in 2, 5, 6 configuration
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+#   covered   zone  per journey  spent  time  Allocated   Actually
+|     |     |     | (minutes)  | (minutes)  |     |     |     | Taken  |
+| --- | --- | --- | ---------- | ---------- | --- | --- | --- | ------ |
+remaining
+(minutes)
+| 2   | 1, 2  | 80, 128  | 17, 2  |             |              |     | 1184, 256  | 70, 128  |
+| --- | ----- | -------- | ------ | ----------- | ------------ | --- | ---------- | -------- |
+|     |       |          |        | 1360 + 256  | 1440 - 1616  |     |            |          |
+|     |       |          |        | = 1616      | = 176        |     |            |          |
+M
+minutes
+overtime
+C
+| 5   | 4   | 88  | 21  | 1848  | 1440 - 1848  |     | 1440  | 69  |
+| --- | --- | --- | --- | ----- | ------------ | --- | ----- | --- |
+|     |     |     |     |       | = 408        | M   |       |     |
+minutes
+overtime
+i
+
+H
+Table 47. Ambulance covering zones that do overlap in 2, 5, 6 configuration
+：
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+|     |     | e #   | the zone  |            |            |            | Allocated   |           |
+| --- | --- | ----- | --------- | ---------- | ---------- | ---------- | ----------- | --------- |
+|     |     |       |           | spent per  | spent      | time       |             | Actually  |
+|     |     |       |           | journey    | (minutes)  | remaining  |             | Taken     |
+号
+|     |     |     |     | (minutes)  |      | (minutes)  |      |     |
+| --- | --- | --- | --- | ---------- | ---- | ---------- | ---- | --- |
+| 6   |     |  6  | 32  | 4          | 128  | 1440 -     | 128  | 32  |
+众
+128 =
+1312
+| 5   |     | 6 公56  |     | 6   | 336  | 1312 -  | 336  | 56  |
+| --- | --- | ------ | --- | --- | ---- | ------- | ---- | --- |
+336 = 976
+| 3   | 信6  |     | 48  | 9.5  | 456  | 976 - 456  | 456  | 48  |
+| --- | --- | --- | --- | ---- | ---- | ---------- | ---- | --- |
+= 520
+
+微
+Table 48. Results for ambulance covering zones for 2, 5, 6 configuration
+| Total Calls Taken                  |     |     | 70+128+69+32+56+48 = 403  |     |     |     |     |     |
+| ---------------------------------- | --- | --- | ------------------------- | --- | --- | --- | --- | --- |
+| Calls made in the county           |     |     | 432                       |     |     |     |     |     |
+| Percentage of calls taken/covered  |     |     | 93.3%                     |     |     |     |     |     |
+| Population covered                 |     |     | 251,875 people            |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 31 / 73
+Summary of Configurations
+
+Table 49. Summary of tables 10 through 48.
+| Configuration  | Percent Calls Answered  | Population Covered  |
+| -------------- | ----------------------- | ------------------- |
+| 1,2,5          | 91.0%                   | 245,625             |
+| 1,3,4          | 87.7%                   | 236,871             |
+M
+| 1,3,5  | 72.9%  | 196,875  |
+| ------ | ------ | -------- |
+C
+| 1,4,5  | 87.7%  | 236,875  |
+| ------ | ------ | -------- |
+M
+| 1,4,6  | 92.4%  | 249,375   |
+| ------ | ------ | --------- |
+| 1,5,6  | 83.3%  | i225,000  |
+H
+| 2,2,5  | 91.0%  | 245,625  |
+| ------ | ------ | -------- |
+：
+| 2,3,4  | 97.7%  | 263,750  |
+| ------ | ------ | -------- |
+| 2,3,5  | 92.8%  | 256,194  |
+号
+| 2,4,5  | 97.7%  | 263,750  |
+| ------ | ------ | -------- |
+众
+| 2,4,6  | 97.7%  | 263,750  |
+| ------ | ------ | -------- |
+| 2,5,5  | 86.6%  | 233,750  |
+公
+| 2,5,6  | 93.3%  | 251,875  |
+| ------ | ------ | -------- |
+
+信
+  Out of all of the configurations listed above, it is clear that there are three configurations
+that are much better than the rest, with 97.7% of all calls answered and 263,750 people out of
+270,000 to微tal. In fact, the next best configuration covers only 251,875 people out of 270,000
+total, just 93.3%. Even with the best possible configuration, it is not possible to cover every
+single person in the city, as no configuration of ambulances could answer all the calls. There are
+ways to optimize the path of the ambulance further, for example, picking up multiple patients
+before dropping by a hospital, but this would come at the cost of the victims and the probability
+that they survive the ambulance trip. It would also require us to make additional assumptions on
+the level of care that can be provided in the ambulance, and Occam’s Razor advises that we
+minimize the number of unnecessary assumptions.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 32 / 73
+From the three remaining configurations that each had 97.7% population coverage,
+namely,
+2,3,4 2,4,5 2,4,6
+we need to choose one to be the optimal configuration to recommend to the ESC. While they all
+cover the same percentage of people, there are ways to differentiate them. One anomaly
+observed in calculating this data was that all of these configurations had some ambulances with
+excess minutes. However, these ambulances with excess minutes could not help out other
+M
+ambulances that didn’t have enough time, because they could not reach the necessary zone
+within 8 minutes. Therefore, a good criteria for determining the best configuration is which
+system has most excess minutes out of all the configurations, as these eCxcess minutes allow
+the ambulance to reach people that do not need to be reached within 8 minutes but are still in
+M
+critical condition, or allowing time for the ambulance to resupply. Table 50 shows the excess
+minutes for each of the three optimum configurations highlighted yellow in table 49.
+i
+H
+Table 50. Comparing excess minutes for the 3 optimum configurations
+Configuration E
+：
+xcess Minutes
+2, 3, 4 1071.5
+号
+2, 4, 5 1024 + 404 = 1428
+2, 4, 6 1264 + 520 = 1784
+众
+From table 50, it is clear that the configuration 2,4,6 is the best in terms of extra minutes,
+公
+meaning that the ambulances in 2,4,6 have the most spare time to rescue others while still
+maintaining the maximum possible number of people served under our 8 minute constraint.
+Clearly, having an信 ambulance in zone 2, an ambulance in zone 4, and an ambulance in zone 6
+is the best way to cover the most people while still having the most free time to be able to
+rescue other people that can be reached in over 8 minutes.
+微
+Counting only people reachable within 8 minutes as per problem requirements, there
+would be 6,250 people who are left without service in the worst case scenario, as out of the
+270,000 people in the county, there are 263,750 people who are accounted for. However, given
+the amount of time that the ambulances have under the 2,4,6 configuration, the number of
+people left without service would probably be even lower. Depending on the locations of these
+people and the frequency with which this occurs, number of people left without service could
+potentially be 0 on some days, although this is not very likely.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 33 / 73
+Part 3
+Operation with 2 ambulances
+Next, we are presented with the scenario of one ambulance being away on a call, so we
+must determine where to place ambulances with only two ambulances for maximum possible
+coverage. Although we are asked to find if we can cover every person, since we cannot cover
+every person with three ambulances, it is impossible to cover every person wMith two
+ambulances. However, we can still find the total number of people that can be covered. With
+only two ambulances, the same method of ambulance travel still applies, there are simply fewer
+C
+ambulances. The same graphic as in figure 1 is provided again as a reminder, though it is
+interesting to note now that in fact an ambulance in zone 2 is a prMactical solution, as we saw in
+the three ambulance scenario.
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 3. How an ambulance reaches calls
+To determine the ideal placement of ambulances with only two ambulances, we must
+follow much the same process and commence with a table of all configurations of two
+ambulance’s positions, table 51. This process again would start off by seeing how many people
+any two configurations of ambulances could cover within in 8 minutes. Following this, we would
+determine how many people those two ambulances could reach.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 34 / 73
+Table 51. Zones and people covered by two ambulances' location
+Configuration (A,B)  Zone A Cover  Zone B Cover  Total Zones  People Covered
+Covered
+| 1,1  | 1,2  | 1,2    | 1,2        | 130000  |
+| ---- | ---- | ------ | ---------- | ------- |
+| 1,2  | 1,2  | 1,2,3  | 1,2,3      | 160000  |
+| 1,3  | 1,2  | 3,5,6  | 1,2,3,5,6  | 215000  |
+M
+| 1,4  | 1,2  | 3,4    | 1,2,3,4    | 215000  |
+| ---- | ---- | ------ | ---------- | ------- |
+| 1,5  | 1,2  | 4,5,6  | 1,2,4,5,6  | 240000  |
+C
+| 1,6  | 1,2  | 3,5,6  | 1,2,3,5,6  | 215000  |
+| ---- | ---- | ------ | ---------- | ------- |
+M
+| 2,2  | 1,2,3  | 1,2,3  | 1,2,3  | 160000  |
+| ---- | ------ | ------ | ------ | ------- |
+i
+| 2,3  | 1,2,3  | 3,5,6          | H1,2,3,5,6   | 215000  |
+| ---- | ------ | -------------- | ------------ | ------- |
+| 2,4  | 1,2,3  | 3,4  ：1,2,3,4  |              | 215000  |
+| 2,5  | 1,2,3  | 4,5,6          | 1,2,3,4,5,6  | 270000  |
+号
+| 2,6  | 1,2,3  | 3,5,6  | 1,2,3,5,6  | 215000  |
+| ---- | ------ | ------ | ---------- | ------- |
+| 3,3  | 3,5,6  | 3,5,6  | 3,5,6      | 85000   |
+众
+| 3,4  | 3,5,6          | 3,4    | 3,4,5,6  | 140000  |
+| ---- | -------------- | ------ | -------- | ------- |
+| 3,5  | 3,5,6  公4,5,6  |        | 3,4,5,6  | 140000  |
+| 3,6  | 3,5,6          | 3,5,6  | 3,5,6    | 85000   |
+信
+| 4,4  | 3,4  | 3,4    | 3,4      | 85000   |
+| ---- | ---- | ------ | -------- | ------- |
+| 4,5  | 3,4  | 4,5,6  | 3,4,5,6  | 140000  |
+微
+| 4,6  | 3,4    | 3,5,6  | 3,4,5,6  | 140000  |
+| ---- | ------ | ------ | -------- | ------- |
+| 5,5  | 4,5,6  | 4,5,6  | 4,5,6    | 110000  |
+| 5,6  | 4,5,6  | 3,5,6  | 3,4,5,6  | 140000  |
+| 6,6  | 3,5,6  | 3,5,6  | 3,5,6    | 85000   |
+
+We start with 36 permutations for the ambulance locations: 6 possibilities for ambulance
+A, and 6 possibilities for ambulance B. However, as previously mentioned, ambulances A and B
+are the same, so order does not matter - Ambulance A in zone 5 and Ambulance B in zone 2 is
+the same as having Ambulance A in zone 2 and Ambulance B in zone 5. As a result, we are
+looking for configurations, not permutations, of which there are only the 21 shown above.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 35 / 73
+Of the 21 configurations shown above, there is only one configuration, an ambulance in
+zone 2 and an ambulance in zone 5, that will cover all regions and thus all people. As we have
+previously explained, it is best to cover all regions when possible, so this is by default the best
+configuration and the one we will use.
+We use the same probability of someone calling an ambulance as we did for calculating
+coverage with three ambulances. By taking the national number of ambulance calls, over the
+number of counties, times by our county’s population divided by the average county population,
+we found there were 432 calls in our county per day. As with the previous part of the problem,
+the number of calls per day per zone will stay the same, as if there are less aMmbulances, people
+will still be injured at the same rate. Similarly, the time taken to travel between zones will also be
+the same.
+C
+Now we must calculate how many people this specific configuration can serve, through
+the same method as used in the tables above, albeit simplified asM there is no overlap in zone
+coverage so only two tables are necessary per configuration that covers all zones. This is
+because there are no non-unique regions, and only unique regions. To simplify this further,
+i
+there is only one configuration that covers all zones, so thHere are only two tables in total, tables
+52 and 53. Of course, there are only two ambulances in the table instead of three since this is
+：
+calculating optimum coverage with two ambulances.
+Table 52. Call coverage with optimum t号wo ambulances' arrangement, 2 and 5.
+Ambulance Zones Calls from Time spent Total time Excess Time Calls
+Zone covered zone per journey spent time Allocated Actually
+众
+(minutes) (minutes) remaining Taken
+(minutes)
+2 1,2,3 8公0, 128, 48 17, 2, 25.5 80*17+128* 1440- 1184,256,0 70,128,0
+2+48*25.5= 2840=1400
+2840 minutes
+信 minutes overtime
+5 4,5,6 88, 56, 32 21, 4, 6 88*21+56*4 1440-2264 1024, 224, 49, 56, 32
++32*6 = = 824 192,
+微
+2264 minutes
+minutes overtime
+Table 53. Results for two ambulances in zones 2 and 5
+Total Calls Taken 70+128+0+49+56+32 = 335
+Calls made in the county 432
+Percentage of calls taken/covered 77.55%
+Population covered 209,385 people
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 36 / 73
+Table 54. Percent of population covered by zone, with ambulances in zones 2 and 5.
+Zone Number Calls Made Calls Covered Population Population % of population
+Covered covered
+1 80 70 50,000 43,750 87.5%
+2 128 128 80,000 80,000 100%
+3 48 0 30,000 0 0%
+M
+4 88 49 55,000 30,625 55.68%
+C
+5 56 56 35,000 35,000 100%
+M
+6 32 32 20,000 20,000 100%
+i
+Clearly, even with optimum ambulance placement,H it is not possible to cover everyone in
+the county. Zones two, five and six received 100% coverage of their residents. This is because
+：
+zones two and five had the ambulances, while as zone 6 was only 6 minutes away from the
+zone 5 ambulance. Zone 2’s ambulance could cover almost all of Zone 1’s population, with only
+10 calls missed in a day. Zone 5’s ambulance could cover barely over half of Zone 4’s calls,
+号
+missing 39 calls each day out of 88. Zone 3, however, was 25.5 minutes away for the Zone 2
+ambulance, and so was completely neglected. While citizens living in Zone 3 may find it unfair
+that their ambulance calls are not 众answered, this arrangement provides the greatest possible
+overall coverage and thus saves the greatest number of lives.
+The coverage with an ambulance in zone 2 and 5 is 77.55%, and so this is the best way
+公
+to arrange two ambulances. Although this is lower than our results for part 1 of the problem, this
+is still a very good coverage percentage. Only 22.45% of the population is left without coverage,
+which equates to 6信0,615 people left without ambulance coverage.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 37 / 73
+Part 4
+Operation under 1 ambulance
+If two ambulances are unavailable, for repairs or some other reason, the ESC should be
+prepared for having only one ambulance. Finding the optimum position for one ambulance
+requires a similar method as that used above: List all possible options, and then test for
+population covered with each option. However, unlike the two and three ambMulance calculations,
+with one ambulance it is not possible to cover all the regions, so no option is inherently better
+than another because it covers all zones. Therefore, all zones must be tested. Tables 55
+C
+through 57 show the percentage of population covered by an ambulance in a given zone, and
+how that number was derived. M
+Table 55. One ambulance 's positions and population covered
+i
+H
+Zone of ambulance Total zones covered People covered
+：
+1 1 and 2 130,000
+2 1,2 and 3 160,000
+号
+3 3,5 and 6 85000
+4 3众 and 4 85000
+5 4,5 and 6 110000
+公
+6 3,5 and 6 85000
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 38 / 73
+Table 56. One ambulance's zone and calls taken
+Ambulance  Zones  Calls from  Time spent  Total time  Excess  Time  Calls
+| Zone   | covered   | zone    |              |            |            | Allocated   |           |
+| ------ | --------- | ------- | ------------ | ---------- | ---------- | ----------- | --------- |
+|        |           |         | per journey  | spent      | time       |             | Actually  |
+|        |           |         | (minutes)    | (minutes)  | remaining  |             | Taken     |
+| 1      | 1,2       | 80,128  | 2,17         |            |            | 160, 1280   | 80,75     |
+|        |           |         |              | 2*80+128*1 | 1440-2336  |             |           |
+|        |           |         |              | 7=2336     | = 896      |             |           |
+|        |           |         |              | minutes    | minutes    |             |           |
+overtime
+M
+2  1,2,3  80,128,48  17,2,25.5  80*17+2*12 1440-2840  1184,256,0  70,128,0
+|     |     |     |     | 8+48*25.5  | = 1400    |     |     |
+| --- | --- | --- | --- | ---------- | --------- | --- | --- |
+|     |     |     |     | = 2840     | minutes   | C   |     |
+|     |     |     |     | minutes    | overtime  |     |     |
+M
+3  3,5,6  48,56,32  3,18,10  48*3+56*18 1440-1472  144,976,32 48,54,32
+|     |     |     |     | +32*10=14 | = 32  | 0   |     |
+| --- | --- | --- | --- | --------- | ----- | --- | --- |
+72 minutes
+miinutes
+Hovertime
+| 4   | 3,4  | 48,88  | 17.5,2  | 4：8*17.5+88 |     | 840,176  | 48,88  |
+| --- | ---- | ------ | ------- | ----------- | --- | -------- | ------ |
+1440-
+|     |     |     |     | *2=1016  | 1016=424  |     |     |
+| --- | --- | --- | --- | -------- | --------- | --- | --- |
+|     |     |     |     | minutes  | minutes   |     |     |
+号
+5  4,5,6  88,56,32  21,4,6  21*88+4*56 1440-2264  1024,224,1 49,56,32
+|     |     |     |     | +6*32=226  | = 824    | 92  |     |
+| --- | --- | --- | --- | ---------- | -------- | --- | --- |
+|     |     |     | 众   | 4 minutes  | minutes  |     |     |
+overtime
+| 6   | 3,5,6  | 48,56,32  | 9.5,6,4  |            |           |            | 48,56,32  |
+| --- | ------ | --------- | -------- | ---------- | --------- | ---------- | --------- |
+|     |        |           |          | 9.5*48+56* | 1440-920  | 456,336,12 |           |
+公
+|     |     |     |     | 6+32*4=92 | minutes =  | 8   |     |
+| --- | --- | --- | --- | --------- | ---------- | --- | --- |
+0 minutes
+520
+minutes
+信
+
+Table 57. Percent of population covered by one ambulance in a zone
+微
+|            |          | Calls Made  |     |          | Population  |             |             |
+| ---------- | -------- | ----------- | --- | -------- | ----------- | ----------- | ----------- |
+| Zone With  | Zones    |             |     | Calls    |             | Population  | % of total  |
+| Ambulance  | Covered  |             |     | Reached  | In Zones    | Covered     | population  |
+covered
+| 1   | 1,2    | 208  |     | 155  | 130,000  | 96875   | 35.88%  |
+| --- | ------ | ---- | --- | ---- | -------- | ------- | ------- |
+| 2   | 1,2,3  | 256  |     | 198  | 160,000  | 123750  | 45.83%  |
+| 3   | 3,5,6  | 136  |     | 134  | 85,000   | 83750   | 31.02%  |
+| 4   | 3,4    | 136  |     | 136  | 85,000   | 85000   | 31.48%  |
+| 5   | 4,5,6  | 176  |     | 137  | 110,000  | 85625   | 32.71%  |
+| 6   | 3,5,6  | 136  |     | 136  | 85,000   | 85000   | 31.48%  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 39 / 73
+Table 57 clearly shows that with only one ambulance, it is impossible to cover even half
+the population. Either the ambulance could not reach all the calls it was supposed to cover
+because it ran out of time, or it reached all the calls it was able to but there weren’t enough
+people within 8 minutes to cover over half the population. The highest population coverage was
+obtained by an ambulance in zone 2, which could cover 45.83% of the population, and had the
+former problem holding it back from more people. An ambulance in zone 2 performed as shown
+in table 58 and 59.
+M
+Table 58. Results for an ambulance in zone 2
+Total Calls Taken 70+128+0=198 C
+Calls made in the county 432 M
+Percentage of calls taken/covered 45.83%
+i
+Population covered 123,750 H
+：
+Table 59. Coverage distribution of a single ambulance in zone 2
+Zone Calls made Calls covered Population Population %
+号
+covered
+1 80 70 50,000 87.5%
+众
+2 128 128 80,000 100%
+3 48 公0 30,000 0%
+Clearly, we cannot come close to covering all areas with one ambulance. In fact, the
+信
+best overall coverage only actually covers the two zones with highest population, and does not
+even touch the other zones. Although this may be unpopular among zones not covered, this
+saves the 微highest number of people, and so this is what the ESC should choose when forced to
+station only one ambulance.
+45.83% of the total population is covered by an ambulance in zone 2, leaving 54.17% of
+the population without coverage under such circumstances. This means that 146,259 people do
+not get coverage, while 123,741 people do. This is maximum number of people that can be
+covered under such circumstances.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 40 / 73
+Part 5
+Operation under a catastrophic event
+To determine how the ESC (Emergency Service Coordinator) would cover catastrophic
+events, we approached the problem in two ways. First of all, we looked at how real counties and
+cities prepare for events of environmental, social, economic, or structural collapse, and how
+they dealt with them if such a case occurred. Using this information, we appliMed it to the county
+that we were given and explained how the ESC should cover the situation, and determined
+whether the ESC would be able to cover the situation in such an event.
+C
+How Counties and Cities Prepared for and Reacted to CMatastrophic Scenarios
+We took a case study approach to this section, taking counties and cities that have
+established or dealt with catastrophic or disaster scenarios, andi analyzing them, with their
+H
+relationship to how they relate to our county factored in. With each case study, the situation is
+read, understood and analyzed, and then reflected upon.
+：
+Case Study A: San Diego
+San Diego has a five objective app号roach to dealing with catastrophes: To provide a
+system for the effective management of emergency situations, to identify lines of authority and
+relationships, to assign tasks and responsibilities, to ensure adequate maintenance of facilities,
+众
+services and resources, and to provide a framework for adequate resources for recovery
+operations.
+Under the Unified S公an Diego County Emergency Services Organization Operational
+Area Emergency Plan, it is stated that emergency incidents are best planned for when they are
+coordinated at the lowest level of government involved in the emergency. It is also stated that
+信
+mutual aid is often requested, and given under most circumstances, since the responsibility of
+the government is to mitigate the harms of catastrophes.
+Local parties that deal with medical situations in Los Angeles include the Sheriff, the
+微
+Medical Examiner, the HHSA (health and human services agency), the Public Health Services
+department, and the Emergency Medical Services department. Clearly, city and governmental
+personnel working for the San Diego will also help out in such situations.
+The private sector also plays a pivotal role, with CBOs (Community Based
+Organizations), NGOs (Non-Governmental Organizations), and the ReadySanDiego Business
+Alliance playing a crucial role before, during and after disasters.
+San Diego has planned for earthquakes, tsunamis, flooding, wild land fires, droughts,
+urban fires, dam failures, transportation accidents, nuclear-related incidents, hazardous material
+incidents, water, gas or energy shortage, landslides and acts of terrorism. However, not all of
+these are related to the topics that we will be covering, as will be justified in the second part of
+this problem.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 41 / 73
+M
+C
+M
+i
+H
+：
+号
+众
+Figure 4. Emergency Plan Structure for San Diego
+公
+The priorities of San Diego under such circumstances include ensuring that the
+immediate needs o信f the people are met (food, clothing, water, shelter, medical attention,
+information etc.), restoration of facilities and properties (regardless of public or private), meeting
+the long-term needs of the people, and in general, returning the city to its former state prior to
+微
+the catastrophe or disaster.
+Management must be done on all levels to keep track of resources, people, and other
+information in order to ensure that things are being done as efficiently and accurately as
+possible.
+Specifically, the purpose of the medical team is to coordinate medical operations and
+allocation of medical resources, the creation of field treatment sites, working with non-
+governmental medical organizations, and the transportation of medical equipment and injured
+people.
+Fire and rescue operations need to search and rescue people who are in positions that
+are physically dangerous to them, put out and mitigate the damage from fires, and to facilitate
+prioritization of resources. Law enforcement also needs to respond in these scenarios, by
+preventing people from acting against the law and to coordinate any plans that are being carried
+out by the government at times.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 42 / 73
+Care and shelter operations are also critical to ensure that the people are supplied with
+the resources and materials that they need to survive, and eventually, to rebuild where
+necessary. Care and shelter operations also provide assistance to those who need it as
+required and act as a liaison to other non-governmental organizations. Communications and
+warning systems are crucial to spreading vital information to citizens, as well as to aid
+communications between various governmental and non-governmental parties. Construction
+and engineering teams are mostly useful after catastrophes, where reconstruction is necessary
+to rebuild and restore damaged property, but the teams are also useful in clearing out debris,
+creating shelters, and other engineering operations in general. M
+Governmental agencies that assist with disaster situations include the SBA (Small
+Business Administration), the DHU (Department of Housing and Urban Development), the
+C
+USDA (United States Department of Agriculture), the IRS (Internal Revenue Service), the FEMA
+(Federal Emergency Management Agency), the Social Security AMdministration, the Health and
+Human Service, as well as the Food and Drug Administration. Clearly, San Diego is well
+prepared for catastrophes, and its catastrophe management plan provides good advice that will
+i
+help us in this problem. H
+：
+Case Study 2: Cuyahoga
+Firstly, the Cuyahoga Emergency Base Plan declares the EOC (Cuyahoga County
+Emergency Operation Center) as the base号 of operations from which emergency response
+activities can be directed, coordinated and/or supported.
+The Emergency Base Plan permits decisions and actions from many parties. A
+众
+declaration of a countywide state of emergency permits the Cuyahoga County Office of
+Emergency Management to make decisions necessary for public health and life safety. Under
+an emergency declaration, the County may ask the State of Ohio for additional resources in the
+公
+form of equipment or personnel. If the scope of the disaster is beyond the financial and
+response capabilities of the State and County combined, then the governor may make a state-
+level emergency d信eclaration. Following a governor’s declaration, a request to the federal
+government for assistance may be activated. Only the Executive or his designee may request
+assistance from other agencies.
+微
+Cuyahoga County, in cooperation with state and federal agencies, establishes five
+emergency action levels, with level 5 having the lowest emergency status, and level 1 reserved
+for the greatest emergency situations.
+Level 5 (Local Resources), being the lowest level of emergency, can be handled by up
+to six personnel with one or two single resources. The incident is typically contained within two
+hours after resources arrive on scene.
+Level 4 (Local & County Resources) is typically contained within one operational period
+in the control phase, usually several hours after resources arrive on scene. Command Staff and
+General Staff functions are activated as needed, and several resources are required to mitigate
+the incident, including a Task Force or Strike Team.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 43 / 73
+Level 3 (Local, County & Regional Resources) usually extends into multiple operational
+periods. Some or all of the Command and General Staff positions may be activated, as well as
+Division/Group Supervisor and/or Unit Leader positions. A written IAP (Incident Action Plan) is
+typically required for each operational period.
+Level 2 (Local, County, Regional & State Resources) is considered when resources are
+requested from outside of Cuyahoga County and Region 2 of Ohio, and the incident spans
+multiple operational periods. Most or all of the Command and General Staff positions are filled.
+A written IAP is required for each operational period.
+Level 1 (Local, County, Regional, State & Federal Resources) is the Mmost complex,
+requiring national resources to safely and effectively manage. All Command and General Staff
+positions are activated, and branches may need to be established. There is a high impact on the
+C
+local jurisdiction, requiring additional staff for office administrative and support functions.
+At any time before, during, or after an event, the Incident CMommander may request
+either an activation of the EOC, or an EOC liaison to serve as an on-scene representative. The
+administrators will then determine if the EOC should be partially or fully activated. If the EOC is
+i
+partially activated, the administrator will determine the appHropriate level of staffing and issue the
+corresponding notification. During a full activation, all pre-identified personnel will be requested
+：
+to staff the EOC either in their County role or as a representative from an Emergency Support
+Function (ESF).
+Upon activation, the EOC can ass号ist in coordinating resources (obtaining, deploying, and
+tracking resources requested by responding personnel), public warning (communicating to the
+general public regarding the nature of the hazard), and being a command post.
+众
+Cuyahoga County declares primary and support EOC facilities with different roles in
+activation, set-up, and operation. Primary agencies are responsible for performing and
+coordinating action plans. Support agencies have the responsibility to support the primary
+公
+agency in accomplishing the ESF mission and tasks.
+Case Study 3: Ja信pan
+After the massive earthquake that hit Japan on September 1st in 1923, Japan realized
+that its old infrastructure, buildings, and approach to emergency was outdated and would no
+微
+longer survive the deadly natural catastrophes that would often plague its nation. Flimsy and
+fire-prone wooden and brick structures that used to litter Tokyo were replaced with buildings of
+much sturdier concrete and steel, the buildings kept from rising too high to prevent potentially
+fatal collapses. Transportation infrastructure was developed and flourished, allowing for Tokyo
+and the rest Japan to regrow.
+There are numerous public awareness events that take place throughout the year to
+inform the public of how to deal with natural disasters, and also boasts among the world’s best
+early warning systems for multiple types of natural disasters, such as earthquakes and tsunamis.
+All of these help to ensure that everything goes as smoothly as possible during a catastrophic
+scenario, so that the people have as much time to prepare for such scenarios as they can, and
+so that the people know what to do in order to put themselves out of harms way and ensure that
+order and restoration can begin as soon as possible.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 44 / 73
+To protect against tsunamis and floods, numerous shelters capable of withstanding
+earthquakes, floods and tsunamis have been built, allowing for the people to have a place to go
+to in the event that their homes are destroyed or need somewhere to rest. Tsunami walls and
+floodgates also help prevent flooding and minimize the amount of unwanted water in the
+territory. These preventative measures can be applied elsewhere to also counter threats of
+floods.
+Building codes in Japan are constantly revised to ensure that buildings and other
+structures will be able to withstand the numerous different catastrophes that occur in Japan.
+Mandatory checks are carried out to ensure that these codes are enforced anMd put into place,
+and while this is costly (upwards of four billion dollars in the Shizuoka prefecture in thirty years
+just for improving structural integrity), it is necessary to ensure that the rebuilding process is as
+C
+efficient and optimal as possible. Safety of not just public buildings of the government, but also
+private buildings is upheld in Japan. M
+Various private sector and non-governmental organizations also step in to contribute,
+such as the Red Cross. These organizations assist with providing supplies, reconstruction,
+i
+caring for the injured, ill or otherwise disabled, among otheHr things. The idea of mutual
+assistance between all parties is one that is highly valued, and one that is carried out for mutual
+：
+benefit.
+Japan’s legal system has also adopted to ensure that it does not fall apart in the event of
+a disaster, and can cope with such disaste号rs. Legislation such as the Disaster Countermeasures
+Basics Act in 1961, the Erosion Control Act in 1897, the Disaster Relief Act in 1947, the Building
+Standard Law in 1950, the River Act in 1964 and the Act on Special Measures for Large-scale
+众
+Earthquakes in 1978 all contribute to disaster management and provide a framework for how
+people, government workers, and the government should act under these circumstances.
+公
+信
+微
+Figure 5. Emergency Plan for Organization of Central Disaster Management Council
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 45 / 73
+As can be seen from Figure 5, the organizational structure in the event of a disaster at
+the governmental level is highly structured and organized. Responsibilities are clearly outlined,
+with the distribution of roles also given. The fact that this is open for the common people also
+indicates some level of transparency to ensure legitimacy, and means that people know what is
+going on, which is important so that they do not panic or act inappropriately under catastrophic
+scenarios.
+The distribution of roles and planning goes beyond the most upper-echelons of
+government. The Basic Disaster Management Plan is the basis for all other plans created in
+Japan, and can also be said to be the master plan. From this plan stems the MDisaster
+Management Operation Plan, with each created by government organizations and public
+corporations, and the Local Disaster Management Plan is similar, but only applies at the
+C
+prefectural and municipal level. The purpose of this plan is to broadly state the organizational
+responsibilities of parties involved, implementing measures to preMvent disasters from occurring,
+as well as planning counter-measures to prepare and respond to disasters, with long-term goals
+such as economic stability and rebuilding in mind.
+i
+H
+How the ESC Should Tackle Catastrophic Scenarios, and Whether it
+：
+Would be Feasible for the ESC to Handle Such Scenarios
+号
+At first glance, it appears difficult to do a risk assessment of possible catastrophic
+scenarios and how to deal with them, since so little information about the county itself is given.
+Nothing is known about the location, circumstances and details of the county, save for the
+众
+population and travel time between zones. As a result, the potential types of catastrophic events
+cannot be narrowed down to anything specific. However, it is still possible to make broad
+generalizations and gener公al plans in order to address the most common types of catastrophes,
+and what to do in order to mitigate the harms of such catastrophes.
+It is also worth noting that the ESC will not be the only agency and party operating
+信
+during such catastrophe scenarios, and that other parties will probably be assisting with the
+situation as much as possible. However, given that it is not possible to determine what these
+parties are微, and how they react to given situations, it is only possible to assume that only the
+most basic government support that is guaranteed will be given during such circumstances, as
+seen in assumption 11.
+Given our assumptions, and the limited information we possess, the most logical start is
+to find information on catastrophes. Assumption 10 restricts us to catastrophes that could affect
+the whole country. Catastrophes that could affect the entire country include both natural and
+manmade disasters. Some types of natural catastrophes that meet assumption 10 include forest
+fires, storms, tsunamis, floods and earthquakes. The types of manmade disasters that could
+affect an entire county are limited, yet there are some. For example, an oil spill, a sewage plant
+failure, or a large chemical production complex toxic waste handling system failure could all
+contaminate the water supply. If the alarm was not raised soon enough, a large number of
+citizens could consume the tainted water and become ill enough to need an ambulance. A war
+could also qualify as a manmade disaster, and would certainly devastate a county.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 46 / 73
+However, there are many assumptions that have to be made about manmade disasters.
+Starting with contaminated water, it is highly improbable that a significant number of people
+would not notice that they had drunk contaminated water. Furthermore, it is unlikely that all
+hospitals come equipped to deal with people who have consumed contaminated water. Not all
+hospitals being able to handle this would force us to assume that a hospital was in a specific
+district. By this point, there are an excessive number of assumptions, and Occam’s razor
+eliminates mass water contamination as a potential catastrophe. Similarly, many other types of
+disasters can then by removed because of Occam’s razor.
+Another possible catastrophe is war. War would almost certainly occuMr on a scale able to
+devastate a county, however, there are several flaws with war as a catastrophe for the county to
+prepare for. First, this violates assumption 11, as in a war there would certainly be more than
+C
+just county medical services to provide aid. While it is fine to go against assumptions and
+remove them, the reasons for having assumption 11 stand. We cMannot predict the scale of the
+war, what the civilian casualty rate will be, what types of weapons will be used, what aid will be
+sent to the county etcetera. There are simply too many unknown quantities that we would have
+i
+to make assumptions about. Occam’s razor therefore simiHlarly eliminates war as a catastrophe
+the ESC should prepare for. Clearly, natural disasters are the most applicable catastrophes for
+：
+the ESC to prepare for.
+However, there is one type of natural disaster we should not take measures to prepare
+for. If there were a global pandemic, or na号tionwide epidemic, or indeed any major infectious
+disease, it would certainly be deadly. However, the ESC would not be facing this catastrophe
+alone. In times of pandemic, the US government has always stepped in with aid. For example,
+众
+during the swine flu / H1N1 pandemic in 2009, the US government worked to create a vaccine,
+and quarantines the United States so that as little excess. As a result, the ESC would not be
+facing the disaster alone. By assumption 11, we should not consider contagious disease as a
+公
+catastrophe the ESC should prepare for, since they would have aid in coping with the disaster.
+Now that it has been decided that the ESC should focus on natural disasters, there are
+several options. As信 the location of the county was not specified, it could be anywhere, so any
+type of natural disaster could apply. Some types of natural disasters include tropical storms,
+which would be called hurricanes as our county is in the US, and earthquakes. Tropical storms
+微
+could also cause tsunamis and flooding. If the county was in a dry area forest fires could be a
+catastrophe for the county.
+In preparing for natural disasters, common protocol is to prepare for the worst. However,
+it should be noted that as this county only possesses three ambulances for 270,000 people, it is
+highly unlikely that the county will be able to cope with a true catastrophe. Nevertheless, we
+looked at the primary types of natural disasters and their frequency rates to determine the risk of
+our particular county having a certain natural disaster. Then we can advise the ESC on how
+best to prepare for the top three most likely disasters.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 47 / 73
+Table 60. Frequency of natural disasters by county (unadjusted for un-localized
+disasters)
+Type of disaster US Occurrences Historical average Chance for our Years Per
+since 1900 for one county in 1 county by Occurrence
+year population***
+Major flood 91 0.02678% 0.06953% 1438
+Major hurricane 193 0.05680% 0.14746% M678
+Major forest fire* 9 0.00265% 0.00688% 14535
+C
+Major earthquake** 35 0.01030% 0.02674% 3740
+M
+Total (excluding 319 0.09389% 0.24375% 410
+forest fire) ****
+i
+H
+*Forest fires counted in the data table were only huge forest fires, but these huge forest can
+：
+now be discounted because fires are not a modern occurrence and major ones only occurred
+long before fire suppression began.
+号
+**As earthquakes come in all varieties of intensities, we are only counting earthquakes that
+caused deaths, as if there were deaths there were almost certainly injuries the ESC would need
+众
+to help out in.
+***While a county having more people does not necessarily directly mean that there is a higher
+公
+chance of a disaster, it very likely that a county with more people has a bigger geographical
+area and thus a higher chance of having a disaster. This is based on assumption 12, which
+states that a great信er population generally leads to a greater amount of area occupied. Thus, to
+calculate the chance for our county by population is calculated by dividing the historical chance
+of occurrence in 1 year by the number of total counties in the US multiplied by the ratio of
+微
+270,000 over the average population of a county.
+****Forest fires are excluded from the total, given how they are events that only occur in very
+specific regions of the United States. These regions generally are not susceptible to flooding-
+type disasters. Therefore, it makes sense to say that counties with the potential to have forest
+fires and counties with the potential to have floods would be mutually exclusive. Given that
+floods are much more likely to occur than forest fires, and also given how forest fires are
+relatively easy to deal with, and also cause relatively minimal human casualty, it makes sense to
+exclude forest fires.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 48 / 73
+Table 61 differs from Table 60 in that it adjusts for un-localized disasters or catastrophes
+that usually spread over one region. This is due to the fact that such disasters usually do spread
+beyond just one county, often encompassing entire states. As a result, it would be inaccurate to
+assume that one disaster would only affect one county. This inaccuracy in our data is why the
+years per occurrence in Table 60 seems extraordinarily high. Therefore, the figures in table 61
+assume that a disaster would, on average, affect one state, or approximately 60 counties (3007
+counties divided by 50 states). As an average, this makes sense, given how some disasters,
+such as floods, often only affect areas within a state, while hurricanes affect multiple states at a
+time.
+M
+
+Table 61. Frequency of natural disasters by county (adjusted for un-localized disasters)
+C
+Type of disaster  US Occurrences  Historical average  Chance for our  Years Per
+|     | since 1900  |     |     | county bMy  | Occurrence  |
+| --- | ----------- | --- | --- | ----------- | ----------- |
+for one county in 1
+|              |     | year   |     | population***  |        |
+| ------------ | --- | ------ | --- | -------------- | ------ |
+| Major flood  | 91  | 1.61%  |     | i 8%           | 23.97  |
+4.171
+H
+| Major hurricane  | 193  | 3.4%  |     | 8.8476%  | 11.30  |
+| ---------------- | ---- | ----- | --- | -------- | ------ |
+：
+| Major forest fire*  | 9    | 0.159%   |     | 0.414%  | 242.25  |
+| ------------------- | ---- | -------- | --- | ------- | ------- |
+| Major earthquake**  | 35   | 0.6号19%  |     | 1.61%   | 62.33   |
+| Total (excluding    | 319  | 5.65%    |     | 14.66%  | 6.83    |
+| forest fire)        |      | 众        |     |         |         |
+
+Table 61 gives us a much more reasonable catastrophe occurrence, every 6.83 years.
+公
+  Now that we have determined the frequency of disasters, we must provide the ESC with
+specific advice as to cope with these disasters. Specifically, we must make sure that the ESC
+can save as many信 people as possible, and recover within 6.83 years and be prepared for the
+next disaster.
+  First, we will look at how to save as many people as possible during a catastrophe. We
+微
+first found the worst number of injuries from each of these events when they occur, as it makes
+sense for the ESC to prepare for the worst.
+
+Table 62. Largest amount of casualties from natural disasters in the US
+Type of Disaster  Name of worst  Injuries  Deaths  Casualties  Casualties
+|     |     |     |     | (Total)  | (county)  |
+| --- | --- | --- | --- | -------- | --------- |
+disaster (since
+1990)
+| Flood:      | Black Hills  | 3057  | 328   | 3385  | 56   |
+| ----------- | ------------ | ----- | ----- | ----- | ---- |
+| Hurricane:  | Hurricane    | 5698  | 1833  | 7531  | 126  |
+Katrina
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 49 / 73
+Earthquake: Northridge 8700 57 8757 146
+Total: All of the above 17455 2216 19673 328
+Of course, these are not the worst disasters in history. The China Floods in 1931 killed
+four million people. However, not only are we only dealing with the US, but we are also no
+longer in 1931. Therefore, we will only be looking at catastrophes during recent times, which we
+will define as since 1990, as that best reflects the state, conditions, and infrastructure of a
+typical county today.
+M
+We will be doing 2 methods for each type of disaster with the optimal method because
+we need to test which method works better. The two methods are the “Disaster-Saving Method”
+C
+and the “Disaster Hour Method”. The optimal configuration with three ambulances, as stated
+previously in the three ambulances case, would be to use the 2, 4, 6 configuration. Both
+M
+methods assume that the disaster begins the moment the day begins, according to assumption
+13, and they both use the same data in terms of how many more extra deaths occur. Finally,
+i
+both methods also use the same method to deal with emergency situations. This method
+H
+consists of going to a zone, delivering patients to the hospital in the zone and not returning to
+the original zone until all the patients in the zone h：ave been dealt with appropriately. Then, the
+ambulance would move on to a new zone.
+The “Disaster-Saving Method” is one where the ambulances go to the closest zone
+号
+(since they are all affected by the catastrophe), and help all the people in the zone, before
+moving on to the next zone, where they help all the people there, and then move on to the next
+zone. This occurs no matter how m众uch time it takes to save all of the people. What is not
+calculated is the amount of people who are not affected by the disaster but need to be attended
+to because their issues come up during the disaster. Therefore, these people are dropped from
+公
+the calculation, and time is not taken to deal with them. Moving on from there, the ambulances
+continue with their daily patrol routines, moving to deal with an issue as they get calls.
+The “Disaster Hour Method” is one where the ambulances go to the closest zone (since
+信
+they are all affected by the catastrophe), and help as many people as they can in the zone,
+before moving on to the next zone, where they help as many people as they can, and so on so
+forth. How微ever, the ambulance only has one hour to do this, and whenever the hour runs out, no
+matter at what point this occurs, this model assumes that the injured all die and cannot be
+treated, so the ambulance continues with its daily patrol routine from that point on. However, the
+people who do get injured during this one-hour period is calculated when compared to the
+“Disaster-Saving Method”, meaning these people are accounted for.
+When trying to calculate the number of calls an ambulance can service in an emergency,
+travel times are slightly altered. When we calculated the ambulance coverage on a normal day,
+we had the ambulance go out to the zone with the call, put the person in the hospital, and then
+return to its station position before going after new calls. This setup is illustrated in figure 6
+below.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 50 / 73
+M
+C
+M
+i
+H
+：
+Figure 6. Ambulance path in covering calls
+号
+However, in a catastrophe situation, it is pointless for the ambulance to return to its
+original station after each person. Instead, the ambulance can pick up everyone in a zone and
+drop them off at that zone’s hospital, then only when the zone is finished return to base. This
+众
+allows ambulances to operate far more efficiently, as shown in figure 7 below.
+公
+信
+微
+Figure 7. Ambulance path in a catastrophe situation
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 51 / 73
+In a catastrophe situation, when ambulances receive a large number of calls from the
+same location, they first clear the calls in their own zone, as this saves the most people fastest.
+They then go to the next closest zone, in this scenario, zone 1, and save all the people there.
+However, instead of stopping back at the ambulance’s station in between, they only run
+between the call and the zone’s hospital. When zone 1 is done, however, they do stop back at
+the ambulance station. This is because such constant running between calls depletes the
+ambulance’s supplies, and so it makes sense that it will need to resupply. The ambulance then
+goes to zone 3, as that has the next greatest travel time. Finally, it travels to zones 4, 5 and 6,
+and uses the same method to save people there if another ambulance has noMt gotten there first.
+Since ambulances can operate faster, they may be able to cover the catastrophe,
+however, we should analyze how best to cover the catastrophe. First, we must find the number
+C
+of extra calls received. Table 63 calculates the time required to handle a zone by an ambulance
+when it is operating under an emergency path, where x is the numMber of calls received.
+Table 63. Times under emergency situation
+i
+H
+Zone Zone 1 Zone 2 Zone 3 Zone 4 Zone 5 Zone 6
+Zone 1 2*x 17+x*2 25.5+x*3
+：
+31+x*2 30+x*4 34+x*4
+Zone 2 17+x*2 2*x 25.5+x*3 33+x*2 34+x*4 36+x*4
+号
+Zone 3 25+x*2 25+x*2 3*x 17+x*2 18+x*4 10+x*4
+Zone 4 31+x*2 33+x*2 17.5+x*3 2*x 22+x*4 26+x*4
+众
+Zone 5 29+x*2 33+x*2 17.5+x*3 21+x*2 4*x 6+x*4
+Zone 6 33+x*2 公35+x*2 9.5+x*3 25+x*2 6+x*4 4*x
+Table 64 is the number of new calls received during a flooding catastrophe. Of
+course, this includes the number of normal injuries, as those will still occur even in a flood.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 52 / 73
+Case in Flood
+
+Table 64. Amount of calls per Flood Day
+| Zone:  | Normal Calls:  | Extra Calls:  |     | Total Calls:  |     |
+| ------ | -------------- | ------------- | --- | ------------- | --- |
+| Total  | 414            | 56+18 = 74    |     | 488           |     |
+| 1      | 77             | 10 + 3 = 13   |     | 90            |     |
+| 2      | 123            | 18 + 5 = 23   |     | 146           |     |
+M
+| 3   | 46  | 6 + 2 = 8  |     | 54  |     |
+| --- | --- | ---------- | --- | --- | --- |
+C99
+| 4   | 84  | 11 + 4 = 15  |      |     |     |
+| --- | --- | ------------ | ---- | --- | --- |
+| 5   | 54  | 7 + 2 = 9    | M63  |     |     |
+| 6   | 31  | 4 + 1 = 5    |      | 36  |     |
+i
+Configuration Save Disasters
+|     |     |     | H   |     |     |
+| --- | --- | --- | --- | --- | --- |
+Table 65. Ambulance covering disasters in 2, 4, 6
+：
+Ambulance #   Zones covered   Calls from zone  Total time spent  People Dropped
+(minutes)
+号
+| 2   | 1,2  | 10, 18  | 37 + 36 = 73  | 4 + 6 = 10  |     |
+| --- | ---- | ------- | ------------- | ----------- | --- |
+众
+| 6   | 3,5,6  | 6,7, 4  | 27.5 + 34 + 16 =  | 3 + 3 + 2  = 8  |     |
+| --- | ------ | ------- | ----------------- | --------------- | --- |
+77.5
+公
+| 4   | 4   | 11  | 22  | 1   |     |
+| --- | --- | --- | --- | --- | --- |
+信
+
+Table 66. 微Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+#   covered   zone  per Call  spent  time  Allocated   Actually
+|     |     | (minutes)  | remaining  |     | Taken  |
+| --- | --- | ---------- | ---------- | --- | ------ |
+(minutes)
+2  1,2  76, 122  17, 2  1292 + 244  1367 - 1536  1123, 244  66, 122
+= 1536  = 169
+minutes
+overtime
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 53 / 73
+6  5,6  53, 30  6, 4  318 + 120 =  1362.5 -  318, 120  53, 30
+|     |     |     |     |     | 438  |     | 438 = 924.5  |     |      |     |
+| --- | --- | --- | --- | --- | ---- | --- | ------------ | --- | ---- | --- |
+| 4   | 4   | 87  | 2   |     | 174  |     | 1418 - 174   |     | 174  | 87  |
+= 1244
+
+Table 67. Ambulance covering zones that do overlap in 2, 4, 6
+M
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+|     |     | e #   | the zone  |            |     |            |     |            | Allocated   |           |
+| --- | --- | ----- | --------- | ---------- | --- | ---------- | --- | ---------- | ----------- | --------- |
+|     |     |       |           | Spent per  |     | spent      |     | time  C    |             | Actually  |
+|     |     |       |           | Call       |     | (minutes)  |     | remaining  |             | Taken     |
+(minutes)
+M
+| 3   |     | 6   | 45  | 9.5  |     | 427.5  |     | 924.5 -  | 427.5  | 45  |
+| --- | --- | --- | --- | ---- | --- | ------ | --- | -------- | ------ | --- |
+i427.5 =
+H497
+
+：
+Table 68. Results for ambulance covering zones for 2, 4, 6
+| Total Calls Taken  |     |     |     | 10+18+6+7+4+11+66+122+53+30+87+45 = 459  |     |     |     |     |     |     |
+| ------------------ | --- | --- | --- | ---------------------------------------- | --- | --- | --- | --- | --- | --- |
+号
+| Calls made in the county           |     |     |         | 488             |     |     |     |     |     |     |
+| ---------------------------------- | --- | --- | ------- | --------------- | --- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     | 众94.1%  |                 |     |     |     |     |     |     |
+| Population covered                 |     |     |         | 253,955 people  |     |     |     |     |     |     |
+公
+
+Configuration One-Hour
+
+| Table 69. Ambulance covering disaster hour in 2, 4, 6  | 信   |     |     |     |     |     |     |     |     |     |
+| ------------------------------------------------------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Ambulance #   Zones  Calls from  Total time  Excess time  Time  Calls Actually
+|     | 微covered   | zone    |     |             |     |              |     | Allocated   |     | Taken  |
+| --- | ---------- | ------- | --- | ----------- | --- | ------------ | --- | ----------- | --- | ------ |
+|     |            |         |     | spent       |     | remaining    |     |             |     |        |
+|     |            |         |     | (minutes)   |     | (minutes)    |     |             |     |        |
+| 2   | 1,2        | 13, 23  |     |             |     |              |     | 14, 46      |     | 1, 23  |
+|     |            |         |     | 221 + 46 =  |     | 60 - 267 =   |     |             |     |        |
+|     |            |         |     | 267         |     | 207 minutes  |     |             |     |        |
+overtime
+6  3,5,6  8, 9, 5  33.5 + 42 +  60 - 95.5 =  0, 40 ,20  0, 9, 5
+|     |     |     |     | 20 = 95.5  |     | 35.5 minutes  |     |     |     |     |
+| --- | --- | --- | --- | ---------- | --- | ------------- | --- | --- | --- | --- |
+overtime
+| 4   | 4   | 15  |     | 30  |     | 60-30 = 30  |     | 30  |     | 15  |
+| --- | --- | --- | --- | --- | --- | ----------- | --- | --- | --- | --- |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 54 / 73
+Table 70. Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+| #   | covered   | zone  | per Call  |            |            |     | Allocated   |           |
+| --- | --------- | ----- | --------- | ---------- | ---------- | --- | ----------- | --------- |
+|     |           |       |           | spent      | time       |     |             | Actually  |
+|     |           |       |           | (minutes)  | remaining  |     |             | Taken     |
+(minutes)
+2  1,2  77, 123  17, 2  1309 + 246  1380-1555  1134, 246  67,123
+|     |     |     |     | = 1555  | =175  |     |     |     |
+| --- | --- | --- | --- | ------- | ----- | --- | --- | --- |
+minutes
+overtime
+M
+| 6   | 5,6  | 54, 31  | 6, 4  |              |             |     | 324, 124  | 54, 31  |
+| --- | ---- | ------- | ----- | ------------ | ----------- | --- | --------- | ------- |
+|     |      |         |       | 324 + 124 =  | 1380 - 448  |     |           |         |
+|     |      |         |       | 448          | = 932       | C   |           |         |
+M
+| 4   | 4   | 84  | 2   | 168  |     |     | 168  | 84  |
+| --- | --- | --- | --- | ---- | --- | --- | ---- | --- |
+1380 - 168
+= 1212
+i
+H
+
+：
+Table 71. Ambulance covering zones that do overlap in 2, 4, 6
+Zones covered
+|     |     | Ambulanc | Calls from  | Time  | Total time  | Excess  | Time  | Calls  |
+| --- | --- | -------- | ----------- | ----- | ----------- | ------- | ----- | ------ |
+e #   the zone号  Spent per  spent  time  Allocated   Actually
+|     |     |     |     | Call  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | --- | ----- | ---------- | ---------- | --- | ------ |
+(minutes)
+众
+| 3   |     | 6   | 46  | 9.5  | 437  | 932-437 =  | 437  | 46  |
+| --- | --- | --- | --- | ---- | ---- | ---------- | ---- | --- |
+495
+|     |     | 公   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Table 72. Results for ambulance covering zones for 2, 4, 6
+| Total Calls Taken  |     |     | 1+23+9+5+15+67+123+54+31+84+46 = 458  |     |     |     |     |     |
+| ------------------ | --- | --- | ------------------------------------- | --- | --- | --- | --- | --- |
+信
+| Calls made in the county  |     |     | 488  |     |     |     |     |     |
+| ------------------------- | --- | --- | ---- | --- | --- | --- | --- | --- |
+微
+| Percentage of calls taken/covered  |     |     | 93.9%           |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------- | --- | --- | --- | --- | --- |
+| Population covered                 |     |     | 253,402 people  |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 55 / 73
+Case for Hurricane
+
+Table 73. Amount of Calls for Hurricane
+| Zone:  | Normal Calls:  | Extra Calls:  |     | Total Calls:  |
+| ------ | -------------- | ------------- | --- | ------------- |
+| Total  | 414            | 126+23 = 149  |     | 558           |
+| 1      | 77             | 23+3=26       |     | 103           |
+| 2      | 123            | 37 + 5 = 42   |     | 165           |
+M
+| 3   | 46  | 14 + 2 = 16  |     | 62  |
+| --- | --- | ------------ | --- | --- |
+C114
+| 4   | 84  | 26 + 4 = 30  |      |     |
+| --- | --- | ------------ | ---- | --- |
+| 5   | 54  | 16 + 2 = 18  | M72  |     |
+| 6   | 31  | 9 + 1 = 10   |      | 41  |
+i
+
+H
+Configuration Save Disasters
+
+：
+Table 74. Ambulance covering disasters in 2, 4, 6
+Ambulance #   Zones covered   Calls from zone  Total time spent  People Dropped
+|     |      | 号       | (minutes)      |        |
+| --- | ---- | ------- | -------------- | ------ |
+| 2   | 1,2  | 23, 37  | 63 + 74 = 137  | 8, 12  |
+众
+| 6   | 3,5,6  | 14, 16, 9  | 51.5+70+36 = 157.5  | 5, 6, 4  |
+| --- | ------ | ---------- | ------------------- | -------- |
+公
+| 4   | 4   | 26  | 52  | 3   |
+| --- | --- | --- | --- | --- |
+信
+
+微
+Table 75. Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+#   covered   zone  per Call  spent  time  Allocated   Actually
+(minutes)  Taken
+remaining
+(minutes)
+2  1,2  72, 116  17, 2  1224 + 232  1303 - 1456  1071, 232  63, 116
+= 1456  = 153
+minutes
+overtime
+6  5,6  50, 28  6, 4  300 + 112 =  1282.5 -  300, 112  50, 28
+412  412 = 870.5
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 56 / 73
+| 4   | 4   | 85  | 2   |     | 170  |     | 1388 - 170  |     | 170  | 85  |
+| --- | --- | --- | --- | --- | ---- | --- | ----------- | --- | ---- | --- |
+= 1218
+
+Table 76. Ambulance covering zones that do overlap in 2, 4, 6
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+|     |     | e #   | the zone  |            |     |            |     |            | Allocated   |           |
+| --- | --- | ----- | --------- | ---------- | --- | ---------- | --- | ---------- | ----------- | --------- |
+|     |     |       |           | Spent per  |     | spent      |     | time       |             | Actually  |
+|     |     |       |           | Call       |     | (minutes)  |     | remaining  |             | Taken     |
+|     |     |       |           |            |     |            |     | (minutes)  | M           |           |
+| 3   |     | 6     | 43        | 9.5        |     | 408.5      |     | 870.5-     | 408.5       | 43        |
+C
+408.5 =
+462
+M
+
+Table 77. Results for ambulance covering zones for 2, 4, 6
+i
+Total Calls Taken  23+37+14+16+9+26+63 H +116+50+28+85+43 = 510
+：
+| Calls made in the county           |     |     |     | 558    |     |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --- | ------ | --- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     |     | 91.4%  |     |     |     |     |     |     |
+号
+| Population covered  |     |     |     | 246,774 people  |     |     |     |     |     |     |
+| ------------------- | --- | --- | --- | --------------- | --- | --- | --- | --- | --- | --- |
+
+众
+Configuration One-Hour
+
+Table 78. Ambulance covering disaster hour in 2, 4, 6
+公
+Ambulance #   Zones  Calls from  Total time  Excess time  Time  Calls Actually
+|     | covered   | zone  |     |            |     |            |     | Allocated   |     | Taken  |
+| --- | --------- | ----- | --- | ---------- | --- | ---------- | --- | ----------- | --- | ------ |
+|     |           |       |     | spent      |     | remaining  |     |             |     |        |
+|     |           |       |     | (minutes)  |     | (minutes)  |     |             |     |        |
+信
+| 2   | 1,2  | 26, 42  |     | 69 + 84 = 153  |     |     |     | 0, 60  |     | 0, 30  |
+| --- | ---- | ------- | --- | -------------- | --- | --- | --- | ------ | --- | ------ |
+60 - 153 = 93
+minutes
+微
+overtime
+6  3,5,6  16, 18, 10  57.5 + 78 +  60 - 175.5 =  0, 20, 40  0, 4,10
+|     |     |     |     | 40 = 175.5  |     | 115.5  |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | ------ | --- | --- | --- | --- |
+overtime
+| 4   | 4   | 30  |     | 60  |     | 60-60 = 0  |     | 60  |     | 30  |
+| --- | --- | --- | --- | --- | --- | ---------- | --- | --- | --- | --- |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 57 / 73
+Table 79. Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+| #   | covered   | zone  | per Call  |            |            |     | Allocated   |           |
+| --- | --------- | ----- | --------- | ---------- | ---------- | --- | ----------- | --------- |
+|     |           |       |           | spent      | time       |     |             | Actually  |
+|     |           |       |           | (minutes)  | remaining  |     |             | Taken     |
+(minutes)
+2  1,2  77, 123  17, 2  1309 + 246  1380 - 1555  1134, 246  67, 123
+|     |     |     |     | = 1555  | = 175  |     |     |     |
+| --- | --- | --- | --- | ------- | ------ | --- | --- | --- |
+minutes
+overtime
+M
+| 6   | 5,6  | 54, 31  | 6, 4  |              |             |     | 324, 124  | 54, 31  |
+| --- | ---- | ------- | ----- | ------------ | ----------- | --- | --------- | ------- |
+|     |      |         |       | 324 + 124 =  | 1380 - 448  |     |           |         |
+|     |      |         |       | 448          | = 932       | C   |           |         |
+M
+| 4   | 4   | 84  | 2   | 168  |     |     | 168  | 84  |
+| --- | --- | --- | --- | ---- | --- | --- | ---- | --- |
+1380 - 168
+= 1212
+i
+H
+
+：
+Table 80. Ambulance covering zones that do overlap in 2, 4, 6
+Zones covered
+|     |     | Ambulanc | Calls from  | Time  | Total time  | Excess  | Time  | Calls  |
+| --- | --- | -------- | ----------- | ----- | ----------- | ------- | ----- | ------ |
+e #   the zone号  Spent per  spent  time  Allocated   Actually
+|     |     |     |     | Call  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | --- | ----- | ---------- | ---------- | --- | ------ |
+(minutes)
+众
+| 3   |     | 6   | 46  | 9.5  | 437  | 932-437 =  | 437  | 46  |
+| --- | --- | --- | --- | ---- | ---- | ---------- | ---- | --- |
+495
+|     |     | 公   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Table 81. Results for ambulance covering zones for 2, 4, 6
+| Total Calls Taken  |     |     | 479  |     |     |     |     |     |
+| ------------------ | --- | --- | ---- | --- | --- | --- | --- | --- |
+信
+| Calls made in the county  |     |     | 558  |     |     |     |     |     |
+| ------------------------- | --- | --- | ---- | --- | --- | --- | --- | --- |
+微
+| Percentage of calls taken/covered  |     |     | 85.8%           |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --------------- | --- | --- | --- | --- | --- |
+| Population covered                 |     |     | 231,774 people  |     |     |     |     |     |
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 58 / 73
+Case for Earthquake
+
+Table 82. Amount of Calls for Earthquake
+| Zone:  | Normal Calls:  | Extra Calls:    |     | Total Calls:  |     |
+| ------ | -------------- | --------------- | --- | ------------- | --- |
+| Total  | 414            | 146 + 18 = 164  |     | 578           |     |
+| 1      | 77             | 27 + 3 = 30     |     | 107           |     |
+| 2      | 123            | 43 + 5 = 48     |     | 171           |     |
+M
+| 3   | 46  | 16 + 2 =18  |     | 64  |     |
+| --- | --- | ----------- | --- | --- | --- |
+C
+| 4   | 84  | 30 + 4 =34  |     | 118  |     |
+| --- | --- | ----------- | --- | ---- | --- |
+M75
+| 5   | 54  | 19 + 2 = 21  |     |     |     |
+| --- | --- | ------------ | --- | --- | --- |
+| 6   | 31  | 11 + 1 = 12  |     | 43  |     |
+i
+|     |     |     | H   |     |     |
+| --- | --- | --- | --- | --- | --- |
+Configuration Save Disasters
+：
+Table 83. Ambulance covering disasters in 2, 4, 6
+Ambulance #   Zones covered   Calls from zone  Total time spent  People Dropped
+号
+(minutes)
+| 2   | 1,2  | 27, 43  | 71 + 86 = 157  | 9, 14  |     |
+| --- | ---- | ------- | -------------- | ------ | --- |
+众
+| 6   | 3,5,6  | 16, 19, 11  |     | 6, 7, 4  |     |
+| --- | ------ | ----------- | --- | -------- | --- |
+57.5 + 82 + 44 =
+183.5
+公
+| 4   | 4   | 30  | 60  | 4   |     |
+| --- | --- | --- | --- | --- | --- |
+信
+  微
+Table 84. Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+#   covered   zone  per Call  spent  time  Allocated   Actually
+|     |     | (minutes)  | remaining  |     | Taken  |
+| --- | --- | ---------- | ---------- | --- | ------ |
+(minutes)
+2  1,2  71, 114  17, 2  1207 + 228  1283 - 1435  1055, 228  62, 114
+= 1435
+= 152
+minutes
+overtime
+6  5,6  49, 28  6, 4  294 + 112   1256.5 -  294, 112  49, 28
+= 406  406 = 850.5
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 59 / 73
+| 4   | 4   | 84  | 2   |     | 168  |     | 1380 - 168  |     | 168  | 84  |
+| --- | --- | --- | --- | --- | ---- | --- | ----------- | --- | ---- | --- |
+= 1312
+
+Table 85. Ambulance covering zones that do overlap in 2, 4, 6
+Zones covered   Ambulanc Calls from  Time  Total time  Excess  Time  Calls
+|     |     | e #   | the zone  |            |     |            |     |            | Allocated   |           |
+| --- | --- | ----- | --------- | ---------- | --- | ---------- | --- | ---------- | ----------- | --------- |
+|     |     |       |           | Spent per  |     | spent      |     | time       |             | Actually  |
+|     |     |       |           | Call       |     | (minutes)  |     | remaining  |             | Taken     |
+|     |     |       |           |            |     |            |     | (minutes)  | M           |           |
+| 3   |     | 6     | 42        | 9.5        |     | 399        |     | 850.5 -    | 399         | 42        |
+C
+399 =
+451.5
+M
+
+Table 86. Results for ambulance covering zones for 2, 4, 6
+i
+Total Calls Taken  27+43+16+19+11+30+6 H 2+114+49+28+84+42 = 525
+：
+| Calls made in the county           |     |     |     | 578    |     |     |     |     |     |     |
+| ---------------------------------- | --- | --- | --- | ------ | --- | --- | --- | --- | --- | --- |
+| Percentage of calls taken/covered  |     |     |     | 90.8%  |     |     |     |     |     |     |
+号
+| Population covered  |     |     |     | 245,242 people  |     |     |     |     |     |     |
+| ------------------- | --- | --- | --- | --------------- | --- | --- | --- | --- | --- | --- |
+
+众
+Configuration One-Hour
+
+Table 87. Ambulance covering disaster hour in 2, 4, 6
+公
+Ambulance #   Zones  Calls from  Total time  Excess time  Time  Calls Actually
+|     | covered   | zone  |     |            |     |            |     | Allocated   |     | Taken  |
+| --- | --------- | ----- | --- | ---------- | --- | ---------- | --- | ----------- | --- | ------ |
+|     |           |       |     | spent      |     | remaining  |     |             |     |        |
+|     |           |       |     | (minutes)  |     | (minutes)  |     |             |     |        |
+信
+| 2   | 1,2  | 30, 48  |     | 77 + 96 = 173  |     |     |     | 0, 60  |     | 0, 30  |
+| --- | ---- | ------- | --- | -------------- | --- | --- | --- | ------ | --- | ------ |
+60 - 173 =
+113 minutes
+微
+overtime
+6  3,5,6  18, 21, 12  63.5 + 90 +  60 - 201.5 =  0, 12, 48  0, 2, 12
+|     |     |     |     | 48 = 201.5  |     | 141.5 minutes  |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | -------------- | --- | --- | --- | --- |
+overtime
+| 4   | 4   | 34  |     | 68  |     | 60 - 68 = 8  |     | 60  |     | 30  |
+| --- | --- | --- | --- | --- | --- | ------------ | --- | --- | --- | --- |
+minutes
+overtime
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 60 / 73
+Table 88. Ambulance covering zones that don’t overlap in 2, 4, 6
+Ambulance  Zones  Calls from  Time Spent  Total time  Excess  Time  Calls
+| #   | covered   | zone  | per Call  |            |            |     | Allocated   |           |
+| --- | --------- | ----- | --------- | ---------- | ---------- | --- | ----------- | --------- |
+|     |           |       |           | spent      | time       |     |             | Actually  |
+|     |           |       |           | (minutes)  | remaining  |     |             | Taken     |
+(minutes)
+2  1,2  77, 123  17, 2  1309 + 246  1380 - 1555  1134, 246  67, 123
+|     |     |     |     | = 1555  | = 175  |     |     |     |
+| --- | --- | --- | --- | ------- | ------ | --- | --- | --- |
+minutes
+overtime
+M
+| 6   | 5,6  | 54, 31  | 6, 4  |              |             |     | 324, 124  | 54, 31  |
+| --- | ---- | ------- | ----- | ------------ | ----------- | --- | --------- | ------- |
+|     |      |         |       | 324 + 124 =  | 1380 - 448  |     |           |         |
+|     |      |         |       | 448          | = 932       | C   |           |         |
+M
+| 4   | 4   | 84  | 2   | 168  |     |     | 168  | 84  |
+| --- | --- | --- | --- | ---- | --- | --- | ---- | --- |
+1380 - 168
+= 1212
+i
+H
+
+：
+Table 89. Ambulance covering zones that do overlap in 2, 4, 6
+Zones covered
+|     |     | Ambulanc | Calls from  | Time  | Total time  | Excess  | Time  | Calls  |
+| --- | --- | -------- | ----------- | ----- | ----------- | ------- | ----- | ------ |
+e #   the zone号  Spent per  spent  time  Allocated   Actually
+|     |     |     |     | Call  | (minutes)  | remaining  |     | Taken  |
+| --- | --- | --- | --- | ----- | ---------- | ---------- | --- | ------ |
+(minutes)
+众
+| 3   |     | 6   | 46  | 9.5  | 437  | 932-437 =  | 437  | 46  |
+| --- | --- | --- | --- | ---- | ---- | ---------- | ---- | --- |
+495
+|     |     | 公   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Table 90. Results for ambulance covering zones for 2, 4, 6
+| Total Calls Taken  |     |     | 479  |     |     |     |     |     |
+| ------------------ | --- | --- | ---- | --- | --- | --- | --- | --- |
+信
+| Calls made in the county  |     |     | 578  |     |     |     |     |     |
+| ------------------------- | --- | --- | ---- | --- | --- | --- | --- | --- |
+微
+| Percentage of calls taken/covered  |     |     | 82.9%                   |     |     |     |     |     |
+| ---------------------------------- | --- | --- | ----------------------- | --- | --- | --- | --- | --- |
+| Population covered                 |     |     | 223,754 people covered  |     |     |     |     |     |
+
+  From the data tables above, it is clear that the “Disaster-Saving Method” is much more
+efficient at saving people than the “Disaster Hour Method”, given how it has a much greater
+percentage of calls taken and covered, and also covers a larger population as a result. From the
+data table below, we can see that this is the case, and that the “Disaster-Saving Method” ought
+to be used, as opposed to the “Disaster Hour Method”.
+
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #4004, Problem A - Emergency Medical Response
+Page 61 / 73
+Table 91. Results from the “Disaster-Saving” and “Disaster Hour” Models with
+Configuration 2, 4,6 for Ambulances
+Disaster Type Method Used Percentage Taken Population Covered
+Flood “Disaster-Saving” 94.1% 253,955 people
+Flood “Disaster Hour” 93.9% 253,402 people
+Hurricane “Disaster-Saving” 91.4 % 246,774 people
+M
+Hurricane “Disaster Hour” 85.8% 231,774 people
+Earthquake “Disaster-Saving” 90.8%
+C
+245,242 people
+Earthquake “Disaster Hour” 82.9% M223,754 people
+Therefore, under most disaster situations, it would be fair better to use the “Disaster-
+H
+Saving” method than the “Disaster Hour” method. This is due to the fact that the “Disaster Hour”
+method eventually reaches a saturation with regards to how many people can be handled. Even
+：
+if one increases the amount of time allocated for the Disaster Hour, it is still less efficient than
+the Disaster-Saving method. As a result, when there is a disaster, the ambulances will, as usual,
+run a 2,4,6 configuration and use the Disa号ster-Saving method.
+This will not be completely accurate, because, as stated above, there are some people
+who are left uncovered that would be covered by the ambulances under the Disaster-Saving
+众
+method, when compared to the ideal Disaster-Saving method. This means that the actual
+efficiency would be slightly higher, given how the emergency ambulance route is more efficient.
+This means that no公t everybody was covered. Under the Disaster-Saving method, all
+people in the disaster will be covered and safe. However, the problem with the Disaster-Saving
+method is that it takes too much out of the regular, meaning that regular people with injuries
+信
+from there on out may not receive treatment. This is supported by the fact that the highest
+percentage of people covered under the Disaster-Saving method is 94.1%. Under the Disaster
+Hour method, the disaster is not able to be handled properly, given the time constraints on the
+微
+ambulances, meaning that the disaster is not covered. The rest of the day is also not completely
+covered. This means that it is worse than the Disaster-Saving method, given its best coverage
+is 93.9% of the population. Therefore, the ESC will not be able to completely cover the medical
+situation with the limited number of ambulances available.
+Moving on from allocation of ambulance resources, we also need to deal with how the
+city on the whole will deal with each kind of disaster. We will be going through each individual
+type of disaster, and the appropriate response from the ESC and the government.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 62 / 73
+Designing for Catastrophic Events
+Regarding All Catastrophic Scenarios
+The ESC, in conjunction with local and state governments, should create plans to deal
+with each catastrophic scenario, detailing responsibilities of parties involved, and organizing
+resources to ensure that if and when such a disaster occurs, the county will be safe. Since not
+much information about the county is given, we assume that the ESC will not be able to provide
+many resources or much manpower if necessary. This can be seen by the fact that the ESC is
+M
+only able to afford three ambulances for a population of 270,000 people, when each ambulance
+usually costs somewhere in the region of $20,000. From this, we know that the local, state, and
+C
+NGOs will have to bear most of the burdens in this scenario. However, given that there is no
+guarantee that there are any NGOs that will help, this is a factor that cannot be relied upon.
+M
+Therefore, only the local and state governments will be able to contribute meaningful resources
+and manpower, although the ESC will probably be able to assist in coordination.
+i
+Depending on the structure of the local and state gHovernment, this means that parties
+will need to be responsible for medical teams (which the ESC helps with), fire and rescue
+：
+operations, law enforcement, care and shelter operations, communications and warning
+systems, construction and engineering teams. In general, existing law enforcement should not
+have to be bolstered in disaster scenarios, medical teams have been covered by the ESC, fire
+号
+and rescue operations should mostly be covered by existing fire departments and law
+enforcement people. However, care and shelter operations, communications and warning
+systems, and construction and en众gineering teams would need to be created.
+Management on all levels is required in order to keep track of resources, people and
+other information involved. This is to ensure that things are being done as efficiently and
+公
+accurately as possible. The goal of disaster recovery should always be to mitigate damage done
+by the catastrophic event, and to help the county recover to its former state. Planning must be
+done for all probab信le scenarios, and not just floods, earthquakes, and hurricanes, so that the
+county is prepared for all eventualities. However, ones that will probably not or never occur,
+such as nuclear fallout if there are no sources of nuclear energy, waste, material or synthesis in
+微
+the region, should not be considered, due to the extremely low probability of such an event
+occurring. However, since no information is provided on the county, we cannot disregard any of
+these possibilities in this section.
+In general, plans should provide a system to effectively manage emergency situations,
+identify sources of authority and clearly define relationships, to delegate tasks and
+responsibilities, to ensure that there are sufficient resources, facilities and services, and to
+provide a framework for long-term recovery and growth. Mutual aid should be requested where
+necessary, although not relied upon, given how it may not always be received.
+To prepare for such scenarios, infrastructure should be improved. This goes beyond just
+improving the state of public services, such as hospitals and shelters, although it is helpful, and
+requires the improvement of transportation systems and nearly all facilities and buildings.
+Facilities and buildings should be made to have a greater structural integrity, and should be
+more resistant to damage from all sources, including waves, fire, and even pressure. This can
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 63 / 73
+be achieved by creating new building codes and making sure that they are enforced. Early-
+warning systems to detect incoming disasters should also be implemented, to allow more time
+for preparation, evacuation, and other responses to such a disaster. Necessary legislation to
+enact this should also be passed.
+Government agencies that will generally help after the fact include the SBA (Small
+Business Administration), the DHU (Department of Housing and Urban Development), the
+USDA (United States Department of Agriculture), the IRS (Internal Revenue Service), the FEMA
+(Federal Emergency Management Agency), the Social Security Administration, the Health and
+Human Service, as well as the Food and Drug Administration, although they Mmay not apply to
+every disaster scenario.
+Not much clear information on what physical action to take is given in this section, given
+C
+how the nature of every catastrophic scenario is different, leading to different solutions. What
+may work in one scenario may be detrimental in another, and so Minformation on how to deal with
+specific scenarios will be provided in later sections.
+Finally, when we talk about the ESC covering a natural disaster or some catastrophic
+i
+scenario, this is the ESC in conjunction with the state goveHrnment and the local government. To
+cover would mean to adequately protect the common people, and be able to salvage situations
+：
+so that rebuilding is possible, and so that minimal damage is to done to resources, property, and
+people.
+号
+Regarding Floods
+Floods are situations where there is too much incoming water, either because local
+众
+bodies of water, such as rivers or lakes, have overflowed, or because there is an excess intake
+of water, from sources such as the ocean or rain. Usually, the results of floods are devastating,
+pushing territory and hous公es underwater, leaving people to evacuate the scene or move to high
+ground to stay safe. This results in large amounts of property damage and sometimes injuries
+and deaths when people do not evacuate from the region quickly enough.
+信
+First of all, preparations must be made so that floods cause minimal damage even if
+nothing is done during and after the flood occurs. As per the section regarding all catastrophic
+scenarios, detectors should be put in place to find out when flooding will occur ahead of time, so
+微
+that the people will have an adequate warning when such an event does occur. This will give
+more time for people to get out of the way or get to high ground, so that they are safer, and will
+give more time for emergency services to respond to an impending natural disaster.
+Another part of these preparations would be to construct various anti-flooding structures.
+These structures include tsunami walls and flood gates, which when implemented by the ESC
+and other affiliated organizations, would block incoming water and prevent it from overflowing
+into the county region. These would also help to redirect the water to other regions which would
+not suffer from the threat of flooding. In this way, the height of the flooding would be less than
+expected.
+Obviously, other preventative measures such as organization of such measures and
+counter-measures, as well as most things detailed in this section, should be coordinated by the
+ESC and other affiliated organizations. Other measures include informing the public of what to
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 64 / 73
+do in the event of a flood, through various public service announcements or other forms of
+communication from government to the people. This is to ensure that the people can react as
+best as they can in the event of a flood. Various locations should be designated as safe areas to
+retreat to in the event of a flood.
+When a flood actually occurs, it is first necessary to send out search and rescue parties
+to make sure that all people are safe. Depending on the severity of the flooding, this can be
+done through people wading through water, or with boats capable of traveling quickly through
+narrow areas. They would go door to door, checking for people who are still inside, and bringing
+them out to safety. Helicopters could also assist here by providing aerial visioMn and quick
+transport. Government workers will also need to set up shelters at safe areas in a flood, and see
+that there is no trouble or conflict. Law enforcement can assist if there is trouble or conflict in
+C
+such regions.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 8. A Flood Shelter
+There is no feasible way to make a flood disappear, and so it is necessary to just wait for
+the flood to gradually disappear. However, depending on how long it takes for the flood to
+recede, shelters may need to be stocked with large amounts of water, food, medical supplies,
+and places to rest. People will be at least temporarily living in this region, so these shelters need
+to be equipped for this eventuality. Care must be given to those who need it, which the section
+on the ambulance distribution and configuration covers.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 65 / 73
+Meanwhile, search and rescue operations must continue to go on, in case there are
+people who are still missing, and need to be rescued. On top of that, management of resources
+and record-keeping must continue. Inevitably, there will be some property damage and loss of
+resources when such floods occur. However, it would be best to ensure that as little property
+and resources is destroyed as possible. This can be done by creating more structurally sound
+and waterproof structures, which would then be able to withstand floods.
+Once the floodwaters recede, people should be ordered to return to their homes and
+properties as fit. However, if people have lost their homes or are unable to return to them for
+other reasons, they should be given leeway, and should be allowed to stay inM shelters until
+suitable housing can be found. The injured should be allowed to stay in hospitals until they have
+recovered. Funding from local and state governments, as well as from governmental agencies,
+C
+should be funding all of the shelters, resources and emergency medical services in general.
+Damage assessment should be carried out as soon as poMssible to determine the
+severity of the flood, as well as to determine the people who perished in the flood. This will allow
+the ESC and government to better prepare for future floods. Damage assessment will also let
+i
+the government know where to focus reconstruction crewsH, which should be led by the
+engineering teams. They will rebuild broken houses and other facilities, so that they can be
+：
+operational and of use. Reconstruction should not only be limited to physical buildings, but also
+to anything damaged in general that is government owned.
+If all of these suggestions are carr号ied out, then the county should be fairly safe from
+most floods. More can be added or adapted if necessary, but the ESC and other affiliated
+organizations should be able to deal with a flooding scenario. However, the ESC on its own
+众
+would not have the resources necessary to deal with a flooding scenario.
+Regarding Hurricanes
+公
+Hurricanes (also tropical cyclones, or typhoon) are natural disasters with characteristics
+of strong wind, rain, and thunderstorms, forming on large bodies of water. Usually, the most
+信
+severe winds occur in the ocean (due to it being created at said location) and therefore is less
+severe when reaching land. However, it can nonetheless create devastation, not only causing
+strong wind and rain, but also creating high waves, storm surge, and tornadoes as a byproduct,
+微
+thus causing floods (refer to the last section on floods), damage in infrastructure, and injury
+(from flying debris, floods, etc.)
+Like with any other natural disaster, preparations must be made to prevent damage from
+hurricanes. Daily weather forecasts must be made, in order to be able to track, and detect
+incoming hurricanes, in order to prepare in advance for the upcoming disaster. Long-term
+prevention is not really possible.
+Another part of these preparations would be to construct various anti-flooding structures.
+These structures include tsunami walls and flood gates, which when implemented by the ESC
+and other affiliated organizations, would block incoming water and prevent it from overflowing
+into the county region. These would also help to redirect the water to other regions which would
+not suffer from the threat of flooding. In this way, the height of the flooding from hurricanes
+would be less than expected.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 66 / 73
+Obviously, other preventative measures such as organization of such measures and
+counter-measures, as well as most things detailed in this section, should be coordinated by the
+ESC and other affiliated organizations. Other measures include informing the public of what to
+do in the event of a hurricane, through various public service announcements or other forms of
+communication from government to the people. Various locations should be designated as safe
+areas to retreat to in the event of a hurricane.
+Government workers will also need to set up shelters at safe areas in a hurricane, and
+see that there is no trouble or conflict. Law enforcement can assist if there is trouble or conflict
+in such regions. There is no feasible way to make a hurricane disappear, andM so it is necessary
+to just wait for the hurricane to gradually disappear. However, depending on how long it takes
+for the flood to recede, shelters may need to be stocked with large amounts of water, food,
+C
+medical supplies, and places to rest. People will be at least temporarily living in this region, so
+these shelters need to be equipped for this eventuality. Care musMt be given to those who need it,
+which the section on the ambulance distribution and configuration covers.
+Meanwhile, search and rescue operations must continue to go on, in case there are
+i
+people who are still missing, and need to be rescued. On Htop of that, management of resources
+and record-keeping must continue. Inevitably, there will be some property damage and loss of
+：
+resources when such floods occur. However, it would be best to ensure that as little property
+and resources is destroyed as possible. This can be done by creating more structurally sound
+and waterproof structures, which would th号en be able to withstand hurricanes.
+If there is a flooding during the hurricane, the ESC should follow the procedure for
+flooding as well.
+众
+Regarding Earthquakes
+Earthquakes are th公e result of a sudden release of energy in the Earth’s crust, and they
+occur in specific places where chances of earthquakes are higher, because they are nearer to
+the plates of the Earth.
+To prepare
+信
+for an earthquake, the ESC must first determine the chances of it happening.
+If the chances of an earthquake is high, you must make sure that buildings are built with strong
+structures and are built low so that the earthquake does not cause too much damage to the
+微
+area. These chances can be determined from seismic graphs, which can be formed from
+detectors that should be put in place so that people some time in advance to know the
+Earthquake is coming. This will definitely give emergency services more time to respond as well,
+as they can get ready.
+Another important part to prepare for earthquakes is to use public service
+announcements to make sure the citizens of the county or country to know what to do. Citizens
+should be prepared to be self-sufficient for at least three days, avoid storing heavy objects in the
+house, securing bookcases, and having an emergency kit at home, office, and car. Also,
+citizens should know what to do during an earthquake. The procedure is to drop, cover, and
+hold so if a citizen is in a building, they should drop to the ground, take cover by getting under a
+sturdy desk or table, and holding on until the earthquake commences. Also, citizens should be
+prepared for an aftershock.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 67 / 73
+The ESC should also have ambulances and shelters prepared for when the earthquake
+takes place depending the magnitude of earthquakes around their location, because it may be
+possible that the earthquake destroys or deconstructs buildings that people live in. Having the
+shelters prepared would eliminate or lower the number of people who will have no shelter after
+the earthquake. The shelter should be long-term and equipped with food, water, shelter, and all
+the other basic necessities of life. The shelters should be sturdy and should not be affected by
+the earthquakes.
+If all of these suggestions are carried out, then the county should be fairly safe from
+most earthquakes. More can be added or adapted if necessary, but the ESC Mand other affiliated
+organizations should be able to deal with a flooding scenario. However, the ESC on its own
+would not have the resources necessary to deal with a flooding scenario.
+C
+Conclusion M
+It is not possible for the ESC to handle any disaster catastrophic scenario on its own.
+However, with the assistance of the local government, state goviernment, and possibly federal
+H
+government, the county will have the resources necessary to deal with the disasters outlined
+above. However, the ESC cannot cover the situation without this assistance, as it probably lacks
+：
+the resources to carry this out.
+Through the various suggestions offered, a clear plan is detailed. This plan will allow the
+ESC and other affiliated groups to be able号 to deal with such disasters.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 68 / 73
+Part 6
+Non-technical Memo
+To: Emergency Service Coordinator
+From: Team 4004
+Date: November 3, 2013
+Subject: Emergency Medical Response M
+Dear Emergency Service Coordinator,
+C
+The purpose of this memo is to inform you of our work. We have modeled how to cover
+the most people in the county with three ambulances, two ambulMances, and just one ambulance.
+We have also determined what to do in the event of a natural disaster, with regards to
+ambulance distribution and general plans, as well as whether you will be able to handle the
+i
+situation. H
+：
+When modeling how three ambulances should be distributed; we determined where
+placement of ambulances would maximize the number of regions covered, and then determined
+the number of people each configuration o号f ambulances that would be covered. In the end, we
+had several configurations that had an equal coverage of people, so we decided to pick the
+configuration with most ambulance free time as the best. This configuration had an ambulance
+众
+in zone 2, zone 4, and zone 6. This configuration covered 97.7% of the population, and left
+6,250 people uncovered. We determined that you would not be able to cover the whole county
+on your own.
+公
+When modeling how two ambulances should be distributed, we determined the only
+configuration that w信ould be able to handle all regions to be the one that had an ambulance in
+zone 2 and zone 5. This configuration covered 77.5% of the population and left 60,615 people
+uncovered. We determined that you would not be able to cover the whole county on your own.
+微
+Finally, when modeling how one ambulance should be distributed, all possible
+configurations of ambulances were tested. The best configuration was determined to be having
+an ambulance in zone 2, which allowed for 45.83% of the population to be covered, and left
+146,259 people uncovered. We determined that you would not be able to cover the whole
+county on your own.
+Moving on to modeling disaster scenarios, we first looked at several counties and
+countries, Japan, Cuyahoga of Ohio, and San Diego to determine how they dealt with disasters.
+We then modeled how the ambulances would best be used in a disaster scenario, through the
+previous described best configuration for three ambulances of 2,4,6, through two different ways
+of dealing with a disaster. The “Disaster-Saver” method involves an ambulance going through
+its assigned zones and working in these zones until all people from the disaster are treated,
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 69 / 73
+before going through the usual routine. The “Disaster Hour” method involves an ambulance
+going through its assigned zones and working in these zones for an hour, regardless of how
+many people are treated, before going through the usual routine. It was determined that the
+“Disaster-Saver” method would be more efficient in covering people, covering up to 94.1% of
+the population and leaving a minimum 16,045 people without coverage during a disaster. We
+then determined what to do in the event of a hurricane, flood and earthquake. We figured out
+that you alone will not be able to handle the entire scenario, but with assistance from local and
+state governments, you would be able to do so.
+M
+We strongly urge you to take our recommendations and start using the ambulance
+configurations that we have offered, given that they will be able to save the most people, and
+C
+also urge you to implement our disaster plans, to minimize the damage done as a result of
+disasters. M
+Best,
+i
+Team 4004 H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 70 / 73
+Part 7
+Bibliography
+Works Cited
+Collier-County-School-District-Zone-Map. Digital image. Naples Guru. N.p., n.d. Web.
+M
+<http://www.naplesguru.com/images/collier_county_public_elementary_school_district_zone_m
+ap_web_4118.jpg>.
+C
+1711322576275886. Digital image. Hamilton County, Indiana. N.p., n.d. Web.
+M
+<http://www.hamiltoncounty.in.gov/egov/gallery/1711322576275886.gif>.
+i
+City-of-Bakersfield-Zoning-Map. Digital image. Mappery.H N.p., n.d. Web.
+<http://www.mappery.com/maps/City-of-Bakersfield-Zoning-Map.mediumthumb.pdf.png>.
+：
+Yeagley, Suzanne. "McSweeney’s Internet Tendency: Interviews With People Who Have
+Interesting or Unusual Jobs: Tracy Unick,号 911 Dispatcher and Trainer."McSweeney's Internet
+Tendency. N.p., 19 July 2008. Web. 01 Nov. 2013. <http://www.mcsweeneys.net/articles/tracy-
+unick-911-dispatcher-and-trainer>.
+众
+"Fast Facts on US Hospitals." Fast Facts on US Hospitals. N.p., n.d. Web. 01 Nov. 2013.
+<http://www.aha.org/resea公rch/rc/stat-studies/fast-facts.shtml>.
+"Population Estimates." County Totals Datasets: Population, Population Change and Estimated
+信
+Components of Population Change. N.p., n.d. Web. 01 Nov. 2013.
+<http://www.census.gov/popest/data/counties/totals/2012/CO-EST2012-alldata.html>.
+微
+Schlesinger, Robert. "U.S. Population 2013: More Than 315 Million People." US News.
+U.S.News & World Report, 28 Dec. 2012. Web. 02 Nov. 2013.
+<http://www.usnews.com/opinion/blogs/robert-schlesinger/2012/12/28/us-population-2013-
+more-than-315-million-people>.
+"AAA || Ambulance Facts." AAA || Ambulance Facts. N.p., n.d. Web. 02 Nov. 2013.
+<http://www.the-aaa.org/media/ambulance_facts.html>.
+"Ambulance Perth." Ambulance Services. St John Ambulance Australia, n.d. Web. 2 Nov. 2013.
+<http://www.stjohnambulance.com.au/st-john/ambulance-services/metro-ambulance-
+service/ambulance-activity-and-response-times>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 71 / 73
+"Response Times." - Ambulance Service of NSW. New South Wales Government., n.d. Web. 02
+Nov. 2013. <http://www.ambulance.nsw.gov.au/Our-performance/Response-Times.html>.
+"Mathwords: Combination Formula." Mathwords: Combination Formula. N.p., n.d. Web. 02
+Nov. 2013. <http://www.mathwords.com/c/combination_formula.htm>.
+"San Diego County Emergency Operations Plan." County of San Diego:. N.p., n.d. Web. 02 Nov.
+M
+2013. <http://www.co.san-
+diego.ca.us/oes/emergency_management/protected/oes_jl_oparea.html>.
+C
+"Family Disaster Plan and Personal Survival Guide." County of San Diego:. N.p., n.d. Web. 02
+M
+Nov. 2013. <http://www.co.san-diego.ca.us/oes/community/oes_jl_familyplan.html>.
+i
+FitzGerald, Edward. "Cuyahoga County Emergency Base HPlan." Cuyahoga County Public Safety
+& Justice Services. N.p., 23 May 2012. Web. 2 Nov. 2013.
+：
+<http://ja.cuyahogacounty.us/pdf_ja/en-US/EmergencyOpPlan.pdf>.
+"How Japan Became a Leader in Disaster 号Preparation." TIME.com. N.p., n.d. Web. 02 Nov. 2013.
+<http://content.time.com/time/world/article/0,8599,2058390,00.html>.
+众
+"Volcanoes of Japan: Facts & Information / VolcanoDiscovery." Volcanoes of Japan: Facts &
+Information / VolcanoDiscovery. N.p., n.d. Web. 02 Nov. 2013.
+<http://www.volcanodisco公very.com/japan.html>.
+Staff, The CNN Wire, Yoko Wakatsuki, and Kyung Lah. "3 Nuclear Reactors Melted down after
+信
+Quake, Japan Confirms." CNN. Cable News Network, 07 June 2011. Web. 02 Nov. 2013.
+<http://edition.cnn.com/2011/WORLD/asiapcf/06/06/japan.nuclear.meltdown/index.html>.
+微
+"Office of Emergency Services." County of San Diego:. N.p., n.d. Web. 02 Nov. 2013.
+<http://www.sdcounty.ca.gov/oes/>.
+"Photos of Japan, March 11 2011." TIME.com. N.p., n.d. Web. 02 Nov. 2013.
+<http://content.time.com/time/photogallery/0,29307,2058378,00.html>.
+"Flood Report - 2001." Flood Report - 2001. US Geological Survey, n.d. Web. 3 Nov. 2013.
+<http://pubs.usgs.gov/of/2003/ofr03-193/cd_files/USGS_Storms/patton.htm>.
+McGhee, Tom. "Colorado Flood: No Relief in Sight..." The Denver Post. The Denver Post, 09
+Dec. 2013. Web. 02 Nov. 2013.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 72 / 73
+<http://www.denverpost.com/breakingnews/ci_24080294/colorado-flood-no-relief-sight-record-
+rain-falls>.
+"Floods in the United States: 1901–2000." Wikipedia. Wikimedia Foundation, 11 Feb. 2013.
+Web. 02 Nov. 2013. <http://en.wikipedia.org/wiki/Floods_in_the_United_States:_1901–2000>.
+"Floods in the United States: 2001–present." Wikipedia. Wikimedia Foundation, 18 Sept. 2013.
+Web. 02 Nov. 2013. <http://en.wikipedia.org/wiki/Floods_in_the_United_States:_2001–present>.
+M
+"Earthquake and Tsunami in Japan." - IFRC. N.p., n.d. Web. 02 Nov. 2013.
+C
+<http://www.ifrc.org/what-we-do/disaster-management/responding/ongoing-operations/japan-
+earthquake/>.
+M
+"Asian Disaster Reduction Center (ADRC)." Asian Disaster Reduction Center (ADRC). N.p., n.d.
+i
+Web. 02 Nov. 2013. <http://www.adrc.asia/nationinformatHion.php?NationCode=392>.
+：
+"HURDAT Re-analysis Chronological List of All Hurricanes." HURDAT Re-analysis
+Chronological List of All Hurricanes. National Oceanic and Atmospheric Administration, n.d.
+Web. 02 Nov. 2013. <http://www.aoml.no号aa.gov/hrd/hurdat/All_U.S._Hurricanes.html>.
+"List of Deadly Earthquakes since 1900." Wikipedia. Wikimedia Foundation, 10 Feb. 2013. Web.
+众
+02 Nov. 2013. <http://en.wikipedia.org/wiki/List_of_deadly_earthquakes_since_1900>.
+"Disaster Management in J公apan." Bousai.go.jp. N.p., n.d. Web.
+<http://www.bousai.go.jp/1info/pdf/saigaipanf_e.pdf>.
+信
+"CALIFORNIA CHAPARRAL INSTITUTE." Forest Fires. N.p., n.d. Web. 02 Nov. 2013.
+<http://www.californiachaparral.org/cforestfires.html>.
+微
+"II. What Actions Are Taken by the U.S. Government When An infectious Disease Outbreak
+Occurs?" II. What Actions Are Taken by the U.S. Government When An infectious Disease
+Outbreak Occurs? N.p., n.d. Web. 02 Nov. 2013.
+<http://clinton1.nara.gov/White_House/EOP/OSTP/CISET/html/2.html>.
+"What Is the Size of a Hurricane? - Texas Hurricane Handbook, Weather Research Center."
+What Is the Size of a Hurricane? - Texas Hurricane Handbook, Weather Research Center. N.p.,
+n.d. Web. 02 Nov. 2013. <http://www.wxresearch.org/family/pg5.html>.
+Government, Queensland. "Understanding Floods." Chiefscientist.qld.gov.au. N.p., n.d. Web.
+<http://www.chiefscientist.qld.gov.au/publications/understanding-floods/assets/floods-quiz.pdf>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4004, Problem A - Emergency Medical Response
+Page 73 / 73
+"Northridge Earthquake." Northridge Earthquake. University of California, Berkeley, n.d. Web.
+03 Nov. 2013. <http://nisee.berkeley.edu/northridge/>.
+"The 1972 Black Hills-Rapid City Flood Revisited." Http://sd.water.usgs.gov/. USGS and South
+Dakota Water Science Center, n.d. Web. <http://sd.water.usgs.gov/projects/1972flood/>.
+"Top Philadelphia News." NBC 10 Philadelphia. N.p., n.d. Web. 03 Nov. 2013.
+M
+<http://www.nbcphiladelphia.com/news/>.
+Flood_shelter_at_Rajamangala_Stadium,_Bangkok,_Thailand,_OctoberC_2011. Digital image.
+Wikipedia. N.p., n.d. Web.
+M
+<http://upload.wikimedia.org/wikipedia/commons/4/42/Flood_shelter_at_Rajamangala_Stadium,
+_Bangkok,_Thailand,_October_2011.jpg>.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

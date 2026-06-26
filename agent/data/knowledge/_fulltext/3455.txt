@@ -1,0 +1,2893 @@
+High School Mathema/cs Compe//on in Modelling
+Team 3455
+Problem B -­‐ How Much Gas Should I Buy This Week?
+Problem
+The problem here is (just as the problem states) to determine how much gas to buy on any given
+week. Essen=ally, we develop a model to predict gasoline prices based on fundamental variables
+and a recursive formula.
+M
+Our Thoughts
+C
+We are given two cases, one where the consumer drives 100 miles per week and one where the
+consumer drives 200 miles per week. If we were to have the op=on of adding as much gas we
+M
+would like, then there would be a large number of choices and complicated the model to reduce
+accuracy. Instead, we deemed accuracy to be of more importance and limited the choices of the
+consumer to binary form every week. i
+H
+We divided our solu=on into 5 parts:
+：
+Part I) Establishing Preliminaries
+号
+Our Assump=ons, Defini=ons, Variables, and General Analysis; these are constantly referred in the
+model 众
+Part II) The General Pricing Model
+公
+Here we determine quan=ta=ve factors as well as the laws of supply and demand to create
+a model that could信 predict future gas prices. We create theore=cal models and then find the
+effects of the actual data to create an accurate pricing model.
+Co微mponent 1: Supply
+•Here we establish and proof a link between crude oil supply and gasoline prices.
+We also show that there is a response =me such that we can use supply to
+an=cipate gasoline prices
+•We create a theore=cal model (created en=rely based on observa=ons we made
+and reasoning)
+•The model here uses current gasoline price, supply of crude oil, and a constant
+“C” (a natural result of one of the integrals), which are the combined effect of
+qualita=ve data (This constant is modeled in component 3)
+Component 2: Individual Profiles
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+•This component is simply a basic analysis and profile of the top five oil expor=ng
+countries to the United States.
+•Important factors are discussed and analyzed
+Component 3: Qualita=ve Data
+•We determined that the global weather and poli=cal stability to be the most
+important qualita=ve data that affects gasoline prices
+•We categorize the different intensi=es of the two data and each category is given a
+quan=ta=ve value that affects the constant “C” and subsequently the price of
+gasoline in the future. Essen=ally, we are able to quan=fy qualita=ve data.
+M
+We now have a complete model that can predict future gasoline prices. The only unknown variable
+is β ,a constant value that is applied to calibrate the magnitude of the changes in supply to the
+C
+changes in gas prices. We use the retail gasoline prices in 2011 to solve for β and the average value
+is used for the General Pricing Model.
+M
+In building the model, we accept that there exists uncertain=es and near random movements. We
+express this concept and its effects by introducing a random varia i ble ε and allow to act like a
+H
+simplified Wiener Process on the model. This accounts for random movements that we cannot see.
+：
+Our next step is to test the model. We used the model star=ng in January of 2012 un=l the most
+recently available data. This is then compared to the actual prices.
+号
+Part III) The Binary Tree Model
+众
+In this part, we plan out and model the actual decision making possibili=es of the consumer.
+Ini=ally, we established that the consumer has a binary choice each =me he has the chance to buy
+gas. We analyze each case公 given separately.
+By looking at the outcomes of the binary trees, we create a table that the consumer can refer to.
+The table contains信 a column that calculates the average amount paid for every mile driven for very
+outcome. The consumer only needs to use the General Pricing Model from Part II to find the price
+of each week in the future and refer to the table in this part to find the outcome where he would
+be paying微 least per unit mile driven.
+Part IV) The Boston Model
+In this part, we take our General Pricing Model (which prices for the weekly United States Regular
+All Formula=ons Retail Gasoline Prices) and apply it to the city of Boston by adding in loca=on-­‐
+specific variables to recalculate the value “C” in the model.
+This part is very similar to the tes=ng of the General Pricing Model at the end of Part II.
+Part V) The Le<er
+As requested, we wrote a lecer to our local newspaper (The South China Morning Post) and
+presented them with an ar=cle detailing the basics of our model and how the average person can
+u=lize it to save money.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+This is wricen in a non-­‐technical language and anyone is able to read it.
+Results
+We obtained rela=vely posi=ve results from our model. Here is a graph of our predicted price of
+2012 and the actual price (from the tes=ng of the General Pricing Model at the end of Part II):
+Here is a a graph demonstra=ng our predicted price and the actual price:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Our percent error was 3.62% which is a very good result.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Here is a graph of the results from the Boston Model
+M
+C
+M
+i
+H
+：
+号
+众
+Here, the correla=on is slightly less but s=ll maintains it’s posi=ve results.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+H I G H S C H O O L M A T H E M A T I C S
+C O M P E T I T I O N I N M O D E L I N G
+Team 3455
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Problem B – How Much Gas Should I Buy This WEek
+Prepared by: Team 3455
+Date: November 2012
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 1
+Problem Summary and Analysis:
+The purpose of this paper is to develop a model that will a6empt to predict and analyze
+retail gasoline prices so that a consumer could use it to determine how much gas to purchase on a
+given week.
+A majority of the ci@zens in the United States depend upon gasoline to power their vehi-­‐
+cles; however, the cost of gasoline is heavily vola@le. Car owners need to be concerned with the
+constantly changing price of fuel. It would be of great convenience to a car owneMr if he were able
+to predict the price of gasoline, so as to be able to have an idea of how much gas to purchase on a
+C
+given week. The objec@ve of this model is to allow the car owner to input publicly available data
+M
+and find a reasonable predic@on for the following week’s gasoline price. Knowing this, the car
+i
+H
+owners can make a more informed decision on how much gasoline to buy that week.
+：
+One part of this paper will create a generalized model for the United States while a la6er part will
+apply the model to a specific city: Boston.
+号
+众
+Summary of SoluLon Method:
+To tackle this probl公em, we must first set defini@ons, assump@ons, and variables that will be
+used. General economics theory dictates that changes in the price of gasoline are usually the result
+信
+of changes in supply and demand of gasoline. We break down the factors determining both supply
+微
+and demand to measurable segments. We analyze this through overall factors as well specific fac-­‐
+tors for the top five countries that export crude oil to the United States. This is done to simply the
+model to account for the @me restraint but to minimize the influence of non-­‐accounted data. This
+is the general pricing model. We then create a binary tree model based on the given assump@ons
+and the results of the pricing model. This is the decision model. Next, we use the general pricing
+model and apply it to the city of Boston by adding loca@on specific factors that further affect the
+price of gasoline. We call this the Boston Pricing Model. Lastly, we write a summary in the form of
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 2
+a one page non-­‐technical le6er to the local paper describing how the average person might use
+our model.
+Part I) Assump@ons, Defini@ons, Variables, and General Analysis
+Part II) The General Pricing Model
+•This model is meant to be a general indicator of the price of gasoline in the United States
+Part III) The Decision Model
+•This model takes the weekly price of gasoline for the next month basedM on the General
+Pricing Model and also the given assump@ons on mileage and decision making to decide
+C
+the best outcome for the driver
+M
+Part IV) The Boston Pricing Model
+i
+H
+•This part takes the General Pricing Model from Part II and adds loca@on-­‐specific factors
+：
+Part V) The le6er to the local paper
+•This part is a non-­‐technical summary that allows the average reader to understand our
+号
+model and how to use it to their benefits
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 3
+PART I
+AssumpLons:
+1) A gas tank holds 16 gallons and the average mileage is 25 miles/gallon. This means that every
+full tank (Given)
+2) The consumer has a choice to buy gas once a week (Given) (further addi@on to this assump@on
+on assump@on 4)
+M
+3)At the beginning of every week, the consumer will have the choice of filling the tank or buying a
+C
+half tank. This is reasonable since half and full are naturally measurable choices and buying by
+M
+other denomina@ons would be unnatural.
+i
+4)The tank would always be half full or full acer filling. It caHnnot be zero since the driver would
+have to drive the next week and thus must fill th：e tank. This also means that the driver can only
+fill the tank if he is empty, or half filled. If this was not true, then it is possible to have 3/4 or 1/4
+号
+filled tanks, thus complica@ng the problem beyond our capabili@es in the given @me. This as-­‐
+众
+sump@on allows for a simplified binary tree model of the final decision on whether to fill full or
+half very @me the opportunity arises.
+公
+5)The price elas@city of demand for gasoline is inelas@c (meaning that there is a rela@vely low
+信
+percentage change in the quan@ty demanded compared to percent change in price). This is rea-­‐
+sonable to assume since in the short run (which is the main usage of our model), people are
+微
+locked into their exis@ng life and are willing to pay the extra amount for the necessity of gaso-­‐
+line. In the long run, people may switch to fuel-­‐efficient vehicles or move to closer to their in-­‐
+tended des@na@on. However, that is beyond the range and objec@ve of the model.
+6)When deciding whether to fill up the tank, the consumers want to minimize cost per miles
+driven. This is reasonable as a basic economic assump@on is that individuals will take opportu-­‐
+ni@es to make themselves be6er off. Who wouldn’t want to pay less for the same amount of
+miles driven? In other words, the objec@ve of the consumer is to drive the most miles and pay-­‐
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 4
+ing the least possible amount. This also defines the objec@ve of our model to allow the consum-­‐
+ers to do this.
+DefiniLons:
+1)Crude Oil: the supply in crude oil is defined as the United States imports of Crude Oil and Petro-­‐
+leum Products
+2)Retail Gasoline Prices are defined as Weekly United States Regular All FormulaM@ons Retail Gaso-­‐
+line Prices
+C
+3)Response @me: the amount of @me between when an independent variable changes and when
+M
+the dependent variable changes due to the rela@onship between the two. In component 1 of
+i
+H
+Part II, we talk about the response @me between gasoline prices and the supply of crude oil
+：
+Variables:
+号
+1)Crude Oil inputs: Crude oil is one of the fundamental components of gasoline. In Part II, compo-­‐
+众
+nent 1, we establish a powerful connec@on between the supply of crude oil and the price of
+gasoline. 公
+信
+2)Weather: The weather and temperature of the suppliers of crude oil as well as those who de-­‐
+微
+mand of gasoline will have an effect on the price of gasoline. For example, cold spells in Europe
+ocen lead to an increase demand for hea@ng and thus an increase in gas prices. In Part II, we
+find out that the effect that the weather has on demand is a lot greater than the effect it has on
+supply.
+3)Poli@cal Stability: The stability of an oil producing na@on ocen drives the price of gasoline up
+and down. The tension and periodical violence in the Middle East (a heavy oil producing region)
+is measured and classified quan@ta@vely in Part II component 3.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 5
+4)N : throughout this paper, N is generally used to denote the discrete @me values whether it is
+month or week (this will be clarified). N=0 denotes the present @me and N=1 is one @me inter-­‐
+val acer the present, etc
+5)G(N) is used throughout to denote the retail gasoline price at a @me N. This is always in dollars
+per gallon
+6)C(N) is used to denote the price of crude oil, the units are specified in the paper
+7)G’(N) is used to denote the change of gasoline prices (some@mes representedM only as G when
+used in a theore@cal calcula@on)
+C
+8)C’(N) is used to denote the change of crude oil prices
+M
+9)M is used in PART II, Component 1 to indicate the @me value of months
+i
+H
+10)S(M) is used to denote the supply of crude oil (in thousand barrels) at a given month (some-­‐
+：
+@mes represented only as S when used in a theore@cal calcula@on)
+11)β is used in the General Pricing Mo号del as a calibra5ng constant rela5ng the change in S
+and the change in G.
+众
+12) k is used to denote response 5me
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 6
+General Analysis:
+1) There is a general correla@on between crude oil prices and retail gasoline prices as evidently
+shown in the graph below:
+M
+C
+M
+i
+H
+：
+2)According to the Energy Informa@on Administra@on, for every dollar we pay for gasoline,
+号
+roughly $.68 goes to paying for the crude oil, $.14 to tax, $.10 to the cost of refining, and 8% to
+the cost of distribu@on and mar众ke@ng.
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 7
+3)We believe that gasoline prices can be modelled and subsequently predicted by the combina-­‐
+@on of global factors.
+M
+C
+M
+i
+H
+：
+As the graph demonstrates, factors and events such as the weather (Hurricane Katrina) and stabil-­‐
+号
+ity (Arab-­‐Spring) and financial recessions and crisis have drama@c impact on gasoline prices.
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 8
+PART II
+The General Pricing Model
+The General Pricing Model Breakdown:
+The General Pricing Model is comprised of three components that uses various factors that
+affect the supply and demand of crude oil.
+•Component 1 Supply: Analysis of the impact of crude oil imports and gasoline prices
+M
+•There is an inverse rela@onship between crude oil imports and retail gasoline
+C
+prices.
+M
+•There is a @me gap between a change in crude oil imports and the impact it has on
+i
+the retail gasoline prices, thus crea@ng an indHicator for the gasoline prices
+：
+•Because of the nature of oligopolies (which retail gas companies belong to), gaso-­‐
+line have s@cky prices. This means there is a momentum effect (will be explained in
+号
+component 1)
+众
+•Component 2 Individual Analysis: Analysis of the top 5 countries that import crude oil to
+公
+the United States
+信
+•Canada, Saudi Arabia, Mexico, Venezuela, and Colombia are analyzed in detail
+微•The precise origin of the oil from the country is determined and the rainfall
+and temperature of that loca@on is analyzed for correla@on
+•Domes@c crude oil produc@on and refineries are analyzed
+•Component 3 Qualita@ve: Qualita@ve factors are considered and quan@fied
+•Weather and Stability are two major qualita@ve factors that are analyzed and clas-­‐
+sified.
+•Temperature and poli@cal stability of the demand and supply side are considered
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  9
+Component	  1:	  Supply
+Gasoline	  and	  Crude	  Oil
+	   Based	  on	  the	  general	  analysis	  1,	  there	  is	  a	  correla@on	  between	  the	  price	  of	  crude	  oil	  and
+the	  retail	  gasoline	  prices.	  One	  may	  feel	  that	  since	  crude	  oil	  is	  an	  input	  of	  gasoline,	  that	  looking	  at
+current	  crude	  oil	  prices,	  we	  can	  determine	  future	  gasoline	  prices.	  However,	  this	  is	  not	  true.	  Looking
+at	  the	  data	  for	  crude	  oil	  prices	  and	  retail	  gasoline	  prices,	  we	  can	  see	  that	  (weekly)	  the	  movement
+M
+of	  crude	  oil	  and	  the	  movement	  of	  retail	  gasoline	  occur	  at	  the	  same	  discrete	  @me	  value:
+C
+M
+•N	  =	  Date	  (In	  unit	  weeks)	  star@ng	  in	  the	  first	  week	  of	  January	  2011
+•G(N)	  =	  the	  U.S.	  Regular	  All	  Formula@ons	  Retail	  Gasoline	  Prices	  on	  week	  N	  (in	  dollars/gallon) i
+H
+•C(N)	  =	  the	  Spot	  Price	  of	  WTI-­‐Cushing,	  Oklahoma	  C：rude	  Oil	  on	  week	  N
+•G’(N)	  =	  the	  change	  in	  G(N)	  and	  discretely	  defined	  as	  G(N)	  -­‐	  CGN-­‐1)
+号
+•C’(N)	  =	  the	  change	  in	  C(N)	  and	  discretely	  defined	  as	  C(N)	  -­‐	  C(N-­‐1)
+众
+| DATE	  (N) | G(N) | C(N) | C(N) | G’(N) | C’(N) |
+| ----------- | ---- | ---- | ---- | ----- | ----- |
+公
+|     |     | DOLLARS/ | DOLLARS/ |     |     |
+| --- | --- | -------- | -------- | --- | --- |
+|     | 信   | BARREL   | GALLON   |     |     |
+89.54
+| 7	  Jan	  2011   | 3.089 |       | 2.8425396825397 | 0     | 0                  |
+| ------------------ | ----- | ----- | --------------- | ----- | ------------------ |
+| 14	  Jan	  20微11 | 3.104 | 91.02 |                 |       |                    |
+|                    |       |       | 2.8895238095238 | 0.015 | 0.0469841269841    |
+| 21	  Jan	  2011  | 3.11  | 89.75 |                 |       |                    |
+|                    |       |       | 2.8492063492064 | 0.006 | -­‐0.0403174603175 |
+28	  Jan	  2011 3.101 86.11 2.7336507936508 -­‐0.009 -­‐0.1155555555556
+| 4	  Feb	  2011 | 3.132 | 89.52 |                 |       |                |
+| ---------------- | ----- | ----- | --------------- | ----- | -------------- |
+|                  |       |       | 2.8419047619048 | 0.031 | 0.108253968254 |
+85.51
+11	  Feb	  2011 3.14 2.7146031746032 0.008 -­‐0.1273015873016
+| 18	  Feb	  2011 | 3.189 | 84.13 |                 |       |                    |
+| ----------------- | ----- | ----- | --------------- | ----- | ------------------ |
+|                   |       |       | 2.6707936507937 | 0.049 | -­‐0.0438095238095 |
+| 25	  Feb	  2011 | 3.383 | 95.26 |                 |       |                    |
+|                   |       |       | 3.024126984127  | 0.194 | 0.3533333333333    |
+4	  Mar	  2011 3.52 101.05 3.2079365079365 0.137 0.1838095238095
+| 11	  Mar	  2011 | 3.567 | 103.74 |                 |                                       |                 |
+| ----------------- | ----- | ------ | --------------- | ------------------------------------- | --------------- |
+|                   |       |        | 3.2933333333333 | 0.047                                 | 0.0853968253968 |
+| TEAM	  3455	    |       |        |                 | Problem	  B	  Search	  and	  Find |                 |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  10
+| DATE	  (N) | G(N) | C(N)     | C(N)     | G’(N) | C’(N) |
+| ----------- | ---- | -------- | -------- | ----- | ----- |
+|             |      | DOLLARS/ | DOLLARS/ |       |       |
+|             |      | BARREL   | GALLON   |       |       |
+18	  Mar	  2011 3.562 99.79 3.1679365079365 -­‐0.005 -­‐0.1253968253968
+| 25	  Mar	  2011 | 3.596 | 104.41 |                 |       |                 |
+| ----------------- | ----- | ------ | --------------- | ----- | --------------- |
+|                   |       |        | 3.3146031746032 | 0.034 | 0.1466666666667 |
+105.08
+| 1	  Apr	  2011  | 3.684 |        | 3.335873015873  | 0.088 | 0.0212698412698    |
+| ----------------- | ----- | ------ | --------------- | ----- | ------------------ |
+| 8	  Apr	  2011  | 3.791 | 109.29 |                 |       |                    |
+|                   |       |        | 3.4695238095238 | 0.107 | 0.1336507936508    |
+| 15	  Apr	  2011 | 3.844 | 107.75 |                 |       |                    |
+|                   |       |        | 3.4206349206349 | 0.053 | -­‐0.0488888888889 |
+M
+22	  Apr	  2011 3.879 109.11 3.4638095238095 0.035 0.0431746031746
+| 29	  Apr	  2011 | 3.963 | 112.3 |                 | 0.0C84 |                 |
+| ----------------- | ----- | ----- | --------------- | ------ | --------------- |
+|                   |       |       | 3.5650793650794 |        | 0.1012698412698 |
+105.84
+| 6	  May	  2011  | 3.965 |       | 3.36             | M0.002   | -­‐0.2050793650794 |
+| ----------------- | ----- | ----- | ---------------- | -------- | ------------------ |
+| 13	  May	  2011 | 3.96  | 99.87 |                  |          |                    |
+|                   |       |       | 3.1704761904762  | -­‐0.005 | -­‐0.1895238095238 |
+| 20	  May	  2011 | 3.849 | 97.99 |                  | i        |                    |
+|                   |       |       | 3.11079365H07937 | -­‐0.111 | -­‐0.0596825396825 |
+27	  May	  2011 3.794 99.55 3.1603174603175 -­‐0.055 0.0495238095238
+：
+| 3	  Jun	  2011 | 3.781 | 100.92 |                 |          |                 |
+| ---------------- | ----- | ------ | --------------- | -------- | --------------- |
+|                  |       |        | 3.2038095238095 | -­‐0.013 | 0.0434920634921 |
+100.05
+10	  Jun	  2011 3.713 号3.1761904761905 -­‐0.068 -­‐0.027619047619
+| 17	  Jun	  2011 | 3.652 | 95.87 |                 |          |                    |
+| ----------------- | ----- | ----- | --------------- | -------- | ------------------ |
+|                   |       |       | 3.0434920634921 | -­‐0.061 | -­‐0.1326984126984 |
+| 24	  Jun	  2011 | 3.574 | 众92.7 |                 |          |                    |
+|                   |       |       | 2.9428571428571 | -­‐0.078 | -­‐0.1006349206349 |
+1	  Jul	  2011 3.579 93.7 2.9746031746032 0.005 0.031746031746
+| 8	  Jul	  2011 | 3.641 公97.12 |     |                 |       |                 |
+| ---------------- | ------------ | --- | --------------- | ----- | --------------- |
+|                  |              |     | 3.0831746031746 | 0.062 | 0.1085714285714 |
+96.72
+15	  Jul	  2011 3.682 3.0704761904762 0.041 -­‐0.0126984126984
+信
+| 22	  Jul	  2011 | 3.699 | 98.01 |                 |       |                    |
+| ----------------- | ----- | ----- | --------------- | ----- | ------------------ |
+|                   |       |       | 3.1114285714286 | 0.017 | 0.0409523809524    |
+| 29	  Jul	  2011 | 3.711 | 97.83 |                 |       |                    |
+|                   |       |       | 3.1057142857143 | 0.012 | -­‐0.0057142857143 |
+微
+5	  Aug	  2011 3.674 90.85 2.884126984127 -­‐0.037 -­‐0.2215873015873
+| 12	  Aug	  2011 | 3.604 | 82.86 |                 |         |                    |
+| ----------------- | ----- | ----- | --------------- | ------- | ------------------ |
+|                   |       |       | 2.6304761904762 | -­‐0.07 | -­‐0.2536507936508 |
+85.36
+19	  Aug	  2011 3.581 2.7098412698413 -­‐0.023 0.0793650793651
+| 26	  Aug	  2011 | 3.627 | 85.06 |                 |       |                    |
+| ----------------- | ----- | ----- | --------------- | ----- | ------------------ |
+|                   |       |       | 2.7003174603175 | 0.046 | -­‐0.0095238095238 |
+| 2	  Sep	  2011  | 3.674 | 88.07 |                 |       |                    |
+|                   |       |       | 2.795873015873  | 0.047 | 0.0955555555556    |
+9	  Sep	  2011 3.661 87.91 2.7907936507937 -­‐0.013 -­‐0.0050793650794
+| 16	  Sep	  2011 | 3.601 | 88.93 |                 |         |                |
+| ----------------- | ----- | ----- | --------------- | ------- | -------------- |
+|                   |       |       | 2.8231746031746 | -­‐0.06 | 0.032380952381 |
+83.65
+23	  Sep	  2011 3.509 2.6555555555556 -­‐0.092 -­‐0.167619047619
+| 30	  Sep	  2011 | 3.433 | 81.18 |                 |                                       |                    |
+| ----------------- | ----- | ----- | --------------- | ------------------------------------- | ------------------ |
+|                   |       |       | 2.5771428571429 | -­‐0.076                              | -­‐0.0784126984127 |
+| TEAM	  3455	    |       |       |                 | Problem	  B	  Search	  and	  Find |                    |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  11
+| DATE	  (N) |     | G(N) | C(N)     | C(N)     | G’(N) | C’(N) |
+| ----------- | --- | ---- | -------- | -------- | ----- | ----- |
+|             |     |      | DOLLARS/ | DOLLARS/ |       |       |
+|             |     |      | BARREL   | GALLON   |       |       |
+7	  Oct	  2011 3.417 79.43 2.5215873015873 -­‐0.016 -­‐0.0555555555556
+| 14	  Oct	  2011 |     | 3.476 | 85.35 |                 |       |                 |
+| ----------------- | --- | ----- | ----- | --------------- | ----- | --------------- |
+|                   |     |       |       | 2.7095238095238 | 0.059 | 0.1879365079365 |
+86.82
+21	  Oct	  2011 3.462 2.7561904761905 -­‐0.014 0.0466666666667
+| 28	  Oct	  2011 |     | 3.452 | 92.32 |                 |          |                 |
+| ----------------- | --- | ----- | ----- | --------------- | -------- | --------------- |
+|                   |     |       |       | 2.9307936507937 | -­‐0.01  | 0.1746031746032 |
+| 4	  Nov	  2011  |     | 3.424 | 93.24 |                 |          |                 |
+|                   |     |       |       | 2.96            | -­‐0.028 | 0.0292063492063 |
+M
+11	  Nov	  2011 3.436 96.97 3.0784126984127 0.012 0.1184126984127
+| 18	  Nov	  2011 |     | 3.368 | 99.32 |                 | -­‐0.0C68 |                 |
+| ----------------- | --- | ----- | ----- | --------------- | --------- | --------------- |
+|                   |     |       |       | 3.1530158730159 |           | 0.0746031746032 |
+96.89
+25	  Nov	  2011 3.307 3.075873015873 M-­‐0.061 -­‐0.0771428571429
+| 2	  Dec	  2011 |     | 3.29  | 99.91  |                  |          |                 |
+| ---------------- | --- | ----- | ------ | ---------------- | -------- | --------------- |
+|                  |     |       |        | 3.171746031746   | -­‐0.017 | 0.095873015873  |
+| 9	  Dec	  2011 |     | 3.286 | 100.08 |                  | i        |                 |
+|                  |     |       |        | 3.17714285H71429 | -­‐0.004 | 0.0053968253968 |
+16	  Dec	  2011 3.229 96.06 3.0495238095238 -­‐0.057 -­‐0.127619047619
+：
+| 23	  Dec	  2011 |     | 3.258 | 97.74 |                 |       |                 |
+| ----------------- | --- | ----- | ----- | --------------- | ----- | --------------- |
+|                   |     |       |       | 3.1028571428571 | 0.029 | 0.0533333333333 |
+99.81
+30	  Dec	  2011 3.299 号3.1685714285714 0.041 0.0657142857143
+众
+	   The	  table	  above	  shows	  the	  retail	  price	  of	  gasoline	  and	  the	  price	  of	  crude	  oil.	  The	  last	  two
+公
+columns	  shows	  the	  change	  in	  gasoline	  price	  and	  the	  change	  in	  crude	  oil.	  If	  we	  are	  able	  to	  use	  crude
+oil	  as	  an	  early	  indicator	  of	  retail	  gasoline	  prices,	  then	  we	  would	  be	  able	  to	  see	  a	  movement
+信
+| C'(N) | ! G'(N | + k) |     |     |     |     |
+| ----- | ------ | ---- | --- | --- | --- | --- |
+for	  some	  value	  k	  over	  a	  consistent	  interval	  or	  discrete	  value	  N.
+微
+	   In	  a	  simpler	  explana@on,	  it	  means	  that	  change	  in	  the	  price	  of	  crude	  oil	  in	  one	  direc@on	  will
+cause	  the	  price	  of	  gasoline	  to	  change	  in	  a	  similar	  direc@on	  and	  similar	  magnitude	  at	  a	  later	  @me
+(hence	  the	  k	  value).	  However,	  based	  on	  this	  data,	  k	  =	  0,	  thus	  there	  is	  no	  @me	  difference	  between	  a
+change	  in	  crude	  oil	  and	  a	  similar	  change	  in	  gasoline	  price.
+| TEAM	  3455	   |     |     |     |     | Problem	  B	  Search	  and	  Find |     |
+| ---------------- | --- | --- | --- | --- | ------------------------------------- | --- |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM 3455 12
+This is consistent with a form of the efficient market hypothesis, which states that the price
+of the commodity in ques@on (gasoline) contains all public informa@on concern the pricing of it
+(crude oil price). Therefore, although we can confirm the direct correla@on between crude oil and
+gasoline prices, we cannot use it to predict it.
+Supply of Crude Oil and Gasoline
+Despite being unable to use present crude oil prices to predict future gasMoline prices, we
+can use the laws of supply and demand of crude oil to make judgements on the price of crude oil
+C
+and thus the price of gasoline (because of the connec@on in general analysis 1).
+M
+i
+H
+Given the commodity of crude oil, we can set a supply and demand to determine its price.
+：
+Based on assump@on 5 (the price inelas@city of demand) and general analysis 1 (rela@onship be-­‐
+tween crude oil and gasoline) we can conclude that the demand of crude oil will remain rela@vely
+号
+the same in the short run while the main changes will occur in the supply. The supply of crude oil is
+众
+the amount of crude oil that is imported by the United States.
+公
+The Rela@onship between The Supply of US Imports of Crude Oil and Petroleum Versus the
+信
+Retail Prices of Gasoline:
+微
+M = Date (in unit Months) star@ng in the first week of January 2008
+S(M) = total U.S. imports of Crude Oil and Petroleum Products in month M (in thousand barrels)
+G(M) = the U.S. Regular All Formula@ons Retail Gasoline Prices in month M (in dollars/gallon)
+M S(M) G(M)
+1 Jan 2008 420616 3.043
+1 Feb 2008 367143 3.028
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  13
+| M                | S(M) |        | G(M) |       |
+| ---------------- | ---- | ------ | ---- | ----- |
+| 1	  Mar	  2008 |      | 390528 |      | 3.244 |
+| 1	  Apr	  2008 |      | 399944 |      | 3.458 |
+| 1	  May	  2008 |      | 399957 |      | 3.766 |
+| 1	  Jun	  2008 |      | 401942 |      | 4.054 |
+| 1	  Jul	  2008 |      | 406854 |      | 4.062 |
+| 1	  Aug	  2008 |      | 406644 |      | 3.779 |
+M
+| 1	  Sep	  2008 |     | 346859 |     | 3.703 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Oct	  2008 |     | 409269 | C   | 3.051 |
+| 1	  Nov	  2008 |     | 386421 |     | 2.147 |
+M
+| 1	  Dec	  2008 |     | 390817 |     | 1.687 |
+| ---------------- | --- | ------ | --- | ----- |
+i
+| 1	  Jan	  2009 |     | 406925 |     | 1.788 |
+| ---------------- | --- | ------ | --- | ----- |
+H
+| 1	  Feb	  2009 |     | 338661 |     | 1.923 |
+| ---------------- | --- | ------ | --- | ----- |
+：
+| 1	  Mar	  2009 |     | 385841 |     | 1.959 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Apr	  2009 | 号   | 358846 |     | 2.049 |
+| 1	  May	  2009 |     | 355774 |     | 2.266 |
+众
+| 1	  Jun	  2009 |     | 358083 |     | 2.631 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Jul	  2009 |     | 366727 |     | 2.527 |
+公
+| 1	  Aug	  2009   |     | 346658 |     | 2.616 |
+| ------------------ | --- | ------ | --- | ----- |
+| 信 1	  Sep	  2009 |     | 352675 |     | 2.554 |
+| 1	  Oct	  2009   |     | 337212 |     | 2.551 |
+微
+| 1	  Nov	  2009 |     | 333152 |     | 2.651 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Dec	  2009 |     | 326556 |     | 2.607 |
+| 1	  Jan	  2010 |     | 350315 |     | 2.715 |
+| 1	  Feb	  2010 |     | 314452 |     | 2.644 |
+| 1	  Mar	  2010 |     | 360262 |     | 2.772 |
+| 1	  Apr	  2010 |     | 375769 |     | 2.848 |
+| 1	  May	  2010 |     | 376383 |     | 2.836 |
+| 1	  Jun	  2010 |     | 373317 |     | 2.732 |
+TEAM	  3455	   Problem	  B	  Search	  and	  Find
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  14
+| M                | S(M) |        | G(M) |       |
+| ---------------- | ---- | ------ | ---- | ----- |
+| 1	  Jul	  2010 |      | 392915 |      | 2.729 |
+| 1	  Aug	  2010 |      | 383045 |      | 2.73  |
+| 1	  Sep	  2010 |      | 354677 |      | 2.705 |
+| 1	  Oct	  2010 |      | 345415 |      | 2.801 |
+| 1	  Nov	  2010 |      | 332884 |      | 2.859 |
+| 1	  Dec	  2010 |      | 345099 |      | 2.993 |
+M
+| 1	  Jan	  2011 |     | 379676 |     | 3.095 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Feb	  2011 |     | 300672 | C   | 3.211 |
+| 1	  Mar	  2011 |     | 367341 |     | 3.561 |
+M
+| 1	  Apr	  2011 |     | 354229 |     | 3.8 |
+| ---------------- | --- | ------ | --- | --- |
+i
+| 1	  May	  2011 |     | 367839 |     | 3.906 |
+| ---------------- | --- | ------ | --- | ----- |
+H
+| 1	  Jun	  2011 |     | 356304 |     | 3.68 |
+| ---------------- | --- | ------ | --- | ---- |
+：
+| 1	  Jul	  2011 |     | 364469 |     | 3.65  |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Aug	  2011 | 号   | 348033 |     | 3.639 |
+| 1	  Sep	  2011 |     | 338087 |     | 3.611 |
+众
+| 1	  Oct	  2011 |     | 342638 |     | 3.448 |
+| ---------------- | --- | ------ | --- | ----- |
+| 1	  Nov	  2011 |     | 336523 |     | 3.384 |
+公
+| 1	  Dec	  2011 |     | 342995 |     | 3.266 |
+| ---------------- | --- | ------ | --- | ----- |
+信
+	   This	  table	  shows	  both	  the	  total	  import	  (supply)	  of	  crude	  oil	  from	  other	  countries	  and	  the
+gasoline	  p微rices.	  Since	  we	  have	  implied	  that	  demand	  remains	  rela@vely	  constant	  in	  the	  short	  run,	  an
+increase	  in	  supply	  of	  crude	  oil	  results	  in	  a	  decrease	  in	  crude	  oil	  prices	  and	  a	  decrease	  in	  supply	  of
+crude	  oil	  results	  in	  an	  increase	  in	  crude	  oil	  prices.
+S(M) !1/C(M)
+This	  can	  be	  represented	  by
+C(M) !G(M)
+General	  analysis	  1	  and	  earlier	  discussion	  allows	  us	  to	  conclude	  that
+S(M) !1/G(M)
+Therefore,	  we	  now	  conclude	  that	   .
+TEAM	  3455	   Problem	  B	  Search	  and	  Find
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM 3455 15
+One important aspect to note is that unlike the rela@onship between crude oil and gasoline
+(which is instantaneous), a change in the supply of crude oil does indeed happen at an earlier dis-­‐
+crete @me than the responding change in the price of gasoline. Therefore, we can actually use the
+supply of crude oil as an early indicator of the retail price of gasoline.
+We now demonstrate this: ObservaLon 1
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Figure 1.1
+微
+In this graph, we graph the retail price of gasoline in blue and the import of crude oil in
+green. Note that the actual value of the supply is in the hundred thousands, but the value graphed
+is S(M)/10,000 so that range of the graph could be seen closer together.
+S(M)!1/G(M)
+The blue box shows an increase in supply and since , we know that
+the the retail price of gasoline should decrease. This is shown in the green box. The observa@on we
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 16
+want to note is that the green box occurs at a later interval than the blue box, meaning that the
+decrease in gasoline price happens a period of @me acer the increase in supply.
+Here are some more examples of the observa@on:
+M
+C
+M
+i
+H
+：
+号
+Figure 1.2
+众
+公
+信
+微
+Figure 1.3
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 17
+k =1.857
+Based on this graph and others, we have concluded that .This value is just an average
+of 8 observed response @mes.
+Further explana@on of details of the slope rela@onship:
+!
+G =
+S
+!G ! !S
+= "
+!t S2 !t
+M
+G is the retail gasoline price func@on and S is the supply func@on.
+C
+The first line is just a representa@on of their inverse rela@onship for some constant α. De-­‐
+M
+riving both sides gives the second equa@on. The second equa@on says that any change in supply
+i
+H
+results in a change of the retail price of gasoline in the opposite direc@on.
+：
+Another observa@on that is key to t号his model is the concept of momentum. ObservaLon 2:
+Generally momentum is considered as the quan@ty of mo@on of a moving body. In this case, we
+众
+define it similarly as iner@a, the tendency for a object to remain in its original state of movement.
+公
+Here, we observed that although the retail price of gasoline moves inversely with the supply of
+crude oil, the price of gasoline seems to have a certain amount of momentum.
+信
+微
+Simply put, if there was a large increase in supply, there would be a heavy drop in the price
+of gasoline. Here, the gasoline is moving downwards with a certain amount of momentum. Now, if
+there is a small decrease in supply, which would normally dictate a small increase in price, the
+momentum or tendency of the price is largely downwards and the small change in the other di-­‐
+rec@on cannot reverse the trend. Instead it can only slow down the momentum (slow down the
+decrease in price). It is similar to how a large truck moving in one direc@on cannot be reversed in
+the other direc@on by simply throwing a ball at it, the most it can do is slow it down.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 18
+Here is how we develop a mathema@cal rela@onship of this no@on:
+t = elapsed @me
+S(t) = the supply at a con@nuous value t
+G(t) = the retail price of gasoline at a con@nuous value t
+First, we establish that there is a rela@onship between the supply S(t) and retail gasoline
+price G(t). In general, an increase in S(t) will result in a decrease of G(t). HoweveMr, by accoun@ng
+for momentum, this will no longer be con@nuously valid acer @me t = 0 due to the introduc@on of
+C
+the iner@a.
+M
+i
+H
+Next, we start at @me 0 and there is a simple movement of S(t), thus a movement of G(t+k)
+：
+in the opposite direc@on, where k represents the delayed @me for the price of gasoline to respond
+to the change in the supply as noted above in the first observa@on. Now, in order to reverse this
+号
+trend, the movement of S(t) must overcome/retrace the amount it has experienced and then
+众
+move into the opposite direc@on. Here is a visual reference to this no@on:
+公
+信
+微
+(Figure 1.4) (Figure 1.5)
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 19
+Figure 1.4 shows an upwards movement of S(t); it is in blue. There is a corresponding movement in
+G(t+k). In order to reverse this trend, the movement S(t) must retrace back to its original posi@on
+(green) and then con@nue in that direc@on (red).
+Next, the slope of the retail price of gasoline with respect to @me is in fact not dependent on the
+current slope of the supply func@on with respect to @me but instead dependent on the accumu-­‐
+lated slopes of the supply func@on in a set interval. In other words, the net chanMge of S(t) is what
+determines the behaviour of the price func@on.
+C
+Therefore:
+M
+!# S'(t)dt = !S = "G'(it + k)
+H
+：
+Equa@on 2.0
+号
+The price of gasoline G(t) has a nega@ve sign because a posi@ve movement of S(t) corre-­‐
+sponds to a nega@ve reac@on of G(t) and vice versa, since a posi@ve net change in supply results in
+众
+a decrease of G(t); k is, as always, included in the price of the gasoline func@on because of the re-­‐
+公
+sponse @me from Observa@on 1. There is a β in the equa@on to account for and calibrate the
+magnitude of the 信 supply func@on. It is closely related to the constant α men@oned above but we
+deem the rela@onship between the two not important in the making of the model since it does not
+微
+contribute as a real world ra@o.
+However, we do not want the rela@onship of the slopes, hence we must integrate once again to
+obtain:
+!! (! S'(t)dt)dt = ! "S dt = #G(t + k) + C
+Equa@on 2.1
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 20
+Although a double integra@on of a deriva@ve may seem redundant, it is a necessary com-­‐
+ponent due to the fact that we must consider only the original net change without it’s own con-­‐
+stant. By wri@ng the integral of the deriva@ve of S(t), we shic the func@on S(t) at t=0 to S(0) = 0.
+This equa@on does not need any further explana@on besides for the clarifica@on of the “C”
+at the end of the equa@on. The constant is a result of the integra@on but in real world terms, C is
+the net result of the other factors that could come into play and of which we wilMl analyze further
+below. It also include the current known value of gasoline price.
+C
+M
+Equa@on 2.1 gives us the way to calculate retail gas prices as a con@nuous func@on crude
+i
+H
+oil imports in the United States. However, the values we are given are not con@nuous but discrete.
+：
+Therefore, we must convert the equa@on into a discrete formula.
+It is given here:
+号
+n
+G(n + k) = G 众 (n)+ C !!n"(S(i)! S(i !1))
+i=1
+公
+Equa@on 2.2
+信
+We first note that our model uses a given current retail gasoline price and the crude oil im-­‐
+ports k m微onths ago. We use the current value to predict the value of the future in one discrete in-­‐
+terval at a @me. This means that if we are in January, we use the data from January to find the
+price in February (One discrete month only).
+We start with
+!# S'(t)dt = !S = "G'(t + k)
+Equa@on 2.3
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 21
+and
+!! (! S'(t)dt)dt = ! "S dt = #G(t + k)+ C
+Equa@on 2.4
+Since we observe changes by unit months. The change of the supply in discrete form is given by:
+S(i)! S(i !1)
+where i is a given month.
+M
+We then find the integral and thus result in Equa@on 2.2.
+C
+M
+Next, our model is only useful if we are able to convert this formula to allow us to calculate
+i
+gasoline prices based on weekly changes rather than monthly.
+H
+：
+Note that we have values for two consecu@ve months (Let’s say January and February).
+号
+There are four weeks between the beginning of January and the beginning of February. This cre-­‐
+ates four intervals between the tw众o points. We also have the supply of crude oil func@on at the
+discrete point of January and February. Let January be represented by @me/date n = 0 and Febru-­‐
+公
+ary as @me/date n = 1, where n is the number of months acer January. Now we can use a linear
+信
+approxima@on to find the values of the beginning of each of the four individual weeks between
+the two months. This is given by
+微
+(w !1)
+S(w) = ( )(S(n) ! S(n !1)) + S(n !1)
+4
+Equa@on 2.5
+where w is the w-­‐th week of the month (in this case January) and S(w) denotes the supply at the
+beginning of the w-­‐th week.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 22
+Again, we must men@on that our model takes one supply value and the one discrete value
+acer to determine gasoline prices. Therefore S(n) will always be S(1) and S(n-­‐1) is S(0), where S(0)
+denotes the month we are looking at and w is the w-­‐th week of that month.
+Now that we have the value of supply in weeks, we can subs@tute this into Equa@on 2.2. Keep in
+mind the fact that our model only predicts one interval at a @me.
+It all simplifies to:
+" 1 % M
+G(k) = G(0)+ C !! (S(1)! S(0)
+$ '
+# 4 C &
+M
+Equa@on 2.6
+i
+This says that the gas price at any @me k months in tHhe future is the current value G(0) sub-­‐
+：
+trac@ng a magnitude @me a quarter of the change of the monthly supply of crude oil and adding a
+constant value C determined by other factors men@oned in component 3 and for loca@on-­‐specific
+号
+values in Part IV when we apply it to Boston. Keep in mind that the value that we have obtained for
+众
+k above is 1.875 (this is from Observa@on 1). 1.875 months is also 7.5 weeks, which since using
+discrete values of week, we round to roughly 8 weeks.
+公
+In words, the price of gasoline one week from now is the price of gasoline 7 weeks ago sub-­‐
+信
+!
+tract mul@plied by a quarter of the change in the supply of crude oil 3 weeks and and 7 weeks
+微
+ago (Which is exactly a month and which is convenient since the data for crude oil is only given per
+month). Knowing this value, we then use the formula again to find the price of gasoline for the
+next week. One may men@on that since our data for crude oil is in months, how we can move back
+3 weeks or 7 weeks to find the supply at those points. We use
+(w !1)
+S(w) = ( )(S(n) ! S(n !1)) + S(n !1)
+4
+Equa@on 2.7.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 23
+Component 2: Individual Analysis
+In this component, we take the top 5 countries who import crude oil to the United States.
+Based on the informa@on given in the Energy Informa@on Administra@on, the top imports of crude
+oil are from Canada, Saudi Arabia, Mexico, Colombia, and Kuwait.
+Here is a table showing the countries and their most recent export quan@ty to the United States:
+M
+COUNTRY MARCH 2012 APRIL 2012 MAY 2012 JUNE 2012
+C
+Canada 90,876 87,943 93,562 91,533
+M
+Saudi Arabia 42,599 47,671 45,598 43,683
+i
+Mexico 31,130 30,054 H30,873 27,447
+：
+Colombia 14,950 14,163 13,322 15,449
+Kuwait 14,328 7,060 12,620 7,502
+号
+Total Sum of these 5 193,883 186,891 195,970 185614
+countries 众
+Total US Import of 328,923 319,005 345,098 341,782
+Crude Oil 公
+Below is a brief profile of each of the major countries that were considered in the making of our
+信
+model:
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 24
+Canada
+Canada is one of the world’s largest crude oil
+producers on the planet today, and is the United
+State’s largest crude oil supplier. Canada has ex-­‐
+ported about 900 million barrels per year within the
+last 4 years. 95% of Canada’s Crude oil produc@on is
+M
+from Alberta which is located in Central Canada. Most of the Oil is obtained from the Athabasca Oil
+Sands which is located in Northeastern Alberta. Most of the oil extracted frCom this area is catego-­‐
+rized as extremely crude oil and requires a series of refinements to Mproduce gasoline. Most of the
+oil is transported to the United State by the pipelines. The climate of the region there can be quite
+i
+H
+different during summers and winters, ranging from sunny summers to snowy winters. Tempera-­‐
+：
+ture in Alberta can range from -­‐30 Celsius to 30 Celsius. Although temperature was ini@ally a factor
+that would have considerable effect on the号 supply of crude oil, by graphing the data, there was lit-­‐
+tle rela@onship and correla@on between the two variables. Shown from the graph below. Hence it
+众
+is concluded that the temperature cannot affect the change in supply by a significant factor. Shown
+公
+below is the correla@on between temperature and crude oil produc@on.
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 25
+Venezuela
+Venezuela is the world’s fich largest oil-­‐
+expor@ng country in the world. It is home to the one
+of the largest reserves of large heavy and light crude
+oil. By 2011, the reserves reached 297 billion barrels,
+surpassing that of Saudi Arabia. Venezuela is one of
+M
+the first five countries of OPEC. A large percentage
+of Venezuelan oil is taken from the Orinoco Belt Region which is located soCuth of the Eastern River
+Orinoco Basin. This belt region contains what is called the Orinoco OMil Sands, a very large deposit
+of extra heavy crude.
+i
+H
+We wanted to see if the weather in the Orinoco Belt Region would affect Venezuelan sup-­‐
+：
+ply of oil to the United States. We therefore plo6ed the total supply of oil to America against the
+temperature of Venezuela. On comple@on 号of this graph, we found no correla@on between Vene-­‐
+zuelan temperature and it’s supply of oil to the United States. The graph of the rela@onship be-­‐
+众
+tween Venezuelan temperature and American oil supply is shown below.
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 26
+Columbia
+In Columbia, South America, oil comes from
+the region Arauca Department of Colombia, located
+in the extreme north of the Orinoco part of Colom-­‐
+bia, bordering Venezuela. Caño Limón oil fields lo-­‐
+cated in Arauca territory accounts for most of Co-­‐
+M
+lombian oil output. The average temperature of the
+months of Arauca was found to see if there was any correla@on between tChe weather of the re-­‐
+gion of one of the biggest exporters to the US and the supply of oil oMf the US.
+We wanted to see if the weather in the Arauca Department of Colombia would affect Co-­‐
+i
+H
+lumbia supply of oil to the United States. We therefore plo6ed the total supply of oil to America
+：
+against the temperature of Aruca. On comple@on of this graph, we found no correla@on between
+Aruca temperature and it’s supply of oil to 号the United States. The graph of the rela@onship be-­‐
+tween Arauca, Columbia temperature and American oil supply is shown below.
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 27
+Mexico
+Oil is taken from Canterell Field produc@on
+peaked at 2.1 million barrels per day (330,000 m3/d)
+in 2003. antarell is located 80 kilometres (50 mi) off-­‐
+shore in the Bay of Campeche. This complex com-­‐
+prises four major fields: Akal (by far the largest), No-­‐
+M
+hoch, Chac and Kutz. The average temperature of the months of Canterell Field was found to see if
+there was any correla@on between the tempearture of Mexico and the supCply of oil of the US.
+However, as the oil is taken offshore Mexico, the temperaturMe of offshore is completely dif-­‐
+ferent than temperature of land. We therefore plo6ed the total supply of oil to America against
+i
+H
+the temperature of inshore Mexico. On comple@on of this graph, we found no correla@on between
+：
+Mexico temperature and it’s supply of oil to the United States. The graph of the rela@onship be-­‐
+tween Mexico temperature and American 号oil supply is shown below.
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 28
+Saudi Arabia
+Oil is taken from Al-­‐Ahsa Governorate (Gha-­‐
+war Field) of the Eastern Province which is the larg-­‐
+est province of Saudi Arabia, home to most of Saudi
+Arabia's oil produc@on.
+Similarly, we plo6ed the total supply of oil to
+M
+America against the temperature of Ghawar Field.
+On comple@on of this graph, we found no correla@on between Mexico temCperature and it’s supply
+of oil to the United States. The graph of the rela@onship between thMe temperature of Saudi Arabia
+and American oil supply is shown below.
+i
+H
+：
+号
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 29
+Component 3: Qualita9ve
+Components 1 Supply and part of Component 2 Individual Analysis dealt with the analysis
+of the supply por@on of the model. Now, we must consider the demand por@on of crude oil. Ear-­‐
+lier, we had established that the short-­‐term price elas@city of demand for crude oil is real@vely low.
+Thus although supply may be shicing in the short-­‐run, the general demand remains rela@vely sta-­‐
+ble. However, it is without doubt that world events may have a no@ceable short-­‐term effect on the
+M
+demand. One example is that a harsher winter in February of 2012 in Europe led to a greater de-­‐
+C
+mand in hea@ng and thus a slight increase in crude oil (and by general analysis 1, subsequently re-­‐
+M
+tail gasoline prices).
+i
+The Qualita@ve Data are presented as weather and stability. Although there are thousands quali-­‐
+H
+ta@ve factors so we will not be able to account for a：ll of them. We deemed that weather and sta-­‐
+bility to be the ones that have the most effect on the price of gasoline.
+号
+Weather is the quality of the environment of specific areas that dictate demand. These are usually
+large important countries or region众s. Poli@cal Stability indicates the level of confidence in the sta-­‐
+bility of a region. If the region heavily influences crude oil prices (such as the Middle East) then a
+公
+shic in stability could poten@ally alter crude oil produc@on and thus prices.
+信
+These qualita@ve values are the make up of the C values.
+微
+Weather:
+The weather can be a major indicator of the demand of crude oil. A cold spell could poten-­‐
+@ally raise crude oil prices since people will need more hea@ng in their homes. However, based on
+the analysis of component 2, minor changes in weather have almost no major impacts. We have
+also no@ced that the actually quan@ta@ve values of temperature are unnecessary in calcula@on.
+Instead, we observe weather changes by categories.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 30
+Categories : If the temperature at any region deviates from the average by more than 5 degrees
+Celsius. The arbitrary value of 5 is used because it is not an extreme value but will create a no@ce-­‐
+able difference.
+If it is 5 degrees above the average temperature, there would be less hea@ng required and
+thus a decrease in demand and a decrease in the price of gasoline.
+If it is 5 degrees above the average temperature, there would be more hea@ng required and thus
+an increase in demand and an increase in the price of gasoline. M
+The next interval is a change of 10 degrees Celsius. This is a largely no@ceable change and thus will
+C
+move gas prices.
+M
+The last is if there is a change of more than 20 degrees Celsius. This is an extreme move-­‐
+i
+H
+ment in temperature and is very rare. It will have a drama@c affect on the retail gasoline prices.
+：
+Here is a table showing the set effect of each category.
+号
+CATEGORY TEMPERATURE CHANGE EFFECT
+Category 1 5 (C) 3%
+众
+Category 2 10 (C) 5%
+Category 3 20 (C) 10%
+公
+信
+The effect of whether is accounted for in the General Pricing Equa@on as a component of C.
+微
+This to use this, we mul@ply G(0) or the ini@al gasoline price by the effect and this is the whether
+part of C. For example, if the price gasoline ini@ally is G(0), and we experience a category 2 change
+in weather, we add or subtract .05*G(0). We men@on again that a decrease in temperature indi-­‐
+cates an increase in price and an increase in temperature indicates a decrease in price. Since tem-­‐
+peratures and climate appear for a period of @me, as long as the temperature is within the cate-­‐
+gory parameters, the effect will be accounted for.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 31
+The Weather Variable is denoted as: ε
+Here is a table showing the average temperatures around Europe and in China based on the
+months:
+M
+C
+M
+i
+H
+：
+(These two regions were chosen because they represent the most consump@on of crude oil out-­‐
+号
+side of the United States. The United States temperature isn’t taken into considera@on since PART
+众
+IV will choose a specific city and it will be taken into account there)
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 32
+Stability:
+It is without doubt that the stability of na@ons around the world have a certain effect on
+the price of gasoline. Possible paths to war and violence in Northern Africa and the Middle East
+ocen drive prices up and down. Just like with weather, we will divide the stability factor into three
+categories.
+M
+Category 1: General Stability
+C
+When the middle east or another important region is in this category, there is rela@vely no
+M
+unrest and generally peaceful. It creates a general decrease in gasoline prices as the supply of
+i
+H
+crude oil is stable and without disturbance.
+：
+Category 2: Protest and unrest
+号
+This category includes na@ons in general unrest. There are protests and or fear of violence
+众
+in the na@on. Category two instability may lead to viola@on of human rights and subsequent em-­‐
+bargo on oil producing na@公ons. This will lead to a fear that the future will have a lower supply of
+crude oil and thus an increase in gasoline prices.
+信
+微
+Category 3: Social Violence and Military Ac@on
+A na@on in this category is deemed very unstable and military ac@on may be needed. An
+example may include the current state of Syria or the Arab Spring.
+The table shows the categories and their assigned effect:
+CATEGORY EFFECT
+Category 1 -2%
+Category 2 +3%
+Category 3 +5%
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 33
+The usage of this table is similar to the usage of the categories of weather. When the state
+of an important oil producing na@on is in one of the set category, the corresponding effect is mul-­‐
+@plied by the effect and added to C. The Stability Variable is denoted as η.
+Final C value
+Thus, we now have a model to account for the two major qualita@ve factors: Weather and
+Stability. M
+C
+The sum of the two factors is the C value in M
+" 1 %
+i
+G(k) = G(0)+ C !! (S(1)! S(0)
+$ H '
+# 4 &
+：
+C =!+"
+号
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 34
+Building the Model Based on 2011
+The current model we developed is based on observa@ons and theory. It takes into account
+current gasoline prices, supply and demand of crude oil (Which by General Analysis 1, we know to
+be related to gasoline prices), along with qualita@ve data. Although this model will work in theory,
+!
+we are missing the value to account for the conversion between the supply crude oil and factor
+!
+magnitude. We will use the data in 2011 to solve for values of and then find itMs average.
+C
+First, we have to simplify the model to be user friendly.
+M
+The current one is this:
+i
+H
+" 1 %
+G(k) = G(0)+ C !!：$ (S(1)! S(0)
+'
+# 4 &
+号
+This func@on gives us the price of gasoline 1.875 months (k value from observa@on 1) from
+now. In component 1, we rounded众 it to approximately 8 weeks. Therefore, we must shic the func-­‐
+@on by 7 weeks to allow it to predict the value one week from now:
+公
+信
+" 1 %
+G(n) = G(n ! 7)+ C !! (S(!6)! S(!7)
+$ '
+微 # 4 &
+The problem now is that we only have the supply values in month. The original linear ap-­‐
+proxima@on used in component 1 only works to simplify the equa@on but is useless to actually
+contribute to the formula. There are 4 weeks in one month so S(0) = S(1) = S(2) = S(3) and S(4)=
+!
+S(5) = S(6) = S(7). This means that the por@on mul@plied by , which is the change of the supply
+using a linear approxima@on, is going to be the same.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 35
+To solve this, we realize that the supply of crude oil does not actually move in a linear mo@on
+across the @me period of the four weeks from the price of one month to the price of the next as
+shown below:
+M
+C
+M
+i
+H
+：
+号
+Instead between month 1 and month 2, it moves in a mo@on we will assume to be nearly random
+(Brownian Mo@on). We add a rand众om value φ to each S(1) and S(0) to account for and calculate
+these random changes. Now we have
+公
+1
+信!S = (S(1) +!) " (S(0) +!))
+4
+微
+One may think that φ cancels out but it does not since not all φ are equal, they are random vari-­‐
+ables.
+Formally expressed φ is a random variable following a normal distribu@on.
+The mean of φ is 0.
+The standard devia@on of φ is 1.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  36
+On	  average,
+|     |     | !S  | = (S(1) | " S(0)) |     |     |     |
+| --- | --- | --- | ------- | ------- | --- | --- | --- |
+.
+To	  account	  for	  the	  large	  value	  of	  the	  supply	  graph,	  instead	  of	  adding	  φ,	  we	  normalize	  the	  supply
+distribu@on	  and	  thus	  mul@ply	  φ by	  125,000.
+| Now,	  our	  new	  user	  friendly	  equa@on	  is: |     |     |     |     |     | M   |     |
+| -------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
+C
+(S(!6)+125,000")!M(S(!7)+125,000")
+| G(n) | = G(n ! 7)+ | C !! |     |     |     |     |     |
+| ---- | ----------- | ---- | --- | --- | --- | --- | --- |
+4
+i
+H
+Where	  n	  denotes	  the	  number	  of	  weeks	  from	  now	  and	  G(n)	  denotes	  the	  gasoline	  price	  at	  n.
+：
+This	  table	  gives	  the	  2011	  data	  where	  the	  week	  of	  January	  first	  2011	  is	  denoted	  by	  n=0
+号
+This	  shows	  the	  gasoline	  prices,	  the	  weather,	  and	  stability	  effects.
+众
+N G(N) G(N-­‐7) C =!+" ε	  (Weather	   WEATHER	   η	  (Stability	   STABILITY
+公
+|     |     |     |     |         | CATE-­‐ |         | CATE-­‐ |
+| --- | --- | --- | --- | ------- | ------- | ------- | ------- |
+|     |     |     |     | Effect) |         | Effect) |         |
+|     |     |     |     |         | GORY    |         | GORY    |
+信
+| -­‐7 | 2.892 |     |     |     |     |     |     |
+| ---- | ----- | --- | --- | --- | --- | --- | --- |
+微
+| -­‐6             | 2.876 |       |         |         |                                       |         |     |
+| ---------------- | ----- | ----- | ------- | ------- | ------------------------------------- | ------- | --- |
+| -­‐5             | 2.856 |       |         |         |                                       |         |     |
+| -­‐4             | 2.958 |       |         |         |                                       |         |     |
+| -­‐3             | 2.98  |       |         |         |                                       |         |     |
+| -­‐2             | 2.982 |       |         |         |                                       |         |     |
+| -­‐1             | 3.052 |       |         |         |                                       |         |     |
+| 0                | 3.07  | 2.892 | 0.18312 | 0.09156 | 1                                     | 0.09156 | 2   |
+| 1                | 3.089 | 2.876 | 0.1842  | 0.0921  | 1                                     | 0.0921  | 2   |
+| TEAM	  3455	   |       |       |         |         | Problem	  B	  Search	  and	  Find |         |     |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  37
+N G(N) G(N-­‐7) C =!+" ε	  (Weather	   WEATHER	   η	  (Stability	   STABILITY
+|     |       |       |         |         | CATE-­‐ |         | CATE-­‐ |
+| --- | ----- | ----- | ------- | ------- | ------- | ------- | ------- |
+|     |       |       |         | Effect) |         | Effect) |         |
+|     |       |       |         |         | GORY    |         | GORY    |
+| 2   | 3.104 | 2.856 | 0.18534 | 0.09267 | 1       | 0.09267 | 2       |
+| 3   | 3.11  | 2.958 | 0.18624 | 0.09312 | 1       | 0.09312 | 2       |
+| 4   | 3.101 | 2.98  | 0.2488  | 0.0933  | 1       | 0.1555  | 3       |
+| 5   | 3.132 | 2.982 | 0.15505 | 0       | none    | 0.15505 | 3       |
+M
+| 6   | 3.14  | 3.052 | 0.1566  | 0   | none | 0.1566  | 3   |
+| --- | ----- | ----- | ------- | --- | ---- | ------- | --- |
+| 7   | 3.189 | 3.07  | 0.157   | 0   | none | C0.157  | 3   |
+| 8   | 3.383 | 3.089 | 0.15945 | 0   | none | 0.15945 | 3   |
+M
+| 9   | 3.52 | 3.104 | 0.16915 | 0   | none | 0.16915 | 3   |
+| --- | ---- | ----- | ------- | --- | ---- | ------- | --- |
+i
+| 10  | 3.567 | 3.11  | 0.176   | 0   | Hnone | 0.176   | 3   |
+| --- | ----- | ----- | ------- | --- | ----- | ------- | --- |
+| 11  | 3.562 | 3.101 | 0.17835 | ：0  | none  | 0.17835 | 3   |
+| 12  | 3.596 | 3.132 | 0.1781  | 0   | none  | 0.1781  | 3   |
+号
+| 13  | 3.684 | 3.14  | 0.1798 | 0         | none | 0.1798 | 3   |
+| --- | ----- | ----- | ------ | --------- | ---- | ------ | --- |
+| 14  | 3.791 | 3.189 | 0      | -­‐0.1842 | 2    | 0.1842 | 3   |
+众
+| 15  | 3.844 | 3.383 | 0          | -­‐0.18955 | 2   | 0.18955 | 3   |
+| --- | ----- | ----- | ---------- | ---------- | --- | ------- | --- |
+| 16  | 3.879 | 公3.52 | -­‐0.07688 | -­‐0.1922  | 2   | 0.11532 | 2   |
+| 17  | 3.963 | 3.567 | -­‐0.07758 | -­‐0.19395 | 2   | 0.11637 | 2   |
+信
+| 18  | 3.965 | 3.562 | 0.11889 | 0   | none | 0.11889 | 2   |
+| --- | ----- | ----- | ------- | --- | ---- | ------- | --- |
+| 19  | 3.96  | 3.596 | 0.11895 | 0   | none | 0.11895 | 2   |
+微
+| 20               | 3.849 | 3.684 | 0.198   | 0       | none                                  | 0.198   | 3   |
+| ---------------- | ----- | ----- | ------- | ------- | ------------------------------------- | ------- | --- |
+| 21               | 3.794 | 3.791 | 0.19245 | 0       | none                                  | 0.19245 | 3   |
+| 22               | 3.781 | 3.844 | 0.3794  | 0.1897  | 2                                     | 0.1897  | 3   |
+| 23               | 3.713 | 3.879 | 0.3781  | 0.18905 | 2                                     | 0.18905 | 3   |
+| 24               | 3.652 | 3.963 | 0.3713  | 0.18565 | 2                                     | 0.18565 | 3   |
+| 25               | 3.574 | 3.965 | 0.3652  | 0.1826  | 2                                     | 0.1826  | 3   |
+| 26               | 3.579 | 3.96  | 0.28592 | 0.10722 | 1                                     | 0.1787  | 3   |
+| 27               | 3.641 | 3.849 | 0.28632 | 0.10737 | 1                                     | 0.17895 | 3   |
+| TEAM	  3455	   |       |       |         |         | Problem	  B	  Search	  and	  Find |         |     |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  38
+N G(N) G(N-­‐7) C =!+" ε	  (Weather	   WEATHER	   η	  (Stability	   STABILITY
+|     |       |       |         |         | CATE-­‐ |            | CATE-­‐ |
+| --- | ----- | ----- | ------- | ------- | ------- | ---------- | ------- |
+|     |       |       |         | Effect) |         | Effect)    |         |
+|     |       |       |         |         | GORY    |            | GORY    |
+| 28  | 3.682 | 3.794 | 0.03641 | 0.10923 | 1       | -­‐0.07282 | 1       |
+| 29  | 3.699 | 3.781 | 0.03682 | 0.11046 | 1       | -­‐0.07364 | 1       |
+| 30  | 3.711 | 3.713 | 0.03699 | 0.11097 | 1       | -­‐0.07398 | 1       |
+| 31  | 3.674 | 3.652 | 0.03711 | 0.11133 | 1       | -­‐0.07422 | 1       |
+M
+| 32  | 3.604 | 3.574 | 0.22044 | 0.11022 | 1   | 0.11022  | 2   |
+| --- | ----- | ----- | ------- | ------- | --- | -------- | --- |
+| 33  | 3.581 | 3.579 | 0.21624 | 0.10812 | 1   | C0.10812 | 2   |
+| 34  | 3.627 | 3.641 | 0.21486 | 0.10743 | 1   | 0.10743  | 2   |
+M
+| 35  | 3.674 | 3.682 | 0.29016 | 0.18135 | 2   | 0.10881 | 2   |
+| --- | ----- | ----- | ------- | ------- | --- | ------- | --- |
+i
+| 36  | 3.661 | 3.699 | 0.29392 | 0.1837   | H2  | 0.11022 | 2   |
+| --- | ----- | ----- | ------- | -------- | --- | ------- | --- |
+| 37  | 3.601 | 3.711 | 0.29288 | ：0.18305 | 2   | 0.10983 | 2   |
+| 38  | 3.509 | 3.674 | 0.28808 | 0.18005  | 2   | 0.10803 | 2   |
+号
+| 39  | 3.433 | 3.604 | 0.17545 | 0   | none | 0.17545 | 3   |
+| --- | ----- | ----- | ------- | --- | ---- | ------- | --- |
+| 40  | 3.417 | 3.581 | 0.17165 | 0   | none | 0.17165 | 3   |
+众
+| 41  | 3.476 | 3.627  | 0.17085 | 0   | none | 0.17085 | 3   |
+| --- | ----- | ------ | ------- | --- | ---- | ------- | --- |
+| 42  | 3.462 | 公3.674 | 0.1738  | 0   | none | 0.1738  | 3   |
+| 43  | 3.452 | 3.661  | 0.1731  | 0   | none | 0.1731  | 3   |
+信
+| 44  | 3.424 | 3.601 | 0.10356 | 0   | none | 0.10356 | 2   |
+| --- | ----- | ----- | ------- | --- | ---- | ------- | --- |
+| 45  | 3.436 | 3.509 | 0.10272 | 0   | none | 0.10272 | 2   |
+微
+| 46               | 3.368 | 3.433 | 0.10308 | 0       | none                                  | 0.10308 | 2   |
+| ---------------- | ----- | ----- | ------- | ------- | ------------------------------------- | ------- | --- |
+| 47               | 3.307 | 3.417 | 0.10104 | 0       | none                                  | 0.10104 | 2   |
+| 48               | 3.29  | 3.476 | 0.26456 | 0.09921 | 1                                     | 0.16535 | 3   |
+| 49               | 3.286 | 3.462 | 0.2632  | 0.0987  | 1                                     | 0.1645  | 3   |
+| 50               | 3.229 | 3.452 | 0.26288 | 0.09858 | 1                                     | 0.1643  | 3   |
+| 51               | 3.258 | 3.424 | 0.25832 | 0.09687 | 1                                     | 0.16145 | 3   |
+| TEAM	  3455	   |       |       |         |         | Problem	  B	  Search	  and	  Find |         |     |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  39
+Now,	  we	  calculate	  the	  β	  values:
+Keep	  in	  mind	  that	  we	  need	  the	  random	  values	  φ,	  which	  we	  found	  using	  a	  random	  number	  genera-­‐
+tor	  that	  uses	  a	  normal	  distribu@on	  with	  a	  mean	  of	  0	  and	  a	  standard	  devia@on	  of	  1.
+| N   | G(N) | G(N-­‐7) | S(N) | S(N-­‐1) | C   | β   | FIRST	  φ | SECOND |
+| --- | ---- | -------- | ---- | -------- | --- | --- | ---------- | ------ |
+φ
+| -­‐7 | 2.892 |     |     |     |     |     |     |     |
+| ---- | ----- | --- | --- | --- | --- | --- | --- | --- |
+M
+| -­‐6 | 2.876 |     |     |     |     |     |     |     |
+| ---- | ----- | --- | --- | --- | --- | --- | --- | --- |
+| -­‐5 | 2.856 |     |     |     |     |     | C   |     |
+| -­‐4 | 2.958 |     |     |     |     |     |     |     |
+M
+| -­‐3 | 2.98 |     |     |     |     |     |     |     |
+| ---- | ---- | --- | --- | --- | --- | --- | --- | --- |
+i
+| -­‐2 | 2.982 |     |     |     |     |     |     |     |
+| ---- | ----- | --- | --- | --- | --- | --- | --- | --- |
+H
+| -­‐1 | 3.052 |     |     |     |     |     |     |     |
+| ---- | ----- | --- | --- | --- | --- | --- | --- | --- |
+：
+| 0   | 3.07 | 2.892 | 379676 | 345099 | 0.18312 | -­‐0 | -­‐1.97 | 0.58 |
+| --- | ---- | ----- | ------ | ------ | ------- | ---- | ------- | ---- |
+号
+1 3.089 2.876 379676 345099 0.1842 -­‐0.000001 0.9830 -­‐0.59
+2 3.104 2.856 379676 345099 0.18534 -­‐0.000003 0.0493 -­‐0.33
+众
+| 3   | 3.11  | 2.958 | 379676 | 345099 | 0.18624 | -­‐0.000001 | -­‐0.252 | 1.6        |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | -------- | ---------- |
+| 4   | 3.101 | 2.9公8 | 379676 | 379676 | 0.2488  | 0.000007    | 0.692    | -­‐0.539   |
+| 5   | 3.132 | 2.982 | 300672 | 379676 | 0.15505 | -­‐0        | -­‐1.49  | -­‐0.00121 |
+信
+| 6   | 3.14  | 3.052 | 300672 | 379676 | 0.1566 | 0.000012    | -­‐1.61 | -­‐0.969 |
+| --- | ----- | ----- | ------ | ------ | ------ | ----------- | ------- | -------- |
+| 7   | 3.189 | 3.07  | 300672 | 379676 | 0.157  | -­‐0.000001 | 1.81    | 0.504    |
+微
+| 8   | 3.383 | 3.089 | 300672 | 379676 | 0.15945 | 0.000001 | -­‐0.415 | 2.33 |
+| --- | ----- | ----- | ------ | ------ | ------- | -------- | -------- | ---- |
+9 3.52 3.104 367341 300672 0.16915 -­‐0.000004 -­‐0.106 -­‐1.34
+| 10  | 3.567 | 3.11  | 367341 | 300672 | 0.176   | 0.00001     | 1.73  | 1.64  |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | ----- | ----- |
+| 11  | 3.562 | 3.101 | 367341 | 300672 | 0.17835 | -­‐0.000021 | 0.675 | 0.176 |
+| 12  | 3.596 | 3.132 | 367341 | 300672 | 0.1781  | -­‐0.000029 | 0.094 | 0.224 |
+13 3.684 3.14 354229 367341 0.1798 0.000096 -­‐0.243 -­‐0.0075
+| 14               | 3.791 | 3.189 | 354229 | 367341 | 0   | -­‐0.000099                           | -­‐0.25 | -­‐0.324 |
+| ---------------- | ----- | ----- | ------ | ------ | --- | ------------------------------------- | ------- | -------- |
+| 15               | 3.844 | 3.383 | 354229 | 367341 | 0   | 0.000011                              | 0.925   | 1.31     |
+| TEAM	  3455	   |       |       |        |        |     | Problem	  B	  Search	  and	  Find |         |          |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  40
+| N   | G(N) | G(N-­‐7) | S(N) | S(N-­‐1) | C   | β   | FIRST	  φ | SECOND |
+| --- | ---- | -------- | ---- | -------- | --- | --- | ---------- | ------ |
+φ
+16 3.879 3.52 354229 367341 -­‐0.07688 -­‐0.000038 -­‐1.18 -­‐0.594
+17 3.963 3.567 367839 354229 -­‐0.07758 0.000026 -­‐0.0445 0.686
+| 18  | 3.965 | 3.562 | 367839 | 354229 | 0.11889 | 0   | -­‐.0.694 | 0.701 |
+| --- | ----- | ----- | ------ | ------ | ------- | --- | --------- | ----- |
+19 3.96 3.596 367839 354229 0.11895 -­‐0.000009 -­‐2.01 -­‐0.929
+| 20  | 3.849 | 3.684 | 367839 | 354229 | 0.198 | -­‐0.000005 | 0.421 | 0.343 |
+| --- | ----- | ----- | ------ | ------ | ----- | ----------- | ----- | ----- |
+M
+21 3.794 3.791 367839 367839 0.19245 0.000006 -­‐0.888 -­‐1.12
+| 22  | 3.781 | 3.844 | 356304 | 367839 | 0.3794 | 0   | C-­‐.1.13 | -­‐0.948 |
+| --- | ----- | ----- | ------ | ------ | ------ | --- | --------- | -------- |
+| 23  | 3.713 | 3.879 | 356304 | 367839 | 0.3781 | 0   | -­‐.0.701 | -­‐0.458 |
+M
+| 24  | 3.652 | 3.963 | 356304 | 367839 | 0.3713 | 0.000019 | -­‐0.39 | -­‐1.3 |
+| --- | ----- | ----- | ------ | ------ | ------ | -------- | ------- | ------ |
+i
+25 3.574 3.965 356304 367839 0.36H52 -­‐0.000014 -­‐0.418 1.56
+| 26  | 3.579 | 3.96 | 364469 | 356304：0.28592 |     | -­‐0.000079 | 0.521 | 0.389 |
+| --- | ----- | ---- | ------ | -------------- | --- | ----------- | ----- | ----- |
+27 3.641 3.849 364469 356304 0.28632 0.000281 -­‐1.83 -­‐0.174
+号
+| 28  | 3.682 | 3.794 | 364469 | 356304 | 0.03641 | 0.000009 | 1.06 | -­‐0.362 |
+| --- | ----- | ----- | ------ | ------ | ------- | -------- | ---- | -------- |
+29 3.699 3.781 364469 356304 0.03682 -­‐0.000006 -­‐1.92 0.488
+众
+| 30  | 3.711 | 3.713 | 348033 | 364469 | 0.03699 | -­‐0.000004 | 1.61 | 0.321 |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | ---- | ----- |
+31 3.674 3.6公52 348033 364469 0.03711 -­‐0.000001 0.0641 0.239
+32 3.604 3.574 348033 364469 0.22044 -­‐0.000048 0.330 0.0293
+信
+33 3.581 3.579 348033 364469 0.21624 -­‐0.000008 -­‐1.48 0.54
+| 34  | 3.627 | 3.641 | 348033 | 348033 | 0.21486 | -­‐0.000012 | -­‐1.1 | 0.51 |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | ------ | ---- |
+微
+| 35  | 3.674 | 3.682 | 338087 | 348033 | 0.29016 | 0.000005 | 0.742 | -­‐2 |
+| --- | ----- | ----- | ------ | ------ | ------- | -------- | ----- | ---- |
+36 3.661 3.699 338087 348033 0.29392 -­‐0.000014 -­‐0.646 0.623
+| 37  | 3.601 | 3.711 | 338087 | 348033 | 0.29288 | -­‐0.000016 | 0.596 | 0.769    |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | ----- | -------- |
+| 38  | 3.509 | 3.674 | 338087 | 348033 | 0.28808 | 0.000097    | 1.1   | -­‐0.119 |
+| 39  | 3.433 | 3.604 | 342638 | 338087 | 0.17545 | -­‐0.000049 | 0.742 | 0.335    |
+40 3.417 3.581 342638 338087 0.17165 0.000016 -­‐0.646 -­‐0.691
+| 41               | 3.476 | 3.627 | 342638 | 338087 | 0.17085 | 0.001491                              | 0.596   | 0.0891  |
+| ---------------- | ----- | ----- | ------ | ------ | ------- | ------------------------------------- | ------- | ------- |
+| 42               | 3.462 | 3.674 | 342638 | 338087 | 0.1738  | 0                                     | -­‐.1.4 | -­‐1.31 |
+| TEAM	  3455	   |       |       |        |        |         | Problem	  B	  Search	  and	  Find |         |         |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  41
+| N   | G(N) | G(N-­‐7) | S(N) | S(N-­‐1) | C   | β   | FIRST	  φ | SECOND |
+| --- | ---- | -------- | ---- | -------- | --- | --- | ---------- | ------ |
+φ
+43 3.452 3.661 342638 342638 0.1731 -­‐0.000013 -­‐1.04 0.805
+| 44  | 3.424 | 3.601 | 336523 | 342638 | 0.10356 | -­‐0.000008 | 0.312 | 1.04  |
+| --- | ----- | ----- | ------ | ------ | ------- | ----------- | ----- | ----- |
+| 45  | 3.436 | 3.509 | 336523 | 342638 | 0.10272 | -­‐0.000011 | 0.388 | 0.499 |
+46 3.368 3.433 336523 342638 0.10308 0.000003 -­‐1.97 -­‐2.12
+47 3.307 3.417 336523 342638 0.10104 -­‐0.00003 -­‐1.11 0.0644
+M
+| 48  | 3.29  | 3.476 | 342995 | 336523 | 0.26456 | 0.00001       | 1.02 | -­‐1.23 |
+| --- | ----- | ----- | ------ | ------ | ------- | ------------- | ---- | ------- |
+| 49  | 3.286 | 3.462 | 342995 | 336523 | 0.2632  | 0.000007C1.92 |      | -­‐1.74 |
+50 3.229 3.452 342995 336523 0.26288 0.000519 -­‐1.2 -­‐0.0982
+M
+51 3.258 3.424 342995 336523 0.25832 0.000017 -­‐0.307 -­‐0.758
+i
+H
+：
+	   Based	  upon	  the	  above	  calcula@ons,	  we	  have	  found	  many	  β	  values,	  each	  for	  every	  week	  of
+| the	  2011	  data	  points.	  The	  average	  β	  value	  was	  0.0000407.	  This	  is	  reasonable	  as	  the	  produc@on	   |     |     |     | 号   |     |     |     |     |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+values	  are	  large	  and	  thus	  a	  very	  sm众all	  β	  value	  is	  needed	  to	  calibrate	  the	  values.
+公
+信
+微
+| TEAM	  3455	   |     |     |     |     |     | Problem	  B	  Search	  and	  Find |     |     |
+| ---------------- | --- | --- | --- | --- | --- | ------------------------------------- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  42
+Tes9ng	  our	  model	  on	  2012	  Retail	  Gas	  Prices
+First,	  we	  must	  quan@ty	  the	  weather	  and	  stability	  effects	  as	  per	  the	  categories	  in	  component	  3:
+N	  denotes	  the	  weeks	  acer	  January	  2012
+G(N)	  denotes
+N ε (Weather	   WEATHER	   η (Stability	   STABILITY	   C =!+" G(N-­‐1)
+|     |         | CATEGORY |        | CATEGORY |     |     |
+| --- | ------- | -------- | ------ | -------- | --- | --- |
+|     | Effect) |          | Effect |          |     |     |
+M
+C
+| 0   | 0.3258 | 3   | 0.09774 | 2   | 0.42354 | 3.258 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+M
+| 1   | 0.3299 | 3   | 0.09897 | 2   | 0.42887 | 3.299 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+| 2   | 0.3382 | 3   | 0.10146 | 2   | 0.43966 | 3.382 |
+i
+H
+| 3   | 0.3391 | 3   | 0.10173 | 2   | 0.44083 | 3.391 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+：
+| 4   | 0.3389 | 3   | -­‐0.06778 | 1   | 0.27112 | 3.389 |
+| --- | ------ | --- | ---------- | --- | ------- | ----- |
+| 5   | 0.3439 | 3   | -­‐0.06878 | 1   | 0.27512 | 3.439 |
+号
+| 6   | 0.3482 | 3             | -­‐0.06964 | 1   | 0.27856 | 3.482 |
+| --- | ------ | ------------- | ---------- | --- | ------- | ----- |
+| 7   | 0.3523 | 3 众-­‐0.07046 |            | 1   | 0.28184 | 3.523 |
+| 8   | 0.3591 | 3             | -­‐0.07182 | 1   | 0.28728 | 3.591 |
+公
+| 9   | 0.3721 | 3   | 0.11163 | 3   | 0.48373 | 3.721 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+| 10  | 0.3793 | 3   | 0.11379 | 3   | 0.49309 | 3.793 |
+信
+| 11               | 0.3829 | 3   | 0.11487 | 3   | 0.49777                               | 3.829 |
+| ---------------- | ------ | --- | ------- | --- | ------------------------------------- | ----- |
+| 12 微0.3867       |        | 3   | 0.11601 | 3   | 0.50271                               | 3.867 |
+| 13               | 0.3918 | 3   | 0.11754 | 2   | 0.50934                               | 3.918 |
+| 14               | 0.3941 | 3   | 0.11823 | 2   | 0.51233                               | 3.941 |
+| 15               | 0.3939 | 3   | 0.11817 | 2   | 0.51207                               | 3.939 |
+| 16               | 0.3922 | 3   | 0.11766 | 2   | 0.50986                               | 3.922 |
+| 17               | 0.387  | 3   | 0.1161  | 2   | 0.5031                                | 3.87  |
+| 18               | 0.383  | 3   | 0.1149  | 2   | 0.4979                                | 3.83  |
+| 19               | 0.379  | 2   | 0.1137  | 2   | 0.4927                                | 3.79  |
+| 20               | 0.3754 | 2   | 0.11262 | 2   | 0.48802                               | 3.754 |
+| TEAM	  3455	   |        |     |         |     | Problem	  B	  Search	  and	  Find |       |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  43
+N ε (Weather	   WEATHER	   η (Stability	   STABILITY	   C =!+" G(N-­‐1)
+|     |         | CATEGORY |         | CATEGORY |         |       |
+| --- | ------- | -------- | ------- | -------- | ------- | ----- |
+|     | Effect) |          | Effect  |          |         |       |
+| 21  | 0.3715  | 2        | 0.11145 | 2        | 0.48295 | 3.715 |
+| 22  | 0.367   | 2        | 0.1101  | 2        | 0.4771  | 3.67  |
+| 23  | 0.3613  | 1        | 0.10839 | 2        | 0.46969 | 3.613 |
+| 24  | 0.3572  | 1        | 0.10716 | 2        | 0.46436 | 3.572 |
+M
+| 25  | 0.3533 | 1   | 0.10599 | 2   | 0.45929  | 3.533 |
+| --- | ------ | --- | ------- | --- | -------- | ----- |
+| 26  | 0.3437 | 1   | 0.10311 | 2   | 0.4C4681 | 3.437 |
+| 27  | 0.3356 | 2   | 0.10068 | 2   | 0.43628  | 3.356 |
+M
+| 28  | 0.3411 | 2   | 0.10233 | 2   | 0.44343 | 3.411 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+i
+| 29  | 0.3427 | 2   | 0.10281   | 2H0.44551 |         | 3.427 |
+| --- | ------ | --- | --------- | --------- | ------- | ----- |
+| 30  | 0.3494 | 2   | 0.10482：2 |           | 0.45422 | 3.494 |
+| 31  | 0.3508 | 2   | 0.10524   | 2         | 0.45604 | 3.508 |
+号
+| 32  | 0.3645 | 2   | 0.10935 | 2   | 0.47385 | 3.645 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+| 33  | 0.3721 | 2   | 0.11163 | 2   | 0.48373 | 3.721 |
+众
+| 34  | 0.3744 | 2   | 0.11232 | 2   | 0.48672 | 3.744 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+| 35  | 0.3776 | 公2  | 0.11328 | 2   | 0.49088 | 3.776 |
+| 36  | 0.3843 | 2   | 0.11529 | 2   | 0.49959 | 3.843 |
+信
+| 37  | 0.3847 | 2   | 0.11541 | 2   | 0.50011 | 3.847 |
+| --- | ------ | --- | ------- | --- | ------- | ----- |
+| 38  | 0.3878 | 2   | 0.11634 | 2   | 0.50414 | 3.878 |
+微
+| 39               | 0.3826 | 2   | 0.11478 | 2   | 0.49738                               | 3.826 |
+| ---------------- | ------ | --- | ------- | --- | ------------------------------------- | ----- |
+| 40               | 0.3804 | 2   | 0.11412 | 2   | 0.49452                               | 3.804 |
+| 41               | 0.385  | 2   | 0.1155  | 2   | 0.5005                                | 3.85  |
+| 42               | 0.3819 | 2   | 0.11457 | 2   | 0.49647                               | 3.819 |
+| 43               | 0.3687 | 2   | 0.11061 | 2   | 0.47931                               | 3.687 |
+| 44               | 0.3568 | 2   | 0.10704 | 2   | 0.46384                               | 3.568 |
+| 45               | 0.3492 | 2   | 0.10476 | 2   | 0.45396                               | 3.492 |
+| 46               | 0.3449 | 2   | 0.10347 | 2   | 0.44837                               | 3.449 |
+| TEAM	  3455	   |        |     |         |     | Problem	  B	  Search	  and	  Find |       |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  44
+Now	  that	  we’ve	  determined	  the	  C	  values,	  we	  can	  determine	  our	  own	  price	  predic@ons	  and	  the	  ac-­‐
+!
+| tual	  price	  values	  given	  that	   |     | =.0000407 |     |     |     |     |     |     |
+| -------------------------------------------- | --- | --------- | --- | --- | --- | --- | --- | --- |
+N ACTUAL	   PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST	  φ SECOND
+|     | PRICE	   | DICTED	   |     |     |     |     |     |     |
+| --- | --------- | ---------- | --- | --- | --- | --- | --- | --- |
+φ
+|     | G(N) | PRICE	   |     |     |     |     |     |     |
+| --- | ---- | --------- | --- | --- | --- | --- | --- | --- |
+P(N)
+| -­‐7 | 3.436 |     | 336523 |     |     |     | -­‐1.97 M | 0.58    |
+| ---- | ----- | --- | ------ | --- | --- | --- | --------- | ------- |
+| -­‐6 | 3.368 |     | 336523 |     |     |     | 0.9830    | -­‐0.59 |
+C
+| -­‐5 | 3.307 |     | 336523 |     |     |     | 0.0493 | -­‐0.33 |
+| ---- | ----- | --- | ------ | --- | --- | --- | ------ | ------- |
+M
+| -­‐4 | 3.29 |     | 342995 |     |     |     | -­‐0.252 | 1.6 |
+| ---- | ---- | --- | ------ | --- | --- | --- | -------- | --- |
+i
+| -­‐3 | 3.286 |     | 342995 |     |     |     | 0.692 | -­‐0.539 |
+| ---- | ----- | --- | ------ | --- | --- | --- | ----- | -------- |
+H
+| -­‐2 | 3.229 |     | 342995 |     |     |     | -­‐1.49 | -­‐0.00121 |
+| ---- | ----- | --- | ------ | --- | --- | --- | ------- | ---------- |
+：
+| -­‐1 | 3.258 |          | 342995 |         |       |         | -­‐1.61 | -­‐0.969 |
+| ---- | ----- | -------- | ------ | ------- | ----- | ------- | ------- | -------- |
+| 0    | 3.299 | 3.437461 | 339255 | 号336523 | 3.436 | 0.42354 | 1.01    | 0.7      |
+1 3.382 3.376063 339255 336523 3.368 0.42887 -­‐0.211 -­‐0.520
+众
+| 2   | 3.391 | 3.492468 | 339255 | 336523 | 3.307 | 0.43966 | 1.002 | 0.824 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+| 3   | 3.389 | 3.272853 | 339255 | 342995 | 3.29  | 0.44083 | 1.73  | 1.34  |
+公
+4 3.439 3.593903 339255 342995 3.286 0.27112 -­‐0.575 -­‐0.576
+| 5   | 3.482信3.374796 |          | 303455 | 342995 | 3.229 | 0.27512 | 0.194 | -­‐0.224  |
+| --- | -------------- | -------- | ------ | ------ | ----- | ------- | ----- | --------- |
+| 6   | 3.523          | 3.620275 | 303455 | 342995 | 3.258 | 0.27856 | 0.243 | -­‐0.0075 |
+微
+7 3.591 3.850986 303455 339255 3.299 0.28184 -­‐0.25 -­‐0.324
+8 3.721 3.938154 303455 339255 3.382 0.28728 -­‐0.835 -­‐0.91
+9 3.793 3.962052 328923 339255 3.391 0.48373 -­‐1.18 -­‐1.194
+10 3.829 3.934435 328923 339255 3.389 0.49309 -­‐0.5445 -­‐0.586
+11 3.867 3.905807 328923 339255 3.439 0.49777 -­‐0.594 -­‐0.701
+12 3.918 3.828595 328923 303455 3.482 0.50271 -­‐1.01 -­‐0.929
+| 13  | 3.941 | 3.851225 | 319005 | 303455 | 3.523 | 0.50934 | 0.361 | 0.343 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+14 3.939 3.650034 319005 303455 3.591 0.51233 -­‐0.888 -­‐1.12
+| TEAM	  3455	   |     |     |     |     |     | Problem	  B	  Search	  and	  Find |     |     |
+| ---------------- | --- | --- | --- | --- | --- | ------------------------------------- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  45
+N ACTUAL	   PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST	  φ SECOND
+|     | PRICE	   | DICTED	   |     |     |     |     |     |     |
+| --- | --------- | ---------- | --- | --- | --- | --- | --- | --- |
+φ
+|     | G(N) | PRICE	   |     |     |     |     |     |     |
+| --- | ---- | --------- | --- | --- | --- | --- | --- | --- |
+P(N)
+| 15  | 3.922 | 3.69583  | 319005 | 303455 | 3.721 | 0.51207 | 0.11     | -­‐0.188 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | -------- | -------- |
+| 16  | 3.87  | 3.818713 | 319005 | 328923 | 3.793 | 0.50986 | 0.402    | -­‐0.058 |
+| 17  | 3.83  | 3.686425 | 319005 | 328923 | 3.829 | 0.5031  | 0.451    | -­‐0.136 |
+| 18  | 3.79  | 3.74626  | 345098 | 328923 | 3.867 | 0.4979  | -­‐0.553 | -­‐0.91  |
+M
+| 19  | 3.754 | 3.841885 | 345098 | 328923 | 3.918 | 0.5527        | 0.311 | -­‐0.054 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------------- | ----- | -------- |
+| 20  | 3.715 | 3.808671 | 345098 | 319005 | 3.941 | 0.48802C0.853 |       | 0.574    |
+| 21  | 3.67  | 3.861379 | 345098 | 319005 | 3.939 | 0.48295       | 0.635 | 0.403    |
+M
+| 22  | 3.613 | 3.867182 | 341782 | 319005 | 3.922 | 0.4771 | 0.924 | 0.688 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------ | ----- | ----- |
+i
+| 23  | 3.572 | 3.726372 | 341782 | 319005      | 3.87H0.46969 |         | 1.141 | 0.841  |
+| --- | ----- | -------- | ------ | ----------- | ------------ | ------- | ----- | ------ |
+| 24  | 3.533 | 3.678498 | 341782 | 319005：3.83 |              | 0.46436 | 0.541 | 0.239  |
+| 25  | 3.437 | 3.519015 | 341782 | 345098      | 3.79         | 0.45929 | 0.63  | 0.0293 |
+号
+| 26  | 3.356 | 3.484144 | 341782 | 345098 | 3.754 | 0.44681 | 0.88  | 0.29  |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+| 27  | 3.411 | 3.517011 | 333184 | 345098 | 3.715 | 0.43628 | 0.825 | 0.231 |
+众
+| 28  | 3.427 | 3.612708 | 333184 | 345098 | 3.67 | 0.44343 | 0.642 | 0.153 |
+| --- | ----- | -------- | ------ | ------ | ---- | ------- | ----- | ----- |
+29 3.494 3.6公89392 333184 341782 3.613 0.44551 0.036 -­‐0.323
+| 30  | 3.508 | 3.697802 | 333184 | 341782 | 3.572 | 0.45422 | 0.68 | 0.353 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ---- | ----- |
+信
+| 31  | 3.645 | 3.792897 | 333184 | 341782 | 3.533 | 0.45604 | 0.492 | 0.269 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+| 32  | 3.721 | 3.865744 | 337840 | 341782 | 3.437 | 0.47385 | 0.702 | 0.635 |
+微
+33 3.744 3.822605 337840 341782 3.356 0.48373 -­‐0.646 -­‐0.691
+| 34  | 3.776 | 3.841569 | 337840 | 333184 | 3.411 | 0.48672 | 0.096  | 0.0891  |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ------ | ------- |
+| 35  | 3.843 | 3.984974 | 337840 | 333184 | 3.427 | 0.49088 | -­‐1.4 | -­‐1.31 |
+36 3.847 3.810506 337840 333184 3.494 0.49959 -­‐0.0453 -­‐0.152
+| 37               | 3.878 |     |     | 333184 | 3.508 | 0.50011                               | 0.312   | 1.04    |
+| ---------------- | ----- | --- | --- | ------ | ----- | ------------------------------------- | ------- | ------- |
+| 38               | 3.826 |     |     | 333184 | 3.645 | 0.50414                               | 0.388   | 0.499   |
+| 39               | 3.804 |     |     | 337840 | 3.721 | 0.49738                               | -­‐1.97 | -­‐2.12 |
+| 40               | 3.85  |     |     | 337840 | 3.744 | 0.49452                               | -­‐1.11 | 0.0644  |
+| TEAM	  3455	   |       |     |     |        |       | Problem	  B	  Search	  and	  Find |         |         |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  46
+N ACTUAL	   PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST	  φ SECOND
+PRICE	   DICTED
+φ
+G(N) PRICE
+P(N)
+| 41  | 3.819 | 337840 | 3.776 | 0.5005  | 1.02     | -­‐1.23   |
+| --- | ----- | ------ | ----- | ------- | -------- | --------- |
+| 42  | 3.687 | 337840 | 3.843 | 0.49647 | 1.92     | -­‐1.74   |
+| 43  | 3.568 | 337840 | 3.847 | 0.47931 | -­‐1.2   | -­‐0.0982 |
+| 44  | 3.492 |        | 3.878 | 0.46384 | -­‐0.307 | -­‐0.758  |
+M
+| 45  | 3.449 |     | 3.826 | 0.45396 | -­‐.0.701 | 0.314 |
+| --- | ----- | --- | ----- | ------- | --------- | ----- |
+C
+M
+Here	  is	  a	  a	  graph	  demonstra@ng	  our	  predicted	  price	  and	  the	  actual	  price:
+i
+H
+：
+号
+众
+公
+信
+微
+General	  Pricing	  Model	  Concluding	  Remark:
+Based	  on	  the	  above	  construc@on	  of	  the	  model	  and	  the	  resul@ng	  graph	  above,	  we	  can	  say	  that	  our
+| TEAM	  3455	   |     |     |     | Problem	  B	  Search	  and	  Find |     |     |
+| ---------------- | --- | --- | --- | ------------------------------------- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM 3455 47
+model is rela@vely accurate and significantly be6er than throwing a dart to predict prices. How-­‐
+ever, we shall analyze our data sta@s@cally to see how well our model did:
+ACTUAL PRICES PREDICTED PRICES
+MEAN 3.658 3.715
+STANDARD DEVIATION 0.19 0.18
+Based on this, our mean predicted price was slightly higher ($.057) than the actual price and the
+M
+standard devia@on is very close. Thus, we deem our model an accurate fit to the actual retail gaso-­‐
+C
+line prices.
+M
+Lastly, we did a general error analysis. Our average percentage of error is 3.62% which is a reason-­‐
+able space for error. i
+H
+：
+号
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 48
+PART III
+The Decision Model
+The Decision Model tells the consumer what to do each week. It takes the predicted price
+of gasoline for the a month in the future and decides using a binary tree. The binary tree here
+branches off every@me the consumer is allowed a decision between 1) filling up full and half or
+2)filling half or no gas. The problem gives two cases to consider: One where the consumer drives
+M
+100 miles per week and one where the consumer drives 200 miles per week.
+C
+As a reminder, the gas tank holds 16 gallons and the average mileage is 25 miles/gallon, therefore
+M
+each full tank allows the consumer to drive 400 miles without having to refill.
+i
+H
+Case 1:
+：
+In case 1, the consumer drives 100 miles per week. We start at Week (0), where the consumer has
+a choice of filling a full tank or a half tank. I号t then branches off into the two decisions. Acer one
+week, the tank could be 1/4 or 3/4 full depending on the original choice. By Assump@on 4, the
+众
+consumer would not make a decision and so con@nues on that week. By similar deduc@on, deci-­‐
+公
+sions are made on Week 0, Week (2), Week (4),...,Week (2n). The model below shows the branches
+that result from this, where f indicates filling the tank to full, h indicates adding half, 0 indicates
+信
+w w w p
+adding no gas. 0 , 2 ,and 4 represent Week (0), Week (2), and Week (4) respec@vely. 0 ,
+微
+p p w
+1 ,and 2 represent the price of gasoline at the start of 2n
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 49
+M
+C
+M
+Diagram 3.1
+i
+H
+This is a binary tree representa@on of what happens over the course of a month.
+：
+At the end of the month, we determine the state of the consumer acer the 3rd @me he
+号
+makes a decision and before he drives any more miles acer. Now, we take the sum of all the prices
+he paid. For example, if he paid for a full tank the 1st @me, a half tank the 2nd @me, and half tank
+众
+the 3rd @me, he would have paid the full price of the 1st @me + 1/2 price of the 2nd @me + 1/2
+公
+price of the 3rd and would have ended up with a full tank.
+信 23
+Acer 3 chances to fill up, there is obviously or 8 different possibili@es labelled
+a,b,c,d,e,f,g, and h. These are called outcomes.
+微
+It is in the best interest for the consumer to have paid the least amount of money per mile
+w
+driven. So, acer filling up the 3rd @me at 4 , the consumer would have driven 400 miles (4
+weeks * 100 miles per week). We then need to consider the amount of gas lec in the tank. This
+measures how much more the car could poten@ally travel. If there is a full tank lec, we add the
+400 miles to the total miles driven. If there is half a tank lec, we add only 200 miles. This newly
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  50
+added	  value	  is	  called	  the	  poten@al	  amount	  and	  is	  determined	  by	  the	  state	  of	  the	  tank	  at	  each	  out-­‐
+come.
+Let:
+T
+outcome	  denote	  the	  total	  miles	  traveled	  (400)	  +	  the	  addi@onal	  poten@al	  amount	  for	  an	  outcome
+P
+outcomedenote	  the	  total	  amount	  paid	  acer	  the	  3rd	  chance	  for	  an	  outcome
+M
+P
+| outcome |     |     |     |     | C   |     |
+| ------- | --- | --- | --- | --- | --- | --- |
+T
+outcome denote	  the	  per	  mile	  amount	  paid	  for	  an	  outcome
+M
+i
+H
+Here	  is	  a	  table	  that	  shows	  what	  happens	  at	  the	  end	  of	  each	  outcome:
+：
+| OUTCOME |     | T       | P       |     |     | P       |
+| ------- | --- | ------- | ------- | --- | --- | ------- |
+|         |     | outcome | outcome |     |     | outcome |
+号 T
+outcome
+|     |     |     | P     | P   |      | P P        |
+| --- | --- | --- | ----- | --- | ---- | ---------- |
+| a   |     | 800 |       |     |      |            |
+|     |     | 众   | P + 1 | + 2 | (P + | 1 + 2)/800 |
+|     |     |     | 0     |     | 0    |            |
+|     |     |     | 2     | 2   |      | 2 2        |
+| b   |     | 600 |       | P   |      | P          |
+|     | 公   |     | P +   | 1   | (P   | + 1)/600   |
+|     |     |     | 0     | 2   |      | 0 2        |
+| c   |     | 800 | P +P  |     | (P   | +P )/800   |
+信
+|                  |     |     | 0     | 2                                     |       | 0 2          |
+| ---------------- | --- | --- | ----- | ------------------------------------- | ----- | ------------ |
+| d                |     | 600 |       | P                                     |       | P            |
+|                  |     |     | P +   | 2                                     | (P    | + 2)/600     |
+| 微                |     |     | 0     | 2                                     |       | 0 2          |
+| e                |     | 800 | P     | P                                     | P     | P            |
+|                  |     |     | 0     | 2                                     | 0     | 2)/800       |
+|                  |     |     | +P    | +                                     | (     | +P +         |
+|                  |     |     | 2 1   | 2                                     | 2     | 1 2          |
+|                  |     |     | P     |                                       | P     |              |
+| f                |     | 600 |       |                                       |       |              |
+|                  |     |     | 0 +P  |                                       | (     | 0 +P)/600    |
+|                  |     |     |       | 1                                     |       | 1            |
+|                  |     |     | 2     |                                       |       | 2            |
+| g                |     | 800 | P P   |                                       | P     | P            |
+|                  |     |     | 0 +   | 1 +P                                  | ( 0   | + 1 +P )/800 |
+|                  |     |     | 2 2   | 2                                     | 2     | 2 2          |
+| h                |     | 600 | P P   | P                                     | P     | P P          |
+|                  |     |     | 0 + 1 | + 2                                   | ( 0 + | 1 + 2)/600   |
+|                  |     |     | 2 2   | 2                                     | 2     | 2 2          |
+| TEAM	  3455	   |     |     |       | Problem	  B	  Search	  and	  Find |       |              |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM 3455 51
+The consumer would u@lize this model to make decisions on whether to buy a full tank or half tank
+or no gas. He or she is also assumed to be price-­‐intelligent and will a6empt to minimize the
+amount of money spent per mile driven (Assump@on 6).
+Knowing the retail price of gasoline today along with many other factors, we can use the General
+p p p
+Pricing Model to approximate 0 , 1 ,and 2 . Knowing the predicted values of each price, we
+P P
+outcome outcome
+M
+T T
+can solve for outcome in each outcome. The lowest outcome value is the outcome that is preferred
+C
+and the path that it represents in the binary tree is the set of decisions that the consumer should
+M
+use.
+i
+H
+Post-­‐CreaLon Analysis: ：
+号
+Case 2:
+众
+In Case 2, the consumer drives 200 miles per week. According to assump@on 4 and assump@on 3,
+公
+this means that at the beginning of every week, the driver has a choice of how much gasoline to fill
+in his tank. Again, we create a binary model similar to that of case 1. The difference is that since
+信
+the driver drives more per week, he is given the chance to refill more ocen and thus, in the course
+微
+of one month, he has a greater number of choices and thus a larger binary tree:
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  52
+Like	  the	  one	  before,	  at	  every	  intersec@on,	  the	  consumer	  has	  a	  choice;	  h	  denotes	  filling	  half	  a	  tank,	  f
+denotes	  filling	  full,	  and	  0	  denotes	  no	  gasoline.	  At	  the	  end,	  the	  outcomes	  are	  labelled	  a-­‐z,	  and	  a2-­‐f2.
+Again,	  just	  like	  case	  1,	  the	  tank	  will	  s@ll	  have	  a	  certain	  amount	  of	  gas,	  and	  we	  know	  that	  a	  full	  tank
+is	  equivalent
+The	  variables	  are	  the	  same:
+Let
+M
+T
+outcome	  denote	  the	  total	  miles	  traveled	  (400)	  +	  the	  addi@onal	  poten@al	  amCount	  for	  an	  outcome
+| P   |     |     |     |     |     | M   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+outcomedenote	  the	  total	  amount	  paid	  acer	  the	  3rd	  chance	  for	  an	  outcome
+i
+P
+H
+outcome
+T
+：
+outcome denotes	  the	  per	  mile	  amount	  paid	  for	  an	  outcome
+号
+| OUTCOME |     |     | T       |     | P       |     |     | P   |         |
+| ------- | --- | --- | ------- | --- | ------- | --- | --- | --- | ------- |
+|         |     |     | outcome |     | outcome |     |     |     | outcome |
+|         |     |     | 众       |     |         |     |     | T   |         |
+outcome
+| a                |     |     | 800 |     | P      | P P P                                 |     | P    | P P P         |
+| ---------------- | --- | --- | --- | --- | ------ | ------------------------------------- | --- | ---- | ------------- |
+|                  |     |     |     | P   | 1+     | 2 3+ 4                                | (P  | + 1+ | 2 + 3+ 4)/800 |
+|                  |     | 公   |     | 0   | +      | +                                     |     | 0    |               |
+|                  |     |     |     |     | 2      | 2 2 2                                 |     | 2    | 2 2 2         |
+| b                |     |     | 600 |     | P      | P P                                   |     | P 1+ | P 2 P 3)/600  |
+|                  |     |     |     | P   | + 1    | + 2 + 3                               | (P  | +    | +             |
+|                  | 信   |     |     |     | 0      |                                       |     | 0 2  | 2 2           |
+|                  |     |     |     |     | 2      | 2 2                                   |     |      |               |
+| c                |     |     | 800 |     | P      | P                                     |     | P    | P             |
+|                  |     |     |     |     | P + 1+ | 2 +P                                  | (P  | + 1+ | 2 +P )/800    |
+| 微                |     |     |     |     | 0      | 4                                     |     | 0    | 4             |
+|                  |     |     |     |     | 2      | 2                                     |     | 2    | 2             |
+|                  |     |     |     |     | P      | P P                                   |     | P    | P P           |
+| d                |     |     | 600 |     | 1+     | 2 4                                   |     | 1+   | 2 4)/600      |
+|                  |     |     |     |     | P 0 +  | +                                     | (P  | 0 +  | +             |
+|                  |     |     |     |     | 2      | 2 2                                   |     | 2    | 2 2           |
+| e                |     |     | 800 |     | P      | P P                                   |     | P    | P P           |
+|                  |     |     |     | P   | + 1+   | 2 +P + 4                              | (P  | + 1+ | 2 +P + 4)/800 |
+|                  |     |     |     | 0   |        | 3                                     |     | 0 2  | 2 3 2         |
+|                  |     |     |     |     | 2      | 2 2                                   |     |      |               |
+| f                |     |     | 600 |     |        | P                                     |     |      | P             |
+|                  |     |     |     |     | P      | 1+P                                   |     | (P   | 1+P )/600     |
+|                  |     |     |     |     | 0 +    | 3                                     |     | 0 +  | 3             |
+|                  |     |     |     |     |        | 2                                     |     |      | 2             |
+| g                |     |     | 800 |     | P 1+   | P 3+P                                 |     | P 1+ | P 3+P         |
+|                  |     |     |     |     | P +    |                                       | (P  | +    | )/800         |
+|                  |     |     |     |     | 0 2    | 2 4                                   |     | 0 2  | 2 4           |
+| h                |     |     | 600 |     | P      | P P                                   |     | P    | P P           |
+|                  |     |     |     |     | P + 1+ | 3+ 4                                  | (P  | + 1+ | 3+ 4)/600     |
+|                  |     |     |     |     | 0      |                                       |     | 0    |               |
+|                  |     |     |     |     | 2      | 2 2                                   |     | 2    | 2 2           |
+| TEAM	  3455	   |     |     |     |     |        | Problem	  B	  Search	  and	  Find |     |      |               |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  53
+| OUTCOME |     | T       |     | P   |         |     |     | P       |     |
+| ------- | --- | ------- | --- | --- | ------- | --- | --- | ------- | --- |
+|         |     | outcome |     |     | outcome |     |     | outcome |     |
+T
+outcome
+|     |     |     |     |        | P P      |     |         | P   | P      |
+| --- | --- | --- | --- | ------ | -------- | --- | ------- | --- | ------ |
+| i   |     | 800 |     |        | 3+ 4     |     |         | 3+  | 4)/800 |
+|     |     |     |     | P 0 +P | 2 +      |     | (P 0 +P | 2 + |        |
+|     |     |     |     |        | 2 2      |     |         | 2   | 2      |
+| j   |     | 600 |     |        | P        |     |         |     | P      |
+|     |     |     |     | P +P   | + 3      |     | (P +P   | +   | 3)/600 |
+|     |     |     |     | 0      | 2        |     | 0       | 2   |        |
+|     |     |     |     |        | 2        |     |         |     | 2      |
+| k   |     | 800 |     | P +P   | +P       |     | (P +P   | +P  | )/800  |
+|     |     |     |     | 0      | 2 4      |     | 0       | 2   | 4      |
+|     |     |     |     |        | P        |     |         |     | P      |
+| l   |     | 600 |     |        | 4        |     |         |     | 4)/600 |
+|     |     |     |     | P 0 +P | 2 +      |     | (PM+P 0 | 2 + |        |
+|     |     |     |     |        | 2        |     |         |     | 2      |
+| m   |     | 800 |     | P      | P        | C(P |         |     | P      |
+|     |     |     |     | P +    | 2 +P + 4 |     | +P      | +   | 4)/800 |
+|     |     |     |     | 0      | 3        |     | 0       | 2   |        |
+|     |     |     |     | 2      | 2        |     |         |     | 2      |
+M
+| n   |     | 600 |     |     | P    |     |     | P    |       |
+| --- | --- | --- | --- | --- | ---- | --- | --- | ---- | ----- |
+|     |     |     |     | P   | 2 +P |     | (P  | 2 +P | )/600 |
+|     |     |     |     | 0 + | 3    |     | 0 + |      | 3     |
+|     |     |     |     |     | 2    |     |     | 2    |       |
+i
+| o   |     | 800 |     | PHP | 2 3+P |     | P    | 2 P 3+P |       |
+| --- | --- | --- | --- | --- | ----- | --- | ---- | ------- | ----- |
+|     |     |     |     | P + | +     |     | (P + | +       | )/800 |
+|     |     |     |     | 0 2 | 2 4   |     | 0 2  | 2       | 4     |
+：
+| p   |     | 600 |     | P   | P P      |     | P    | P      | P      |
+| --- | --- | --- | --- | --- | -------- | --- | ---- | ------ | ------ |
+|     |     |     |     | P + | 2 + 3+ 4 |     | (P + | 2 + 3+ | 4)/600 |
+|     |     |     |     | 0   |          |     | 0    |        |        |
+|     |     |     |     | 2   | 2 2      |     | 2    | 2      | 2      |
+号
+|     |     |     | P   |        | P P P  |     | P      | P   | P P       |
+| --- | --- | --- | --- | ------ | ------ | --- | ------ | --- | --------- |
+| q   |     | 800 | 0   |        | 2 3+ 4 |     | ( 0 +P | 2   | 3+ 4)/800 |
+|     |     |     |     | +P 1 + | +      |     | 1      | + + |           |
+|     |     |     | 2   |        | 2 2 2  |     | 2      | 2   | 2 2       |
+众
+| r                |     | 600 |     | P     | P P                                   |     | P         | P       | P             |
+| ---------------- | --- | --- | --- | ----- | ------------------------------------- | --- | --------- | ------- | ------------- |
+|                  |     |     |     | 0 +P  | + 2 + 3                               |     | ( 0 +P    | + 2     | + 3)/600      |
+|                  |     |     |     |       | 1                                     |     |           | 1       |               |
+|                  |     |     |     | 2     | 2 2                                   |     | 2         | 2       | 2             |
+| s                | 公   | 800 |     | P     | P                                     |     | P         | P       |               |
+|                  |     |     |     | 0 +P  | 2 +P                                  |     | ( 0 +P    | 2       | +P )/800      |
+|                  |     |     |     |       | 1 + 4                                 |     |           | 1 +     | 4             |
+|                  |     |     |     | 2     | 2                                     |     | 2         | 2       |               |
+| t 信              |     | 800 |     | P 0   | P 2 P 4                               |     | P 0       | P 2     | P 4)/600      |
+|                  |     |     |     | +P    | + +                                   |     | ( +P      | +       | +             |
+|                  |     |     |     | 2     | 1 2 2                                 |     | 2         | 1 2     | 2             |
+| 微u               |     | 600 |     | P     |                                       |     | P         |         |               |
+|                  |     |     |     | 0 +P  | +P +P                                 |     | ( 0 +P    | +P      | +P )/800      |
+|                  |     |     |     |       | 1 3 4                                 |     |           | 1 3     | 4             |
+|                  |     |     |     | 2     |                                       |     | 2         |         |               |
+|                  |     |     |     | P     |                                       |     | P         |         |               |
+| v                |     | 800 |     | 0     |                                       |     | 0         |         |               |
+|                  |     |     |     |       | +P 1 +P 3                             |     | (         | +P 1 +P | 3 )/600       |
+|                  |     |     |     | 2     |                                       |     | 2         |         |               |
+| w                |     | 600 |     | P     | P                                     |     | P         | P       |               |
+|                  |     |     |     | 0 +P  | + 3+P                                 |     | ( 0 +P    | + 3+P   | )/800         |
+|                  |     |     |     |       | 1 4                                   |     |           | 1       | 4             |
+|                  |     |     |     | 2     | 2                                     |     | 2         | 2       |               |
+| x                |     | 800 |     | P     | P P                                   |     | P         | P       | P             |
+|                  |     |     |     | 0 +P  | 3+ 4                                  |     | ( 0 +P    | 3+      | 4)/600        |
+|                  |     |     |     |       | 1 +                                   |     |           | 1 +     |               |
+|                  |     |     |     | 2     | 2 2                                   |     | 2         | 2       | 2             |
+| y                |     | 600 | P 0 | P 1+P | P 3+ P 4                              |     | P 0 P 1+P |         | P 3+ P 4)/800 |
+|                  |     |     |     | +     | +                                     |     | ( +       | 2 +     |               |
+|                  |     |     | 2   | 2     | 2 2 2                                 |     | 2 2       |         | 2 2           |
+| TEAM	  3455	   |     |     |     |       | Problem	  B	  Search	  and	  Find |     |           |         |               |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi  | CM  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  54
+| OUTCOME | T       |     | P       |     |     |     | P   |         |
+| ------- | ------- | --- | ------- | --- | --- | --- | --- | ------- |
+|         | outcome |     | outcome |     |     |     |     | outcome |
+T
+outcome
+|     |     |     | P P     |     | P   | P   | P       | P        |
+| --- | --- | --- | ------- | --- | --- | --- | ------- | -------- |
+| z   | 800 |     | 0 1+P   |     | 3   |     | 0 1+P   | 3)/600   |
+|     |     |     | +       | 2 + |     | (   | +       | 2 +      |
+|     |     |     | 2 2     |     | 2   | 2   | 2       | 2        |
+| a2  | 600 |     | P P     |     |     | P   | P       |          |
+|     |     |     | 0 + 1+P | +P  |     | (   | 0 + 1+P | +P )/800 |
+|     |     |     |         | 2   | 4   |     |         | 2 4      |
+|     |     |     | 2 2     |     |     | 2   | 2       |          |
+| b2  | 800 |     | P P     |     | P   | P   | P       | P        |
+|     |     |     | 0 1+P   |     | 4   | ( 0 | 1+P     | 4)/600   |
+|     |     |     | +       | 2 + |     |     | +       | 2 +      |
+|     |     |     | 2 2     |     | 2   | 2   | 2       | 2        |
+M
+| c2  | 600 | P 0 | P 1+ | P 2 | P 4 | P 0 | P 1+ | P 2 P 4)/800 |
+| --- | --- | --- | ---- | --- | --- | --- | ---- | ------------ |
+|     |     |     | +    | +P  | +   | (   | +    | +P 3 +       |
+|     |     | 2   | 2    | 2 3 | 2   | 2   | 2    | 2 2          |
+C
+| d2  | 800 |     | P P    | P    |     | P   | P      | P          |
+| --- | --- | --- | ------ | ---- | --- | --- | ------ | ---------- |
+|     |     |     | 0 + 1+ | 2 +P |     | (   | 0 + 1+ | 2 +P )/600 |
+|     |     |     |        |      | 3   |     |        | 3          |
+|     |     |     | 2 2    | 2    |     | 2   | 2      | 2          |
+M
+|     |     | P   | P   | P P |     | P   | P   | P P         |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+| e2  | 600 | 0   | 1+  | 2   | 3+P | ( 0 | 1+  | 2 3+P )/800 |
+|     |     |     | +   | +   | 4   |     | +   | + 4         |
+|     |     | 2   | 2   | 2 2 |     | 2   | 2   | 2 2         |
+i
+H
+| f2  | 800 | P   | P P  | P      | P   | P    | P   | P P P        |
+| --- | --- | --- | ---- | ------ | --- | ---- | --- | ------------ |
+|     |     | 0   | + 1+ | 2 + 3+ | 4   | ( 0+ | 1+  | 2+ 3+ 4)/600 |
+|     |     |     |      |        |     | 2    | 2   | 2 2 2        |
+|     |     | ：2  | 2    | 2 2    | 2   |      |     |              |
+号
+This	  table	  shows	  the	  outcomes	  and	  their	  corresponding	  cost	  and	  cost	  per	  miles	  driven.	  The	  con-­‐
+众
+P
+outcome
+T
+sumer	  will	  want	  to	  use	  thi 公 s	  model	  along	  with	  the	  General	  Pricing	  Model	  to	  minimize outcome .
+信
+How	  to	  use	  this:
+微
+These	  two	  binary	  trees	  are	  very	  simple	  to	  use.	  A	  consumer	  would	  know	  the	  current	  price	  of	  the
+retail	  gasoline	  price.	  He	  would	  also	  know	  all	  the	  factors	  of	  input	  such	  as	  the	  supply	  of	  crude	  oil,	  the
+weather	  around	  the	  world,	  and	  the	  knowledge	  of	  world	  poli@cal	  stability.	  Using	  this,	  we	  can	  then
+determine	  the	  price	  values	  at	  each	  week	  in	  the	  future.	  Knowing	  this	  he	  then	  uses	  the	  table	  corre-­‐
+sponding	  to	  the	  case	  he	  is	  taking	  (100	  miles	  per	  week	  or	  200	  miles	  per	  week),	  and	  look	  at	  the	  last
+column,	  which	  tells	  the	  amount	  paid	  per	  miles	  driven	  and	  poten@al	  miles	  driven.	  The	  lowest	  of
+| TEAM	  3455	   |     |     |     |     | Problem	  B	  Search	  and	  Find |     |     |     |
+| ---------------- | --- | --- | --- | --- | ------------------------------------- | --- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM 3455 55
+these values would be the op@mal (for obvious reasons) and thus that outcome would dictate the
+decisions the consumer would use.
+Is there an upper bound to mileage driven that changes the decision for buying weekly gasoline:
+Realis@cally, the answer should be no, no ma6er how much a driver drives per week, he would al-­‐
+ways want to obtain the least amount paid per miles driven and thus the binary tree model could
+be used with no upper bound to mileage driven. M
+However, the problem with this is that the data given to us is only in weekly (and monthly but it is
+C
+then effec@vely converted to weeks). This means that we cannot tell the prices changes within a
+M
+week. Using Assump@on 5 (Which was assumed to create a slightly simpler model but a lot more
+i
+H
+effec@ve), the driver can only have half a tank full or a full tank. By a corollary of Assump@on 1
+：
+(Given), each tank has the poten@al to drive 400 miles. Therefore, the greatest amount that a
+driver could go a week is 200 miles. The next greatest that we can use our model for is 400 miles
+号
+which would give the consumer no choice and thus not a good model. Anything above 400 miles is
+众
+not possible because the maximum poten@al miles to be driven is only 400 and by Assump@on 2,
+the driver can only fill up o公nce a week and would thus be unable to drive his full a6empted mile-­‐
+age. It appears that we have given up flexibility for accuracy in model, we believe to be an advan-­‐
+信
+tageous trade.
+微
+Post Binary Tree Model Analysis:
+Using the General Pricing Model, we are able to generate future weekly prices. Using these prices,
+we use the Binary Tree Model table to find the op@mal outcome and the consumer would follow
+that path. Here is an analysis on how well the consumer would do if he or she used our model.
+Based on the test of our model on 2012 retail gasoline prices, we found out that we accurately
+predicted the direc@on of the gasoline price movement 23 out of 37 @mes or 62.2% of the @me.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 56
+We also know that two possible cases: Success in predic@ng the direc@on or failure.
+We know that each predic@on is independent since the predic@on uses only present price values
+and that is constantly changing.
+Lastly, for each Case (100 miles per week and 200 miles per week), we have a set number of deci-­‐
+sion making @mes.
+These four condi@ons means that we have a binomial se{ng. This means the sample space X,
+which determines how well a consumer would do if he used our model, has a biMnomial distribu@on
+with n trials and probability of 62.2% of being correct each @me.
+C
+We separate for each case:
+M
+Case 1:
+i
+H
+There are two trials since we have to predict the change between week-­‐0 to week 1 and week-­‐1 to
+：
+week-­‐2. For any binomial se{ng, we have:
+P(X = k) = ( n ) pk(1! p)n号!k
+k
+众
+which means the probability of our model ge{ng both predic@ons correct (and thus arriving at the
+most op@mal decisions is 3公8.64%, 49.04% of ge{ng a decent result, and only 14.32% of ge{ng a
+unsa@sfactory result.
+信
+Case 2:
+微
+Due to the complexity of case two, we only have a .8% chance of ge{ng the worst result, and only
+6% of ge{ng four wrong predic@ons and thus a not so good result. If we define a reasonable and
+well modelled result as that predic@ng the majority of the price changes correctly, then our model
+achieves this more than 35% of the @me. Hence, we the accuracy of our model gives it a powerful
+advantage to an average consumer trying to guess the prices with nothing but his or her gut feel-­‐
+ings and a newspaper.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 57
+PART IV
+The Boston Model
+In order to apply the model, we have to find the factors that reside in Boston that could af-­‐
+fect the gas price of a gallon of gasoline such as the monthly temperature. This will determine the
+C value in the model. The gasoline prices of each month of 2011 was found be averaging 5 days of
+M
+month in price of dollars per gallon. The gasoline prices was graphed against the respec@ve tem-­‐
+C
+perature of the month. From the graph below, we can conclude as the temperature increases,
+M
+there is an increase in demand with a steady supply, leading to a increasing price of the average oil
+i
+($/g) in Boston in a linear progression model or trend. H
+：
+The price is supposedly affected by adjustment of tax quarterly in the state of Massachu-­‐
+号
+se6s. However, the current tax of gasoline (0.21 dollars per gallon) and addi@on Federal tax/UST/
+众
+Inspec@on fund tax stayed constant. Shipment similarly has no affect on the price as the gas price
+fluctua@on is negligible in the current and previous year.
+公
+信
+First, we must quan@ty the weather and stability effects as per the categories in component 3 as
+described above. N denotes the weeks acer January 3 2012.
+微
+N ε (Weather WEATHER η (Stability STABILITY C =!+" G(N-­‐1)
+CATEGORY CATEGORY
+Effect) Effect
+0 0.0622 1 0.0933 2 0.1555 3.11
+1 0.06276 1 0.09414 2 0.1569 3.138
+2 0.06328 1 0.09492 2 0.1582 3.164
+3 0.06338 1 0.09507 2 0.15845 3.169
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  58
+N ε (Weather	   WEATHER	   η (Stability	   STABILITY	   C =!+" G(N-­‐1)
+|     |         | CATEGORY |            | CATEGORY |     |       |
+| --- | ------- | -------- | ---------- | -------- | --- | ----- |
+|     | Effect) |          | Effect     |          |     |       |
+| 4   | 0.0636  | 1        | -­‐0.0636  | 1        | 0   | 3.18  |
+| 5   | 0.06362 | 1        | -­‐0.06362 | 1        | 0   | 3.181 |
+| 6   | 0.06382 | 1        | -­‐0.06382 | 1        | 0   | 3.191 |
+| 7   | 0.06392 | 1        | -­‐0.06392 | 1        | 0   | 3.196 |
+M
+| 8   | 0.06414 | 1   | -­‐0.06414 | 1   | 0        | 3.207 |
+| --- | ------- | --- | ---------- | --- | -------- | ----- |
+| 9   | 0.0671  | 1   | 0.10065    | 3   | 0.1C6775 | 3.355 |
+| 10  | 0.07038 | 1   | 0.10557    | 3   | 0.17595  | 3.519 |
+M
+| 11  | 0.0708 | 1   | 0.1062 | 3   | 0.177 | 3.54 |
+| --- | ------ | --- | ------ | --- | ----- | ---- |
+i
+| 12  | 0.0708  | 1   | 0.1062    | 3H0.177 |         | 3.54  |
+| --- | ------- | --- | --------- | ------- | ------- | ----- |
+| 13  | 0.07094 | 1   | 0.10641：2 |         | 0.17735 | 3.547 |
+| 14  | 0.07244 | 1   | 0.10866   | 2       | 0.1811  | 3.622 |
+号
+| 15  | 0.07438 | 1   | 0.11157 | 2   | 0.18595 | 3.719 |
+| --- | ------- | --- | ------- | --- | ------- | ----- |
+| 16  | 0.07652 | 1   | 0.11478 | 2   | 0.1913  | 3.826 |
+众
+| 17  | 0.07808 | 1   | 0.11712 | 2   | 0.1952 | 3.904 |
+| --- | ------- | --- | ------- | --- | ------ | ----- |
+| 18  | 0.07988 | 公1  | 0.11982 | 2   | 0.1997 | 3.994 |
+| 19  | 0.08032 | 1   | 0.12048 | 2   | 0.2008 | 4.016 |
+信
+| 20  | 0.08054 | 1   | 0.12081 | 2   | 0.20135 | 4.027 |
+| --- | ------- | --- | ------- | --- | ------- | ----- |
+| 21  | 0.07942 | 1   | 0.11913 | 2   | 0.19855 | 3.971 |
+微
+| 22               | 0.07806 | 1   | 0.11709 | 2   | 0.19515                               | 3.903 |
+| ---------------- | ------- | --- | ------- | --- | ------------------------------------- | ----- |
+| 23               | 0.07718 | 1   | 0.11577 | 2   | 0.19295                               | 3.859 |
+| 24               | 0.0761  | 1   | 0.11415 | 2   | 0.19025                               | 3.805 |
+| 25               | 0.0757  | 1   | 0.11355 | 2   | 0.18925                               | 3.785 |
+| 26               | 0.07536 | 1   | 0.11304 | 2   | 0.1884                                | 3.768 |
+| 27               | 0.07466 | 1   | 0.11199 | 2   | 0.18665                               | 3.733 |
+| 28               | 0.0754  | 1   | 0.1131  | 2   | 0.1885                                | 3.77  |
+| 29               | 0.07638 | 1   | 0.11457 | 2   | 0.19095                               | 3.819 |
+| TEAM	  3455	   |         |     |         |     | Problem	  B	  Search	  and	  Find |       |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  59
+N ε (Weather	   WEATHER	   η (Stability	   STABILITY	   C =!+" G(N-­‐1)
+|     |         | CATEGORY |         | CATEGORY |         |       |
+| --- | ------- | -------- | ------- | -------- | ------- | ----- |
+|     | Effect) |          | Effect  |          |         |       |
+| 30  | 0.07658 | 1        | 0.11487 | 2        | 0.19145 | 3.829 |
+| 31  | 0.07652 | 1        | 0.11478 | 2        | 0.1913  | 3.826 |
+| 32  | 0.0763  | 1        | 0.11445 | 2        | 0.19075 | 3.815 |
+| 33  | 0.07534 | 1        | 0.11301 | 2        | 0.18835 | 3.767 |
+M
+| 34  | 0.07472 | 1   | 0.11208 | 2   | 0.1868   | 3.736 |
+| --- | ------- | --- | ------- | --- | -------- | ----- |
+| 35  | 0.07418 | 1   | 0.11127 | 2   | 0.1C8545 | 3.709 |
+| 36  | 0.07458 | 1   | 0.11187 | 2   | 0.18645  | 3.729 |
+M
+| 37  | 0.07454 | 1   | 0.11181 | 2   | 0.18635 | 3.727 |
+| --- | ------- | --- | ------- | --- | ------- | ----- |
+i
+| 38  | 0.07354 | 1   | 0.11031   | 2H0.18385 |         | 3.677 |
+| --- | ------- | --- | --------- | --------- | ------- | ----- |
+| 39  | 0.07232 | 1   | 0.10848：2 |           | 0.1808  | 3.616 |
+| 40  | 0.07126 | 1   | 0.10689   | 2         | 0.17815 | 3.563 |
+号
+| 41  | 0.07002 | 1   | 0.10503 | 2   | 0.17505 | 3.501 |
+| --- | ------- | --- | ------- | --- | ------- | ----- |
+| 42  | 0.0708  | 1   | 0.1062  | 2   | 0.177   | 3.54  |
+众
+| 43  | 0.07042 | 1   | 0.10563 | 2   | 0.17605 | 3.521 |
+| --- | ------- | --- | ------- | --- | ------- | ----- |
+| 44  | 0.06996 | 公1  | 0.10494 | 2   | 0.1749  | 3.498 |
+| 45  | 0.06966 | 1   | 0.10449 | 2   | 0.17415 | 3.483 |
+信
+| 46  | 0.06972 | 1   | 0.10458 | 2   | 0.1743 | 3.486 |
+| --- | ------- | --- | ------- | --- | ------ | ----- |
+|     | 0.0692  |     |         |     | 0.0692 | 3.46  |
+微
+|                  | 0.06864 |     |     |     | 0.06864                               | 3.432 |
+| ---------------- | ------- | --- | --- | --- | ------------------------------------- | ----- |
+|                  | 0.06796 |     |     |     | 0.06796                               | 3.398 |
+|                  | 0.06712 |     |     |     | 0.06712                               | 3.356 |
+|                  | 0.06656 |     |     |     | 0.06656                               | 3.328 |
+|                  | 0.06648 |     |     |     | 0.06648                               | 3.324 |
+| TEAM	  3455	   |         |     |     |     | Problem	  B	  Search	  and	  Find |       |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  60
+	   Now	  that	  we’ve	  determined	  the	  C	  values,	  we	  can	  determine	  our	  own	  price	  predic@ons	  for
+Boston	  and	  the	  actual	  price	  values	  given	  that	  β =.0000407
+N ACTUAL	   PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST	  φ SECOND
+|     | PRICE	   | DICTED	   |     |     |     |     |     |     |
+| --- | --------- | ---------- | --- | --- | --- | --- | --- | --- |
+φ
+|     | G(N) | PRICE	   |     |     |     |     |     |     |
+| --- | ---- | --------- | --- | --- | --- | --- | --- | --- |
+P(N)
+| -­‐7 | 2.903 |     | 336523 |     |     |     | -­‐1.97 | 0.58    |
+| ---- | ----- | --- | ------ | --- | --- | --- | ------- | ------- |
+| -­‐6 | 2.966 |     | 336523 |     |     |     | 0.M9830 | -­‐0.59 |
+| -­‐5 | 3.012 |     | 336523 |     |     |     | 0.0493  | -­‐0.33 |
+C
+| -­‐4 | 3.006 |     | 342995 |     |     |     | -­‐0.252 | 1.6 |
+| ---- | ----- | --- | ------ | --- | --- | --- | -------- | --- |
+M
+| -­‐3 | 3.063 |     | 342995 |     |     |     | 0.692   | -­‐0.539   |
+| ---- | ----- | --- | ------ | --- | --- | --- | ------- | ---------- |
+| -­‐2 | 3.068 |     | 342995 |     |     | i   | -­‐1.49 | -­‐0.00121 |
+H
+| -­‐1 | 3.083 |     | 342995 |     |     |     | -­‐1.61 | -­‐0.969 |
+| ---- | ----- | --- | ------ | --- | --- | --- | ------- | -------- |
+：
+| 0   | 3.11 | 3.005264 | 339255 | 336523 | 2.903 | 0.1555 | 0.72 | 0.7 |
+| --- | ---- | -------- | ------ | ------ | ----- | ------ | ---- | --- |
+1 3.138 3.046771 339255 336523 2.966 0.1569 -­‐0.211 -­‐0.249
+号
+| 2   | 3.164 | 3.040652 | 339255 | 336523 | 3.012 | 0.1582 | 0.92 | 0.84 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------ | ---- | ---- |
+众
+| 3   | 3.169 | 3.080405 | 339255 | 342995 | 3.006 | 0.15845 | 1.02     | 0.924    |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | -------- | -------- |
+| 4   | 3.18  | 3.099783 | 339255 | 342995 | 3.063 | 0       | -­‐0.575 | -­‐0.576 |
+公
+| 5   | 3.181 | 3.05696  | 303455 | 342995 | 3.068 | 0   | 0.101 | -­‐0.224  |
+| --- | ----- | -------- | ------ | ------ | ----- | --- | ----- | --------- |
+| 6   | 3.191 | 3.243027 | 303455 | 342995 | 3.083 | 0   | 0.183 | -­‐0.0075 |
+信
+| 7   | 3.196 | 3.380146 | 303455 | 339255 | 3.11 | 0   | -­‐0.25 | -­‐0.324 |
+| --- | ----- | -------- | ------ | ------ | ---- | --- | ------- | -------- |
+微
+| 8   | 3.207 | 3.406874 | 303455 | 339255 | 3.138 | 0   | -­‐0.835 | -­‐0.91 |
+| --- | ----- | -------- | ------ | ------ | ----- | --- | -------- | ------- |
+9 3.355 3.419072 328923 339255 3.164 0.16775 -­‐1.18 -­‐1.194
+10 3.519 3.397931 328923 339255 3.169 0.17595 -­‐0.545 -­‐0.586
+| 11  | 3.54  | 3.502828 | 328923 | 339255 | 3.18  | 0.177   | -­‐0.594 | -­‐0.562 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | -------- | -------- |
+| 12  | 3.54  | 3.583447 | 328923 | 303455 | 3.181 | 0.177   | -­‐1.01  | -­‐0.629 |
+| 13  | 3.547 | 3.44161  | 319005 | 303455 | 3.191 | 0.17735 | 0.361    | 0.543    |
+14 3.622 3.513954 319005 303455 3.196 0.1811 -­‐1.252 -­‐1.02
+| 15               | 3.719 | 3.870666 | 319005 | 303455 | 3.207 | 0.18595                               | 0.025 | 0.525 |
+| ---------------- | ----- | -------- | ------ | ------ | ----- | ------------------------------------- | ----- | ----- |
+| TEAM	  3455	   |       |          |        |        |       | Problem	  B	  Search	  and	  Find |       |       |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM	  3455	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  61
+N ACTUAL	   PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST	  φ SECOND
+|     | PRICE	   | DICTED	   |     |     |     |     |     |     |
+| --- | --------- | ---------- | --- | --- | --- | --- | --- | --- |
+φ
+|     | G(N) | PRICE	   |     |     |     |     |     |     |
+| --- | ---- | --------- | --- | --- | --- | --- | --- | --- |
+P(N)
+| 16  | 3.826 | 4.100003 | 319005 | 328923 | 3.355 | 0.1913 | 0.402    | 0.758 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------ | -------- | ----- |
+| 17  | 3.904 | 4.180144 | 319005 | 328923 | 3.519 | 0.1952 | 0.451    | 0.738 |
+| 18  | 3.994 | 4.153823 | 345098 | 328923 | 3.54  | 0.1997 | -­‐0.453 | 0.002 |
+| 19  | 4.016 | 4.097688 | 345098 | 328923 | 3.54  | 0.2008 | 0.111    | 0.521 |
+M
+| 20  | 4.027 | 3.891126 | 345098 | 319005 | 3.547 | 0.20135       | 0.853 | 1.174 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------------- | ----- | ----- |
+| 21  | 3.971 | 3.895916 | 345098 | 319005 | 3.622 | 0.19855C0.335 |       | 0.603 |
+| 22  | 3.903 | 3.763794 | 341782 | 319005 | 3.719 | 0.19515       | 0.824 | 0.888 |
+M
+23 3.859 3.736319 341782 319005 3.826 0.19295 -­‐0.141 -­‐0.181
+i
+| 24  | 3.805 | 3.732763 | 341782 | 319005       | 3.90H4 | 0.19025 | 0.541 | 0.439 |
+| --- | ----- | -------- | ------ | ------------ | ------ | ------- | ----- | ----- |
+| 25  | 3.785 | 3.746397 | 341782 | 345098：3.994 |        | 0.18925 | 1.3   | 0.93  |
+| 26  | 3.768 | 3.743381 | 341782 | 345098       | 4.016  | 0.1884  | 1.008 | 0.619 |
+号
+| 27  | 3.733 | 3.706569 | 333184 | 345098 | 4.027 | 0.18665 | 0.825 | 0.331 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+| 28  | 3.77  | 3.658778 | 333184 | 345098 | 3.971 | 0.1885  | 0.642 | 0.153 |
+众
+| 29  | 3.819 | 3.724832  | 333184 | 341782 | 3.903 | 0.19095 | 0.036 | -­‐0.323 |
+| --- | ----- | --------- | ------ | ------ | ----- | ------- | ----- | -------- |
+| 30  | 3.829 | 3.7公22032 | 333184 | 341782 | 3.859 | 0.19145 | 0.68  | 0.353    |
+| 31  | 3.826 | 3.800157  | 333184 | 341782 | 3.805 | 0.1913  | 0.492 | 0.269    |
+信
+| 32  | 3.815 | 3.930644 | 337840 | 341782 | 3.785 | 0.19075 | 0.702 | 0.635 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------- | ----- | ----- |
+33 3.767 3.939225 337840 341782 3.768 0.18835 -­‐0.646 -­‐0.691
+微
+| 34  | 3.736 | 3.863649 | 337840 | 333184 | 3.733 | 0.1868 | 0.096 | 0.0891 |
+| --- | ----- | -------- | ------ | ------ | ----- | ------ | ----- | ------ |
+35 3.709 3.821588 337840 333184 3.77 0.18545 -­‐0.184 -­‐0.252
+36 3.729 3.822366 337840 333184 3.819 0.18645 -­‐0.0453 -­‐0.152
+| 37               | 3.727 |     |     | 333184 | 3.829 | 0.18635                               | 0.312   | 1.04    |
+| ---------------- | ----- | --- | --- | ------ | ----- | ------------------------------------- | ------- | ------- |
+| 38               | 3.677 |     |     | 333184 | 3.826 | 0.18385                               | 0.388   | 0.499   |
+| 39               | 3.616 |     |     | 337840 | 3.815 | 0.1808                                | -­‐1.97 | -­‐2.12 |
+| 40               | 3.563 |     |     | 337840 | 3.767 | 0.17815                               | -­‐1.11 | 0.0644  |
+| 41               | 3.501 |     |     | 337840 | 3.736 | 0.17505                               | 1.02    | -­‐1.23 |
+| TEAM	  3455	   |       |     |     |        |       | Problem	  B	  Search	  and	  Find |         |         |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+TEAM 3455 62
+N ACTUAL PRE-­‐ S(N) S(N-­‐1) G(N-­‐7) C FIRST φ SECOND
+PRICE DICTED
+φ
+G(N) PRICE
+P(N)
+42 3.54 337840 3.709 0.177 1.92 -­‐1.74
+43 3.521 337840 3.729 0.17605 -­‐1.2 -­‐0.0982
+44 3.498 3.727 0.1749 -­‐0.307 -­‐0.758
+45 3.483 3.677 0.17415 -­‐.0.701 0.314
+M
+Here is a a graph demonstra@ng our predicted price and the actual price:
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Boston Pricing Model Concluding Remark:
+Based on the above construc@on of the model and the resul@ng graph above, we can say
+that our model is rela@vely accurate. Based on our model, the mean is predicted to be $3.625,
+which is extremely close to that of the actual price ($3.611). We calculated a 3.23% error.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 63
+PART V
+LeWer to Local Newspaper
+Dear Mark Clifford, Chief Editor of the South China Morning Post,
+We are Team 3455 wri@ng to you to present what can be developed to be a new ar@cle on
+gas prices.
+Even an average teenager would be capable of telling you that one of the most important
+commodi@es in our industrialized society is fuel. As such, gasoline is without a doubt an extremely
+essen@al resource for almost the en@re popula@on of this community. From car owners to financial
+investors, many members of society are concerned with the rising gas prices that have been ob-­‐
+M
+served recently, and we are sure that many individuals would like to u@lize a method of purchase
+that makes gasoline more affordable.
+C
+As car owners as well as consumers of fuel, it would be extremely helpful to be able to pre-­‐
+M
+dict the fuel cost of the following week. Using this predic@on, one would be able to judge how
+much money to spend on fuel each week. If gas prices were predicted to increase the following
+week, individuals should spend more on gasoline this week to rediuce the amount of money spent
+on a more expensive gasoline the following week. Likewise, Hif gas prices were predicted to de-­‐
+crease the following week, individuals should reduce the number of @mes gasoline is purchased
+：
+this week, and purchase more gas at a lower cost the following week.
+The model used to predict future fuel costs involves mathema@cs, economic theory, and
+号
+financial considera@on. When building this model, we took into considera@on what the price of
+gasoline is based upon. According to the Energy Informa@on Administra@on, it is based on distri-­‐
+bu@on, refining, taxes, and most prominently, the price of crude oil. As such, we looked further on
+众
+crude oil and found that there is a response @me, a period of @me between a change in the supply
+and the change in the price of gas due to that change. Also, we have taken into account the mo-­‐
+mentum of the price of gasoline. Any changes to factors affec@ng the price of gasoline may be im-­‐
+公
+pacted by this momentum.
+In order to信 use this model to predict the price of gas of the following week, one only needs
+to know the following:
+• The price of gasoline seven weeks prior to today;
+• 微The weather of the current loca@on;
+• The poli@cal stability of the crude oil’s country of origin; and
+• The supply of crude oil (in barrels)
+This model has a mere 3.62% error, and we believe it to be rela@vely accurate and will be of
+great use to the ci@zens of the this community.
+We hope you will consider publishing this in the next edi@on of the South China Morning
+Post as we feel that many readers would be interested in our research and work on the subject.
+Sincerely,
+Team 3455
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 64
+BIBLIOGRAPHY
+Calore, Paul. "So What Is The Profit-­‐Margin For Refining Crude Oil Into Gasoline?" Refinery Oil
+Prices. What It Costs, n.d. Web. 17 Nov. 2012. <h6p://business.wha@tcosts.com/>.
+EIA. "Spot Prices." Spot Prices for Crude Oil and Petroleum Products. U.S. Energy Informa@on Ad-­‐
+ministra@on, 15 Nov. 2012. Web. 17 Nov. 2012. <h6p://www.eia.gov/>.
+EIA. "U.S. Energy Informa@on Administra@on -­‐ EIA -­‐ Independent Sta@s@cs and Analysis." Energy &
+M
+Financial Markets. U.S. Energy Informa@on Administra@on -­‐ EIA -­‐ Independent Sta@s@cs
+and Analysis, Oct. 2012. Web. 17 Nov. 2012. <h6p://www.eia.gov/C>.
+M
+Flynn, Phil. "Oil Supply Risks Rise with Middle East Instability." Oil Supply Risks Rise with Middle
+East Instability. Future Mags, 23 Feb. 2012. Web. 18 Nov.i 2012.
+H
+<h6p://www.futuresmag.com/2012/02/23/oil-­‐supply-­‐risks-­‐rise-­‐with-­‐middle-­‐east-­‐instabilit
+：
+y>.
+号
+Freudenrich, Craig, PhD. "How Oil Refining Works." How Oil Refining Works. HowStuffWorks, 4 Jan.
+2001. Web. 17 Nov. 2012. <h6p://science.howstuffworks.com/>.
+众
+Goren, Arie. "Brent Crude Or WTI Crude Oil -­‐ Do We Know Which One Is A Be6er Investment?"
+公
+Brent Crude Or WTI Crude Oil -­‐ Do We Know Which One Is A BeJer Investment? Seekin-­‐
+gAlpha, 3信 Aug. 2012. Web. 17 Nov. 2012. <h6p://seekingalpha.com/>.
+Nerurkar, Neelesh, and Robert Pirog. "Rising Gasoline Prices 2012." Rising Gasoline Prices 2012.
+微
+Congressional Research Service, 1 Mar. 2012. Web. 17 Nov. 2012.
+<h6p://www.fas.org/sgp/crs/misc/R42382.pdf>.
+Poyzner, Mikhail. "Middle East, 2011 Timeline." Middle East, 2011 Timeline. World New Atlas, n.d.
+Web. 18 Nov. 2012. <h6p://www.mapreport.com/>.
+"Retail Prices for Gasoline, All Grades." Weekly Retail Gasoline and Diesel Prices. Ed. EIA. U.S. En-­‐
+ergy Informa@on Administra@on, 13 Nov. 2012. Web. 17 Nov. 2012.
+<h6p://www.eia.gov/>.
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+TEAM 3455 65
+Rothe, John. "Musings of a Money Manager." Chart of the Day: Gas Prices Are Rising (Again). Mus-­‐
+ings of a Money Manager, 21 Sept. 2012. Web. 18 Nov. 2012.
+<h6p://www.johnrothe.com/2012/09/chart-­‐of-­‐the-­‐day-­‐gas-­‐prices-­‐are-­‐rising-­‐again/>.
+Wagner, Hans. "What Determines Gas Prices?" What Determines Gas Prices? Investopedia, 15 Feb.
+2011. Web. 17 Nov. 2012. <h6p://www.investopedia.com/>.
+"Weather Sta@s@cs for Athens, A{ca (Greece)." Weather StaUsUcs for Athens, AVca (Greece) â
+Yr.no. Ed. Tom Erik Støwer. YrNo, Dec. 2011. Web. 18 Nov. 2012. M
+<h6p://www.yr.no/place/Greece/A{ca/Athens/sta@s@cs.html>.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+TEAM 3455 Problem B Search and Find
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

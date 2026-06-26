@@ -1,0 +1,64 @@
+{
+  "schema_version": 3,
+  "paper_id": "2050",
+  "meta": {
+    "paper_id": "2050",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2008,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2008\\B\\2050.pdf",
+    "kind": "pdf"
+  },
+  "concepts_used": [
+    {
+      "concept_id": "writing.assumptions",
+      "title": "模型假设的写法",
+      "stage": "assume",
+      "how_used": "论文列出了6条假设，包括CaCO3使用年限、建筑市场增长、经济周期等，为后续建模提供基础。",
+      "source_excerpt": "ASSUMPTIONS : 1. CaCO₃ can be used for a year, and overused CaCO₃ will be given up. 2. All Construction waste(CaCO₃ ) can be used several time... 3. Construction market will constantly grow... 4. Economic depression will appear regularly. 5. Economic depression... can be displayed sine function. 6. Construction waste ∝ Emission of CO₂ ."
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "title": "非线性与指数模型拟合",
+      "stage": "build",
+      "how_used": "用正弦函数模拟建筑垃圾释放量的年增长，并积分得到总建筑垃圾量，进而计算CO2去除量。",
+      "source_excerpt": "Setting α releasement of construction waste in 2007 and Y annual increasement of construction waste releasement, the annual total waste is α +∫{40sin(x/20)+40}dx. So after x years, we can remove 0.88n[α +∫{40sin(x/20)+40}dx] = 0.88n[-800cos(ix/20)+40x+α+C]"
+    },
+    {
+      "concept_id": "opt.lp",
+      "title": "线性规划建模",
+      "stage": "solve",
+      "how_used": "建立线性规划模型，以反应天数和丢弃天数为变量，总成本为约束，求解最优反应天数n。",
+      "source_excerpt": "Let's assume : A year contains reacting day... and discard day... Then we can get one formula : x+y = 365... 500x+100y = 100000"
+    },
+    {
+      "concept_id": "viz.charttype",
+      "title": "常用图表类型及选择指南",
+      "stage": "write",
+      "how_used": "使用折线图展示CO2排放趋势和预测，以及柱状图展示各州排放量，辅助分析。",
+      "source_excerpt": "Look at the <chart 1>... Look at the <chart 2>... In this graph, we can see the emission level of each states."
+    },
+    {
+      "concept_id": "prep.normalize",
+      "title": "中心化/归一化/标准化",
+      "stage": "build",
+      "how_used": "根据分子量比例（CaCO3:CO2=100:44）计算去除系数r=0.88，将建筑垃圾量转化为CO2去除量。",
+      "source_excerpt": "Because the molecular weight of CaCO₃ is 100 and that of CO₂ is 44, a single ton of CaCO₃ can remove 0.88n tons of CO₂ for a year. (1 : r = 100 : 88) r = 0.88"
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "title": "灵敏度分析",
+      "stage": "sensitivity",
+      "how_used": "通过改变n值（每年反应次数）分析达到CO2去除目标所需时间的变化，并讨论n过小或过大的效率与成本问题。",
+      "source_excerpt": "If we do twice a year, it takes 77 years to reach the equal point... if we do 'n' times a year, it will take 154/n year to reach the point. If n is too small, we can't expect any efficiency... But if n is too large, it costs too much..."
+    },
+    {
+      "concept_id": "viz.geo",
+      "title": "地理信息可视化",
+      "stage": "write",
+      "how_used": "根据各州CO2排放量分级（>20000吨需4个反应器，<2000吨需1或0个），提出反应器布局方案。",
+      "source_excerpt": "We concluded that the reactor has to be built many in the states that emit more CO2. Namely, the states that emit CO2 more than 20000 tons a year need four reactors... We made a standard : CO2 Emissions(ton) more than 20000 4, 10000 to 20000 3, 5000 to 10000 2, 2000 to 5000 1, less than 2000 1 or 0"
+    }
+  ]
+}

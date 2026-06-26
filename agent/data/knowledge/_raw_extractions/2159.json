@@ -1,0 +1,94 @@
+{
+  "paper_id": "2159",
+  "meta": {
+    "paper_id": "2159",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2008,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2008\\A\\2159.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "ode.basic",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "建立离散差分方程模型，将国家债务变化表示为上一期债务、政府支出、税收和利息的函数。",
+      "formulas": [
+        {
+          "latex_code": "D(t)= D(t-1)+G_{sp}(t)-T(t)+(D(t-1)*I(t))",
+          "variables": {
+            "D(t)": "第t年的国家债务（十亿美元）",
+            "G_{sp}(t)": "第t年的政府支出（十亿美元/年）",
+            "T(t)": "第t年的税收收入（十亿美元/年）",
+            "I(t)": "第t年的政府借款利率（0到1之间）"
+          }
+        }
+      ],
+      "source_excerpt": "D(t)= D(t-1)+G_{sp}(t)-T(t)+(D(t-1)*I(t)) [1]"
+    },
+    {
+      "concept_id": "pred.grey",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用Hauser's Law将税收收入表示为GDP的固定比例（19.5%），简化模型。",
+      "formulas": [
+        {
+          "latex_code": "\\frac{\\Delta D}{\\Delta t}=G_{sp}(t)-.195*y(t)+(D(t-1)*I(t))",
+          "variables": {
+            "y(t)": "第t年的GDP（十亿美元）"
+          }
+        }
+      ],
+      "source_excerpt": "Applying Hauser's Law to equation [3] allows us to replace T(t) with a multiple of GDP in billions of dollars which is represented by y(t): \\frac{\\Delta D}{\\Delta t}=G_{sp}(t)-.195*y(t)+(D(t-1)*I(t)) [4]"
+    },
+    {
+      "concept_id": "ode.logistic",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "假设GDP以恒定增长率增长，建立指数增长微分方程并求解。",
+      "formulas": [
+        {
+          "latex_code": "\\frac{dy}{dt}=.029 y",
+          "variables": {
+            "y": "GDP（十亿美元）",
+            "t": "时间（年）"
+          }
+        },
+        {
+          "latex_code": "y = 14000 e^{.029 t}",
+          "variables": {
+            "y": "GDP（十亿美元）",
+            "t": "时间（年）"
+          }
+        }
+      ],
+      "source_excerpt": "We use the value of GDP growth in the following differential equations in order to determine a function for the GDP with respect to time. \\frac{dy}{dt}=.029 y ... y = 14000 e^{.029 t}"
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过改变GDP增长率和利率参数（高、低、平均）创建多个扩展模型，分析债务对参数的敏感性。",
+      "formulas": [],
+      "source_excerpt": "These different extensions allow for us to determine the sensitivity of the national debt to each of our three different variables."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出8条一般假设和每个扩展的特定假设，每条假设附有详细理由。",
+      "formulas": [],
+      "source_excerpt": "II. General Assumptions and Justifications 1. The United States Government borrows money from various sources in order to pay off whatever expenditures are not covered by the federal income. ..."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：问题重述、假设、模型建立、求解、结果、结论、参考文献。",
+      "formulas": [],
+      "source_excerpt": "Table of Contents I. Problem Restatement II. General Assumptions and Justifications III. Task I: Our Model of the National Debt ..."
+    }
+  ]
+}

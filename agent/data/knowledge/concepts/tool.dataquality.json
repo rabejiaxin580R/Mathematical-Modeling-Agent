@@ -1,0 +1,72 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.dataquality",
+  "title": "数据质量评估",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "数据获取",
+    "数据质量评估"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.3",
+  "aliases": [
+    "数据质量",
+    "可靠性",
+    "完整性检查"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder",
+    "modeler"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "数据质量评估就是检查数据靠不靠谱、完不完整，确保后续分析不会因为数据本身的问题而得出错误结论。",
+    "intuition": "想象你要用一堆水果做果汁，但有些水果烂了、有些没洗干净。数据质量评估就像先挑出烂水果、洗掉泥土，保证最后榨出的果汁是干净好喝的。",
+    "when_to_use": "拿到任何新数据集时，或者数据来源不明、有缺失、有异常值时，都应该先做数据质量评估。常见场景：数据清洗前、建模前、数据集成时。",
+    "definition": "数据质量评估是对数据源的可信度以及数据集的完整性进行系统检查的过程，包括来源可靠性判断和完整性检查。",
+    "math_principle": "完整性检查通过缺失率量化：对于特征 j，缺失率 $r_j = \\frac{n_{\\text{missing},j}}{n}$，其中 $n_{\\text{missing},j}$ 为特征 j 缺失值的个数，$n$ 为总样本数。来源可靠性通过加权评分法：$R = \\sum_{i} w_i s_i$，其中 $w_i$ 为第 i 个评估指标的权重，$s_i$ 为对应得分（如权威性、时效性、一致性）。",
+    "step_by_step": [
+      "1. 列出所有数据源，记录每个数据源的采集方法、发布机构、更新时间。",
+      "2. 对每个数据源，按权威性、时效性、一致性等指标打分（如1-5分），并设定权重。",
+      "3. 计算加权总分 R，判断数据源是否可靠（如总分>3分可接受）。",
+      "4. 对数据集每个特征，统计缺失值个数，计算缺失率 r_j。",
+      "5. 设定缺失率阈值（如0.2），标记超过阈值的特征为高缺失特征，需处理。",
+      "6. 检查异常值（如超出3倍标准差的值），记录异常比例。",
+      "7. 综合来源可靠性和完整性，给出数据质量报告。"
+    ],
+    "worked_example": "假设有一个数据集包含100个样本，特征A有5个缺失值，特征B有20个缺失值。数据源来自政府统计局（权威性5分，时效性4分，一致性5分，权重分别为0.4,0.3,0.3）。计算：缺失率 r_A=5/100=0.05，r_B=20/100=0.2；来源可靠性 R=0.4*5+0.3*4+0.3*5=4.7。结论：数据源可靠，特征A缺失率低，特征B缺失率较高需处理。",
+    "pitfalls": [
+      "缺失率阈值设定主观，需结合业务理解。",
+      "来源可靠性评分权重可能不客观，需专家判断。",
+      "异常值检测方法不同结果可能不同，需谨慎选择。",
+      "数据质量评估是静态的，但数据可能随时间变化，需定期复查。"
+    ],
+    "tools": "Python 中常用 pandas 进行缺失值统计：df.isnull().sum()/len(df) 计算缺失率；scipy.stats.zscore 检测异常值。示例代码：\n```python\nimport pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('data.csv')\nmissing_rate = df.isnull().sum() / len(df)\nprint('缺失率：\\n', missing_rate)\n\nfrom scipy import stats\nz_scores = np.abs(stats.zscore(df.select_dtypes(include=[np.number])))\noutliers = (z_scores > 3).sum(axis=0)\nprint('异常值数量：\\n', outliers)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "r_j = \\frac{n_{\\text{missing},j}}{n}",
+      "variables": {
+        "r_j": "特征 j 的缺失率",
+        "n_{\\text{missing},j}": "特征 j 缺失值的个数",
+        "n": "总样本数"
+      }
+    },
+    {
+      "latex_code": "R = \\sum_{i} w_i s_i",
+      "variables": {
+        "R": "来源可靠性总分",
+        "w_i": "第 i 个评估指标的权重",
+        "s_i": "第 i 个评估指标的得分"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_H12"
+    ],
+    "from_papers": []
+  }
+}

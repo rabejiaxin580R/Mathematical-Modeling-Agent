@@ -1,0 +1,101 @@
+{
+  "schema_version": 3,
+  "concept_id": "opt.integer",
+  "title": "整数规划与 0-1 规划",
+  "taxonomy_path": [
+    "模型求解算法",
+    "数学规划求解方法",
+    "整数规划与 0-1 规划"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.1",
+  "aliases": [
+    "整数规划",
+    "0-1规划",
+    "二进制规划"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "整数规划是要求决策变量只能取整数的优化问题，0-1规划是变量只能取0或1的特殊整数规划，常用于资源分配、选址、排班等决策问题。",
+    "intuition": "想象你要安排飞机停靠廊桥，每个廊桥同一时间只能停一架飞机，你需要决定哪些飞机停廊桥、哪些停远机位。这就像在棋盘上放棋子，每个格子只能放一个棋子，你要选择放哪些棋子使得总得分最高。整数规划就是帮你做这种“是/否”或“整数个”决策的数学方法。",
+    "when_to_use": "当问题涉及有限资源的分配、选择、排班，且决策变量必须是整数（如人数、机器台数、是否选择某个方案）时，就应该想到整数规划。典型信号：题目中出现“选择”、“分配”、“安排”、“覆盖”等字眼，且答案必须是整数或0/1。",
+    "definition": "整数规划（Integer Programming, IP）是数学规划的一种，其中部分或全部决策变量被限制为整数。0-1整数规划是变量只能取0或1的特殊情况，常用于表示“是/否”决策。",
+    "math_principle": "整数规划的一般形式为：\n\\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad A\\mathbf{x} \\leq \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0}, \\mathbf{x} \\in \\mathbb{Z}^n\n其中，\\(\\mathbf{x}\\) 是整数决策变量向量，\\(\\mathbf{c}\\) 是成本系数向量，\\(A\\) 是约束矩阵，\\(\\mathbf{b}\\) 是资源向量。\n0-1规划中，\\(x_j \\in \\{0,1\\}\\)。\n求解方法包括分支定界法、割平面法、隐枚举法等。分支定界法通过递归地将问题分解为子问题并剪枝来找到最优整数解。",
+    "step_by_step": [
+      "1. 识别决策变量：确定哪些变量需要取整数或0/1，例如是否选择某个地点、分配多少资源。",
+      "2. 建立目标函数：用决策变量线性表示要最大化或最小化的目标（如成本、覆盖数）。",
+      "3. 列出约束条件：将问题中的限制（如资源上限、覆盖要求、互斥条件）用线性不等式或等式表示。",
+      "4. 明确变量类型：声明哪些变量是整数（int）或0-1（binary）。",
+      "5. 选择求解器：使用如Python的PuLP、Gurobi、ortools等工具求解。",
+      "6. 求解并分析结果：运行求解器，检查最优解是否满足整数要求，必要时调整模型。"
+    ],
+    "worked_example": "以飞机靠桥率优化为例：假设有3个廊桥机位（编号1,2,3）和5架飞机（A,B,C,D,E），每架飞机需要停靠一个机位，每个机位同一时间只能停一架飞机。目标是最小化使用摆渡车的飞机数量（即最大化靠桥率）。设0-1变量 \\(x_{ij}\\) 表示飞机i是否停靠机位j。约束：每架飞机只能停一个机位（\\(\\sum_j x_{ij}=1\\)），每个机位最多停一架飞机（\\(\\sum_i x_{ij} \\leq 1\\)）。目标：最大化 \\(\\sum_{i,j} x_{ij}\\)（即停靠廊桥的飞机数）。求解得最优解为3架飞机停廊桥，2架用摆渡车。",
+    "pitfalls": [
+      "1. 整数规划求解时间可能很长，尤其变量多时，需考虑使用启发式算法。",
+      "2. 建模时容易忽略整数约束，导致解非整数，需明确变量类型。",
+      "3. 0-1规划中，约束条件可能非线性，需线性化处理（如乘积项）。",
+      "4. 实际问题中，整数规划模型可能过于简化，忽略现实细节（如时间顺序、随机性）。"
+    ],
+    "tools": "Python的PuLP库：\n```python\nfrom pulp import *\n\n# 定义问题\nprob = LpProblem(\"Maximize_Bridge_Rate\", LpMaximize)\n\n# 定义变量\nx = LpVariable.dicts(\"x\", [(i,j) for i in planes for j in gates], cat='Binary')\n\n# 目标函数\nprob += lpSum([x[(i,j)] for i in planes for j in gates])\n\n# 约束\nfor i in planes:\n    prob += lpSum([x[(i,j)] for j in gates]) == 1\nfor j in gates:\n    prob += lpSum([x[(i,j)] for i in planes]) <= 1\n\n# 求解\nprob.solve()\nprint(value(prob.objective))\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad A\\mathbf{x} \\leq \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0}, \\mathbf{x} \\in \\mathbb{Z}^n",
+      "variables": {
+        "\\mathbf{x}": "整数决策变量向量",
+        "\\mathbf{c}": "成本系数向量",
+        "A": "约束矩阵",
+        "\\mathbf{b}": "资源向量",
+        "\\mathbb{Z}^n": "n维整数空间"
+      }
+    }
+  ],
+  "cases": [
+    "4421",
+    "6475",
+    "6829"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec005_002_03",
+      "lec005_003_01",
+      "lec006_003_01",
+      "lec009_012_01",
+      "lec009_013_01",
+      "lec009_015_01",
+      "lec009_015_02",
+      "lec009_015_03",
+      "lec010_006_01",
+      "lec010_006_02",
+      "lec010_007_01",
+      "lec010_007_02",
+      "lec010_008_01",
+      "lec010_010_04",
+      "lec010_014_01",
+      "lec011_001_04",
+      "lec011_002_03",
+      "lec012_001_03",
+      "lec012_002_02",
+      "lec012_002_03",
+      "lec012_002_04",
+      "lec018_003_03",
+      "lec018_004_01",
+      "lec018_004_02",
+      "lec018_004_03",
+      "lec018_004_04",
+      "lec020_002_02",
+      "lec020_002_03",
+      "lec020_003_01"
+    ],
+    "from_papers": [
+      "4421",
+      "6475",
+      "6829"
+    ]
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "id": "prob_2020_B",
+  "title": "佛罗里达濒危植物保护资金优化",
+  "year": 2020,
+  "contest": "HiMCM",
+  "difficulty": "Beginner",
+  "tags": [
+    "优化模型",
+    "资金分配",
+    "蒙特卡洛模拟",
+    "灵敏度分析"
+  ],
+  "background": "2020 HiMCM\nProblem B: Funding Biodiversity Conservation\n\nBackground: Thousands of species of plants and animals face threats that could result in their\nextinction, while biodiversity conservation actions that could save them are often available.\nConservation managers face difficult decisions when there is limited funding for biodiversity\nconservation. Managers need to decide which projects they should fund to best achieve their\nobjectives, not the least of which is to save the most species. This is particularly important if the\nbenefits of certain conservation actions vary across projects, the costs of these actions for\nspecific projects differ, and the available funding for these actions is considerably less than is\nneeded to support all proposed projects.\n\nOne issue that makes this a more difficult problem is the varying timeline and life cycle of each\nproject. Conservation projects can take years or decades, and the schedule of when costs are\nincurred during the project can vary significantly depending on the project’s scope, location,\ntargeted species, and responsible agency. This means that budgets for conservation projects must\nprovide adequate funds for the entire lifetime of the project. Additionally, managers need to\nclosely monitor their budgets to efficiently allocate funds as demand for resources vary across\nprojects and time. For example, they need to ensure they have adequate resources available for\ntimes when some projects require more funding, and take advantage of times when some projects\nrequire less.\n\nObjective: Determine how to efficiently invest in biodiversity conservation activities for\nendangered and threatened species that take place over long time frames, and whose expected\ncosts change over that time.\n\nHiMCM Case: Prioritize Action and Funding for Plant Conservation in Florida (USA)\nFlorida is one of the hotspots for plant biodiversity conservation, with 20% of its species\nimperiled. Only 2% of these plant species (~64) receive protection under the US Endangered\nSpecies Act (ESA), but funding is currently inadequate for protecting even this limited number\nof species. The Florida Rare Plant Conservation Endowment (FRPCE) (see Attachment A) is a\ntrust fund spearheaded by conservation managers to provide funds over time to support research,\nprotection, and conservation of rare and imperiled plant species found in Florida. This trust fund\naims to generate an adequate endowment to pay for both the up-front costs of conservation and\nthe long-term costs that are currently difficult to meet with traditional fundraising campaigns.\n\nRequirements:\n1. Given the need to recover imperiled plant species in Florida and manage them into the future,\ndevelop a model to advise the FRPCE Board of the minimum fundraising required for “long-\nterm and reliable” funding. For the purposes of this HiMCM problem, we will limit our analysis\nto the 48 imperiled species included in the attached data set (Attachment B). Note that each row\nin the database indicates a recovery project for a species.\n\na. Identify and discuss relevant objectives that the FRPCE Board should consider in their\nconservation efforts and budgeting decisions. Using these objectives, what measures\nwould you use to evaluate a proposed fundraising plan as being the “best?”\nb. List and address some general characteristics of imperiled plant species. Indicate the\nfactors involved in these species’ protection that you will use in your decision model.\n\n微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM微信公众号：HiMCM\n\n\fc. Develop a model or algorithm (or set of models or algorithms) for the FRPCE Board to\nuse to determine a fundraising schedule (money required with timeline) that will\nminimize the funds required to be raised, yet still obtain the necessary resources to\nimplement the recovery projects for our 48 species and manage them into the future.\n\n2. Apply your model to recommend to the FRPCE Board a priority order of funding for the\nrecovery projects that will manage balancing the funds available with the spending required on\nthese projects over time. Discuss your recommendation.\n\n3. Write a one-page non-technical memo to the FRPCE Board explaining your results, and make\nrecommendations based on your modeling and analysis.\n\nYour PDF solution of no more than 25 total pages should include:\n\n One-page Summary Sheet.\n Table of Contents.\n Your complete solution.\n One-page Memo.\n References list.\n\nNote: The HiMCM Contest now has a 25 page limit. All aspects of your submission count toward the 25\npage limit (Summary Sheet, Table of Contents, Reference List and any Appendices).\n\nAttachments:\n\nAttachment A: A Conservation Endowment For Imperiled Plants In Florida\n\nAttachment B: HiMCM2020ProblemB_ThreatenedPlantsData.xlsx\n\nData Fields:\n\nunique_id: the unique plant identifier for that species.\n\nBenefit: a measure that indicates the expected relative conservation value of funding one\nspecies over another. It takes into account information about how threatened a species is\nand how easy it would be to perform the conservation actions to recover it.\n\nTaxonomic Uniqueness: a measure of the uniqueness of the species; larger number\nindicates greater uniqueness.\n\nFeasibility of Success: the probability that the species will be protected from extinction\nif all of the actions receive funding.\n\nYear “n” cost: the estimated recovery cost in US dollars for each row’s species in\nthe “nth” year of that project; n ∈ {1, 2, 3, … 25}.\n\n微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM微信公众号：HiMCM\fGlossary:\n\nBiodiversity: the amount of diversity or variety between different plants, animals, and\nother species in a given habitat at a particular time.\n\nBiodiversity Conservation: the practice of protecting and preserving the great variety\nof species, habitats, ecosystems, and genetic diversity on the planet.\n\nImperiled Species: those species whose populations have decreased so dramatically that\nthey are at risk of extinction.\n\nTraditional Fundraising: fundraising efforts or campaigns that occur annually or on a\nregular schedule that involve requests for donations to attain a specific total monetary\ngoal.\n\nCOMAP thanks researchers from Arizona and Florida for their assistance in developing this\nproject. Upon completion of HiMCM, COMAP will recognize these researchers and their\ninstitutions on the HiMCM webpage and in our spring Consortium publication.\n\nAttachment A\n\nA Conservation Endowment for imperiled plants in Florida\n\nFlorida has a rich and unique natural diversity, with about 18% of native U.S. plant taxa. But\nwith ongoing threats, the number of imperiled species has increased and the State has been\nconsidered a conservation priority region. Less than 5% of imperiled plant species in Florida\nreceive protection under the U.S. Endangered Species Act, and only a small portion of actions\nneeded to recover Florida plants have been financed. Because existing plant conservation\nfunding is inadequate to support research, protection, and management of imperiled plants, a\ngroup of conservation specialists representing seven institutions in Florida began conversations\nin 2015 to initiate the Florida Rare Plant Conservation Endowment (FRPCE). The FRPCE is\nbeing established as a mechanism to provide long-term and reliable funding to support\nconservation-related projects for Florida imperiled plant species and their ecosystems.\n\nExcerpt from: Negron-Ortiz, V. (2019, July 27-31). A Conservation Endowment for imperiled\nplants in Florida [Conference session]. Botany 2019 Conference: Sky Islands and Desert\nSeas, Tucson, Arizona. The Botanical Society of America. Printed with permission from the\nauthor.\n\nGlossary:\n\nTaxa (singular taxon): classification/taxonomic units at a given level. Plant taxonomy or\nclassification is the science of naming organisms and placing them in a hierarchical\nstructure, each level being given a name (e.g., kingdom, division (phylum), class, order,\nfamily, genus, species). Taxa are arranged in hierarchy from kingdom to subspecies.\n\n微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM微信公众号：HiMCM",
+  "data_files": [
+    {
+      "name": "HiMCM2020ProblemB_ThreatenedPlantsData.xlsx",
+      "filename": "HiMCM2020ProblemB_ThreatenedPlantsData.xlsx"
+    }
+  ],
+  "total_max_score": 100,
+  "steps": [
+    {
+      "id": "s1",
+      "stage_key": "restate",
+      "modality": "key-points",
+      "guide_style": "苏格拉底式追问，引导分点列举，不直接给答案",
+      "deliverable": "子问题清单 + 关键约束",
+      "title": "问题分析与重述",
+      "prompt": "请用你自己的话，简要重述HiMCM 2020 B题的核心问题。你需要说明：FRPCE的目标是什么？面临的主要困难是什么？我们需要给出什么样的输出（如资金筹集时间表、项目优先顺序等）？",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "准确理解FRPCE的目标（长期可靠资金、拯救最多物种）",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "指出关键困难（资金有限、项目成本时间变化）",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "明确输出要求（最小筹资额、优先顺序、时间表）",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "FRPCE旨在为佛罗里达48种濒危植物提供长期可靠的保护资金。困难在于资金有限，且各项目成本随时间变化，需决定项目优先顺序和筹资时间表。输出包括最小筹资额、项目优先顺序及年度资金分配方案。",
+      "hint": "注意题目中提到的'长期可靠'和'最小化所需资金'两个关键词。",
+      "paper_points": []
+    },
+    {
+      "id": "s2",
+      "stage_key": "assume",
+      "modality": "key-points",
+      "guide_style": "质疑每条假设的必要性与合理性",
+      "deliverable": "假设清单 + 理由",
+      "title": "模型假设",
+      "prompt": "列出至少5条合理的模型假设，并简要说明每条假设的合理性。例如：假设项目一旦启动必须持续到完成；假设资金每年可投资获得固定利息等。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "假设数量达到5条",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "每条假设有合理的解释",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "假设与问题背景一致，不矛盾",
+          "weight": 4,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "1. 项目一旦启动必须持续到完成（避免中途放弃浪费）。2. 每年筹集的资金可存入银行获得固定年利率（如2%）。3. 项目成本在数据给定年份内固定，不考虑通货膨胀。4. 各项目独立，互不影响。5. 可行性成功概率随时间指数衰减（延迟启动降低成功率）。",
+      "hint": "考虑现实约束，如资金的时间价值、项目不可中断等。",
+      "paper_points": []
+    },
+    {
+      "id": "s3",
+      "stage_key": "notation",
+      "modality": "formula",
+      "guide_style": "检查符号一致性与单位是否齐全",
+      "deliverable": "符号表",
+      "title": "符号说明与变量定义",
+      "prompt": "定义模型中需要用到的符号和变量。至少包括：项目索引、年份、成本、收益、可行性、优先级等。用表格形式列出符号、含义和单位。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "符号定义完整，覆盖主要变量",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "每个符号有清晰含义和单位",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "格式规范，易于理解",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "设 $i=1,\\dots,48$ 为项目索引，$t=1,\\dots,25$ 为年份。$C_{i,t}$ 为项目 $i$ 在第 $t$ 年的成本（美元）。$B_i$ 为项目 $i$ 的收益值。$U_i$ 为分类独特性。$F_{i,t}$ 为项目 $i$ 在第 $t$ 年启动时的可行性概率。$x_{i,t}\\in\\{0,1\\}$ 表示项目 $i$ 是否在第 $t$ 年启动。",
+      "hint": "参考数据文件中的字段名，如Benefit, Taxonomic Uniqueness, Feasibility of Success等。",
+      "paper_points": []
+    },
+    {
+      "id": "s4",
+      "stage_key": "build",
+      "modality": "formula",
+      "guide_style": "推敲方程是否自洽、可解、贴合题意",
+      "deliverable": "核心方程组",
+      "title": "模型建立",
+      "prompt": "建立一个数学模型，用于确定项目优先顺序和资金筹集时间表。模型应包含目标函数（如最大化总收益或最小化总成本）和约束条件（如年度预算限制、项目完成时间等）。请写出数学表达式。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "目标函数明确，反映FRPCE的目标",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "约束条件合理，包括预算、时间等",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "模型可求解，变量和参数定义清晰",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "考虑可行性衰减或时间价值",
+          "weight": 4,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "目标：最大化总期望收益 $\\sum_i B_i U_i F_{i,t_i} x_{i,t_i}$，其中 $t_i$ 为启动年。约束：每年总支出 $\\sum_i \\sum_{s=t_i}^{t_i+d_i-1} C_{i,s-t_i+1} x_{i,t_i} \\leq M_t$（$M_t$ 为第 $t$ 年预算），且每个项目最多启动一次。也可考虑最小化总成本或最小化年度支出波动。",
+      "hint": "可参考获奖论文中的'成本效益'或'优先级指数'方法。",
+      "paper_points": []
+    },
+    {
+      "id": "s5",
+      "stage_key": "solve",
+      "modality": "code",
+      "guide_style": "逐步调试，关注可运行性与结果合理",
+      "deliverable": "可运行代码 + 结果",
+      "title": "模型求解",
+      "prompt": "使用蒙特卡洛模拟或遗传算法求解上述模型。请描述你的算法步骤，并给出一个示例结果（如项目启动年份和每年所需资金）。你可以用伪代码或流程图说明。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "算法步骤清晰，可重复",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "选择了合适的求解方法（如蒙特卡洛、遗传算法）",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "给出了具体的数值结果示例",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "结果合理，符合约束",
+          "weight": 4,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "采用蒙特卡洛模拟：随机生成项目启动顺序，检查预算约束，计算总收益。重复10000次，选择收益最高的方案。例如，得到项目528、179等在第一年启动，总成本约1.07亿美元，年度标准差约26.7万美元。也可用遗传算法优化启动年份。",
+      "hint": "注意数据中每个项目有25年的成本序列，需考虑项目持续时间。",
+      "paper_points": []
+    },
+    {
+      "id": "s6",
+      "stage_key": "analyze",
+      "modality": "prose",
+      "guide_style": "追问结果是否可信、与现实是否吻合",
+      "deliverable": "结果解读",
+      "title": "结果分析与检验",
+      "prompt": "分析你的模型结果：给出项目优先顺序列表，以及每年所需资金的时间表。讨论结果是否合理，例如是否优先启动了收益高、成本低的项目？年度资金波动是否平稳？",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "清晰展示优先顺序和资金时间表",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "对结果进行合理性分析",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "指出可能的改进方向",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "优先顺序：项目528、179、455等因收益高、成本低而优先启动。年度资金需求在初期较高，后期平稳，标准差较小。结果合理，但可进一步优化以降低总成本。",
+      "hint": "比较不同项目的收益-成本比，验证优先级是否合理。",
+      "paper_points": []
+    },
+    {
+      "id": "s7",
+      "stage_key": "sensitivity",
+      "modality": "code",
+      "guide_style": "引导设计扰动实验并解读",
+      "deliverable": "灵敏度表 / 图",
+      "title": "灵敏度分析",
+      "prompt": "选择两个关键参数（如年度预算上限、可行性衰减率）进行灵敏度分析。改变参数值，观察模型结果（如总收益、项目数量）的变化。用图表展示结果，并讨论模型的稳健性。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "选择了两个有意义的参数",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "展示了参数变化对结果的影响（图表或数据）",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "讨论了模型的稳健性和局限性",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "当年度预算从50万增至200万时，可完成项目数从12增至48，总收益增加。可行性衰减率从0.05增至0.1时，延迟启动的项目收益下降明显，模型倾向于尽早启动。模型对预算敏感，对衰减率中等敏感。",
+      "hint": "可参考获奖论文中的灵敏度分析部分，如改变收益基准百分比。",
+      "paper_points": []
+    },
+    {
+      "id": "s8",
+      "stage_key": "evaluate",
+      "modality": "prose",
+      "guide_style": "对照假设找局限，避免空泛",
+      "deliverable": "优缺点 + 改进",
+      "title": "模型评价",
+      "prompt": "列出你的模型的至少3个优点和3个缺点。优点如简单易用、考虑全面等；缺点如忽略某些因素、计算复杂度高等。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "优点至少3个，具体且合理",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "缺点至少3个，具体且合理",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "评价客观，不夸大",
+          "weight": 2,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "优点：1. 模型直观，易于理解。2. 考虑了收益、成本、可行性等多因素。3. 可输出具体时间表。缺点：1. 假设项目独立，忽略相互作用。2. 未考虑通货膨胀。3. 蒙特卡洛模拟可能陷入局部最优。",
+      "hint": "从假设的简化、数据的局限性、算法的效率等方面思考。",
+      "paper_points": []
+    }
+  ],
+  "schema_version": 2,
+  "papers": [],
+  "review": {
+    "curated": false
+  }
+}

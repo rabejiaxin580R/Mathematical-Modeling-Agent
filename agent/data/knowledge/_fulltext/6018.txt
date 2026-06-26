@@ -1,0 +1,2439 @@
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2015
+M
+18th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+C
+M
+Team Control Number: 6018
+​
+Problem Chose: B
+​ i
+H
+Our model serves to describe the safety of My City with a rating that can be compared
+to the FBI Crime Data for cities and metropolitan areas. The FBI data was approximated to
+：
+represent a normal distribution, and because the My City data fit the normal distribution, the
+model was able to rate My City in relation to the cities and metropolitan areas within the
+United States. The model that was used 号to best represent that safety ranking was
+R =Σ(W ×C )in which R was the rating of the metropolitan area and was calculated with
+m c m ​m
+​
+the summation of each of the major crime’s rate per 100,000 people for two weeks multiplied
+众
+by its individual weights. The weights were calculated by the sentence of each crime using data
+from the United States Sentencing Commission by using the median sentence given for each
+crime used in the safety 公ranking.
+The advantage to this rating system is that it incorporates the frequency of crime
+occurrences as well as the severity of the crime into the safety rating. The calculated safety
+信
+rating for My City was 1370.9268 and the mean of the FBI metropolitan area ratings was
+1462.467 with a standard deviation of 564.8396. As a result, the z­score of My City in relation
+to the po微pulation of FBI data was ­0.1620636, meaning that it was safer than 56.43 percent of
+cities.
+In addition to this, a city that was most similar to My City was found based on the
+safety rankings and population size and was determined to be Chicago. Using GDP and crime
+data for several years in Chicago’s past, a significant correlation was determined between the
+crime rate and the GDP of Chicago, which was then concluded to also apply to My City due to
+their similarities.
+Also, using a model to determine which of the district and beats had the most
+dangerous proportion of violent and property crime within My City, district­specific values
+were established that represented the proportion of the My City police force that would be
+assigned to each district in order to optimize the the safety by placing more officers in more
+dangerous districts and fewer in less dangerous ones.
+http://www.comap.com/highschool/contests/himcm/summary_sheet.php3 11/12/15
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 2 of 58
+Restatement of Problem
+Crimes in the United States of America have been recorded since the birth of the
+country. And with such ample amounts of detailed criminal records collected by organizations
+like the Federal Bureau of Investigation and the National Crime Victimization Surveys, a
+massive database of crime statistics has been accumulated over the years—especially statistics
+M
+within major cities. Thus, this paper aims to analyze such criminal data for a specific city and
+C
+determine the city’s safeness via a developed rating method. In addition, the paper will
+M
+correlate the city’s number of reported crimes to the economic activity and examine the
+i
+H
+placement of additional law enforcement within My City to improve the city’s safeness.
+：
+Introduction
+In October of 2002, two men bro号ught fear in the hearts of Americans as they claimed
+the lives of ten innocent bystanders and critically injured three others over a period of
+众
+twenty­three days. These heinous crimes instilled terror in the citizens living in the Maryland,
+公
+Virginia, and Washington D.C. area.1 People in this region were afraid of leaving their homes.
+​
+​
+Schools and busi信nesses were closed until the men behind the murders were brought to justice.
+Eventually, both of the snipers were brought to justice. However, the crime was not forgotten.
+微
+For years, criminal activity has been a major issue in the United States of America. In
+the 2015 mid­year report, the US was ranked 45th out of 120 countries in terms of its crime
+index.2 In 2002, data showed that we were ranked first out of 82 countries for our number of
+​
+​
+total crimes. During this year, there was a total of 11.88 million cases accounted for—a value
+that surpassed the second ranked country, the United Kingdom, by almost double the crime
+count.3 In 2012, the United States law enforcement also made over 12 million arrests
+​
+​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 3 of 58
+nationwide. Of these arrests, 4.273%, or 521,196 cases, were due to violent crimes.4 The
+​
+​
+statistics go on and on.
+Such extensive data on crime, therefore, is critical for the evaluation of a nation’s
+criminal activity. It not only shows the numerical value for crimes but also the trend in data.
+For example, in 2013, the number of estimated arrests was 11,302,102—a 7.3367% decrease
+from 2012.5 This drop coincides with the overall decreasing trend in reporteMd crimes in the
+​
+​
+United States since the early 1990s as shown in Graph 1 of Appendix AC regarding the total
+number of reported crimes over time. M
+This annually compiled data provides massive statisticis. Within the United States, this
+H
+data is collected by a myriad of organizations, one of which is the Federal Bureau of
+：
+Investigation (FBI). For the FBI, the Uniform Crime Reporting (UCR) program is used. This
+号
+program gathers information regarding only violent crime (categorized by murder and
+众
+nonnegligent manslaughter, forcible rape, robbery, and aggravated assault) and property crime
+(categorized by burglaries, larceny­theft, and motor vehicle theft), and data using this system
+公
+has existed since 1930.6
+​
+信
+This paper thus seeks to apply the abundant amount of gathered criminal statistics to
+微
+the safeness of cities and metropolitan areas. Data regarding crime reports will be analyzed in
+order to develop a system for rating an area’s safeness. Furthermore, a correlation between the
+criminal activity and the location’s economic prosperity will be explored as well as the
+placement of additional law enforcement in order to improve a city’s safeness rating.
+Global Assumptions
+To adequately analyze the criminal data, several assumptions were developed. These included:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 4 of 58
+1. My City is a city in the United States of America.
+○ Thus, FBI reported data can be applied to the problem.
+2. My City, which has a population of 2.8 million people, is impacted by a metropolitan
+area of an additional approximately 6 million people.
+○ Due to this, the reported crimes of My City are affected by the 6 million people
+of the metropolitan area, also. And thus, the value used for toMtal population
+influencing the crime data set is 8.8 million rather than Cjust the 2.8 million of
+My City. M
+3. The My City crimes given are the only crimes that occiurred in My City and its
+H
+metropolitan area.
+：
+4. The crimes that occur are distributed uniformly across the year.
+号
+○ Thus, when the annual distribution of FBI’s metropolitan crime data is used, the
+众
+data’s yearly values can be divided by 26 to obtain the data collected over just a
+two week period (the time frame of collected data in the
+公
+My_City_Crime_Data.xlsx file).
+信
+5. Since the distribution of frequency of metropolitan areas’ number of crimes is
+微
+approximately normal (see graph below), data could be standardized.
+○ The FBI uses the UCR program, which incorporates the Hierarchy Rule.
+Graph 2: Number of Crimes per 100000 per Two Weeks under Hierarchy Rule
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 5 of 58
+M
+C
+M
+i
+H
+Graph 3: Number of Violent Crimes per 100000 per Two Weeks under Hierarchy Rule
+：
+号
+众
+公
+信
+微
+Model 1
+The purpose of Model 1 was to determine a method for rating the safeness of My City
+as well as My City’s metropolitan area (from here on, any mentioning of “My City” will thus
+refer to My City and its metropolitan area). The given crime data for My City included a
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 6 of 58
+variety of information, such as the date of occurrence, primary and secondary descriptions,
+location description, arrest, domesticity, and beat number. However, for the formulated method
+of rating, the primary and secondary descriptions of the crime where most significant.
+The recorded crimes were first categorized by their primary description and further
+sorted by their secondary descriptions. The frequency of each crime was then counted. In order
+to develop the ranking system (based on z­score calculations), however, theM crimes must
+further be categorized into “violent crimes” and “other crimes.” The deCfinitions of violent
+crimes and other crimes are found in Assumptions for Model 1. M
+Assumptions for Model 1 i
+H
+1. “Violent crimes” were defined as any crime in which the perpetrator’s actions can
+：
+result in potentially detrimental effects to another living being(s) (see Table 1 of
+号
+Appendix B).
+众
+2. “Other crimes” were defined as illegal actions mainly involving the damage of
+property. However, “other crimes” also consisted of crimes that do not fit the “violent
+公
+crimes” category (see Table 1 of Appendix B).
+信
+With the assumptions above, the following equation was formulated to rate the safeness
+微
+of My City’s metropolitan area:
+R =z +z
+1 1 2
+where R was the safety rating for 2014’s crime data based on z and z , z was the
+​​1 ​1 ​2 ​1
+​ ​ ​ ​
+z­score of My City’s ratio of total crimes per 100,000 inhabitants relative to the population
+mean ratio of crime per 100,000 inhabitants, and z was the z­score of My City’s ratio of
+​2
+​
+violent crimes per 100,000 inhabitants relative to the population mean ratio of violent crimes
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 7 of 58
+per 100,000 inhabitants. The R value also provided additional weighting to violent crimes to
+​1
+​
+the overall safety rating by adding the z­score specific to violent crimes to the z­score specific
+to total crimes. The higher the R­value, the more dangerous the metropolitan area.
+​
+All values necessary for the population were calculated based on data from the FBI’s
+table of crime data of the United States grouped by metropolitan statistical area. Metropolitan
+data with missing values i.e. specific property crime values, population numMbers, etc. were
+omitted. The table of used data can be found in Table 1 of Appendix GC.
+Finding z M
+​1
+To calculate the z­score of My City’s ratio of total crimies per 100,000 inhabitants
+H
+relative to the population mean ratio, the following values were needed:
+：
+1. μ , the numerator of the ratio of crimes per 100,000 inhabitants for the entire
+​C
+​
+号
+population of metropolitan areas over the course of 14 days in 2014.
+​ ​
+众
+○ σ , the standard deviation for the total crimes per 100,000 inhabitants for the
+​C
+​
+entire population of metropolitan areas over the course of 14 days in 2014.
+公 ​ ​
+2. C = the numerator of ratio of crimes per 100,000 inhabitants.
+信
+In My City’s crime data, the number of crimes were recorded in a period of 14 days.
+微
+Thus, the data pulled from the FBI’s metropolitan area values had to be two week’s worth of
+data also, if they were to be compared to My City’s values. So find this, the average of the
+FBI’s total crimes per 100,000 inhabitants of every metropolitan area was divided by 26,
+representing 26 weeks. This gave the number of crimes for two weeks out of the 52 in a year.
+The μ was found to be 117.2929 crimes and σ was found to be 36.2718 crimes.
+​c ​C
+​ ​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 8 of 58
+To find the z­score of My City’s total crimes per 100,000 inhabitants, the total number
+of crimes per 100,000 inhabitants and the number of crimes per 100,000 inhabitants had to be
+found:
+1. T , the total crimes in My City (11,162 crimes).
+​C
+​
+○ This value was found by summing the number of crimes in My City from
+7/5/2014 to 7/18/2015. M
+2. P, the population of My City metropolitan area (8,800,000 peopCle).
+3. C, the numerator of the ratio of crimes per 100,000 inhabMitants.
+The following proportion was set up to find the numbeir of crimes per 100,000
+H
+inhabitants:
+：
+C = T C
+100,000 P
+号
+C was found to equal 126.84 crimes. This value was input into the z­score equation:
+众
+C − μ
+z = C = 0.2632
+1 σ
+C
+公
+Therefore, z was 0.2632.
+​1
+​
+Finding z 信
+​2
+To calculate the z­score of My City’s ratio of violent crimes per 100,000 inhabitants,
+微
+the following values were needed:
+1. μ , the numerator of the ratio of violent crimes per 100,000 inhabitants for the entire
+​V ​ ​
+​
+population of metropolitan areas over the course of 14 days in 2014.
+2. σ , the standard deviation for the violent crimes per 100,000 inhabitants for the entire
+​V
+​
+population of metropolitan areas over the course of 14 days in 2014.
+3. V, the numerator of ratio of violent crimes per 100,000 inhabitants.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 9 of 58
+μ was found to be 13.4854 crimes and σ was found to be 6.4781 crimes.
+​V ​V
+​ ​
+To find the z­score of My City’s violent crimes per 100,000 inhabitants, the total
+number of violent crimes per 100,000 inhabitants and the number of crimes per 100,000
+inhabitants had to be found:
+1. T , the total of violent crimes in My City (3,919 crimes).
+​V
+​
+○ This value was found by summing the number of violent crimMes in My City
+from 7/5/2014 to 7/18/2015. C
+2. P, the population of My City’s metropolitan area (8,800,M000 people).
+3. V, the numerator of the ratio of violent crimes per 100i,000 inhabitants.
+H
+V = T V
+100,000 P ：
+V was found to equal 44.534 crimes. This value was input into the z­score equation:
+号
+V − μ
+z = V = 4.7934
+2 σ
+V
+众
+Therefore, z was 4.7934, and the safety rating (R ) for My City was the sum of z and
+​2 ​​1 ​1
+​ ​ ​
+z , which equaled 5.0566公.
+​2
+​
+Graph 1: Safety Rating Distribution
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 10 of 58
+M
+C
+M
+i
+H
+Since the distribution of all metropolitan areas’ safety ratings (R ) was approximately
+​1
+​
+：
+normal, the z­score of My City’s safety rating relative to the all the metropolitan areas’
+​
+safety ratings could be calculated, and号 was found to be 2.8581. In general, this showed that
+​
+My City’s metropolitan area was less safe than the average metropolitan area in the U.S.
+众
+Model 2.
+​
+公
+The Federal Bureau of Investigation has been collected crime data using their program,
+the UCR program信, since 1930. This system of reporting crime consists of a concept known as
+the Hierarchy Rule7. This rule categorizes crime in two categories: violent crimes and property
+​
+微​
+crimes. Violent crimes consist of only murder and nonnegligent manslaughter, rape,
+aggravated assault, and robbery, while property crimes consist of burglary, larceny and theft,
+and motor vehicle theft.
+Because of so, the defining of crimes in Model 1 were adjusted in Model 2 to coincide
+with the FBI’s UCR program. Crimes of My City’s crime data spreadsheet were categorized as
+“violent” and “property” crimes. Other crimes that did not fit the two categorizes were not used
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 11 of 58
+in the rating method. Model 2’s incorporation of the Hierarchy Rule in its categorization of
+crimes allowed for realistic comparisons to the FBI data. This would therefore yield a more
+realistic safety rating (R­score).
+The crimes deemed “violent” and “property” crimes by the Hierarchy Rule can be
+found in Table 2 of Appendix C.
+The formula for Model 2 was the same as that of Model 1: M
+R =z +z , C
+2 1 2
+M
+with higher R scores representing a more dangerous metropolitan area.
+​ ​2 ​
+​
+Calculations and values for Model 2 were the same as ithe calculations for Model 1,
+H
+with the following changes:
+：
+1. T , the total number of crimes in My City (6,855 crimes).
+​C
+​ 号
+● This value was found by summing the number of crimes in My City from
+众
+7/5/2014 to 7/18/2015 as defined by the Hierarchy Rule.
+​ ​
+2. C, the numerator of the ratio of crimes per 100,000 inhabitants.
+公
+● While calculated the same way as in Model 1, its value changed.
+信
+3. T , the total number of violent crimes in My City (3,249 crimes).
+​V
+​
+微
+● This value was calculated by summing the number of violent crimes, as defined
+​
+by the Hierarchy Rule, in My City from 7/5/2014 to 7/18/2015.
+​
+4. V, the numerator of the ratio of violent crimes per 100,000 inhabitants.
+● While calculated the same way as in Model 1, its value changed.
+C = T C
+100,000 P
+C was found to be 77.8977 crimes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 12 of 58
+V = T V
+100,000 P
+V was found to be 36.9205 crimes.
+The values that remained the same from Model 1 were:
+1. P, the population of My City’s metropolitan area
+2. μ , the numerator of the ratio of crimes per 100,000 inhabitants for the entire
+​C
+​
+M
+population of metropolitan areas over the course of 14 days in 2014.
+​ ​
+C
+● μ = 117.2929 crimes
+​C
+​
+M
+­ σ , the standard deviation for the total crimes per 100,000 inhabitants for the entire
+​C
+​
+i
+population of metropolitan areas over the courseH of 14 days in 2014.
+​ ​
+：
+● σ = 36.2718 crimes
+​C
+​
+3. μ , the numerator of the ratio of violent crimes per 100,000 inhabitants for the entire
+​V 号​ ​
+​
+population of metropolitan areas over the course of 14 days in 2014.
+​ ​
+众
+● μ = 13.4854 crimes
+​V
+​
+公
+4. σ , the standard deviation for the violent crimes per 100,000 inhabitants for the entire
+​V
+​
+population of metropolitan areas over the course of 14 days in 2014.
+信
+​ ​
+● σ = 6.4781 crimes
+​V
+微​
+After using these changed and unchanged values and inputting C into z and V into z ,
+​1 ​2
+​ ​
+z and z were recalculated to be ­1.0861 and 3.6176, respectively.
+​1 ​2
+​ ​
+C − μ
+z = C = ­1.0861
+1 σ
+C
+V − μ
+z = V = 3.6176
+2 σ ​
+V
+The new and improved safety rating (R ) was the sum of z and z , or 2.5315.
+​2 ​1 ​2
+​ ​ ​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 13 of 58
+Since the distribution of all metropolitan areas’ safety ratings (R ) is approximately
+​2
+​
+normal (as shown by Graph 1 in Model 1), the z­score of My City’s safety rating relative to
+​
+the all the metropolitan areas’ safety ratings could be calculated, and was found to be
+1.4110. In general, this means that My City’s metropolitan area is less safe than the average
+​
+metropolitan area in the U.S. Refer to Appendix G for the full distribution of safety ratings (R )
+​2
+​
+in the U.S. M
+Model 3 C
+Model 3 addresses some issues that were present in the sMafety ratings provided by
+Models 1 and 2. Models 1 and 2 calculated the safety rating byi combining the Z­score of
+H
+overall crime per 100,000 people with the z­score of violent crime per 100,000 people. The
+：
+purpose of this was to establish an increased weight for the violent crimes, leading to a worse
+号
+rating for cities with greater proportions of violent crimes. However, this method of weighting
+众
+the crimes grossly overrepresented the violent crimes within Model 2’s safety rating, and
+Model 3 served to better represent the different types of crime within the safety rating.
+公
+The primary change to Model 3 was re­adjusting the weighting scheme from the
+信
+previous models. Whereas Models 1 and 2 only emphasized the violent crime category, Model
+微
+3 assigned the weight for each crime from the Hierarchy Rule individually (see Appendix C for
+full table).
+Table 2: Sentencing Months per Crime8
+​
+Mean Median
+Primary Offense Months Months Number
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 14 of 58
+Murder 273 240 75
+Sexual Abuse 134 120 545
+Assault 31 18 775
+Robbery 78 60 782
+M
+Burglary/B&E 30 21 37
+C
+M
+Auto Theft 61 42 86
+i
+H
+Larceny 10 2 1,408
+：
+The weights for the crimes listed under the Hierarchy Rule were quantified using their
+号
+2014 national median sentence length (in months) as reported by the U.S. Sentencing
+Commission.8
+​
+Median sentence 众lengths were used as weight coefficients because medians are
+​
+more robust to outliers than means. As a result of this weighting process, severe crimes such as
+公
+murder were given a weight of 240 whereas crimes such as theft were given a weight of 2.
+信
+However, high weights of severe crimes were counteracted by the high volume of less severe
+crimes w微hich led to a more representative model for determining safety ratings. The safety
+rating range was from 0 to infinity, with lower values representing safer cities due to less crime
+contributing to the safety rating. Therefore, the higher the R value, the more dangerous the city
+and metropolitan area.
+The follow equation was formulated for Model 3’s rating method:
+R =W ×C
+c c m
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 15 of 58
+| R =Σ(W | ×C  | )   |     |     |     |
+| ------ | --- | --- | --- | --- | --- |
+| m      | c   | m   |     |     |     |
+where
+W  = weight for a crime under Hierarchy Rule
+​c
+​
+C  = number of occurrences of such a crime per 100,000 in the metropolitan
+​m
+​
+area in a fourteen day
+M
+R  = crime rating (subset of safety rating)
+​c
+​
+R  = safety rating for a metropolitan area  C
+​m
+​
+M
+When My City’s data values were inputted,
+| Murder= | (240)(0.22727) |     | =54.5448  |     | i   |
+| ------- | -------------- | --- | --------- | --- | --- |
+H
+| Rape =(120)(0.841)= |            |         | 100.92  | ：   |     |
+| ------------------- | ---------- | ------- | ------- | --- | --- |
+| Robbery=            | (60)(4.58) | =274.8  |         |     |     |
+号
+| Aggravated Assault= |     |     | (18)(31.27) | =562.86  |     |
+| ------------------- | --- | --- | ----------- | -------- | --- |
+众
+| Burglary= | (21)(6.432)=135.072  |     |     |     |     |
+| --------- | -------------------- | --- | --- | --- | --- |
+公
+| Larceny/Theft=      |     | (2)(30.205) | =60.41      |           |     |
+| ------------------- | --- | ----------- | ----------- | --------- | --- |
+| Motor Vehicle Test= |     |             | (42)(4.341) | =182.322  |     |
+信
+And the safety rating of My City’s metropolitan area was found to be:
+微
+R = (54.5448)+(100.92)+(274.8)+(562.86)+(135.072)+(60.41)+(182.322) =1370.9268
+My City
+A z­score for My City’s metropolitan area was also calculated for.
+1370.9268−1462.467
+| z−score R |         | =   |          | = ­0.1620636  |     |
+| --------- | ------- | --- | -------- | ------------- | --- |
+|           | My City |     | 564.8396 |               |     |
+Graph 1: Weighted Number of Crimes per 100000 per Two Weeks under Hierarchy Rule
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 16 of 58
+M
+C
+M
+i
+H
+μ= 1462.467
+：
+σ=564.8396
+号
+n = number of metropolitan areas = 354
+B ­ SENSITIVITY ANALYSIS 众
+The improved weights from Model 3 helped to better represent the safety rating every
+公
+year by weighing severe crimes such as murder more heavily than crimes such as larceny and
+信
+theft. Because each of the crimes would have a different effect on the safety rating based upon
+the weigh微ting and frequency of occurrence, sensitivity analyses9
+​
+were conducted in order to
+​
+better understand how change in crime occurrences would affect safety ratings for each year.
+The number of occurrences of each crime was fluctuated by 10 percent in both directions in
+order to observe the magnitude of change in the final result for the safety rating. The slopes in
+each graph represented the magnitude of the effect that each type of crime had on the safety
+rating relative to the other crimes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 17 of 58
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 18 of 58
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 19 of 58
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Model 4
+微
+Since My City is described as a “large international hub of commerce, technology,
+finance and travel,” Model 4 strives to determine if a significant relationship exists between
+crime in My City’s crime and its economy. My City’s economy was represented by its GDP,
+since GDP is the “godfather of the [economic] indicator world.”10 Although no economic data
+​
+​
+was provided for My City, GDP data for metropolitan areas similar to My City could be found.
+In order to determine which metropolitan area’s GDP data could be used to represent My
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 20 of 58
+City’s GDP data, potential locations were determined by first choosing cities with safety
+ratings similar to My City’s. Metropolitan areas with safety ratings within 30% of My City’s
+safety rating were identified as potential places from which data could be used. Within this
+group of potential areas, only one metropolitan area, Chicago, had a population size within
+10% of My City’s population (the others’ populations were significantly smaller than My
+City’s). As a result, the Chicago metropolitan area’s GDP11 over the course Mof 10 years (from
+​
+​
+2001 to 2011) was used to compare with its total reported crimes over Cthe same period of time.
+However, since My City only had crime data for 2 weeks, the yeMarly GDP and total crime data
+for Chicago had to be divided by 26 weeks. This way, My Citiy’s government officials could
+H
+predict their GDP based on their reported crimes, and, given that they already had a projected
+：
+GDP value on hand, could predict their total crime based on their GDP.
+号
+A linear regression t­test was used to show the significant relationship between the
+众
+GDP Index and the total crimes in Chicago over two weeks. The hypothesis that the
+relationship between number of crimes and GDP would be negative was tested against the null
+公
+hypothesis that no relationship exists (slope would be zero). The following conditions for
+信
+linear regression tests were satisfied:
+微
+1. For any fixed value of x, the response y varies according to a normal distribution.
+Repeated responses y are independent of each other.
+2. The mean response μ has a straight line relationship with x:
+y
+μ = α+βx
+y
+The slope βand the intercept αare unknown parameters
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 21 of 58
+3. The standard deviation of y (σ) is the same value for all values of x. The value of σis
+unknown.
+and the findings are reported below:
+p­value = 1.487*10­6
+​
+degrees of freedom = 9
+M
+r2 = 0.9207
+​
+​
+A math model with input being number of crimes over 2 weeksC and output being GDP
+M
+was established:
+GDP over 2 weeks = 8.649 crimes ­0.00006*(Ni)
+H
+with N representing the number of crimes in metropolitan area over 2 weeks.
+：
+号
+众
+公
+信
+微
+If the city officials were to have a projected 2­week GDP value and sought to predict
+total crimes, the following model could be used:
+N = ­0.00003(GDP over 2 weeks ­ 8.2856 crimes)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 22 of 58
+Since the p­value (the probability that the slope being as negative as it was could be due
+to chance) at 9 degrees of freedom was so low, and since the square of the correlation
+coefficient was high (0.9207), it was concluded that a significant relationship exists between
+GDP and crime rate, and therefore the incorporation of the above models was deemed valid.
+Furthermore, a model incorporating weighted values to predict number of crimes (using
+the scaled weighting values from Model 3) was created so that an equation tMhat could more
+accurately predict GDP could be developed. This equation would be usCed for officials who
+have access to more specific data (murder, rape, robbery, assaulMt, burglary, theft, and motor
+vehicle theft) and want a more accurate model. (The first equaition, GDP over 2 weeks = 8.649
+H
+crimes ­ 0.00006*(N), only requires total crimes, whereas this equation requires specific data).
+：
+Another linear regression t­test was run for the adjusted crime values vs. GDP, and the
+号
+findings are reported below:
+众
+p­value = 1.872*10­6
+​
+degrees of freedom = 9
+公
+r2 = 0.9166
+​
+​
+信
+A math model with input being number of crimes over 2 weeks and output being GDP
+微
+was established:
+GDP over 2 weeks = 8.2856 crimes ­0.00003*(T )
+​C
+​
+T = ∑(s * N )
+​C ​C ​C
+​ ​ ​
+where T is total crimes, s is the weight or median sentence time (in months) of crime C, and
+​C ​C
+​ ​
+N is the frequency of crime C over 2 weeks.
+​C
+​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 23 of 58
+M
+C
+M
+i
+If the city officials were to have a projected 2­week GDP value and sought to predict
+H
+total crimes, the following model could be used:：
+N = ­0.00003(GDP over 2 weeks ­ 8.2856 crimes)
+号
+Since the p­value (the probability that the slope being as negative as it was could be due
+众
+to chance) at 9 degrees of freedom was so low, and since the square of the correlation
+coefficient was high (0.9公166), it was concluded that a significant relationship exists between
+GDP and crime rate, and therefore the incorporation of the above models was deemed valid.
+信
+Model 5
+微
+Assumptions
+1. My City’s Metropolitan Area Police Force has a limited number of police officers.
+2. My City’s Metropolitan Area beat system is structured like Chicago’s Metropolitan
+Area beat system.
+○ In this system, the digits of the beat represent geographic location.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 24 of 58
+○ It is further explained below the rationale for using Chicago’s beat system as a
+basis for interpreting My City’s beat system.
+3. The police allocated to each district are distributed evenly throughout all of the beats
+within the district.
+The purpose of Model 5 was to determine an allocation method of the My City’s Police
+Department’s police officers to different parts of My City’s Metropolitan ArMea. This allocation
+was based on the frequency of crime at each beat, as provided by origiCnal My City data. Police
+beats are areas broken down for patrol and statistical purposes12.M Two metropolitan areas that
+​
+​
+prominently use beats are Houston and Chicago. Since Chicagio had a more similar safety
+H
+rating (R ) and more similar population size to My City than Houston, Chicago’s beat system
+​M ：
+​
+was analyzed in order to interpret My City’s beat system.
+号
+Each beat consists of three to four digits. For 3­digit beats, the first digit refers to the
+众
+district, while in 4­digit beats, the first two digits refer to the district13. Only the district digits
+​
+​
+would be used in determining allocation because frequency of crime emanating from beats
+公
+would be more volatile than frequency of crime emanating from districts.
+信
+Because of My City’s limited number of police officers, they have to be stationed
+微
+efficiently throughout the districts in order to have optimal response times to crimes. The patrol
+areas of police officers also depend on the proportion of violent crimes within each district
+because violent crime would more often require a rapid response by the police, and therefore
+require more police in the district. This process of increasing the emphasis of violent crimes is
+described by the equations below. The model provided the proportions of police to be stationed
+within each district. These values would then be multiplied by My City’s number of police
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 25 of 58
+officers and rounded to the nearest integer to determine exactly how many police officers to
+station within every district in order to optimally distribute the police force.
+D = proportion of violent crimes under Hierarchy Rule in a District D out of My City
+​pv
+​
+D = proportion of property crimes under Hierarchy Rule in a District D out of My
+​pp
+​
+City
+D = number of violent crimes under Hierarchy Rule in District D M
+​v
+​
+D = number of property crimes under Hierarchy Rule in DistriCct D
+​p
+​
+The following equations were formulated: M
+N = N + N i
+​v ​p
+​ H
+Σ(D = 1)
+​prop ：
+​
+where
+号
+N = number of crimes under Hierarchy in My City
+众
+N = number of violent crimes under Hierarchy Rule in My City
+​v
+​
+N = number of property crimes under Hierarchy Rule Crimes in My City
+​P 公
+​
+and,
+信
+D = proportion of police force to send to District D.
+​prop
+​
+微
+The equation for the scaling (weighting) of violent crimes was as follows:
+W = Σ(Cw×Cv)
+v Nv
+where
+W = weight for violent crimes in My City
+​v
+​
+C = weight factor associated with Hierarchy Rule Crime C
+​w
+​
+C = Number of Occurrences of a Violent Hierarchy Rule Crime.
+​v
+​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 26 of 58
+And the equation for the scaling of property crimes was as follows:
+W =Σ(
+Cw×Cp)
+p Np
+where
+W = weight for property crimes in My City
+​p
+​
+C = weight factor associated with Hierarchy Rule Crime C
+​w
+​
+M
+C = number of occurrences of a property crimes under Hierarchy Rule
+​p
+​
+The proportions of crimes under the Hierarchy Rule Crimes areC displayed in the
+M
+equations below:
+D = Dv i
+pv Nv H
+D = Dp ：
+pp Np
+The equation for the proportion of district police distributed to beats is below:
+号
+D =
+(W
+v
+×Dpv)+(Wp×Dpp)
+prop Wv+Wp
+众
+The districts’ proportional allocation of police officers can be found in Table 1 of
+公
+Appendix E.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 27 of 58
+References
+1. "The DC Sniper Beltway Attacks." Crime Library:. National Museum of Crime &
+​ ​
+Punishment, 2015. Web. 12 Nov. 2015.
+2. "Crime Index for Country 2015 Mid Year." Crime Index by Country 2015 Mid Year.
+​ ​
+Numbeo, 2009. Web. 12 Nov. 2015.
+3. "Countries Compared by Crime Total Crimes. International Statistics at
+NationMaster.com." NationMaster.com. NationMaster, 2003. Web. 12 Nov. 2015.
+​ ​
+4. "Persons Arrested." FBI. FBI, 16 May 2013. Web. 12 Nov. 2015.
+​ ​
+5. "Crime in U.S." FBI. FBI, 19 May 2014. Web. 12 Nov. 2015.
+​ ​
+6. "Uniform Crime Reports." FBI. FBI, 09 May 2012. Web. 11 Nov. 2015.
+​ ​
+7. "Violent Crime." FBI. FBI, 25 July 2011. Web. 12 Nov. 2015. M
+​ ​
+8. "USSC Interactive Sourcebook ­ Table of Contents." USSC Interactive Sourcebook ­
+​
+Table of Contents. U.S. Sentencing Commission, 2000. Web. 1C2 Nov. 2015.
+​
+9. "Conducting Sensitivity Analysis." Conducting Sensitivity Analysis. University of
+​ ​
+Arizona, 2014. Web. 11 Nov. 2015. M
+10."Economic Indicators: Gross Domestic Product (GDP) | Investopedia."Investopedia.
+​ ​
+N.p., 03 Dec. 2003. Web. 12 Nov. 2015. i
+H
+11."Regional Data." U.S. Bureau of Economic Analysis (BEA). N.p., 2000. Web. 12 Nov.
+​ ​
+2015.
+：
+12."Neighborhood (Police Beat) Crime Statistics." Neighborhood (Police Beat) Crime
+​
+Statistics. N.p., n.d. Web. 12 Nov. 2015.
+​
+13."KnowYourDistrict." KnowYour号District. N.p., n.d. Web. 12 Nov. 2015.
+​ ​
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 28 of 58
+Appendix A
+Graph 1: Total Number of Reported Crimes from 1960 ­ 2014
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 29 of 58
+Appendix B
+
+Table 1: My City’s Categorized Crime Data
+
+Key       P = Decided by Primary Description of Crime
+​
+             S = Decided by Secondary Description of Crime
+​
+Violent Crimes (3919 total crimes)  Other Crimes (7243 total crimes)
+| Assault (P)  |     | Arson (P)     |     |
+| ------------ | --- | ------------- | --- |
+| Battery (P)  |     | Burglary (P)  | M   |
+Criminal Sexual Assault (P)  Concealed Carry License Violation (P)
+| Homicide (P)                        |     | Criminal Damage (P)C   |     |
+| ----------------------------------- | --- | ---------------------- | --- |
+| Interference w/ Public Officer (P)  |     | Criminal Trespass (P)  |     |
+Deceptive PracMtice (P)
+Intimidation (P)
+| Kidnapping (P)                  |     | Gambling (P)               |     |
+| ------------------------------- | --- | -------------------------- | --- |
+| Offense Involving Children (P)  |     | Liquor Law Viiolation (P)  |     |
+| Animal Abuse/Neglect (S)        |     | Motor Vehicle Theft (P)  H |     |
+| Harassment (S)                  |     | Narcotics (P)              |     |
+：
+| Obscene Phone Calls (S)  |     | Other Narcotic Violation (P)  |     |
+| ------------------------ | --- | ----------------------------- | --- |
+Other Crimes Against Person (S)  False/Stolen/Altered Temporary Registration
+Sex Offender (S)  号Permits (S)
+| Telephone Threat (S)  |     | Gun Offender (S)  |     |
+| --------------------- | --- | ----------------- | --- |
+Violate Order of Protection (S)  Hazardous Materials Violation (S)
+众
+| Violent Offender (S)  |     | License Violation (S)        |     |
+| --------------------- | --- | ---------------------------- | --- |
+| Bomb Threat (S)       |     | Other Vehicle Offense (S)    |     |
+| Mob Action (S)        |     | Other Weapons Violation (S)  |     |
+公
+| Peeping Tom (S)       |     | Parole Violation (S)                 |     |
+| --------------------- | --- | ------------------------------------ | --- |
+| Reckless Conduct (S)  |     | Possession of Burglary Tools (S)     |     |
+| Robbery (P)           | 信   | Probation Violation (S)              |     |
+| Sex Offense (P)       |     | Vehicle Title/Registration Offender  |     |
+| Stalking (P)          |     | Arson Threat (S)                     |     |
+微
+False Police Report (S)
+Other Violation (S)
+Public Demonstration (S)
+Theft (P)
+Weapons Violation (P)
+
+|     |     |     |     |
+| --- | --- | --- | --- |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 30 of 58
+Appendix C
+
+Table 1: My City’s Categorized Crime Data under Hierarchy Rule
+
+Key       P = Decided by Primary Description of Crime
+​
+             S = Decided by Secondary Description of Crime
+​
+Violent Crimes (3249 total crimes)  Property Crimes (3630 total crimes)
+| Assault (P)                  |     | Arson (P)                |     |     |     |
+| ---------------------------- | --- | ------------------------ | --- | --- | --- |
+| Battery (P)                  |     | Burglary (P)             |     |     | M   |
+| Criminal Sexual Assault (P)  |     | Motor Vehicle Theft (P)  |     |     |     |
+| Homicide (P)                 |     | Theft (P)                |     | C   |     |
+| Sex Offender (S)             |     |                          |     |     |     |
+M
+Robbery (P)
+Sex Offense (P)
+| Stalking (P)  |     |     | i   |     |     |
+| ------------- | --- | --- | --- | --- | --- |
+H
+
+Table 3: Sentencing M：onths per Crime (full)
+
+|                  | 号Mean   |     | Median  |     |         |
+| ---------------- | ------- | --- | ------- | --- | ------- |
+| Primary Offense  | Months  |     | Months  |     | Number  |
+众
+Total
+|     | 44  |     | 24  |     | 75836  |
+| --- | --- | --- | --- | --- | ------ |
+公
+| Murder        | 273  |     | 240  |     | 75  |
+| ------------- | ---- | --- | ---- | --- | --- |
+| Manslaughter  | 54   |     | 37   |     | 49  |
+信
+| Kidnapping/Hostage Taking  | 201  |     | 168  |     | 50  |
+| -------------------------- | ---- | --- | ---- | --- | --- |
+微
+| Sexual Abuse                    | 134  |     | 120  |     | 545    |
+| ------------------------------- | ---- | --- | ---- | --- | ------ |
+| Assault                         | 31   |     | 18   |     | 775    |
+| Robbery                         | 78   |     | 60   |     | 782    |
+| Arson                           | 62   |     | 49   |     | 54     |
+| Drugs ­ Trafficking             | 68   |     | 51   |     | 21323  |
+| Drugs ­ Communication Facility  | 31   |     | 24   |     | 344    |
+| Drugs ­ Simple Possession       | 5    |     | 6    |     | 2344   |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 31 of 58
+| Firearms      |     | 82  | 57  | 7925  |
+| ------------- | --- | --- | --- | ----- |
+| Burglary/B&E  |     | 30  | 21  | 37    |
+| Auto Theft    |     | 61  | 42  | 86    |
+| Larceny       |     | 10  | 2   | 1408  |
+| Fraud         |     | 27  | 14  | 7614  |
+| Embezzlement  |     | 10  | 6   | 334   |
+M
+| Forgery/Counterfeiting  |     | 18  | 12  | 713  |
+| ----------------------- | --- | --- | --- | ---- |
+C
+| Bribery  |     | 21  | 12  | 241  |
+| -------- | --- | --- | --- | ---- |
+M
+| Tax  |     | 13  | 9   | 649  |
+| ---- | --- | --- | --- | ---- |
+i
+| Money Laundering  |     | 32  | 18  | 886  |
+| ----------------- | --- | --- | --- | ---- |
+H
+| Racketeering/Extortion  |     | 88  ：58  |     | 864  |
+| ----------------------- | --- | -------- | --- | ---- |
+| Gambling/Lottery        |     | 5        | 3   | 117  |
+号
+| Civil Rights       |      | 36   | 18  | 58     |
+| ------------------ | ---- | ---- | --- | ------ |
+| Immigration        | 众15  |      | 10  | 22238  |
+| Child Pornography  |      | 137  | 97  | 1925   |
+公
+| Prison Offenses  |     | 15  | 12  | 448  |
+| ---------------- | --- | --- | --- | ---- |
+Administration 信of Justice
+| Offenses  |     | 18  | 12  | 1242  |
+| --------- | --- | --- | --- | ----- |
+Environ微mental/Wildlife
+|                               |     | 4   | 0   | 202   |
+| ----------------------------- | --- | --- | --- | ----- |
+| National Defense              |     | 45  | 35  | 108   |
+| Antitrust                     |     | 22  | 16  | 19    |
+| Food & Drug                   |     | 8   | 0   | 114   |
+| Other Miscellaneous Offenses  |     | 18  | 0   | 2267  |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 32 of 58
+Appendix D
+
+Table 1: GDP Index from 2001 to 2011 vs. Number of Crimes Reported
+
+Number of Crimes
+| Year  |     | Reported     |     | GDP Index  |
+| ----- | --- | ------------ | --- | ---------- |
+| 2001  |     | 7647.153846  |     | 100        |
+| 2002  |     | 7429.307692  |     | 102        |
+M
+| 2003  |     | 7396.269231  |     | 105.1  |
+| ----- | --- | ------------ | --- | ------ |
+C
+| 2004  |     | 6883.5  |     | 110.8  |
+| ----- | --- | ------- | --- | ------ |
+M
+| 2005  |     | 6422.423077  |     | 116.6  |
+| ----- | --- | ------------ | --- | ------ |
+| 2006  |     | 6336.846154  | i   | 123.2  |
+H
+| 2007  |     | 6175.615385  |     | 128.5  |
+| ----- | --- | ------------ | --- | ------ |
+：
+| 2008  |     | 6413.692308  |     | 127.6  |
+| ----- | --- | ------------ | --- | ------ |
+号
+| 2009  |     | 5930.769231  |     | 125.1  |
+| ----- | --- | ------------ | --- | ------ |
+| 2010  | 众   | 5776.423077  |     | 128.4  |
+| 2011  |     | 5620.923077  |     | 132.5  |
+公
+
+Graph 1: GDP Index from 2001 to 2011 vs. Number of Crimes Reported
+信
+微
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 33 of 58
+Table 2: GDP Index from 2001 to 2011 vs. Adjusted Number of Crimes Reported
+
+Adjusted Number of
+| Year  | Crimes Reported  |     | GDP Index  |
+| ----- | ---------------- | --- | ---------- |
+| 2001  | 148730.5385      |     | 100        |
+| 2002  | 143838.3846      |     | 102        |
+| 2003  | 142691.6923      |     | 105.1      |
+M
+| 2004  | 126030.7692  |     | 110.8  |
+| ----- | ------------ | --- | ------ |
+C
+| 2005  | 124000.8462  |     | 116.6  |
+| ----- | ------------ | --- | ------ |
+M
+| 2006  | 121181.7308  |     | 123.2  |
+| ----- | ------------ | --- | ------ |
+| 2007  | 115361.5769  | i   | 128.5  |
+H
+| 2008  | 120441.8846  |     | 127.6  |
+| ----- | ------------ | --- | ------ |
+：
+| 2009  | 110904.7692  |     | 125.1  |
+| ----- | ------------ | --- | ------ |
+号
+| 2010  | 110234.5     |     | 128.4  |
+| ----- | ------------ | --- | ------ |
+| 2011  | 106745.8462  |     | 132.5  |
+众
+
+Graph 2: GDP Index from 2001 to 2011 vs. Adjusted Number of Crimes Reported
+公
+
+信
+微
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 34 of 58
+Appendix E
+
+Table 1: Correlation Between the Districts of Beats and the Proportion of Officers Assigned to
+District to Handle Crime
+
+|                  | Total Non­Violent    |        | Officer Proportion  |
+| ---------------- | -------------------- | ------ | ------------------- |
+| District Number  | Total Violent Cases  | Cases  | per District        |
+| 1                | 80                   | 238    | 0.03464464258       |
+| 2                | 121                  | 159    | 0.03868759105       |
+| 3                | 213                  | 153    | 0.05944512901       |
+M
+| 4   | 228  | 203  | 0.06630773324  |
+| --- | ---- | ---- | -------------- |
+| 5   | 183  | 137  | 0.0514512015   |
+C
+| 6   | 232  | 234  | 0.06934314949  |
+| --- | ---- | ---- | -------------- |
+| 7   | 253  | 160  | 0.06912574235  |
+M
+| 8   | 158  | 248  | 0.05327280079  |
+| --- | ---- | ---- | -------------- |
+| 9   | 182  | 171  | 0.05354093053  |
+i
+| 10  | 195  | H143  | 0.05462148069  |
+| --- | ---- | ----- | -------------- |
+| 11  | 244  | 135   | 0.06534932748  |
+：
+| 12  | 140  | 208  | 0.04640226641  |
+| --- | ---- | ---- | -------------- |
+| 14  | 92   | 163  | 0.03228832941  |
+| 15  | 150  | 85   | 0.04031078522  |
+号
+| 16  | 66  | 143  | 0.02494178442  |
+| --- | --- | ---- | -------------- |
+| 17  | 76  | 121  | 0.02574148629  |
+众
+| 18  | 77   | 261  | 0.0355236964   |
+| --- | ---- | ---- | -------------- |
+| 19  | 121  | 292  | 0.04776211924  |
+| 20  | 44   | 149  | 0.02028950801  |
+公
+| 22    | 108  | 65   | 0.02928303759  |
+| ----- | ---- | ---- | -------------- |
+| 24    | 93   | 98   | 0.02808348479  |
+| 25  信 | 181  | 175  | 0.05358377351  |
+
+微
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+Appendix F
+Table 1: Metropolitan Areas and their Assigned Numbers
+Number Metropolitan Area
+1 Includes Callahan, Jones, and Taylor Counties
+2 Includes Baker, Dougherty, Lee, Terrell, and Worth Counties3
+3 Includes Linn County M
+4 Includes Albany, Rensselaer, Saratoga, Schenectady, and Schoharie Counties
+5 Includes Bernalillo, Sandoval, Torrance, and Valencia Counties C
+6 Includes Grant and Rapides Parishes
+M
+7 Includes Warren County, NJ and Carbon, Lehigh, and Northampton Counties, PA
+8 Includes Blair County i
+H
+9 Includes Armstrong, Carson, Oldham, Potter, and Randall Counties
+：
+10 Includes Story County
+11 Includes Anchorage Municipality and Matanuska-Susitna Borough
+12 Includes Washtenaw County 号
+13 Includes Calhoun County
+14 Includes Calumet and Outagamie Counties 众
+15 Includes Buncombe, Haywood, Henderson, and Madison Counties
+16 Includes Clarke, Madison, Oconee, and Oglet公horpe Counties3
+Includes Barrow, Bartow, Butts, Carroll, Cherokee, Clayton, Cobb, Coweta, Dawson, DeKalb, Douglas, Fayette, Forsyth, Fulton,
+17 Gwinnett, Haralson, Heard, Henry, Jasp信er, Lamar, Meriwether, Morgan, Newton, Paulding, Pickens, Pike, Rockdale, Spalding, and
+Walton Counties3
+18 Includes Atlantic County 微
+19 Includes Lee County
+20 Includes Burke, Columbia, Lincoln, McDuffie, and Richmond Counties, GA3 and Aiken and Edgefield Counties, SC
+21 Includes Bastrop, Caldwell, Hays, Travis, and Williamson Counties
+22 Includes Kern County
+23 Includes Anne Arundel, Baltimore, Carroll, Harford, Howard, and Queen Anne's Counties and Baltimore City
+24 Includes Penobscot County
+25 Includes Barnstable County
+26 Includes Calhoun County
+27 Includes Bay County
+28 Includes Hardin, Jefferson, Newton, and Orange Counties
+29 Includes Fayette and Raleigh Counties
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+30 Includes Whatcom County
+31 Includes Deschutes County
+32 Includes Carbon, Golden Valley, and Yellowstone Counties
+33 Includes Broome and Tioga Counties
+34 Includes Burleigh, Morton, Oliver, and Sioux Counties
+35 Includes Floyd, Giles, Montgomery, and Pulaski Counties and Radford City
+36 Includes DeWitt and McLean Counties
+37 Includes Monroe and Owen Counties M
+38 Includes Ada, Boise, Canyon, Gem, and Owyhee Counties
+C
+39 Includes Allen, Butler, Edmonson, and Warren Counties
+40 Includes Kitsap County M
+41 Includes Fairfield County
+42 Includes Cameron County i
+H
+43 Includes Brantley, Glynn, and McIntosh Counties3
+：
+44 Includes Alamance County
+45 Includes St. Mary's County
+号
+46 Includes Carroll and Stark Counties
+47 Includes Lee County
+众
+48 Includes Alexander County, IL and Bollinger and Cape Girardeau Counties, MO
+49 Includes Carson City
+公
+50 Includes Natrona County
+51 Includes Benton, Jones, and Linn Counties
+信
+52 Includes Franklin County
+53 Includes Champaign, Ford, and Piatt Counties
+54 Includes Boone, Clay, and Kanaw微ha Counties
+55 Includes Berkeley, Charleston, and Dorchester Counties
+Includes Cabarrus, Gaston, Iredell, Lincoln, Mecklenburg, Rowan, and Union Counties, NC and Chester, Lancaster, and York Counties,
+56
+SC
+57 Includes Albemarle, Buckingham, Fluvanna, Greene, and Nelson Counties and Charlottesville City
+58 Includes Catoosa, Dade, and Walker Counties, GA3 and Hamilton, Marion, and Sequatchie Counties, TN
+59 Includes Laramie County
+Includes the Metropolitan Divisions of Chicago-Naperville-Arlington Heights, IL; Elgin, IL; Gary, IN; and Lake County-Kenosha
+60
+County, IL-WI
+61 Includes Cook, DuPage, Grundy, Kendall, McHenry, and Will Counties
+62 Includes DeKalb and Kane Counties
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+63 Includes Jasper, Lake, Newton, and Porter Counties
+64 Includes Lake County, IL and Kenosha County, WI
+65 Includes Butte County
+Includes Dearborn, Ohio, and Union Counties, IN; Boone, Bracken, Campbell, Gallatin, Grant, Kenton, and Pendleton Counties, KY;
+66
+and Brown, Butler, Clermont, Hamilton, and Warren Counties, OH
+67 Includes Christian and Trigg Counties, KY and Montgomery County, TN
+68 Includes Bradley and Polk Counties
+69 Includes Kootenai County M
+70 Includes Brazos, Burleson, and Robertson Counties
+71 Includes El Paso and Teller Counties C
+72 Includes Boone County M
+73 Includes Calhoun, Fairfield, Kershaw, Lexington, Richland, and Saluda Counties
+74 Includes Russell County, AL and Chattahoochee, Harris, Marion, and Musicogee Counties, GA3
+H
+75 Includes Bartholomew County
+：
+76 Includes Delaware, Fairfield, Franklin, Hocking, Licking, Madison, Morrow, Perry, Pickaway, and Union Counties
+77 Includes Aransas, Nueces, and San Patricio Counties
+号
+78 Includes Benton County
+79 Includes Okaloosa and Walton Counties
+众
+80 Includes Allegany County, MD and Mineral County, WV
+81 Includes Murray and Whitfield Counties
+公
+82 Includes Baldwin County
+83 Includes Henry, Mercer, and Rock Island Counties, IL and Scott County, IA
+84 Includes Lawrence and Morgan Counti信es
+85 Includes Macon County
+86 Includes Flagler and Volusia Cou微nties
+87 Includes Dallas, Guthrie, Madison, Polk, and Warren Counties
+88 Includes the Metropolitan Divisions of Detroit-Dearborn-Livonia and Warren-Troy-Farmington Hills
+89 Includes Wayne County
+90 Includes Lapeer, Livingston, Macomb, Oakland, and St. Clair Counties
+91 Includes Kent County
+92 Includes Dubuque County
+93 Includes Carlton and St. Louis Counties, MN and Douglas County, WI
+94 Includes Chatham, Durham, Orange and Person Counties
+95 Includes Monroe County
+96 Includes Chippewa and Eau Claire Counties
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+97 Includes Imperial County
+98 Includes Hardin, Larue, and Meade Counties
+99 Includes Elkhart County
+100 Includes Chemung County
+101 Includes El Paso and Hudspeth Counties
+102 Includes Posey, Vanderburgh, and Warrick Counties, IN and Henderson County, KY
+103 Includes Fairbanks North Star Borough
+104 Includes Clay County, MN and Cass County, ND M
+105 Includes San Juan County
+C
+106 Includes Cumberland and Hoke Counties
+107 Includes Coconino County M
+108 Includes Genesee County
+109 Includes Darlington and Florence Counties i
+H
+110 Includes Colbert and Lauderdale Counties
+：
+111 Includes Fond du Lac County
+112 Includes Larimer County
+号
+113 Includes Crawford and Sebastian Counties, AR and Le Flore and Sequoyah Counties, OK
+114 Includes Allen, Wells, and Whitley Counties
+众
+115 Includes Fresno County
+116 Includes Alachua and Gilchrist Counties
+公
+117 Includes Hall County3
+118 Includes Adams County
+信
+119 Includes Warren and Washington Counties
+120 Includes Wayne County
+121 Includes Polk County, MN and G微rand Forks County, ND
+122 Includes Hall, Hamilton, Howard, and Merrick Counties
+123 Includes Mesa County
+124 Includes Cascade County
+125 Includes Weld County
+126 Includes Guilford, Randolph, and Rockingham Counties
+127 Includes Pitt County
+128 Includes Tangipahoa Parish
+129 Includes Kings County
+130 Includes Cumberland, Dauphin, and Perry Counties
+131 Includes Rockingham County and Harrisonburg City
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+132 Includes Hartford, Middlesex, and Tolland Counties
+133 Includes Alexander, Burke, Caldwell, and Catawba Counties
+134 Includes Beaufort and Jasper Counties
+135 Includes Liberty and Long Counties3
+136 Includes Citrus County
+137 Includes Lafourche and Terrebonne Parishes
+138 Includes Austin, Brazoria, Chambers, Fort Bend, Galveston, Harris, Liberty, Montgomery, and Waller Counties
+139 Includes Limestone and Madison Counties M
+140 Includes Bonneville, Butte, and Jefferson Counties
+C
+141 Includes Boone, Brown, Hamilton, Hancock, Hendricks, Johnson, Madison, Marion, Morgan, Putnam, and Shelby Counties
+142 Includes Johnson and Washington Counties M
+143 Includes Jackson County
+144 Includes Copiah, Hinds, Madison, Rankin, Simpson, and Yazoo Counties i
+H
+145 Includes Chester, Crockett, and Madison Counties
+：
+146 Includes Baker, Clay, Duval, Nassau, and St. Johns Counties
+147 Includes Rock County
+号
+148 Includes Callaway, Cole, Moniteau, and Osage Counties
+149 Includes Carter, Unicoi, and Washington Counties
+众
+150 Includes Cambria County
+151 Includes Craighead and Poinsett Counties
+公
+152 Includes Jasper and Newton Counties
+153 Includes Kalawao and Maui Counties
+信
+154 Includes Kalamazoo and Van Buren Counties
+155 Includes Kankakee County
+Includes Johnson, Leavenworth, L微inn, Miami, and Wyandotte Counties, KS and Bates, Caldwell, Cass, Clay, Clinton, Jackson,
+156
+Lafayette, Platte, and Ray Counties, MO
+157 Includes Benton and Franklin Counties
+158 Includes Bell, Coryell, and Lampasas Counties
+159 Includes Hawkins and Sullivan Counties, TN and Scott and Washington Counties and Bristol City, VA
+160 Includes Ulster County
+161 Includes Anderson, Blount, Campbell, Grainger, Knox, Loudon, Morgan, Roane, and Union Counties
+162 Includes Howard County
+163 Includes Houston County, MN and La Crosse County, WI
+164 Includes Benton, Carroll, and Tippecanoe Counties
+165 Includes Mohave County
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+166 Includes Polk County
+167 Includes Lancaster County
+168 Includes Clinton, Eaton, and Ingham Counties
+169 Includes Webb County
+170 Includes Dona Ana County
+171 Includes Clark County
+172 Includes Comanche and Cotton Counties
+173 Includes Lebanon County M
+174 Includes Nez Perce County, ID and Asotin County, WA
+C
+175 Includes Androscoggin County
+176 Includes Allen County M
+177 Includes Lancaster and Seward Counties
+178 Includes Faulkner, Grant, Lonoke, Perry, Pulaski, and Saline Counties i
+H
+179 Includes Gregg, Rusk, and Upshur Counties
+：
+180 Includes Cowlitz County
+181 Includes the Metropolitan Divisions of Anaheim-Santa Ana-Irvine and Los Angeles-Long Beach-Glendale
+号
+182 Includes Orange County
+183 Includes Los Angeles County
+众
+Includes Clark, Floyd, Harrison, Scott, and Washington Counties, IN and Bullitt, Henry, Jefferson, Oldham, Shelby, Spencer, and
+184
+Trimble Counties, KY
+公
+185 Includes Crosby, Lubbock, and Lynn Counties
+186 Includes Amherst, Appomattox, Bedford, and Campbell Counties and Bedford and Lynchburg Cities
+187 Includes Madera County 信
+188 Includes Columbia, Dane, Green, and Iowa Counties
+189 Includes Hillsborough County 微
+190 Includes Pottawatomie and Riley Counties
+191 Includes Blue Earth and Nicollet Counties
+192 Includes Richland County
+193 Includes Hidalgo County
+194 Includes Jackson County
+Includes Crittenden County, AR; Benton, DeSoto, Marshall, Tate, and Tunica Counties, MS; and Fayette, Shelby, and Tipton Counties,
+195
+TN
+196 Includes Merced County
+Includes the Metropolitan Divisions of Fort Lauderdale-Pompano Beach-Deerfield Beach, Miami-Miami Beach-Kendall, and West
+197
+Palm Beach-Boca Raton-Delray Beach
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+198 Includes Broward County
+199 Includes Miami-Dade County
+200 Includes Palm Beach County
+201 Includes La Porte County
+202 Includes Midland County
+203 Includes Martin and Midland Counties
+204 Includes Milwaukee, Ozaukee, Washington, and Waukesha Counties
+Includes Anoka, Carver, Chisago, Dakota, Hennepin, Isanti, Le Sueur, Mille Lacs, RaMmsey, Scott, Sherburne, Sibley, Washington, and
+205
+Wright Counties, MN and Pierce and St. Croix Counties, WI
+206 Includes Missoula County C
+207 Includes Mobile County M
+208 Includes Stanislaus County
+209 Includes Autauga, Elmore, Lowndes, and Montgomery Counties i
+H
+210 Includes Monongalia and Preston Counties
+：
+211 Includes Hamblen and Jefferson Counties
+212 Includes Skagit County
+号
+213 Includes Delaware County
+214 Includes Muskegon County
+众
+215 Includes Napa County
+216 Includes Collier County
+公
+Includes Cannon, Cheatham, Davidson, Dickson, Hickman, Macon, Maury, Robertson, Rutherford, Smith, Sumner, Trousdale,
+217
+Williamson, and Wilson Counties
+218 Includes Craven, Jones, and Pamlico C信ounties
+219 Includes New Haven County
+220 Includes Dutchess and Putnam C微ounties
+221 Includes Nassau and Suffolk Counties
+222 Includes Essex, Hunterdon, Morris, Somerset, Sussex, and Union Counties, NJ and Pike County, PA
+223 Includes Berrien County
+224 Includes Manatee and Sarasota Counties
+225 Includes New London County
+226 Includes Marion County
+227 Includes Cape May County
+228 Includes Box Elder, Davis, Morgan, and Weber Counties
+229 Includes Canadian, Cleveland, Grady, Lincoln, Logan, McClain, and Oklahoma Counties
+230 Includes Thurston County
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+231 Includes Harrison, Mills, and Pottawattamie Counties, IA and Cass, Douglas, Sarpy, Saunders, and Washington Counties, NE
+232 Includes Lake, Orange, Osceola, and Seminole Counties
+233 Includes Winnebago County
+234 Includes Daviess, Hancock, and McLean Counties
+235 Includes Ventura County
+236 Includes Brevard County
+237 Includes Bay and Gulf Counties
+238 Includes Escambia and Santa Rosa Counties M
+239 Includes Marshall, Peoria, Stark, Tazewell, and Woodford Counties
+C
+Includes the Metropolitan Divisions of Camden, NJ; Montgomery County-Bucks County-Chester County, PA; Philadelphia, PA; and
+240
+Wilmington, DE-MD-NJ M
+241 Includes Burlington, Camden, and Gloucester Counties
+242 Includes Bucks, Chester, and Montgomery Counties i
+H
+243 Includes Delaware and Philadelphia Counties
+：
+244 Includes New Castle County, DE; Cecil County, MD; and Salem County, NJ
+245 Includes Cleveland, Jefferson, and Lincoln Counties
+号
+246 Includes Allegheny, Armstrong, Beaver, Butler, Fayette, Washington, and Westmoreland Counties
+247 Includes Berkshire County
+众
+248 Includes Cumberland, Sagadahoc, and York Counties
+249 Includes Clackamas, Columbia, Multnomah, Washington, and Yamhill Counties, OR and Clark and Skamania Counties, WA
+公
+250 Includes Martin and St. Lucie Counties
+251 Includes Bristol County, MA and Bristol, Kent, Newport, Providence, and Washington Counties RI
+252 Includes Pueblo County 信
+253 Includes Charlotte County
+254 Includes Racine County 微
+255 Includes Custer, Meade, and Pennington Counties
+256 Includes Berks County
+257 Includes Shasta County
+258 Includes Storey and Washoe Counties
+Includes Amelia, Caroline, Charles City, Chesterfield, Dinwiddie, Goochland, Hanover, Henrico, King William, New Kent, Powhatan,
+259
+Prince George, and Sussex Counties and Colonial Heights, Hopewell, Petersburg, and Richmond Cities
+260 Includes Riverside and San Bernardino Counties
+261 Includes Botetourt, Craig, Franklin, and Roanoke Counties and Roanoke and Salem Cities
+262 Includes Dodge, Fillmore, Olmsted, and Wabasha Counties
+263 Includes Livingston, Monroe, Ontario, Orleans, Wayne, and Yates Counties
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+264 Includes Boone and Winnebago Counties
+265 Includes Edgecombe and Nash Counties
+266 Includes El Dorado, Placer, Sacramento, and Yolo Counties
+267 Includes Saginaw County
+268 Includes Marion and Polk Counties
+269 Includes Monterey County
+270 Includes Sussex County, DE and Somerset, Wicomico, and Worcester Counties, MD
+271 Includes Salt Lake and Tooele Counties M
+272 Includes Irion and Tom Green Counties
+C
+273 Includes Atascosa, Bandera, Bexar, Comal, Guadalupe, Kendall, Medina, and Wilson Counties
+274 Includes San Diego County M
+275 Includes the Metropolitan Divisions of Oakland-Hayward-Berkeley, San Francisco-Redwood City-South San Francisco, and San Rafael
+276 Includes Alameda and Contra Costa Counties i
+H
+277 Includes San Francisco and San Mateo Counties
+：
+278 Includes Marin County
+279 Includes San Benito and Santa Clara Counties
+号
+280 Includes San Luis Obispo County
+281 Includes Santa Cruz County
+众
+282 Includes Santa Fe County
+283 Includes Santa Barbara County
+公
+284 Includes Sonoma County
+285 Includes Bryan, Chatham, and Effingham Counties3
+信
+286 Includes Lackawanna, Luzerne, and Wyoming Counties
+287 Includes the Metropolitan Divisions of Seattle-Bellevue-Everett and Tacoma-Lakewood
+288 Includes King and Snohomish Co微unties
+289 Includes Pierce County
+290 Includes Indian River County
+291 Includes Highlands County
+292 Includes Sheboygan County
+293 Includes Grayson County
+294 Includes Plymouth and Woodbury Counties, IA; Dakota and Dixon Counties, NE; and Union County, SD
+295 Includes Lincoln, McCook, Minnehaha, and Turner Counties
+296 Includes St. Joseph County, IN and Cass County, MI
+297 Includes Spartanburg and Union Counties
+298 Includes Pend Oreille, Spokane, and Stevens Counties
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+299 Includes Menard and Sangamon Counties
+300 Includes Hampden and Hampshire Counties
+301 Includes Christian, Dallas, Greene, Polk, and Webster Counties
+302 Includes Clark County
+303 Includes Centre County
+304 Includes Augusta County and Staunton and Waynesboro Cities
+305 Includes Benton and Stearns Counties
+306 Includes Washington County M
+307 Includes Doniphan County, KS and Andrew, Buchanan, and DeKalb Counties, MO
+C
+Includes Bond, Calhoun, Clinton, Jersey, Macoupin, Madison, Monroe, and St. Clair Counties, IL and Franklin, Jefferson, Lincoln, St.
+308
+Charles, St. Louis, and Warren Counties and St. Louis City, MO M
+309 Includes San Joaquin County
+310 Includes Sumter County i
+H
+311 Includes Madison, Onondaga, and Oswego Counties
+：
+312 Includes Gadsden, Jefferson, Leon, and Wakulla Counties
+313 Includes Hernando, Hillsborough, Pasco, and Pinellas Counties
+号
+314 Includes Little River and Miller Counties, AR and Bowie County, TX
+315 Includes Sumter County
+众
+316 Includes Jackson, Jefferson, Osage, Shawnee, and Wabaunsee Counties
+317 Includes Mercer County
+公
+318 Includes Creek, Okmulgee, Osage, Pawnee, Rogers, Tulsa, and Wagoner Counties
+319 Includes Hale, Pickens, and Tuscaloosa Counties
+320 Includes Herkimer and Oneida Countie信s
+321 Includes Brooks, Echols, Lanier, and Lowndes Counties3
+322 Includes Solano County 微
+323 Includes Goliad and Victoria Counties
+324 Includes Cumberland County
+Includes Currituck and Gates Counties, NC and Gloucester, Isle of Wight, James City, Mathews, and York Counties and Chesapeake,
+325
+Hampton, Newport News, Norfolk, Poquoson, Portsmouth, Suffolk, Virginia Beach, and Williamsburg Cities, VA
+326 Includes Tulare County
+327 Includes Falls and McLennan Counties
+328 Includes Columbia and Walla Walla Counties
+329 Includes Houston, Peach, and Pulaski Counties3
+Includes the Metropolitan Divisions of Silver Spring-Frederick-Rockville, MD and Washington-Arlington-Alexandria, DC-VA-MD-
+330
+WV
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+
+| 331  Includes Frederick and Montgomery Counties  |     |     |     |     |     |     |     |     |     |     |
+| ------------------------------------------------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Includes District of Columbia; Calvert, Charles, and Prince George's Counties, MD; Arlington, Clarke, Culpeper, Fairfax, Fauquier,
+332  Loudoun, Prince William, Rappahannock, Spotsylvania, Stafford, and Warren Counties and Alexandria, Fairfax, Falls Church,
+Fredericksburg, Manassas, and Manassas Park Cities, VA; and Jefferson County, WV
+| 333  Includes Black Hawk, Bremer, and Grundy Counties                |     |     |     |     |     |     |     |     |     |     |
+| -------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 334  Includes Jefferson County                                       |     |     |     |     |     |     |     |     |     |     |
+| 335  Includes Marathon County                                        |     |     |     |     |     |     |     |     |     |     |
+| 336  Includes Chelan and Douglas Counties                            |     |     |     |     |     |     | M   |     |     |     |
+| 337  Includes Belmont County, OH and Marshall and Ohio Counties, WV  |     |     |     |     |     |     |     |     |     |     |
+C
+| 338  Includes Archer, Clay, and Wichita Counties  |     |     |     |     |     |     |     |     |     |     |
+| ------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 339  Includes Lycoming County                     |     |     |     |     |     |     |     |     |     |     |
+M
+| 340  Includes New Hanover and Pender Counties  |     |     |     |     |     |     |     |     |     |     |
+| ---------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+341  Includes Frederick County and Winchester City, VA and Hampshire Counity, WV
+H
+| 342  Includes Davidson, Davie, Forsyth, Stokes, and Yadkin Counties  |     |     |     |     |     |     |     |     |     |     |
+| -------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+：
+| 343  Includes Windham County, CT and Worcester County, MA  |     |     |     |     |     |     |     |     |     |     |
+| ---------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 344  Includes Yakima County                                |     |     |     |     |     |     |     |     |     |     |
+号
+| 345  Includes York County               |     |     |     |     |     |     |     |     |     |     |
+| --------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 346  Includes Sutter and Yuba Counties  |     |     |     |     |     |     |     |     |     |     |
+| 347  Includes Yuma County               |     |     |     |     | 众   |     |     |     |     |     |
+348  Includes Aguada, Aguadilla, Anasco, Isabela, Lares, Moca, Rincon, San Sebastian, and Utuado Municipios
+| 349  Includes Arecibo, Camuy, Hatillo, and Quebr公adillas Municipios  |     |     |     |     |     |     |     |     |     |     |
+| -------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 350  Includes Arroyo, Guayama, and Patillas Municipios               |     |     |     |     |     |     |     |     |     |     |
+Includes Hormigueros and Mayaguez M信unicipios
+351
+352  Includes Guanica, Guyanilla, Juana Diaz, Penuelas, Ponce, Villalba, and Yauco Municipios
+Includes Cabo Rojo, Lajas, Saban微a Grande, and San German Municipios
+353
+Includes Aguas Buenas, Aibonito, Barceloneta, Barranquitas, Bayamon, Caguas, Canovanas, Carolina, Catano, Cayey, Ceiba, Ciales,
+Cidra, Comerio, Corozal, Dorado, Fajardo, Florida, Guaynabo, Gurabo, Humacao, Juncos, Las Piedras, Loiza, Luquillo, Manati,
+354
+Maunabo, Morovis, Naguabo, Naranjito, Orocovis, Rio Grande, San Juan, San Lorenzo, Toa Alta, Toa Baja, Trujillo Alto, Vega Alta,
+Vega Baja, and Yabucoa Municipios
+
+Table 2: FBI’s Crime Data, Grouped by Metropolitan Areas, and their Calculated Z-Scores
+
+Z-Score of
+| Crime Rate  |             |          |           |         | Crime     | Number of  | Z-Score of  |          |           |                |
+| ----------- | ----------- | -------- | --------- | ------- | --------- | ---------- | ----------- | -------- | --------- | -------------- |
+|             |             | Violent  | Property  | Total   |           |            |             | Violent  | Sum of Z- | Z-Score of     |
+| per 100000  | Population  |          |           |         | Rate per  | Violent    | Total       |          |           |                |
+|             |             | Crimes   | Crimes    | Crimes  |           |            |             | Crimes   | Scores    | Safety Rating  |
+| for         |             |          |           |         | 100000    | Crimes     | Crimes      |          |           |                |
+(two weeks)
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+Metropolitan (two (two (two
+Area weeks) weeks) weeks)
+353 132660 69.4 617.4 686.8 26.415385 2.6692308 -2.1211995 -1.6213094 -3.7425089 -1.882654419
+303 155684 81.6 1183.8 1265 48.669231 3.1384615 -1.5796124 -1.5497544 -3.1293669 -1.854634212
+118 101545 102.4 1111.8 1214 46.7 3.9384615 -1.6275372 -1.4277591 -3.0552962 -1.774768107
+335 135783 89.8 1362.5 1452 55.857692 3.4538462 -1.4046684 -1.5016601 -2.9063285 -1.758922901
+14 231052 137.2 1469.8 1607 61.807692 5.2769231 -1.2598645 -1.2236514 -2.4835159 -1.727484432
+348 322641 82.1 918 1000 38.465385 3.1576923 -1.827M9412 -1.5468219 -3.3747631 -1.639869361
+221 2860417 134.4 1385.7 1520 58.465385 5.1692308 -1.3412055 -1.2400738 -2.5812794 -1.574289137
+119 128487 111.3 1390.8 1502 57.773077 4.2807692 -1C.3580541 -1.3755591 -2.7336132 -1.571762892
+242 1954080 126 1518.8 1645 63.261538 4.8461538 M-1.2244826 -1.2893412 -2.5138238 -1.564129683
+220 396951 173.3 1262.9 1436 55.238462 6.6653846 -1.4197385 -1.011919 -2.4316575 -1.562618022
+98 152068 92.1 1323.1 1415 54.430769 3.5423077i -1.4393951 -1.4881702 -2.9275653 -1.529136767
+H
+163 135985 113.2 1815.6 1929 74.184615 4.3538462 -0.95865 -1.3644153 -2.3230653 -1.523662102
+：
+292 114823 162.9 1720 1883 72.419231 6.2653846 -1.0016138 -1.0729167 -2.0745305 -1.517363513
+62 629627 174.7 1420.5 1595 61.353846 6.7192308 -1.2709097 -1.0037078 -2.2746174 -1.505569832
+号
+233 170212 169.8 1665 1835 70.569231 6.5307692 -1.0466368 -1.0324471 -2.0790839 -1.504112645
+202 84059 123.7 1239.6 1363 52.434615 4.7576923 -1.4879751 -1.3028311 -2.7908061 -1.479088522
+众
+173 135898 153.8 1592.4 1746 67.161538 5.9153846 -1.1295691 -1.1262897 -2.2558588 -1.446649088
+262 213400 141 1381 1522 58.538462 5.4230769 -1.3394271 -1.2013638 -2.5407908 -1.438866075
+公
+315 111413 189.4 1007.1 1197 46.019231 7.2846154 -1.6441049 -0.9174899 -2.5615948 -1.422993632
+111 101856 199.3 1567.9 1767 67.969231 7.6653846 -1.1099125 -0.8594248 -1.9693372 -1.408551138
+131 130160 140.6 1415.2 信1556 59.838462 5.4076923 -1.3077892 -1.2037098 -2.5114991 -1.407883828
+24 153425 76.9 2259.7 2337 89.869231 2.9576923 -0.5769368 -1.5773207 -2.1542575 -1.402967525
+160 180937 167.5 1622微.1 1790 68.830769 6.4423077 -1.0889454 -1.045937 -2.1348823 -1.372209984
+331 1272900 184.1 1608.1 1792 68.930769 7.0807692 -1.0865117 -0.9485752 -2.0350869 -1.36567307
+96 165411 131.2 1737.5 1869 71.873077 5.0461538 -1.0149054 -1.2588424 -2.2737477 -1.346641119
+150 139742 165.3 1730.3 1896 72.907692 6.3576923 -0.9897262 -1.0588403 -2.0485665 -1.332484615
+304 119879 147.6 1698.4 1846 71 5.6769231 -1.0361533 -1.1626537 -2.198807 -1.316932208
+57 225461 161.9 1781.2 1943 74.734615 6.2269231 -0.9452647 -1.0787819 -2.0240466 -1.288918809
+10 93310 131.8 1762.9 1895 72.873077 5.0692308 -0.9905686 -1.2553233 -2.2458919 -1.280734049
+190 99371 234.5 1474.3 1709 65.723077 9.0192308 -1.1645766 -0.652971 -1.8175477 -1.277451973
+64 870131 166.1 1682.9 1849 71.115385 6.3884615 -1.0333452 -1.0541482 -2.0874934 -1.268490954
+167 531837 165.1 1576.8 1742 66.996154 6.35 -1.133594 -1.0600133 -2.1936074 -1.253946321
+8 126112 233.1 1643 1876 72.157692 8.9653846 -1.0079788 -0.6611823 -1.669161 -1.246701242
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+248 522033 127.6 1999.5 2127 81.811538 4.9076923 -0.7730352 -1.2799569 -2.0529921 -1.216256928
+345 439739 205.1 1671.2 1876 72.165385 7.8884615 -1.0077916 -0.8254068 -1.8331984 -1.208773524
+78 87222 120.4 2544.1 2665 102.48077 4.6307692 -0.2700125 -1.3221861 -1.5921986 -1.195148145
+140 138893 154.8 1763.9 1919 73.796154 5.9538462 -0.9681039 -1.1204245 -2.0885284 -1.191961399
+334 120437 181.8 1983.6 2165 83.284615 6.9923077 -0.7371852 -0.9620651 -1.6992503 -1.175980007
+306 150723 134.7 1734.3 1869 71.884615 5.1807692 -1.0146246 -1.2383143 -2.2529389 -1.171315647
+210 137326 201.7 1594 1796 69.065385 7.7576923 -1.0832356 -0.8453484 -1.928584 -1.160277796
+49 54298 294.7 1611.5 1906 73.315385 11.334615 -0.979M8042 -0.2998882 -1.2796925 -1.159624105
+188 632961 208.5 2037.9 2246 86.4 8.0192308 -0.6613668 -0.8054653 -1.466832 -1.15452395
+C
+100 88535 179.6 2237.5 2417 92.965385 6.9076923 -0.5015864 -0.9749685 -1.4765549 -1.153700027
+112 321817 191.7 2152.5 2344 90.161538 7.3730769 M-0.569823 -0.904 -1.473823 -1.102916379
+352 325929 238.7 943.2 1182 45.457692 9.1807692 -1.6577709 -0.6283374 -2.2861083 -1.096256898
+35 180931 189.6 1698.4 1888 72.615385 7.2923077i -0.99684 -0.9163169 -1.9131569 -1.092103234
+H
+350 80581 197.3 1258.4 1456 55.988462 7.5884615 -1.4014859 -0.8711551 -2.272641 -1.089508896
+：
+82 198874 199.1 2144.6 2344 90.142308 7.6576923 -0.570291 -0.8605978 -1.4308888 -1.088896061
+148 150805 236.1 1953.5 2190 84.215385 9.0807692 -0.7145333 -0.6435868 -1.3581201 -1.078852365
+号
+90 2533067 213.7 1471.6 1685 64.819231 8.2192308 -1.1865733 -0.7749664 -1.9615398 -1.058131711
+31 168749 168.3 2359.1 2527 97.207692 6.4730769 -0.3983423 -1.0412448 -1.4395871 -1.051465421
+众
+261 312777 202.7 2251.8 2455 94.403846 7.7961538 -0.4665789 -0.8394832 -1.3060621 -1.050811729
+52 152602 148.8 2026.2 2175 83.653846 5.7230769 -0.7281993 -1.1556155 -1.8838148 -1.050369126
+公
+339 116875 218.2 1902.9 2121 81.580769 8.3923077 -0.7786514 -0.7485732 -1.5272245 -1.033992795
+186 257560 229.1 1647 1876 72.157692 8.8115385 -1.0079788 -0.6846429 -1.6926217 -1.031732113
+信
+7 828360 182.8 1947.8 2131 81.946154 7.0307692 -0.7697591 -0.9562 -1.725959 -1.023738012
+142 163631 259.7 1812 2072 79.680769 9.9884615 -0.8248912 -0.5051689 -1.3300602 -1.021906314
+336 114491 117 2063微.9 2181 83.880769 4.5 -0.7226767 -1.3421277 -2.0648044 -1.015893716
+337 145171 283.1 1714.5 1998 76.830769 10.888462 -0.8942511 -0.3679241 -1.2621752 -1.013973497
+349 191864 153.2 1418.7 1572 60.457692 5.8923077 -1.2927192 -1.1298088 -2.4225279 -1.009104858
+50 81960 184.2 2380.4 2565 98.638462 7.0846154 -0.3635219 -0.9479887 -1.3115107 -1.00775662
+38 663371 228.2 1772.2 2000 76.938462 8.7769231 -0.8916302 -0.6899216 -1.5815518 -1.005577649
+92 96347 177.5 1793.5 1971 75.807692 6.8269231 -0.9191495 -0.9872853 -1.9064348 -0.990937686
+45 110842 237.3 1994.7 2232 85.846154 9.1269231 -0.6748456 -0.6365486 -1.3113942 -0.961439863
+36 192070 273.3 1780.6 2054 78.996154 10.511538 -0.8415526 -0.4254027 -1.2669553 -0.94347016
+286 561534 226.5 2047.6 2274 87.465385 8.7115385 -0.6354387 -0.6998923 -1.3353311 -0.93794102
+59 96236 160 2432.6 2593 99.715385 6.1538462 -0.3373131 -1.0899257 -1.4272388 -0.929170661
+305 192150 178.5 2318.5 2497 96.038462 6.8653846 -0.4267976 -0.9814202 -1.4082177 -0.921966438
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+246 2361431 287.2 1819.6 2107 81.030769 11.046154 -0.7920366 -0.343877 -1.1359135 -0.915075441
+228 629218 155 2084 2239 86.115385 5.9615385 -0.6682934 -1.1192515 -1.7875449 -0.910295323
+130 559478 237.9 1903.2 2141 82.35 9.15 -0.7599307 -0.6330295 -1.3929602 -0.909144554
+234 116963 128.2 2387.1 2515 96.742308 4.9307692 -0.4096682 -1.2764379 -1.6861061 -0.897459821
+341 132823 176.2 2114.8 2291 88.115385 6.7769231 -0.6196198 -0.99491 -1.6145299 -0.896683562
+175 107711 142 2145.6 2288 87.984615 5.4615385 -0.6228023 -1.1954986 -1.8183009 -0.883957009
+191 99160 179.5 2184.3 2364 90.915385 6.9038462 -0.5514768 -0.975555 -1.5270318 -0.877140914
+351 98661 178.4 1650.1 1829 70.326923 6.8615385 -1.052M5338 -0.9820067 -2.0345405 -0.857700405
+39 164892 157.1 2319.7 2477 95.261538 6.0423077 -0.4457054 -1.1069346 -1.55264 -0.851347342
+C
+182 3156440 198.2 1734.7 1933 74.342308 7.6230769 -0.9548122 -0.8658765 -1.8206887 -0.839049774
+290 144091 281.8 2202.1 2484 95.534615 10.838462 M-0.4390596 -0.3755488 -0.8146084 -0.817334964
+117 190345 176.5 1952.8 2129 81.896154 6.7884615 -0.7709759 -0.9931505 -1.7641264 -0.803668728
+41 927225 244.6 1606.2 1851 71.184615 9.4076923i -1.0316603 -0.5937329 -1.6253932 -0.799092889
+H
+4 881039 267.9 2222 2490 95.765385 10.303846 -0.4334434 -0.4570746 -0.890518 -0.794203822
+：
+189 405230 267 2075.1 2342 90.080769 10.269231 -0.5717887 -0.4623532 -1.0341419 -0.794176586
+278 261200 173.8 1747.7 1922 73.903846 6.6846154 -0.965483 -1.0089864 -1.9744694 -0.786563805
+号
+253 167298 262.4 2570.9 2833 108.97308 10.092308 -0.1120106 -0.489333 -0.6013436 -0.766047428
+121 101602 206.7 2187 2394 92.065385 7.95 -0.5234895 -0.8160226 -1.3395121 -0.76097451
+众
+201 111335 166.2 2608.3 2775 106.71154 6.3923077 -0.1670492 -1.0535617 -1.2206109 -0.75727026
+125 275436 287.2 2023.7 2311 88.880769 11.046154 -0.6009928 -0.343877 -0.9448698 -0.750651635
+公
+12 356841 285 1843.1 2128 81.85 10.961538 -0.7720991 -0.3567803 -1.1288795 -0.729222815
+320 297852 259.2 2093.3 2353 90.480769 9.9692308 -0.562054 -0.5081015 -1.0701555 -0.725600275
+信
+101 843273 368.7 2029.7 2398 92.246154 14.180769 -0.5190902 0.13413381 -0.3849564 -0.719315305
+147 160897 233.1 2503.5 2737 105.25385 8.9653846 -0.2025247 -0.6611823 -0.863707 -0.713220996
+149 202004 288.6 2465微.3 2754 105.91923 11.1 -0.1863314 -0.3356657 -0.5219972 -0.698873831
+256 413879 327.6 1774.4 2102 80.846154 12.6 -0.7965295 -0.1069244 -0.9034539 -0.679474178
+235 847935 222.9 1982.7 2206 84.830769 8.5730769 -0.6995568 -0.7210069 -1.4205637 -0.674169745
+157 276409 205.1 2213 2418 93.003846 7.8884615 -0.5006504 -0.8254068 -1.3260572 -0.670908099
+84 153346 166.9 2445.5 2612 100.47692 6.4192308 -0.3187797 -1.0494561 -1.3682357 -0.670233978
+137 210453 242.3 2875.2 3118 119.90385 9.3192308 0.1540091 -0.6072228 -0.4532136 -0.663921772
+33 247250 251.2 2526.6 2778 106.83846 9.6615385 -0.1639603 -0.5550228 -0.7189831 -0.660619268
+259 1255599 232.2 2325.9 2558 98.388462 8.9307692 -0.3696061 -0.6664609 -1.0360671 -0.659495736
+241 1256578 275.8 2080.4 2356 90.623077 10.607692 -0.5585906 -0.4107398 -0.9693305 -0.635949229
+284 500416 363.9 1715.2 2079 79.965385 13.996154 -0.8179646 0.10598103 -0.7119836 -0.630597131
+34 126444 338.5 2125.1 2464 94.753846 13.019231 -0.458061 -0.0429941 -0.5010551 -0.6167879
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+254 194990 199 2278.6 2478 95.292308 7.6538462 -0.4449566 -0.8611843 -1.3061409 -0.602536067
+343 856152 421 1874.2 2295 88.276923 16.192308 -0.6156885 0.44088183 -0.1748067 -0.587126655
+215 142015 376 1679.4 2055 79.053846 14.461538 -0.8401485 0.1769495 -0.663199 -0.583722012
+80 100807 258.9 2795.4 3054 117.47308 9.9576923 0.0948521 -0.5098611 -0.415009 -0.582441867
+263 1085775 259 2247.5 2507 96.403846 9.9615385 -0.4179053 -0.5092746 -0.9271799 -0.573140384
+75 80345 109.5 3202.4 3312 127.38077 4.2115385 0.3359735 -1.3861164 -1.0501429 -0.569456559
+311 662707 279.3 2284.9 2564 98.623077 10.742308 -0.3638964 -0.3902117 -0.7541081 -0.55735646
+104 227885 251.9 2175.7 2428 93.369231 9.6884615 -0.491M7581 -0.5509172 -1.0426753 -0.557015995
+164 210988 218.5 2457 2676 102.90385 8.4038462 -0.2597162 -0.7468136 -1.0065298 -0.553686255
+C
+218 128067 233.5 2440.1 2674 102.83077 8.9807692 -0.2614946 -0.6588362 -0.9203309 -0.543567657
+51 263979 209.1 2450.6 2660 102.29615 8.0423077 M-0.2745055 -0.8019462 -1.0764516 -0.535130954
+19 153664 252.5 2561.4 2814 108.22692 9.7115385 -0.1301696 -0.5473981 -0.6775677 -0.532870271
+159 308581 318.2 2523.8 2842 109.30769 12.238462i -0.1038672 -0.1620569 -0.2659241 -0.526476352
+H
+247 129547 307.2 2127.4 2435 93.638462 11.815385 -0.4852059 -0.2265737 -0.7117796 -0.518434587
+：
+95 166423 218.1 2436 2654 102.08077 8.3884615 -0.2797472 -0.7491597 -1.028907 -0.507110746
+114 426293 229.7 2446.7 2676 102.93846 8.8346154 -0.2588738 -0.6811238 -0.9399976 -0.505027105
+号
+216 346776 396.2 2119.2 2515 96.746154 15.238462 -0.4095746 0.29542579 -0.1141488 -0.504489172
+3 51889 97.7 3188.7 3286 126.4 3.7576923 0.3121047 -1.4553253 -1.1432206 -0.503093268
+众
+107 138202 348 3184.5 3533 135.86538 13.384615 0.5424617 0.01272494 0.5551867 -0.503059221
+250 444898 331.3 2183 2514 96.703846 12.742308 -0.4106043 -0.0852233 -0.4958275 -0.502317008
+公
+330 6031640 316.6 2111.6 2428 93.392308 12.176923 -0.4911965 -0.1714412 -0.6626376 -0.501227524
+124 82773 247.7 3288.5 3536 136.00769 9.5269231 0.5459250 -0.5755509 -0.0296259 -0.501016435
+信
+293 123565 271.9 2150.3 2422 93.161538 10.457692 -0.4968126 -0.433614 -0.9304266 -0.500675971
+132 1024517 252.2 2232.2 2484 95.553846 9.7 -0.4385916 -0.5491577 -0.9877492 -0.493798593
+226 341542 415.2 2028微.4 2444 93.984615 15.969231 -0.4767816 0.40686388 -0.0699177 -0.475025395
+27 106711 277.4 1990.4 2268 87.223077 10.669231 -0.6413357 -0.4013556 -1.0426913 -0.472703428
+294 169008 240.2 2635.4 2876 110.6 9.2384615 -0.0724165 -0.6195396 -0.6919562 -0.472410629
+206 112637 269 2899.6 3169 121.86923 10.346154 0.2018403 -0.4506229 -0.2487826 -0.465846477
+15 441690 205.6 2308.9 2515 96.711538 7.9076923 -0.4104171 -0.8224742 -1.2328913 -0.465540061
+211 115787 383.5 2695.5 3079 118.42308 14.75 0.1179720 0.22093822 0.3389102 -0.462986579
+225 146061 339.6 2378.5 2718 104.54231 13.061538 -0.2198413 -0.0365424 -0.2563837 -0.462251175
+280 279628 420.9 2032.3 2453 94.353846 16.188462 -0.4677957 0.44029531 -0.0275004 -0.435783484
+81 142646 221.5 2742.5 2964 114 8.5192308 0.0103285 -0.7292182 -0.7188896 -0.427517012
+239 382542 309.2 2352.2 2661 102.36154 11.892308 -0.2729142 -0.2148434 -0.4877576 -0.427013125
+37 163976 264.1 2446.7 2711 104.26154 10.157692 -0.2266743 -0.4793622 -0.7060365 -0.416935383
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+83 384694 355.3 2427.9 2783 107.04615 13.665385 -0.1589057 0.05554063 -0.1033651 -0.411896514
+174 62666 188.3 2992.1 3180 122.32308 7.2423077 0.2128855 -0.9239416 -0.7110561 -0.403657277
+85 108808 364.9 2432.7 2798 107.6 14.034615 -0.1454269 0.11184619 -0.0335807 -0.400409249
+205 3491062 261.8 2496.5 2758 106.08846 10.069231 -0.1822129 -0.4928521 -0.675065 -0.391073719
+251 1610481 328.9 2133.3 2462 94.7 12.65 -0.4593714 -0.0992997 -0.5586711 -0.390488121
+70 240441 292.4 2506.2 2799 107.63846 11.246154 -0.1444909 -0.3133781 -0.457869 -0.385789714
+99 201503 357.3 2149.3 2507 96.407692 13.742308 -0.4178117 0.06727095 -0.3505407 -0.383243041
+143 160565 412.3 2144.3 2557 98.330769 15.857692 -0.371M0102 0.38985491 0.0188447 -0.375786875
+25 215384 425.8 2000.1 2426 93.303846 16.376923 -0.4933493 0.46903461 -0.0243147 -0.370216879
+C
+325 1715279 308.6 2782.8 3091 118.9 11.869231 0.1295788 -0.2183625 -0.0887837 -0.35877047
+177 317498 301.4 3048.8 3350 128.85385 11.592308 M0.3718234 -0.2605916 0.1112318 -0.353554558
+93 280297 224.4 3151.3 3376 129.83462 8.6307692 0.3956922 -0.7122092 -0.316517 -0.34943494
+295 247531 327.6 2278.9 2607 100.25 12.6 i-0.3243023 -0.1069244 -0.4312267 -0.335503145
+H
+162 82820 227 2790.4 3017 116.05385 8.7307692 0.0603126 -0.6969598 -0.6366472 -0.334665602
+：
+42 422772 259 3316.7 3576 137.52692 9.9615385 0.5828982 -0.5092746 0.0736237 -0.333773585
+69 146681 276.1 2638.4 2915 112.09615 10.619231 -0.036005 -0.4089803 -0.4449852 -0.322715307
+号
+203 161969 322.3 2580.1 2902 111.63077 12.396154 -0.0473309 -0.1380097 -0.1853407 -0.309171639
+122 84623 202.1 3177.6 3380 129.98846 7.7730769 0.3994363 -0.8430023 -0.443566 -0.284726305
+众
+87 608260 316.8 2498.6 2815 108.28462 12.184615 -0.1287656 -0.1702681 -0.2990337 -0.283575535
+227 95711 238.2 3694.5 3933 151.25769 9.1615385 0.9170610 -0.6312699 0.2857911 -0.283418923
+公
+123 148670 349.1 2617.2 2966 114.08846 13.426923 0.0124814 0.01917662 0.0316580 -0.283017175
+274 3256669 325.2 1813.5 2139 82.257692 12.507692 -0.7621772 -0.1210008 -0.883178 -0.281668936
+信
+332 4758740 352 2246.3 2598 99.934615 13.538462 -0.3319777 0.03618559 -0.2957921 -0.269337322
+222 2506630 316 1594.7 1911 73.488462 12.153846 -0.9755921 -0.1749603 -1.1505524 -0.259906462
+133 363897 193.7 2746微.7 2940 113.09231 7.45 -0.0117618 -0.8922697 -0.9040315 -0.257455118
+155 111679 313.4 2612 2925 112.51538 12.053846 -0.0258022 -0.1902097 -0.2160119 -0.239383276
+268 404329 212.5 3101.4 3314 127.45769 8.1730769 0.3378455 -0.7820046 -0.4441591 -0.228182002
+91 171672 422.9 2737.2 3160 121.54231 16.265385 0.1938841 0.45202564 0.6459097 -0.225887273
+21 1938280 290.9 2878.8 3170 121.91154 11.188462 0.2028699 -0.3221759 -0.1193059 -0.22562852
+354 2242285 283.5 1425.4 1709 65.726923 10.903846 -1.164483 -0.3655781 -1.5300611 -0.213446709
+60 9546349 380.1 2135.4 2516 96.75 14.619231 -0.409481 0.20099667 -0.2084844 -0.206405909
+317 371608 347.1 1816.2 2163 83.203846 13.35 -0.7391509 0.00744629 -0.7317046 -0.204104371
+30 208491 202.9 3425.6 3629 139.55769 7.8038462 0.6323206 -0.8383102 -0.2059896 -0.195851516
+53 235685 462.9 2305.2 2768 106.46538 17.803846 -0.1730398 0.68663215 0.5135924 -0.193713401
+134 202116 435.4 2607.4 3043 117.03077 16.746154 0.0840877 0.52534017 0.6094279 -0.151584354
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+255 143222 382.6 2462.6 2845 109.43077 14.715385 -0.1008719 0.21565957 0.1147877 -0.149752657
+230 265955 226 2739.6 2966 114.06154 8.6923077 0.0118262 -0.7028249 -0.6909987 -0.140621405
+72 172934 342.3 2974 3316 127.55 13.165385 0.3400920 -0.0207065 0.3193855 -0.136454123
+321 144114 263.7 3382.7 3646 140.24615 10.142308 0.6490756 -0.4817083 0.1673673 -0.131653577
+283 441058 293.4 2060.5 2354 90.534615 11.284615 -0.5607435 -0.307513 -0.8682565 -0.124728534
+168 468547 424.3 1994 2418 93.011538 16.319231 -0.5004632 0.46023686 -0.0402263 -0.115678995
+46 404136 287 2692.4 2979 114.59231 11.038462 0.0247434 -0.34505 -0.3203066 -0.115154679
+135 81944 346.6 2697 3044 117.06154 13.330769 0.0848M365 0.00451371 0.0893503 -0.093017694
+213 117526 280.8 2967.9 3249 124.95 10.8 0.2768163 -0.381414 -0.1045977 -0.085554717
+C
+67 276035 460.1 2507.7 2968 114.14615 17.696154 0.0138855 0.67020969 0.6840951 -0.074026598
+48 97805 399.8 2724.8 3125 120.17692 15.376923 M0.1606550 0.31654038 0.4771954 -0.073100535
+194 210715 315.1 3935.2 4250 163.47308 12.119231 1.2143442 -0.1802389 1.0341053 -0.06524943
+56 2370253 392.2 2822.1 3214 123.62692 15.084615i 0.2446169 0.27196514 0.5165820 -0.057275756
+H
+249 2345482 258.7 2898.3 3157 121.42308 9.95 0.1909824 -0.5110341 -0.3200517 -0.055518961
+：
+169 267304 402.5 3750 4153 159.71154 15.480769 1.1228005 0.33237631 1.4551768 -0.045257369
+328 63981 201.6 3532.3 3734 143.61154 7.7538462 0.7309782 -0.8459349 -0.1149567 -0.044392589
+号
+16 199695 300.5 2883.4 3184 122.45769 11.557692 0.2161616 -0.2658703 -0.0497087 -0.035295385
+66 2145462 267.3 2957.9 3225 124.04615 10.280769 0.2548196 -0.4605937 -0.2057741 -0.026198179
+众
+18 276587 384 2937.6 3322 127.75385 14.769231 0.3450529 0.2238708 0.5689238 -0.008262523
+193 831477 329.4 3365.3 3695 142.10385 12.669231 0.6942858 -0.0963671 0.5979187 -0.005416242
+公
+158 430225 341.2 2765.3 3107 119.48077 13.123077 0.1437128 -0.0271582 0.1165547 0.000861919
+61 7341262 427 2193.5 2621 100.78846 16.423077 -0.3111979 0.4760728 0.1648750 0.006486388
+信
+44 155421 371.9 2768 3140 120.76538 14.303846 0.1749763 0.15290233 0.3278786 0.008542793
+223 155008 427.1 2379.9 2807 107.96154 16.426923 -0.1366282 0.47665932 0.3400311 0.010108928
+105 125309 534.7 1983微.1 2518 96.838462 20.565385 -0.4073282 1.10775084 0.7004227 0.03390738
+219 807947 326.6 2666.5 2993 115.11923 12.561538 0.0375670 -0.1127895 -0.0752225 0.040607716
+63 705329 339.1 2727.8 3067 117.95769 13.042308 0.1066460 -0.039475 0.0671710 0.051849846
+179 218568 344.1 2965.7 3310 127.3 13.234615 0.3340078 -0.0101492 0.3238586 0.060306977
+165 205249 205.1 3158.6 3364 129.37308 7.8884615 0.3844598 -0.8254068 -0.440947 0.065890591
+127 176019 413.6 3123.5 3537 136.04231 15.907692 0.5467675 0.39747962 0.9442471 0.07857629
+102 315179 291.6 3262.3 3554 136.68846 11.215385 0.5624928 -0.3180702 0.2444225 0.079386594
+333 170225 480 2383.9 2864 110.15 18.461538 -0.0833681 0.78692643 0.7035583 0.083124892
+40 255676 272.6 2887.2 3160 121.53077 10.484615 0.1936033 -0.4295083 -0.2359051 0.088831073
+291 98122 317 2912.7 3230 124.21923 12.192308 0.2590318 -0.1690951 0.0899367 0.094557682
+170 213753 285.8 3050.7 3337 128.32692 10.992308 0.3589998 -0.3520882 0.0069116 0.100931172
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+126 746709 320.9 3066.1 3387 130.26923 12.342308 0.4062693 -0.146221 0.2600483 0.114672311
+110 147427 340.5 2807.5 3148 121.07692 13.096154 0.1825581 -0.0312638 0.1512943 0.11657891
+129 151437 459.6 2294.7 2754 105.93462 17.676923 -0.185957 0.66727711 0.4813201 0.128876477
+240 6054007 459.6 2331.3 2791 107.34231 17.676923 -0.1516983 0.66727711 0.5155788 0.136938673
+79 260307 498.6 2938.5 3437 132.19615 19.176923 0.4531644 0.89601846 1.3491829 0.137149759
+308 2807175 429.8 2449.2 2879 110.73077 16.530769 -0.069234 0.49249526 0.4232612 0.139471726
+323 99086 429.9 2887.4 3317 127.58846 16.534615 0.3410280 0.49308178 0.8341098 0.149692463
+181 13277942 368.9 2050.4 2419 93.05 14.188462 -0.499M5271 0.13530684 -0.3642203 0.150175923
+55 727099 392.9 2895.1 3288 126.46154 15.111538 0.3136023 0.27607075 0.5896731 0.153069868
+C
+113 279713 424.7 3103.5 3528 135.7 16.334615 0.5384368 0.46258293 1.0010197 0.180075492
+258 444810 378.8 2394.7 2774 106.67308 14.569231 M-0.1679852 0.19337196 0.0253867 0.190241755
+161 858559 391.5 3136.3 3528 135.68462 15.057692 0.5380624 0.26785952 0.8059219 0.190983968
+47 677068 439.4 2586 3025 116.36154 16.9 i0.0678008 0.54880082 0.6166016 0.194626935
+H
+154 333814 456.2 2517.6 2974 114.37692 17.546154 0.0195016 0.64733556 0.6668372 0.194817594
+：
+270 389229 413.6 3231.3 3645 140.18846 15.907692 0.6476715 0.39747962 1.0451511 0.200551013
+217 1783924 610.9 2567 3178 122.22692 23.496154 0.2105454 1.55467625 1.7652217 0.202083101
+号
+347 203851 372.3 2558.2 2931 112.71154 14.319231 -0.0210285 0.1552484 0.1342199 0.20943032
+136 139880 528.3 2663.7 3192 122.76923 20.319231 0.2237434 1.0702138 1.2939572 0.228312468
+众
+212 119835 206.1 3666.7 3873 148.95385 7.9269231 0.8609928 -0.8195417 0.0414511 0.290324627
+282 147809 272.6 2823.9 3097 119.09615 10.484615 0.1343525 -0.4295083 -0.2951558 0.299237982
+公
+327 262172 384.5 3076.6 3461 133.11923 14.788462 0.4756292 0.22680338 0.7024325 0.302097881
+236 556949 560.4 3011.2 3572 137.36923 21.553846 0.5790605 1.25848553 1.8375460 0.305529761
+信
+86 608127 461.1 3234.9 3696 142.15385 17.734615 0.6955027 0.67607486 1.3715775 0.326216368
+244 721696 501.5 2922 3424 131.67308 19.288462 0.4404344 0.91302744 1.3534619 0.328177442
+296 318782 323.4 2827微 3150 121.16923 12.438462 0.1848046 -0.1315581 0.0532465 0.348128647
+120 125267 368.8 3387.2 3756 144.46154 14.184615 0.7516645 0.13472033 0.8863848 0.360739444
+297 321808 394.3 3026 3420 131.55 15.165385 0.4374391 0.28428198 0.7217211 0.375045751
+267 195891 660.1 1947.5 2608 100.29231 25.388462 -0.3232726 1.84324226 1.5199696 0.389644858
+29 124037 375.7 3011.2 3387 130.26538 14.45 0.4061757 0.17518995 0.5813657 0.392586471
+176 105180 386 3296.3 3682 141.62692 14.846154 0.6826791 0.23560113 0.9182802 0.393635099
+151 126640 412.2 3541.5 3954 152.06538 15.853846 0.9367177 0.38926839 1.3259861 0.395977493
+272 118519 293.6 3562.3 3856 148.30385 11.292308 0.8451739 -0.3063399 0.5388340 0.398823776
+68 119510 494.5 3419 3914 150.51923 19.019231 0.8990892 0.8719713 1.7710605 0.427504484
+198 1875917 418.6 3102.5 3521 135.42692 16.1 0.5317909 0.42680544 0.9585964 0.431998612
+329 188330 348.9 4107.7 4457 171.40769 13.419231 1.4074472 0.01800359 1.4254508 0.439488825
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+313 2914610 447.5 3236.4 3684 141.68846 17.211538 0.6841767 0.59630864 1.2804853 0.443131794
+265 150531 453.1 2986.1 3439 132.27692 17.426923 0.4551301 0.62915355 1.0842836 0.444650264
+279 1950374 249.8 2246.7 2497 96.019231 9.6076923 -0.4272656 -0.5632341 -0.9904997 0.44583508
+71 689470 385.8 2883.2 3269 125.73077 14.838462 0.2958177 0.2344281 0.5302458 0.451119084
+76 1985491 294.9 3097.9 3393 130.49231 11.342308 0.4116983 -0.2987152 0.1129830 0.453216343
+300 629676 507.4 2525.3 3033 116.64231 19.515385 0.0746338 0.9476319 1.0222657 0.454802907
+183 10121502 422.1 2148.8 2571 98.880769 16.234615 -0.357625 0.44733351 0.0897085 0.459800922
+266 2243875 410.6 2474.9 2886 110.98077 15.792308 -0.063M1498 0.37988413 0.3167342 0.462674441
+346 170005 360 2646.4 3006 115.63077 13.846154 0.0500162 0.08310689 0.1331231 0.472173394
+C
+180 102175 247.6 3622.2 3870 148.83846 9.5230769 0.8581847 -0.5761374 0.2820473 0.491539
+20 585946 286.9 3304.6 3592 138.13462 11.034615 M0.5976875 -0.3456365 0.2520509 0.498790889
+319 237088 377.9 3216.5 3594 138.24615 14.534615 0.6004019 0.18809331 0.7884953 0.5036391
+32 167246 323.5 3467.9 3791 145.82308 12.442308i 0.7847999 -0.1309715 0.6538284 0.5135398
+H
+316 234274 368.4 3435.7 3804 146.31154 14.169231 0.7966875 0.13237426 0.9290617 0.534178744
+：
+26 61225 537.5 2708.3 3246 124.83846 20.673077 0.2741018 1.1241733 1.3982751 0.543909212
+224 745917 542.8 3348 3891 149.64615 20.876923 0.8778413 1.15525866 2.0331000 0.554490841
+号
+184 1269992 395 3289.4 3684 141.70769 15.192308 0.6846447 0.28838759 0.9730323 0.567789374
+65 223878 302.8 2961.9 3265 125.56538 11.646154 0.2917928 -0.2523804 0.0394124 0.57335937
+众
+214 170933 445.2 3555.2 4000 153.86154 17.123077 0.9804302 0.58281877 1.5632490 0.5741152
+97 178032 339.3 3201.1 3540 136.16923 13.05 0.5498563 -0.038302 0.5115543 0.578942983
+公
+338 152243 343.5 3409 3753 144.32692 13.211538 0.7483883 -0.0136683 0.7347200 0.583750339
+285 371693 354.1 3176.3 3530 135.78462 13.619231 0.5404960 0.04850243 0.5889984 0.590042118
+信
+187 153544 578.3 2201.3 2780 106.90769 22.242308 -0.1622754 1.36347194 1.2011965 0.594263874
+139 440192 477.7 3174.1 3652 140.45385 18.373077 0.6541301 0.77343656 1.4275666 0.619267569
+153 162229 313.1 3575微.2 3888 149.55 12.042308 0.8755012 -0.1919692 0.6835320 0.628051548
+166 633015 452.9 3292.5 3745 144.05385 17.419231 0.7417425 0.62798052 1.3697230 0.638422088
+281 272480 418 2980.4 3398 130.70769 16.076923 0.4169400 0.42328634 0.8402264 0.639858847
+28 408113 494 2972.2 3466 133.31538 19 0.4804029 0.86903871 1.3494416 0.658039638
+326 459432 421.6 2486.5 2908 111.85 16.215385 -0.0419956 0.44440092 0.4024053 0.659204025
+237 193811 500 3834.7 4335 166.71923 19.230769 1.2933451 0.90422969 2.1975748 0.676901357
+340 272484 406.3 3400.6 3807 146.41923 15.626923 0.7993084 0.35466393 1.1539723 0.697649249
+43 114492 420.1 4155.7 4576 175.99231 16.157692 1.5190220 0.43560318 1.9546252 0.702429368
+307 128038 346 4001.2 4347 167.2 13.307692 1.3050455 0.00099461 1.3060401 0.704090834
+146 1417629 561.1 3432.8 3994 153.61154 21.580769 0.9743460 1.26259114 2.2369372 0.716790151
+54 223677 499.4 3606.5 4106 157.91923 19.207692 1.0791814 0.90071059 1.9798920 0.72497491
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+260 4440461 327.5 2617.1 2945 113.25385 12.596154 -0.0078305 -0.1075109 -0.1153414 0.743966007
+231 903607 364.9 3128.7 3494 134.36923 14.034615 0.5060501 0.11184619 0.6178963 0.744558414
+342 654625 402.8 3537.4 3940 151.54615 15.492308 0.9240812 0.33413586 1.2582171 0.755780115
+152 175290 328.6 4260.9 4590 176.51923 12.638462 1.5318456 -0.1010592 1.4307864 0.768847135
+116 274003 661.3 3223.7 3885 149.42308 25.434615 0.8724123 1.85028046 2.7226928 0.769820862
+94 542584 426.7 3258.7 3685 141.74615 16.411538 0.6855807 0.47431326 1.159894 0.777603876
+144 577909 363.9 2998.7 3363 129.33077 13.996154 0.3834301 0.10598103 0.4894112 0.810356537
+88 4299979 529.4 2203.7 2733 105.11923 20.361538 -0.205M8008 1.07666548 0.8708646 0.810942135
+23 2790201 588.5 2793.5 3382 130.07692 22.634615 0.4015891 1.4232966 1.8248857 0.812256326
+C
+17 5597635 398.4 3231.3 3630 139.60385 15.323077 0.6334438 0.30832915 0.9417730 0.864817198
+264 343135 664.8 2868.8 3534 135.90769 25.569231 M0.5434913 1.87080853 2.4142998 0.869583698
+196 266350 557.5 2675.4 3233 124.34231 21.442308 0.2620270 1.24147655 1.5035036 0.883855958
+344 248862 243.1 3291.4 3535 135.94231 9.35 i0.5443337 -0.6025306 -0.0581969 0.890168166
+H
+200 1395570 527 3417.3 3944 151.70385 20.269231 0.9279189 1.06258909 1.9905080 0.912454955
+：
+1 169202 400.1 3668.4 4069 156.48077 15.388462 1.0441739 0.31829992 1.3624738 0.937451841
+192 121351 211.8 4554.6 4766 183.32308 8.1461538 1.6974294 -0.7861102 0.9113191 0.961168581
+号
+73 803559 585.5 3411.9 3997 153.74615 22.519231 0.9776221 1.40570111 2.3833232 0.961829082
+145 131143 755.7 3137 3893 149.71923 29.065385 0.8796198 2.40395183 3.2835716 0.963674399
+众
+324 157616 511.4 3886 4397 169.13077 19.669231 1.3520342 0.97109255 2.3231268 0.973193779
+299 211855 767 3299.9 4067 156.41923 29.5 1.0426762 2.47022817 3.5129044 0.982004994
+公
+58 546512 532.8 3741.7 4275 164.40385 20.492308 1.2369961 1.09660703 2.3336031 0.984374624
+108 413377 652.2 2733.8 3386 130.23077 25.084615 0.4053332 1.79690748 2.2022407 1.027545493
+信
+77 449583 589.4 4084.9 4674 179.78077 22.669231 1.6112210 1.42857525 3.0397962 1.04717666
+13 116381 617.8 3347.6 3965 152.51538 23.761538 0.9476692 1.59514587 2.5428150 1.093636413
+156 2066584 482.1 3017微.2 3499 134.58846 18.542308 0.5113855 0.79924328 1.3106287 1.111177131
+273 2326684 404.9 4197.6 4603 177.01923 15.573077 1.5440140 0.34645271 1.8904667 1.158406332
+209 373331 394 3612.1 4006 154.08077 15.153846 0.9857656 0.28252243 1.2682880 1.16185183
+229 1336996 463.7 3350.8 3815 146.71154 17.834615 0.8064222 0.69132428 1.4977465 1.16338392
+318 968064 461 3100.3 3561 136.97308 17.730769 0.5694193 0.67548834 1.2449077 1.180795261
+2 155769 612.4 4003.4 4616 177.53077 23.553846 1.5564632 1.56347399 3.1199372 1.193297109
+271 1156755 348 4474.8 4823 185.49231 13.384615 1.7502215 0.01272494 1.7629464 1.19557141
+269 434416 421.9 2434.8 2857 109.87308 16.226923 -0.0901075 0.44616047 0.3560529 1.233553602
+109 207327 521.9 4427.8 4950 190.37308 20.073077 1.8690037 1.03267676 2.9016805 1.234227721
+197 5938747 595.2 3888.9 4484 172.46538 22.892308 1.4331880 1.46259319 2.8957812 1.293046325
+314 150328 532.8 4079.1 4612 177.38077 20.492308 1.5528127 1.09660703 2.6494197 1.309831212
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+301 452154 535.9 3916.8 4453 171.25769 20.611538 1.4037967 1.11478904 2.5185857 1.315380781
+115 966353 470.6 3373.3 3844 147.84231 18.1 0.8339415 0.7317939 1.5657354 1.393544564
+238 474766 672.8 3978.8 4652 178.90769 25.876923 1.5899731 1.91772983 3.5077029 1.404126193
+302 135676 367.1 4157 4524 174.00385 14.119231 1.4706293 0.12474955 1.5953788 1.440065599
+312 377234 679.2 3660.9 4340 166.92692 26.123077 1.2983997 1.95526687 3.2536666 1.442578226
+185 305514 737.8 3953 4691 180.41538 28.376923 1.6266655 2.29896541 3.9256309 1.467418497
+207 414522 511.4 4005.8 4517 173.73846 19.669231 1.4641706 0.97109255 2.4352632 1.469277432
+138 6454938 567.4 3208.1 3776 145.21154 21.823077 0.7699M170 1.29954167 2.0694587 1.470360108
+288 2838393 296.5 4266.9 4563 175.51538 11.403846 1.5074152 -0.2893309 1.2180843 1.47823845
+C
+106 380427 458.7 4405.8 4865 187.09615 17.642308 1.7892539 0.66199847 2.4512524 1.517432696
+277 1608949 521 3736.7 4258 163.75769 20.038462 M1.2212708 1.02739811 2.2486689 1.532106704
+141 1971378 646.3 3243.4 3890 149.60385 24.857692 0.8768117 1.76230301 2.6391147 1.576387486
+287 3667968 327.3 4189.4 4517 173.71923 12.588462i 1.4637026 -0.1086839 1.3550187 1.591919465
+H
+9 261505 559.8 3838.9 4399 169.18077 21.530769 1.3532511 1.25496643 2.6082175 1.600431071
+：
+204 1573272 634 3011.7 3646 140.21923 24.384615 0.6484203 1.69016151 2.3385818 1.6396866
+208 531018 532.2 3495 4027 154.89231 20.469231 1.0055158 1.09308793 2.0986038 1.645215739
+号
+310 108748 665.8 3763.7 4430 170.36538 25.607692 1.3820808 1.87667369 3.2587545 1.706526541
+232 2319802 685.4 4012.5 4698 180.68846 26.361538 1.6333113 1.99163088 3.6249422 1.712212295
+众
+172 131086 704.9 3700.6 4406 169.44231 27.111538 1.3596161 2.10600156 3.4656176 1.725715107
+257 180406 706.7 3162.3 3869 148.80769 27.180769 0.8574358 2.11655885 2.9739947 1.730025384
+公
+178 729360 696.4 4385.2 5082 195.44615 26.784615 1.9924661 2.05614767 4.0486138 1.745366704
+275 4585742 498.1 3370 3868 148.77308 19.157692 0.8565934 0.89308588 1.7496793 1.77101728
+信
+322 429882 490.6 3129.5 3620 139.23462 18.869231 0.6244579 0.84909716 1.4735551 1.820173509
+22 367406 510.5 3233.6 3744 144.00385 19.634615 0.7405257 0.9658139 1.7063396 1.82549837
+103 34712 648.2 4007微.3 4656 179.05769 24.930769 1.5936236 1.77344682 3.3670705 1.825525608
+11 316696 843.7 3951.4 4795 184.42692 32.45 1.7242934 2.92008616 4.6443796 1.831790149
+289 829575 432.6 3924.5 4357 167.58077 16.638462 1.3143122 0.50891772 1.8232299 1.97655555
+199 2667260 755.1 4688.8 5444 209.38077 29.042308 2.3315899 2.40043273 4.7320226 2.096099358
+243 2121653 861.4 3027.3 3889 149.56538 33.130769 0.8758756 3.02389954 3.8997752 2.096896044
+6 155023 812.1 4450.3 5262 202.4 31.234615 2.1617004 2.73474701 4.8964474 2.118141014
+276 2715593 515.8 3308.7 3825 147.09615 19.838462 0.8157825 0.99689926 1.8126818 2.159486992
+171 2066423 743 2791.8 3535 135.95385 28.576923 0.5446145 2.32946426 2.8740788 2.160726282
+309 712619 750.2 3521.1 4271 164.28077 28.853846 1.2340008 2.37169343 3.6056942 2.215404842
+298 539925 318.6 5414.3 5733 220.49615 12.253846 2.6021026 -0.1597108 2.4423918 2.22189409
+245 94694 685.4 3571.5 4257 163.72692 26.361538 1.2205220 1.99163088 3.2121529 2.302073422
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6018, page 36 of 58
+5 903982 740.3 4270.5 5011 192.72308 28.473077 1.9261952 2.31362832 4.2398235 2.326048914
+74 322951 439.7 5137.6 5577 214.51154 16.911538 2.4564563 0.55056037 3.0070167 2.595655747
+128 126481 761.4 5305.9 6067 233.35769 29.284615 2.9151111 2.43738326 5.3524944 2.672593859
+195 1348092 1034 4134.6 5168 198.77308 39.75 2.0734327 4.03329407 6.1067268 2.804755272
+252 162854 575.4 5105.8 5681 218.50769 22.130769 2.5537098 1.34646297 3.9001728 2.902754502
+89 1766912 982.1 3253.2 4235 162.89615 37.773077 1.2003037 3.7318247 4.9321284 3.490286855
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Appendix G
+Non-Technical Report on the Devised Safety Ranking of My City
+For years, criminal activity has been a major issue within several metropolitan cities such
+as My City. Within the United States, the Federal Bureau of Investigation is responsible for
+ranking each of the metropolitan cities solely based on what it categorizes as “violent crime,”
+such as murder, robbery, and rape. In an effort to improve the current safety ranking technique
+M
+employed by My City, we have devised a method to apply the abundant amount of gathered
+C
+criminal statistics to assess the safeness of cities and metropolitan areas and to suggest optimal
+M
+distribution of police officers throughout city districts to optimally police the regions. Data
+i
+H
+regarding FBI crime reports for cities and metropolitan areas across the United States were
+：
+analyzed in order to develop a system for rating an My City’s safeness. Furthermore, a
+correlation between the criminal activity a号nd the My City’s economic prosperity was explored as
+well as the placement of additional law enforcement in order to improve a city’s safeness rating.
+众
+In order to rate the safeness of My City in the most accurate manner possible, FBI data
+公
+was used in conjunction to weighing systems in order to represent the safety as a combined value
+of the frequency of信 crime occurrence as well as the severity of the crimes. By using the United
+States Sentencing Commission's minimum mandatory sentencing guidelines for the crimes
+微
+described in the FBI report, we were able to weigh more severe crimes i.e. murder and rape more
+heavily as well as less severe crimes i.e. theft less heavily. The safety rating of My City was
+calculated to be 1370.9268, whereas the national average safety rating was 1462.467. My City
+was calculated to be safer than 56.43% of cities and metropolitan areas across the United States.
+The model also determined if a significant relationship existed between crime in My
+City’s crime and its economy. To track trends within the past, a city of similar GDP, safety
+rating, and population was used to be representative for My City in determining the significance
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+of crime and GDP. Chicago best represented My City due to its safety rating being within +/-
+30% of My City’s safety rating and the population being within +/- 10% of My City’s
+population. Based on ten years worth of data of the crime and GDP of Chicago, calculations
+were conducted to determine whether a significant correlation existed between crime and GDP
+data. It was discovered that there was a significant correlation between the crime and GDP in
+Chicago, and because of the city’s similarity to My City, My City’s GDP was then correlated to
+M
+the crime within My City.
+C
+In order to allocate the limited officers within My City’s police force efficiently, an
+M
+allocation strategy was created that determined what proportion of the police force should be
+i
+H
+assigned to each district. The allocation was optimized by calculating the frequency of violent
+：
+and property crime in every beat and using the frequencies along with weighting for violent and
+property crime to determine where to send号 officers. The model’s results stated that districts 3, 4,
+6, 7, and 11 had the most dangerous proportions of violent and property crime. As a result, the
+众
+model suggested that the greatest proportion of My City’s police officers ought to patrol the
+公
+areas with 5.94, 6.63, 6.93, 6.91, and 6.53 percent of the police force, respectively.
+Overall, the信 new safety rating allows My City to determine its safeness in relation to
+many other United States cities and to represent the violent and property crime with weights that
+微
+represent severities of each major crime. Also, the versatility of the model allows it to be applied
+in order to best distribute the police force through My City according to danger in each district.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

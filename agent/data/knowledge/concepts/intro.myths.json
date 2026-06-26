@@ -1,0 +1,69 @@
+{
+  "schema_version": 3,
+  "concept_id": "intro.myths",
+  "title": "常见的数学建模误区",
+  "taxonomy_path": [
+    "新手入门与学习路径",
+    "零基础入门指南",
+    "常见的数学建模误区"
+  ],
+  "module_id": "B",
+  "subcat_id": "B.1",
+  "aliases": [
+    "建模误区",
+    "常见错误认知"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "modeler",
+    "coder",
+    "writer"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "数学建模误区是指新手常犯的“炫技”错误——以为方法越复杂、代码越高级、推导越长就越厉害，结果反而偏离了解决问题的本质。",
+    "intuition": "想象你要去一个地方，明明有直达的公交车，你却非要先坐飞机到另一个城市再转火车，最后还抱怨路太远。数学建模也一样：简单有效的方法往往比花哨的复杂模型更好。记住奥卡姆剃刀——如无必要，勿增实体。",
+    "when_to_use": "当你开始建模时，时刻提醒自己：问题是什么？这个方法真的必要吗？如果发现自己在追求“高级”方法而不是解决问题，就说明你可能陷入了误区。",
+    "definition": "数学建模误区是指学生在建模过程中常见的错误观念和做法，如盲目追求复杂方法、高级代码或冗长推导，而忽视问题本质和模型有效性。",
+    "math_principle": "核心原则是奥卡姆剃刀：在多个能解释数据的模型中，应选择最简单的那个。量化工具如AIC和BIC：AIC = 2k - 2ln(L)，BIC = k ln(n) - 2ln(L)，其中k是参数个数，L是似然函数值，n是样本量。AIC/BIC越小，模型越好。",
+    "step_by_step": [
+      "1. 明确问题：先理解要解决什么问题，需要什么输出。",
+      "2. 从简单模型开始：比如线性回归、简单分类器。",
+      "3. 评估模型：用交叉验证、AIC/BIC等指标检查拟合度和泛化能力。",
+      "4. 逐步复杂化：只有当简单模型不够时，才考虑增加复杂度（如多项式、神经网络）。",
+      "5. 对比选择：比较不同模型的性能，选择最简洁且有效的。"
+    ],
+    "worked_example": "假设你要预测房价，有面积和房间数两个特征。新手可能直接上神经网络，但正确做法是：先试线性回归 y = a*面积 + b*房间数 + c，计算AIC。如果AIC很大，再考虑加入交互项或多项式。最终选择AIC最小的模型。",
+    "pitfalls": [
+      "1. 过度拟合：复杂模型在训练集上表现好，但测试集上差。",
+      "2. 忽视数据质量：盲目用高级方法处理脏数据。",
+      "3. 追求“流行”方法：比如不管什么问题都用深度学习。",
+      "4. 忽略模型可解释性：复杂模型难以向评委解释。"
+    ],
+    "tools": "Python的statsmodels库可计算AIC/BIC。示例：\n```python\nimport statsmodels.api as sm\nimport numpy as np\n\nX = np.random.rand(100, 2)\ny = X[:,0] + 0.5*X[:,1] + np.random.randn(100)*0.1\nX = sm.add_constant(X)\nmodel = sm.OLS(y, X).fit()\nprint('AIC:', model.aic)\nprint('BIC:', model.bic)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "AIC = 2k - 2\\ln(L)",
+      "variables": {
+        "k": "模型参数个数",
+        "L": "似然函数值"
+      }
+    },
+    {
+      "latex_code": "BIC = k\\ln(n) - 2\\ln(L)",
+      "variables": {
+        "k": "模型参数个数",
+        "n": "样本量",
+        "L": "似然函数值"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_B03"
+    ],
+    "from_papers": []
+  }
+}

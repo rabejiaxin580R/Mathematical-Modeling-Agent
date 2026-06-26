@@ -1,0 +1,1382 @@
+Team #4342
+M
+C
+M
+i
+H
+The problem we are presented with involves d：etermining minimal changes to the teller system of
+a bank to achieve the goals set by the manager, namely to minimize the length of the waiting line and the
+time customers spend waiting. Although the context of our problem is narrow, the models we developed
+can be applied to any situation involving queu
+号
+es and improving operational efficiency.
+In this project, we wanted to make the smallest change to the bank’s teller system while satisfying
+management goals of having the average queue lengths be 2 people or fewer and the average wait time
+众
+in queue be 2 minutes or less. To achieve these goals, we constructed a system of probabilistic
+differential equations that related the related the average arrival and departure rates to find the likelihood
+that our bank will be serving a given number of people at any time. From these probabilities, we
+公
+determined the expected number of customers we will see waiting in line and the average time they will
+spend waiting. Using our model we determined that hiring an extra teller would decrease average queue
+lengths from 2.79 to 0.28 people and wait time from 6.84 to 0.69 minutes. We also accounted for factors
+信
+such as bank peak hours where we would see an increased arrival rate by adding piecewise components
+with respect to time to our system of differential equations. Again, hiring an extra teller to serve during
+those peak 微hours decreased average queue length from 2.32 to 0.98 people and wait time from 5.68 to
+2.4 minutes.
+We also created a computational model of the system using stochastic processes. This
+computational model allows for the analysis of more complex scenarios and results in more accurate
+numerical data than the mathematical model. The computational model agreed with the mathematical
+model in that the current system does not achieve the manager’s goals for queue length and wait time,
+and that improvements are necessary. Multiple improvements were modeled and tested, including adding
+a full-time and a part-time additional teller and installing an ATM. All of these changes brought the queue
+length and wait time within the manager’s specifications, so we performed a cost/benefit analysis to
+choose the optimal change. We found that, although hiring a part-time teller to work peak hours only
+costs $8,300/year, installing an ATM will be a cheaper and better solution in the long run, with a payback
+period of only 3 years. Therefore, we state this solution achieves the objectives while having minimal
+costs.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+1
+HiMCM 2013: Problem B Solution Paper
+Introduction
+Background
+Corporations devote billions of dollars each year to addressing issues like customer satisfaction and
+operational efficiency. In particular, one major issue businesses face is reducing the time their customers
+spend waiting in line; research has shown a direct proportion between wait time and customer frustration
+M
+(Neogi). Thus, companies must find cost-effective ways to alleviate wait times to prevent dissatisfied
+customers from taking their business elsewhere. In this paper, we investigate several ways a bank can
+improve its customer service by creating and analyzing both mathematical andC computational models of
+customer arrival rates and teller service times. The models developed in this paper are relevant in a
+general sense and can be applied to many different situations involving Mminimizing time spent waiting in
+queues.
+i
+Problem Restatement H
+：
+At a certain bank, the bank manager has set customer experience goals that 1) the average customer
+waits less than two minutes for service and 2) on average, the length of the queue line is two people or
+fewer. Given probability distribution data on the customer interarrival times and customer service times at
+号
+the bank, as well as information on the bank’s daily number of patrons, we first seek to determine whether
+or not the current service system meets the manager’s goals (Pt.1). If the current service is
+unsatisfactory, we seek to investigate众 several different measures that the bank could employ in order to
+assure that management goals are met (Pt.2). We also wanted to account for changes in traffic that
+banks can expect to see during times such as standard peak business hours.
+公
+Assumptions and Justifications
+信
+Assumption 1: Customers entering the bank will approach an open teller immediately to be serviced and
+if no tellers are available, they will wait in the queue.
+Justification: Our model will assume that it is in the best interest of bank customers to be served in the
+微
+quickest manner possible. This assumption is realistic and gives us a specific, logical behavior for
+customers to follow within our model.
+Assumption 2: There is one queue that customers wait in to be serviced by one or more teller.
+Justification: Our model follows the format for which most banks arrange their teller system. This format
+promotes fairness, making sure that the first-come first-serve standard is met. The idea of fairness alone
+may be considered better customer service.
+Assumption 3: Bank managers aim to minimize the cost of operation while maintaining the desired level
+of service.
+Justification: Banks, like every other business, aim to minimize costs to maximize profits. We take this
+into account when deciding the ‘minimal’ changes for the bank to make; since it costs money to increase
+the level of service (more employees, ATM’s, etc), we consider and define the “best” changes to the
+system to be ones that minimize costs while achieving the desired service level.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+2
+Assumption 4: Once a customer has been serviced, he or she will depart.
+Justification: We consider it in the customer’s best interest to immediately depart after being serviced to
+attend to other matters. As a result, in our model served customers are removed from the queue once
+served and the departure rate is equivalent in value to the service rate.
+Assumption 5: There is currently one teller at this bank.
+Justification: We were not given the number of current tellers. Having one teller simplifies our basic
+model and provides a point of comparison for situations in which we vary the number of tellers employed.
+Assumption 6: The bank opens at 9:00am, and remains open continuously for 6.625M hours or 397.5
+minutes before closing.
+Justification: 9:00 a.m. is a standard start time for a bank. Given that the bank serves approximately 150
+C
+people/day, and that the mean time between arrivals is 2.65 min (math shown in Mathematical Model Pt.
+1), we find that the bank must be open for about 6.625 hours per day toM process the given number of
+customers. If it were open longer, more than 150 people would be served per day based on the given
+probability rate.
+i
+H
+Assumption 7: The bank is open six days a week for the same number of hours each day.
+Justification: For simplicity’s sake (given our time res：traint), we don’t consider days with shortened
+hours; each day is open the same number of hours (6.625). Additionally, we assume the bank is closed
+on Sundays, as is protocol for most banks.
+号
+Assumption 8: Customers only arrive and are processed at minute intervals.
+Justification: The data is given in minute intervals. We do not have the information to make conclusive
+众
+judgements about how the bank operates on shorter time intervals; therefore, while also acknowledging
+our time constraint, our model must run on minute intervals.
+公
+Part 1: Models
+信
+In Part One, we analyze the current system to see if it already satisfies the manager’s goals. We use both
+a mathematical model and a computational model.
+微
+Mathematical Model
+In order to evaluate the current efficacy of our banking establishment, we first determined the mean
+interarrival time (X) and mean service time (Y). Since the data sets for both interarrival time and service
+time followed a discrete probability distribution, to find X and Y, we just found the expected value for each
+corresponding data set, where expected value E(Z) is:
+where E(Z) is the expected value for some event Z, z is an individual outcome of Z, and P(z) is the
+probability of z occurring. Our results for X and Y are as follows:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+3
+From X annd Y, we thenn calculated thhe average arrivals per minute ( ) and tthe average ccustomers served
+per minutee ( ):
+M
+We then cconstructed aa system of linnear differential equations wwhere P(S ) iis the probability that the
+n
+system will be in state S , with n dennoting the total number of people (sum of the peoplee waiting in thhe
+n
+C
+queue pluus those beingg served by aa teller). Addittionally, P (t) ddenotes the pprobability of being in statee S
+n n
+at time t.
+M
+We now loook at severaal different casses for the prrobabilistic moodel:
+i
+H
+Case 1: SS
+0
+：
+Consider P (t + Δt), thee case of beinng in S at timme t + Δt, wheere Δt is smalll enough to guuarantee thatt
+n n
+there will not be multiple arrivals or departures inn single Δt.
+号
+There aree three different ways to reaach S (the staate of having zero people)) after Δt, alonng with their
+0
+corresponnding probabilities of occurrring:
+众
+1)) Starting at SS , one person will arrive aand one persoon will leave:
+0
+2)) Starting at SS , zero people will arrive aand zero peopple will leave::
+0 公
+3)) Starting at SS zero peoplee will arrive and one persoon will leave:
+1
+Where iss the mean信 raate of customeer arrival and is the mean rate of servvice. Thereforre, the total
+probabilityy of being in sstate 0 at timee t + Δt is:
+微
+Simplifying the expresssion yields:
+From this probabilistic model, we caan then solve for the differeential:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+
+4
+|     |     | P (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3398)P |     | (cid:4666)t(cid:4667) |                                               |                                                                                                        |            |            |     |
+| --- | --- | ---------------------------------------------- | --- | --------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- | ---------- | --- |
+|     |     | lim(cid:4666) (cid:2868)                       |     | (cid:2868)            |                                               | (cid:4666)t(cid:4667)λ(cid:3397)P(cid:4666)t(cid:4667)µ(cid:3398)P(cid:4666)t(cid:4667)λµΔt(cid:4667)  |            |            |     |
+|     |     |                                                |     |                       | (cid:4667)(cid:3404) lim(cid:4666)(cid:3398)P | (cid:2868)                                                                                             | (cid:2869) | (cid:2869) |     |
+|     |     | Δ(cid:2930)(cid:1372)(cid:2868)                | Δt  |                       | (cid:2940)(cid:2930)(cid:1372)(cid:2868)      |                                                                                                        |            |            |     |
+
+dP
+|     |     |     |     | (cid:2868) | (cid:3404) (cid:3398)λP | (cid:4666)t(cid:4667)(cid:3397)µP(cid:4666)t(cid:4667)  |     |     |     |
+| --- | --- | --- | --- | ---------- | ----------------------- | ------------------------------------------------------- | --- | --- | --- |
+|     |     |     |     |            |                         | (cid:2868) (cid:2869)                                   |     |     |     |
+dt
+
+Case 2: S , (cid:1814)(cid:3410)(cid:2778)
+n
+
+There are four different ways to reach the state of having n people after Δt (along with their corresponding
+probabilities):
+  1) Starting at S , one person will arrive and one person will leave: P (cid:4666)t(cid:4667)(cid:4666)λΔt(cid:4667)(cid:4666)MµΔt(cid:4667)
+|     | n   |     |     |     |     |     |     | (cid:2924) |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ---------- | --- |
+  2) Starting at S , zero people will arrive and zero people will leave: P (cid:4666)t(cid:4667)(cid:4666)1(cid:3398)λΔt(cid:4667)(cid:4666)1(cid:3398)µΔt(cid:4667)
+|     | n   |     |     |     |     |     |     | (cid:2924) |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ---------- | --- |
+  3) Starting at S  zero people will arrive and one person will leave: P (cid:4666)t(cid:4667)(cid:4666)1(cid:3398)λΔt(cid:4667)(cid:4666)µΔt(cid:4667)
+|     | n+1 |     |     |     |     |     |     | (cid:2924)(cid:2878)C(cid:2869) |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------------------------- | --- |
+  4) Starting at S  one person will arrive and zero people will leave: P (cid:4666)t(cid:4667)(cid:4666)λΔt(cid:4667)(cid:4666)1(cid:3398)µΔt(cid:4667)
+|     | n-1 |     |     |     |     |     |     | (cid:2924)(cid:2879)(cid:2869) |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------------------------ | --- |
+|     |     |     |     |     |     |     |     | M                              |     |
+Therefore the total probability of being in state n at time t + Δt is:
+
+i
+P (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3404)P (cid:4666)t(cid:4667)(cid:4666)λΔt(cid:4667)(cid:4666)µΔt(cid:4667)(cid:3397)P (cid:4666)t(cid:4667)(cid:4666)1(cid:3398)λΔt(cid:4667)(cid:4666)1(cid:3398)µΔt(cid:4667)(cid:3397)P (cid:4666)t(cid:4667)(cid:4666)1(cid:3398)λΔt(cid:4667)(cid:4666)µΔt(cid:4667)(cid:3397)P (cid:4666)t(cid:4667)(cid:4666)λΔt(cid:4667)(cid:4666)1(cid:3398)µΔt(cid:4667)
+(cid:2924) (cid:2924) (cid:2924) (cid:2924)(cid:2878)(cid:2869)H (cid:2924)(cid:2879)(cid:2869)
+
+Simplifying the expression and finding the differential y：ields:
+
+P (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3404)2P (cid:4666)t(cid:4667)λµΔt(cid:2870)(cid:3397)P (cid:4666)t(cid:4667)(cid:3398)P (cid:4666)t(cid:4667)λΔt(cid:3398)P (cid:4666)t(cid:4667)µΔt(cid:3397)P (cid:4666)t(cid:4667)µΔt(cid:3398)P (cid:4666)t(cid:4667)λµΔt(cid:2870)(cid:3397)P (cid:4666)t(cid:4667)λΔt
+(cid:2924) (cid:2924) (cid:2924) (cid:2924) (cid:2924) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2879)(cid:2869)
+号
+(cid:3398)P (cid:4666)t(cid:4667)λµΔt(cid:2870)
+(cid:2924)(cid:2879)(cid:2869)
+
+| P (cid:2924) (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3398)P | (cid:2924) (cid:4666)t(cid:4667) |                                                |     | 众                                   |            |                                     |                                     |                                                |                                |
+| --------------------------------------------------------- | -------------------------------- | ---------------------------------------------- | --- | ----------------------------------- | ---------- | ----------------------------------- | ----------------------------------- | ---------------------------------------------- | ------------------------------ |
+|                                                           | (cid:3404)2P                     | (cid:4666)t(cid:4667)λµΔt(cid:2870)(cid:3398)P |     | (cid:4666)t(cid:4667)λΔt(cid:3398)P |            | (cid:4666)t(cid:4667)µΔt(cid:3397)P | (cid:4666)t(cid:4667)µΔt(cid:3398)P | (cid:4666)t(cid:4667)λµΔt(cid:2870)(cid:3397)P | (cid:4666)t(cid:4667)λΔt       |
+|                                                           |                                  | (cid:2924)                                     |     | (cid:2924)                          | (cid:2924) |                                     | (cid:2924)(cid:2878)(cid:2869)      | (cid:2924)(cid:2878)(cid:2869)                 | (cid:2924)(cid:2879)(cid:2869) |
+|                                                           | (cid:3398)P                      | (cid:4666)t(cid:4667)λµΔt(cid:2870)            |     |                                     |            |                                     |                                     |                                                |                                |
+(cid:2924)(cid:2879)(cid:2869)
+|                                                |                       | 公   |     |     |     |     |     |     |     |
+| ---------------------------------------------- | --------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| P (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3398)P | (cid:4666)t(cid:4667) |     |     |     |     |     |     |     |     |
+| (cid:2924)                                     | (cid:2924)            |     |     |     |     |     |     |     |     |
+(cid:3404)2P (cid:4666)t(cid:4667)λµΔt(cid:3398)P (cid:4666)t(cid:4667)λ(cid:3398)P (cid:4666)t(cid:4667)µ(cid:3397)P (cid:4666)t(cid:4667)µ(cid:3398)P (cid:4666)t(cid:4667)λµΔt(cid:3397)P (cid:4666)t(cid:4667)λ(cid:3398)P (cid:4666)t(cid:4667)λµΔt
+Δt (cid:2924) (cid:2924) (cid:2924) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2879)(cid:2869) (cid:2924)(cid:2879)(cid:2869)
+
+信
+| P (cid:4666)t(cid:3397)Δt(cid:4667)(cid:3398)P | (cid:4666)t(cid:4667) |     |     |     |     |     |     |     |     |
+| ---------------------------------------------- | --------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| (cid:2924)                                     | (cid:2924)            |     |     |     |     |     |     |     |     |
+lim (cid:3404) lim2P (cid:4666)t(cid:4667)λµΔt(cid:3398)P (cid:4666)t(cid:4667)λ(cid:3398)P (cid:4666)t(cid:4667)µ(cid:3397)P (cid:4666)t(cid:4667)µ(cid:3398)P (cid:4666)t(cid:4667)λµΔt(cid:3397)P (cid:4666)t(cid:4667)λ(cid:3398)P (cid:4666)t(cid:4667)λµΔt
+Δ(cid:2930)(cid:1372)(cid:2868) Δt (cid:2940)(cid:2930)(cid:1372)(cid:2868) (cid:2924) (cid:2924) (cid:2924) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2878)(cid:2869) (cid:2924)(cid:2879)(cid:2869) (cid:2924)(cid:2879)(cid:2869)
+| 微   |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+dP
+|     |     |     | (cid:2924)             |                                |                                   |                                                                             |                                | (cid:4666)t(cid:4667)µ  |     |
+| --- | --- | --- | ---------------------- | ------------------------------ | --------------------------------- | --------------------------------------------------------------------------- | ------------------------------ | ----------------------- | --- |
+|     |     |     | (cid:3404) (cid:3398)P | (cid:2924)(cid:2879)(cid:2869) | (cid:4666)t(cid:4667)λ(cid:3398)P | (cid:2924) (cid:4666)t(cid:4667)(cid:4666)λ(cid:3397)µ(cid:4667)(cid:3397)P | (cid:2924)(cid:2878)(cid:2869) |                         |     |
+dt
+
+Considering the first-order system of differential equations with constant coefficients constructed by the
+differential equations from Cases 1 and 2, a matrix can be used to express the system.
+
+(cid:2914)P
+|     |                                         |     |     |     | (cid:3404) | Ax                                    (1)  |     |     |     |
+| --- | --------------------------------------- | --- | --- | --- | ---------- | ------------------------------------------ | --- | --- | --- |
+(cid:2914)(cid:2930)
+|     |     |     |     |     | x(cid:4666)0(cid:4667) | (cid:3404) C  |     |     |     |
+| --- | --- | --- | --- | --- | ---------------------- | ------------- | --- | --- | --- |
+
+Here x(cid:4666)t(cid:4667) is a column vector that describes the probabilities of being at state S , x:R(cid:1372)R(cid:2924), and a is an
+n
+n(cid:3400)nmatrix. Using an exponential of the matrix, a solution can be obtained for the system of linear first-
+order ordinary differential equations using a power series.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+5
+e(cid:2930)(cid:1668)A (cid:3404) ∑(cid:2998)
+(cid:2930)(cid:3169)
+A(cid:2921)
+(cid:3038)(cid:2880)(cid:2868)
+(cid:2921)!
+We can implement a finite approximation of the exponential of the matrix numerically using MathCad, a
+mathematical computing software. Let A be a m(cid:3400)m matrix. Then the exponential,
+e(cid:2930)A
+, can be
+approximated after counting K terms in the series, where K represents a finite limit to the queue length.
+This approximation can be used to approximate the solution to equation (1).
+(cid:3012) t(cid:2924) M
+e(cid:2930)(cid:1668)A (cid:3406) (cid:3533) A(cid:2924)
+n!
+C
+(cid:3041)(cid:2880)(cid:2868)
+x(cid:4666)t(cid:4667) (cid:3404) C (cid:1668) e(cid:2930)A
+M
+The eigenvalues of matrix A are important in determining exact exponential and understanding the
+behavior of the probabilistic model. The eigenvalues are the solutions for the following equation:
+i
+H
+A(cid:1668)v (cid:3404) Λ(cid:1668)v
+(cid:4666)A(cid:3398)Λ(cid:1668)I(cid:4667)：(cid:1668)v (cid:3404) 0
+Above, Λ is a real eigenvalue for matrix A, v is a non-zero eigenvector for Λ, and I is an m(cid:3400)m identity
+号
+matrix. The above equations imply
+det(cid:4666)A(cid:3398)Λ(cid:1668)I(cid:4667)(cid:3404)0,
+众
+which is a polynomial in Λ, or the characteristic polynomial of the matrix A. The roots of the polynomial
+are known as generalized eigenvalues for matrix A. In this case, the generalized eigenvalues are real and
+公
+distinct. Given the above to be true, the probability for being in any given state can calculated given a
+prior distribution.
+信
+To find the average probability that the system will be in a given state over a(cid:3409)t(cid:3409)b,we performed the
+following function.
+(cid:3029)
+微
+(cid:2172) (cid:3404)(cid:4678)(cid:3505) (cid:2172) (cid:4666)(cid:2202)(cid:4667)(cid:2186)(cid:2202)(cid:4679)(cid:3402)(cid:4666)b(cid:3398)a(cid:4667)
+(cid:2196),(cid:2183)(cid:2204)(cid:2189) (cid:2196)
+(cid:3028)
+Mean queue length was computed using the formula for expected values. n denotes all possible values
+for the state of our system and (cid:2172) is given above
+(cid:2196),(cid:2183)(cid:2204)(cid:2189)
+∑(cid:2877) n(cid:3400)(cid:2172)
+(cid:3041)(cid:2880)(cid:2868) (cid:2196),(cid:2183)(cid:2204)(cid:2189)
+After setting up this system of differential equations, we solved for the P (t) for 0 ≤ n ≤ 9 as t → ∞ in
+n
+MathCad, a mathematical computing software, and obtained the following average probability
+distributions, P . Q is the number of people waiting in the queue, which is obtained by subtracting the
+n,avg n
+number of people being serviced from S , the total number of people in our system:
+n
+S Q P
+n n n,avg
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+
+6
+| S   | 0   | 0.081  |
+| --- | --- | ------ |
+0
+| S   | 0   | 0.0139  |
+| --- | --- | ------- |
+1
+| S   | 1   | 0.124  |
+| --- | --- | ------ |
+2
+
+| S 3 | 2   | 0.111   |
+| --- | --- | ------- |
+| S   | 3   |         |
+| 4   |     | 0.099   |
+| S   | 4   | M0.089  |
+5
+| S   | 5   | 0.081  |
+| --- | --- | ------ |
+6
+C
+| S   | 6   | 0.073  |
+| --- | --- | ------ |
+7
+M
+| S   | 7   | 0.067  |
+| --- | --- | ------ |
+8
+i
+| S   | 8   | 0.061  |
+| --- | --- | ------ |
+9 H
+Table 1. Probabilities P n,avg (t) that our one teller system will be in a state S n  with n customers at any given time t. Q n
+：
+denotes number of customers in queue since S includes the  one customer who is currently being served.
+n
+
+号
+众
+公
+信
+微
+
+Figure 1. Probability distribution of S  occurring one teller system. X-axis showing time elapsed is truncated at 50
+n
+approach a fixed value.
+minutes since probabilities for S n
+
+We bounded n at 9 since previous studies have shown that customers will begin to balk and leave once
+they see that a queue contains 10 or more people (Dhar and Rhaman, 2013). From this data, we
+calculated the average queue length to be 2.79 people (by finding the expected value), from which we
+can find the average wait time by multiplying the queue length by the average service rate, μ, which
+results in an total average wait time of 6.84 minutes. Thus, the current system fails to satisfy the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+7
+manager’s goals, as the average queue length is larger than the desired average of two and the average
+wait time is greater than the desired two minute wait time. Clearly, teller changes are necessary to reach
+satisfaction guidelines.
+It should be noted that the mathematical model is not entirely numerically accurate. Since the
+mathematical model does not take into account the given probability functions of interarrival time and
+service time, but only considers the mean of these probability tables to calculate λ and μ, some
+inaccuracy results. When constructing the mathematical function, by using only the λ and μ values, we
+made the assumption that the probability functions were of an exponential distribution. An exponential
+distribution is the type of distribution that is used to model interarrival times - when collecting data in the
+field, an exponential distribution accurately models the interarrival times for random eMvents such as
+people entering a building or telephone call rate - anything that occurs through the Poisson process.
+Therefore if we were not given a probability distribution, we would assume it to be an exponential
+C
+probability distribution. However, when we inspect the probability distribution we find that it is not in fact
+an exponential distribution, but is in fact closer to a normal distribution in shape. This is strange, because
+M
+in addition to the fact that we would expect this process to follow an exponential distribution, a Gaussian
+distribution does not have the property of “memorylessness” like an exponential distribution does, and
+which is necessary to accurately model a function of the type which wie are modeling. Due to these
+H
+factors, it would be very difficult to model this system accurately using a closed-form process - the model
+is not unlike a G/G/1 queuing system, which is very difficult to solve accurately in a mathematical model.
+：
+While the general pattern and shape of the graphs and data shown is extremely useful for analysis of the
+system, the numerical results may have some slight error. Therefore, to collect accurate numerical data, a
+different model type is necessary which can ta号ke the given probability distribution into account. We find
+that a computational model is the perfect type of model to numerically solve this system.
+Computational Model 众
+Due to the limitations of our mathematical model, namely the inaccuracies present due to the inaccurate
+公
+modelling of the rate of arrival and service and the difficulty of modelling various complex scenarios with
+such a closed-form model, we decided that it would be useful to build a complementary computational
+model. This computational model is stochastic and models the arrival and processing of people randomly
+信
+based on the given probabilities. Due to these properties, the computational model returns slightly
+different results each time that it is run.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+8
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微Flowchaart of basic onne-teller computational moodel
+To create a computatioonal model off the system, wwe must first consider the most simple case before
+extendingg the model too more compleex situations. The most simmple case is tthat which is presented in the
+problem sstatement, namely a constaant one-tellerr system. In thhis system, peeople enter thhe system at aa rate
+λ with a probability disttribution of timme between aarrivals as given in the probblem statemeent. Similarly,
+people leaave the system at a rate μ with the probbability distribution as givenn. To model this system
+computatiionally, we will evaluate thee number of ppeople enterinng and exitingg the system at discrete timme
+intervals oof 1 minute. WWe will then iterate over theese one minuute intervals too determine the behavior oof the
+system.
+We will model the entryy of people innto the systemm by considerring the time ssince the last arrival t. Sincce we
+wish to knnow the probaability that a pperson will arrrive given a time since lastt arrival t, we must find the
+probabilityy P(t) based oon the given pprobabilities oof time betweeen arrival timees. To do thiss, we consider the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+9
+probability based on the remaining probabilities - for example P(3) = .35/(.35+.25+.05) = 54%. It should
+be noted that at the last value of t given (t = 5), the result of this calculation is 100% probability, because
+the probability of a time between arrival at t > 5 is 0. To evaluate stochastically whether or not a person
+will arrive based on the calculated probability P(t), we generate a random number n between 1 and 100
+and test whether n < P(t) x 100. If the test returns positive, the queue length is iterated by one.
+Additionally, since P(0) > 0 (the probability of two people walking in simultaneously), we must generate a
+new random number and test if n < P(0) x 100, repeatedly iterating the queue until the test fails.
+The model for the processing of people is very similar to that of their entry. We first create a new table of
+P(t) for each t based on the given probabilities between arrival, and then, based on the elapsed time t that
+a person has been processed for finds the probability that the person will finish beingM processed in the
+current iteration of the program. The same random number test is used to determine stochastically
+whether or not the person leaves the system. Since we have stated the assumption that when a person
+C
+finishes being processed they will immediately leave the system, the rate of processing is equal to the
+rate of exit from the system.
+M
+To evaluate the current system with our stochastic computational model, we programmed the model to
+i
+run one minute at a time - until the number of people that have been processed that day equals 150.
+H
+Since the model is stochastic, it will return a slightly different result each time it is run (each day that we
+simulate). Therefore, we run the simulation multiple tim：es, and analyze the distributions of data
+generated. For our simulations, we ran 1000 simulations for each scenario (1000 discrete days
+simulated). We recorded several parameters from each run, namely the average number of people in the
+queue, the average service time, and the aver号age wait time in the queue. We then plotted the
+distributions and compared the means for each of these parameters in order to compare the different
+scenarios and to evaluate if the manager’s goals are met.
+众
+For a bank with only one teller, we saw that there was an average of 1.83 people in the queue, a average
+service time of 2.45 min, and an average wait time of 4.91 min in the queue. The results for wait time and
+公
+service time are close to the mathematical calculations we obtained previously. Note, however, that the
+average queue length derived from our system of differential equations slightly exceeds the value given
+by the computational model. This is likely due to how we were unable to account for the probability
+信
+distributions in our mathematical model while the computational simulation reflected those variances by
+using the given probabilities to generate queue lengths.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+10
+M
+C
+M
+i
+Figure 3. SSimulation resuults for bankingg system with oone teller with aa constant arrivval rate. Chartss show frequency
+H
+distributionn of average nuumber of peoplee in system, avverage service time, and averrage wait time in queue for 10000
+runs with eeach run simulaating an averagge day.
+：
+Peak Hours
+号
+In makingg a realistic model, we alsoo wanted to coonsider peak hours: hours at which the bank are bussiest
+during thee day. We thuus produced aalternate variaable-rate moddels for both thhe mathemattical and
+computatiional models that take intoo c众onsideration a bank’s peeak hours. Noormal peak timmes at banks
+typically ooccur for a twoo-hour periodd from 11:00am-1:00pm (1220 - 240 minuutes) (White, 2012).
+公
+For the mathematical mmodel, although most likelyy the rate of eentry would bee some smoooth curve withh a
+peak fromm 11:00am-1:000pm, for the purposes of the model wee considered a discrete ratte change fromm off-
+peak to peeak times for simplicity. Thhe increase inn rate of arrivaal during peakk hours was cchosen to be 50%
+信
+comparedd to normal buusiness hourss. This was reeflected in thee increased .. We defined a peak time tto
+have a 500% high entry rate λ than ooff-peak timess. In incorporaating this channge into our mmodel, we firsst
+found the m微ean and standard deviaation of the enntry rate, and then calculateed the mean of the new raates
+based on the equation below, wheree T representts time and λ the entry ratee.
+Since we defined , we cann solve for thee new λ’s based on the origginal λ. We
+accountedd for this channge by modifyying our systeem of differenntial equationss for one telleer to be piecewwise
+with differrent values off (peak or offf-peak) basedd on whether or not t is within peak hours. To reflect the
+use of muultiple tellers ((see Part Twoo of paper) duuring peak hours, we changged the pieceewise componnent
+describingg P (t) to multtiple teller moodel describedd in case 3 aloong with seleecting the peaak value wheen t is
+n
+within peaak hours. was also calculated withh the peak hoour time periodds as the uppper and lowerr
+integral boounds.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+
+11
+For our initial or prior probability distribution, x(cid:4666)0(cid:4667)(cid:3404)C, in the peak hour component of our model we used
+the posterior probability distributions obtained from the one teller and λ=λ model. For the post
+(cid:3042)(cid:3033)(cid:3033)(cid:2879)(cid:3043)(cid:3032)(cid:3028)(cid:3038)
+peak hour piece, we used the posterior probability distributions obtained from having mtellers during peak
+| hours and λ=λ | component.   |     |     |     |     |     |     |     |
+| ------------- | ------------ | --- | --- | --- | --- | --- | --- | --- |
+(cid:3043)(cid:3032)(cid:3028)(cid:3038)
+
+Below is a table showing data collected from running the alternate mathematical model. From the
+following table, we calculate the average queue length to be 2.32 people with an average wait time of
+5.68 minutes. Again, this exceeds the limits set by management’s satisfaction guidelines and changes are
+necessary.
+
+M
+|     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+ S n  Q n P n,avg , 0 ≤ t < 120 P n,avg ;  120 ≤ t ≤  P n,avg ;  240 < t ≤
+|     |     |     |     |     | 240  |     | 397.5  |     |
+| --- | --- | --- | --- | --- | ---- | --- | ------ | --- |
+C
+| S   | 0   |     |     | 0.045 |     |     | 0.084  | 0.057 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ----- |
+| 0   |     |     |     |       |     | M   |        |       |
+| S   | 0   |     |     | 0.201 |     |     | 0.05   | 0.129 |
+1
+i
+|     | 1   |     |     |       | H   |     |        |       |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ----- |
+| S 2 |     |     |     | 0.149 |     |     | 0.057  | 0.107 |
+：
+| S   | 2   |     |     | 0.111 |     |     | 0.063  | 0.09 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ---- |
+3
+| S   | 3   |     |     | 0.082 |     |     | 0.069  | 0.077 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ----- |
+| 4   |     |     | 号   |       |     |     |        |       |
+| S   | 4   |     |     |       |     |     |        |       |
+| 5   |     |     |     | 0.062 |     |     | 0.075  | 0.066 |
+众
+| S   | 5   |     |     | 0.045 |     |     | 0.084  | 0.057 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ----- |
+6
+| S   | 6   | 公   |     | 0.034 |     |     | 0.095  | 0.05 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ---- |
+7
+| S   | 7   |     |     | 0.026 |     |     | 0.109  | 0.043 |
+| --- | --- | --- | --- | ----- | --- | --- | ------ | ----- |
+8
+信
+|     | 8   |     |     |      |     |     |        |       |
+| --- | --- | --- | --- | ---- | --- | --- | ------ | ----- |
+| S 9 |     |     |     | 0.02 |     |     | 0.129  | 0.036 |
+Table 2. Prob微abilities P  that our one teller system with peak hours be in a state S with n customers at any given
+|     | n,avg |     |     |     |     |     | n   |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+time t. Q denotes number of customers in queue since S includes the one customers currently being served. Peak
+| n   |     |     |     | n   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+ is piecewise with respect to peak hour time intervals.
+| time interval is from 120-240 minutes. P |     | n,avg |     |     |     |     |     |     |
+| ---------------------------------------- | --- | ----- | --- | --- | --- | --- | --- | --- |
+
+The computational model that accounted for peak hours used several of the same guidelines as the
+mathematical model; the peak hours are from 11:00 a.m. -1:00 p.m., a peak time has a 50% higher entry
+rate λ than off-peak times, and for simplicity reasons, there is a discrete rate change from off-peak to
+peak times. We also used the same equation:
+
+|     |     | λ (cid:3400)T(cid:3404)T                                                         | (cid:3400)λ                                                                       |  (cid:3397) T |                                                                                  | (cid:3400)λ                                                                      |     |     |
+| --- | --- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- |
+|     |     | (cid:3042)(cid:3045)(cid:3036)(cid:3034)(cid:3036)(cid:3041)(cid:3028)(cid:3039) | (cid:3043)(cid:3032)(cid:3028)(cid:3038) (cid:3043)(cid:3032)(cid:3028)(cid:3038) |               | (cid:3042)(cid:3033)(cid:3033)(cid:2879)(cid:3043)(cid:3032)(cid:3028)(cid:3038) | (cid:3042)(cid:3033)(cid:3033)(cid:2879)(cid:3043)(cid:3032)(cid:3028)(cid:3038) |     |     |
+
+Since we defined λ (cid:1568)1.5(cid:3400)λ , we can solve for the new λ’s based on the original λ. We then
+|     | (cid:3043)(cid:3032)(cid:3028)(cid:3038) | (cid:3042)(cid:3033)(cid:3033)(cid:2879)(cid:3043)(cid:3032)(cid:3028)(cid:3038) |     |     |     |     |     |     |
+| --- | ---------------------------------------- | -------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+create new probability functions for each new λ (peak and off-peak), and add a function in the code to
+implement the proper probability function at the proper time (peak times being 11:00am-1:00pm).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+12
+Below aree the simulatioon results. Thhe average quueue length iss seen to be 22.30 people aand the averagge
+wait time is 6.87 minutees. These ressults align witth the conclussion drawn froom our matheematical modeel that
+one teller is not enoughh to provide aadequate servvice.
+M
+C
+M
+i
+H
+：
+Figure 5. Simulation results for bankingg system with oone teller with peak hours from 11 am - 1 amm. Charts showw
+frequency distribution of aaverage numbeer of people in queue, averagge service time, and average wait time in queue
+for 1000 ruuns with each run simulating aan average 号dayy.
+Part 22: Extenssions 众
+In the seccond part of our solution, wwe look at wayys to improve the current ssystem so thaat that the
+公
+manager’ss goals are saatisfied.
+In general, there are信 twwo ways we ccan increase pproductivity. WWe can add uunits of service (in this casee,
+additional bank tellers or ATM’s), orr we can increease labor effficiency.
+Additioon微al Units of Servicee
+Multiple TTellers
+To modifyy our mathematical model tto account for multiple telleers, at onee time, we moodified our sysstem
+of probabilistic differential equationss such that whhen the systeem is at S , there will only bbe one teller
+1
+working (rrate of servicee would be )), and when thhe system is at S , there wwill be two tellers working (rate
+2
+of servicee would be ), so that the rate of servicce will be foor . The rate of servvice is for all S
+n
+where n so that all tellers are aassisting a customer.
+Probabilityy distributionss are shown in the followinng table and ggraph. Our avverage queue length is thenn
+0.28 peopple which givees us an total average waitt time of 0.69 minutes thuss meeting our satisfaction
+guideliness.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+
+13
+| S   | Q   |     | P        |     |
+| --- | --- | --- | -------- | --- |
+| n   | n   |     | n,avg    |     |
+| S   | 0   |     | 0.00697  |     |
+0
+| S   | 0   |     | 0.34  |     |
+| --- | --- | --- | ----- | --- |
+1
+| S   | 0   |     | 0.156  |     |
+| --- | --- | --- | ------ | --- |
+2
+
+| S 3 | 1   |     | 0.072  |     |
+| --- | --- | --- | ------ | --- |
+| S   | 2   |     |        |     |
+| 4   |     |     | 0.033  |     |
+M
+| S   | 3   |     | 0.015  |     |
+| --- | --- | --- | ------ | --- |
+5
+C
+| S   | 4   |     | 0.00697  |     |
+| --- | --- | --- | -------- | --- |
+6
+M
+| S   | 5   |     | 0.003205  |     |
+| --- | --- | --- | --------- | --- |
+7
+| S   | 6   | i   | 0.001475  |     |
+| --- | --- | --- | --------- | --- |
+8
+H
+| S   | 7   |     | 0.006795  |     |
+| --- | --- | --- | --------- | --- |
+| 9   | ：   |     |           |     |
+Table 2. Probabilities P  that our two teller system will be in a state S with n customers at any given time t. Q
+| n,avg |     | n   |     | n   |
+| ----- | --- | --- | --- | --- |
+denotes number of customers in queue since S includes the two customers currently being served.
+n
+号
+众
+公
+信
+微
+
+Figure 2. Probability distribution of S n  occurring with two tellers. X-axis showing time elapsed is truncated at 50
+minutes since probabilities for S approach a fixed value.
+n
+
+Another simple solution to satisfying the manager’s goals would be to hire an extra teller only during peak
+hours to expedite service. This would result in shorter queues with an expected length of just 0.98 people
+关注 HiMCM
+|     |     |     | ×+ −÷ |        |
+| --- | --- | --- | ----- | ------ |
+|     |     |     | Hi CM | 获取更多资讯 |
+
+Team #4342
+
+14
+and an average waiting time of 2.40 minutes. Although the waiting time is slightly longer than desired, the
+queue length is twice as short as management goals.
+
+ S n  Q n  P n,avg , 0 ≤ t <   P n,avg ;  240 < t  Q n  ; 120 ≤ t ≤   P n,avg ;  120 ≤ t
+|     | 120  | ≤ 397.5  |         | 240  | ≤ 240  |        |
+| --- | ---- | -------- | ------- | ---- | ------ | ------ |
+| S   | 0    | 0.045    | 0.024   |      |        | 0.021  |
+| 0   |      |          | 0       |      |        |        |
+| S   | 0    |          |         |      |        |        |
+| 1   |      | 0.201    | 0.071 0 |      |        | 0.0228 |
+M
+| S   | 1   | 0.149 | 0.059 0 |     |     | 0.14 |
+| --- | --- | ----- | ------- | --- | --- | ---- |
+2
+| S   | 2   | 0.111 | 0.048   | C   |     | 0.086 |
+| --- | --- | ----- | ------- | --- | --- | ----- |
+| 3   |     |       | 1       |     |     |       |
+| S   | 3   | 0.082 | 0.038 M |     |     | 0.053 |
+| 4   |     |       | 2       |     |     |       |
+
+| S 5 | 4   | 0.062 | 0.031 i3 |     |     | 0.033 |
+| --- | --- | ----- | -------- | --- | --- | ----- |
+H
+| S   | 5   | 0.045 | 0.024 |     |     | 0.021 |
+| --- | --- | ----- | ----- | --- | --- | ----- |
+| 6   |     |       | 4     |     |     |       |
+：
+| S   | 6   | 0.034 | 0.019   |     |     | 0.013    |
+| --- | --- | ----- | ------- | --- | --- | -------- |
+| 7   |     |       | 5       |     |     |          |
+| S   | 7   | 号     |         |     |     |          |
+| 8   |     | 0.026 | 0.015 6 |     |     | 0.008324 |
+| S   | 8   | 0.02  | 0.012 7 |     |     | 0.005194 |
+| 9   | 众   |       |         |     |     |          |
+Table 3. Probabilities P that our two teller system with peak hours be in a state S with n customers at any given
+n,avg n
+time t. P  is piecewise with respect to peak hour time intervals. Q is also piecewise with respect to peak time
+| n,avg |     |     | n   |     |     |     |
+| ----- | --- | --- | --- | --- | --- | --- |
+intervals since the number of tel公lers and consequently number of customers being serviced varies depending on the
+time interval.Peak time interval is from 120-240 minutes.
+
+To add an additiona信l teller to our computational model, we simply created a duplicate worker that
+processes the queue in parallel with the first worker. This second worker has the same properties as the
+first worker, and follows the same probability function. Therefore, the probability distribution of service
+time remain微s unchanged with the addition of a second teller.
+
+If we consider the utilization factors (λ/μ) in the scenario with one worker at peak and off-peak times we
+note that, although the utilization factor at peak time is significantly greater than 1 (~1.2), the utilization at
+off-peak times is less than 1 (.75). Therefore, while the single worker can handle the off-peak condition,
+the queue expands rapidly in the peak time when the worker can’t keep up with arrivals. Therefore, it is
+logical to consider adding a second worker during peak times and having only one teller at off-peak times.
+We will incorporate the scenario in the computational model by starting the day with one worker, then
+enabling the second worker during peak times, and then disabling the worker once peak times are over.
+By having two tellers at peak times, μ = 2μ, which halves the utilization factor (to about ~.6),
+combined
+allowing the two tellers to easily keep up with the increased rate of arrival.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team #44342
+15
+M
+C
+M
+i
+H
+：
+号
+Two-woorker flowcharrt, highlightingg departure block
+众
+Figure 4 ddisplays results from addinng an additionnal full-time teeller. The channge decreasees the average
+number of people in quueue to 0.04 aand the averaage wait time to 0.07 minuttes.
+公
+信
+微
+Figure 4. SSimulation resuults for bankingg system with twwo full-time telllers with a consstant arrival ratte. Charts showw
+frequency distribution of aaverage numbeer of people in queue, averagge service time, and average wait time in queue
+for 1000 ruuns with each run simulating aan average dayy. Note changees in mean fromm one teller sysstem.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+16
+As in our mathematical model, we aalso modeled hiring an addditional part-timme teller to seerve during ppeak
+hours onlyy (11 a.m. to 1 p.m.) This rresulted in avverage queue lengths of 0.10 people and average waait
+times of 00.27 minutes tthus solving oour problem aand satisfying our customers.
+M
+C
+M
+i
+H
+：
+Figure 6. SSimulation resuults for bankingg system with oone extra part time teller (two total) at peak hhours from 11 aam - 1
+号
+pm. Chartss show frequenncy distribution of average nummber of peoplee in queue, aveerage service time, and averaage
+wait time inn queue for 10000 runs with eaach run simulatting an averagee day.
+众
+ATM Macchine
+Another wway that a bannk can reducee the load on the tellers is to add an ATTM. An ATM ccan be placedd
+公
+outside a bank and alloow some of thhe people whoo would otherrwise need too talk to the teeller to insteadd be
+able to peerform their traansaction at tthe ATM. Sincce this causes some people to not go innto the teller
+queue, thee load on the teller is reduced and the qqueue length and wait timee are also redduced.
+信
+To model this scenarioo we can conssider that somme fixed perceent (ex. 25%) of people arrriving to the bbank
+are able too 微perform theeir transactionn at the ATM aand are willing to do so. WWe define a beehavior that states
+that, if thee ATM queue is shorter thaan the teller queue, the 25%% of people aable to use the ATM will chhose
+to do so. OOtherwise, they will talk to the teller. Thhe ATM queuee is processed at a fixed raate of 1 custoomer
+per 3 minutes for simplicity.
+This systeem was only mmodeled commputationally ssince a matheematical systeem of differenntial equationss is
+difficult to create for thee closed formm expression uused to represent ATM usaage.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+17
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Flowchart of system witth ATM, highlighting arrival block
+Running tthis model witth peak hourss (we chose too only run it oon peak hourss since we felt peak hours
+represents a more reallistic scenarioo) gave us an average queeue length of 00.34 people aand a mean wwait
+time of 1.337 minutes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #44342
+18
+M
+C
+M
+i
+H
+Figure 7. Simulation results for bankingg system with oone ATM and oone teller with ppeak hours fromm 11 am - 1 pmm.
+：
+Charts shoow frequency distribution of avverage numberr of people in qqueue, averagee service time, and average wwait
+time in queeue for 1000 runs with each ruun simulating aan average dayy.
+号
+Increasse Labor EEfficiency
+众
+In order too increase thee efficiency off the tellers, wwe consideredd modeling seeveral optionss such as
+improvingg access to reeference mateerials, improving the compuuter skills of tellers, giving the tellers acccess
+to more advanced techhnolog公y, improoving the mental math skillls of tellers, aand improvingg the customeer
+communiccation skills oof tellers.
+However, because w信e lack informattion on the cuurrent efficienccy state of thee tellers, it waas hard to perrform
+a conclusive analysis. In addition, ddifferent work habits and learning styles mean every bank teller haas to
+find his orr her own wayy of becomingg the most effficient at his oor her job.
+微
+For these reasons, ourr study on thee impact of immproving laborr efficiency onn queue lengtths and wait tiimes
+is inconcluusive. In the ffuture, with acccess to animmate resourcees (to find morre and better options to
+improve teeller efficiency), as well ass more data on the current efficiency staate of the telleers at the bank in
+question ((for example, has the bankk already done things to immprove efficienncy? How advvanced is thee
+software tthe tellers usee? What are tthe educationn levels of the tellers?), we could analyzze this further..
+Data AAnalysis
+The custoomer service ggoals as definned by the baank manager wwere to have the average queue lengthh be
+shorter than two peoplee and the aveerage wait timme for service (time in queuue) to be less than two minnutes.
+When we evaluate the bank as it is currently, we consider ourr two models ffor this condittion - with andd
+without peeak hours. Without consideering peak hoours, we find aan average off 1.8 people in the queue wwith a
+wait time of nearly 5 minutes. Whenn we considerr peak hours, this value inccreases to 2.33 people in the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+19
+queue and a wait time of nearly 7 minutes. Although these two scenarios differ slightly (as expected),
+neither falls within the manager’s goals, and therefore some change is necessary.
+Our proposed improvements involve hiring more tellers or adding an ATM. By hiring a second teller for
+the entire day, we mathematically found that we can decrease the average number of people in the
+queue to 0.28 and the wait time to 0.69 minutes. Although this is a huge improvement, it may be seen as
+overkill that comes at an unnecessarily high cost. A similar, but much less expensive solution would be to
+hire a part-time teller to only work during peak hours. In this simulation, we find that the average queue
+length is 0.98 person and the mean time in queue is 2.4 minutes. This solution is adequate for achieving
+the goals of the bank manager.
+M
+A different approach to solving the problem involves adding an ATM instead of additional tellers. In this
+solution, the ATM reduces the load on the teller, resulting in a mean queue length of 0.34 people and a
+C
+wait time of 1.37 minutes when peak hours are considered. This solution also addresses the goals of the
+manager.
+M
+i
+Cost/Benefit Analysis
+H
+Since we have generated multiple solutions, each of which achieve the goals of the manager, we must
+：
+consider which would be the best solution for the bank to employ. We will define “best” to be the solution
+that minimizes cost to the business while still achieving the goals of the manager.
+号
+First we must evaluate the cost of hiring a new bank teller. A bank teller makes on average $12.40/hour
+(Occupational Employment and Wages 2013). To hire a full-time teller for this bank (based on the 6.625
+hour average time open per day stated in Assumption 6 and a 6-day work-week) would cost
+众
+$25,630/year. Additionally, hiring a full-time employee typically requires some compensation in the form
+of insurance or benefits, possibly increasing this value. However, this is relatively close to the average
+mean annual wage for a ban公k teller of $25,790, so we will ignore insurance and benefits for now. If,
+instead of hiring an additional full-time teller, we hired a part-time teller for just the peak hours (2
+hours/day and slightly more on the weekend) would cost approximately $8,300 - a significant cost
+reduction. ATM’s, on信 the other hand, have a high initial cost yet have no hourly cost. Therefore, an ATM
+installation, while an expensive initial investment, would save significant amounts of money in the long
+run. For example, a typical ATM costs around $25,000 (Welch), and therefore is equivalent to three years
+of a part-tim微e worker’s salary. However, after the three-year payback period, the bank would be saving
+$8,300 a year. When compared to hiring an additional full-time teller, the ATM cost is about the same as
+the yearly salary of the teller, and would be saving the bank $25,000 after the first year.
+The ATM carries additional benefits that are not considered in our model. For example, an ATM is open
+24/7, whereas our bank is only open for about 7 hours a day, 6 days a week. Therefore, installing an ATM
+quadruples (168 vs 42 hours) the time which our bank can perform transactions for customers. Since
+some current customers may use the ATM at times when the bank is not open, the load on the teller
+would be further reduced beyond what we consider in the computational model as there would be less
+people entering the bank during its hours of operation. Additionally, some people that may have difficulty
+going to the bank when it is open due to work schedules or other factors could now use our bank, and our
+bank would gain additional customers and profits.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+20
+Sensitivity Analysis
+To test the sensitivity of our result to changes in the input parameters, we performed a sensitivity analysis
+on our mathematical model. For each experiment, we changed one variable (eg. λ) by a small percent
+while holding the other variables constant. We then measured the change in the output. We did not
+perform this analysis on the computational model as the simulations take non-negligible time to run, and
+because the results should very closely mirror the mathematical solution.
+Independent Variable % Change Dependent Variable % Change
++10% λ +24.7% Queue Length
+M
+-10% λ -24.5% Queue Length
+C
++10% μ -21.4% Queue Length
+M
+-10% μ +26.4% Queue Length
+i
+While we note that a 10% change in an input variable creates aH larger (~25%) change in the output, all
+the changes were relatively consistent and there were no abnormal results. This suggests that, while our
+model can be affected by errors in input parameters, th：e error will propagate in an expected and
+repeatable fashion, allowing it to easily be discovered and removed instead of propagating in a strange
+and inexplicable fashion which would suggest an error in our model.
+号
+Strengths
+● Our model is highly adaptable to the processing speed of the teller and arrival rate of
+众
+consumers: The only two inputs necessary to solve the system of probabilistic differential
+equations that provide our average queue lengths and average wait times are the rates at which
+tellers can service cu公stomers (µ) and the rate at which customers arrive (λ). Thus our model is
+easily adaptable to situations with different rates.
+● Since our model utilizes a probabilistic stochastic process, it accounts for some
+randomnes信s: Since we compute the average queue length and wait time by taking into account
+the probability with which we expect to see various numbers of customers in the bank, we
+account for some variance and randomness in our model.
+微
+● Computational and mathematical component of our model is adaptable for variety of
+different changes to system: We evaluate the results of various changes to our system both
+computationally and mathematically to strengthen the conclusions we draw. Also having both a
+computational and mathematical component of our model allows us to broaden the range of
+changes we can consider without overcomplicating our model or making unnecessary
+assumptions. For example, implementing the effects of adding an ATM was best done
+computationally since modeling ATM usage mathematically would have required significant
+additional piecewise components.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+21
+Weaknesses
+λ µ λ
+● Our differential equations do not take into account probability distributions of and :
+µ
+and were calculated using mean interarrival and service times which have associated
+deviations. However, in our system of probabilistic differential equations, we could not generate
+ranges of values for probability distributions or conduct statistical analysis that reflected the
+uncertainties inherent in these values.
+● Our waiting times and queue lengths were estimated in the mathematical model: Since
+waiting times and queue lengths were derived from expected values, there are possible outcomes
+in which those times and lengths could be larger than what was set in satisfaction guidelines.
+M
+However, we were able to check this with the computational model and verify the values
+generated, leading to much stronger conclusions.
+C
+● Our mathematical model only calculates the probability distributions for a maximum of 10
+people in the system: Determining P (t) for various values of n required solving a system of
+n
+M
+differential equations in an n x n matrix. Since our processor power was limited we could not
+solve a matrix of infinite size (or at least up to 150). As n became larger than 10, P (t) returned
+n
+probability values that were small enough to be unlikely to occiur in our system that only serves
+H
+150 customers/day so we bound n from 0 to 9. Again, however, our computational model took
+this into account and solved instead for an infinite queue.
+：
+Conclusion
+号
+Using both our computational and mathematical models, we observed that the initial rates for customer
+arrival intervals and service rates maintained an average queue length of 2.79 people and an average
+众
+wait time of 6.84 minutes. These did not fulfill the management’s desires to ensure that the queue length
+be two or fewer people and for the average customer to wait less than two minutes. We came up with two
+different possible solutions that could be implemented to lower both the queue length and wait time to fit
+公
+within the management’s request. Our first solution was to hire an additional teller to help with the rate of
+service. With the addition of our a second teller, our mathematical model approximated that there would
+be an average queue length of 0.28 people and an average wait time of only 0.98 minutes. Our
+信
+computational model (considered to be more numerically accurate) calculated that there would be an
+average queue length of only 0.04 people and an average wait time of 0.07 minutes.
+微
+We extended our study to include the second teller only during the peak hours. Our computational model
+approximated that there would be an average queue length of 0.10 people and an average wait time of
+0.28 minutes. We also investigated adding a peak-time teller, which would reduce the average queue
+length to 0.1 people and the average wait time to 0.27 minutes. Though the addition of a second teller
+would fall within the management’s standard for customer service, we decided to also examine the
+addition of an ATM in our bank. Using our computational model, there would be an average queue length
+of 0.34 people and an average wait time of 1.37 minutes during the peak hours. Since the ATM was a
+one time purchase, met the standards of management, and is cheaper than hiring a second teller in the
+long run, we decided that an ATM would be a better solution.
+In the future, we would try to improve our current models by using supported, rather than predicted,
+values for inputs such as percentage of people at banks who use ATM’s (we arbitrarily predicted 25% in
+our solution) and additional traffic flow during peak hours (which we arbitrarily assigned as 50%). We
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+22
+would also like to perform more in-depth sensitivity analysis, for example on the computational model in
+addition to the mathematical model.
+Additionally, we would like to investigate other ways the bank could improve its customer service to meet
+the goals of the manager. For example, we might look at the effects of lengthening the time the bank is
+open; it follows that increasing the hours the bank is open will cause an overall decrease in the arrival
+rate throughout the day. Another interesting approach that we would like to investigate would be to give
+the tellers additional training to increase their speed of processing the customers. Finally, we may
+consider investigating mobile banking, both in the short-term and long-term (in the long-term, how much
+of banking can be done online?) to see how it may affect the usage of brick-and-mortar banks in general.
+M
+References
+Dhar, S.K., and T. Rahman. May 2013. Case Study for Bank ATM Queuing MoCdel. IOSR Journal of
+Mathematics (7): 1-5. Retrieved from: http://www.iosrjournals.org/iosr-jm/papers/Vol7-iss
+ue1/A0710105.pdf M
+Neogi, S. (n.d.). Queuing Theory Approach to Enhance Decision Making in the Service Sector, 1–18.
+i
+Retrieved from http://www.apicsterragrande.org/CKNelson 2013H Winners/Queuing Theory Approach to
+Enhance Decision Making in the Service Sector - A case study.pdf
+：
+Occupational Employment and Wages: Tellers. (2013, March 29). Bureau of Labor Statistics. Retrieved
+November 16, 2012, from http://www.bls.gov/oes/current/oes433071.htm
+号
+The Real Cost of Running Your Own ATM. (n.d.). Welch ATM. Retrieved November 17, 2013, from
+http://www.welchatm.com/real-cost-of-running-atms-infographic.html
+众
+White, R. 2012. What Is a Peak Time Teller?. Chron. Retrieved November 17, 2013, from
+http://work.chron.com/peak-t公ime-teller-26558.html
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+23
+Appendix
+Bank Hours
+Bank of America
+● Mon-Thurs: 9-5; Fri: 9-6; Sat: 9-1; Sun: closed
+● http://locators.bankofamerica.com/locator/locator/DURHAM_NC/branch_and_atm_lo
+cations/locations.html
+Wells Fargo:
+● Mon-Thurs: 9-5; Fri: 9-6; Sat: 9-1; Sun: closed M
+● https://www.wellsfargo.com/locator/search/Durham_NC/
+Coastal:
+C
+● Mon-Fri: 8:30-5:30; Sat-Sun: closed
+● https://www.coastal24.com/locations/ M
+Chase:
+● Mon-Fri: 9-7; Sat: 9-4; Sun: closed
+i
+● https://www.chase.com/ H
+Bank Teller Salary ：
+Employment Mean hourly Mean annual
+Employment
+号
+Wage RSE
+RSE wage wage
+541,770 0.6 % $12.40 $25,790 0.2 %
+众
+公50%
+Percentile 10% 25% 75% 90%
+(Median)
+Hourly Wage 信$9.44 $10.41 $11.99 $14.07 $16.50
+Annual Wage $19,630 $21,660 $24,940 $29,260 $34,320
+http://www.bls.gov/oes/current/oes433071.htm
+微
+Code Sample
+Relevant functions are shown below, namely the main processing function and the functions which model
+the addition and removal of people from the queue. Variable definitions, UI controls, data logging, and
+other functions have been removed for clarity.
+void process() //Main Loop, runs simulations in iterations of 1 minute
+{
+if (peakTimes) //Sets peak and off‐peak probabilities and # of workers if enabled
+{
+t++;
+if (t == 0)
+{
+timeBetweenArrival = new double[] { 0, 3, 15, 45, 35, 80, 95, 100 };
+twoWorkers = false;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+24
+if (t == 120)
+{
+timeBetweenArrival = new double[] { 10, 20, 45, 80, 95, 100, 100, 100 };
+//twoWorkers = true;
+}
+if (t == 240)
+{
+timeBetweenArrival = new double[] { 0, 3, 15, 45, 35, 80, 95, 100 };
+twoWorkers = false;
+}
+}
+if (atmQueue != 0) //Processes ATM queue every 3 iterations
+{
+atmTimer++; M
+if (atmTimer >= 3)
+{
+atmQueue‐‐;
+atmTimer = 0; C
+}
+}
+M
+peopleInQueue += numberOfPeopleArriving();
+//Data Recording i
+int numPeopleLeaving = worker1() + worker2(); H
+peopleInQueueData.Add(peopleInQueue);
+totalQueueWaitTime += peopleInQueue; ：
+totalPeopleProcessed += numPeopleLeaving;
+updateUI(); //Updates UI elements
+号
+}
+int numberOfPeopleArriving() //Number of People Arriving at the bank each iteration
+{
+众
+timeSinceLastArrival++;
+if (random.Next(0, 1000) < 10 * timeBetweenArrival[timeSinceLastArrival])
+{
+公
+if (ATMActive)
+{
+if (random.Next(0, 100) < 25)
+{
+信
+if (atmQueue < (peopleInQueue + 1))
+{
+timeBetweenArrivalsData.Add(timeSinceLastArrival);
+timeSinceLastArrival = 0;
+微
+atmQueue++;
+return 0;
+}
+}
+}
+timeBetweenArrivalsData.Add(timeSinceLastArrival);
+timeSinceLastArrival = 0;
+if (random.Next(0, 100) < timeBetweenArrival[0])
+{
+timeBetweenArrivalsData.Add(0);
+if (random.Next(0, 100) < timeBetweenArrival[0])
+{
+timeBetweenArrivalsData.Add(0); //Chance of >3 people per iteration: .01%
+(negligible)
+return 3;
+}
+return 2;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+25
+return 1;
+}
+else
+{
+return 0;
+}
+}
+int worker1() //Teller: returns 0 if still working, 1 if finished
+{
+returnValue = 0;
+if (processing)
+{
+timeBeingServed++; M
+if (random.Next(0, 1000) < (10 * serviceTime[timeBeingServed]))
+{
+timeBeingServedData.Add(timeBeingServed); C
+processing = false;
+returnValue = 1;
+M
+}
+}
+if (!processing && peopleInQueue > 0) //possible issue? miinutes
+{ H
+processing = true;
+peopleInQueue‐‐; ：
+timeBeingServed = 0;
+}
+return returnValue;
+}
+号
+int worker2() //Teller 2: Enabled if twoWorkers is set to true
+{
+if (twoWorkers)
+众
+{
+returnValue2 = 0;
+if (processing2)
+{
+公
+timeBeingServed2++;
+if (random.Next(0, 1000) < (10 * serviceTime[timeBeingServed2]))
+{
+信
+timeBeingServedData.Add(timeBeingServed2);
+processing2 = false;
+returnValue2 = 1;
+}
+微
+}
+if (!processing2 && peopleInQueue > 0) //possible issue? minutes
+{
+processing2 = true;
+peopleInQueue‐‐;
+timeBeingServed2 = 0;
+}
+return returnValue;
+}
+return 0;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+Dear Manager,
+We are writing to report the results of our study on the company’s current customer service state. Last
+week, you gave us the task of analyzing whether our branch currently satisfies the customer service
+standards you set forth, and if not, determining the most minimal change required to restore the level of
+customer service to the level defined in these standards.
+First, as employees, we would like to let you know we fully support the intentions of this study. Through
+our interactions with customers each day, we are fully aware that quality customer service -- whether it be
+the positive attitudes of the employees or the services the bank offers as a whole -- is integral to keeping
+our customers happy and coming back and improving the efficiency of our bank.
+M
+As a result, we wholeheartedly agree with the standard of customer service you set forth stating that, on
+average, customers should experience a wait time no longer than two minutes,C and that no queue should
+have more than two people in it on average.
+M
+For this study, we first set up a mathematical model of our current system with one teller using data on
+existing arrival and service rates. From this we saw that customers can expect to spend on average 6.84
+i
+minutes waiting in lines with an average line length of 2.79 peopHle. These values are clearly larger than
+those outlined in our satisfaction guidelines.
+：
+To complement our mathematical model, we also created a computer simulation of our current system.
+Although less elegant than a mathematical model, the computer simulation allows us to model more
+complex situations like the peak hours that ou号r bank experiences daily where lines get especially long.
+During these peak hours, our computer simulation shows that we can have lines over 10 people long,
+corresponding to wait times of over 20 minutes. These wait times are aggravating our loyal customers,
+众
+and we are pleased to see that you have taken an interest in these issues and are searching for a
+solution to this problem.
+公
+After thoroughly evaluating our current banking service system using our mathematical and computer
+models, we would like to present several possibilities for improving the customer service at our bank. Of
+course, since we are also interested in maximizing the profit of our bank, we will also consider the cost of
+信
+implementing these changes. The most basic solution, which I’m sure you’ve considered, is that of hiring
+a new teller. There’s plenty of space behind the desk to house an additional teller, and adding a second
+teller would微 greatly ease the load on the overworked teller that is handling all of our current customers.
+Currently our single teller is serving a customer 92% of the time, so he/she has very little down time.
+Based on our computer simulations, hiring an additional teller would reduce our average line lengths
+to .04 people and average wait time to a mere 4 seconds. However, the annual salary of a bank teller is
+about $25,000 so this would not be an insignificant cost to our bank.
+Additionally, having two full-time tellers is unnecessary. Therefore, we’ve also considered the possibility
+of hiring an additional part-time teller who would work during peak time thus helping to reduce the load on
+our current teller in these busy yet important parts of the day. We find that in this scenario, with a part-
+time teller working only 2 hours/day, we can reduce the queue length from its current state to about 0.1
+people long on average and the wait time to about 16 seconds. This solution satisfies your customer
+service criteria, and also saves our bank a lot of money when compared to hiring a full-time teller. A teller
+is paid about $12.40/hour, and at 13 hours a week (2/weekday and 3 on Saturday), this would only cost
+our bank $8,300 a year!
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4342
+Although hiring an additional part-time teller seems like an attractive solution, we still considered
+additional options, like adding an ATM to our facility. By placing a drive-up ATM outside our bank, some
+people could use it instead of talking to the teller. Therefore, the load on the teller is reduced. Given the
+assumption that 25% of people would be willing to use an ATM instead of waiting to talk to the teller, we
+find that, without hiring any tellers, we can reduce the queue length of both queues (ATM and teller) to
+less than 0.33 people long on average, and maintain an average wait time of 1.4 minutes, even when
+considering peak hours of operation. This achieves your goals for customer service and also is very cost-
+effective. A typical ATM installation costs less than $25,000. This equates to three years of paying a part-
+time employee, or just a year of salary for a full-time employee. Therefore, you will recoup your
+investment very quickly, and, when the payback period is over in 1-3 years, be saving thousands of
+dollars per year while maintaining excellent customer service!
+M
+Installing a drive-through ATM at our bank also has several other benefits. First, an ATM is open 24/7,
+whereas our bank is only open on average about 7 hours a day, 6 days a weekC. This corresponds to a
+fourfold increase in the amount of time in which our customers can perform transactions at our bank -
+from 42 hours currently to 168 hours. Our customers will appreciate theMse extra hours, as they will never
+again drive to our bank only to find it closed! Additionally, due to the greatly increased hours of operation
+at our bank due to the ATM, potential customers that had conflicts with our hours of operation due to work
+i
+or other factors may now be able to use our bank, leading to incHreased revenue.
+Although we considered modeling numerous other opt：ions for improving customer service beyond what is
+listed here, such as extending the hours of operation of the bank or improving the processing speed of
+tellers (through job training, hiring more experienced tellers, improving computing systems and workflow,
+etc), we believe that either hiring a peak-time 号teller or installing an ATM are the best solutions for
+achieving your standards for customer service. If you are looking for a quick, low-investment fix, hire the
+peak-time teller. However, if you want a long-term money saver, the ATM is your best option - after a few
+众
+year payback period, it will save our bank thousands of dollars a year, with the added bonus of improving
+hours of operation and customer satisfaction.
+公
+Sincerely,
+Your Devoted Employees
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

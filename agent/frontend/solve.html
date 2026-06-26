@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数学建模助教 · 做题</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX 公式渲染 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Markdown + 代码高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <!-- CodeMirror 5（编辑器，供 ide.js 使用） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css?v=anim1" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+</head>
+<body>
+  <div class="sv" id="sv">
+    <!-- 顶栏：品牌 + 题目 + 编辑器工具（工作目录/文件名/保存/运行/停止）+ 模型 -->
+    <header class="sv-top">
+      <div class="sv-brand"><span class="mark">绣</span>做题</div>
+      <span class="sv-cur-title" id="sv-cur-title"></span>
+      <span class="sv-top-spacer"></span>
+      <input type="text" class="ws-path" id="workdir" placeholder="工作目录（绝对路径，回车生效；留空用临时目录）" />
+      <input type="text" class="ws-path ws-fname" id="filename" placeholder="文件名 main.py" value="main.py" />
+      <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
+      <button class="ide-btn run" id="btn-run" title="运行（Ctrl+Enter）">▶ 运行</button>
+      <button class="ide-btn" id="btn-stop" title="停止当前进程" disabled>⛔ 停止</button>
+      <button class="sv-link-btn" id="sv-reset" title="换一道题" hidden>↻ 重新出题</button>
+      <a class="ws-link" href="/build" title="返回做建模">⌂ 做建模</a>
+      <div class="model-selector" id="model-selector">
+        <button class="model-pill" id="model-pill" title="点击切换模型">
+          <span class="model-pill-dot"></span>
+          <span class="model-pill-label">模型</span>
+          <span class="model-pill-name" id="model-badge">…</span>
+          <span class="model-pill-caret">▾</span>
+        </button>
+        <div class="model-menu" id="model-menu" hidden>
+          <div class="model-menu-title">快速切换模型</div>
+          <button class="model-opt" data-provider="deepseek"><b>DeepSeek</b><span>deepseek-chat</span></button>
+          <button class="model-opt" data-provider="qwen"><b>通义千问</b><span>qwen-plus</span></button>
+          <button class="model-opt" data-provider="openai"><b>OpenAI</b><span>gpt-4o-mini</span></button>
+          <button class="model-opt" data-provider="moonshot"><b>Moonshot</b><span>moonshot-v1-8k</span></button>
+          <button class="model-opt model-opt-more" id="model-menu-more">⚙ API 密钥 / 自定义模型…</button>
+        </div>
+      </div>
+      <button class="btn-icon" id="btn-settings" title="模型与 API 设置">⚙</button>
+    </header>
+
+    <!-- 视图 A：立题 -->
+    <section class="sv-setup" id="sv-setup">
+      <div class="sv-setup-inner">
+        <h1 class="sv-h1">带一道题来，我陪你一步步做完它</h1>
+        <p class="sv-lead">粘贴赛题题面或上传题目文件，助教会按建模框架把它拆成一条<strong>解题路线</strong>。然后进入工作台：左边是路线，中间写代码、跑程序，右边和助教一起把当前这一步做出来。</p>
+        <textarea id="sv-statement" class="sv-statement" placeholder="把赛题题面粘贴到这里（也可只上传题目文件）…"></textarea>
+        <div class="sv-setup-actions">
+          <input type="file" id="sv-file" hidden accept=".csv,.xlsx,.xls,.json,.txt,.md,.py,.pdf,.docx,.doc,.pptx,.ppt,.html,.htm" />
+          <button class="sv-btn" id="sv-upload" title="上传题目文件（pdf/word/txt 等）">📎 上传题目文件</button>
+          <span class="sv-chips" id="sv-chips"></span>
+          <button class="sv-btn primary" id="sv-analyze">让助教拆解 →</button>
+          <span class="sv-status" id="sv-status"></span>
+        </div>
+
+        <!-- 我的做题存档：刷新/下次进来可继续做过的题 -->
+        <div class="sv-archive" id="sv-archive" hidden>
+          <div class="sv-archive-head">我的做题存档</div>
+          <div class="sv-archive-list" id="sv-archive-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 视图 B：解题驾驶舱（路线图 | 编辑器+终端 | 当前步共创） -->
+    <section class="sv-cockpit" id="sv-cockpit" hidden>
+      <!-- 左：题目 + 路线图 -->
+      <aside class="sv-rail">
+        <div class="sv-rail-head">
+          <h2 class="sv-rail-title" id="sv-rail-title">我的题目</h2>
+          <button class="sv-bg-toggle" id="sv-bg-toggle" title="展开/收起题面">题面 ▾</button>
+        </div>
+        <div class="sv-bg panel-md" id="sv-bg" hidden></div>
+        <div class="sv-roadmap-label">解题路线</div>
+        <div class="sv-roadmap" id="sv-roadmap"></div>
+      </aside>
+
+      <!-- 中：编辑器 + 终端（复用 ide.js） -->
+      <section class="sv-col-mid">
+        <div class="ws-editor"><textarea id="editor"></textarea></div>
+        <div class="ws-console" id="ws-console">
+          <div class="console-head">
+            <span class="console-title">终端 / 控制台</span>
+            <span class="status" id="con-status">就绪</span>
+            <span class="console-spacer"></span>
+            <button class="ide-btn mini" id="btn-insert-sel" title="把编辑器中选中的代码插入右侧对话">↪ 选中插入对话</button>
+            <button class="btn-clear" id="btn-clear" title="清空控制台">清空</button>
+            <button class="btn-clear" id="console-toggle" title="折叠/展开控制台">▾</button>
+          </div>
+          <div class="console-log" id="con-log"></div>
+          <div class="console-imgs" id="con-imgs"></div>
+          <div class="console-input-row">
+            <span class="console-prompt" id="con-prompt">$</span>
+            <input type="text" class="console-input" id="con-input"
+                   placeholder="运行中：在此回答程序输入；空闲时：输入命令回车执行（dir、pip install …）" />
+          </div>
+          <div class="console-hint">命令在你本机以子进程运行，仅限信任环境使用。</div>
+        </div>
+      </section>
+
+      <!-- 右：当前步任务 + 共创对话 -->
+      <main class="sv-stage">
+        <div class="sv-step-head" id="sv-step-head">
+          <div class="sv-step-empty">从左边的路线里点开一步，开始和助教一起做。</div>
+        </div>
+        <div class="sv-chat" id="sv-chat"></div>
+        <div class="sv-composer">
+          <textarea id="sv-input" rows="1" placeholder="和助教一起把这一步做出来…（Enter 发送，Shift+Enter 换行）" disabled></textarea>
+          <button class="sv-send" id="sv-send" title="发送" disabled>➤</button>
+        </div>
+        <div class="sv-composer-hint">助教只聚焦你点开的这一步；想推进下一步，点左边路线的下一个节点。</div>
+      </main>
+    </section>
+
+    <!-- 设置弹窗（与工作台同款） -->
+    <div class="settings-overlay" id="settings-overlay">
+      <div class="settings-modal">
+        <div class="settings-head">
+          <h2>模型与 API 设置</h2>
+          <button class="btn-close" id="btn-close-settings">×</button>
+        </div>
+        <div class="settings-body">
+          <div class="settings-section">
+            <label>快速选择</label>
+            <div class="provider-presets" id="provider-presets">
+              <button class="preset" data-provider="deepseek">DeepSeek</button>
+              <button class="preset" data-provider="qwen">通义千问</button>
+              <button class="preset" data-provider="openai">OpenAI</button>
+              <button class="preset" data-provider="moonshot">Moonshot</button>
+              <button class="preset" data-provider="custom">自定义</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <label for="setting-api-key">API 密钥</label>
+            <input type="password" id="setting-api-key" placeholder="sk-xxxxxxxxxxxxxxxx" autocomplete="off" />
+          </div>
+          <div class="settings-section">
+            <label for="setting-base-url">接口地址 (Base URL)</label>
+            <input type="text" id="setting-base-url" placeholder="https://api.deepseek.com/v1" />
+          </div>
+          <div class="settings-section">
+            <label for="setting-model">模型名称</label>
+            <input type="text" id="setting-model" placeholder="deepseek-chat" />
+          </div>
+        </div>
+        <div class="settings-foot">
+          <span class="settings-status" id="settings-status"></span>
+          <button class="btn-save" id="btn-save-settings">保存设置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 顺序：共享渲染 → 档案 → 编辑器/终端（ide.js）→ 编辑器预览 → 做题驾驶舱逻辑 -->
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/render.js?v=anim1"></script>
+  <script src="/static/profile.js?v=anim1"></script>
+  <script src="/static/ide.js?v=anim1"></script>
+  <script src="/static/editor-preview.js?v=anim1"></script>
+  <script src="/static/layout.js?v=anim1"></script>
+  <script src="/static/solve.js?v=anim1"></script>
+</body>
+</html>

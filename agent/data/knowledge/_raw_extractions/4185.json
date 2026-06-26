@@ -1,0 +1,79 @@
+{
+  "paper_id": "4185",
+  "meta": {
+    "paper_id": "4185",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2013,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2013\\A\\4185.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了10条具体假设，如半完美条件、最大化覆盖人口优先、救护车仅单程接送等，并逐条给出解释和例外情况。",
+      "formulas": [],
+      "source_excerpt": "1.1 General Assumptions\n1. The model takes semi-perfect conditions as uneventful situations and sees the given transit times as the average transit times when there are no unexpected obstacles.\n..."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在加权平均模型中，以各区域人口为权重，计算救护车系统到达随机患者的平均时间，公式为平均时间 = Σ(人口_i * 最小时间_i) / Σ人口_i。",
+      "formulas": [
+        {
+          "latex_code": "\\text{Average Time} = \\frac{\\sum_{i=1}^{6} P_i \\cdot \\min_{j \\in S} t_{ij}}{\\sum_{i=1}^{6} P_i}",
+          "variables": {
+            "P_i": "区域 i 的人口",
+            "t_{ij}": "从救护车站点 j 到区域 i 的行驶时间",
+            "S": "救护车站点集合"
+          }
+        }
+      ],
+      "source_excerpt": "This model uses weighted averages to find the average amount of time a system of ambulances takes to rescue a random patient from any zone, which are more likely to come from populous zones."
+    },
+    {
+      "concept_id": "graph.shortestpath",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "在最近邻模型中，使用最近邻算法构造一条经过所有区域的近似最优路径，计算平均救援时间。",
+      "formulas": [],
+      "source_excerpt": "The first method was the nearest neighbor method, in which we create a near-optimal route shared by 3 ambulances, passing through all zones."
+    },
+    {
+      "concept_id": "meta.ga",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "在分裂循环模型中，通过枚举不同分区组合（类似遗传算法的思想）找到最优的救护车站点分配，使平均救援时间最小化。",
+      "formulas": [],
+      "source_excerpt": "The second method, split-cycle method, takes a more complicated approach: it divides the six zones evenly into three areas, with one ambulance responsible for one area. By comparing different combinations produced, we are able to find an optimal solution where ambulances are stationed in zones 2, 4, and 5."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "对布尔模型和加权平均模型进行灵敏度分析，分别测试行驶时间和人口数据变化对结果的影响。",
+      "formulas": [],
+      "source_excerpt": "4.0 Sensitivity Notes\n4.1 Sensitivity of the Boolean Model\n4.2 Sensitivity test of weighted average model\n4.2.1 Transit time\n4.2.2 Population"
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：Introduction（问题背景、假设）、Methods（布尔模型、加权平均模型、灾难模型）、Results（各模型最优解）、Discussion（灵敏度分析、备忘录）。",
+      "formulas": [],
+      "source_excerpt": "Table of Contents\n1.0 Introduction\n2.0 The Models\n3.0 Catastrophic event\n4.0 Sensitivity Notes\n5.0 Memo to ESC"
+    },
+    {
+      "concept_id": "viz.modelcompare",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "通过表格和文字对比不同模型的优缺点，如布尔模型简单但无法区分可行解，加权平均模型更精确但计算复杂。",
+      "formulas": [],
+      "source_excerpt": "2.2.2 Strengths and Weaknesses for Boolean Model\n2.3.2 Strengths and Weaknesses for Weighted Average Model"
+    }
+  ]
+}

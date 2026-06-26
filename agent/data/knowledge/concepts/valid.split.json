@@ -1,0 +1,75 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.split",
+  "title": "训练集/测试集划分",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "模型验证方法",
+    "训练集/测试集划分"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.1",
+  "aliases": [
+    "数据集划分",
+    "留出法",
+    "hold-out"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "把数据分成两份：一份教模型学习，一份考模型水平，防止模型只会背答案。",
+    "intuition": "就像学生考试：训练集是平时做的练习题，用来学习知识；测试集是期末考试题，用来检验真实水平。如果练习题和考试题一模一样，那考试满分也没用，因为可能只是背答案。所以训练集和测试集要分开，且测试集不能提前让模型看到。",
+    "when_to_use": "任何机器学习任务都需要划分训练集和测试集，尤其是分类、回归问题。当数据有类别不平衡时，要用分层抽样保持比例。",
+    "definition": "训练集（Training Set）用于训练模型参数，测试集（Test Set）用于评估模型在未见数据上的泛化能力。留出法（Hold-out）随机划分，分层抽样（Stratified Sampling）按类别比例划分。",
+    "math_principle": "设数据集 D 有 N 个样本，随机划分为训练集 S 和测试集 T，满足 S ∪ T = D，S ∩ T = ∅。训练集大小 N_train = p * N，测试集大小 N_test = (1-p) * N，通常 p=0.7 或 0.8。分层抽样：假设有 K 个类别，第 k 类样本数 N_k，则训练集中该类样本数 N_train_k = round(p * N_k)，确保各类比例一致。",
+    "step_by_step": [
+      "1. 收集完整数据集 D，包含特征和标签。",
+      "2. 确定训练集比例 p（常用 0.7 或 0.8）。",
+      "3. 如果是分类问题，检查类别分布；若不平衡，采用分层抽样。",
+      "4. 使用随机种子（如 random_state=42）保证可重复性。",
+      "5. 划分数据：训练集用于模型训练，测试集用于最终评估。",
+      "6. 训练过程中不要触碰测试集，直到模型确定后再用测试集评估。"
+    ],
+    "worked_example": "假设有 100 个样本，二分类问题，正类 20 个，负类 80 个。留出法：随机选 70 个训练，30 个测试，可能训练集中正类只有 10 个，测试集 10 个，比例失调。分层抽样：训练集 70 个，其中正类 14 个（20*0.7），负类 56 个（80*0.7）；测试集 30 个，正类 6 个，负类 24 个，保持 1:4 比例。",
+    "pitfalls": [
+      "1. 数据泄露：测试集信息提前用于训练（如特征缩放时用全局统计量），应只在训练集上计算。",
+      "2. 随机划分可能造成类别分布不均，尤其小样本类别。",
+      "3. 留出法单次划分结果不稳定，建议多次重复或使用交叉验证。",
+      "4. 时间序列数据不能随机划分，应按时间顺序划分（如论文3874用2011年训练，2012年测试）。"
+    ],
+    "tools": "Python 的 sklearn.model_selection.train_test_split 支持分层抽样。代码示例：\n```python\nfrom sklearn.model_selection import train_test_split\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)\n```\n其中 stratify=y 实现分层抽样。"
+  },
+  "formulas": [
+    {
+      "latex_code": "N_{\\text{train}} = p \\cdot N, \\quad N_{\\text{test}} = (1-p) \\cdot N",
+      "variables": {
+        "N": "总样本数",
+        "p": "训练集比例",
+        "N_train": "训练集样本数",
+        "N_test": "测试集样本数"
+      }
+    },
+    {
+      "latex_code": "N_{\\text{train},k} = \\text{round}(p \\cdot N_k)",
+      "variables": {
+        "N_k": "第k类样本数",
+        "N_train,k": "训练集中第k类样本数",
+        "p": "训练集比例"
+      }
+    }
+  ],
+  "cases": [
+    "3874"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_I01"
+    ],
+    "from_papers": [
+      "3874"
+    ]
+  }
+}

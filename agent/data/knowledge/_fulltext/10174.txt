@@ -1,0 +1,2767 @@
+Team Control Number
+10174
+Problem Chosen
+A
+2019
+HiMCM
+Summary Sheet
+The growth of personal devices, from handheld mobile phones to electric vehicles, has
+led to an increasing demand for “free” electricity from public charging stations. In response,
+M
+public places like airports and coffee shops are increasing the availability of electrical outlets for
+their visitors. However, this “free” energy is actually paid for by private businesses and the
+government. Consequently, it is important to study the rapid growth of eClectricity energy
+consumption and to understand its effects on national level, as well as investigate approaches to
+M
+mitigate the cost. Our objective is to develop a mathematical model to predict the economic costs
+of increasing public electrical outlet availability over the next decade and investigate ways to
+reduce the impact and its cost. i
+H
+Our model consists of a continuous time-dependent function that incorporates 1) a
+computational agent-based model to characterize the small-scale interactions between people and
+：
+device charging availability in a single public location and 2) an analytical model describing
+electric vehicle charging. For the agent-based model, we explore several location-specific
+parameters that vary across different publi号c locations and analyze the differences in cost across
+locations and with increasing outlet availability. We integrate our models to predict total
+economic cost due to public charging of personal devices and provide suggested guidelines to
+reduce cost. Our model accounts f众or many parameters such as the influx distribution of visitors
+to a specific destination that is backed up by extensive research and is thus highly robust and
+applicable to model different situations.
+公
+Overall, our model predicts that energy consumption due to the charging of personal
+electronic devices and electric vehicles will increase in the coming years. For cost due to electric
+charging of personal devices, we found that schools and airports suffer the most costs of
+信
+increasing demand and that public outlet density was strongly correlated to an increase in
+electrical consumption. For low public outlet densities, we found an electricity cost for personal
+devices to 微grow from $150,000 to $180,000 over a ten year period. On the other hand, for high
+outlet density, we determined a price change from $450,000 to $525,000 per year. For electric
+vehicles, we estimated a cost change from $50,000,000 to $400,000,000 per year between 2018
+and 2028. We also determined that the ideal outlet density for airports and coffee was 3 outlets
+per 576 ft2 and 3 outlets per 144 ft2 respectively. For electric vehicles our model was able to
+predict the total energy consumption of 2018 within 0.048 TWh. We also found that the overall
+cost associated with publicly charging electronic devices was relatively low due to the low price
+of generating electricity. While the associated cost of publicly funded charging is relatively
+small, it can be further decreased through restrictions on public outlets by public area
+management and the integration of increasingly efficient technologies in the coming years.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Newspaper Article
+Personal electronic devices, from the phones and laptops we see and use everyday to the
+slightly less ubiquitous electric cars, have become increasingly prevalent in the last few years. In
+accordance with this increase in device presence, public areas such as airports and coffee shops
+have begun to increase electrical charging outlets to satisfy the resulting demand. Unfortunately,
+this “free” energy is actually paid for by business and governments.
+We were tasked with answering the question of, “How does the cost of offering free
+electricity change over time?” To do so, we first wanted to understand the reasons behind this
+change in electricity cost over time. We looked into the change in the price of electricity over
+time and change in the attendance of a location over time. Next, we identified different public
+spaces and characterized how each location differed from the others in terms of electricity usage.
+M
+We settled on airports, libraries, schools, railway stations and coffee shops as the public
+destinations we wanted to model.
+C
+To build our model, we wanted to understand the different factors that influence electrical
+energy consumption: number of visitors and distribution throughout a day, number of outlets, the
+M
+number of personal electronic devices and corresponding energy needed. With these ideas in
+mind, we created a Netlogo model to calculate the usage of electricity while incorporating the
+i
+complexity of each variable. In this agent based model, we were able to simulate the actions of
+H
+individuals with a set number of devices with random charge distributions and their appearance
+in each of the destinations. While this model could： incorporate the factors of energy
+consumption for individuals in public spaces, it could not be used to model electric car energy
+consumption.
+We created a second model to mod号el the consumption of electricity to charge electric cars
+30%, a safe estimate to travel from the charging station back home. Using the time it takes to
+charge a car battery and the average number of available charging stations, we estimated the
+众
+amount of energy used to charge electric cars in public during one day across the nation. With
+this data, we calculated the average electric consumption for the United States in one year.
+With our models, we estimated the cost of electricity for electric vehicles to be
+公
+$50,000,00 in 2018 and for this value to increase to 400,000,000 in 2028. We also found
+electricity cost for personal devices to grow from $150,000 to $180,000 over the same ten year
+period. Using othe信r calculations and data from our model, we found that outlet density strongly
+correlated to increase in costs of electricity and that Schools and Airports consisted of the
+majority of public charging costs due to their large volumes.
+微
+With our model in hand, we advise two main methods to reduce costs associated with
+charging electronic devices. Primarily, business and other public places can restrict access to
+electrical outlets thereby reducing their overhead with visitors utilizing their electricity.
+Additionally, we predict that electronics efficiency will increase in the coming years with new
+advances in batteries and other technologies which will reduce the cost associated with charging
+electronic devices.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Contents
+1 Introduction 1
+1.1 Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.2 ProblemAnalysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+2 Methodology 2
+2.1 GeneralDefinitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+2.2 GeneralAssumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2.3 GeneralCostModel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+2.4 CommercialElectricityPrice . . . . . . . . . . . . . . . . . . . . .M. . . . . . . . 4
+2.5 PersonalDeviceAgent-BasedUsageModel . . . . . . . . . . . . . . . . . . . . . 5
+2.5.1 Agent-BasedModelAssumptions . . . . . . . . . . . . . . . . . . . . . . 7
+C
+2.5.2 CapacityandSizeofDestination . . . . . . . . . . . . . . . . . . . . . . . 8
+2.5.3 PublicOutletDensity . . . . . . . . . . . . . . M. . . . . . . . . . . . . . . 8
+2.5.4 DestinationAttendanceoverTime . . . . . . . . . . . . . . . . . . . . . . 9
+2.5.5 VisitorInfluxDistribution . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+i
+2.5.6 DeviceAssignment . . . . . . . . . . . H. . . . . . . . . . . . . . . . . . . 11
+2.5.7 BatteryLife . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+：
+2.5.8 DurationofStay . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.6 ElectricVehiclesEnergyUsageModel . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.6.1 ElectricVehiclesBasedA号ssumption . . . . . . . . . . . . . . . . . . . . . 12
+2.6.2 ElectricVehicleChargerTypes . . . . . . . . . . . . . . . . . . . . . . . . 13
+2.6.3 ElectricVehicleCount . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+众
+2.6.4 ElectricVehicletoOutletRatio . . . . . . . . . . . . . . . . . . . . . . . . 13
+3 ResultsandAnalysis 14
+公
+3.1 ElectricalConsumptionResults . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.2 CostResults . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.3 ElectricV信ehicleCostAnalysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+3.4 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+3.5 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+微
+4 SuggestedGuidelines(Initiatives,Requirements) 18
+5 Conclusion 19
+Appendices
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page1of20
+1 Introduction
+1.1 Problem
+In response to the ever-increasing integration of personal electronics such as mobile phones,
+laptops, and electric vehicles in people’s daily lives, public places are expanding the availability
+of electrical outlets for their visitors. However, this expansion comes with a economic cost that
+must be accounted for. In addition, different public destinations have unique characteristics, such
+as hours of operation, distribution of visitors, and availability of outlets, which impact electricity
+consumptionthroughoutaday. Giventhepotentialeffectsofincreasingpublicchargingofpersonal
+devices,initiativesmustbeimplementedtoreducethecostsofsuchtrends. M
+Simply put, our objective is to model the change in public electrical charging availability and
+develop a model for the economic cost of this increase over the next decade in the United States.
+C
+Wealsoaimtoexplorehowthiscostvariesoverdifferentdestinationsandwaystoreduceit.
+M
+1.2 Problem Analysis
+i
+With the rise of personal electronic devices and the coHrresponding need to charge them, users
+are utilizing public charging stations more and more. Consequently, public places are faced with
+：
+the increasing demand and need to provide public charging stations for the public. However, the
+increased energy consumption has required public places to install more outlets and resulted in
+higher electricity bills. For instance, as p号art of the 907 million dollar expansion of Terminal 2
+openedatSanDiegoInternationalAirport,USB-enhancedpowerportsateveryseatwereadded,
+leadingtotheadditionofmorethan1600intotal[1].
+众
+Businesses and governments, thereby tax payers, are often the ones faced with the installation
+fees for the charging stations and the higher electricity bill. The median cost of installing one
+electric outlet is 193 dollars with a range from 148 to 200 dollars [2]. Electric vehicle stations
+公
+costevenmorewithLevel3chargerscostingaround100000perstation[3]. Fortunately,forsome
+electric vehicle charging stations, the government has offered rebates and incentives. In addition
+totheabilitytoqua信lifyforpubliclevel2rebate,statessuchasAlabamahavegivengrantstocreate
+chargingstations. Similarly,Californiaprovidesloansforthepurchaseandinstallationofcharging
+stationstocustomers[4].
+微
+Yet, despite the additional cost, the increasing number of electric charging stations have also
+been found to have positive effects with places having a increased guest retention rates. The aver-
+agegueststayed17%longeratconventionsand14%longerattradeshowswhileguestengagement
+rates increased by 12% at trade shows[5]. Theorizing that these results are applicable across the
+boardatcoffeeshopsorotherstores,theincreasedgueststaywillleadtomoregoodsbeingbought
+and higher revenues for each destination. In addition, more charging stations help alleviate the
+long waits at airports or the railway station. It also helps reduce the work on technicians and cus-
+todianswhohavehadtodealwithmovingchairsandunpluggedmachineryfrompeoplesearching
+forelectricaloutlets[1].
+Keepingthesefactorsinmind,wheninitiallydevelopingourmodel,welistedouttheaspectsof
+theproblemthatweaimtoaddressalongwiththesectionsinthepaperwheretheyarediscussed:
+• How has public outlet energy consumption changed, and how will it continue to change?
+(MethodsinSection2.5;ResultsinSection3.1)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page2of20
+• Whataretheimpactsonandrequirementsofpublicplaceswithincreaseddemands? (Section
+1.2)
+• What is the financial cost of increasing outlet availability? How is it paid? (Methods in
+Section2.3;ResultsinSection3.2;Section1.2)
+• How does the model change for different types of public places? (Methods in Section 2.5;
+ResultsinSection3.1)
+• Whatcanbedonetoreducethecostsofpublicenergyconsumption? Howdothesechanges
+influencethemodel? (Section4)
+The quantitative questions to be addressed require a mathematical model tMhat can predict eco-
+nomic cost over a span of time, taking into account outlet availability as well as various factors
+thatcapturetheotherdifferencesbetweendifferenttypesofpublicplacesC[andallowustoexplore
+waystoreducecost]. Thus,itisintuitivetocreateamodelofcostwherecostisafunctionoftime
+M
+anddependsonsomeotherfactorsthat,too,aretime-dependent.
+It is simultaneously known that the processes governing outlet availability on a location-by-
+location basis form a complex system consisting of location spiecifics and the number, behavior,
+H
+and interactions of individuals within the location. To simulate such a random system, we choose
+an agent-based model. Using both the cost function and the agent-based model, we aim to in-
+：
+tegrate large-scale changes in electricity parameters over time with small-scale human charging
+behaviors to create a robust and accurate model to predict the cost of charging personal devices in
+public places. Additionally, to model the w号orkings and behaviors associated with electric vehicle
+charging, we created an analytical model to understand the changing cost of public electric vehi-
+cle charging based on parameters such as battery capacity and varying charger rates at different
+众
+chargerstations.
+公
+2 Methodology
+As explained a信bove, our objective is to create a model to estimate the cost associated with the
+useofpublicelectricoutletsforchargingpersonalelectronicdevicesoveratenyearperiodspecif-
+ically for the United States. Using this base model, we plan to vary various factors to explore the
+微
+impactsofincreasesinpublicoutletavailabilityinseveralcommonpublicdestinations. Finally,by
+analyzing our model’s results, we will propose initiatives and guidelines to reduce the detrimental
+costs associated with the growth in energy demand associated with charging personal electronic
+devicesinpubliclocations.
+2.1 General Definitions
+Public Spaces: Areas available to the general public that do not require specialized access. Ex-
+amples include public squares, parks, beaches, libraries, coffee shops, airports, train stations, bus
+stations,malls,movie,andreststops.
+Personal Electronic Devices: Non-commercial devices which require periodic charging to func-
+tion, including laptops, mobile phones, tablets, radios, cassette players, portable digital assistants,
+audiodevices,watcheswithinputcapability,andreminderrecorders.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page3of20
+Destinations: Destinations are the different types of public places where a Visitor may consume
+electricalpowerfromanoutlet. Ourdefinitionforeachdestinationweevaluateisgivenbelow:
+Airports: Publicairportsofanysize(ratherthanprivateairports).
+Coffee Shops: Sit-down coffee shops with seating (rather than drive-through or on-the-go
+coffeeshopslocatedinlargerbusinessesorinstitutions).
+Railway Terminals: Only Amtrak Stations, which are official United States government
+passengerrailroadstations.
+Libraries: Publiclibraries(ratherthanacademiclibraries,schoollibraries,speciallibraries,
+Armed Forces libraries, and government libraries, since their public availability and use is
+M
+unclear).
+Schools: Public secondary and post-secondary schools, as it is more likely that students at
+C
+theseschoolshavedevicestocharge.
+ShoppingMalls: Allmallsopentothepublic,fromstripmallstoshoppingcenters.
+M
+Offices: Companyoffices,whicharenotavailabletothepublic.
+i
+Visitors: The people who go to each destination. For instHance, for airports the visitors would be
+thepeopleboardingtheairplanes.
+：
+Capacity: Thetotalnumberofvisitorsadestinationcanholdatanygiventime.
+Usage/Electrical Consumption: Amoun号t of energy consumed by personal device charging, in
+unitsofkWh.
+众
+Flybys: Visitors to a certain destination who do not sit/stay at the location for prolonged periods
+oftime. Forexample,atacoffeeshopaflybywouldvisit,buyacoffeeandleave,withoutcharging
+theirdevices.
+公
+2.2 General Assumptions
+信
+Assumption: The growth of number of US locations for each destination type of interest over the
+next10yearsisnegligible.
+微
+Justification: The%changesinnumberofUSlocationsperyearforAirports,CoffeeShops,
+Railway Stations, Libraries, and Schools were found to be -0.5% (Appendix B3)[6], 0.56%
+[7],0.125%(AppendixB2)[8],0.011%(AppendixB4)[9],and0.0037%(AppendixB1)[10],
+respectively. All of these values are too small to be of significant impact in our model;
+therefore,growthinnumberoflocationscanbesafelyignored.
+Assumption: Populationgrowthoverthenext10yearsisinconsequential.
+Justification: US population growth has stagnated to 0.62% per year, equating to a 6%
+growth in 10 years [11]. While this percentage is not insignificant, a majority of the growth
+can be attributed children under the age of 10 who generally do not have personal devices
+andthusdonotcontributetoourmodel.
+Assumption: The weekday operational hours are a reasonable estimate for the operational hours
+throughouttheweek.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page4of20
+Justification: Whiletheremaybedifferentoperationalhoursduringtheweekendcompared
+to the weekday, there are more weekdays and it can act like a good approximate for the
+weekendoperationalhours. Thedifferenceisnegligibleinthelongrun.
+Assumption: Percentage of the population with personal electronic devices (excluding electric
+vehicles)doesnotchangeoveratenyearperiod.
+Justification: AsdiscoveredbythePewResearchgroup,personalelectronicdevices,specif-
+ically phones, laptops and tablets have reached market saturation and as such there has been
+nogrowthinrecentyears[12].
+Assumption: Electricefficiencywillremainconstantoverthenext10years.
+Justification: Since we are only projecting and thereby concerned about the next ten years
+M
+ofelectricityconsumptionandcost,wecanreasonablyassumethattherewillbenoextreme
+innovationsinelectricefficiencytohaveanon-negligibleeffectonourmodel.
+C
+2.3 General Cost Model M
+To model the growing cost of public electricity consumption for personal devices (C ($)) over
+i
+time, we split C into two factors: commercial price of electricity per kilowatt hour (P ($/kWh))
+H
+and total electricity consumption for personal devices in the public commercial sector (U, kWh).
+Thus,theequationgoverningourcostmodelis ：
+C(t)=P(t)∗U(t) (1)
+号
+P(t) is a relatively straightforward function of time that can be derived from data and is dis-
+cussedinSection2.4. Ontheotherhand,totalelectricityconsumptionbyonlypersonaldevicesin
+众
+public locationsU(t) is complex and depends on interactions between visitors and charging spots
+inadestinationonasmallscale. Thus,theagent-basedmodelwillbeusedinthecalculationofU,
+whichwillbefedintoEqu公ation1toproducecost.
+2.4 Commercial Electricity Price
+信
+TodeterminethechangeincommercialelectricitypricePovertheyears,weanalyzedelectric-
+ity prices from 2001 to 2018 in cents per kilowatt hour ( /kWh) from the US Energy Information
+微
+and Administration (See Appendix A1) [13]. From a gen¢eral practical understanding of trends in
+electricity use, a logarithmic regression is the most fitting. Specifically, the price of electricity has
+increased due to the cost of implementing infrastructure to support increased electricity demands.
+Over the years, as the necessary infrastructure is constructed, the change in the price of electricity
+hasdecreased,andthuspriceincreasesataslowerandslowerrate.
+The trend of commercial electricity price fitted to a trendline of Price = 359.06∗lnyear−
+2721.2. Usingthisprojectedtrend,thefuturepriceofelectricitywascalculated(Table1)By2028,
+thecommercialpriceofelectricityisexpectedtoreach12.97 /kWh.
+¢
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page5of20
+|     | Year CommercialPriceofElectricity( | /kWh)       | %ChangeinPrice |
+| --- | ---------------------------------- | ----------- | -------------- |
+|     | 2019                               | 11.37500643 | —              |
+¢
+|     | 2020 | 11.55280292 | 1.563045164 |
+| --- | ---- | ----------- | ----------- |
+|     | 2021 | 11.73051141 | 1.538228366 |
+|     | 2022 | 11.90813199 | 1.514175948 |
+|     | 2023 | 12.08566475 | 1.490853143 |
+|     | 2024 | 12.26310978 | 1.468227261 |
+|     | 2025 | 12.44046715 | 1.446267537 |
+|     | 2026 | 12.61773697 | 1.424944991 |
+|     | 2027 | 12.79491931 | 1.404232297 |
+M
+|     | 2028 | 12.97201425 | 1.384103673 |
+| --- | ---- | ----------- | ----------- |
+Theforecastedcommercialpriceofelectricityfrom2019to202C8with%changeinprice
+Table1:
+betweenyears.
+M
+As seen from Table 1, the percent increase in commercial price of electricity year to year is
+i
+around 1.45% in the next 10 years. While the residential price and commercial price of electricity
+H
+are not directly proportional, the US Energy Information Administration projected the residential
+20：19
+price of electricity to increase 0.8%-1% from to 2020[14], indicating that our estimation
+producesreasonablevalues.
+号
+| 2.5 Personal | Device Agent-Based | Usage Model |     |
+| ------------ | ------------------ | ----------- | --- |
+This model produces U, the t众otal electricity consumption for personal devices in the public
+commercialsector. Wequantifytheamountofelectricalconsumptionfrompublicchargingoutlets
+for personal electronic devices at each destination and how the energy consumption changes over
+公
+time.
+Since outlet usage at a destination is inherently contained within a system of randomly inter-
+acting components, we develop a computational agent-based model using the NetLogo language
+信
+to describe the relationships between visitors and the availability of outlets. Our model represents
+a single instance of any destination (e.g., a single coffee shop) by an arrangement of outlet and
+non-outlet微seats(Figure3). Throughoutthecourseofa”day”,acertainnumberofvisitors“enter”
+the destination according to a visitor influx distribution. A visitor may own any subset of mobile
+phone,laptop,tablet(includingtheemptyset)withdevicesprobabilisticallyassignedaccordingto
+theirprevalencewithinthegeneralpopulation.
+For each device, a random initial battery level is assigned based on the tendency that devices
+have less battery later in the day due to use. Each visitor with at least one device chooses an
+availableseat(favoringoutletseats)andstaysforarandomdurationwhilevisitorswithnodevices
+represent flybys who do not go to a destination to use devices (e.g., people at a coffee shop who
+simply grab coffee and go). Each device type has a constant battery drainage and charge rate;
+at each “tick” of the model, every device drains, and the device with minimum battery for every
+visitor at an outlet seat is charged (unless all devices are at 100%). A visitor leaves their seat
+when either 1) their stay duration expires or 2) they run out of battery (0%) on any one of their
+devices. The seat numbers and outlet ratios, total visitors, visitor influx distribution, and visitor
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page6of20
+staydurationarealldestination-dependentandcalculatedfromavailabledataandstatistics,which
+aredetailedinthesectionsfollowingtheassumptions.
+M
+C
+M
+i
+H
+Figure 1: NetLogo Model Flowchart. Components are detailed in the following sections after
+：
+assumptions
+号
+众
+公
+信
+微
+(a)Duringthemorningrushhour (b)Laterintheday
+Figure2: NetLogomodelforCoffeeShop. Greenseatshaveoutlets,whileblueonesdonot. White
+textdisplaysremainingbatterylevelsandremainingdurationindestination.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page7of20
+2.5.1 Agent-BasedModelAssumptions
+Assumption: Shopping malls, parks, beaches, movie theaters, rest stops and offices have a negli-
+gibleamountofpubliccharging,andconsequentlyaninsignificantcost.
+Justification: People do not stop to charge their personal devices while they are shopping
+since they are constantly moving and there are not many outlets publicly available. Addi-
+tionally, offices, as defined in General Definitions, are not available to the public, so there
+is no possibility of public charging. For parks and beaches, there are no available charging
+outlets. Finally, for movie theaters and rest stops, despite the presence of available charging
+outlets,thetimespentchargingislargelynegligiblebecausepeoplehavelittletimetodoso.
+Assumption: CharginginairportsonlyoccurswhilepassengersarewaitingatMboarding/departure
+gates. Similarly,charginginrailwaystationsonlyoccursatplatformswhilepassengersarewaiting
+toboardtrains. C
+Justification: People are in transit at all other locations in an airport/railway station. There-
+fore, the only time travelers have to charge personal devicMes is when they are at gates or
+platforms.
+Assumption: ThenumberofCanadianAmtrakridersandstatioinsarenegligible.
+Justification: Of the total 526 Amtrak stations inHNorth America[8], only 9 stations are
+located in Canada [15]. This accounts for only 1.71% of total Amtrak service which is a
+：
+negligibleproportionforourcalculations.
+Assumption: At a school, students usually arrive between 7 and 7:30 am. There is a inconse-
+quential amount that arrive/leave school th号roughout the middle of a school day for appointments
+orotherobligations
+Justification: Since the average U.S. public school day begins at 7:59 am, all students will
+众
+arrive between 7:30 am and 8 am[16]. This assumption ignores tardy arrivals and slight
+variationsinstudentattendanceoverthecourse ofaday,whicharebothproportionallyneg-
+ligible.
+公
+Assumption: Thepopulationofteachersisnegligiblewhencomparedagainstthestudentpopula-
+tioninaschool.
+Justification信: The average student to teacher ratio in the American Public School system is
+16 students to 1 teacher[17]. Since teachers account for less than 6% of the total population
+in the school, it can be relatively safely assumed that students account for the vast majority
+微
+ofelectricityusageforpersonalelectronicsinschools.
+Assumption: The only devices that will be charged at a public place are a mobile device, laptop,
+oratablet.
+Justification: As concluded by the Pew Research Center in June 2019, nearly 77% of the
+American adult population have phones, 74% have laptops, and 53% have tablets. Other
+personal devices, including radios, CD,smartwatches, and E-readers are owned byless than
+25%ofthepopulationandarenotusuallychargedinpubliccommercialdestinations,making
+theirimpactonourmodelinconsequential[18].
+Assumption: Before noon, the percent of battery someone initially walks into a destination is a
+random value between 50% - 100%. After noon, the percent of battery is a random value between
+25%-75%.
+Justification: As the day progresses the battery of someone’s devices decreases as they are
+beingusedmore.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page8of20
+Assumption: The time it takes to charge the battery of a personal device is linear throughout the
+entire charging process, e.g. charging from 5% to 6% is the same amount of time from 90% to
+91%.
+Justification: According to Electropedia, the charging percentage vs voltage of a typical
+lithium ion battery (common phone battery) is relatively linear in all stages except for the
+verybeginningandendstagesofcharging[19].
+Assumption: Avisitorwillusealloftheirdevicesforthefulldurationatadestination.
+Justification: This justification is used to simplify our model and is based on the fact that
+inanincreasinglyconnectedworld,multipledevicesareoftenusedinconjunctionformulti-
+tasking. Furthermore,devicesconsumepowerevenwhennotbeingdirectlyused.
+M
+Next, we describe the definitions and calculations of several important variables that change be-
+tween destinations. The ways in which the various factors change hereCrepresent our answer to
+howthemodelchangesfordifferentdestinations.
+M
+2.5.2 CapacityandSizeofDestination
+i
+The average capacity determines the maximum amounHt of people at a given destination at the
+same time. As capacity is dependent on the layout of each individual destination, we estimated
+：
+averagecapacity. Whenlackingsufficientdata,wecalculatedcapacitybasedontheapproximation
+that there is 1 seat for every 36 ft2 [20]. Please reference [WHICH APPENDIX] to view the
+derivationsforeachdestination’saveragecapacitynumber.
+号
+Destination AverageCapacityNumber SquareFoot
+Airports 众visitors2,709 97,541
+CoffeeShops 50-70guestsonaverage 1000-1750
+RailwayStations 70Visitors 2534
+公
+Schools —Students 173,727
+Libraries 600people 21,500
+信
+Table2: Theaveragecapacitynumberandsquarefootforeachdestination
+微
+2.5.3 PublicOutletDensity
+To determine how cost changes in relation to an increase in the number of publicly available
+outlets, we created a measure called public outlet density (POD) that gives the number of square
+feetper1outletavailabletothepublic.
+Additionally, we wanted to find the ratio between the number of outlets that existed with a
+certainpublicdestinationandthenumberofseatsthatexisted. Thissaturationofseatswithoutlets
+was thought to be a well-off metric of what a public destination might strive to increase and an
+easy-to-understand value. The number of seats that are in an establishment was determined to
+be its square footage divided by 36 sq. ft./person as this is the square feet for an occupant to fit
+comfortablyinanestablishment.
+sq. footage
+outlet
+pod
+= ratio (2)
+sq. footage seat
+36
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page9of20
+In our agent-based model we varied the POD value as we believed that public destinations
+would strive to increase this value, thus making more outlets available to the public. To find
+bounds in which to vary POD we looked at the outlet ratio. A 1 to 1 ratio for number of outlets to
+seat
+seatswouldbeoptimalandthuswefoundthePODvaluethatwouldproducethisratio, 1 ,andset
+36
+this to our upper bound. However, this upper bound was then decreased for Airports and Schools
+because it would be impossible (and undesirable in the latter case) to install so many outlets. On
+the other hand, a 0 to 1 ratio is least optimal. This gives a range of 0 to upper bound, between
+which 3 more evenly spaced POD values are evaluated; in order, the 5 levels for POD are named
+zero, low, low-mid, mid-high, and high. Note that low-mid is twice the density of low, and high
+twicethedensityoflow-mid.
+M
+2.5.4 DestinationAttendanceoverTime
+C
+Energyconsumptionofaparticulardestinationwasthoughttobereliantonthenumberofthat
+M
+particular destination in the United States as well as the average number of people (v) that go to
+these destinations (d) per day. Because these two attributes are inherently correlated, we deemed
+itnecessarytoincorporatethemintoonevariabledescribingtheinumberofpeopleperdestination.
+H
+Tounderstandhowthisvaluechangesovertime,wedifferentiateditproducingtheequation:
+：
+d v dv 1 dd 1
+( )= ∗ − ∗ ∗v (3)
+dt d dt destinations dt destinations2
+Looking at (site assumption) , we see t号hat the change in the number of a particular destination
+is insignificant and thus can be reduced to 0. This makes our differential equation completely
+dependentonthefirsttermasthesecondonereducesto0.
+众
+dv %∆∗destinationvisitors
+= ∗v
+dt year
+公
+IntegratingthisgivesustheequationbelowwhereIisourinitialvalueofpeopleperdestination.
+v
+信 =Ie%change∗t (4)
+d
+Through our research, we were able obtain % change values for the number of attendees of a
+微
+particulardestination. Forsecondaryschools,the%changefollowedapiecewisefunctionmeaning
+the % change value projected to be constant from 2016 to 2023 and then change to another value
+thatwouldstayconstantfrom2023to2028.
+2.5.5 VisitorInfluxDistribution
+Todevelopadistributionfunctiondescribingthedensityofpeoplethatcomeatacertaintimeat
+whichadestinationisoperational,weresearchedthe”peak”hoursofeverydestinationbasedonthe
+Google Popular Times. In order to determine Google Popular Times, Google uses aggregated and
+anonymized data from users who have opted in to Google Location History and the popular times
+are based on the average popularity over the past several weeks[21]. Popular times correspond to
+therelativenumberofvisitorswhocametothedestinationwhichwecandefineasvisitorinflux.
+WelookedatmultiplelocationsacrosstheUnitedStatestoensurethatthetrendsinpopularity
+were not influenced by regional differences. Figure ?? describes one of such data points for the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page10of20
+Los Angeles International Airport. Looking at airports across the nation, we noticed that airports
+tendtofollowabimodaldistributionwithpeaksaround11amand8pm.
+(a)L.A.InternationalAirportDistribution M
+(b)NormalizedAirportDistributionFunction
+C
+Figure 3: The influx distribution and normalized airport distribution function of the L.A. Interna-
+tionalAirport. M
+Once we collected visitor distributions of each destination, we devised quintic and quartic fits
+i
+to describe this distributions of people throughout the dayHby utilizing specific data values of time
+and number of people. We then normalized these distribution curves for any location of a specific
+：
+destinationbyensuringthatthetrapezoidalRiemannsumofthefunctionwasequalto1. Bydoing
+so, we created a probability density function so that we could calculate the percentage of total
+visitorsarrivinginagiventimeperiod. 号
+For example, in the Airport distribution of the L.A. Internal Airport shown above, the area
+under the curve between 3 and 4 am can be calculated to be 0.0188, so approximately 1.88% of
+thetotalvisitorscomeinthistime众frame.
+t2−t1
+∑
+公2 f(x
+i
+)+ f(x
+i+1
+)
+∗
+1
+=normalization factor (5)
+2 2
+n=1
+The process of normalization was undertaken by performing a trapezoidal Riemann sum for our
+信
+quintic functions (for each destination) using the hours that a particular destination is operation as
+our bound and a 30 minute interval. The function was then divided by the value of the Riemann
+sum (norm微alization factor) as to make the new Riemann sum value 1 while maintaining the x-
+interceptsofthefunction.
+For the equation above t −t is equal to the working hours of a destination divided by 2 for
+2 1
+the number of 30 min interval that this time span contains. Note that all students at a school come
+infrom8:00-8:30asnotedinourassumptions.
+Destination WorkingHours
+Airport 24Hours
+CoffeeShops 04:00-16:00
+RailwayStations 24Hours
+Schools 08:00-15:00
+Libraries 09:00-18:00
+Table3: WorkingHoursofeachdestination.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page11of20
+Thisnormalizationisimportantasthenatevery30minuteintervalourmodelisabletoretrieve
+a certain density from our normalized equation and then multiply this by the average number of
+visitorsforaparticulardestination,thusgivingusthenumberofpeoplethatwouldvisitwithinthe
+specified 30 minute interval. The calculated number of people that would visit within a specified
+30 minute interval was rounded and then they were randomly distributed across the 30 minute
+interval.
+Destination NormalizedVisitorInfluxDistributions
+Airport y= 1 (−6.991+4143x−0.7746x2+0.06206x3−0.002372x4+0.00003342x5)
+36.648
+CoffeeShop y= 1 (109.8−72.36x+17.47x2−1.932x3+0.09991x4−M0.001963x5)
+28.395
+RailwayStation y= 1 (−6.991+4143x−0.7746x2+0.06206x3−0.002372x4+0.00003342x5)
+36.648 C
+School
+y=2
+M
+Library y= 1 (−208.4+64.58x−7.340x2+0.3651x3−0.006703x4)
+14.307
+i
+H
+Table4: NormalizedVisitorInfluxDistributionsforeachdestination.
+：
+2.5.6 DeviceAssignment
+Based on research, we found the perce号ntage of US adults that have a mobile phone, laptop, or
+tablet, as per our assumption regarding personal devices. These probabilities were implemented
+within our NetLogo model, as when a visitor enters the destination, they are either assigned a
+众
+possiblyemptysubsetofmobilephone,laptop,andtabletbasedontheprobabilities. Ifavisitoris
+assignednodevices,theyareconsidereda“flyby”meaningthattheyareataparticulardestination
+forpurelycommercialreas公onsandwillnotbesittingdowntochargetheirdevice. Theprobability
+thatsomeonehadamobiledeviceis0.77,laptopis0.73,andtabletis0.53.
+信
+2.5.7 BatteryLife
+Additionally, every device type (mobile phone, laptop, and tablet) was assigned its own lin-
+微
+ear rate of battery drainage and charging (in % per min). Every minute in the simulation, every
+device of every visitor drains, and for the visitors at an outlet seat, their lowest-charged device is
+also charged (unless all devices are at 100% battery, in which case no charging and no electrical
+consumptionoccurs).
+Drainage rate (de) was derived from each device’s average battery life . Charging rate (dc)
+dt dt
+wasderivedfromtheelectricalcapacityofeachdevice’sbatteryaswellastheelectricitythateach
+device’schargercanintakefromanoutletperminute.
+de 100%
+= (6) dc 100%
+dt deviceavg.batterylife(min) = (7)
+dt devicebatterycapacity(kWh)
+devicechargerate(kWh)
+min
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page12of20
+2.5.8 DurationofStay
+Table 5 displays the range of time that an average US visitor will spend at a destination; each
+visitor is assigned a random duration of stay within the range. These values influence the time
+spentchargingpersonaldevices.
+Note that airport and railway station waiting time does not include time spent in the security
+linebecauseofourassumptionthatnobodychargestheirphonewhilewaitinginthesecurityline.
+|     |     | Destination     | RangeofStayDuration |     |     |
+| --- | --- | --------------- | ------------------- | --- | --- |
+|     |     | Airports        | 1hour-3hours        |     |     |
+|     |     | CoffeeShops     | 1.12-3.4hours       | M   |     |
+|     |     | RailwayStations | 30-45minutes        |     |     |
+|     |     | Schools         | 6.5hours            | C   |     |
+|     |     | Libraries       | 0.65-1.42hours      |     |     |
+M
+Table5: Therangeoftimeanaveragevisitorspendsateachdestination
+i
+H
+| 2.6 Electric | Vehicles | Energy Usage | Model |     |     |
+| ------------ | -------- | ------------ | ----- | --- | --- |
+：
+With the rise of electric vehicles (EVs) over the past couple of decades, electric vehicles are
+a common occurrence used by people and considered a personal device. However, due to distinct
+differencesbetweenelectricvehiclesando号therpersonaldevicessuchasmobilephonesorlaptops,
+we considered their factors separately. A computational Python model was created in order to
+analyticallycalculatetheEVelectricityconsumptionanditsdependenceontime.
+众
+0.3∗batterycapacity∗outlets=dailyEV electricityconsumption (8)
+公
+0.3∗batterycapacityrepresentstheamountofenergyittakestochargeanEVbatteryby30%
+per one outlet. An average battery capacity of 58.8 kwh for electric vehicles was used in order to
+simplify our model. This resulting number is then multiplied by the number of available public
+信
+outlets to find daily EV electricity consumption. This equation was restricted by the amount of
+chargingthatcouldoccurinonedaybysummingupthetimeachargewouldtake.
+微
+batterycapacity
+|     |     | 0.3∗    | =chargingtime |     | (9) |
+| --- | --- | ------- | ------------- | --- | --- |
+|     |     | charger | wattage       |     |     |
+Once a 24 hour limitwas reached, aday was ended, and a new day would start until a 365day
+| cyclewascompleted. | Thisprocesswasdoneformultipleyears. |     |     |     |     |
+| ------------------ | ----------------------------------- | --- | --- | --- | --- |
+2.6.1 ElectricVehiclesBasedAssumption
+Assumption: Anownerofanelectricvehiclechargestheircaronceaday
+Justification: Since electric vehicle charging is cheap and common, owners tend to charge
+theircaronceaday,similartophones,toprepareforthenextday.
+| Assumption: | Chargingstationsarealwaysbeingused. |     |     |     |     |
+| ----------- | ----------------------------------- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page13of20
+Justification: Due to the high frequency of electric vehicles, low number of charging sta-
+tions,andlongtimetocharge,chargingstationsarealwaysoccupied.
+Assumption: 20%ofallchargingforelectricvehiclesaredoneatapublicchargingstation.
+Justification: AccordingtotheOfficeofEnergyEfficiencyandRenewableEnergy,”electric
+vehicle drivers do more than 80% of their charging at home” [22] due to the low, stable
+residentialelectricityrates.
+Assumption: Location of types of electric vehicle charging stations are randomly distributed
+acrossthecountry.
+Justification: In order to simplify our model, the concentration of electric vehicle charging
+M
+stationsinlocationssuchasCaliforniawasignored[23].
+Assumption: Anelectricvehiclecharges30%theirbatterywhenatapuCblicchargingstation.
+Justification: AnaverageEVbatterycanhandle100miles[24]andthus30%ofthisallows
+M
+a person to drive 30 miles. We deemed this a valid amount at a public station as an average
+person’sworkcommuteis30minutes[25]and30%wouldbeplentytogethomewherethey
+canchargetheircar. i
+H
+2.6.2 ElectricVehicleChargerTypes ：
+There are three different type of electric vehicle charges: DC fast, Level 1, and Level 2. Each
+is able to charge at various voltages and 号currents, thus charging vehicles at different rates. Our
+chosenunitwaskWasourmetricformeasuringEVbatterycapacitywaskWh.
+ChargerT众ype Volts kW RelativeAmounts
+Level1 120 1.44 5.4%
+Level2 240 9.6 79.7%
+公
+DCFast 480 45 14.9%
+Table6: ChargingintensityofvariousEVchargertypes[26].[27].
+信
+2.6.3 ElectricVehicleCount
+微
+The electric vehicle industry is booming and thus the rate at which electric cars on the road
+withintheUnitedStatesisincreasingrapidly. Byrunningdifferentkindsofregressionsonthedata
+found for the number of electric cars in the US over time, we were able to produce the quadratic
+equation 18,590t2−418,483t+2∗106 with a coefficient of determination of 0.9947 [28]. This
+equation is able to model the number of electric vehicles on the road in the USt years after 2000,
+aselectricvehiclesweren’tsubstantiveenoughtocontributetoelectricityconsumptionpre-2000.
+2.6.4 ElectricVehicletoOutletRatio
+A meaningful metric to consider when looking at the demand for public energy consumption,
+is the electric vehicle to outlet ratio. Similar to the previous section, various types of regressions
+were run for data over time for this ratio [28] and produced the quadratic equation 0.1247t2+
+0.6053t+5.5952withacoefficientofdeterminationof0.9776.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page14of20
+3 Results and Analysis
+3.1 Electrical Consumption Results
+We run the NetLogo simulation 100 times for each combination of Year and Public Outlet
+Density and plot the mean daily electrical consumption (Figure 4). Note that outlet density of 0 is
+notplottedas0outletsnecessarilyresultsinanelectricalconsumptionof0.
+M
+C
+M
+i
+(a)Airports H (b)CoffeeShops
+：
+号
+众
+公
+(c)RailwayStations
+(d)Schools
+信
+微
+(e)Libraries
+Figure 4: The forecasted daily electrical consumption (kWh) from 2018-2028 for different public
+outletdensities(colors)foreachdefineddestination(a-e).
+Severaltrendsarerevealedinthesegraphs. First,alltrendsgenerallyfollowtrendsinnumberof
+visitorsovertheyears,whichmakessense. ElectricalconsumptioninRailwayStationsandCoffee
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page15of20
+Shops increases as more visitors come to these destinations. Libraries experience a decrease in
+electrical consumption, and Airports and Schools remain relatively constant, again reflecting the
+visitor data. Secondly, Railway Stations and Libraries do not depend greatly on the public outlet
+density. Thisisbecauseevenunderthelowestdensity,allvisitorstoeachofthesedestinationshas
+outletaccess. Forrailwaystationsthisisduetothelowdailyvisitors,andforlibrariesisduetothe
+generalhighavailabilityofoutlets. Asimilareffectisobservedwithonlythehighesttwodensities
+in both Airports and Coffee Shops; this means that for airports, a public outlet density of 3 outlets
+every 576 ft2 is the minimum threshold at which every visitor throughout the day is guaranteed
+outlet access, and for coffee shops the same occurs at 3 outlets every 144 ft2. For libraries, it
+is interesting to observe the great variability in daily electrical consumption; this is attributable
+M
+to the visitors being condensed in the short working hours, which the random agent-based model
+simulatedwell. Schoolsshowedaclearseparationbetweeneachpublicoutletdensity,showingthat
+C
+even at a relatively high outlet availability, the school cannot provide an outlet for every student,
+whichmakespracticalsense.
+M
+3.2 Cost Results
+i
+H
+：
+号
+众
+公
+(a)LowPOD (b)Low-MidPOD
+信
+微
+(c)Mid-HighPOD (d)HighPOD
+Figure 5: The total projected electricity cost from public charging stations for the years 2018 -
+2028,separatedbythePublicOutletDensity.
+To go from per-day kWh for each destination to total annual costs, we multiplied by 365 days
+and used Equation 1 to generate Figure 7. As years go on, due to increasing numbers of visitors
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page16of20
+to each destination, cost also increases slowly. More drastic increases in cost, from $150,000 to
+$500,000, are observed as POD increases from the Low to High setting. Additionally, it is clear
+that in all cases, School and Airport are the two destinations with the highest total annual cost.
+This is attributable to the large number of Schools in the US and the high number of visitors to
+each airport. Coffee Shops, Libraries, and Railway Stations contribute much less to the overall
+electricalcostofpersonaldevicecharging. Infact,asPODincreases,largecontributorstocostare
+made even larger contributors; under High POD, Schools contribute to about 80% of total annual
+cost.
+M
+C
+M
+i
+H
+：
+(a)LowPOD (b)Low-MidPOD
+号
+众
+公
+信
+(c)Mid-HighPOD (d)HighPOD
+Figure6: T微heprojectedelectricitycostfrompublicchargingstationsfortheyears2018-2028for
+eachindividualdestination,separatedbythePublicOutletDensity.
+In addition to analyzing total annual cost from all destinations, we also investigate annual cost
+per individual location of each destination, e.g. how much money a single coffee shop expends
+onprovidingpersonaldevicechargingperyear6. SchoolsandAirportsremainthehighest-valued
+destinations, but Airport is now greater than School because each individual School does not ex-
+pend as much as each individual Airport, which has many more people per day. Again, cost
+increases over time and increases with POD as well, except in the cases discussed in Section ??
+where electrical consumption does not increase with POD. Overall, cost per destination increases
+byafactorof2-3fromthelowtohighPODsetting.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page17of20
+3.3 Electric Vehicle Cost Analysis
+M
+C
+(b)EVEMnergyConsumptionCost
+(a)EnergyConsumptionandEVtoOutletRatio
+Figure 7: The projected energy consumption, electric vehicle toioutlet ratio, and cost for electric
+H
+vehiclesforthenext10years.
+：
+As per seen through our graph, our computational model was able to predict the yearly con-
+sumption of electricity from public charging of electric vehicles. This data was seen to be quite
+号
+accurate when compared to known data for yearly consumption of electricity for EV. For the year
+2018ourmodelpredictedapublicelectricityconsumptionof0.618TWh. 2.85TWhofelectricity
+were consumed in total for electri众city cars, but it’s important to note that only 20% of charging
+is actually done at public charging locations [22] which provides us with a value of 0.57 TWh of
+electricityconsumedthroughpubliccharging.
+公
+The graph above also shows a clear trend of the increasing cost in electricity consumption
+as time progresses which is most likely attributed to the rapidly increasing number of EVs and
+the demand for charging. Additionally, the electric vehicle to outlet ratio is also increasing over
+信
+time but at a faster rate. Theoretically, if the vehicle to outlet ratio was able to decrease then the
+consumptionofelectricitybyelectricvehicleswouldbeabletoincreasefastersincetheadditional
+outletscou微ldalsobecomesaturated.
+3.4 Strengths
+Our model is robust with nearly all inputs in the model and destinations statistically based
+on real-world data from trusted websites and governmental agencies such as the Department of
+Energy and U.S. Energy Information Administration. With the large data set of information we
+accumulated, our agent-based model accounts for a number of factors that determine electricity
+consumption, such as availability of outlets depending on the influx of visitors to a destination
+overtime,tothechangeinthenumberofdestinationsinacategoryoveraseriesofyear.
+Additionally, our agent-based model for usage allows accurate representation of the inherent
+random interactions present within any system. We can run a large sample size of 100 trials for
+everycombinationofoutletdensityandyear,givinganaccurateestimationoftheexpectedcostof
+energyconsumption.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page18of20
+Ourtime-basedequationallowsustotakeintoaccounthowfactorswillchangeovertime. For
+instance, the number of visitors that go to libraries will decrease in the future as people convert
+moretoelectronicreadingdevices.
+Finally, one of the most unique aspects of our model is the ability to take account the varying
+characteristicsofeachdestinationanddevelopamodelspecificallyforeachdestinationandpublic
+outletdensity. Ratherthangiveageneralizedcostduetopublicelectricconsumptionovertheyears
+basedontheaveragedestinationcharacteristics,weareabletospecifytheinputs. Forexample,the
+visitor influx distribution of a school is a constant with all visitors, otherwise known as students,
+coming at the beginning of the day and not leaving. On the other hand, in a coffee shop, visitors
+maycomevariablythroughoutthedaywithapeakduringbreakfastandlunchhours.
+M
+3.5 Weaknesses
+C
+Our model was designed using information from the US and is not easily applicable to other
+M
+countries. For instance, since the US is one of the most developed countries in the world, it has a
+majority of the necessary infrastructure needed for the transmission of electricity. Consequently,
+i
+weareabletomodelthecommercialpriceofelectricitychangeforthenext10yearasalogarithmic
+H
+function. On the other hand, the commercial price of electricity may be significantly higher and
+increasefasterforadevelopingcountrysuchasAl：bania.
+Moreover, in our research to back our data, there was an inconsistency in sources for related
+pieces of information due to specificity of information needed for different inputs. However, they
+号
+arestillagoodestimate.
+Our model only considers certain public spaces as defined in General Definitions. While this
+assumptionwasbasedonsoundju众stifications,thesumofnegligiblecontributionstowardsthecost
+ofchargingpersonaldevicesinpubliccouldimpactourmodel.
+Ourmodellikelyoverestimateselectricalconsumptionbecauseinreality,alargeproportionof
+visitorstoacoffeeshop,fo公rexample,wouldbeflybyswhoonlyintendtograbcoffee.
+Finally,theagent-basedmodeldoesnottakeintoaccountthatmostoutletsintheUSarepaired,
+nor the possible impacts of tables with multiple seats or visitors arriving in groups. However, the
+信
+model is still a good representation of the effects of limited and increasing outlets in a destination
+withnon-uniformlyarrivingvisitors.
+微
+4 Suggested Guidelines (Initiatives, Requirements)
+Asourmodelhasshown,inthecomingyears,aspublicplacescontinuetoincreaseoutletavail-
+abilityanddemandforelectricitycontinuestogrow,electricityconsumptionwillonlyincrease. To
+combatthisincreasingcost,severalmeasurescanbetakentoimprovedeviceefficiencyandreduce
+associatedcostsforpublicplaces.
+Specifically, battery life can be greatly improved through research in more efficient batteries
+and improved battery usage through the further development of charge recovery and low battery
+algorithms. Researchers across the world are currently tackling this problem with advances in
+Sodium and Potassium based batteries [29], and nanolithia cathode batteries[30] creating new
+batterieswithincreasedchargingcapacityandenergyefficiency. Energyefficiencycanalsobeim-
+provedthroughtheimprovementofindividualcomponentswithineachdevicewillbringdownthe
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page19of20
+total energy consumption of the device. For example, the optimization of energy consumption for
+hardware such as monitors, CPU’s and interfaces, will improve energy efficiency. Our model al-
+lowsfortheseadjustmentsthroughthedrainingandchargingratesofindividualdevicesdescribed
+inSection2.5.7.
+Additionally,individualdestinationsmayimplementrestrictionsontheavailabilityofcharging
+outletstoreducethecostassociatedwithchargingpersonaldevices. Indoingso,ourmodelpredicts
+the cost of electricity to decrease as a result of fewer outlets for visitors to use. Our model allows
+forthisadjustmentwithvariationinthePODorpublicoutletdensitydescribedinSection2.5.3.
+Furthermore,withtheintegrationofelectricvehiclesintomainstreamautomobiles,itisessen-
+tial to improve the car battery efficiency. One of such ways is the implementation of silicon based
+M
+electrodes which have an increased capacity of almost 20 times the value for current lithium-ion
+based batteries. Implementations of these devices in the future will reduce charging necessity and
+C
+increasebatteryefficiency[31].
+Allofthesefutureimplementationswillalterourmodel;however,givenourrobustmodel,only
+M
+slight changes must be made to account for these changes in the coming years. For example, to
+accountforincreasedbatteryefficiency,ourmodelwouldchangetherateofdepletionofchargeas
+i
+it is being used, the rate of battery replenishment, and the ranges for initial battery charge. These
+H
+variables would need to be altered because with higher efficiency batteries, less charge is lost in a
+givenunitoftimeleadingtolowerrateofdepletion：,andahigherrangeofinitialbatterycharge. By
+accountingfortheseadjustments,ourmodelwouldpredictwoulddecreaseintotalcostassociated
+withchargingpersonaldevicesinpublicareas.
+号
+Finally,ourmodelrevealsaninterestingpattern: decreasingpublicoutletavailabilityisnouse
+in reducing cost if a destination’s visitor influx is so sparse that everyone will be able to use an
+outlet. In these cases, only other众initiatives like increasing battery efficiency would effectively
+reducecosts.
+公
+5 Conclusion
+信
+As our world becomes more and more connected, personal electronic devices from phones
+and laptops to electric cars are becoming increasingly prevalent. A rise in electricity demand has
+accompanied the growth in personal electronic devices, creating a demand for charging stations
+微
+andoutlets. Publiclocationshaverecentlybegantosatisfythedemandsofpublicconsumerneeds
+by increasing the number of electrical outlets available to the public. In our model, we modeled
+growth by estimating the costs incurred by governmental and private business when fulfilling this
+demand by integrating an agent-based model and algebraic model. Since each location within the
+larger subset of public destinations is inherently different with regard to visitation hours, number
+of visitors, duration of stay, capacity to hold visitors, and number of destinations, we created a
+modeltoincorporateeachofthesefactors.
+Bymeasuringthecostofelectricityoveratenyearperiodatvariouspubliclocations,wewere
+able to find that over time, the total cost of charging of personal electronic devices in public areas
+increased. We noticed that for airports and schools, there seemed to be insignificant growth in
+electrical consumption, and for railway stations and coffee shops we found that energy consump-
+tion increased; however, we also found that library consumption will decrease over time. These
+trends closely aligned with data we found regarding the change in visitors over time. To model
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Page20of20
+increases in the number of public outlets available, we ran our model with varying public outlets
+densities and found that for railway stations and libraries, variation of public outlets showed very
+littleimpactsincealmostallvisitorshadaccesstooutletsregardlessofthedensity. Atalowoutlet
+density we found an electricity cost for personal devices to grow from $150,000 to $180,000 over
+a ten year period. On the other hand, for high outlet density, we determined a price change from
+$450,000 to $525,000 per year over the same period. However, for electric vehicles, we estimated
+a cost change from $50,000,000 to $400,000,000 per year between 2018 and 2028. For Airports
+andCoffeeShops,wededucedanidealpublicoutletdensityof3/576ft2 and3/144ft2 respectively
+to ensure each visitor had access to at least one outlet. When comparing total cost due to energy
+consumptionofallpublicdestinationsdefinedinourmodel,wenoticedthatamajorityofthecon-
+M
+tributions originated from Schools and Airports. This is likely due to the relatively vast number
+andvisitorvolumeofschoolsandairportsincomparisontootherpublicareas. Thesedestinations’
+C
+contributionscontinuedtoincreaseaspublicoutletdensityincreased,indicatingthateachofthese
+destinations were more reliant on outlet density than the others. However, per-location, airports
+M
+havethehighestannualcostduetothelargevisitorvolume.
+Anotherincreasinglyprevalentelectriccostassociatedwithpersonaldevicesisthechargingof
+i
+electricvehicles. Ourmodelforelectricityconsumptionofelectvehicleswasfoundtoveryclosely
+H
+resembleexistingdataasitwasabletopredictelectricityconsumptionofpubliclychargedelectric
+vehicleswithin0.048TWh. Wealsosawthatelect：ricvehicleenergyconsumptionwillcontinueto
+increaselinearlyasafunctionoftime.
+While these costs are expected to increase in the coming years, action can be taken to reduce
+号
+the cost sustained from offering ”free” charging services at public locations. One such way is the
+restrictionoftheavailabilityofoutletstothepublic. AscanbeseeninFigure7,asPODdecreases,
+costofelectricchargingdrastically众decreaseswithadifferenceofnearlyaround$200,000between
+ourlowandhighPODmetrics. Anotherpossibilitytoreducecostsassociatedpayingforelectricity
+is the implementation of new technologies into the market. Specifically, new batteries such as
+sodiumandpotassiumbase公dbatteriesthathaveincreasedchargecapacity,efficiency,andcharging
+capabilities. While this may not occur in the ten year scope of our model, its impacts reducing
+the cost of electricity can easily be modelled through the implementation of an energy efficiency
+信
+factor.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 References
+References
+[1] HarrietBaskas. Airportsaddoutletstoservepower-parchedpassengers,2013.
+https://www.usatoday.com/story/travel/flights/2013/11/20/airport-power-
+electric-outlet-charging-station/3641489/.
+[2] improvenet. 2019ElectricOutletInstallationCost,2019.
+https://www.improvenet.com/r/costs-and-prices/install-electrical-outlet.
+[3] BenHollandJoshAgenbroad. RMI:What’sthetruecostofEVchargingstations?,2014.
+https://www.greenbiz.com/blog/2014/05/07/rmi-whats-true-cost-ev-
+M
+charging-stations#:~:targetText=Public%20stations%20are%20more%
+20expensive,for%20some%20features%20and%20brands.
+C
+[4] SuzanneGuinn. EVSERebatesandTaxCredits,byState,2019.
+M
+https://www.clippercreek.com/evse-rebates-and-tax-credits-by-state/.
+[5] Veloxity. VeloxityReleasesMarketResearchDataonPhonieChargingStationsforEvents,
+H
+2019. https://veloxity.us/phone-charging-statistics-at-events/.
+：
+[6] BureauofTransportationStatistics. NumberofU.S.Airports,2019.
+https://www.bts.gov/content/number-us-airportsa.
+号
+[7] NickBrown. AllegraPredictsSpecialtySegmentGrowthin2019USCoffeeShopReport,
+2018. https://www.google.com/url?q=https://dailycoffeenews.com/2018/10/
+31/allegra-predicts-spe众cialty-segment-growth-in-2019-us-coffee-shop-
+report/%23:~:targetText%3DIn%2520total%252C%2520there%2520are%
+2520approximately,market%2520value%2520of%2520%252445.4%2520billion&sa=
+D&ust=15739678765公37000&usg=AFQjCNEioGLojEQQRWpxxclk_5r0Ms9eZg.
+[8] BureauofTransportationStatistics. NumberofStationsServedbyAmtrakandRailTransit,
+信
+FiscalYear,2018. https://www.bts.gov/content/number-stations-served-
+amtrak-and-rail-transit-fiscal-year.
+微
+[9] AmericanLibraryAssociation. LibraryStatisticsandFigures: NumberofPublicLibraries
+intheUnitedStatesOverTime,2018.
+https://libguides.ala.org/librarystatistics/numberoflibrariesovertime.
+[10] NationalCenterforEducationStatistics. Numberofeducationalinstitutions,byleveland
+controlofinstitution: Selectedyears,1980-81through2015-16,2018. https:
+//nces.ed.gov/programs/digest/d17/tables/dt17_105.50.asp?current=yes.
+[11] WilliamH.Frey. USpopulationgrowthhits80-yearlow,cappingoffayearofdemographic
+stagnation,2018.
+https://www.brookings.edu/blog/the-avenue/2018/12/21/us-population-
+growth-hits-80-year-low-capping-off-a-year-of-demographic-stagnation/.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 References
+[12] PaulHitlin. Internet,socialmediauseanddeviceownershipinU.S.haveplateauedafter
+yearsofgrowth,2019.
+https://www.pewresearch.org/fact-tank/2018/09/28/internet-social-media-
+use-and-device-ownership-in-u-s-have-plateaued-after-years-of-growth/.
+[13] U.S.EnergyInformationAdministration. ElectricityDataBrowser,2018.
+https://www.eia.gov/electricity/data/browser/#/topic/7?agg=0,1&geo=g&
+endsec=vg&linechart=ELEC.PRICE.US-ALL.A~ELEC.PRICE.US-
+RES.A~ELEC.PRICE.US-COM.A~ELEC.PRICE.US-
+IND.A&columnchart=ELEC.PRICE.US-ALL.A~ELEC.PRICE.US-
+RES.A~ELEC.PRICE.US-COM.A~ELEC.PRICE.US-IND.A&map=ELEC.PRMICE.US-
+ALL.A&freq=A&ctype=linechart&ltype=pin&rtype=s&maptype=0&rse=0&pin=.
+C
+[14] U.S.EnergyInformationandAdministration. SHORT-TERMENERGYOUTLOOK,2019.
+https://www.eia.gov/outlooks/steo/. M
+[15] Amtrak. AmtrakRoutesandDestinations,2019.
+i
+https://www.amtrak.com/routes.html.
+H
+[16] JessicaCampisi. Shouldtheschooldaystartlater?,2018.
+：
+https://www.educationdive.com/news/should-the-school-day-start-
+later/532961/#:~:targetText=The%20average%20U.S.%20public%20school,
+least%208%20hours%20per%20day号.
+[17] PublicSchoolReview. AveragePublicSchoolStudent: TeacherRatio,2019.
+https://www.publicschoo众lreview.com/average-student-teacher-ratio-
+stats/national-data.
+[18] PewResearchCenter公. MobileFactSheet,2019.
+https://www.pewresearch.org/internet/fact-sheet/mobile/.
+信
+[19] Electropedia. BatteryChargersandChargingMethods,2019.
+https://www.mpoweruk.com/chargers.htm.
+微
+[20] RickPaulas. HowtoCalculateMaximumOccupancyforaRoom,2017.
+https://legalbeagle.com/6306392-calculate-maximum-occupancy-room.html.
+[21] GoogleMyBusinessHelp. Populartimes,waittimes,andvisitduration,2019.
+https://support.google.com/business/answer/6263531?hl=en.
+[22] DepartmentofEnergy. ChargingatHome,2019.
+https://www.energy.gov/eere/electricvehicles/charging-home.
+[23] RickPaulas. AlternativeFuelsDataCenter: ElectricVehicleChargingStationLocations,
+2017. https://afdc.energy.gov/fuels/electricity_locations.html#/find/
+nearest?fuel=ELEC.
+[24] PodPoint. HowLongDoesitTaketoChargeanElectricCar,2019.
+https://pod-point.com/guides/driver/how-long-to-charge-an-electric-car.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 References
+[25] convene. HowLongisTooLongtoCommute,2019.
+https://convene.com/catalyst/long-commute/.
+[26] ClipperCreek. ElectricVehicleRangeperhourofcharging,2019.
+https://www.clippercreek.com/wp-content/uploads/2019/10/EV-Range-Added-
+per-Hour-of-Charging-20190919.pdf.
+[27] ChargePoint. Driver’sChecklist: AQuickGuidetoFastCharging,2019.
+https://www.chargepoint.com/files/Quick_Guide_to_Fast_Charging.pdf.
+[28] EVAdoption. EVChargingStatistics,2019.
+M
+https://evadoption.com/ev-charging-stations-statistics/.
+[29] GeorgiaInstituteofTechnology. Sodium-andpotassium-basedbatCteriesholdpromisefor
+cheapenergystorage,2018.
+M
+https://www.sciencedaily.com/releases/2018/06/180619122746.htm.
+[30] Sumangala. Latest20batteryinventionsthatcanchangethefuture,2018.
+i
+https://www.rtoz.org/2019/01/24/latest-20-Hbattery-inventions-that-can-
+change-the-future/.
+：
+[31] LaurenGoode. BatteriesStillSuck,ButResearchersAreWorkingonIt,2019.
+https://www.wired.com/story/building-a-better-battery/.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+Appendices
+| A Commercial | Price | of Electricity |          |
+| ------------ | ----- | -------------- | -------- |
+|              | Year  | Price( /kWh)   | %Change  |
+|              | 2001  | 7.¢92          | –        |
+|              | 2002  | 7.89           | -0.37878 |
+|              | 2003  | 8.03           | 1.774397 |
+M
+|     | 2004 | 8.17 | 1.743462 |
+| --- | ---- | ---- | -------- |
+|     | 2005 | 8.67 | 6.119954 |
+C
+|     | 2006 | 9.46 | 9.111880046 |
+| --- | ---- | ---- | ----------- |
+|     | 2007 | 9.65 | 2.00845666  |
+M
+|     | 2008 | 10.26 | 6.321243523  |
+| --- | ---- | ----- | ------------ |
+|     | 2009 | 10.16 | -0.974658869 |
+i
+|     | 2010 | 10.19 | 0.295275591 |
+| --- | ---- | ----- | ----------- |
+H
+|     | 2011 | 10.24 | 0.490677134 |
+| --- | ---- | ----- | ----------- |
+：-1.46484375
+|     | 2012 | 10.09 |             |
+| --- | ---- | ----- | ----------- |
+|     | 2013 | 10.26 | 1.684836472 |
+|     | 2014 | 10.74 | 4.678362573 |
+号
+|     | 2015 | 10.64 | -0.93109869 |
+| --- | ---- | ----- | ----------- |
+|     | 2016 | 10.43 | -1.97368421 |
+2017众10.66
+2.205177373
+|     | 2018 | 10.67 | 0.09380863 |
+| --- | ---- | ----- | ---------- |
+公
+TableA1: Commercialpriceofelectricity( /kWh)2001-2018,with%changebetweenyears
+¢
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team10174  |                            |          |                | Appendices |
+| ---------- | -------------------------- | -------- | -------------- | ---------- |
+| B Number   | of Destinations            | over the | year           |            |
+| B.1 Public | Schools                    |          |                |            |
+|            | Year NumberofPublicSchools |          | PercentChange  |            |
+|            | 2005                       | 26,011   | –              |            |
+|            | 2006                       | 25,929   | -0.3152512399  |            |
+|            | 2007                       | 26,647   | 2.7691002353   |            |
+|            | 2008                       | 26,345   | -1.1333358352  |            |
+|            | 2009                       | 26,640   | 1.1197570697   | M          |
+|            | 2010                       | 26,559   | -0.3040540541  |            |
+|            | 2011                       | 26,368   | -0.71915358C26 |            |
+|            | 2012                       | 26,275   | -0.3527002427  |            |
+-0.867M7450048
+|     | 2013 | 26,047 |                |     |
+| --- | ---- | ------ | -------------- | --- |
+|     | 2014 | 26,145 | 0.3762429454   |     |
+|     | 2015 | 26,005 | -0.5i354752343 |     |
+H
+|     |     | Average | 0.0037385057 |     |
+| --- | --- | ------- | ------------ | --- |
+：
+TableB1: NumberofPublicSchoolsandaccompanyingpercentchangeoveranelevenyearperiod
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+B.2 Railway Stations
+| Year Stations | %Change     |     |
+| ------------- | ----------- | --- |
+| 2000 515      | –           |     |
+| 2001 512      | -0.58252427 |     |
+| 2002 515      | 0.5859375   |     |
+| 2003 514      | -0.19417476 |     |
+| 2004 529      | 2.91828794  |     |
+| 2005 531      | 0.37807183  |     |
+| 2006 510      | -3.95480226 | M   |
+| 2007 508      | -0.39215686 |     |
+| 2008 510      | 0.39370079  | C   |
+| 2009 511      | 0.19607843  |     |
+M
+| 2010 512 | 0.19569472  |     |
+| -------- | ----------- | --- |
+| 2011 511 | -0.1953125  |     |
+| 2012 512 | 0.19569472i |     |
+H
+| 2013 516 | 0.78125    |     |
+| -------- | ---------- | --- |
+| 2014 518 | ：0.3875969 |     |
+| 2015 521 | 0.57915058 |     |
+| 2016 525 | 0.76775432 |     |
+号
+| 2017 527 | 0.38095238  |     |
+| -------- | ----------- | --- |
+| 2018 526 | -0.18975332 |     |
+众
+TableB2: NumberofRailwaysoveraneighteenyearperiodandaccompanyingpercentchanges
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+B.3 Public Airports
+| Year PublicAirports |       | %change      |     |
+| ------------------- | ----- | ------------ | --- |
+| 2000                | 5,317 | –            |     |
+| 2001                | 5,294 | -0.43257476  |     |
+| 2002                | 5,286 | -0.151114469 |     |
+| 2003                | 5,286 | 0            |     |
+| 2004                | 5,288 | 0.037835793  |     |
+| 2005                | 5,270 | -0.340393343 |     |
+| 2006                | 5,233 | -0.702087287 | M   |
+| 2007                | 5,221 | -0.229313969 |     |
+| 2008                | 5,202 | -0.363914959 | C   |
+| 2009                | 5,178 | -0.461361015 |     |
+M
+| 2010 | 5,175 | -0.057937428 |     |
+| ---- | ----- | ------------ | --- |
+| 2011 | 5,172 | -0.057971014 |     |
+| 2012 | 5,171 | -0.01933i488 |     |
+H
+| 2013 | 5,155               | -0.309417908 |     |
+| ---- | ------------------- | ------------ | --- |
+| 2014 | 5,145 ：-0.193986421 |              |     |
+| 2016 | 5,136               | -0.174927114 |     |
+| 2017 | 5,104               | -0.62305296  |     |
+号
+| 2018 | 5,087 | -0.3330721 |     |
+| ---- | ----- | ---------- | --- |
+TableB3: NumberofPublicAirportsintheUnitedStatesofAmericaoveraneighteenyearperiod
+众
+andaccompanyingpercentchanges
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+B.4 Public Libraries
+| Year NumberofPublicLibraries |      | %Change      |     |
+| ---------------------------- | ---- | ------------ | --- |
+| 2000                         | 9074 | 0.309529074  |     |
+| 2001                         | 9129 | 0.606127397  |     |
+| 2002                         | 9137 | 0.087632818  |     |
+| 2003                         | 9211 | 0.809893838  |     |
+| 2004                         | 9207 | -0.043426338 |     |
+| 2005                         | 9198 | -0.097751711 |     |
+| 2006                         | 9208 | 0.108719287  | M   |
+| 2007                         | 9214 | 0.06516073   |     |
+| 2008                         | 9221 | 0.0759713C48 |     |
+| 2009                         | 9225 | 0.043379243  |     |
+-2.9M70189702
+| 2010 | 8951 |              |     |
+| ---- | ---- | ------------ | --- |
+| 2011 | 8956 | 0.05585968   |     |
+| 2012 | 9082 | 1.i406878071 |     |
+H
+| 2013 | 9070   | 0.099097115  |     |
+| ---- | ------ | ------------ | --- |
+| 2014 | 9070 ： | -0.23099769  |     |
+| 2015 | 9068   | -0.022050717 |     |
+| 2016 | 9057   | -0.12130569  |     |
+号
+TableB4: NumberofLibrariesoverasixteenyearperiodandaccompanyingpercentchanges
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| C Airport | Terminal | Data |     |     |     |
+| --------- | -------- | ---- | --- | --- | --- |
+TableC1: AlistingofthemediumsizedairportsintheUnitedStatesandtheirnumberofterminals
+|     |     | Airport | Terminal | Num- |     |
+| --- | --- | ------- | -------- | ---- | --- |
+ber
+|     |     | Atlanta       | 206 |     |     |
+| --- | --- | ------------- | --- | --- | --- |
+|     |     | ChicagoO’Hare | 182 |     |     |
+|     |     | DallasDFW     | 161 |     |     |
+|     |     | DetroitDTW    | 147 |     | M   |
+|     |     | Denver        | 136 |     |     |
+|     |     | Washington    | 135 |     | C   |
+Dulles
+M
+|     |     | HoustonBush | 130 |     |     |
+| --- | --- | ----------- | --- | --- | --- |
+|     |     | New York    | 129 |     |     |
+Newark
+i
+|     |     | Minneapolis  | 127 | H   |     |
+| --- | --- | ------------ | --- | --- | --- |
+|     |     | Philadelphia | 126 |     |     |
+：
+|     |     | NewYorkJFK   | 125 |     |     |
+| --- | --- | ------------ | --- | --- | --- |
+|     |     | MiamiMIA     | 123 |     |     |
+|     |     | Toronto 号122 |     |     |     |
+|     |     | Phoenix      | 116 |     |     |
+|     |     | Los Angeles  | 112 |     |     |
+众
+LAX
+|     |     | San Francisco | 108 |     |     |
+| --- | --- | ------------- | --- | --- | --- |
+公SFO
+|     |     | LasVegas     | 103 |     |     |
+| --- | --- | ------------ | --- | --- | --- |
+|     |     | OrlandoInt’l | 96  |     |     |
+信
+|     |     | Charlotte  | 95  |     |     |
+| --- | --- | ---------- | --- | --- | --- |
+|     |     | Baltimore- | 84  |     |     |
+微 Washington
+|     |     | Vancouver   | 81  |     |     |
+| --- | --- | ----------- | --- | --- | --- |
+|     |     | SaltLake    | 79  |     |     |
+|     |     | New York La | 72  |     |     |
+Guardia
+|     |     | Tampa        | 62  |     |     |
+| --- | --- | ------------ | --- | --- | --- |
+|     |     | Portland     | 60  |     |     |
+|     |     | KansasCity   | 59  |     |     |
+|     |     | SaintLouis   | 59  |     |     |
+|     |     | Sydney       | 59  |     |     |
+|     |     | MiamiFtLaud. | 57  |     |     |
+|     |     | Montreal     | 56  |     |     |
+|     |     | Milwaukee    | 48  |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+Melbourne 47
+Chicago - Mid- 45
+way
+SanDiego 45
+Calgary 44
+NewOrleans 44
+Washington Na- 44
+tional
+Brisbane 34
+M
+Edmonton 32
+Halifax 32
+Sacramento 32 C
+Oakland 30
+M
+FortMyers 28
+Miami Palm 28
+i
+Beach
+H
+SanJose 28
+HoustonHobby ：26
+Ottawa 26
+Austin 25
+号
+SanAntonio 24
+Reno-Tahoe 23
+Jack众sonville 20
+DallasLove 19
+Winnipeg 18
+公
+Boston Manch- 15
+ester
+信DesMoines 15
+ElPaso 15
+Sarasota- 14
+微
+Bradenton
+St Pete- 13
+Clearwater
+OrlandoSanford 12
+Pensacola 12
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| D Amtrak |     | Station | Size and  | Capacity |          |
+| -------- | --- | ------- | --------- | -------- | -------- |
+|          |     | Railway | Platforms | Size     | Capacity |
+Stations
+|     |     | Aberdeen, | 2   | 3294 | 91.5 |
+| --- | --- | --------- | --- | ---- | ---- |
+Maryland
+|     |     | Albany, | 1   | 1647 | 45.75 |
+| --- | --- | ------- | --- | ---- | ----- |
+Oregon
+|     |     | Albany- | 2   | 3294 | 91.5 |
+| --- | --- | ------- | --- | ---- | ---- |
+M
+Rensselaer,
+NY
+|     |     | Albion,MI | 1   | 1647 | 45.75 C |
+| --- | --- | --------- | --- | ---- | ------- |
+|     |     | Alpine,TX | 1   | 1647 | 45.75   |
+M
+|     |     | Alliance, | 1   | 1647 | 45.75 |
+| --- | --- | --------- | --- | ---- | ----- |
+OH
+|     |     | Allensworth | 1   | 1647 | i45.75 |
+| --- | --- | ----------- | --- | ---- | ------ |
+H
+|     |     | Alexandria, | 2   | 3294 | 91.5  |
+| --- | --- | ----------- | --- | ---- | ----- |
+|     |     | VA          |     | ：    |       |
+|     |     | Alderson,   | 1   | 1647 | 45.75 |
+WV
+号
+|     |     | Aldershot, | 3   | 4941 | 137.25 |
+| --- | --- | ---------- | --- | ---- | ------ |
+Ontario
+|     |     | Alvarado | 众 4     | 6588 | 183   |
+| --- | --- | -------- | ------- | ---- | ----- |
+|     |     | Alton,   | Illi- 1 | 1647 | 45.75 |
+nois
+Alton公a,PA
+|     |     |            | 1   | 1647 | 45.75 |
+| --- | --- | ---------- | --- | ---- | ----- |
+|     |     | Amsterdam, | 1   | 1647 | 45.75 |
+NY
+信
+|     |     | Anaheium, | 2   | 3294 | 91.5 |
+| --- | --- | --------- | --- | ---- | ---- |
+Ca
+|     | 微Ann |     | Aro- 1 | 1647 | 45.75 |
+| --- | ---- | --- | ------ | ---- | ----- |
+bor,Mi
+|     |     | Anniston, | 1   | 1647 | 45.75 |
+| --- | --- | --------- | --- | ---- | ----- |
+AL
+|     |     | Antioch- | 1   | 1647 | 45.75 |
+| --- | --- | -------- | --- | ---- | ----- |
+Pittsburg
+|     |     | Arcadia | 1   | 1647 | 45.75 |
+| --- | --- | ------- | --- | ---- | ----- |
+Valley,MO
+|     |     | Ardmore, | 1   | 1647 | 45.75 |
+| --- | --- | -------- | --- | ---- | ----- |
+Ok
+|     |     | Ardmore, | 2   | 3294 | 91.5 |
+| --- | --- | -------- | --- | ---- | ---- |
+Pa
+|     |     | Arkadelphia | 1   | 1647 | 45.75 |
+| --- | --- | ----------- | --- | ---- | ----- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Ashland, | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+KY
+| Ashland, | 2   | 3294 | 91.5 |
+| -------- | --- | ---- | ---- |
+VA
+| Atlanta,Ga   | 2   | 3294 | 91.5  |
+| ------------ | --- | ---- | ----- |
+| AuburnCa     | 1   | 1647 | 45.75 |
+| Austin,TX    | 1   | 1647 | 45.75 |
+| Bakersfield, | 2   | 3294 | 91.5  |
+Ca
+M
+| Maryland, | 3   | 4941 | 137.25 |
+| --------- | --- | ---- | ------ |
+Baltimore
+C
+| Bangor,MI | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Barstow,  | 1   | 1647 | 45.75 |
+M
+California
+| Battle  | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+| CreekMi |     |      | i     |
+H
+| Beaumont, | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| TX        |     | ：    |       |
+| Fairhaven | 1   | 1647 | 45.75 |
+Stations
+号
+| Bellow | 1   | 1647 | 45.75 |
+| ------ | --- | ---- | ----- |
+Falls,VT
+| BensonAZ   | 众0  | 0    | 0     |
+| ---------- | --- | ---- | ----- |
+| BerkelyCA  | 1   | 1647 | 45.75 |
+| BerlinCon- | 2   | 3294 | 91.5  |
+公
+necticut
+| Bingnen- | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+White
+信
+| Birmingham | 2   | 3294 | 91.5 |
+| ---------- | --- | ---- | ---- |
+Station
+微Uptown
+|     | 2   | 3294 | 91.5 |
+| --- | --- | ---- | ---- |
+Station
+| BackBay    | 4   | 6588  | 183    |
+| ---------- | --- | ----- | ------ |
+| North Sta- | 9   | 14823 | 411.75 |
+tion
+| South Sta- | 7   | 11529 | 320.25 |
+| ---------- | --- | ----- | ------ |
+tion
+| Union Sta- | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+tion
+| Bridgeport | 2   | 3294 | 91.5 |
+| ---------- | --- | ---- | ---- |
+Station
+| Godbold | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Browning | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+Station
+| Brunswick | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+Maine
+| Buffalo- | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+Depow
+| Bufallo Ex- | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+change
+| Burbank | 2   | 3294 | 91.5 |
+| ------- | --- | ---- | ---- |
+M
+| Burke Cen- | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+tre
+C
+| Burlington | 2   | 3294 | 91.5  |
+| ---------- | --- | ---- | ----- |
+| Burlington | 1   | 1647 | 45.75 |
+M
+NC
+| BWI Rail | 2   | 3294 | 91.5 |
+| -------- | --- | ---- | ---- |
+| Station  |     |      | i    |
+H
+| Camarillo   | 2   | 3294  | 91.5  |
+| ----------- | --- | ----- | ----- |
+| Camden      | 1   | ：1647 | 45.75 |
+| Carbondale  | 1   | 1647  | 45.75 |
+| Carlinville | 2   | 3294  | 91.5  |
+号
+| Carpinteria | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+| Cary        | 2   | 3294 | 91.5  |
+| Castleton,  | 众1  | 1647 | 45.75 |
+VT
+| Centralia | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+公
+| Centralia | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+Union
+Depot
+信
+| Illinois | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| North    | 1   | 1647 | 45.75 |
+微Charleston
+Station
+| Charleston | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+Station
+| Charlotte | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+Station
+| Charlottesevill2e |     | 3294 | 91.5 |
+| ----------------- | --- | ---- | ---- |
+Union
+| Chatsworth | 3   | 4941 | 137.25 |
+| ---------- | --- | ---- | ------ |
+Station
+| Chemult | 1   | 1647  | 45.75  |
+| ------- | --- | ----- | ------ |
+| Chicago | 30  | 49410 | 1372.5 |
+Union
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Chico | Sta- 1 | 1647 | 45.75 |
+| ----- | ------ | ---- | ----- |
+tion
+| Cincinnati | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+Union
+| Claremont | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+Station
+| Cleburne  | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Clemson   | 1   | 1647 | 45.75 |
+| Cleveland | 1   | 1647 | 45.75 |
+M
+| Clifton | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+Forge
+C
+| Coatesville | 2   | 3294 | 91.5  |
+| ----------- | --- | ---- | ----- |
+| Colfax      | 1   | 1647 | 45.75 |
+M
+| Columbia | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| Columbus | 1   | 1647 | 45.75 |
+i
+| Connellsvile | 1   | 1647 | 45.75 |
+| ------------ | --- | ---- | ----- |
+H
+| Connersvile | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+：
+IN
+| Corcoran  | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Cornwells | 2   | 3294 | 91.5  |
+号
+| Crawfordsville1 |     | 1647 | 45.75  |
+| --------------- | --- | ---- | ------ |
+| Creston         | 2   | 3294 | 91.5   |
+| Croton          | 众3  | 4941 | 137.25 |
+| Culpeper        | 1   | 1647 | 45.75  |
+| Cumberland      | 1   | 1647 | 45.75  |
+公
+Station
+| CutBank | 1     | 1647 | 45.75  |
+| ------- | ----- | ---- | ------ |
+| 信Dallas | Un- 3 | 4941 | 137.25 |
+oin
+| Danville | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+微
+| DavidCA | 2    | 3294 | 91.5 |
+| ------- | ---- | ---- | ---- |
+| John    | D. 2 | 3294 | 91.5 |
+Dingell
+| Deerfield | 2   | 3294 | 91.5 |
+| --------- | --- | ---- | ---- |
+Beach
+| DelRio  | 1   | 1647  | 45.75  |
+| ------- | --- | ----- | ------ |
+| DeLand  | 1   | 1647  | 45.75  |
+| Delray  | 2   | 3294  | 91.5   |
+| Deming  | 0   | 0     | 0      |
+| Denmark | 1   | 1647  | 45.75  |
+| Denver  | 7   | 11529 | 320.25 |
+| Detroit | 1   | 1647  | 45.75  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+|     | Detroit | 1   | 1647 | 45.75 |
+| --- | ------- | --- | ---- | ----- |
+Lakes
+|     | Devils | 1   | 1647 | 45.75 |
+| --- | ------ | --- | ---- | ----- |
+Lake
+|     | Dillon Sta- | 1   | 1647 | 45.75 |
+| --- | ----------- | --- | ---- | ----- |
+tion
+|     | DodgeCity | 2   | 3294 | 91.5  |
+| --- | --------- | --- | ---- | ----- |
+|     | Dover     | 1   | 1647 | 45.75 |
+Trans-
+M
+portation
+Center
+C
+|     | Dowagiac   | 1   | 1647 | 45.75 |
+| --- | ---------- | --- | ---- | ----- |
+|     | Downington | 2   | 3294 | 91.5  |
+M
+|     | DuQuoin  | 1   | 1647 | 45.75   |
+| --- | -------- | --- | ---- | ------- |
+|     | Dunsmuir | 1   | 1647 | 45.75   |
+|     | Durand   | 1   | 1647 | i 45.75 |
+H
+|     | Durham | 1   | 1647 | 45.75 |
+| --- | ------ | --- | ---- | ----- |
+|     | NH     |     | ：    |       |
+|     | Durham | 1   | 1647 | 45.75 |
+NC
+号
+|     | Dwight | 1   | 1647 | 45.75 |
+| --- | ------ | --- | ---- | ----- |
+Station
+|     | Dyer | 众1  | 1647 | 45.75 |
+| --- | ---- | --- | ---- | ----- |
+Station
+|     | East | 1   | 1647 | 45.75 |
+| --- | ---- | --- | ---- | ----- |
+公
+Glacier
+Park
+|     | East Lans- | 1   | 1647 | 45.75 |
+| --- | ---------- | --- | ---- | ----- |
+信
+ing
+|            | Edmonds        | 1   | 1647 | 45.75 |
+| ---------- | -------------- | --- | ---- | ----- |
+| 微Effingham |                | 1   | 1647 | 45.75 |
+|            | ElPaso         | 1   | 1647 | 45.75 |
+|            | Elkhart        | 1   | 1647 | 45.75 |
+|            | Elizabethtown2 |     | 3294 | 91.5  |
+|            | Elko           | 2   | 3294 | 91.5  |
+|            | Elyria         | 1   | 1647 | 45.75 |
+|            | Emeryville     | 2   | 3294 | 91.5  |
+|            | Ephrata        | 1   | 1647 | 45.75 |
+|            | Erie           | 2   | 3294 | 91.5  |
+|            | Essex          | 1   | 1647 | 45.75 |
+|            | Essex Junc-    | 1   | 1647 | 45.75 |
+tion
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Eugene | 1   | 1647 | 45.75 |
+| ------ | --- | ---- | ----- |
+Springfield
+| Everett Sta- | 2   | 3294 | 91.5 |
+| ------------ | --- | ---- | ---- |
+tion
+| Exeter Sta- | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+tion
+| Exton Sta- | 2   | 3294 | 91.5 |
+| ---------- | --- | ---- | ---- |
+tion
+| Fairfiel- | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+M
+Vacaville
+| Fargo Sta- | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+C
+tion
+| Fayetteville | 1   | 1647 | 45.75 |
+| ------------ | --- | ---- | ----- |
+M
+| Flagstaff | 1   | 1647 | 45.75   |
+| --------- | --- | ---- | ------- |
+| Flint     | 1   | 1647 | 45.75   |
+| Florence  | 1   | 1647 | i 45.75 |
+H
+| Fort Ed-   | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+| ward       |     | ：    |       |
+| Fort Laud- | 2   | 3294 | 91.5  |
+erdale
+号
+| Fort Madi- | 2   | 3294 | 91.5 |
+| ---------- | --- | ---- | ---- |
+son
+| Fort Mor- | 众1  | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+gan
+| FortWorth | 2   | 3294 | 91.5 |
+| --------- | --- | ---- | ---- |
+公
+| Farmingham | 2   | 3294 | 91.5  |
+| ---------- | --- | ---- | ----- |
+| Fraser-    | 1   | 1647 | 45.75 |
+WinterPark
+信
+| Fredericksburg2 |     | 3294 | 91.5  |
+| --------------- | --- | ---- | ----- |
+| Freeport        | 1   | 1647 | 45.75 |
+微Freemont
+|              | 2   | 3294 | 91.5   |
+| ------------ | --- | ---- | ------ |
+| SantaFe      | 2   | 3294 | 91.5   |
+| Fullerton    | 3   | 4941 | 137.25 |
+| Fulton       | 1   | 1647 | 45.75  |
+| Gainesville  | 1   | 1647 | 45.75  |
+| Gainesville, | 1   | 1647 | 45.75  |
+TX
+| Galesburg | 2   | 3294 | 91.5  |
+| --------- | --- | ---- | ----- |
+| Gallup    | 1   | 1647 | 45.75 |
+| Garden    | 1   | 1647 | 45.75 |
+City
+| Gastonia | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| Gilman   | 2   | 3294 | 91.5  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Glasgow  | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| Glendale | 2   | 3294 | 91.5  |
+| Glenview | 2   | 3294 | 91.5  |
+| Glenwood | 1   | 1647 | 45.75 |
+| Goleta   | 1   | 1647 | 45.75 |
+| Granby   | 1   | 1647 | 45.75 |
+| Grand    | 2   | 3294 | 91.5  |
+Forks
+| Grand | 2   | 3294 | 91.5 |
+| ----- | --- | ---- | ---- |
+M
+Junction
+| Vernon | J 1 | 1647 | 45.75 |
+| ------ | --- | ---- | ----- |
+C
+Ehlers
+| Green | 1   | 1647 | 45.75 |
+| ----- | --- | ---- | ----- |
+M
+River
+Station
+i
+| John | W. 1 | 1647 | 45.75 |
+| ---- | ---- | ---- | ----- |
+H
+Olver
+| transit |     | ：   |     |
+| ------- | --- | --- | --- |
+Center
+| Greensburg | 2   | 3294 | 91.5 |
+| ---------- | --- | ---- | ---- |
+号
+Statoin
+| Greenvile | 2   | 3294 | 91.5  |
+| --------- | --- | ---- | ----- |
+| SC        | 众   |      |       |
+| Greenwood | 1   | 1647 | 45.75 |
+| Grimsby   | 0   | 0    | 0     |
+公
+| Grover | 1   | 1647 | 45.75 |
+| ------ | --- | ---- | ----- |
+Beach
+| Guadalupe | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+信
+| Hamlet  | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+| Hammond | 1   | 1647 | 45.75 |
+微Station
+| Hammond- | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+Whiting
+| Hanford | 2   | 3294 | 91.5 |
+| ------- | --- | ---- | ---- |
+| Harpers | 2   | 3294 | 91.5 |
+Ferry
+| Harrisberg | 4   | 6588 | 183   |
+| ---------- | --- | ---- | ----- |
+| Hartford   | 1   | 1647 | 45.75 |
+Union
+| Hastings    | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+| Hattiesburg | 1   | 1647 | 45.75 |
+| Haverhill   | 2   | 3294 | 91.5  |
+| Havre       | 2   | 3294 | 91.5  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Hayward | 2   | 3294 | 91.5 |
+| ------- | --- | ---- | ---- |
+Stiation
+| Hazlehurst  | 1   | 1647 | 45.75 |
+| ----------- | --- | ---- | ----- |
+| Helper Sta- | 1   | 1647 | 45.75 |
+tion
+| Hermann | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+Station
+| HighPoint | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Hinton    | 1   | 1647 | 45.75 |
+M
+| Holdrege | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| Holland  | 1   | 1647 | 45.75 |
+C
+Station
+| Hollywood | 2   | 3294 | 91.5 |
+| --------- | --- | ---- | ---- |
+M
+Station
+| Holyoke | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+i
+| Homewood | 2   | 3294 | 91.5 |
+| -------- | --- | ---- | ---- |
+H
+Station
+| Hope | 1   | ：1647 | 45.75 |
+| ---- | --- | ----- | ----- |
+Station
+| Houston | 2   | 3294 | 91.5 |
+| ------- | --- | ---- | ---- |
+号
+| Hudson | 2   | 3294 | 91.5 |
+| ------ | --- | ---- | ---- |
+Station
+| Huntingdon | 众1  | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+Station
+| Hunting | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+公
+WV
+| Hutchinson | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+Station
+信
+| Independence1 |     | 1647 | 45.75 |
+| ------------- | --- | ---- | ----- |
+Station
+微Indianapolis
+|     | 1   | 1647 | 45.75 |
+| --- | --- | ---- | ----- |
+Station
+| Irvine       | 2   | 3294 | 91.5  |
+| ------------ | --- | ---- | ----- |
+| Jackson      | 2   | 3294 | 91.5  |
+| Jacksonville | 2   | 3294 | 91.5  |
+| Jesup        | 1   | 1647 | 45.75 |
+| Johnstown    | 1   | 1647 | 45.75 |
+| JoiletIl     | 2   | 3294 | 91.5  |
+| Kalamazoo    | 2   | 3294 | 91.5  |
+| Kankakee     | 1   | 1647 | 45.75 |
+| Kannapolis   | 1   | 1647 | 45.75 |
+| KansasSta-   | 1   | 1647 | 45.75 |
+tion
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+| Kelso     | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Kewanee   | 2   | 3294 | 91.5  |
+| Kingman   | 1   | 1647 | 45.75 |
+| Kingston  | 2   | 3294 | 91.5  |
+| Kingstree | 1   | 1647 | 45.75 |
+| Kirkwood  | 2   | 3294 | 91.5  |
+| Kissimmee | 2   | 3294 | 91.5  |
+| Klamath   | 2   | 3294 | 91.5  |
+| LaCrosse  | 1   | 1647 | 45.75 |
+M
+| LaGrange  | 2   | 3294 | 91.5  |
+| --------- | --- | ---- | ----- |
+| Jefferson | 1   | 1647 | 45.75 |
+C
+CityMO
+| LaJunta | 2   | 3294 | 91.5 |
+| ------- | --- | ---- | ---- |
+M
+| LaPlata   | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+| Lafayette | 1   | 1647 | 45.75 |
+i
+| Lafayette | 1   | 1647 | 45.75 |
+| --------- | --- | ---- | ----- |
+H
+LA
+：1647
+| Lake | 1   |     | 45.75 |
+| ---- | --- | --- | ----- |
+Charles
+| Lakeland | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+号
+| LamarCO | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+| Lamy    | 2   | 3294 | 91.5  |
+众2
+| Lancaster |     | 3294 | 91.5 |
+| --------- | --- | ---- | ---- |
+Pa
+| Lapeer | 1   | 1647 | 45.75 |
+| ------ | --- | ---- | ----- |
+公
+| LasVegas | 1   | 1647 | 45.75 |
+| -------- | --- | ---- | ----- |
+| Latrobe  | 2   | 3294 | 91.5  |
+| 信Laurel  | 1   | 1647 | 45.75 |
+| Lawrence | 1   | 1647 | 45.75 |
+Station
+微
+| Icicle     | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+| Lee’s Sum- | 1   | 1647 | 45.75 |
+mit
+| Lewistown  | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+| Lexington  | 1   | 1647 | 45.75 |
+| Libby Sta- | 1   | 1647 | 45.75 |
+tion
+| Lincoln | 1   | 1647 | 45.75 |
+| ------- | --- | ---- | ----- |
+Station
+| LincoldNE  | 1   | 1647 | 45.75 |
+| ---------- | --- | ---- | ----- |
+| LittleRock | 1   | 1647 | 45.75 |
+| Lodi       | 1   | 1647 | 45.75 |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+|     | Lompoc- | 1   | 1647 | 45.75 |
+| --- | ------- | --- | ---- | ----- |
+Surf
+|     | Longview   | 1   | 1647 | 45.75 |
+| --- | ---------- | --- | ---- | ----- |
+|     | Lordsburg  | 0   | 0    | 0     |
+|     | Lorton     | 1   | 1647 | 45.75 |
+|     | Union Sta- | 6   | 9882 | 274.5 |
+tionLA
+|     | Lynchburg | 1   | 1647 | 45.75 |
+| --- | --------- | --- | ---- | ----- |
+|     | Macomd    | 1   | 1647 | 45.75 |
+M
+|     | Madera | 1   | 1647 | 45.75 |
+| --- | ------ | --- | ---- | ----- |
+|     | Malta  | 1   | 1647 | 45.75 |
+C
+|     | Malvern  | 1   | 1647 | 45.75 |
+| --- | -------- | --- | ---- | ----- |
+|     | Manassas | 2   | 3294 | 91.5  |
+M
+|     | Maricopa | 1   | 1647 | 45.75 |
+| --- | -------- | --- | ---- | ----- |
+|     | Marks    | 1   | 1647 | 45.75 |
+i
+|     | Marshall | 1   | 1647 | 45.75 |
+| --- | -------- | --- | ---- | ----- |
+H
+| TableD1: | Amtrakstationsandcorrespondingplatformnumbers,estimatedsizesandcapacities |     | ：   |     |
+| -------- | ------------------------------------------------------------------------- | --- | --- | --- |
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+E Destination Public Outlet Density Cost Analysis
+E.1 Library POD Cost Analysis
+Year P(Cents/kWH) LowPOD CLowPOD Low-MidPOD CLow-MidPOD High-MidPOD CHigh-MidPOD HighPOD CHighPOD
+2018 10.670 8.109 7836.715 8.036 7765.370 8.133 7859.168 8.095 7822.457
+2019 11.375 8.112 8357.313 8.043 8285.963 8.088 8332.743 8.068 8311.518
+2020 11.553 8.081 8455.237 8.096 8470.630 8.036 8408.439 8.114 8490.366
+2021 11.731 8.016 8516.117 8.082 8586.340 8.028 8529.388 8.078 8582.514
+2022 11.908 8.013 8641.841 8.108 8744.607 8.016 8645.345 8.114 8750.959
+2023 12.086 8.121 8889.142 8.012 8769.393 7.989 8744.227 8.106 8872.389
+2024 12.263 8.074 8967.517 8.072 8965.815 8.044 8934.764 8.077 8970.817
+2025 12.440 8.092 9117.783 8.040 9059.220 8.062 9083.600 8.063 9084.325
+2026 12.618 7.994 9135.678 8.057 9207.706 8.057 9206.969 7.985 9125.397
+2027 12.795 8.067 9348.002 8.040 9317.246 7.962 9226.741 8M.038 9314.696
+2028 12.972 8.008 9408.388 7.977 9372.334 7.931 9318.092 7.940 9328.226
+TableE1: CostofelectricityatLibrariesatvaryingPOD
+C
+M
+E.2 Railway POD Cost Analysis
+i
+Year P(Cents/kWH) LowPOD CLowPOD Low-MidPOD CLow-MidPOD HHigh-MidPOD CHigh-MidPOD HighPOD CHighPOD
+2018 10.670 1.653 92.773 1.646 92.395 1.651 92.657 1.649 92.529
+2019 11.375 1.685 100.818 1.674 100.130 1.685 100.830 1.672 100.010
+2020 11.553 1.690 102.689 1.681 102：.148 1.654 100.529 1.693 102.869
+2021 11.731 1.720 106.158 1.741 107.415 1.751 108.042 1.755 108.303
+2022 11.908 1.713 107.311 1.684 105.499 1.736 108.715 1.726 108.096
+2023 12.086 1.748 111.156 1.733 110.198 1.751 111.331 1.741 110.675
+2024 12.263 1.744 112.497 1.757 113.338 1.749 112.843 1.718 110.802
+2025 12.440 1.766 115.566 1.777 号116.278 1.780 116.484 1.762 115.303
+2026 12.618 1.767 117.286 1.762 116.965 1.783 118.324 1.771 117.511
+2027 12.795 1.820 122.489 1.828 123.046 1.832 123.267 1.796 120.900
+2028 12.972 1.854 126.532 1.829 124.798 1.865 127.222 1.861 126.985
+TableE2: Costof众ElectricityatRailwayStationsatvaryingPOD
+E.3 Airport POD C公ost Analysis
+Year P(Cents/kWH) 信LowPOD CLowPOD Low-MidPOD CLow-Mid High-MidPOD CHigh-MidPOD HighPOD CHighPOD
+2018 10.670 93.926 50981.490 165.303 89723.782 180.507 97976.238 180.851 98162.656
+2019 11.375 94.027 54408.153 165.509 95771.247 180.439 104410.400 180.449 104415.955
+2020 11.553 94.102 55303.178 165.878 97485.220 180.372 106002.810 180.706 106199.530
+2021 11.731 94.021 56105.502 165.361 98675.759 181.045 108035.076 181.379 108234.681
+2022 11.908 94.183 57053.086 165.990 100551.471 181.130 109722.255 181.233 109784.958
+微
+2023 12.086 94.167 57893.574 165.797 101931.494 181.357 111498.093 181.354 111495.854
+2024 12.263 93.818 58526.073 165.834 103451.439 181.166 113015.695 181.636 113309.073
+2025 12.440 94.134 59572.107 165.626 104815.880 181.668 114967.913 182.020 115190.475
+2026 12.618 94.052 60368.735 166.193 106673.278 182.007 116824.013 181.916 116765.161
+2027 12.795 94.085 61237.692 165.969 108025.274 181.538 118159.320 181.554 118169.541
+2028 12.972 94.127 62113.006 166.340 109765.429 181.873 120015.607 181.668 119880.519
+TableE3: CostofElectricityatAirportsatvaryingPOD
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+E.4 Coffee Shop POD Cost Analysis
+Year P(Cents/kWH) LowPOD CLowPOD Low-MidPOD CLow-MidPOD High-MidPOD CHigh-MidPOD HighPOD CHighPOD
+2018 10.670 1.861 7070.762 2.888 10975.989 3.279 12461.944 3.362 12777.717
+2019 11.375 1.882 7623.673 2.838 11497.210 3.309 13404.933 3.322 13456.474
+2020 11.553 1.791 7368.113 2.863 11778.458 3.415 14052.085 3.495 14381.698
+2021 11.731 1.929 8061.136 3.004 12549.217 3.472 14507.556 3.525 14726.733
+2022 11.908 1.868 7921.768 3.004 12739.349 3.542 15022.698 3.605 15287.842
+2023 12.086 1.852 7970.895 3.069 13208.382 3.596 15476.600 3.815 16419.369
+2024 12.263 1.930 8428.083 3.188 13923.673 3.769 16463.079 3.723 16259.018
+2025 12.440 1.950 8641.926 3.194 14152.556 3.734 16543.222 3.964 17565.005
+2026 12.618 1.936 8700.977 3.260 14648.761 3.830 17213.933 3.896 17506.398
+2027 12.795 1.926 8778.122 3.237 14751.276 3.773 17194.668 4.054 18475.583
+2028 12.972 1.949 9003.672 3.233 14936.382 3.846 17770.019 4.102 18950.906
+TableE4: CostofelectricityatCoffeeShopsatvaryingPODM
+E.5 School POD Cost Analysis C
+M
+Year P(Cents/kWH) LowPOD CLowPOD Low-MidPOD CLow-MidPOD High-MidPOD CHigh-MidPOD HighPOD CHighPOD
+2018 10.670 31.189 86541.061 63.044 174929.515 94.587 262454.729 119.202 330752.837
+2019 11.375 31.300 92587.186 62.762 185654.032 93.931 277853.896 119.036 352117.327
+2020 11.553 31.230 93824.145 62.522 187833.755 94.636i284316.495 120.086 360775.643
+2021 11.731 31.426 95866.410 62.304 190060.976 H94.683 288832.873 121.501 370640.504
+2022 11.908 30.957 95863.907 62.844 194609.176 94.619 293008.656 123.210 381546.973
+2023 12.086 31.095 97727.882 62.362 195997.434 94.094 295725.196 123.060 386761.206
+2024 12.263 31.030 98955.193 62.583 19957：9.968 94.522 301433.824 122.596 390962.793
+2025 12.440 31.145 100757.086 62.137 201023.020 94.543 305860.914 120.761 390677.702
+2026 12.618 31.561 103558.036 63.053 206891.972 93.600 307123.123 120.196 394391.359
+2027 12.795 31.389 104441.328 62.580 208224.619 93.880 312368.994 119.260 396815.936
+2028 12.972 31.420 105990.557 62.567 211060.962 94.313 318153.062 118.076 398314.597
+号
+TableE5: CostofelectricityatSchoolsatvaryingPOD
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+F Capacity Derivations
+ForAirports,wefoundanaverageof40.2enplanements,thenumberofpeopleboardingflights,
+perdeparture.
+Since every departure is at a gate, the gate can hold at least 40.2 people. Using the 36 ft2 per
+seatrule,eachgateisapproximately1447.2ft2. Giventhattheaveragenumberofgatesperairport
+wascalculatedas67.4,anaverageairportisdeterminedtobe97,541ft2.
+ForCoffeeShops,wefoundstatisticsdetailingtheaverageattendanceofcoffeeshopstobe68
+peopleperday(InsertCitation).
+For Railway stations, we estimate the average visitors based on official statistics of Amtrak
+stations and platforms across the nation. Using 1647 m2 per platform (CITAT M ION), we found an
+averagerailwaystationsizeof2534m2,whichequatestoapproximately70seats. (Citation)
+ForSchools,wedefinedcapacitytobeequivalenttothenumberofvisiCtors,sincepublicschools
+have variable capacity and will accommodate all students necessary to guarantee a right to a free
+M
+publiceducation.
+ForLibraries,wefoundanaveragesizeof21,500ft2 foracommunitylibrary. Usingthe1seat
+per36ft2 rule,21,500ft2 cancomfortablyhost600people(CITiATION).
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+G Agent-based Model NetLogo Code
+globals [
+visitors
+capacity
+square−footage
+outlets
+nseat−coords
+noccupied
+M
+oseat−coords
+ooccupied
+C
+enter−ticks
+device−list
+M
+device−ps
+device−drains
+i
+device−charges H
+device−wattages
+：
+not−charging
+no−capacity
+号
+no−charge
+time−done
+total −laptop−charge−t众ime
+total −mobile−charge−time
+total −tablet −charge−time
+公
+energy−consumption
+run−results信
+average
+]
+微
+turtles −own [
+devices
+init −batts
+per−minute−drains
+per−minute−charges
+curr−charging
+batts
+stay
+charge−times
+remaining−time
+at−outlet
+]
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team10174 |        |          |     |        |     |          |     |       |     | Appendices |
+| --------- | ------ | -------- | --- | ------ | --- | -------- | --- | ----- | --- | ---------- |
+| to−report |        | visitor  |     | −years |     | [ yr ]   |     |       |     |            |
+|           | report | round(68 |     | ∗      | ((1 | + 0.017) | ˆ   | yr )) |     |            |
+end
+| to−report |     | coffee−shop−density |     |     |     |     | [x] |     |     |     |
+| --------- | --- | ------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+report ((109.8 − 72.36 ∗ x + 17.47 ∗ x ∗ x − 1.932 ∗ x ∗ x ∗ x + 0.09991 ∗ x ∗ x ∗ x ∗ x − 0.001963 ∗ x ∗ x ∗ x ∗ x ∗ x) / 28.395)
+end
+| to  | initialize |     | −variables |     |     |     |     |     |     |     |
+| --- | ---------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+M
+|     | set visitors       |     |     | visitor | −years |     | year |     |     |     |
+| --- | ------------------ | --- | --- | ------- | ------ | --- | ---- | --- | --- | --- |
+|     | set square−footage |     |     |         | 1000   |     |      |     |     |     |
+C
+|     | set capacity |     |                | round( | square−footage |     |                  | / 36) |     |     |
+| --- | ------------ | --- | -------------- | ------ | -------------- | --- | ---------------- | ----- | --- | --- |
+|     | set outlets  |     | outlet−density |        |                |     | ∗ square−footage |       |     |     |
+M
+|     | set device−list |     |     | [”    | laptop” |       | ”mobile” | ” tablet | ”]  |     |
+| --- | --------------- | --- | --- | ----- | ------- | ----- | -------- | -------- | --- | --- |
+|     | set device−ps   |     |     | [0.73 | 0.77    | 0.53] |          |          |     |     |
+i
+set device−drains [0.00476 0.0016666666666666667 0.0016666666666666667]
+H
+device−charges
+|     | set                 |                     |     |     | [0.01641 |     | 0.01835 | 0.0038] |     |     |
+| --- | ------------------- | ------------------- | --- | --- | -------- | --- | ------- | ------- | --- | --- |
+|     | set device−wattages |                     |     |     | [65      | 6   | 15] ：   |         |     |     |
+|     | set total           | −laptop−charge−time |     |     |          |     | 0       |         |     |     |
+|     | set total           | −mobile−charge−time |     |     |          |     | 0       |         |     |     |
+号
+|     | set total        | −tablet |     | −charge−time |     |     | 0   |     |     |     |
+| --- | ---------------- | ------- | --- | ------------ | --- | --- | --- | --- | --- | --- |
+|     | set not−charging |         |     | 0            |     |     |     |     |     |     |
+|     | set no−capacity  |         |     | 0            | 众   |     |     |     |     |     |
+|     | set no−charge    |         |     | 0            |     |     |     |     |     |     |
+|     | set time−done    |         |     | 0            |     |     |     |     |     |     |
+energy−consu公mption
+|     | set |     |     |     |     | 0   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+end
+信
+to setup−world
+|     | resize−world |           |     | 0 40       | 0 40 |     |     |     |     |     |
+| --- | ------------ | --------- | --- | ---------- | ---- | --- | --- | --- | --- | --- |
+|     | ask p微atches |           | [   | set pcolor |      | 38] |     |     |     |     |
+|     | let xy       | 0         |     |            |      |     |     |     |     |     |
+|     | repeat       | max−pxcor |     | +          | 1 [  |     |     |     |     |     |
+crt 1 [ setxy xy max−pycor set shape ” tile brick” set color red ]
+|     | crt | 1 [ setxy |     | xy  | 0 set | shape | ” tile | brick” | set color | red ] |
+| --- | --- | --------- | --- | --- | ----- | ----- | ------ | ------ | --------- | ----- |
+crt 1 [ setxy max−pxcor xy set shape ” tile brick” set color red ]
+|     | crt | 1 [ setxy |     | 0 xy | set | shape | ” tile | brick” | set color | red ] |
+| --- | --- | --------- | --- | ---- | --- | ----- | ------ | ------ | --------- | ----- |
+|     | set | xy xy     | +   | 1    |     |       |        |        |           |       |
+]
+ask turtles with [ xcor = 0 and ( ycor = max−pycor / 2 or ycor = max−pycor / 2 − 1 or ycor = max−pycor / 2 + 1)] [ die ]
+crt 1 [ setxy (max−pxcor / 2 − 5) (max−pycor − 2) set shape ”clock” set color white set size 2]
+|     | set nseat−coords |     |     | []  |     |     |     |     |     |     |
+| --- | ---------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set noccupied    |     |     | []  |     |     |     |     |     |     |
+oseat−coords
+|     | set |     |     | []  |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team10174 |              |              |           |      |           |            |      |          |     |      | Appendices |     |
+| --------- | ------------ | ------------ | --------- | ---- | --------- | ---------- | ---- | -------- | --- | ---- | ---------- | --- |
+| set       | ooccupied    |              | []        |      |           |            |      |          |     |      |            |     |
+| let       | seats−placed |              |           | 0    |           |            |      |          |     |      |            |     |
+| let       | seat−x       |              | max−pxcor |      | / ((      | ceiling    | sqrt | capacity | ) + | 1)   |            |     |
+| let       | x−change     |              | seat−x    |      |           |            |      |          |     |      |            |     |
+| let       | seat−y       |              | max−pycor |      | / ((      | ceiling    | sqrt | capacity | ) + | 1)   |            |     |
+| let       | y−change     |              | seat−y    |      |           |            |      |          |     |      |            |     |
+| repeat    |              | ( ceiling    |           | sqrt | capacity  | )          | [    |          |     |      |            |     |
+|           | set          | seat−y       | max−pycor |      | /         | (( ceiling | sqrt | capacity | )   | + 1) |            |     |
+|           | repeat       | (            | ceiling   | sqrt | capacity  |            | ) [  |          |     |      |            |     |
+|           | if           | seats−placed |           |      | < outlets | [          |      |          |     |      |            |     |
+M
+|     |     | ask patch |     | int ( | seat−x) | int | ( seat−y) | [ set | pcolor | 65] |     |     |
+| --- | --- | --------- | --- | ----- | ------- | --- | --------- | ----- | ------ | --- | --- | --- |
+set oseat−coords insert −item ( length oseat−coords ) ( oseat−coords ) ( list int ( seat−x) int ( seat−y))
+C
+set ooccupied insert −item ( length ooccupied ) ( ooccupied ) ( False )
+]
+M
+|     | if  | seats−placed |     |       | >= outlets |     | [         |       |        |     |     |     |
+| --- | --- | ------------ | --- | ----- | ---------- | --- | --------- | ----- | ------ | --- | --- | --- |
+|     |     | ask patch    |     | int ( | seat−x)    | int | ( seat−y) | [ set | pcolor | 95] |     |     |
+i
+set nseat−coords insert −item ( length nseat−coords ) ( nseat−coords ) ( list int ( seat−x) int ( seat−y))
+H
+−item
+set noccupied insert ( length noccupied ) ( noccupied ) ( False )
+|     | ]   |              |     |     |              |     | ：        |     |     |     |     |     |
+| --- | --- | ------------ | --- | --- | ------------ | --- | -------- | --- | --- | --- | --- | --- |
+|     | set | seats−placed |     |     | seats−placed |     | + 1      |     |     |     |     |     |
+|     | if  | seats−placed |     |     | = capacity   |     | [ stop ] |     |     |     |     |     |
+号
+|     | set | seat−y | seat−y |     | + y−change |     |     |     |     |     |     |     |
+| --- | --- | ------ | ------ | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+]
+|     | set | seat−x | seat−x |     | +众x−change |     |     |     |     |     |     |     |
+| --- | --- | ------ | ------ | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+]
+end
+公
+to setup−turtle
+| set | size | 2   |     |     |     |     |     |     |     |     |     |     |
+| --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+信
+| setxy |         | 0 max−pycor |     | /   | 2 − 0.5 | + random−float |     | 1   |     |     |     |     |
+| ----- | ------- | ----------- | --- | --- | ------- | -------------- | --- | --- | --- | --- | --- | --- |
+| set   | color   | 45          |     |     |         |                |     |     |     |     |     |     |
+| set   | s微hape  | ”person”    |     |     |         |                |     |     |     |     |     |     |
+| let   | i       | 0           |     |     |         |                |     |     |     |     |     |     |
+| set   | devices |             | []  |     |         |                |     |     |     |     |     |     |
+| set   | init    | −batts      | []  |     |         |                |     |     |     |     |     |     |
+per−minute−drains
+| set    |                    |              |           |     | []     |             |     |     |     |     |     |     |
+| ------ | ------------------ | ------------ | --------- | --- | ------ | ----------- | --- | --- | --- | --- | --- | --- |
+| set    | per−minute−charges |              |           |     | []     |             |     |     |     |     |     |     |
+| set    | charge−times       |              |           | []  |        |             |     |     |     |     |     |     |
+| repeat |                    | length       | device−ps |     | [      |             |     |     |     |     |     |     |
+|        | if                 | random−float |           | 1   | < item | i device−ps |     | [   |     |     |     |     |
+set devices insert −item ( length devices ) ( devices ) ( item i device−list )
+set init −batts insert −item ( length init −batts ) ( init −batts ) ( precision ( ifelse −value ( ticks < 720) [50 + random−float 50] [25 + random−float 50]) 2)
+set per−minute−drains insert −item ( length per−minute−drains ) (per−minute−drains ) ( item i device−drains )
+set per−minute−charges insert −item ( length per−minute−charges ) (per−minute−charges ) ( item i device−charges )
+|     |     | charge−times |     |     |        | −item |          | charge−times |     |     | (charge−times |       |
+| --- | --- | ------------ | --- | --- | ------ | ----- | -------- | ------------ | --- | --- | ------------- | ----- |
+|     |     | set          |     |     | insert |       | ( length |              |     |     | )             | ) (0) |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| Team10174 |     |     |     |     |     |     |     |     | Appendices |     |
+| --------- | --- | --- | --- | --- | --- | --- | --- | --- | ---------- | --- |
+]
+|     | set | i i + | 1   |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+| set | batts | init   | −batts |          |     |     |     |     |     |     |
+| --- | ----- | ------ | ------ | -------- | --- | --- | --- | --- | --- | --- |
+| set | stay  | random | 67     | + random | 141 |     |     |     |     |     |
+if not empty? devices [ set curr−charging item ( position min init −batts init −batts ) devices ]
+| set | label−color |       | white |     |                  |     |     |     |     |     |
+| --- | ----------- | ----- | ----- | --- | ---------------- | --- | --- | --- | --- | --- |
+| set | label       | (word | batts | ” , | ” remaining−time |     | )   |     |     |     |
+end
+M
+to setup
+clear−all
+C
+| initialize |     | −variables |     |     |     |     |     |     |     |     |
+| ---------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- |
+setup−world
+M
+let people−per−30 [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+| let | i 0 |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+| repeat |     | 48 [ |     |     |     |     |     |     |     |     |
+| ------ | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+>= <= people−per−30 replace−item (people−per −30) ∗ ∗ coffee−shop−density
+if i 11 and i 32 [ set ( ( i ) (round (0.5 visitors ( ( i / 2)))))]
+|     | set i | i + | 1   |     |     | ：   |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+| set | enter−ticks |     | []  |     |     |     |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+号
+| set    | i 0    |             |                  |      |      |                |     |                 |     |     |
+| ------ | ------ | ----------- | ---------------- | ---- | ---- | -------------- | --- | --------------- | --- | --- |
+| repeat |        | length      | people−per−30    |      | [    |                |     |                 |     |     |
+|        | repeat | item        | i peopl众e−per−30 |      |      | [              |     |                 |     |     |
+|        | set    | enter−ticks |                  | lput | (( i | ∗ 30) + random |     | 29) enter−ticks |     |     |
+]
+公
+|     | set i | i + | 1   |     |     |     |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+reset−ticks
+信
+ask patch (max−pxcor / 2) (max−pycor − 2) [ set plabel−color red set plabel (word ”Time: ” int ( ticks / 60) ”:” ( ifelse −value ( ticks mod 60 < 10) [word ”0” ( ticks mod 60)] [ ticks mod 60]))]
+end
+微
+to find−seat
+| if  | member? | False | ooccupied |     | [   |     |     |     |     |     |
+| --- | ------- | ----- | --------- | --- | --- | --- | --- | --- | --- | --- |
+move−to patch ( item 0 item ( position False ooccupied ) oseat−coords ) ( item 1 item ( position False ooccupied ) oseat−coords )
+replace−item
+|     | set ooccupied      |     | (    |      |     | ( position | False | ooccupied | ) ooccupied | True) |
+| --- | ------------------ | --- | ---- | ---- | --- | ---------- | ----- | --------- | ----------- | ----- |
+|     | set at−outlet      |     | True |      |     |            |       |           |             |       |
+|     | set remaining−time |     |      | stay |     |            |       |           |             |       |
+stop
+]
+| if  | member? | False | noccupied |     | [   |     |     |     |     |     |
+| --- | ------- | ----- | --------- | --- | --- | --- | --- | --- | --- | --- |
+move−to patch ( item 0 item ( position False noccupied ) nseat−coords ) ( item 1 item ( position False noccupied ) nseat−coords )
+set noccupied ( replace−item ( position False noccupied ) noccupied True)
+|     | set at−outlet |     | False |     |     |     |     |     |     |     |
+| --- | ------------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+remaining−time
+|     | set |     |     | stay |     |     |     |     |          |     |
+| --- | --- | --- | --- | ---- | --- | --- | --- | --- | -------- | --- |
+|     |     |     |     |      |     |     |     |     | 关注 HiMCM |     |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team10174 |     |     |     |     |     |     | Appendices |     |
+| --------- | --- | --- | --- | --- | --- | --- | ---------- | --- |
+stop
+]
+| set | no−capacity |     | no−capacity |     | + 1 |     |     |     |
+| --- | ----------- | --- | ----------- | --- | --- | --- | --- | --- |
+die
+end
+to go
+| let | ppl−enter | length       |     | filter | [ i −> i | = ticks ] enter−ticks |     |     |
+| --- | --------- | ------------ | --- | ------ | -------- | --------------------- | --- | --- |
+|     | ppl−enter | setup−turtle |     |        |          |                       |     |     |
+| crt |           | [            |     |        | ]        |                       |     |     |
+ask turtles with [ shape = ”person” and length devices = 0] [ set not−charging not−charging + 1 die ]
+M
+ask turtles with [ shape = ”person” and xcor = 0] [ find−seat ]
+ask turtles with [ shape = ”person ”] [ set batts (map [ [ batt pmd] −> max ( list 0 ( batt − pmd))] batts per−minute−drains )]
+C
+ask turtles with [ shape = ”person” and ( at−outlet = True and not empty? filter [ i −> i < 1 ] batts )] [ set charge−times ( replace−item ( position min batts batts ) ( charge−times ) ( item ( position min batts batts ) charge−times + 1))]
+ask turtles with [ shape = ”person” and at−outlet = True] [ set batts ( replace−item ( position min batts batts ) ( batts ) min ( list 1 (min batts + ( item position min batts batts per−minute−charges ))))]
+M
+ask turtles with [ shape = ”person ”] [ set label (word (map [ batt −> precision batt 2] batts ) ” , ” remaining−time )]
+ask turtles with [ shape = ”person ”] [ set remaining−time remaining−time − 1]
+i
+ask turtles with [ shape = ”person” and ( remaining−time <= 0 or member? 0 batts )] [
+H
+|     | if member?    | 0   | batts     | [   |      |     |     |     |
+| --- | ------------- | --- | --------- | --- | ---- | --- | --- | --- |
+|     | set no−charge |     | no−charge |     | + 1： |     |     |     |
+]
+|     | if remaining−time |     |     | <= 0 | [   |     |     |     |
+| --- | ----------------- | --- | --- | ---- | --- | --- | --- | --- |
+号
+|     | set time−done |     | time−done |     | + 1 |     |     |     |
+| --- | ------------- | --- | --------- | --- | --- | --- | --- | --- |
+]
+|     | show charge−times |          |     | 众       |     |     |     |     |
+| --- | ----------------- | -------- | --- | ------- | --- | --- | --- | --- |
+|     | if member?        | ”laptop” |     | devices | [   |     |     |     |
+set total −laptop−charge−time total −laptop−charge−time + first charge−times
+公
+]
+|     | if member? | ”mobile” |     | devices | and member? | ”laptop” | devices | [   |
+| --- | ---------- | -------- | --- | ------- | ----------- | -------- | ------- | --- |
+set total −mobile−charge−time total −mobile−charge−time + item 1 charge−times
+信
+]
+if member? ”mobile” devices and not member? ”laptop” devices [
+微set total −mobile−charge−time total −mobile−charge−time + first charge−times
+]
+|     | if member? | ” tablet |     | ” devices | [   |     |     |     |
+| --- | ---------- | -------- | --- | --------- | --- | --- | --- | --- |
+set total −tablet −charge−time total −tablet −charge−time + last charge−times
+]
+|     | if at−outlet | =   | True | [   |     |     |     |     |
+| --- | ------------ | --- | ---- | --- | --- | --- | --- | --- |
+show ( position ( list [ pxcor ] of patch−here [ pycor ] of patch−here ) oseat−coords )
+set ooccupied ( replace−item ( position ( list [ pxcor ] of patch−here [ pycor ] of patch−here ) oseat−coords ) ooccupied False )
+]
+|     | if at−outlet | =   | False | [   |     |     |     |     |
+| --- | ------------ | --- | ----- | --- | --- | --- | --- | --- |
+set noccupied ( replace−item ( position ( list [ pxcor ] of patch−here [ pycor ] of patch−here ) nseat−coords ) noccupied False )
+]
+die
+]
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team10174 Appendices
+set energy−consumption total −laptop−charge−time ∗ 60 ∗ first device−wattages + total −mobile−charge−time ∗ 60 ∗ item 1 device−wattages + total −tablet −charge−time ∗ 60 ∗ last device−wattages
+tick
+ask patch (max−pxcor / 2) (max−pycor − 2) [ set plabel (word ”Time: ” int ( ticks / 60) ”:” ( ifelse −value ( ticks mod 60 < 10) [word ”0” ( ticks mod 60)] [ ticks mod 60]))]
+end
+to run−one−day
+| repeat |     | 1440 [go] |     |     |     |     |     |     |     |
+| ------ | --- | --------- | --- | --- | --- | --- | --- | --- | --- |
+end
+| to−report |     | run−one−day−report |     |     |     |     |     |     |     |
+| --------- | --- | ------------------ | --- | --- | --- | --- | --- | --- | --- |
+M
+| repeat |     | 1440 [go]          |     |     |     |     |     |     |     |
+| ------ | --- | ------------------ | --- | --- | --- | --- | --- | --- | --- |
+| report |     | energy−consumption |     |     |     |     |     |     |     |
+C
+end
+M
+to run−one−day−x−times
+| set | run−results |     | []  |     |     |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+| repeat |     | x−times | [   |     |     |     |     |     |     |
+| ------ | --- | ------- | --- | --- | --- | --- | --- | --- | --- |
+H
+−variables
+initialize
+|     | setup−world |     |     |     |     | ：   |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- |
+let people−per−30 [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+|     | let i | 0   |     |     |     |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+号
+|     | repeat | 48 [ |     |     |     |     |     |     |     |
+| --- | ------ | ---- | --- | --- | --- | --- | --- | --- | --- |
+if i >= 11 and i <= 32 [ set people−per−30 ( replace−item ( i ) (people−per −30) (round (0.5 ∗ visitors ∗ ( coffee−shop−density ( i / 2)))))]
+|     | set | i i + | 1   | 众   |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+]
+|     | set enter−ticks |     |     | []  |     |     |     |     |     |
+| --- | --------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+|     | set i  | 0      |               |               |     |     |     |     |     |
+| --- | ------ | ------ | ------------- | ------------- | --- | --- | --- | --- | --- |
+|     | repeat | length | people−per−30 |               |     | [   |     |     |     |
+|     | repeat | item   | i             | people−per−30 |     | [   |     |     |     |
+信
+|     | set | enter−ticks |     | lput | (( i | ∗ 30) | + random |     | 29) enter−ticks |
+| --- | --- | ----------- | --- | ---- | ---- | ----- | -------- | --- | --------------- |
+]
+|     | s微et | i i + | 1\usepackage{ |     | listings |     | }   |     |     |
+| --- | ---- | ----- | ------------- | --- | -------- | --- | --- | --- | --- |
+]
+reset−ticks
+ask patch (max−pxcor / 2) (max−pycor − 2) [ set plabel−color red set plabel (word ”Time: ” int ( ticks / 60) ”:” ( ifelse −value ( ticks mod 60 < 10) [word ”0” ( ticks mod 60)] [ ticks mod 60]))]
+|     | run−results |     |     | run−one−day−report |     |     |     | run−results |     |
+| --- | ----------- | --- | --- | ------------------ | --- | --- | --- | ----------- | --- |
+|     | set         |     |     | lput               |     |     |     |             |     |
+]
+| set | average | (sum | run−results |     | )   | / x−times |     |     |     |
+| --- | ------- | ---- | ----------- | --- | --- | --------- | --- | --- | --- |
+end
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team10174 Appendices
+H Electric Vehicles Python Simulation Code
+import numpy as np
+import pandas as pd
+import random
+battery capacity = 58.8
+p = 0.2
+M
+def vor( year ):
+x = year − 2000
+C
+return 0.1247 ∗x∗ x + 0.6053 ∗ x + 5.5952
+M
+def num cars( year ):
+x = year − 2000
+i
+return 18590 ∗ x ∗ x − 418483 ∗ x + 2He6
+：
+yenergies = []
+for yr in range (2018 , 2029):
+denergies = []
+号
+for day in range (365):
+cenergies = []
+time = 0 众
+for i in range ( int (num cars( yr ))):
+wattage = np. random . choice ([45 , 1.44 , 9.6] , p=[0.149 , 0.054 , 0.797])
+公
+time += 0.3∗ battery capacity / wattage
+if time >= 24:
+break信
+cenergies . append (0.3 ∗ battery capacity ∗ (num cars( yr )) / (1 ∗ vor( yr )))
+denergies . append(sum( cenergies ))
+微
+print ( cenergies )
+yenergies . append(sum( denergies ))
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

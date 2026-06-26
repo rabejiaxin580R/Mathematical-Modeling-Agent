@@ -1,0 +1,137 @@
+{
+  "paper_id": "2663",
+  "meta": {
+    "paper_id": "2663",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\B\\2663.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "pred.multireg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用多元线性回归，以城市人口、高中毕业率、高中辍学率、监狱人口、假释违规百分比为自变量，暴力犯罪发生率为因变量，建立预测模型。",
+      "formulas": [
+        {
+          "latex_code": "V = \\beta_0 + \\beta_1 P + \\beta_2 G + \\beta_3 D + \\beta_4 J + \\beta_5 R",
+          "variables": {
+            "V": "暴力犯罪发生率",
+            "P": "城市人口",
+            "G": "高中毕业率",
+            "D": "高中辍学率",
+            "J": "监狱人口",
+            "R": "假释违规百分比",
+            "\\beta_i": "回归系数"
+          }
+        }
+      ],
+      "source_excerpt": "ran a multivariate linear regression to create a function that outputs an approximate incidence of violence given the City Population, High School Graduation Rate, High School Dropout Rate, Prison Population, and Percent of Parole Violations."
+    },
+    {
+      "concept_id": "corr.pearson",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "通过计算每个变量与暴力犯罪发生率的线性回归决定系数（R²）来评估相关性，并筛选出R²较高的五个变量。",
+      "formulas": [
+        {
+          "latex_code": "R^2 = 1 - \\frac{SS_{res}}{SS_{tot}}",
+          "variables": {
+            "R^2": "决定系数",
+            "SS_{res}": "残差平方和",
+            "SS_{tot}": "总平方和"
+          }
+        }
+      ],
+      "source_excerpt": "we ran linear regressions of all values vs. all other values and outputted the coefficient of determination from each regression."
+    },
+    {
+      "concept_id": "test.ttest",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "对每个回归系数的斜率进行假设检验，检验斜率是否显著不为零，以确认变量对暴力犯罪有预测能力。",
+      "formulas": [
+        {
+          "latex_code": "t = \\frac{\\hat{\\beta}_1}{SE(\\hat{\\beta}_1)}",
+          "variables": {
+            "t": "t统计量",
+            "\\hat{\\beta}_1": "斜率估计值",
+            "SE(\\hat{\\beta}_1)": "斜率标准误"
+          }
+        }
+      ],
+      "source_excerpt": "we conducted hypothesis tests that would determine the probability that the slope of our regression line was 0."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "对每个变量单独与暴力犯罪进行一元线性回归，初步判断相关性，并发现失业率、青少年囚犯数与暴力犯罪几乎无关。",
+      "formulas": [
+        {
+          "latex_code": "V = \\alpha + \\beta X + \\epsilon",
+          "variables": {
+            "V": "暴力犯罪发生率",
+            "X": "单个自变量",
+            "\\alpha": "截距",
+            "\\beta": "斜率",
+            "\\epsilon": "误差项"
+          }
+        }
+      ],
+      "source_excerpt": "we ran linear regressions of violence with respect to each value with the statistical analysis software MINITAB."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "用实际数据测试模型，计算预测值与真实值之间的误差范围（15起到小于1起），评估模型准确性。",
+      "formulas": [
+        {
+          "latex_code": "\\text{Error} = |V_{\\text{predicted}} - V_{\\text{actual}}|",
+          "variables": {
+            "V_{\\text{predicted}}": "预测的暴力犯罪数",
+            "V_{\\text{actual}}": "实际的暴力犯罪数"
+          }
+        }
+      ],
+      "source_excerpt": "When we tested this model against data that we already had, there was relatively low error, with discrepancies in incidence of violence ranging from 15 crimes to less than 1 crime."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过分析回归系数大小，确定高中毕业率和辍学率对暴力犯罪影响最大，从而将重点放在学校经费上。",
+      "formulas": [],
+      "source_excerpt": "we found which variable(s) affected the function most. We found that High School Graduation and Dropout Rates had the biggest effect"
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "建立学校经费增加百分比与毕业率、辍学率变化之间的函数关系，用于预测经费投入对教育指标的影响。",
+      "formulas": [
+        {
+          "latex_code": "\\Delta G = f(\\Delta F), \\quad \\Delta D = g(\\Delta F)",
+          "variables": {
+            "\\Delta G": "毕业率变化量",
+            "\\Delta D": "辍学率变化量",
+            "\\Delta F": "学校经费增加百分比"
+          }
+        }
+      ],
+      "source_excerpt": "we set out to create a relation which could model increases in graduation rate and decreases in dropout rate as a function of the percent increase in school funding."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "MINITAB 统计分析软件",
+      "stage": "build",
+      "how_used": "使用MINITAB软件进行线性回归分析，计算决定系数和假设检验，辅助变量筛选。",
+      "formulas": [],
+      "source_excerpt": "we ran linear regressions of violence with respect to each value with the statistical analysis software MINITAB."
+    }
+  ]
+}

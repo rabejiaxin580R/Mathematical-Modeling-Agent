@@ -1,0 +1,856 @@
+Team # 5325 B
+Page 1 of 24
+
+Executive	Summary
+
+As the world population grows and its distribution changes over time, mathematically modeling
+the spread of disease is an increasingly important means of developing rapid and effective
+response measures in diverse areas of the world. Quantitative knowledge of factors related to the
+spread of disease can be used to influence public policy to determine the best allocation of scarce
+medical resources to best combat disease. Given this need to address the spread of an unknown
+disease in a small village on an island in Indonesia, we have created a series of models that,
+when combined, can both predict the progression of said disease over time and recommend the
+necessary preventative measures.
+
+Our first model uses a typical SIR model to provide an initial, simplified prediction of how the
+disease might spread over time absent any preventative measures. From this foundation, we then
+modified the SIR model into the SIRD model, which accounts specifically for deaths over time
+and contains a modification that allows for modeling the spread of the disease given some
+relative abundance of vaccines that have an average protection rate (i.e. the chance that a vaccine
+has of making an individual immune to said disease). Our third model is a decision tree that
+categorizes the severity of the disease based on quantitative thresholds of individual and
+community risk. The model then recommends treatment measures based on the category said
+disease falls under.
+
+In a real world situation, all three of the previously discussed models would be used in
+conjunction to ascertain an appropriate response to the disease and adjust it over time. The three
+models all start with the same initial input of known disease characteristics, and result in a
+categorization of severity from the Decision Tree Model and an estimation of the progression of
+the disease from the SIR and the SIRD model. Appropriate treatment measures would likely be
+determined by adjusting the prescriptions of the Decision Tree using conclusions that can be
+drawn from the other two models. The interconnectivity between the models means that the
+effectiveness of the implemented treatment measure can be evaluated by re-running the SIRD
+model with data from the situation where treatment measures are in effect. If the effects of the
+disease are shown as being significantly mitigated, the effectiveness of the treatment has been
+confirmed; otherwise, a re-categorization of the disease and a change in the way resources are
+allocated may be appropriate. Therefore, the interconnectivity of the models serves as a way to
+confirm the effectiveness of our response.
+
+Aside from the limitations of modeling with limited concrete data and assuming an essentially
+isolated population of interest, we have nonetheless generated some important insights from our
+models. Our models support the effectiveness of vaccination measures, especially on small
+populations, as each susceptible individual has a greater ability to become vaccinated, and
+classifies the disease as a “Risk Group 4”, the most severe classification, as it crosses our
+quantitative thresholds of high individual and community risk. This given risk group
+recommends the allocation of medical resources that prioritizes the reduction of community risk
+over individual risk.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 2 of 24
+
+2014 HiMCM Problem B
+
+The Coming Plague
+
+Team # 5325
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 3 of 24
+
+Table	of	Contents
+Executive Summary ........................................................................................................................ 1
+
+Table of Contents ............................................................................................................................ 3
+
+Interpretation/Problem Restatement ............................................................................................... 5
+
+Our Models ..................................................................................................................................... 6
+
+SIR Model ....................................................................................................................................... 6
+
+Model Building ........................................................................................................................... 6
+
+Assumptions ................................................................................................................................ 6
+
+Model .......................................................................................................................................... 7
+
+Strengths ..................................................................................................................................... 7
+
+Limitations .................................................................................................................................. 7
+
+Containment Standards ............................................................................................................... 8
+
+SIRD Model .................................................................................................................................... 8
+
+Model Building ........................................................................................................................... 8
+
+Assumptions ................................................................................................................................ 9
+
+Model .......................................................................................................................................... 9
+
+SIRD + Vaccine .......................................................................................................................... 9
+
+Strengths ..................................................................................................................................... 9
+
+Limitations ................................................................................................................................ 10
+
+Sensitivity Analysis .................................................................................................................. 10
+
+Decision Tree Model..................................................................................................................... 11
+
+Model Building ......................................................................................................................... 11
+
+Assumptions .............................................................................................................................. 11
+
+Model ........................................................................................................................................ 12
+
+Strengths ................................................................................................................................... 13
+
+Limitations ................................................................................................................................ 14
+
+The Question of Ethics .............................................................................................................. 14
+
+Scenario......................................................................................................................................... 14
+
+Implementation into Our Model ............................................................................................... 14
+
+Recommendations for the CDC ................................................................................................ 15
+
+Questions for Clarification ........................................................................................................ 16
+
+Model Modifications and Refinement based on Supplemental Information ............................ 17
+
+Conclusion .................................................................................................................................... 18
+
+Results ....................................................................................................................................... 18
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team # 5325 B
+Page 4 of 24
+
+Potential Extensions .................................................................................................................. 18
+
+News Report.................................................................................................................................. 19
+
+Appendix ....................................................................................................................................... 20
+
+References ..................................................................................................................................... 24
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 5 of 24
+
+Interpretation/Problem	Restatement
+
+The problem is to determine the most optimal way to identify, treat, and contain epidemics
+utilizing limited resources. The initial task given was to develop a generic model that simulated
+the spread of disease and allowed for the determination of appropriate treatment steps to mitigate
+further spread and harm. Based off the model we built, we were to come up with suggestions for
+how our country’s disease control center should address future epidemics and were required to
+improve and modify our model given new information specific to the disease in question.
+Finally, we were tasked with writing a summary of our findings for our local news station.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 6 of 24
+
+Our	Models
+
+SIR	Model
+
+Model	Building
+
+The basic SIR model is a widely accepted model regarding the population distribution between
+three different categories of people: susceptible to disease infection, those that are infected, and
+those that have recovered (dead or immune). We have decided to use this model as a basis for a
+more complex model due to its ease of modification, such as adding variables based on specific
+disease qualities.
+
+Assumptions
+
+Assumption 1: Time of contraction is considered to be the same as time of infectiousness.
+Justification: The model is very time sensitive. This assumption avoids more variables between
+the susceptibility rate of change, latent period (the time it takes for an infected individual to
+become infectious), and infectious rate of change by grouping the latent and infectious periods
+together.
+
+Assumption 2: Each individual in the population is equally at risk of acquiring the disease;
+therefore, no one is initially immune to the disease. Individuals are well mixed so that
+everyone in the population has the same probability of being in contact with one another.
+Justification: There is no way to reliably determine the number of inherently immune members
+of the population, and no way to reliably determine the individuals in the population who have
+the most or least exposure to sources of the disease. This allows us to simplify the
+transmissibility of the disease.
+
+Assumption 3: The only carriers of the disease are the ones that show symptoms.
+Justification: If there were individuals who were able to transmit the disease without showing
+any symptoms, it would make the model less accurate because the calculations for the infected
+and susceptible individuals would have high margins of error.
+
+Assumption 4: The time scale is small enough that population changes such as deaths,
+births, and migrations won’t significantly affect the population.
+Justification: This is to assure that the number of people in the population will stay constant as
+well as limit outside influences and maintain a consistent set of rates of change within the initial
+population.
+
+Assumption 5: Once someone is immune to the disease they are no longer susceptible to the
+disease.
+Justification: Without this assumption, the model would require additional variables, such as the
+rate at which a recovered individual becomes susceptible again, which would more closely
+resemble the SIRS, not SIR model. Furthermore, the initial information we were given prevents
+us from inferring that recovered individuals do indeed reenter the susceptible population.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 7 of 24
+
+Model
+
+(cid:2170) (cid:3404) (cid:2175)(cid:4666)(cid:2202)(cid:4667) (cid:3397) (cid:2165)(cid:4666)(cid:2202)(cid:4667) (cid:3397) (cid:2174)(cid:4666)(cid:2202)(cid:4667)
+Where:
+(cid:2170) is the total population
+(cid:2175) is the amount of people potentially susceptible to the disease
+(cid:2165) is the amount of people infected with the disease
+(cid:2174) is the amount of people that have recovered from the disease (recovery includes death or
+immunization) and are “resistant” to the disease
+
+(cid:3404)
+
+(cid:3404) 	 (cid:3398)
+
+(cid:3398) 	(cid:2237)(cid:2165)
+
+(cid:3404) 	(cid:2237)(cid:2165)
+
+(cid:2236)(cid:2175)(cid:2165)
+(cid:2170)
+
+(cid:2236)(cid:2175)(cid:2165)
+(cid:2170)
+
+Based off the definitions of  (cid:2175)(cid:4666)(cid:2202)(cid:4667) ,(cid:2165)(cid:4666)(cid:2202)(cid:4667), and (cid:2174)(cid:4666)(cid:2202)(cid:4667), we can then derive them to find
+(cid:2186)(cid:2175)
+(cid:2186)(cid:2202)
+(cid:2186)(cid:2165)
+(cid:2186)(cid:2202)
+(cid:2186)(cid:2174)
+(cid:2186)(cid:2202)
+Where:
+(cid:2236) is the infection rate of the disease (how often contact between susceptible and infected
+individuals results in successful transfer of the disease)
+(cid:2237) is the recovery rate (the rate an infected member of the population “recovers” and moves into
+the resistant group).
+Strengths
+
+1.  The model allows for inputs and outputs that quickly estimate the effects of the disease
+
+on the population’s rates of change.
+
+2.  The SIR model is prevalent in the real world and is a known standard in the medical
+
+community, allowing for easy interpretation.
+
+3.  Given more information pertaining to the scarcity, cost, and benefits of different
+
+resources, first order cost-benefit analyses can be easily applied in conjunction with the
+results of the SIR model. This is useful when making necessary policy or health
+management decisions involving best possible allocation of resources.
+
+Limitations
+
+1.  The model is only accurate when dealing with a closed population, which may be an
+
+unreasonable assumption to make when dealing with areas with high levels of traffic in
+and out (such as urban areas). Since the prevention of the spread of a disease outside an
+observed area is a key priority when enacting measures to control an epidemic, the model
+may not suggest effective actions.
+
+2.  The model can’t account for changes in variables such as recovery rate or immunization
+effectiveness, nor can it account for random variations in individual probabilities of
+infection and death, which are important when dealing with relatively small populations.
+The model’s use of initial values make it deterministic and unable to adapt to change in
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 8 of 24
+
+certain disease conditions over time; however, the sensitivity analysis done on the model
+decreases the effect of this limitation and makes the nature of the model more stochastic
+and representative of random variations.
+
+3.  The SIR model is unable to model multiple diseases at once because it can’t handle the
+extra complexity. In a situation with multiple diseases, there would be an overlapping
+population that all the diseases would affect, but the multiple death and infection rates
+would make the model an ineffective tool for ascertaining useful data that can be used in
+decision-making.
+
+Containment	Standards
+
+Containment shall be defined as stopping infection while there is population still remaining
+that is susceptible.
+
+In order to define containment, the progress of the disease is considered over time using the
+previously discussed equation. Therefore, for both of the following definitions, t, the time, is
+greater than 0.
+
+Definition of containment:
+
+(cid:2186)(cid:2175)
+(cid:2186)(cid:2202)
+
+(cid:3404) (cid:2777), (cid:2175) (cid:3408) (cid:2777), (cid:2202) (cid:3408) (cid:2777)
+
+In this state, the susceptibility of the population remains constant while the susceptible
+population remains positive. (cid:2175) must remain positive as that shows that some of the population is
+still alive and able to become infected. (cid:2186)(cid:2175)
+(cid:2186)(cid:2202)
+within the susceptible population which indicates that the disease is not infecting anyone.
+
+ must remain zero as it shows that there is no change
+
+An alternate definition for containment is the state in which (cid:2186)(cid:2165)
+(cid:2186)(cid:2202)
+over time, is less than or equal to zero while (cid:2175), the susceptible population, is greater than zero.
+
+, the change in infected people
+
+(cid:2186)(cid:2165)
+(cid:2186)(cid:2202)
+
+(cid:3409) (cid:2777), (cid:2175) (cid:3408) (cid:2777), (cid:2202) (cid:3408) (cid:2777)
+
+In this situation, the number of people who get infected continuously decrease. (cid:2175) is always
+positive because if no one were susceptible, no infections would occur.
+
+SIRD	Model
+
+Model	Building
+
+One of the key limitations to the original SIR model is the lack of distinction within the
+“Recovery” group between deaths and those that have become immune over time. Through
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 9 of 24
+
+manipulation of the SIR model inputs, a method was generated to differentiate between those
+that had died and those that had become immune. The model takes into account the mean
+mortality rate of the disease and uses that to calculate the population that dies or recovers.
+
+Assumptions
+
+Assumption: Vaccines are readily available at the beginning of the simulation period and
+can be evaluated with an effectiveness scale.
+Justification: This is especially important for the vaccine modification. If it is determined that
+vaccination is an appropriate measure in the treatment of a disease, then the assumption is
+needed so that the simulation can accurately use the values prescribed to the vaccine and
+simulate the effects of it.
+
+Model
+
+(cid:2170) (cid:3404) (cid:2175)(cid:4666)(cid:2202)(cid:4667) (cid:3397) (cid:2165)(cid:4666)(cid:2202)(cid:4667) (cid:3397) (cid:2174)(cid:4666)(cid:2202)(cid:4667) (cid:3397) (cid:2160)(cid:4666)(cid:2202)(cid:4667)
+Where:
+(cid:2175),(cid:2165), and (cid:2174) are the same to the SIR model
+(cid:2160) is the amount of people that are considered dead
+
+The value for (cid:2160)(cid:4666)(cid:2202)(cid:4667) is evaluated in the following equations:
+(cid:2174)(cid:4666)(cid:2202)(cid:4667) (cid:3404) (cid:2174)(cid:2202)(cid:2879)(cid:2778) (cid:3397) (cid:3435)(cid:4666)(cid:2778) (cid:3398) (cid:2235)(cid:4667) ∗ (cid:2165)(cid:2202)(cid:2879)(cid:2778) ∗ (cid:2237)(cid:3439) ∗ (cid:2186)(cid:2202)
+(cid:2160)(cid:4666)(cid:2202)(cid:4667) (cid:3404) (cid:2160)(cid:2202)(cid:2879)(cid:2778) (cid:3397) (cid:4666)(cid:2235) ∗ (cid:2165)(cid:2202)(cid:2879)(cid:2778) ∗ (cid:2237)(cid:4667) ∗ (cid:2186)(cid:2202)
+Where:
+(cid:2235) is the mortality rate
+(cid:2180)(cid:2202)(cid:2879)(cid:2778) (cid:3404) (cid:2180)(cid:4666)(cid:2202) (cid:3398) (cid:2778)(cid:4667)
+
+SIRD	+	Vaccine
+
+Since vaccines are a likely preventative measure that would be taken to mitigate the spread of a
+disease, this modification allows the model to account for this impact. In this case, the population
+of interest is a small, relatively homogenous island population with minimal outside contact and
+migration, so shipments of vaccines would be very effective. Therefore, all individuals who are
+susceptible can be specifically treated and the amount of people infected over time would be
+greatly decreased.
+
+Strengths
+
+1.  The model allows differentiation between those that have gained immunity and those that
+have died, which leads to better classification of the severity of the disease by providing
+an accurate measure of death over the course of the disease.
+
+2.  The use of Excel allows for easy understanding and utilization of our model by people
+
+with non-technical backgrounds.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 10 of 24
+
+Limitations
+
+1.  This death and vaccine modification requires more data, which may be costly and hard to
+
+find.
+
+2.  There is no calculable dD/dt value independent of the D(t) value. This means that we
+
+can’t independently calculate rate of change in D which may hinder potential applications
+to containment calculations.
+
+Sensitivity	Analysis
+See Appendix for Figure 1
+The spider graph of the maximum number of infected individuals quantitatively shows how, as
+the infection and interaction rate increase, the maximum number of infected individuals
+increases (evidenced by the positive slope of the respective lines), while an increased recovery
+rate corresponds to a decreased maximum number of infected individuals (evidenced by the
+negative slope of the respective line).
+
+See Appendix for Figure 2
+The spider graph of the total number of recovered individuals quantitatively shows how, as the
+death rate increases, the total number of recovered individuals decreases, while an increased
+interaction rate corresponds to an increased total number of recovered individuals. Surprisingly,
+an increased recovery rate and vaccine protection rate do not correspond to an increased total
+number of recovered individuals. This may be due to the fact that, in our model, an increased
+vaccine protection rate results in a greater rate of removal of individuals from the susceptible
+population, and these individuals are not added to the total recovered population.
+
+See Appendix for Figure 3
+The spider graph of the total number of vaccinated individuals quantitatively shows how, as the
+infection rate and available number of vaccines increases, the total number of vaccinated
+individuals increases, while an increased recovery and interaction rate corresponds to a
+decreased number of vaccinated individuals. This may be due to a greater recovery rate reducing
+the need to vaccinate individuals, while a greater interaction rate may contribute to a greater
+number of infected people over time and, therefore, reduces the total number of susceptible
+individuals that are able to be vaccinated.
+
+See Appendix for Figure 4
+The spider graph of the total number of protected individuals (due to vaccinations preventing
+them from being infected) quantitatively shows how, as the vaccine protection rate and vaccine
+availability increase, there is a large corresponding increase in the total number of infected
+individuals. To a lesser extent, an increased death rate also corresponds with an increased total
+number of protected individuals, possibly because of a lurking variable of time. As time
+advances, more people are protected and more people die.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 11 of 24
+
+Decision	Tree	Model
+
+Model	Building
+
+Based on the World Health Organization (WHO) guidelines for categorizing the severity or risk
+associated with a certain outbreak of disease, the model uses the quantitative measures of death
+rates and infection rates to categorically describe the “risk group” a certain disease situation falls
+under. The decision tree was built using WHO categorizations of disease severity and empirical
+examples of infection rates to build the decision tree. The two main factors in play during the
+determination were community risk (how infectious the disease is to the overall population) and
+individual risk (the effects on a single person, which may include death). The final risk group
+that is determined can be used to assign appropriate treatment measures.
+
+Assumptions
+
+1.  The values for infection rate and mortality rate in the SIRD model are consistent and
+
+reflect an accurate measure for classification of the disease. This is necessary to create
+the quickest and simplest way to classify between the various WHO groups.
+
+2.  The threshold values for disease are estimations. The threshold value for individual risk is
+based on the lowest value of mortality rates within already classified Risk Group 3 and 4
+(which are classified by the WHO as high individual risk), which happened to be around
+20%. The rate of infection threshold of .25 is also an estimation based on reasonable
+averages from a variety of example diseases.
+
+3.  We assume that all other variables can be ignored when it comes to the calculation of
+
+thresholds to allow for simplicity and to avoid categorical data from coming into play and
+to avoid variables that would require more data, which would make it incompatible with
+the SIRD models.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team # 5325 B
+Page 12 of 24
+
+Model
+
+KEY:
+WHO Risk Group 1 - Little to no severity for individuals or the community - usually this
+classification reflects either the lack of individual risk of death or simply that immunization
+methods are already in place to dangers.
+Preventative Measures and Allocation of Resources - No preventative measures are really
+needed, however, the CDC of said country may wish to allocate the most resources towards the
+creation of vaccines against the strain of disease to preempt potential evolution of the non-
+harmful strain.
+
+WHO Risk Group 2 - Low severity risk to individuals and little to no community risk - usually
+this classification is assigned to diseases that have a potential to cause harm or death to
+individuals with a disease. However, the disease is either non-transmittable (geographically or
+pathologically) or the subject is isolated and presents no risk to the community overall. Usually
+preventative and treatment measures are readily available.
+Examples include - Hepatitis A and B, Staph., typhoid, and the common flu
+Preventative Measures - If available, administer vaccines. If not, implementing hospitalization to
+reduce the risk of spread of the disease may be needed. The needed resources for research and
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 13 of 24
+
+development of preventative measures regarding immunization may be necessary to prevent
+spread of similar diseases in the future.
+
+WHO Risk Group 3 - This classification refers to diseases that have been diagnosed as high risk
+toward individuals, usually referring to high possibility of death or serious problems with host,
+but lacks the potential to spread, usually due to the difficulty to spread (e.g. blood to blood,
+sexual intercourse, or sheer lack of transmissibility). Another possibility is that a vaccine is
+already available for the disease in question which reduces community risk and increases
+preventability.
+Examples include - HIV, Monkeypox, and chlamydia.
+Preventative Measures - If available, vaccination is once again recommended as it is the fastest
+way to reduce symptoms and infectiousness. However, if unavailable, careful measures must be
+taken to prevent contact between the susceptible and infected beyond just hospitalization.
+Quarantine should remain the last ditch option if the infected is noncompliant to warnings.
+Education of the population regarding the causes of infection may be another potential to reduce
+spread.
+
+WHO Risk Group 4 - This classification refers to diseases that have been diagnosed as high risk
+towards both individuals and the community. These are diseases that have both a high risk of
+death/serious injury for the infected as well as high risk for spread throughout the community
+due to high transmissibility rate between the infected and susceptible. These diseases are usually
+viral in nature and are difficult to generate a vaccine for which means that preventative measure
+are not as readily available.
+Allocation of resources – Due to the high community risk associated with this group of diseases,
+priority should be given towards preventing new infections rather than treating existing
+infections. Therefore, money and human resources should be spent educating the population on
+how to avoid the disease and implementing measures to separate the infected from the
+uninfected. A maximum possible usage of containment facilities would be appropriate in this
+circumstance due to the importance of decreasing the likelihood of contact with the disease. The
+next priority in this scenario would be vaccination research, so that efforts are made to make
+probability of disease spread extremely low.
+Example Include- Ebola and serious strains of Herpesviruses.
+Preventative Measures- Strict quarantine on the infected or susceptible may be necessary to
+mitigate the overall harm on the population. Based on multiple case studies done by the WHO
+and international health organizations, quarantine seems to be the most feasible way to prevent
+spread of disease. Quarantine should begin with the individuals infected and, if that fails to
+prevent spread, isolation of the geographical region should be implemented to prevent further
+spread into other regions as well.
+
+Strengths
+
+1.  The model is highly non-technical and can be easily interpreted by those whom may not
+have the expertise to assess the results of a more technical model. Therefore, this model
+can be more easily translated into practical medical solutions.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 14 of 24
+
+2.  The simple categorization tool provided by the model is highly useful in time-sensitive
+situations or emergency situations in which a reasonable estimate of appropriate action
+and involved risk would be more valuable than the rate of change measurements that the
+other models provide.
+
+3.  This model is the only one out of the three that suggests how to deal with a given disease
+
+based on how risky it is.
+
+Limitations
+
+1.  Once again there is a lack of data used in obtaining the numbers used for the decision tree
+model. The percentages could vary from disease type, strain of disease, and the area’s
+population and development.
+
+The	Question	of	Ethics
+
+Due to the high controversy behind quarantine and isolation, the CDC should also consider the
+ethical backings behind each option. First, the idea of quarantine is backed by the notion of
+utilitarianism, the philosophy that the maximum number of lives should be saved. However, this
+directly contradicts the idea of human rights and the medical code of ethics in which every life is
+considered worth saving. The act of quarantine may not be inherently an act of “giving up” on
+those in isolation, but ethically it may not allow for maximum resources to be allocated towards
+preventative measures and treatment. Although this question is beyond the scope of the paper, it
+is an important question to ask and consider when selecting preventative measures to implement.
+
+Scenario
+
+Implementation	into	Our	Model
+
+The models shown above are the simulations of the situation given in the problem (Initial
+Population = 30 people, Initial Infected = 135 people, Initial Recovered/Dead = 15) along with
+estimated constraints based off the values used for our research and reasonability regarding the
+most common mortality rates and infection rates (Mortality rate = 20%, Infection Rate = .2 and
+Recovery rate = .1). Figure 3, with the SIRD model with vaccination takes into account
+vaccination factors (Vaccination Protection = 70% and 30 Vaccinations Delivered Per Time
+Period). The graphs above show the data based on each individual model.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 15 of 24
+
+Recommendations	for	the	CDC
+
+Send a research team to study the disease.
+Justification: Due to the high amount of uncertainty, specifically with regards to the infection
+rate, medium of transmission, and mortality rate, additional information is needed on how to
+address the disease. The research team would first be sent to obtain more information to better
+model the type of disease and the rate of spread. The team could also obtain strains of the disease
+and begin research and development on vaccines. Based on our preliminary estimations with a
+mortality rate of 20%, 1/10 of the population was already dead within 10 days of the disease.
+Thus, preventative measures should be implemented quickly if the disease appears on US soil,
+especially in a case that mortality or infection rate is underestimated.
+
+Use a model similar to the SIRD model that constantly accounts for new and updated data
+in order to accurately project the effects of a disease on a population over time.
+Justification: Because the SIR family of models (which includes variations such as SIRD) is
+already well established and proven across a wide variety of diseases, the recommendation
+allows the CDC to create an accurate model for the analysis of risk of the diseases. The
+simplicity of the SIR family of models also allows for quick analysis with simple inputs.
+However, due to the limitation of dependence on initial values, the CDC should also
+continuously update the model in accordance with changing factors, such as immunization,
+quarantine, and geographical changes to take proper action.
+
+If the disease appears in the US, immediately implement the WHO Risk Group 4 protocol
+assigned by the decision tree model shown above.
+Justification: Based on the data given, we see that the community risk of the disease is quite high
+already; shown by one half of the population already being infected and showing symptoms.
+However, we lack the data for mortality rate regarding the disease. We can technically create an
+estimation of 10% based on the 15 people dead in the past week but this value is unreliable as it
+attempts to apply short term probability to a long term mean value. Therefore, we recommend
+that the CDC treat the disease as highly deadly to avoid the consequences of underestimation.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 16 of 24
+
+Questions	for	Clarification
+
+What is the medium of transmission of the disease?
+Justification: The medium by which the disease spreads has a powerful impact on both factors
+relating to the spread of the disease and recommended preventive measures. For the latter case,
+an airborne virus, for instance, would most likely need additional safety measures such as
+Airborne Infection Isolation Rooms (AIIRs) and the adequate distribution of facemasks to
+patients and medical workers. These precautionary measures would account for a potentially
+unnecessary financial burden if the transmission turned out to be only through bodily fluids, for
+instance. For the former case, an airborne virus would also have a fairly high infection rate,
+while bodily fluid transmission rate would be considerably lower. This new information would
+also allow us to classify more specific prevention techniques within the different WHO Risk
+Groups.
+
+Are those who have recovered from the disease still susceptible to infection again?
+Justification: Our model assumes that individuals who are in the recovered group are not able to
+be infected or infect others again (i.e. they’re no longer susceptible to disease). In the case where
+individuals of the recovered group can rejoin the susceptible class, we would have to modify our
+model to include the chance of an individual rejoining the susceptible group, more closely
+resembling the widely accepted SIRS model. Another modification based on this answer would
+be changes in preventative measures regarding those that recover but are still susceptible, such as
+longer periods of quarantine to reduce the chance of becoming infected or infecting others again.
+
+What is the relative abundance of government resources, in regards to preventative
+measures for disease?
+Justification: Knowledge of the availability of resources can be used to improve the specificity of
+the preventative measures taken in our decision tree model. Specificity of scarce resources in
+particular is crucial to what measures can be implemented. For example, a lack of research
+facilities and lack of hospitals would have different effects in regards to the effectiveness of
+implementing certain preventative measures. Therefore, specificity allows us to better establish
+what specific guidelines proposed by the decision tree model to follow and which are impossible,
+particularly in the case of Risk Group 4 diseases.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 17 of 24
+
+Model	Modifications	and	Refinement	based	on	Supplemental	Information
+
+Appears to spread through contact with bodily fluids of an infected person
+This conclusion means that infection rate will be considerably lower given that bodily fluid
+transmission rate (especially in the case of proper isolation treatments are administered) is less
+contagious than transmission through indirect and airborne contact. This also helps with
+classification, as it reduces the risk of community infection which potentially lowers the Risk
+Group Calculation.
+
+The elderly and children are more likely to die if infected
+This gives us more of an idea to the extent of the disease and its effects on different types of
+population. If data is given regarding the age groups, such as the population numbers within each
+of the “elderly” and “children” age groups, then we would be able to create multiple models with
+each model specific to each age group with a more accurate mortality rate. Furthermore, this
+allows us to better analyze the proper WHO Risk Group classification.
+
+A nearby island is starting to show similar signs of infection
+The SIR model and the family of SIRD models are limited in the assumption of an isolated
+population. Potentially, we would be forced to apply this model again to the new susceptible
+population. This point may also require us to modify our model to account for changes in total
+population to better account for changes in susceptibility of the disease.
+
+One of the researchers that returned to your capital appears infected
+Similarly to the previous scenario, we would have to reapply the parameters of the SIRD models
+to the geographical region in question. Instead of an island, we are dealing with a contiguous
+landmass, which means that the population parameters will be different. The US probably has a
+lower infection rate due to better preventative measures and greater access to hospitals. Finally,
+we could use the decision tree model to enforce a higher classification group in order to
+implement the necessary preventative measures. In the case of our country, more direct control
+over how we allocate our scarce medical resources means we should over rather than underreact
+to the introduction of new diseases, in order to ensure that the disease is quickly contained and
+eliminated.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 18 of 24
+
+Conclusion
+
+Results
+
+By utilizing three different mathematical models in conjunction-the SIR, SIRD, and the
+
+decision tree model-we were able to classify diseases by both individual and community risk
+factors. We also assigned numerical values based on the SIR family of models to determine
+whether not a scenario is considered contained or not. Finally, we used the classifications and
+severities to generate a basic model for different preventive measures for each type of risk group.
+
+Through our analysis of these various models we determined that overall the best way to
+deal with risk is to limit the interaction of those infected and those that are susceptible to disease.
+By limiting infection rate down to as close to zero as possible, we can limit the chain of
+procession incorporated in the SIR model. This can be done by quarantine and other methods of
+isolation which are recommended by our model.
+
+When the models were applied to the scenario of the island in Indonesia, we were able to
+
+make some assumptions regarding rates of infection, mortality, and recovery, and apply the
+general population data. The situation in Indonesia was categorized as a “Risk Group 4” scenario
+and its severity was supported by the high death rates found in the SIRD model. The
+recommended measures for treatment included vaccinations (if possible), using the SIRD model
+to run again while accounting for the effect of vaccines. The much lowered death rate indicated
+that vaccines were a highly effective tool in the small population of the village. Furthermore, the
+high community risk associated with a “Risk Group 4” disease suggests the appropriate response
+measure should focus on isolating infected individuals from uninfected individuals rather than
+focusing on the treatment of infected individuals.
+
+Potential	Extensions
+
+Potential extensions, if time were admissible, for the overall model would be:
+
+  Use of more empirical data to find out more mortality rates, infection rates, and other
+
+data to create better informed estimations.
+
+  Use of more empirical data to test out already accepted models with the ones we created
+
+and do error analysis of the model with this data.
+
+  Evaluation of more potential variations in SIR, such as, SEIR or SIRS, and their
+effectiveness within the situation given as well as sensitivity analysis toward the
+respective variables within each mode.
+
+  Creation of more variable models, such as the one we created regarding vaccination, to
+
+factor in other preventative measures and their effect on the population.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 19 of 24
+
+News	Report
+
+In Indonesia, there is an outbreak of a viral disease in a small village. So far, 5% of the total
+village population has died from the disease. In an effort to address the potential impact such a
+disease could have if it were to spread in other countries, our team has modeled the disease
+through predicting the changes in the susceptible, infected, and recovery populations of the
+island’s population and underlined some measures to be taken if a country finds itself in a similar
+situation.
+
+We have found that the disease has high individual and community risk (relatively high mortality
+rate and infection rate). According to the World Health Organization’s disease classification
+system, the disease would then be considered a Risk Group 4 disease.  The disease serves as a
+major problem within the region as there is a lack of resources for disease prevention. Although
+no specifics have been found, the nation of Indonesia has historically disregarded rural regions
+when it comes to disease. Furthermore, due to the unknown nature of the disease, there are also
+no preventative measures available such as vaccines. What we do know is that the disease is
+transmittable only thorough body fluids and is more deadly amongst the young and elderly.
+
+What happened in Indonesia may become a very real risk in the United States, as there have been
+rumors that a researcher recently returned with Indonesia showing symptoms of the viral disease.
+These rumors are true. Despite all this, there is little need to fear, as US protocol in dealing with
+highly deadly and infective diseases is to quarantine and treat the patients to avoid further
+infection; therefore, there is a low risk that anyone will be immediately in danger. However, if
+you are still worried about the disease, basic preventative measures can be taken by each
+individual to avoid the risk of infection. Avoid any transfer of body fluids, such as blood, saliva,
+or sweat, with someone who seems to be sick or show symptoms.
+
+Although our models show a high severity and potential for large casualties, preventative
+measures in the US are enough to lower the infection rate to a manageable level to where normal
+citizens have little to no risk at all. As President Kennedy once said, we have nothing to fear but
+fear itself. In the midst of the growing Ebola epidemic, such words have never rung more true.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 20 of 24
+
+Appendix
+
+Figure 1
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team # 5325 B
+Page 21 of 24
+
+Figure 2
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team # 5325 B
+Page 22 of 24
+
+Figure 3
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+Team # 5325 B
+Page 23 of 24
+
+Figure 4
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM
+
+Team # 5325 B
+Page 24 of 24
+
+References
+
+@risk. Computer software. Palisade. Vers. 5. N.p., n.d. Web. 8 Nov. 2014.
+
+"Airborne Diseases." Minnesota Department of Health. N.p., 28 Aug. 2014. Web. 09 Nov. 2014.
+
+Althaus CL. Estimating the Reproduction Number of Ebola Virus (EBOV) During the 2014
+Outbreak in West Africa. PLOS Currents Outbreaks. 2014 Sep 2. Edition 1. doi:
+10.1371/currents.outbreaks.91afb5e0f279e7f29e7056095255b288.
+
+"Biohazardous Agent Classification." (n.d.): n. pag. Caltech. Web. 8 Nov. 2014.
+
+Chen, Li-Chiou, Kathleen Carley, Douglas Fridsma, Boris Kaminsky, and Alex Yahja.Model
+Alignment of Anthrax Simulations. Tech. N.p.: n.p., n.d. Print."Risk Group Classification for
+Infectious Agents." ABSA -. N.p., n.d. Web. 08 Nov. 2014.
+
+Nesse, Hans. "SIR Model." ASU. N.p., n.d. Web. 07 Nov. 2014
+
+"Outbreak Surveillance and Response in Humanitarian Emergencies." World Health
+Organization. WHO Document Production Services, 2012. Web.
+
+SIR. Evanston: n.p., n.d. Xlsx.
+
+"Sensitivity Analysis Using Excel." (n.d.): n. pag. Treeplan. Web. 7 Nov. 2014.
+Top Rank. Computer software. Palisade. Vers. 5. N.p., n.d. Web. 8 Nov. 2014.
+
+微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM

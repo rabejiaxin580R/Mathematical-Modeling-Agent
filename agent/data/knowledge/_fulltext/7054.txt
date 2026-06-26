@@ -1,0 +1,2576 @@
+Problem A: Swim, Bike, Run Team # 7054 Page 1 of 45
+Summary
+On your mark, get set, go! Triathlons are globally held competitions that put the fittest of
+the fit to the test. A local town wants to hold a triathlon and is expecting 2000 athletes –
+both amateurs and professionals – to participate. The sponsor of the triathlon, Super Tread
+Racing Company, would like to reduce congestion on the course, and the Town Mayor does
+not want the public roads to be closed (during the running and cycling segments) for more
+than 5.5 hours. In order fulfill both requests, we created divisions that will be used in the
+raceas wellas ascheduleof wave starttimes. Furthermore, todeterminethe advantages that
+might be achieved by varying the distances of each segment of the triathlon, we developed
+an agent-based model capable of organizing each segment. M
+Ouragent-basedmodelwascreatedinNetLogo,usingdatatakenfCromaprevioustriathlon
+to determine the apportionment of athlete sex and segment times. We placed the athletes
+into eight divisions (four per each sex), where each division reMpresents a respective quartile
+of the course completion times. Congestion was defined as being linearly related to the
+number of people athletes had to pass and logarithmically rielated to the number of people
+H
+around each athlete. We developed the course of the triathlon, in which we demarcated the
+path into three lanes – fast, main, and slow – where each lane is based on segment times for
+：
+each athlete. The three-lane system decreases congestion by 72% relative to a base model
+with no lanes. Separately closing the cycling roads and the running roads allowed us to
+minimize congestion by 29%. We then号used our agent-based model to generate a schedule
+of wave start times that will fit the criteria set by the CEO and the mayor. We constructed
+“wave-packets” to further minimize the congestion and road closure time. Each wave-packet
+众
+contains 55 athletes with a distribution of: 25% fast athletes, 25% slow athletes, and 50%
+medium-speed athletes. By releasing the wave-packets in order of decreasing average speed,
+we ensure that wave-pack公ets do not interfere with each other, decreasing congestion by 27%.
+By testing our model with various values for the separation time between wave-packets, we
+found that separating wave-packets by 4 minutes would minimize congestion while keeping
+the road closure t信ime under 5.5 hours.
+Using our model, we determined that the 2000 athletes should be placed into groups
+微
+of 55, with 14 fast athletes, 27 medium athletes and 14 slow athletes in each group, and
+the groups should be deployed every four minutes. Our model is in line with the Olympic
+triathlon standards for segment lengths and satisfies the CEO’s desire to attract high-skilled
+racers with professional standards. The measures we take to decrease congestion (lanes,
+wave-packets, and bike/run road splitting) all significantly decrease congestion. By changing
+segment distances, we saw that decreasing the running length from 10 km to 5 km would
+significantly decrease congestion by 22% but would compromise our adherence to Olympic
+standards. Furthermore, our solution does not exceed the 5.5 hour limit for road closure
+time. Our numerous, skill-based divisions allow for a fair yet competitive environment.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 2 of 45
+L Σ
+Math et s
+Mathematical Modeling Team John Smith, PhD
+John Smith
+MathLetΣs
+123 Broadway
+Berkeley CA 12345
+Phone: (555) 555-5555
+November 14, 2016
+E-mail: johns@mathletes.com
+M
+URL: http://www.mathletes.com
+Mayor Tali North
+City Council of Bradtown
+C
+Bradtown, California 12823
+M
+Dear Mayor North:
+i
+H
+Thank you for working with us to design a schedule for our town’s triathlon!
+We are truly very excited to help our town and community with this project. As we
+：
+discussed in prior meetings, the City Council shared your concerns about the traffic and
+complicated logistics of closing roads for an extended period of time. Furthermore,
+the Super Tread Race Company, the main sponsor of the event, wanted to reduce the
+号
+congestion during the race to cater to professional and premier athletes.
+Considering the complexity of scheduling waves for the triathlon and catering to
+众
+both amateurs and professionals, we devised agent-based models that suggest that the
+athletes should be divided up into 8 divisions - first by gender and then by skill. The
+divisions are: Female Black Diamond, Male Black Diamond, Female Diamond, Male
+公
+Diamond, Female Gold, Male Gold, Female Silver, and Male Silver. After analyzing
+past triathlon data, we were able to divide athletes into four quartiles, from which we
+approximated th信e cutoffs for each division. For the all-male divisions, the record time
+cutoffs are 2.50, 3.00, and 3.50 hours. For the all-female divisions, cutoffs will be at
+2.75, 3.25, and 3.75 hours. To assess the past record of the athletes that attend the
+triathlon,微we will conduct a survey during registration. Although we considered making
+divisions along the categories of the athletes (such as professional, premier, and open),
+we decided to allow experienced and amateur athletes to compete against athletes of
+similar skill levels. By evening the playing field, everyone has at least some chance
+to receive commendation. Furthermore, a balanced, competitive atmosphere between
+the professionals and premier athletes will increase cooperation and future triathlon
+ventures.
+Given your request that the roads cannot be closed for more than 5.5 hours, we
+must send a large amount of people into the triathlon at a time. This could potentially
+cause large amounts of congestion within the triathlon. In order to properly address
+this, we decided to model the congestion. We found that splitting the course into a
+multi-lane system with a fast-lane and a slow-lane reduced congestion by 72%. We can
+reduce congestion further by 29% if we individually close the biking segment and the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem | A:  | Swim, | Bike, | Run |     | Team | # 7054 |     |     |     |     | Page 3 | of 45 |
+| ------- | --- | ----- | ----- | --- | --- | ---- | ------ | --- | --- | --- | --- | ------ | ----- |
+running segment. Of course, for this to work, we would need the running and biking
+segments to be on two separate road systems. Thus, we would be much obliged if you
+reserved space for our triathlon such that these two adjustments are possible. It would
+also benefit us if you could reserve either long or wide stretches of roads, so we can
+| minimize | congestion |     | due | to lapping. |     |     |     |     |     |     |     |     |     |
+| -------- | ---------- | --- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Logistically, our triathlon sends out “wave-packets” of 55 individuals at a time.
+These wave-packets are sent out in order of decreasing average speed. This special
+| group | ordering | was | shown | to  | decrease | the | congestion |     | by 27%. |     |     |     |     |
+| ----- | -------- | --- | ----- | --- | -------- | --- | ---------- | --- | ------- | --- | --- | --- | --- |
+Using our model, we have also come up with a schedule for the tMriathlon program.
+Since the optimal difference between two wave-packets is 4 minutes, we have adjusted
+our schedule accordingly. Under such conditions, the triathlon will C last for a maximum
+of 7 hours. Furthermore, we have scheduled fundraiser events after the triathlon for the
+| benefit | of the | community! |      |     |     |     |     |     | M     |     |     |     |     |
+| ------- | ------ | ---------- | ---- | --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- |
+| Start   | Time   | End        | Time |     |     |     |     |     | Event |     |     |     |     |
+i
+7:00 AM 7:30 AM Setup - Youth voluHnteers help set up stations
+7:30 AM 8:00 AM Registration - Athletes register and receive wave numbers
+| 8:00 | AM  |     | -   |     | First  | Wave：-Packet |             | -   | First | 55 Athletes |        | Depart |     |
+| ---- | --- | --- | --- | --- | ------ | ------------ | ----------- | --- | ----- | ----------- | ------ | ------ | --- |
+| 8:04 | AM  |     | -   |     | Second |              | Wave-Packet |     | - 55  | Athletes    | Depart |        |     |
+| 8:08 | AM  |     | -   |     |        | Third        | Wave-Packet |     | - 55  | Athletes    | Depart |        |     |
+|      | .   |     | .   |     |        |              |             |     | .     |             |        |        |     |
+|      | .   |     | .   |     |        | 号            |             |     | .     |             |        |        |     |
+|      | .   |     | .   |     |        |              |             |     | .     |             |        |        |     |
+10:24 AM - Thirty-Seventh Wave-Packet - Final 20 Athletes Depart
+| 8:00 | AM  | 3:00 | PM  |     | 众       |                |         | Triathlon |              |               |            |     |     |
+| ---- | --- | ---- | --- | --- | ------- | -------------- | ------- | --------- | ------------ | ------------- | ---------- | --- | --- |
+| 3:00 | PM  | 3:30 | PM  |     |         |                | Lunch   | for       | Participants |               |            |     |     |
+| 3:30 | PM  | 4:00 | PM  |     | Keynote |                | Speaker | from      | Sponsor      | for           | Fundraiser |     |     |
+| 4:00 | PM  | 5:00 | PM公 |     |         | Meet-and-Greet |         |           | with         | Professionals |            |     |     |
+Sincerely,
+信
+微
+|     | John Smith, |     | PhD |     |     |     |     |     |     |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- |
+获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 4 of 45
+Introduction
+The Super Tread Race Company is sponsoring a triathlon in a local town, and they want us
+tomakeita world-class event. Atriathlonisa multiple-stageathletic endurance competition
+of three continuous, sequential segments of a 1500 m swim, a 40 km bike ride and a 10 km
+run [1]. Participants compete with each other to achieve the lowest course completion time,
+which includes the time it takes to transition between segments [1]. In anticipation of the
+triathlon, the town Mayor wants the race to be enjoyable for the 2000 athletes that are
+expected to partake in this race. We are provided with an Excel spreadsheet of results
+from a recent triathlon to help us with organizing the event. The spreadsheet contains data
+M
+on the age, sex, category (professional, premier, and opening), time for each segment, and
+course completion time for over 3000 participants. Unfortunately, issues such as multiple
+athletes congesting part of a course, as well as the limited duration oCf road closure time, are
+major challenges in preparing for the race. In this paper, we provide an agent-based model
+M
+that considers these factors and places the participants into divisions as well as develops a
+schedule of wave start times to entice athlete enrollment in future triathlons. Let the race
+begin! i
+H
+：
+Restatement of Problem
+In order to attract professional racers and serious amateur athletes to future triathlons, the
+号
+CEO of Super Tread tasks us with minimizing the amount of congestion that the athletes
+experience throughout the course. It is important that the path of the athlete is not sig-
+nificantly hindered by the prese众nce of other surrounding athletes. Meanwhile, the mayor
+wants us to minimize the time that the roads are closed during the cycling and running
+portions of the triathlon. Specifically, the mayor does not want the road closure time to be
+公
+more than 5.5 hours. Catering to both requests, we must use the spreadsheet provided to
+partition the athletes into divisions based on age, gender and category, as well as generate
+a schedule of sta信rt times for each respective wave of triathlon athletes. Placing the ath-
+letes in different divisions is for athlete satisfaction, while the wave schedule will have the
+dual criteria of minimizing congestion and the road closure time. We will also explore the
+微
+effectsofchangingthesegmentdistancesonminimizingthecongestionandroadclosuretime.
+Weproposecreatingacongestionmetricandatemporalmetrictoaddresstheneedsofthe
+CEO of Super Tread Race Company and the Mayor of the town respectively. The congestion
+metric can be used to measure the amount of congestion athletes face throughout the whole
+event, and the temporal metric can be used to measure the amount of time roads will be
+closed for the event. To implement these metrics with the data from previous triathlons in
+a dynamic environment, we use an agent-based NetLogo model [2].
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem      |     | A: Swim, | Bike,        | Run | Team | # 7054       |        | Page 5 | of 45 |
+| ------------ | --- | -------- | ------------ | --- | ---- | ------------ | ------ | ------ | ----- |
+| Definitions, |     |          | Assumptions, |     |      | and Measured | Values |        |       |
+Definitions
+| Athlete: |     | Individual | participant | in  | the race. |     |     |     |     |
+| -------- | --- | ---------- | ----------- | --- | --------- | --- | --- | --- | --- |
+Course: Theterrain(waterorroad)thattheathletestraverseduringtheentiretyoftherace.
+Cutoff Time: The time (hh:mm:ss) that is the dividing boundary of two divisions/group-
+s/categories.
+M
+Division: A division is any group of athletes in the triathlon that will compete against each
+other for a division award. In our model, an athlete is categorized intCo one of eight divisions.
+athleMte.
+| Passing: |     | The act | of a faster | athlete | overtaking | a slower |     |     |     |
+| -------- | --- | ------- | ----------- | ------- | ---------- | -------- | --- | --- | --- |
+Segment: Refers to the swimming, cycling, or running porition of the triathlon.
+H
+Transition Area: The area designated to proceed from one segment to another. T1 refers
+：
+to transition from swimming segment to the cycling segment, and T2 refers to transition
+| from | the | cycling | segment | to the running |     | segment. |     |     |     |
+| ---- | --- | ------- | ------- | -------------- | --- | -------- | --- | --- | --- |
+号
+Wave: During a triathlon, a set of athletes is released periodically so as to ease congestion.
+| This | set | of athletes | is called | a wave. |     |     |     |     |     |
+| ---- | --- | ----------- | --------- | ------- | --- | --- | --- | --- | --- |
+众
+Assumptions
+公
+• Weather and road conditions, as well as the structure and topography of the terrain,
+|     | are | negligible | for each | segment | in  | the triathlon. |     |     |     |
+| --- | --- | ---------- | -------- | ------- | --- | -------------- | --- | --- | --- |
+信
+– Environmental factors are stochastic and have unpredictable effects on the race.
+Additionally, we assume that the Mayor would like to decide on the configuration
+微and
+date of the course in a way that would reduce the effect of weather or other
+environmental factors. We will use this generalization in recreating the triathlon
+|     |     | course | in our computational |     | simulation. |     |     |     |     |
+| --- | --- | ------ | -------------------- | --- | ----------- | --- | --- | --- | --- |
+• The data from previous triathlons can be reasonably extrapolated to the athletes that
+|     | attend | the | triathlon. |     |     |     |     |     |     |
+| --- | ------ | --- | ---------- | --- | --- | --- | --- | --- | --- |
+– Thespreadsheetprovidedtoushasdatafor3217athletesfromprevioustriathlons.
+We assume that selecting 2000 data points from the spreadsheet can accurately
+represent the distribution of athletes attending the triathlon. Adjusting for vari-
+ances between our triathlon and their triathlon is impossible to quantify.
+• The roads will be closed during the cycling and running portions of the triathlon only.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem |     | A:  | Swim, | Bike, |     | Run | Team | # 7054 |     |     |     | Page 6 | of 45 |
+| ------- | --- | --- | ----- | ----- | --- | --- | ---- | ------ | --- | --- | --- | ------ | ----- |
+– The swimming part of the triathlon will not require any opening in the road, as
+|     |     | it  | will take | place | in  | a body | of  | water. |     |     |     |     |     |
+| --- | --- | --- | --------- | ----- | --- | ------ | --- | ------ | --- | --- | --- | --- | --- |
+• The athletes will roughly know their mean times for each segment in the triathlon and
+|     | will | be  | able to | report | this | time | to  | us during | registration. |     |     |     |     |
+| --- | ---- | --- | ------- | ------ | ---- | ---- | --- | --------- | ------------- | --- | --- | --- | --- |
+– Inourmodel, weutilizethisregistrationinformationtodeterminethedivisionand
+the wave number of the athlete. Therefore, it is imperative that all athletes have
+their records from past triathlons. This expectation can be advertised beforehand
+and allows for a controlled and innovative solution to resolve the congestion in
+|     |     | the | city. |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+|     | • The | age | of the | athlete |     | does not | impact | his/her | performance. |     |     |     |     |
+| --- | ----- | --- | ------ | ------- | --- | -------- | ------ | ------- | ------------ | --- | --- | --- | --- |
+C
+– Age is not necessarily indicative of the physical condition of the athlete and thus
+M
+does not influence his/her allocation into a division. This assumption allows us
+|     |     | to  | extrapolate |     | information |     | from | the spreadsheet |     | to  | our triathlon. |     |     |
+| --- | --- | --- | ----------- | --- | ----------- | --- | ---- | --------------- | --- | --- | -------------- | --- | --- |
+i
+|     | • The | distance |     | covered | at  | the | transition | areas | is noHt | significant. |     |     |     |
+| --- | ----- | -------- | --- | ------- | --- | --- | ---------- | ----- | ------- | ------------ | --- | --- | --- |
+trans：ition
+– Although the time spent in the area is significant, the distance covered
+during that time is not considered in a standard triathlon. The transition time
+|     |     | will | be constant |     | even | if  | the length | of the | segments |     | are modified. |     |     |
+| --- | --- | ---- | ----------- | --- | ---- | --- | ---------- | ------ | -------- | --- | ------------- | --- | --- |
+号
+• Theracecourseislongand/orwideenoughsothatmultiplelapsdonotleadtoathletes
+|     | earlier |     | in the | race | lapping | athletes |     | later in | the race. |     |     |     |     |
+| --- | ------- | --- | ------ | ---- | ------- | -------- | --- | -------- | --------- | --- | --- | --- | --- |
+众
+– Athletes passing other athletes in a lap-based circuit or a self-intersecting course
+is hard to quantify in a model. Thus we assume that no such interactions occur.
+公
+• The roads for the running portion and biking portion are different and can thus be
+|     | closed |     | off at | different | times. |     |     |     |     |     |     |     |     |
+| --- | ------ | --- | ------ | --------- | ------ | --- | --- | --- | --- | --- | --- | --- | --- |
+信
+– We assume that the roads for the biking and running portions are distinct enough
+微that each can be closed off separately. This arrangement minimizes the time that
+a road is closed. This can be easily arranged by the mayor if requested.
+• Athletes have constant speed within a segment and only take breaks at transition
+points.
+– As we cannot discretely determine each athlete’s acceleration functions over time,
+we assume a zero acceleration. The accelerations and decelerations will aver-
+age out over time, so this is a valid assumption. We use this assumption when
+|     |     | calculating |     | the | speed | of  | each | athlete. |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | ----- | --- | ---- | -------- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Problem A: Swim, Bike, Run Team # 7054 Page 7 of 45
+Measured Values
+Congestion: It represents the total number of passings and athlete density during the cy-
+cling and running portions of the race. The metric associated with congestion is denoted C.
+Road Closure Time: The total, continuous time that the roads are closed during the race.
+Analysis of Problem
+M
+Before diving into the problem, we first analyze the properties of an ideal triathlon so that
+these properties can be incorporated into the model.
+C
+Our triathlon is being sponsored directly by the Super Tread Race Company. If we wish
+M
+to keep this valuable sponsorship in the future, we must tailor our race to meet their goals.
+Our sponsor has specifically stated that they want “to ensure [that] the race is a world-class
+i
+event that will attract professional racers and serious amateur athletes each year to further
+H
+promote the company’s brand and sales.” Therefore, an ideal triathlon will promote the
+interests of professionals and talented amateurs：in a fair, competitive fashion.
+Furthermore, theMayorhastakenaninterestinthetriathlonfromacitizens’perspective.
+号
+He wishes that the triathlon is an “enjoyable event for the many amateur participants” but
+requests that we keep the road closed for no more than 5.5 hours, to ensure that the triathlon
+does not terribly inconvenience众other citizens of the town. An ideal triathlon will stick to
+the 5.5 hour limit (with some time buffer for the time it takes to close/open the roads) while
+not inconveniencing some of the slower amateurs in the triathlon.
+公
+Model Design
+信
+Developing the Agent-Based Model
+微
+Inordertoaccuratelymodelthecomplexsystemofindividualathletesaffectingtheaggregate
+congestionandroadclosuretime, weranmultiplecomputersimulationsusinganagent-based
+model. We developed a model that generated 2000 athletes, each with varying speeds, and
+recreated the entire course of the triathlon, including transition areas.
+Configuring the Athletes
+Thefirstpartofouragent-basedmodelisconfiguringeveryathlete, oragent, inthetriathlon.
+In this part of our computational model, we will assign properties to every athlete that we
+deem pertinent to calculating congestion and road time closure. This exercise will only serve
+to organize our model and, more importantly, classify each athlete into a division.
+We first scaled down the given data set of 3217 athletes to the 2000 athletes that will
+participate in the town’s triathlon. For example, there are 7 male professional athletes in
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 8 of 45
+the data set of 3217 athletes. Therefore, the number of male professional athletes in our
+model was:
+2000·7
+male professional athletes = 4.33 ≈ 4 male professional athletes.
+3217
+Thus we randomly selected 4 data points from the 7 in the original data set, ensuring that
+the ratios of each category were conserved.
+Using the generated data set, we assign athletes a swim speed, T1 (transition area 1)
+M
+speed, bike speed, T2 (transition area 2) speed, and run speed. These individual speeds are
+calculated by dividing the length of the track by the time it takes to complete the segment.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 1: Distribution of athlete speeds for each segment
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 9 of 45
+The figures above depict the distributions of the speeds that is representative of the 2000
+participants for each segment. After scaling this distribution down to 2000 participants, we
+assigneachspeedrandomlytoanathlete, whichdeterminehisorhercoursecompletiontime.
+We use the course completion time to make divisions for the athletes, as the athletes
+would want to be able to compete with other athletes of similar skill. Divisions are based on
+sex and projected course completion time, which are both gathered from the results of the
+registration survey (see Appendix). We have four divisions for males and females each, as-
+signed the encouraging names of Black Diamond, Diamond, Gold, and Silver. Each division
+represents a quartile of the distribution of course completion times. If we display the course
+M
+completion times (of the corresponding sex) in a box-and-whisker plot, we can determine
+the cutoff times for each division. The following table describes the total times required to
+C
+be placed in each division.
+M
+i
+H
+：
+号
+众
+公
+Figure 2: A box-and-whisker plot of the final times from our data for females. Red line
+represents the mean.
+信
+微
+Figure 3: A box-and-whisker plot of the final times from our data for males. Red line
+represents the mean.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 10 of 45
+Loosely, the Black Diamond division corresponds to participants who rank in the top
+25% of course completion time, Diamond represents the 25% - 50% tier, Gold the 50% - 75%
+tier, and Silver the bottom 25%. The cutoff times were rounded to a convenient multiple of
+15 minutes. These clean, rounded values have a practical purpose: participants will not list
+their times on the survey as “2:34:23”; they will report it as “2:30:00”. It is also very simple
+for us to divide the participants with the cutoffs of 2:30:00 and 3:00:00 rather than that of
+2:22:43 and 2:56:45.
+Hence, we will be able to assign each agent a speed as well as division in our agent-based
+model.
+M
+Designing the Triathlon Course
+C
+It is essential that our computer-simulated course is as close to a real-life triathlon as pos-
+sible. We begin by dividing the entire course into five “trackMs”, or portions of the course,
+one for each segment and transition area. We then assign “patches”, which are units of area
+(in this case 1 patch = 1 km2), to each track. Thus, as eachiwave is called, athletes start at
+H
+the swimming segment, proceed through the transition area where they pick up their bike,
+bike through the biking patches, drop off their bike in the second transition area, and run
+：
+through the running patches before crossing the finish line at the right-most patch.
+As an auxiliary note, the width of th号e course becomes a slight consideration, specifically
+in regard to the cycling and running segments. Since the terrestrial parts of the race occur
+on town roads, we will assume that the roads have a width of twelve athletes. In other words,
+众
+twelve athletes will be able to compete side by side at the same time. As for the swimming
+portion of the triathlon, the track takes place in a body of water, and there will be ample
+space to compete. As a r公esult, we assumed that twenty-four athletes will be able to compete
+side by side at the same time.
+信
+In order to provide a pleasant experience to all participants, the triathlon should aim
+to reduce any steric hindrances athletes experience on the course. Moreover, all divisions
+should be able to proceed with similar congestion, i.e. lower congestion for one group should
+微
+not come at the cost of the other group. To accomplish this, we propose to split the segments
+into three lanes:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 11 of 45
+M
+C
+M
+Figure 4: Pictorial representation of the three different lanes. Notice the 1:2:1 ratio.
+i
+H
+Thus, individuals who do exceedingly well at biking, for example, will use the fast lane to
+bypass the athletes using the main lane. On th：e other hand, individuals who do poorly will
+use the slow lane to prevent themselves from slowing down the main lane. By having the
+cyclingandrunningtrackssplitintothreelanes, anathleteonlyhastoconsiderthoseintheir
+号
+lane, so it heavily cuts down on the congestion of the overall triathlon for all participants.
+The slow lane also has some practical utility: if one’s bike breaks down or one has a severe
+cramp, one can just use the slow lane to fix their bike or catch their breath without slowing
+众
+down the main group.
+We implemented the公lanes in our agent-based model. We devised a two-dimensional co-
+ordinate system for patches, where the horizontal patches indicate the length of the course,
+and the vertical patches indicate the different lanes.
+信
+In regards to the allocation of athletes into their respective lane, we decided that the
+lanes will微be based on the quartiles of the track time distribution due to the 1:2:1 nature of
+the lanes. Thus, the athletes in the first quartile will use the the fast lane, and the athletes in
+the fourth quartile will use the slow lane, while everyone in between will use the main lane.
+Since this was done on the three segments of the race (swim, bike, run), it is theoretically
+possible for an individual to be in the fast lane for swimming, the main lane for running,
+and the slow lane for biking (Note that we use the quartiles of the course completion time
+distributionfordeterminingdivisions, butforthelanesweareusingthequartileofindividual
+track time).
+Attaining the Optimum Schedule for Wave Start Times
+The optimum schedule for wave start times is one that minimizes the congestion experienced
+by the athletes and minimizes the road closure time. We can model congestion and road
+closure time and seek to reduce those quantities in our agent-based model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem  | A: Swim,   | Bike, | Run | Team # 7054 |     | Page 12 | of 45 |
+| -------- | ---------- | ----- | --- | ----------- | --- | ------- | ----- |
+| Defining | Congestion |       |     |             |     |         |       |
+It can be seen time and again that participants naturally form “chains” or groups that move
+together [3]. Once an athlete finds his or her way into a group, he or she may find it difficult
+to deviate from the overall group speed. Thus, if an athlete wants to move faster than the
+group that he or she is in, he/she will have to pass other athletes in the group, which can
+become a severe hindrance. In fact, we find that the congestion is logarithmic with respect
+| to the | number of people | around | the | athlete. |     |     |     |
+| ------ | ---------------- | ------ | --- | -------- | --- | --- | --- |
+Let C(N) be the congestion that an athlete experiences when there are N people around
+him or her. We reasoned that at first thought, the congestion should be linMear with N, where
+the change in congestion is constant and is independent of the number of people. However,
+∂C
+if we considered the limiting case, it becomes clear that when N → C ∞, → 0. In other
+∂N
+words, the change in the perception of congestion is rather negligible when the number of
+surrounding people is large, i.e. having twenty people surrouMnding the athlete versus ten
+would not make the athlete feel twice as congested. Hence, mathematically:
+i
+H
+∂C 1
+∝
+∂N ：N
+| Thus, we | have that: |     |     |     |     |     |     |
+| -------- | ---------- | --- | --- | --- | --- | --- | --- |
+号
+(cid:90) 1
+|     |     |     | C(N) | ∝ dN = ln(N) |     |     |     |
+| --- | --- | --- | ---- | ------------ | --- | --- | --- |
+|     |     |     | 众    | N            |     |     |     |
+*We use partial derivatives here because C can be a function of multiple variables.
+公
+Furthermore, the congestion becomes worse if the athlete has to make multiple passings.
+It is easy to see that the congestion should be linear with respect to the number of passes,
+i.e. doing 2 passe信s is twice as hard as doing 1 pass. Hence, we can define our congestion
+metric in terms of the number of people around an individual and the number of people that
+| an individual | needs | to pass. |     |     |     |     |     |
+| ------------- | ----- | -------- | --- | --- | --- | --- | --- |
+微
+| Definition | 1:  | Congestion | Metric |                       |                    |     |     |
+| ---------- | --- | ---------- | ------ | --------------------- | ------------------ | --- | --- |
+|            | Let | P be the   | set of | all passes that occur | in the simulation. |     |     |
+1 (cid:88)
+|     |     |     |     | C = ln(N) | ,   |     |     |
+| --- | --- | --- | --- | --------- | --- | --- | --- |
+t
+p∈P
+where C is the congestion metric, N is the number of people surrounding an athlete,
+and t represents simulation time, which normalizes C with respect to time.
+*When applying the congestion metric in our agent-based model, we also included the
+| individual | in N. |     |     |     |     |     |     |
+| ---------- | ----- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Problem A: Swim, Bike, Run Team # 7054 Page 13 of 45
+After we defined congestion, we implemented it in our agent-based model by having the
+athletes calculate the number of people around them as well as the number of people they
+passed.
+Defining Road Closure Time
+Road closure time is the time that the roads are closed in order to accomodate the triathlon.
+We assumed that the roads will not be closed during the swimming segment of the race since
+it will take place in water. Thus the road closure time is the time it takes to complete the
+cycling and running segments. We accounted for this in our agent-based model by measuring
+the time it took to complete the cycling and running portion of the evenMt. However, since
+different roads will be closed for the cycling and running segments, we will make sure neither
+segment times exceed more than 5.5 hours. C
+M
+Reducing Congestion and Road Closure Time: Constructing the “Wave Packet”
+In the 2016 Rio Olympics, the game-coordinator held two triathlons over a period of three
+i
+days (one for male and female), with 55 athletes compeHting in each triathlon [4]. In the local
+town, we are expecting 2000 athletes to compete in the upcoming triathlon, which will be
+：
+held for only one day. We must therefore consider how to deploy all of the athletes while
+not closing the roads for more than 5.5 hours. Hence, the road closure time is dependent on
+the deployment time of the waves. Since we cannot deploy more than 55 athletes per wave
+号
+(because we are abiding by Olympic triathlon standards), we must define the road closure
+time with respect to the time spent between the deployment of two consecutive waves. First,
+however, we must consider the t众ype of athletes that will be in each wave.
+Recall the three lane model, where each track represents one or two quartiles of the
+公
+distribution of their respective track times. If we consider all of the track times together, in
+other words the course completion time, we can generalize the lanes that each athlete will
+follow. We can t信hen split all of the athletes to the respective lanes that they will tread.
+This is different than simply splitting the athletes into divisions because now we will have
+three groups instead of four (one for each lane). We define “group 1” to be the group of
+微
+the fastest athletes, who will generally use the fast lane; “group 2” to be the group of the
+average athletes, who will generally use the middle lane; and “group 3” to be the group of
+the slowest athletes, who will generally use the slow lane.
+Group 1 = Athletes in Fast Lane
+Group 2 = Athletes in Main Lane
+Group 3 = Athletes in Slow Lane
+Each group is then ordered into ranks. The athletes that in each rank are determined
+by 15 minute intervals, starting from the cutoff time for each group and based on reported
+total time (i.e. the time that they provided on the survey). For example, if group 1 are those
+with a reported total time better than 2:45:00, the group would be split into ranks of 2:30:00
+to 2:45:00, 2:15:00 to 2:30:00, .... Splitting the groups into intervals of less than 15 minutes
+would be highly impractical as people do not report their times as 2:36:45. We note that
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 14 of 45
+these groupings do not depend on sex. This is because the faster ranks should always be
+deployed before the slower ranks otherwise faster individuals will be trapped behind slower
+individuals (which would add to our congestion).
+The deploying mechanism for the groups is as follows: It has 55 individuals that need
+to be deployed in every wave (we call this a wave-packet), with some set amount of time
+between each wave-packet. At the start of the triathlon, each athlete is given a rank to
+inform them of their wave-packet. Due to the widths of each lane, one-fourth of the 55
+individuals of each wave-packet should come from group 1, one-half should come from group
+2, and one-fourth should come from group 3. When selecting from a group, the individuals
+M
+should come from the highest ranks, then the next highest ranks, and so on to prevent faster
+individuals from being trapped behind slower individuals. Ideally, the last person from each
+C
+group should finish the triathlon at roughly the same time so that we are not keeping the
+roads closed for just a handful of people in one group. Since group 1 is naturally fast and
+M
+group 3 is naturally slow, in order to make group 1 finish at the same time as group 3, there
+should be fewer individuals in group 3 and more individuals in group 1. Upon testing this
+i
+in our agent-based model, we found that defining group 1 to be those athletes with a time
+H
+better than 2:45:00 and defining group 3 to be those athletes with a time worse than 3:30:00
+causes all 3 groups to finish at the same time. ：
+Definition 2: Wave-Packet
+号
+A Wave-Packet is a group of 55 athletes that are deployed at the same time. 25%
+of the athletes come from the highest ranks of Group 1 that have not yet been
+众
+deployed, 50% of the athletes come from the highest ranks of Group 2 that have not
+yet been deployed, and 25% of the athletes come from the highest ranks of Group 3
+公that have not yet been deployed.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 15 of 45
+M
+C
+M
+i
+H
+：
+Figure 5: Wave-Packet号Structure (Note: Areas not to scale)
+The grouping/ranking system minimizes the intersections of different wave-packets over
+众
+time. If the slowest athletes go first, they will take the fast lane and will interfere with
+athletes in the next wave-packet much like actual waves.
+公
+With our deploying mechanism in place, we just need to adjust the time between wave-
+packets. A higher time between wave-packets leads to less interaction between wave-packets,
+信
+which leads to a lower congestion value. Therefore, a large interval of time between wave-
+packets is ideal. However, we are held back by the fact that we only have 5.5 hours to run our
+triathlon. We can improve on this number by realizing that if the biking track is in use but
+微
+the running track is not, we can potentially have the roads for the running track open and
+vice versa. This of course would have to be specially arranged. With this optimization, we
+can simply increase the time between waves until the road closure time approaches 5.5 hours.
+In summary, we simulate the triathlon using the following algorithms:
+Figure 6: Setup Algorithm
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem | A:  | Swim, | Bike, | Run | Team | #   | 7054 | Page 16 | of 45 |
+| ------- | --- | ----- | ----- | --- | ---- | --- | ---- | ------- | ----- |
+M
+C
+M
+i
+H
+：
+号
+众
+|     |     |     |     | Figure | 7: Simulation |     | Algorithm |     |     |
+| --- | --- | --- | --- | ------ | ------------- | --- | --------- | --- | --- |
+公
+| The | complete | NetLogo |     | code can | be found | in  | the Appendix. |     |     |
+| --- | -------- | ------- | --- | -------- | -------- | --- | ------------- | --- | --- |
+信
+Results
+微
+| Exploring |     | Congestion |     | and | Road | Closure |     |     |     |
+| --------- | --- | ---------- | --- | --- | ---- | ------- | --- | --- | --- |
+Divisons
+The first task of the problem is to devise divisions to promote a healthy competition between
+| the athlete. | We  | created | the | following | divisions |     | for the athletes. |     |     |
+| ------------ | --- | ------- | --- | --------- | --------- | --- | ----------------- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A:  | Swim,  | Bike,    | Run   |        | Team    | # 7054    |        |         |               | Page 17 | of 45 |
+| ------- | --- | ------ | -------- | ----- | ------ | ------- | --------- | ------ | ------- | ------------- | ------- | ----- |
+|         |     |        | Division |       | Male   | Cutoff  | Time      | Female | Cutoff  | Time          |         |       |
+|         |     | Black  | Diamond  |       |        | 2:30:00 |           |        | 2:45:00 |               |         |       |
+|         |     |        | Diamond  |       |        | 3:00:00 |           |        | 3:15:00 |               |         |       |
+|         |     |        | Gold     |       |        | 3:30:00 |           |        | 3:45:00 |               |         |       |
+|         |     |        | Silver   |       | All    | Other   | Times     | All    | Other   | Times         |         |       |
+|         |     | Figure | 8:       | Table | of the | eight   | divisions | along  | with    | cutoff times. |         |       |
+Each category (Black Diamond, Diamond, etc) represents a certain skill level which was
+M
+quantified by finding the quartiles of the course completion times of the previous triathlon.
+By placing the athletes into their respective division by using the registration survey, we
+divisCion
+conduct a competitive environment where athletes in the same have a similar com-
+| pletion | course | time. |     |     |     |     |     |     |     |     |     |     |
+| ------- | ------ | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+| Schedule | of  | Wave | Start | Times |     |     |     |     |     |     |     |     |
+| -------- | --- | ---- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+In regards to generating a schedule of wave start times, H we created wave-packets of 55
+athletes. The wave-packets were then divided into groups, where the groups approximately
+：
+reference the lane that the athlete will remain on (fast, main, slow). The groups are further
+divided into ranks to determine the order of deployment. The following describes the wave-
+| packet | structure | of  | the | triathlon. |     | 号   |     |     |     |     |     |     |
+| ------ | --------- | --- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- |
+众
+公
+信
+微
+|     |     |     |     | Figure | 9:  | Wave-Packet |     | Partitioning |     |     |     |     |
+| --- | --- | --- | --- | ------ | --- | ----------- | --- | ------------ | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim,     | Bike,        | Run | Team | # 7054 |          | Page 18  | of 45 |
+| ------- | ------------ | ------------ | --- | ---- | ------ | -------- | -------- | ----- |
+|         | Time Between | Wave-Packets |     | (s)  | CM     | BTM (hr) | RTM (hr) |       |
+|         |              | 200          |     |      | 100.03 | 4.49     | 4.44     |       |
+|         |              | 240          |     |      | 71.65  | 5.34     | 5.22     |       |
+|         |              | 260          |     |      | 59.48  | 5.74     | 5.62     |       |
+From this table, we can see that increasing the time between wave-packets results in
+decreased congestion but increased road closure time. If we allow road closure time to be as
+close to 5.5 hrs as possible, we find from the graph below that a wave-packet separation of
+240 seconds, or 4 minutes, gives a relatively low congestion value of 71.65.
+M
+C
+M
+i
+H
+：
+号
+众
+|     |     | Figure | 10: | Total | Congestion | was 71.6 |     |     |
+| --- | --- | ------ | --- | ----- | ---------- | -------- | --- | --- |
+公
+It can be seen from the data that a separation of 4 minutes between waves minimizes conges-
+tion while also keeping road closure time under 5.5 hrs. Therefore the optimal time between
+信
+| waves | was 4 min, creating | the | following | schedule. |     |     |     |     |
+| ----- | ------------------- | --- | --------- | --------- | --- | --- | --- | --- |
+微
+|     |     |     | Time  | Wave-Packet    |     |     |     |     |
+| --- | --- | --- | ----- | -------------- | --- | --- | --- | --- |
+|     |     |     | 8:00  | AM Wave-Packet |     | 1   |     |     |
+|     |     |     | 8:04  | AM Wave-Packet |     | 2   |     |     |
+|     |     |     | 8:08  | AM Wave-Packet |     | 3   |     |     |
+|     |     |     | .     |                | .   |     |     |     |
+|     |     |     | .     |                | .   |     |     |     |
+|     |     |     | .     |                | .   |     |     |     |
+|     |     |     | 10:16 | AM Wave-Packet |     | 35  |     |     |
+|     |     |     | 10:20 | AM Wave-Packet |     | 36  |     |     |
+|     |     |     | 10:24 | AM Wave-Packet |     | 37  |     |     |
+This table is the generated schedule if the triathlon began at 8:00 AM. Once the first
+wave-packet is deployed, we wait four minutes until the next packet can be deployed. For
+| the full | table, see the | Appendix. |     |     |     |     |     |     |
+| -------- | -------------- | --------- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem  | A:  | Swim,   | Bike, | Run     | Team | # 7054       |     |     |     |           | Page 19 | of 45 |
+| -------- | --- | ------- | ----- | ------- | ---- | ------------ | --- | --- | --- | --------- | ------- | ----- |
+| Changing |     | Segment |       | Lengths |      | (Sensitivity |     |     |     | Analysis) |         |       |
+To test the sensitivity of our model to the various parameters, we changed the time between
+wave-packets’ release as well as the lengths of the three segments of the race (Note: time
+| between | wave-packets |      | is set | to 200 | s, see Appendix |     | for  | full data). |     |      |     |     |
+| ------- | ------------ | ---- | ------ | ------ | --------------- | --- | ---- | ----------- | --- | ---- | --- | --- |
+|         |              | Swim | Length | (km)   | CM              |     | BTM  | (hr)        | RTM | (hr) |     |     |
+|         |              |      | 0.50   |        | 90.32           |     | 4.65 |             |     | 4.58 |     |     |
+|         |              |      | 1.50   |        | 100.03          |     | 4.49 |             |     | 4.44 |     |     |
+M
+|     |     |     | 2.50 |     | 94.99 |     | 4.85 |     |     | 4.81  |     |     |
+| --- | --- | --- | ---- | --- | ----- | --- | ---- | --- | --- | ----- | --- | --- |
+|     |     |     | 3.50 |     | 96.13 |     | 5.03 |     |     | 4C.85 |     |     |
+M
+|     |     | Bike | Length | (km) | CM  |     | BTM | (hr) | RTM | (hr) |     |     |
+| --- | --- | ---- | ------ | ---- | --- | --- | --- | ---- | --- | ---- | --- | --- |
+i
+|     |     |     | 20  |     | 85.93 |     | 4.07 |     |     | 4.42 |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | ---- | --- | --- | ---- | --- | --- |
+H
+|     |     |     | 30  |     | 85.14 |     | 4.46 |     |     | 4.57 |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | ---- | --- | --- | ---- | --- | --- |
+：
+|     |     |     | 40  |     | 100.03 |     | 4.49 |     |     | 4.44 |     |     |
+| --- | --- | --- | --- | --- | ------ | --- | ---- | --- | --- | ---- | --- | --- |
+|     |     |     | 50  |     | 95.55  |     | 5.30 |     |     | 4.96 |     |     |
+号
+|     |     | Running | Length | 众 (km) |        | CM    | BTM | (hr) |     | RTM (hr) |     |     |
+| --- | --- | ------- | ------ | ------ | ------ | ----- | --- | ---- | --- | -------- | --- | --- |
+|     |     |         | 5      |        |        | 77.84 |     | 4.79 |     | 4.25     |     |     |
+|     |     |         | 10     |        | 100.03 |       |     | 4.49 |     | 4.44     |     |     |
+公
+|     |     |     | 15  |     |        | 93.68 |     | 4.79 |     | 5.67 |     |     |
+| --- | --- | --- | --- | --- | ------ | ----- | --- | ---- | --- | ---- | --- | --- |
+|     |     |     | 20  |     | 101.06 |       |     | 4.73 |     | 6.79 |     |     |
+信
+Given these results, we can say that increasing or decreasing the swimming and biking
+lengths fro微m its original values leads to a general decrease in the congestion of the triathlon.
+On the other hand, for running length, the correlation is less clear as increasing it to 20 led
+to a larger congestion whereas increasing it to 15 led to a smaller congestion. However, as
+the model is probabilistic in its data selection, we cannot be definitive about the congestion
+values without running more trials. The road closure times, on the other hand, provide a
+more concrete measure of the impact of the length parameters. For example, changing the
+bike length from 40 km to 50 km does not push the road closure time above the 5.5 hr limit,
+but increasing the running length to even 15 km means that the 5.5 hr criterion will no
+| longer | be met. |     |     |     |     |     |     |     |     |     |     |     |
+| ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+One plausible explanation for the positive correlation between length and congestion at
+low lengths is the “catch-up factor”. Suppose that there are two athletes biking, one of
+whom is slightly faster than the other. However, suppose that the faster athlete is behind
+the slower athlete. With a longer biking length, the faster athlete has a bigger window to
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Problem A: Swim, Bike, Run Team # 7054 Page 20 of 45
+catch-up. By catching-up, the faster athlete adds to the congestion. On the other hand,
+with a longer biking length, the distribution of athletes is more spread out (differences in
+speeds matter more), decreasing the congestion.
+If we want to minimize congestion in our model, one realistic way is by decreasing the
+size of the running section to only 5 km as it decreased congestion from 100.03 to 77.84 in
+our model, larger than any other change. However, this would deviate from the Olympic
+standards and thus make the event less professional.
+Justification M
+Our model sought to satisfy the needs of both professionals and amCateurs while sticking to
+the constraint of a road closure of 5.5 hours. There are multiple ways in which our model
+tailors to the needs of professionals and talented amateurs: GiMven our group 1, group 2, and
+group 3 system, all of our talented male and female athletes will find themselves at or near
+the highest rank of group 1. This allows them to start the triiathlon with little to no waiting
+time. In addition, they generally experience less congeHstion since they are almost always in
+the fast lane with very few other waves in front of them. Most importantly, starting near the
+：
+beginning implies that the first individuals to finish are these talented individuals. At the
+finish line, this adds to the reward from an athlete point-of-view and to the excitement from
+a spectator point-of-view. The triathlo号n can be also seen as legitimate (thereby carrying
+weight by the talented athletes) as it uses an Olympic-style format.
+众
+On the other hand, the triathlon also tailors to the more amateur side of the triathlon.
+The triathlon track includes a slow lane that allows athletes that are falling behind the rest
+of the group to slow down and rest without impacting everyone behind them. Even though
+公
+the more talented athletes experience a bit less congestion then the rest of the participants,
+the burden does not fall heavily on one particular group. In addition, the divisions like Silver
+and Gold allow le信sser skilled individuals to compete amongst themselves, giving everyone a
+chance of earning a high placing.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 21 of 45
+M
+C
+M
+i
+Figure 11: Even though the congestion for Black DiamHond is low, the burden does not fall
+heavily on the other groups
+：
+Ourmodelassumedthatweusedseparateroadsystemsforthebikeandrunningsections.
+If we consider a singular road system, w号e obtain the following results:
+众
+公
+信
+微
+We can easily see that road closure time has risen to 5.46 hours, which may not leave
+enough time for the road to transition between closed and open. On top of this, the time
+between wave-packets has decreased to 200 seconds. The congestion metric itself has risen
+to almost 100.03, a sharp 40% increase (29% decrease) over the 71.6 metric given by the
+separate system model. Therefore having two separate closures provides a strong benefit to
+any triathlon.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 22 of 45
+Our model used a three lane system to prevent faster and slower athletes from congesting
+one another. If we consider a one lane system instead, we obtain the following results:
+M
+C
+M
+i
+H
+：
+This is a bigger disaster than the singular road system model: the congestion value has
+号
+more than tripled to 254.9 (256% increase). Just by adding in two more lanes, we were able
+to decrease congestion by 72%. Most likely, using a single lane system would lead to far
+more complications and general众congestion to the point that the triathlon would no longer
+be a fair, competitive contest of skill.
+公
+Our model characterized athletes into three separate groups in order to effectively use
+the three lanes. If we instead group randomly, we obtain the following results:
+信
+微
+Figure 12: Wave-packaging is done arbitrarily
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 23 of 45
+The congestion value here has risen to 90.6, a 27% increase (21% decrease) over the
+congestion value of 71.6. The increase can be attributed to greater interference among the
+wave-packets. This is also an indication that the remaining 70% or so of the congestion is
+primarily “intraference” that occurs naturally within a wave-packet.
+Strengths and Weaknesses
+Strengths
+• Our agent-based model accounts for the complex interactions betwMeen the individual
+athletes and calculates a congestion metric based on the number of people athletes
+pass as well as the number of people around each athlete. This provides us with an
+C
+easy way to judge the efficacy of a wave-packet schedule. Our model also calculates
+the amount of time the roads need to be closed, which tMells us if a wave schedule will
+fit within the required road closure time of 5.5 hours.
+i
+• We divide the race course into three different lanes based on the speed class of the
+H
+athletes. This allows us to minimize congestion as the faster athletes will not have
+to continuously zig-zag around slower at：hletes and vice versa. By using this 3-lane
+system, we decrease the congestion by 72%.
+• Our model uses wave-packets com号posed of a distribution of athletes. Even though
+some athletes are faster, they will take the faster lane, and will not run into as many
+of the slower athletes from the previous wave-packet. Similarly, the slower athletes
+众
+will not be forced aside by faster athletes in a successive wave. Furthermore, since
+the athletes in each wave-packet are chosen by their group (based loosely on speed
+quartiles) and rank公within a group (based on 15-minute time intervals), we know that
+the fastest people will be sent out first, which will motivate them to come back for the
+next triathlon, strengthening our sponsorship from Super Tread Race Company.
+信
+• Our model incorporates many aspects of the Olympic Triathlon, including the number
+of athletes per wave (55) and the lengths of the segments of the race (1.5 km swim,
+微
+40 km bike, 10 km run). This makes the triathlon more alluring to professionals and
+will thus attract more pro racers and serious amateurs, as per the Super Tread Racing
+Company CEO’s discretion [4].
+• We incorporate four divisions for each sex into our triathlon model. This motivates
+more people to join as they have a higher chance to win in their category. We also
+ensure that almost all Premier and Professional racers will be in the same division,
+which increases the competitiveness of the top division.
+Weaknesses
+• Our race course is linear and thus does not account for race courses in which there are
+multiple short laps. We could not account for the road infrastructure of the town in
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 24 of 45
+which the triathlon is held, so we generalized it to a linear case. Wide roads (such as
+highways) can be subdivided to form loops.
+• Our model heavily relies on the data received from the participants. For example,
+if the participants were to underestimate by 5%, our model will not group athletes
+properly, which will compound to large inefficiencies in terms of congestion and road
+closure time.
+• As we do not have an explicit formula for calculating the time between wave-packet
+releases or the group distributions, we have to compute the optimal time for every
+setting. This means that it will take large amounts of computationaMl power to perfect
+the values.
+C
+• As some parts of the model (mainly the data set generation) are probabilistic, we have
+to run multiple trials of the model at each setting in order to obtain metric values for
+M
+that setting. However, since the model is computationally intensive, this is difficult to
+do with our limited computing power.
+i
+H
+Conclusion and Future Work
+：
+We were tasked with properly modeling and organizing a schedule for a local youth organiza-
+tion’striathlon. TheMayorofthetown号permitted5.5hoursoftimeduringwhichroadscould
+be closed. Furthermore, the main sponsor of the triathlon requested that professional ath-
+letes be allowed to attend so as to increase the future prospects of another triathlon. For this
+众
+to occur, the sponsor asked us to minimize the congestion experienced by athletes during the
+event. We began by determining the method by which registered athletes would be divided
+to foster friendly competi公tion and yet allow all contenders to have a decent chance of winning
+awards. We then chose an optimal layout for our track and used a wave-packet approach
+to ease congestion. Our simulations were run in an agent-based model developed in NetLogo.
+信
+We determined that athletes should be divided into eight divisions: Female Black Di-
+amond, Male Black Diamond, Female Diamond, Male Diamond, Female Gold, Male Gold,
+微
+Female Silver, and Male Silver. This method of separation removes the necessity of categori-
+cal qualifiers, such as being a premier or professional athlete, to compete with other members
+in one’s skill level. Furthermore, this allows all athletes to compete relatively fairly for com-
+mendations. The time interval between the deployment of wave models was optimized to a
+value of 240 seconds, or 4 minutes. Therefore, athletes leave in waves of 55 athletes spaced
+out in 4-minute intervals.
+Since we were constrained by computational power, we were unable to iterate through
+all the possible variations of parameters. In the future, we hope to use faster computational
+methods to achieve this goal. If we receive information on the topography and circuit of the
+triathlon from the Mayor, we hope to also take into account any lapping that occurs in our
+wave model so as to optimize the time between wave-packets even further.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 25 of 45
+Appendix
+Registration Survey
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Problem A: Swim, Bike, Run Team # 7054 Page 26 of 45
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem  | A: Swim,   | Bike, Run | Team # 7054 | Page 27 | of 45 |
+| -------- | ---------- | --------- | ----------- | ------- | ----- |
+| Selected | Simulation | Results   |             |         |       |
+M
+C
+M
+i
+H
+Figure 13: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 20 km;
+| Running | Length: 10 | km  | ：   |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+号
+众
+公
+信
+微
+Figure 14: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 30 km;
+| Running | Length: 10 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, | Bike, Run | Team # 7054 | Page 28 | of 45 |
+| ------- | -------- | --------- | ----------- | ------- | ----- |
+M
+C
+M
+Figure 15: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 50 km;
+| Running | Length: 10 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 16: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 40 km;
+| Running | Length: 5 | km  |     |     |     |
+| ------- | --------- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, | Bike, Run | Team # 7054 | Page 29 | of 45 |
+| ------- | -------- | --------- | ----------- | ------- | ----- |
+M
+C
+M
+Figure 17: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 40 km;
+| Running | Length: 15 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 18: Time between waves: 200 s; Swim Length: 1.5 km; Bike Length: 40 km;
+| Running | Length: 20 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, | Bike, Run | Team # 7054 | Page 30 | of 45 |
+| ------- | -------- | --------- | ----------- | ------- | ----- |
+M
+C
+M
+Figure 19: Time between waves: 200 s; Swim Length: 0.5 km; Bike Length: 40 km;
+| Running | Length: 10 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 20: Time between waves: 200 s; Swim Length: 2.5 km; Bike Length: 40 km;
+| Running | Length: 10 | km  |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+Problem A: Swim, Bike, Run Team # 7054 Page 31 of 45
+M
+C
+M
+Figure 21: Time between waves: 200 s; Swim Length: 3.5 km; Bike Length: 40 km;
+Running Length: 10 km
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Problem  | A: Swim, | Bike,    | Run Team | # 7054      |     | Page 32 | of 45 |
+| -------- | -------- | -------- | -------- | ----------- | --- | ------- | ----- |
+| Complete | Wave     | Schedule |          |             |     |         |       |
+|          |          |          | Time     | Wave-Packet |     |         |       |
+|          |          |          | 8:00 AM  | Wave-Packet | 1   |         |       |
+|          |          |          | 8:04 AM  | Wave-Packet | 2   |         |       |
+|          |          |          | 8:08 AM  | Wave-Packet | 3   |         |       |
+|          |          |          | 8:12 AM  | Wave-Packet | 4   |         |       |
+|          |          |          | 8:16 AM  | Wave-Packet | 5   |         |       |
+|          |          |          | 8:20 AM  | Wave-Packet | 6   |         |       |
+M
+|     |     |     | 8:24 AM | Wave-Packet | 7   |     |     |
+| --- | --- | --- | ------- | ----------- | --- | --- | --- |
+|     |     |     | 8:28 AM | Wave-Packet | 8   |     |     |
+C
+|     |     |     | 8:32 AM | Wave-Packet | 9   |     |     |
+| --- | --- | --- | ------- | ----------- | --- | --- | --- |
+M
+|     |     |     | 8:36 AM | Wave-Packet | 10  |     |     |
+| --- | --- | --- | ------- | ----------- | --- | --- | --- |
+|     |     |     | 8:40 AM | Wave-Packet | 11  |     |     |
+i
+|     |     |     | 8:44 AM | Wave-PackHet | 12  |     |     |
+| --- | --- | --- | ------- | ------------ | --- | --- | --- |
+|     |     |     | 8:48 AM | Wave-Packet  | 13  |     |     |
+：
+|     |     |     | 8:52 AM | Wave-Packet | 14  |     |     |
+| --- | --- | --- | ------- | ----------- | --- | --- | --- |
+|     |     |     | 8:56 AM | Wave-Packet | 15  |     |     |
+号
+|     |     |     | 9:00 AM | Wave-Packet | 16  |     |     |
+| --- | --- | --- | ------- | ----------- | --- | --- | --- |
+|     |     |     | 9:04 AM | Wave-Packet | 17  |     |     |
+众
+|     |       |       | 9:08 AM | Wave-Packet | 18  |     |     |
+| --- | ----- | ----- | ------- | ----------- | --- | --- | --- |
+|     |       |       | 9:12 AM | Wave-Packet | 19  |     |     |
+|     |       | 公9:16 | AM      | Wave-Packet | 20  |     |     |
+|     |       |       | 9:20 AM | Wave-Packet | 21  |     |     |
+|     | 信9:24 |       | AM      | Wave-Packet | 22  |     |     |
+|     |       |       | 9:28 AM | Wave-Packet | 23  |     |     |
+|     |       |       | 9:32 AM | Wave-Packet | 24  |     |     |
+微
+|     |     |     | 9:36 AM  | Wave-Packet | 25  |     |     |
+| --- | --- | --- | -------- | ----------- | --- | --- | --- |
+|     |     |     | 9:40 AM  | Wave-Packet | 26  |     |     |
+|     |     |     | 9:44 AM  | Wave-Packet | 27  |     |     |
+|     |     |     | 9:48 AM  | Wave-Packet | 28  |     |     |
+|     |     |     | 9:52 AM  | Wave-Packet | 29  |     |     |
+|     |     |     | 9:56 AM  | Wave-Packet | 30  |     |     |
+|     |     |     | 10:00 AM | Wave-Packet | 31  |     |     |
+|     |     |     | 10:04 AM | Wave-Packet | 32  |     |     |
+|     |     |     | 10:08 AM | Wave-Packet | 33  |     |     |
+|     |     |     | 10:12 AM | Wave-Packet | 34  |     |     |
+|     |     |     | 10:16 AM | Wave-Packet | 35  |     |     |
+|     |     |     | 10:20 AM | Wave-Packet | 36  |     |     |
+关注 HiMCM
+|     |     |     | 10:24 AM | Wave-Packet | 37  |     |     |
+| --- | --- | --- | -------- | ----------- | --- | --- | --- |
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem |     | A: Swim, | Bike, |     | Run | Team | # 7054 |     |     | Page 33 | of 45 |
+| --- | ------- | --- | -------- | ----- | --- | --- | ---- | ------ | --- | --- | ------- | ----- |
+|     | NetLogo |     | Code     |       |     |     |      |        |     |     |         |       |
+extensions[csv]
+1
+globals[
+2
+| 3   | wave          | ;; the | current | wave   |      |          |           |          |     |     |     |     |
+| --- | ------------- | ------ | ------- | ------ | ---- | -------- | --------- | -------- | --- | --- | --- | --- |
+|     | wave-cooldown |        |         | ;; the | wave | cooldown | increment | variable |     |     |     |     |
+4
+| 5   | per-wave         |     | ;; number | of     | people | per | wave (55) |               |         |     |     |     |
+| --- | ---------------- | --- | --------- | ------ | ------ | --- | --------- | ------------- | ------- | --- | --- | --- |
+|     | road-bike-closed |     |           | ;; the | amount | of  | time      | the bike road | is open |     |     |     |
+6
+|     | road-run-closed |     |     | ;; the | amount | of  | time the | running | road is open |     |     |     |
+| --- | --------------- | --- | --- | ------ | ------ | --- | -------- | ------- | ------------ | --- | --- | --- |
+7
+| 8   | road-closed |     | ;;     | the total | time | roads | are | open |     |     |     |     |
+| --- | ----------- | --- | ------ | --------- | ---- | ----- | --- | ---- | --- | --- | --- | --- |
+|     | order       | ;;  | to set | orderings |      |       |     |      |     |     |     |     |
+9
+| 10  | order-so-far |     | ;;   | the number       |     | or orders | so   | far   |     | M   |     |     |
+| --- | ------------ | --- | ---- | ---------------- | --- | --------- | ---- | ----- | --- | --- | --- | --- |
+|     | data-row     |     | ;; a | data placeholder |     | for       | data | input |     |     |     |     |
+11
+|     | data | ;; the | spreadsheet |     | data |     |     |     |     |     |     |     |
+| --- | ---- | ------ | ----------- | --- | ---- | --- | --- | --- | --- | --- | --- | --- |
+12
+C
+| 13  | passed | ;;  | a counter | for | number | of  | times | passed |     |     |     |     |
+| --- | ------ | --- | --------- | --- | ------ | --- | ----- | ------ | --- | --- | --- | --- |
+target-swim
+14
+|     | target-bike |     |     |     |     |     |     |     | M   |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+15
+16 target-running
+low-swim
+17
+i
+18 low-bike
+H
+low-running
+19
+time
+| 20  |     |     |     |     |     |     |     | ：   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+21 time2
+] ;; global variables that are accessible from any scope of the program
+22
+23 turtles-own[
+号
+location
+24
+swim
+25
+26 t1
+众
+bike
+27
+28 t2
+running
+29
+|     | ordering |     |     |     | 公   |     |     |     |     |     |     |     |
+| --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+30
+31 type-turtle
+around-me
+32
+| 33  | total |     |     | 信   |     |     |     |     |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+34 division
+sex
+35
+36 wave-div微
+new-order
+37
+my-pass
+38
+39 ]
+40
+41
+42
+to read
+43
+44 file-close-all
+|     | file-open |     | "datas.csv" |     |     |     |     |     |     |     |     |     |
+| --- | --------- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+45
+| 46  | set   | data | []            |     |     |     |     |     |     |     |     |     |
+| --- | ----- | ---- | ------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | while | [not | file-at-end?] |     | [   |     |     |     |     |     |     |     |
+47
+|     | set | data-row |     | csv:from-row |     | file-read-line |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ------------ | --- | -------------- | --- | --- | --- | --- | --- | --- |
+48
+| 49  | set | data | lput | data-row | data |     |     |     |     |     |     |     |
+| --- | --- | ---- | ---- | -------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+]
+50
+51 end
+to setup
+52
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem |     | A: Swim, |     | Bike, | Run | Team # 7054 |     |     | Page 34 | of 45 |
+| --- | ------- | --- | -------- | --- | ----- | --- | ----------- | --- | --- | ------- | ----- |
+53 clear-all
+read
+54
+| 55  | set | wave          | 0   |                    |     |     |      |     |     |     |     |
+| --- | --- | ------------- | --- | ------------------ | --- | --- | ---- | --- | --- | --- | --- |
+| 56  | set | wave-cooldown |     | (wave-cooldown-max |     |     | - 1) |     |     |     |     |
+|     | set | per-wave      | 55  |                    |     |     |      |     |     |     |     |
+57
+| 58  | set | road-bike-closed |     |     | 0   |     |     |     |     |     |     |
+| --- | --- | ---------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | road-run-closed  |     |     | 0   |     |     |     |     |     |     |
+59
+|     | set | road-closed |     | 0   |     |     |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+60
+| 61  | set | order       | 0   |           |     |           |     |     |     |     |     |
+| --- | --- | ----------- | --- | --------- | --- | --------- | --- | --- | --- | --- | --- |
+|     | set | target-swim |     | interpret |     | "0:20:13" |     |     |     |     |     |
+62
+| 63  | set | target-bike    |           | interpret |           | "1:18:15" |     |     |     |     |     |
+| --- | --- | -------------- | --------- | --------- | --------- | --------- | --- | --- | --- | --- | --- |
+|     | set | target-running |           | interpret |           | "0:51:42" |     |     |     |     |     |
+| 64  |     |                |           |           |           |           |     |     | M   |     |     |
+|     | set | low-swim       | interpret |           | "0:25:10" |           |     |     |     |     |     |
+65
+| 66  | set | low-bike    | interpret |           | "1:35:56" |           |     |     |     |     |     |
+| --- | --- | ----------- | --------- | --------- | --------- | --------- | --- | --- | --- | --- | --- |
+|     | set | low-running |           | interpret |           | "1:06:24" |     |     | C   |     |     |
+67
+| 68  | set | time  | interpret | "3:30:00" |           |     |     |     |     |     |     |
+| --- | --- | ----- | --------- | --------- | --------- | --- | --- | --- | --- | --- | --- |
+|     | set | time2 | interpret |           | "2:45:00" |     |     | M   |     |     |     |
+69
+resize-world 0 swim-length + bike-length + running-length + 2.5 0 1
+70
+| 71  | ask | patches | with | [pxcor | =   | 0][ |     |     |     |     |     |
+| --- | --- | ------- | ---- | ------ | --- | --- | --- | --- | --- | --- | --- |
+|     | set | pcolor  | red  |        |     |     |     | i   |     |     |     |
+72
+H
+73 ]
+|     | ask | patches | with | [pxcor | >   | 0 and pxcor | < swim-length][ |     |     |     |     |
+| --- | --- | ------- | ---- | ------ | --- | ----------- | --------------- | --- | --- | --- | --- |
+| 74  |     |         |      |        |     |             | ：               |     |     |     |     |
+|     | set | pcolor  | blue |        |     |             |                 |     |     |     |     |
+75
+76 ]
+ask patches with [pxcor > swim-length + 1 and pxcor < swim-length + bike-length + 1][
+77
+号
+| 78  | set | pcolor | gray |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+79 ]
+ask patches with [pxcor > swim-length + bike-length + 2 and pxcor < swim-length +
+80
+running-leng众th
+|     |     | bike-length |       | +   |     |     | + 2][ |     |     |     |     |
+| --- | --- | ----------- | ----- | --- | --- | --- | ----- | --- | --- | --- | --- |
+|     | set | pcolor      | green |     |     |     |       |     |     |     |     |
+81
+]
+82
+| 83  | ask | patches | with  | [pcolo公r | =   | 0][ |     |     |     |     |     |
+| --- | --- | ------- | ----- | -------- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | pcolor  | brown |          |     |     |     |     |     |     |     |
+84
+85 ]
+|     | set | data-row | su信blist |     | data | order (order | + 7 - 1) |     |     |     |     |
+| --- | --- | -------- | -------- | --- | ---- | ------------ | -------- | --- | --- | --- | --- |
+86
+|     | set | data-row | n-of | 4   | data-row |     |     |     |     |     |     |
+| --- | --- | -------- | ---- | --- | -------- | --- | --- | --- | --- | --- | --- |
+87
+| 88  | set | order-so-far |     | order |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | crt | 4[           |     |       |     |     |     |     |     |     |     |
+| 89  |     | 微            |     |       |     |     |     |     |     |     |     |
+| 90  | set | location     |     | 0     |     |     |     |     |     |     |     |
+|     | set | ordering     |     | order |     |     |     |     |     |     |     |
+91
+|     | set | order | order | +   | 1   |     |     |     |     |     |     |
+| --- | --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+92
+| 93  | set | type-turtle |     | "M  | PRO" |     |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | ---- | --- | --- | --- | --- | --- | --- |
+|     | set | ycor        | 0.5 |     |      |     |     |     |     |     |     |
+94
+| 95  | set | xcor | 0.5 |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+96
+set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+97
+98 set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+99
+100 set running interpret (item 8 (item (ordering - order-so-far) data-row))
+101 set sex (item 2 (item (ordering - order-so-far) data-row))
+]
+102
+| 103 | set | data-row | sublist |     | data     | order (order | + 49 - 1) |     |     |     |     |
+| --- | --- | -------- | ------- | --- | -------- | ------------ | --------- | --- | --- | --- | --- |
+|     | set | data-row | n-of    | 30  | data-row |              |           |     |     |     |     |
+104
+|     | set | order-so-far |     | order |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+105
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem | A:       | Swim, |     | Bike, Run |     | Team # 7054 |     |     |     | Page 35 | of 45 |
+| --- | ------- | -------- | ----- | --- | --------- | --- | ----------- | --- | --- | --- | ------- | ----- |
+| 106 | crt     | 30[      |       |     |           |     |             |     |     |     |         |       |
+|     | set     | location |       | 0   |           |     |             |     |     |     |         |       |
+107
+| 108 | set | ordering    |       | order |      |     |     |     |     |     |     |     |
+| --- | --- | ----------- | ----- | ----- | ---- | --- | --- | --- | --- | --- | --- | --- |
+| 109 | set | order       | order | +     | 1    |     |     |     |     |     |     |     |
+|     | set | type-turtle |       | "M    | PRE" |     |     |     |     |     |     |     |
+110
+| 111 | set | ycor | 0.5 |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | xcor | 0.5 |     |     |     |     |     |     |     |     |     |
+112
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+113
+114 set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+115
+116 set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+set running interpret (item 8 (item (ordering - order-so-far) data-r ow))
+| 117 |     |     |       |         |           |     |               |            |     | M   |     |     |
+| --- | --- | --- | ----- | ------- | --------- | --- | ------------- | ---------- | --- | --- | --- | --- |
+|     | set | sex | (item | 2 (item | (ordering | -   | order-so-far) | data-row)) |     |     |     |     |
+118
+119 ]
+|     | set | data-row | sublist |     | data order | (order | + 2147 | - 1) |     | C   |     |     |
+| --- | --- | -------- | ------- | --- | ---------- | ------ | ------ | ---- | --- | --- | --- | --- |
+120
+| 121 | set | data-row     | n-of | 1330  | data-row |     |     |     |     |     |     |     |
+| --- | --- | ------------ | ---- | ----- | -------- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | order-so-far |      | order |          |     |     |     | M   |     |     |     |
+122
+|     | crt | 1330[ |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+123
+| 124 | set | location |     | 0     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | ordering |     | order |     |     |     |     | i   |     |     |     |
+125
+H
+| 126 | set | order       | order | +   | 1     |     |     |     |     |     |     |     |
+| --- | --- | ----------- | ----- | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | type-turtle |       | "M  | OPEN" |     |     |     |     |     |     |     |
+| 127 |     |             |       |     |       |     | ：   |     |     |     |     |     |
+|     | set | ycor        | 0.5   |     |       |     |     |     |     |     |     |     |
+128
+| 129 | set | xcor | 0.5 |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+130
+(ord号ering
+131 set t1 interpret (item 5 (item - order-so-far) data-row))
+132 set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+133
+众8
+134 set running interpret (item (item (ordering - order-so-far) data-row))
+|     | set | sex | (item | 2 (item | (ordering | -   | order-so-far) | data-row)) |     |     |     |     |
+| --- | --- | --- | ----- | ------- | --------- | --- | ------------- | ---------- | --- | --- | --- | --- |
+135
+]
+136
+| 137 | set | data-row | sublist |     | da公ta order | (order | + 6 - 1) |     |     |     |     |     |
+| --- | --- | -------- | ------- | --- | ----------- | ------ | -------- | --- | --- | --- | --- | --- |
+|     | set | data-row | n-of    | 4   | data-row    |        |          |     |     |     |     |     |
+138
+| 139 | set | order-so-far |     | order |     |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | crt | 4[           |     |       |     |     |     |     |     |     |     |     |
+| 140 |     |              |     | 信     |     |     |     |     |     |     |     |     |
+|     | set | location     |     | 0     |     |     |     |     |     |     |     |     |
+141
+| 142 | set | ordering    |       | order |      |     |     |     |     |     |     |     |
+| --- | --- | ----------- | ----- | ----- | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | or der      | order | +     | 1    |     |     |     |     |     |     |     |
+| 143 |     | 微           |       |       |      |     |     |     |     |     |     |     |
+| 144 | set | type-turtle |       | "F    | PRO" |     |     |     |     |     |     |     |
+|     | set | ycor        | 0.5   |       |      |     |     |     |     |     |     |     |
+145
+|     | set | xcor | 0.5 |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+146
+147 set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+148
+149 set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+150
+set running interpret (item 8 (item (ordering - order-so-far) data-row))
+151
+152 set sex (item 2 (item (ordering - order-so-far) data-row))
+]
+153
+| 154 | set | data-row     | sublist |       | data order | (order | + 18 - | 1)  |     |     |     |     |
+| --- | --- | ------------ | ------- | ----- | ---------- | ------ | ------ | --- | --- | --- | --- | --- |
+| 155 | set | data-row     | n-of    | 11    | data-row   |        |        |     |     |     |     |     |
+|     | set | order-so-far |         | order |            |        |        |     |     |     |     |     |
+156
+| 157 | crt | 11[      |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | location |     | 0   |     |     |     |     |     |     |     |     |
+158
+|     | set | ordering |     | order |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+159
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem | A:          | Swim, | Bike, | Run  |     | Team | # 7054 |     |     |     | Page 36 | of 45 |
+| --- | ------- | ----------- | ----- | ----- | ---- | --- | ---- | ------ | --- | --- | --- | ------- | ----- |
+| 160 | set     | order       | order | + 1   |      |     |      |        |     |     |     |         |       |
+|     | set     | type-turtle |       | "F    | PRE" |     |      |        |     |     |     |         |       |
+161
+| 162 | set | ycor | 0.5 |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 163 | set | xcor | 0.5 |     |     |     |     |     |     |     |     |     |     |
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+164
+165 set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+166
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+167
+168 set running interpret (item 8 (item (ordering - order-so-far) data-row))
+|     | set | sex | (item | 2 (item | (ordering | -   | order-so-far) |     | data-row)) |     |     |     |     |
+| --- | --- | --- | ----- | ------- | --------- | --- | ------------- | --- | ---------- | --- | --- | --- | --- |
+169
+170 ]
+|     | set | data-row | sublist |     | data order | (order | +   | 898 - | 1)  |     |     |     |     |
+| --- | --- | -------- | ------- | --- | ---------- | ------ | --- | ----- | --- | --- | --- | --- | --- |
+| 171 |     |          |         |     |            |        |     |       |     |     | M   |     |     |
+|     | set | data-row | n-of    | 556 | data-row   |        |     |       |     |     |     |     |     |
+172
+| 173 | set | order-so-far |     | order |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | crt | 556[         |     |       |     |     |     |     |     |     | C   |     |     |
+174
+| 175 | set | location |     | 0     |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | ordering |     | order |     |     |     |     |     | M   |     |     |     |
+176
+|     | set | order | order | + 1 |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+177
+| 178 | set | type-turtle |     | "F  | OPEN" |     |     |     |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | ycor        | 0.5 |     |       |     |     |     |     | i   |     |     |     |
+179
+H
+| 180 | set | xcor | 0.5 |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+| 181 |     |     |     |     |     |     |     | ：   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+182
+183 set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+184
+(item号(ordering
+| 185 | set | running | interpret |     | (item | 8   |     |     | - order-so-far) |     | data-row)) |     |     |
+| --- | --- | ------- | --------- | --- | ----- | --- | --- | --- | --------------- | --- | ---------- | --- | --- |
+186 set sex (item 2 (item (ordering - order-so-far) data-row))
+]
+187
+orde众r
+| 188 | set | data-row | sublist |     | data     | (order | +   | 60 - | 1)  |     |     |     |     |
+| --- | --- | -------- | ------- | --- | -------- | ------ | --- | ---- | --- | --- | --- | --- | --- |
+|     | set | data-row | n-of    | 37  | data-row |        |     |      |     |     |     |     |     |
+189
+|     | set | order-so-far |     | order |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+190
+| 191 | crt | 37[      |     |     | 公   |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | location |     | 0   |     |     |     |     |     |     |     |     |     |
+192
+| 193 | set | ordering |        | order |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | ------ | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | order    | orde信r | + 1   |     |     |     |     |     |     |     |     |     |
+194
+|     | set | type-turtle |     | "CLY" |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+195
+| 196 | set | ycor  | 0.5 |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | xc or | 0.5 |     |     |     |     |     |     |     |     |     |     |
+| 197 |     | 微     |     |     |     |     |     |     |     |     |     |     |     |
+198 set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+199
+set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+200
+201 set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+set running interpret (item 8 (item (ordering - order-so-far) data-row))
+202
+203 set sex (item 2 (item (ordering - order-so-far) data-row))
+]
+204
+|     | set | data-row | sublist |     | data order | (order | +   | 32 - | 1)  |     |     |     |     |
+| --- | --- | -------- | ------- | --- | ---------- | ------ | --- | ---- | --- | --- | --- | --- | --- |
+205
+| 206 | set | data-row     | n-of | 20    | data-row |     |     |     |     |     |     |     |     |
+| --- | --- | ------------ | ---- | ----- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | order-so-far |      | order |          |     |     |     |     |     |     |     |     |
+207
+| 208 | crt | 20[      |     |       |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 209 | set | location |     | 0     |     |     |     |     |     |     |     |     |     |
+|     | set | ordering |     | order |     |     |     |     |     |     |     |     |     |
+210
+| 211 | set | order       | order | + 1   |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----------- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | type-turtle |       | "ATH" |     |     |     |     |     |     |     |     |     |
+212
+|     | set | ycor | 0.5 |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+213
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem | A:   | Swim, |     | Bike, | Run | Team | #   | 7054 |     |     | Page 37 | of 45 |
+| --- | ------- | ---- | ----- | --- | ----- | --- | ---- | --- | ---- | --- | --- | ------- | ----- |
+| 214 | set     | xcor | 0.5   |     |       |     |      |     |      |     |     |         |       |
+set swim interpret (item 4 (item (ordering - order-so-far) data-row))
+215
+216 set t1 interpret (item 5 (item (ordering - order-so-far) data-row))
+217 set bike interpret (item 6 (item (ordering - order-so-far) data-row))
+set t2 interpret (item 7 (item (ordering - order-so-far) data-row))
+218
+219 set running interpret (item 8 (item (ordering - order-so-far) data-row))
+|     | set | sex | (item | 2 (item | (ordering |     | - order-so-far) |     | data-row)) |     |     |     |     |
+| --- | --- | --- | ----- | ------- | --------- | --- | --------------- | --- | ---------- | --- | --- | --- | --- |
+220
+]
+221
+| 222 | ask | turtles[ |          |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | shape    | "person" |     |     |     |     |     |     |     |     |     |     |
+223
+224 ]
+|     | ask | turtles[ |      |     |           |     |              |     |     |     |     |     |     |
+| --- | --- | -------- | ---- | --- | --------- | --- | ------------ | --- | --- | --- | --- | --- | --- |
+| 225 |     |          |      |     |           |     |              |     |     |     | M   |     |     |
+|     | set | total    | swim | +   | t1 + bike | +   | t2 + running |     |     |     |     |     |     |
+226
+| 227 | if(total |          | < interpret |       | "2:30:00" |          | and sex | = "M")[ |     |     |     |     |     |
+| --- | -------- | -------- | ----------- | ----- | --------- | -------- | ------- | ------- | --- | --- | --- | --- | --- |
+|     | set      | division |             | "male | black     | diamond" |         |         |     |     | C   |     |     |
+228
+| 229 | set | color | black |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | ]   |       |       |     |     |     |     |     |     | M   |     |     |     |
+230
+if(total >= interpret "2:30:00" and total < interpret "3:00:00" and sex = "M")[
+231
+| 232 | set | division |     | "male | diamond" |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ----- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | color    | 84  |       |          |     |     |     |     | i   |     |     |     |
+233
+H
+234 ]
+if(total >= interpret "3:00:00" and total < interpret "3:30:00" and sex = "M")[
+| 235 |     |          |     |       |       |     |     |     | ：   |     |     |     |     |
+| --- | --- | -------- | --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | division |     | "male | gold" |     |     |     |     |     |     |     |     |
+236
+| 237 | set | color | yellow |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+238
+and号sex
+| 239 | if(total |          | >=  | interpret | "3:30:00" |     |     | =   | "M")[ |     |     |     |     |
+| --- | -------- | -------- | --- | --------- | --------- | --- | --- | --- | ----- | --- | --- | --- | --- |
+| 240 | set      | division |     | "male     | silver"   |     |     |     |       |     |     |     |     |
+|     | set      | color    | 7   |           |           |     |     |     |       |     |     |     |     |
+241
+众
+242 ]
+|     | if(total |     | < interpret |     | "2:45:00" |     | and sex | = "F")[ |     |     |     |     |     |
+| --- | -------- | --- | ----------- | --- | --------- | --- | ------- | ------- | --- | --- | --- | --- | --- |
+243
+|     | set | division |     | "female | black |     | diamond" |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ------- | ----- | --- | -------- | --- | --- | --- | --- | --- | --- |
+244
+| 245 | set | color | black |     | 公   |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+246
+247 if(total >= interpret "2:45:00" and total < interpret "3:15:00" and sex = "F")[
+|     | set | division信"female |     |     | diamond" |     |     |     |     |     |     |     |     |
+| --- | --- | ---------------- | --- | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+248
+|     | set | color | 84  |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+249
+250 ]
+if(tot al >= interpret "3:15:00" and total < interpret "3:45:00" and sex = "F")[
+| 251 |     | 微        |        |         |       |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | ------ | ------- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 252 | set | division |        | "female | gold" |     |     |     |     |     |     |     |     |
+|     | set | color    | yellow |         |       |     |     |     |     |     |     |     |     |
+253
+]
+254
+| 255 | if(total |          | >=  | interpret | "3:45:00" |     | and sex | =   | "F")[ |     |     |     |     |
+| --- | -------- | -------- | --- | --------- | --------- | --- | ------- | --- | ----- | --- | --- | --- | --- |
+|     | set      | division |     | "female   | silver"   |     |         |     |       |     |     |     |     |
+256
+| 257 | set | color | 7   |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+258
+]
+259
+| 260 | set | order | 0       |      |        |     |            |       |         |       |     |     |     |
+| --- | --- | ----- | ------- | ---- | ------ | --- | ---------- | ----- | ------- | ----- | --- | --- | --- |
+|     | let | agent | turtles | with | [total |     | > time and | total | <= time | + 45] |     |     |     |
+261
+| 262 | foreach | sort-on  |     | [ordering] |     | agent[ |     |     |     |     |     |     |     |
+| --- | ------- | -------- | --- | ---------- | --- | ------ | --- | --- | --- | --- | --- | --- | --- |
+| 263 | ask     | ? [      |     |            |     |        |     |     |     |     |     |     |     |
+|     | set     | ordering |     | order      |     |        |     |     |     |     |     |     |     |
+264
+| 265 | set | new-order |       | 1   |     |     |     |     |     |     |     |     |     |
+| --- | --- | --------- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | set | order     | order |     | + 1 |     |     |     |     |     |     |     |     |
+266
+]
+267
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, | Bike, | Run Team # 7054 |     | Page 38 | of 45 |
+| ------- | -------- | ----- | --------------- | --- | ------- | ----- |
+268 ]
+set agent turtles with [total > time + 45 and total <= time + 90]
+269
+| 270 foreach | sort-on  | [ordering] | agent[ |     |     |     |
+| ----------- | -------- | ---------- | ------ | --- | --- | --- |
+| 271 ask     | ? [      |            |        |     |     |     |
+| set         | ordering | order      |        |     |     |     |
+272
+| 273 set | new-order   | 1   |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+| set     | order order | + 1 |     |     |     |     |
+274
+]
+275
+276 ]
+set agent turtles with [total > time + 90 and total <= time + 135]
+277
+| 278 foreach | sort-on  | [ordering] | agent[ |     |     |     |
+| ----------- | -------- | ---------- | ------ | --- | --- | --- |
+| ask         | ? [      |            |        |     |     |     |
+| 279         |          |            |        | M   |     |     |
+| set         | ordering | order      |        |     |     |     |
+280
+| 281 set | new-order   | 1   |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+| set     | order order | + 1 |     | C   |     |     |
+282
+283 ]
+| ]   |     |     | M   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+284
+set agent turtles with [total > time + 135 and total <= time + 180]
+285
+| 286 foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- |
+| ask         | ? [     |            | i      |     |     |     |
+287
+H
+| 288 set | ordering  | order |     |     |     |     |
+| ------- | --------- | ----- | --- | --- | --- | --- |
+| set     | new-order | 1     |     |     |     |     |
+289 ：
+| set | order order | + 1 |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- |
+290
+291 ]
+]
+292
+号+
+293 set agent turtles with [total > time 180 and total <= time + 225]
+| 294 foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- |
+| ask         | ? [     |            |        |     |     |     |
+295
+众
+| 296 set | ordering  | order |     |     |     |     |
+| ------- | --------- | ----- | --- | --- | --- | --- |
+| set     | new-order | 1     |     |     |     |     |
+297
+| set | order order | + 1 |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- |
+298
+| 299 ] |     | 公   |     |     |     |     |
+| ----- | --- | --- | --- | --- | --- | --- |
+]
+300
+301 set agent turtles with [total > time + 225 and total <= time + 270]
+| foreach | sort-on信[ordering] |     | agent[ |     |     |     |
+| ------- | ------------------ | --- | ------ | --- | --- | --- |
+302
+| ask | ? [ |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+303
+| 304 set | ordering    | order |     |     |     |     |
+| ------- | ----------- | ----- | --- | --- | --- | --- |
+| set     | n ew-order  | 1     |     |     |     |     |
+| 305     | 微           |       |     |     |     |     |
+| 306 set | order order | + 1   |     |     |     |     |
+]
+307
+]
+308
+309 set agent turtles with [total > time + 270 and total <= time + 315]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- |
+310
+| 311 ask | ? [      |       |     |     |     |     |
+| ------- | -------- | ----- | --- | --- | --- | --- |
+| set     | ordering | order |     |     |     |     |
+312
+| set | new-order | 1   |     |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- |
+313
+| 314 set | order order | + 1 |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+]
+315
+316 ]
+317 set agent turtles with [total > time + 315 and total <= time + 360]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- |
+318
+| 319 ask | ? [      |       |     |     |     |     |
+| ------- | -------- | ----- | --- | --- | --- | --- |
+| set     | ordering | order |     |     |     |     |
+320
+| set | new-order | 1   |     |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- |
+321
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A:        | Swim, Bike, | Run | Team # 7054 |     | Page 39 | of 45 |
+| ------- | --------- | ----------- | --- | ----------- | --- | ------- | ----- |
+| 322     | set order | order + 1   |     |             |     |         |       |
+]
+323
+324 ]
+325 set agent turtles with [total > time + 360 and total <= time + 405]
+|     | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+326
+| 327 | ask ? [      |       |     |     |     |     |     |
+| --- | ------------ | ----- | --- | --- | --- | --- | --- |
+|     | set ordering | order |     |     |     |     |     |
+328
+|     | set new-order | 1   |     |     |     |     |     |
+| --- | ------------- | --- | --- | --- | --- | --- | --- |
+329
+| 330 | set order | order + 1 |     |     |     |     |     |
+| --- | --------- | --------- | --- | --- | --- | --- | --- |
+]
+331
+332 ]
+set agent turtles with [total > time + 405 and total <= time + 450]
+| 333 |                 |            |        |     | M   |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+|     | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+334
+| 335 | ask ? [      |       |     |     |     |     |     |
+| --- | ------------ | ----- | --- | --- | --- | --- | --- |
+|     | set ordering | order |     |     | C   |     |     |
+336
+| 337 | set new-order | 1         |     |     |     |     |     |
+| --- | ------------- | --------- | --- | --- | --- | --- | --- |
+|     | set order     | order + 1 |     |     | M   |     |     |
+338
+]
+339
+340 ]
+set agent turtles with [total > time + 450 and total <= tiime + 495]
+341
+H
+| 342 | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+|     | ask ? [         |            |        |     |     |     |     |
+| 343 |                 |            |        | ：   |     |     |     |
+|     | set ordering    | order      |        |     |     |     |     |
+344
+| 345 | set new-order | 1         |     |     |     |     |     |
+| --- | ------------- | --------- | --- | --- | --- | --- | --- |
+|     | set order     | order + 1 |     |     |     |     |     |
+346
+号
+347 ]
+348 ]
+set agent turtles with [total > time + 495 and total <= time + 540]
+349
+age众nt[
+| 350 | foreach sort-on | [ordering] |     |     |     |     |     |
+| --- | --------------- | ---------- | --- | --- | --- | --- | --- |
+|     | ask ? [         |            |     |     |     |     |     |
+351
+|     | set ordering | order |     |     |     |     |     |
+| --- | ------------ | ----- | --- | --- | --- | --- | --- |
+352
+| 353 | set new-order | 1 公       |     |     |     |     |     |
+| --- | ------------- | --------- | --- | --- | --- | --- | --- |
+|     | set order     | order + 1 |     |     |     |     |     |
+354
+355 ]
+]
+| 356 |           | 信   |     |     |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- | --- |
+|     | set order | 0   |     |     |     |     |     |
+357
+358 set agent turtles with [total > time2 - 495 and total <= time2 - 450]
+|     | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+| 359 | 微               |            |        |     |     |     |     |
+| 360 | ask ? [         |            |        |     |     |     |     |
+|     | set ordering    | order      |        |     |     |     |     |
+361
+|     | set new-order | 0   |     |     |     |     |     |
+| --- | ------------- | --- | --- | --- | --- | --- | --- |
+362
+| 363 | set order | order + 1 |     |     |     |     |     |
+| --- | --------- | --------- | --- | --- | --- | --- | --- |
+]
+364
+365 ]
+set agent turtles with [total > time2 - 450 and total <= time2 - 405]
+366
+|     | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+367
+| 368 | ask ? [      |       |     |     |     |     |     |
+| --- | ------------ | ----- | --- | --- | --- | --- | --- |
+|     | set ordering | order |     |     |     |     |     |
+369
+| 370 | set new-order | 0         |     |     |     |     |     |
+| --- | ------------- | --------- | --- | --- | --- | --- | --- |
+| 371 | set order     | order + 1 |     |     |     |     |     |
+]
+372
+373 ]
+set agent turtles with [total > time2 - 405 and total <= time2 - 260]
+374
+|     | foreach sort-on | [ordering] | agent[ |     |     |     |     |
+| --- | --------------- | ---------- | ------ | --- | --- | --- | --- |
+375
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, | Bike, | Run Team # 7054 |     | Page 40 | of 45 |
+| ------- | -------- | ----- | --------------- | --- | ------- | ----- |
+| 376 ask | ? [      |       |                 |     |         |       |
+| set     | ordering | order |                 |     |         |       |
+377
+| 378 set | new-order   | 0   |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+| 379 set | order order | + 1 |     |     |     |     |
+]
+380
+381 ]
+set agent turtles with [total > time2 - 360 and total <= time2 - 315]
+382
+| foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- |
+383
+| 384 ask | ? [      |       |     |     |     |     |
+| ------- | -------- | ----- | --- | --- | --- | --- |
+| set     | ordering | order |     |     |     |     |
+385
+| 386 set | new-order   | 0   |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+| set     | order order | + 1 |     |     |     |     |
+| 387     |             |     |     | M   |     |     |
+]
+388
+389 ]
+set agent turtles with [total > time2 - 315 and total <= time2 -C270]
+390
+| 391 foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- |
+| ask         | ? [     |            |        | M   |     |     |
+392
+| set | ordering | order |     |     |     |     |
+| --- | -------- | ----- | --- | --- | --- | --- |
+393
+| 394 set | new-order   | 0   |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+| set     | order order | + 1 |     | i   |     |     |
+395
+H
+396 ]
+]
+397 ：
+set agent turtles with [total > time2 - 270 and total <= time2 - 225]
+398
+| 399 foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- |
+| ask         | ? [     |            |        |     |     |     |
+400
+号
+| 401 set | ordering    | order |     |     |     |     |
+| ------- | ----------- | ----- | --- | --- | --- | --- |
+| 402 set | new-order   | 0     |     |     |     |     |
+| set     | order order | + 1   |     |     |     |     |
+403
+众
+404 ]
+]
+405
+set agent turtles with [total > time2 - 225 and total <= time2 - 180]
+406
+| 407 foreach | sort-on | [orderi公ng] | agent[ |     |     |     |
+| ----------- | ------- | ----------- | ------ | --- | --- | --- |
+| ask         | ? [     |             |        |     |     |     |
+408
+| 409 set | ordering   | order |     |     |     |     |
+| ------- | ---------- | ----- | --- | --- | --- | --- |
+| set     | new-orde信r | 0     |     |     |     |     |
+410
+| set | order order | + 1 |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- |
+411
+412 ]
+]
+| 413 | 微   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+414 set agent turtles with [total > time2 - 180 and total <= time2 - 135]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- |
+415
+| ask | ? [ |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+416
+| 417 set | ordering  | order |     |     |     |     |
+| ------- | --------- | ----- | --- | --- | --- | --- |
+| set     | new-order | 0     |     |     |     |     |
+418
+| 419 set | order order | + 1 |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+]
+420
+]
+421
+422 set agent turtles with [total > time2 - 135 and total <= time2 - 90]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- |
+423
+| 424 ask | ? [       |       |     |     |     |     |
+| ------- | --------- | ----- | --- | --- | --- | --- |
+| 425 set | ordering  | order |     |     |     |     |
+| set     | new-order | 0     |     |     |     |     |
+426
+| 427 set | order order | + 1 |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+]
+428
+]
+429
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+| Problem | A: Swim, |     | Bike, Run |     | Team # | 7054 |     | Page 41 | of 45 |
+| ------- | -------- | --- | --------- | --- | ------ | ---- | --- | ------- | ----- |
+430 set agent turtles with [total > time2 - 90 and total <= time2 - 45]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- | --- | --- | --- |
+431
+| 432 ask | ? [           |       |     |     |     |     |     |     |     |
+| ------- | ------------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+| 433     | set ordering  | order |     |     |     |     |     |     |     |
+|         | set new-order | 0     |     |     |     |     |     |     |     |
+434
+| 435 | set order | order | + 1 |     |     |     |     |     |     |
+| --- | --------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+]
+436
+]
+437
+438 set agent turtles with [total > time2 - 45 and total <= time2]
+| foreach | sort-on | [ordering] | agent[ |     |     |     |     |     |     |
+| ------- | ------- | ---------- | ------ | --- | --- | --- | --- | --- | --- |
+439
+| 440 ask | ? [           |       |     |     |     |     |     |     |     |
+| ------- | ------------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|         | set ordering  | order |     |     |     |     |     |     |     |
+| 441     |               |       |     |     |     |     | M   |     |     |
+|         | set new-order | 0     |     |     |     |     |     |     |     |
+442
+| 443 | set order | order | + 1 |     |     |     |     |     |     |
+| --- | --------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+| ]   |           |       |     |     |     |     | C   |     |     |
+444
+445 ]
+| set | order 0 |     |     |     |     |     | M   |     |     |
+| --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+446
+| set | agent turtles | with | [total | > time2 | and total | <= time2 | + 45] |     |     |
+| --- | ------------- | ---- | ------ | ------- | --------- | -------- | ----- | --- | --- |
+447
+| 448 foreach | sort-on | [ordering] | agent[ |     |     |     |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- | --- | --- | --- |
+| ask         | ? [     |            |        |     |     |     | i   |     |     |
+449
+H
+| 450 | set ordering  | order |     |     |     |     |     |     |     |
+| --- | ------------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | set new-order | 2     |     |     |     |     |     |     |     |
+| 451 |               |       |     |     | ：   |     |     |     |     |
+|     | set order     | order | + 1 |     |     |     |     |     |     |
+452
+453 ]
+]
+454
+time2号+
+455 set agent turtles with [total > 45 and total <= time2 + 90]
+| 456 foreach | sort-on | [ordering] | agent[ |     |     |     |     |     |     |
+| ----------- | ------- | ---------- | ------ | --- | --- | --- | --- | --- | --- |
+| ask         | ? [     |            |        |     |     |     |     |     |     |
+457
+众
+| 458 | set ordering  | order |     |     |     |     |     |     |     |
+| --- | ------------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | set new-order | 2     |     |     |     |     |     |     |     |
+459
+|     | set order | order | + 1 |     |     |     |     |     |     |
+| --- | --------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+460
+| 461 ] |     |     | 公   |     |     |     |     |     |     |
+| ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+462
+463 set agent turtles with [total > time2 + 90 and total <= time]
+| foreach | sort-on信[ordering] |     | agent[ |     |     |     |     |     |     |
+| ------- | ------------------ | --- | ------ | --- | --- | --- | --- | --- | --- |
+464
+| ask | ? [ |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+465
+| 466 | set ordering   | order |     |     |     |     |     |     |     |
+| --- | -------------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | set n ew-order | 2     |     |     |     |     |     |     |     |
+| 467 | 微              |       |     |     |     |     |     |     |     |
+| 468 | set order      | order | + 1 |     |     |     |     |     |     |
+]
+469
+]
+470
+471 reset-ticks
+472
+473 end
+to go
+474
+| if  | all? turtles | [location | =   | 6][ |     |     |     |     |     |
+| --- | ------------ | --------- | --- | --- | --- | --- | --- | --- | --- |
+475
+476 stop
+]
+477
+| 478 if           | any? turtles  | with | [location           | = 0][ |     |     |     |     |     |
+| ---------------- | ------------- | ---- | ------------------- | ----- | --- | --- | --- | --- | --- |
+| 479 set          | wave-cooldown |      | wave-cooldown       | +     | 1   |     |     |     |     |
+| if(wave-cooldown |               | >=   | wave-cooldown-max)[ |       |     |     |     |     |     |
+480
+| 481 | set wave-cooldown |     | (wave-cooldown |     | - wave-cooldown-max) |     |     |     |     |
+| --- | ----------------- | --- | -------------- | --- | -------------------- | --- | --- | --- | --- |
+ask turtles with [(ordering >= wave * (per-wave / 4 ) and ordering < (wave + 1) * (
+482
+per-wave / 4) and new-order = 0) or (ordering >= wave * (per-wave / 4 ) and
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem |     | A: Swim, |     | Bike, | Run | Team | # 7054 |     | Page 42 | of 45 |
+| --- | ------- | --- | -------- | --- | ----- | --- | ---- | ------ | --- | ------- | ----- |
+ordering < (wave + 1) * (per-wave / 4) and new-order = 1) or (ordering >= wave *
+(per-wave / 2 ) and ordering < (wave + 1) * (per-wave / 2) and new-order = 2)][
+| 483 |     | set     | location | 1               |     |     |     |     |     |     |     |
+| --- | --- | ------- | -------- | --------------- | --- | --- | --- | --- | --- | --- | --- |
+| 484 |     | if      | lanes?   | [               |     |     |     |     |     |     |     |
+|     |     | if(swim |          | < target-swim)[ |     |     |     |     |     |     |     |
+485
+| 486 |     |     | set ycor | 0.75 |     |     |     |     |     |     |     |
+| --- | --- | --- | -------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+]
+487
+|     |     | if(swim |     | > low-swim)[ |     |     |     |     |     |     |     |
+| --- | --- | ------- | --- | ------------ | --- | --- | --- | --- | --- | --- | --- |
+488
+| 489 |     |     | set ycor | 0.25 |     |     |     |     |     |     |     |
+| --- | --- | --- | -------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+]
+490
+| 491 |     | ]   |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+]
+| 492 |     |          |      |     |     |     |     |     | M   |     |     |
+| --- | --- | -------- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | set wave | wave | +   | 1   |     |     |     |     |     |     |
+493
+494 ]
+] C
+495
+| 496 | if  | any? turtles         |     | with | [location        | =   | 3][ |     |     |     |     |
+| --- | --- | -------------------- | --- | ---- | ---------------- | --- | --- | --- | --- | --- | --- |
+|     |     | set road-bike-closed |     |      | road-bike-closed |     | +   | 1   | M   |     |     |
+497
+]
+498
+| 499 | if  | any? turtles        |     | with[location |                 | = 5][ |     |     |     |     |     |
+| --- | --- | ------------------- | --- | ------------- | --------------- | ----- | --- | --- | --- | --- | --- |
+|     |     | set road-run-closed |     |               | road-run-closed |       | + 1 |     | i   |     |     |
+500
+H
+501 ]
+if any? turtles with [location = 3 or location = 4 or location = 5] [
+| 502 |     |                 |     |             |     |     |     | ：   |     |     |     |
+| --- | --- | --------------- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | set road-closed |     | road-closed |     | + 1 |     |     |     |     |     |
+503
+504 ]
+|     | ask | turtles | with | [location |     | = 5][ |     |     |     |     |     |
+| --- | --- | ------- | ---- | --------- | --- | ----- | --- | --- | --- | --- | --- |
+505
+bike-len号gth
+| 506 |     | facexy  | 2.5 +      | swim-length   |     | +   | +           | running-length     | ycor |     |     |
+| --- | --- | ------- | ---------- | ------------- | --- | --- | ----------- | ------------------ | ---- | --- | --- |
+| 507 |     | fd (10  | / running) |               |     |     |             |                    |      |     |     |
+|     |     | if(xcor | >= 2.5     | + swim-length |     | +   | bike-length | + running-length)[ |      |     |     |
+508
+众
+| 509 |     | set location |     | 6   |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | set ycor     | 0.5 |     |     |     |     |     |     |     |     |
+510
+]
+511
+| 512 | ]   |         |      |           | 公   |       |     |     |     |     |     |
+| --- | --- | ------- | ---- | --------- | --- | ----- | --- | --- | --- | --- | --- |
+|     | ask | turtles | with | [location |     | = 4][ |     |     |     |     |     |
+513
+514 facexy 2.5 + swim-length + bike-length + running-length ycor
+|     |     | fd (1 /   | t2)      |     |     |     |     |     |     |     |     |
+| --- | --- | --------- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 515 |     |           |          | 信   |     |     |     |     |     |     |     |
+|     |     | set shape | "person" |     |     |     |     |     |     |     |     |
+516
+| 517 |     | if(xcor    | >= 2.5  | + swim-length |     | +   | bike-length)[ |     |     |     |     |
+| --- | --- | ---------- | ------- | ------------- | --- | --- | ------------- | --- | --- | --- | --- |
+|     |     | set l      | ocation | 5             |     |     |               |     |     |     |     |
+| 518 |     | 微          |         |               |     |     |               |     |     |     |     |
+| 519 |     | if lanes?[ |         |               |     |     |               |     |     |     |     |
+|     |     | if(swim    | <       | target-swim)[ |     |     |               |     |     |     |     |
+520
+|     |     | set | ycor | 0.75 |     |     |     |     |     |     |     |
+| --- | --- | --- | ---- | ---- | --- | --- | --- | --- | --- | --- | --- |
+521
+| 522 |     | ]       |     |            |     |     |     |     |     |     |     |
+| --- | --- | ------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | if(swim | >   | low-swim)[ |     |     |     |     |     |     |     |
+523
+| 524 |     | set | ycor | 0.25 |     |     |     |     |     |     |     |
+| --- | --- | --- | ---- | ---- | --- | --- | --- | --- | --- | --- | --- |
+]
+525
+]
+526
+527 ]
+528
+529 ]
+| 530 | ask | turtles | with  | [location   |     | = 3][         |     |                |      |     |     |
+| --- | --- | ------- | ----- | ----------- | --- | ------------- | --- | -------------- | ---- | --- | --- |
+|     |     | facexy  | 2.5 + | swim-length |     | + bike-length | +   | running-length | ycor |     |     |
+531
+| 532 |     | fd (40    | / bike) |     |     |     |     |     |     |     |     |
+| --- | --- | --------- | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | set shape | "bike"  |     |     |     |     |     |     |     |     |
+533
+|     |     | if(xcor | >= 1.5 | + swim-length |     | +   | bike-length)[ |     |     |     |     |
+| --- | --- | ------- | ------ | ------------- | --- | --- | ------------- | --- | --- | --- | --- |
+534
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem |              | A: Swim, | Bike, | Run | Team | # 7054 |     |     | Page 43 | of 45 |
+| --- | ------- | ------------ | -------- | ----- | --- | ---- | ------ | --- | --- | ------- | ----- |
+| 535 |         | set location |          | 4     |     |      |        |     |     |         |       |
+|     |         | set ycor     | 0.5      |       |     |      |        |     |     |         |       |
+536
+537 ]
+538 ]
+|     | ask | turtles | with | [location | = 2][ |     |     |     |     |     |     |
+| --- | --- | ------- | ---- | --------- | ----- | --- | --- | --- | --- | --- | --- |
+539
+540 facexy 2.5 + swim-length + bike-length + running-length ycor
+|     |     | fd (1 / | t1) |     |     |     |     |     |     |     |     |
+| --- | --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+541
+|     |     | set shape | "person" |     |     |     |     |     |     |     |     |
+| --- | --- | --------- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+542
+| 543 |     | if(xcor      | >= 1.5 | + swim-length)[ |     |     |     |     |     |     |     |
+| --- | --- | ------------ | ------ | --------------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | set location |        | 3               |     |     |     |     |     |     |     |
+544
+| 545 |     | if lanes? | [    |               |     |     |     |     |     |     |     |
+| --- | --- | --------- | ---- | ------------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | if(swim   | <    | target-swim)[ |     |     |     |     |     |     |     |
+| 546 |     |           |      |               |     |     |     |     | M   |     |     |
+|     |     | set       | ycor | 0.75          |     |     |     |     |     |     |     |
+547
+| 548 |     | ]       |     |            |     |     |     |     |     |     |     |
+| --- | --- | ------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | if(swim | >   | low-swim)[ |     |     |     |     | C   |     |     |
+549
+| 550 |     | set | ycor | 0.25 |     |     |     |     |     |     |     |
+| --- | --- | --- | ---- | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | ]   |      |      |     |     |     | M   |     |     |     |
+551
+]
+552
+553 ]
+|     | ]   |     |     |     |     |     |     | i   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+554
+H
+| 555 | ask | turtles | with    | [location   | = 1][         |     |                  |      |     |     |     |
+| --- | --- | ------- | ------- | ----------- | ------------- | --- | ---------------- | ---- | --- | --- | --- |
+|     |     | facexy  | 2.5 +   | swim-length | + bike-length |     | + running-length | ycor |     |     |     |
+| 556 |     |         |         |             |               |     | ：                |      |     |     |     |
+|     |     | fd (1.5 | / swim) |             |               |     |                  |      |     |     |     |
+557
+| 558 |     | set shape | "fish" |                 |     |     |     |     |     |     |     |
+| --- | --- | --------- | ------ | --------------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | if(xcor   | >= 0.5 | + swim-length)[ |     |     |     |     |     |     |     |
+559
+号
+| 560 |     | set location |     | 2   |     |     |     |     |     |     |     |
+| --- | --- | ------------ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 561 |     | set ycor     | 0.5 |     |     |     |     |     |     |     |     |
+]
+562
+众
+563 ]
+|     | ask | turtles | with | [location | = 1][ |     |     |     |     |     |     |
+| --- | --- | ------- | ---- | --------- | ----- | --- | --- | --- | --- | --- | --- |
+564
+|     |     | let x xcor |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+565
+| 566 |     | let y ycor |        | 公   |     |     |     |     |     |     |     |
+| --- | --- | ---------- | ------ | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | let z 1.5  | / swim |     |     |     |     |     |     |     |     |
+567
+568 set around-me count other turtles with[ycor = y and abs(xcor - x) < abs(z - (1.5 /
+|     |     | swim)) | and信location |     | = 1] |     |     |     |     |     |     |
+| --- | --- | ------ | ------------ | --- | ---- | --- | --- | --- | --- | --- | --- |
+set passed passed + (myfunc around-me) * count other turtles with [ycor = y and xcor
+569
+|     |     | > x              | and xcor | < x + | z - (1.5 | / swim) | and location | = 1] |     |     |     |
+| --- | --- | ---------------- | -------- | ----- | -------- | ------- | ------------ | ---- | --- | --- | --- |
+|     |     | if (gr oup-con?) |          | [     |          |         |              |      |     |     |     |
+| 570 |     | 微                |          |       |          |         |              |      |     |     |     |
+571 set my-pass my-pass + (myfunc around-me) * count other turtles with [(ycor = y and
+xcor > x and xcor < x + z - (1.5 / swim) and location = 1) or (ycor = y and xcor
+|     |     |     | < x and | x < xcor | - z + (1.5 | /   | swim) and location | = 1)] |     |     |     |
+| --- | --- | --- | ------- | -------- | ---------- | --- | ------------------ | ----- | --- | --- | --- |
+572 ]
+]
+573
+| 574 | ask | turtles    | with | [location | = 3][ |     |     |     |     |     |     |
+| --- | --- | ---------- | ---- | --------- | ----- | --- | --- | --- | --- | --- | --- |
+|     |     | let x xcor |      |           |       |     |     |     |     |     |     |
+575
+|     |     | let y ycor |     |     |     |     |     |     |     |     |     |
+| --- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+576
+| 577 |     | let z 40 | / bike |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | ------ | --- | --- | --- | --- | --- | --- | --- | --- |
+set around-me count other turtles with[ycor = y and abs(xcor - x) < abs(z - (40 /
+578
+|     |     | bike)) | and | location | = 3] |     |     |     |     |     |     |
+| --- | --- | ------ | --- | -------- | ---- | --- | --- | --- | --- | --- | --- |
+579 set passed passed + (myfunc around-me) * count other turtles with [ycor = y and xcor
+|     |     | > x             | and xcor | < x + | z - (40 | / bike) | and location | = 3] |     |     |     |
+| --- | --- | --------------- | -------- | ----- | ------- | ------- | ------------ | ---- | --- | --- | --- |
+| 580 |     | if (group-con?) |          | [     |         |         |              |      |     |     |     |
+set my-pass my-pass + (myfunc around-me) * count other turtles with [(ycor = y and
+581
+xcor > x and xcor < x + z - (40 / bike) and location = 3) or (ycor = y and xcor
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+|     | Problem |     | A: Swim, | Bike,    | Run   | Team        | # 7054 |          |       | Page 44 | of 45 |
+| --- | ------- | --- | -------- | -------- | ----- | ----------- | ------ | -------- | ----- | ------- | ----- |
+|     |         | <   | x and    | x < xcor | - z + | (40 / bike) | and    | location | = 3)] |         |       |
+]
+582
+583 ]
+| 584 | ask | turtles    | with | [location | = 5][ |     |     |     |     |     |     |
+| --- | --- | ---------- | ---- | --------- | ----- | --- | --- | --- | --- | --- | --- |
+|     |     | let x xcor |      |           |       |     |     |     |     |     |     |
+585
+| 586 |     | let y ycor |           |     |     |     |     |     |     |     |     |
+| --- | --- | ---------- | --------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | let z 10   | / running |     |     |     |     |     |     |     |     |
+587
+set around-me count other turtles with[ycor = y and abs(xcor - x) < abs(z - (10 /
+588
+|     |     | running)) |     | and location | =   | 5]  |     |     |     |     |     |
+| --- | --- | --------- | --- | ------------ | --- | --- | --- | --- | --- | --- | --- |
+set passed passed + (myfunc around-me) * count other turtles with [ycor = y and xcor
+589
+|     |     | > x             | and | xcor < x | + z - (10 | / running) | and | location | = 5] |     |     |
+| --- | --- | --------------- | --- | -------- | --------- | ---------- | --- | -------- | ---- | --- | --- |
+|     |     | if (group-con?) |     | [        |           |            |     |          |      |     |     |
+| 590 |     |                 |     |          |           |            |     |          | M    |     |     |
+set my-pass my-pass + (myfunc around-me) * count other turtles with [(ycor = y and
+591
+xcor > x and xcor < x + z - (10 / running) and location = 5) or (ycor = y and
+xcor < x and x < xcor - z + (10 / running) and location =C5)]
+592 ]
+|     | ]   |     |     |     |     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+593
+tick
+594
+595 end
+i
+596
+H
+| 597 | to-report |     | interpret | [hi] |     |     |     |     |     |     |     |
+| --- | --------- | --- | --------- | ---- | --- | --- | --- | --- | --- | --- | --- |
+report floor (((read-from-string (substring hi 0 1)) * 60 * 60 + (read-from-string (
+| 598 |     |     |     |     |     |     | ：   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+substring hi 2 4)) * 60 + (read-from-string substring hi 5 7)) / 20); 20 seconds
+|     |     | per tick |     |     |     |     |     |     |     |     |     |
+| --- | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+end
+599
+号
+| 600 | to-report |     | myfunc  | [around] |     |     |     |     |     |     |     |
+| --- | --------- | --- | ------- | -------- | --- | --- | --- | --- | --- | --- | --- |
+| 601 | report    | ln  | (around | + 1)     |     |     |     |     |     |     |     |
+end
+602
+众
+603
+|     | to-report |     | congestion | [psd] |     |     |     |     |     |     |     |
+| --- | --------- | --- | ---------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+604
+|     | ifelse | (ticks |     | != 0) [ | report psd | / ticks | ] [ report |     | 0 ] |     |     |
+| --- | ------ | ------ | --- | ------- | ---------- | ------- | ---------- | --- | --- | --- | --- |
+605
+| 606 | end |     |     |     | 公   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+607
+| 608 | to-report |      | group-congestion |     | [number]    |      |            |     |          |     |     |
+| --- | --------- | ---- | ---------------- | --- | ----------- | ---- | ---------- | --- | -------- | --- | --- |
+|     | report    | mean | [my信-pass]       |     | of (turtles | with | [new-order | =   | number]) |     |     |
+609
+end
+610
+微
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team # 7054 Page 45 of 45
+References
+[1] Garrett, WilliamE., andDonaldT.Kirkendall.Exercise and Sport Science.Philadelphia:
+Lippincott Williams & Wilkins, 2000. Print.
+[2] Wilenski, Uri. NetLogo. Center for Connected Learning, n.d. Web. 13 Nov. 2016. (https:
+//ccl.northwestern.edu/netlogo/).
+[3] B, Hanley. ”Pacing, Packing and Sex-based Differences in Olympic and IAAF World
+Championship Marathons.” J Sports Sci. 34 (2016): 1675-681. Pubmed.gov. Web. 13
+Nov. 2016.
+M
+[4] ”Triathlon.” Rio 2016. International Olympic Committee, Web. 12 Nov. 2016. (https:
+//www.rio2016.com/en/triathlon). C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

@@ -1,0 +1,845 @@
+Summary Sheet
+Train stations have always been a hub for commuters, but this hub becomes a nightmare once
+congestion prevents people from leaving the station and getting to work. In certain train stations, the
+placement and size of staircases is often a limiting factor that prevents the continuous flow of movement
+from the train platform to the street level exit. Our models seek to minimize the time it takes to leave the
+train, move across the platform, and go up the stairs based on the given variables: platform length (p),
+number of stairs (q), train car length (d), and the number of train cars (n). Each train is at least 10 cars long,
+with each car having three seats on one side and two on the other. The current staircase can only hold two
+columns of people.
+In approaching this problem, we focused on the overall time it takes to leave the station. This time
+was broken into three components: the time taken to unload a train and walk to the stairs, the time spent in
+M
+the queue waiting to walk up the stairs, and the time needed to ascend the stairs. Our goal was to minimize
+the time it takes to clear the train station, meaning the time it takes the last passenger to reach street level.
+C
+We created both a mathematical and a computational model to accomplish this goal. Our
+mathematical model used flow rate differential equations and Euler’s method estimates in an Excel
+M
+spreadsheet to determine how long it takes to get through the stairway waiting queue. These time values
+incorporate the time to unload a train, walk to the stairs, and walk up the stairs. The computational model
+was a NetLogo program that modelled the time taken to completely emipty a train station. For almost all of
+H
+our calculations, the mathematically and computationally calculated times to empty the station were similar
+or equal.
+：
+Using these tools, we then modified the values of our variables to adjust the timeframe. Modifying
+the variables represents changing the conditions in the station platform. As we initially expected, the width of
+the stairwell is the most significant factor that im号pacts the time; allowing at least 6 people to walk up the
+stairs at one time halves the amount of time it takes to clear the train station. The placement of stairs,
+number of staircases, and even the arrangement of train cars does not have as great an influence.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 1
+To the Director of Transportation,
+We understand that in your train station, the stairways are often congested during the
+busiest times by the amount of passengers trying to reach the exit. Thus, we propose to you a
+model to help improve exiting the station. In this model, we aimed to minimize the amount of
+time it takes to unload from a train, ascend the stairs, and exit to the street. We used a
+mathematical equation and a computer program to simulate this train station. Using the
+optimal model of a train with 600 passengers (10 cars of 12 rows), we used these tools to
+help minimize the time to clear out the train station. Our models suggest that the best way to
+improve this train station is to increase the width of the stairwell from 2 columns to 6 columns.
+M
+This decreases the amount of time it takes for all passengers to leave the station by
+approximately one­half.
+C
+Adding extra stairwells, so that it triples the rate at which people leave the train
+platform would improve the time as well, but we believe this is nMot cost effective. After
+conducting a cost analysis, we found that widening your stairwell can save time for each
+unloading cycle, allowing for more train cycles per hour and thus more customers served.
+i
+Overall, the increased efficiency suggests an increase inH revenue of about 76­102%.
+Therefore, our model not only improves customer satisfaction, but it also significantly
+：
+increases the amount of money earned. We highly suggest you consider adapting our model
+for this train station.
+号 Sincerely,
+Team 5086
+众
+P.S. As a side note, with the current amount of people the train station has crowding around
+the staircases, it could po公ssibly become a hazard, especially in the case of a fire. Thus action
+needs to be taken to improve this train station soon.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 2
+HiMCM 2014: Problem A Solution Paper
+Introduction
+Background
+A problem that many train stations face is congestion caused by the influx of passengers
+when a train unloads. Because most train stations have multiple floors, stairways often
+become chokepoints as passengers walk to the ground floor. In a certain central train station,
+M
+train unloading is causing significant overcrowding and time­wasting. The station wishes to
+improve passenger exiting to optimize station efficiency. In this paper, we investigate ways to
+C
+minimize the time needed to reach street level in order to exit the station. The models in this
+paper are relevant, with reasonable assumptions, and can appliMed to many different station
+congestion situations.
+i
+Restatement of Problem H
+：
+The essential problem that needs to be answered is how the station can minimize the time
+needed for passengers to reach an exit at street level. The metric that we used to measure
+minimal time is the time it takes for all号 of the train’s passengers to exit the train station.
+We first wish to determine a model that can minimize the time for a full train’s occupants to
+exit and the time for two full trains’ passengers to exit. However, if these results are still not
+众
+optimal, we are given the opportunity to determine where the stairways can be placed.
+Assumptions and Just公ifications
+Assumption 1: There are not people standing in the car; the maximum number is filled when
+信
+the seats are filled.
+Justification: Since our aim to optimize the average train’s unloading time, we assume that
+unlike a su微bway, there will be nobody standing up.
+Assumption 2: All other conditions are normal. For example, the stairs are typical, the trains
+are functional and timely, people are acting orderly, and there are no extenuating
+circumstances.
+Justification: The goal of our model is to model the everyday situation in the train station, so
+we will assume all functions are normal. This is also a simplifying assumption for our model.
+Assumption 3: The walking speed of these passengers is 1.4 m/s.
+Justification: Though there are definitely variations between people, most people, especially
+walking with a crowd, walk at about the same average speed of 1.4 m/s [1]. This is w in our
+model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 3
+Assumption 4: No passengers are coming in to board the train.
+Justification: This is a commuter train into the city, hence people will be exiting the train
+station going to work, not boarding the train to leave the city.
+Assumption 5: Only one person can exit the car at a time.
+Justification: Generally, the doors of a train are fit for one person, and it is of the best
+interest, in terms of safety and congestion, of the passengers to get off one at a time.
+Assumption 6: Trains will generally pull up to the same point.
+M
+Justification: We consider it in the best interest of the station to have the trains pull up in
+about the same place, and most stations have dictated starting and stopping points for trains.
+C
+Thus, to better represent the average train and to simplify our model, we assumed that the
+trains will arrive to the same spot. M
+Assumption 7: It does not matter what side the staircase is facing when it is not on the two
+i
+edges of the station. H
+Justification: The difference is very small even if a staircase is facing a certain side. In
+：
+addition, this helps us simplify our model by assuming both sides have the same chance to
+access the staircase.
+号
+Assumption 8: For multiple stairwells, the passengers will go the closest stairwell.
+Justification: We assumed that passengers will choose to walk the least distance and go to
+众
+the closest stairwell. We believe that this is in their best interest.
+Assumption 9: The cars 公are completely adjoining. Thus, the door at the end of one car is in
+about the same position as the door in the beginning of the next car.
+Justification: For simplicity, we will consider that all of the cars are joined in this way, so the
+信
+distance between cars is not taken into account.
+Assumpti微on 10: Each row in the train car is 1 meter wide.
+Justification: This is our approximation of the length of the seat and the legroom. This also
+simplifies our model by allowing us to assume that the length of the car (d) is the same as
+number of rows in the car.
+Assumption 11: Train cars have the same length and the same amount of people inside. The
+two trains that pull up to the stations are the same length.
+Justification: This is a simplifying assumption so that we do not need to take into account
+variance within our variables. This is also generally true for fully occupied trains belonging to
+the same station.
+Assumption 12: The amount of time that it takes for passengers to arrange their belongings
+and begin leaving the train cars is 10 seconds (this is t in our model). The amount of time
+e
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 4
+that it takes for one row of passengers to enter the aisle in a train car is 5 seconds, one
+second for each person (this is t in our model). The speed that passengers walk up stairs is
+ar
+1 stair per second (this is S in our model) [2]. The difference between the length of the
+platform and the length of the train is 17 meters (this is l in our model). The number of steps in
+a staircase is 40.
+Justification: These are simplifying assumptions based on what is reasonable in the real
+world.
+Part 1: Optimizing the Single­Train Standard Layout
+M
+Given a standard train station with a platform of length p, and one staircase with q steps, our
+goal was to minimize the time for passengers to reach the top of the stCaircase to exit the
+complex. We began by optimizing the dimensions of the train by changing n, the number of
+M
+cars in each train and d, the size of each of these cars (see Figure 1). We kept the number of
+passengers, given by the expression 5*n*d, the same and changed the values of n and d to
+find the optimal solution. A standard train with 600 passengersi was tested using (n,d) pairs of
+H
+(8,15),(10,12),(12,10) and (15,8). Two complementary models were developed to describe the
+situation: mathematical and computational. ：
+号
+众
+公
+信
+微
+Figure 1: A Diagram of the Train Station
+Mathematical Model
+The efficiency of any given train setup is defined as the amount of time required for all
+passengers to leave the platform. This is best describes the situation because train schedules
+depend on the platform being as clear as possible. In order to minimize the time it takes the
+passengers to climb the stairs to the exit, we decided to split the time calculations into multiple
+steps. When the system is considered as a compartment model, any given passenger
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 5
+assumes one of 4 conditions at any time, t: (1) exiting the train car, (2) approaching the
+staircase (3) walking up the staircase, and (4) having left the train station.
+Four variables are essential to modeling the train station: the length of the platform (p), the
+length of the car (d), the number of stairs (q), and the number of cars (n). We also defined the
+variable l, which is the length difference between the platform (p) and the length of the train (n
+* d). This is the extra distance passengers need to walk to reach the stairwell. First, we
+decided to calculate the time needed to unload a train car. The total time for the last person
+to unload from the car (t ) is dependent on the time to gather one’s belongings (t ), the time
+c e
+for the aisle to be clear (after all rows on this passenger’s side have passed through) (t * d),
+Mar 2
+and the time to walk across half of the train car to the nearest exit, which is dependent on
+walking speed (w) and the length of the car (d).
+C
+M
+(1)
+To find the rate of people leaving the car, we divided the number of people (5d), by the
+i
+amount of time to empty the car after gathering one’s belongings. The total time to empty the
+H
+car is the difference between the time it takes the first passenger to leave and the last.
+：
+号
+众
+公
+信
+微 Figure 2: Diagram of a Train Car
+This yields a differential equation for the rate of change in the population of the car, c. dc is
+dt
+negative, as the population is always decreasing.
+(2)
+We then substituted Equation 1 for t in order to determine the rate that people exited the
+c
+cars. However, since there are two doors per car, the rate of people exiting a door is half the
+rate of exiting a car.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 6
+We first calculated the rate of unloading through door c , the door closest to the stairwell. This
+1
+rate is equal to the rate at which people are arriving at the stairwell. The bounds for this
+differential equation is when time t is greater than the time it takes for the first person to arrive
+at the stairwell (first person gets up, and walks to the stairwell) to the time it takes for the last
+person from the same train car to reach the stairwell.
+M
+C
+M
+We repeated this process for door c , which we said was the length of the car, d, away
+2 i
+further than door c was. In addition, c and c based on HAssumption 9, give the same
+1 2 3
+equation.
+：
+号
+众
+公
+The general equation for door number N (with N=1 being the door closest to the stairwell)
+yielded:
+信
+微
+Once these passengers leave the first compartments, c , they begin their approach to the
+1−N
+stairwell. Q represents the number of passengers in this compartment, or the queue. Using
+the previous equations, we calculated dQ as a function of the rate of passengers added from
+dt
+each train car. In addition, Q decreases at a rate of at most 2 people per second, because 2
+people can walk up the stairs at one time, and we assumed they walk at a pace of 1 step per
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 7
+second. Therefore, 2 passengers leave the queue and enter the staircase per second.dQis
+dt
+composed of a series of piecewise equations because the passengers’ approach to the
+staircase is staggered based on the door from which they came. For example, for the first bit
+of time, door c has people exiting c and joining Q to walk up the stairs. Passengers from
+1 1
+door c and c then join Q as well. However, at some point, door c stops contributing to Q,
+2 3 1
+since no more passengers are exiting c , but passengers are still coming and joining Q from
+1
+c , c ... c . The solutions of these piecewise differential equations for the (n,d) pairs (8,15)
+2 3 n
+and (10,12) can be found in (Appendix A).
+Excel Approximation of the Differential Equations M
+Because the differential equations could not easily be adapted to chanCging parameters, we
+chose to use Microsoft Excel to approximate solutions for Q. This Excel data spreadsheet was
+M
+also programmed so that values of the numbers of cars (n), length of car (d), number of steps
+(q), stairway speed (S), and walking speed (w), the time it takes to gather belongings on a
+train (t ), and the time it takes to walk in the aisle of the train (it ) could be easily modified.
+e Har
+Below is a table of the Excel document’s results for the (n,d) pairs (8,15), (10,12), (12,10) and
+(15,8) and the differential equation results for the： (n,d) pairs (8,15) and (10,12).
+号
+Number of Numbers of Excel Approximation for the Differential Equations
+cars on train rows of seats time needed for last Solution for the time needed
+众
+on the train passenger to leave for last passenger to leave
+(n) (d) (seconds) (seconds)
+公
+8 15 370 368
+信
+10 12 369 374
+Table 1: Excel Approximation vs Differential Equations
+微
+Because the Excel approximation was incredibly close to the real solution of the differential
+equations, we chose to stop solving the differential equations and use the excel
+approximation from this point forward.
+Computational Model
+To account for the fact that our mathematical equations simplify the reality of a train station,
+we next analyzed the situation from an agent­based perspective. By using a computational
+model of this train station using the modeling environment NetLogo, we can account for the
+variation between individual agents that is not captured by averages. The model mimics the
+compartment­based calculations, but also allows for a range of variation in speed and
+direction of individual passengers. This stochastic approach allows us to evaluate the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 8
+accuracy of our deterministic mathematical model. Furthermore, this computational model
+allows us to easily visualize the effects of changing w, t , n, d, l, t , and q. However due to
+ar e
+the probabilistic nature of the computational model, there is some slight variation in the output
+results every time we run the NetLogo program that could not be adjusted for.
+In order to create our computational model, we first considered the simplest case, which was
+the arrival of only one train to the station. For this case, people exit the train, moved toward
+one of the columns of the staircase at a speed of w, and waited to get onto the staircase,
+which had a maximum capacity of one person for each of the q steps. In order to complement
+our mathematical model, this model was used to determine the number of pMeople in the
+queue and the number of people remaining in the system for every one second time interval.
+We iterated in one second intervals to determine the behavior of the system. The flow chart
+C
+below summarizes the algorithm used to model the system (Figure 3)
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 9
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 3: A flowchart of the computational model’s logic
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 10
+M
+C
+M
+i
+H
+Figure 4: A Sample Screen fro：m the Computational Model
+Results
+号
+Using both our mathematical equations and our computational program, we modeled the time
+needed for a full train of passeng众ers to exit the train station based upon the values of n and d.
+Below is a table of our results and a graph of the number of passengers over time for n=10
+and d=12.
+公
+Time Needed to Clear Train Station after One Full Train Arrives
+信
+Number of Numbers of rows Excel Approximation for NetLogo data for the
+cars on train of seats on the the time needed for last time needed for last
+train passenger to leave passenger to leave
+微
+(n) (seconds) (seconds)
+(d)
+8 15 370 370
+10 12 369 367
+12 10 368 368
+15 8 368 366
+Table 2: Both of the models’ result times for various values of n and d
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 11
+  M
+Figure 5: Number of passengers in the queue and staircase over time, collected on NetLogo
+|     |     |     |     |     | C   |
+| --- | --- | --- | --- | --- | --- |
+As you can see from the similar time values, the time needed to clear a train station is almost
+M
+identical when comparing our differential equation estimations in Excel to the NetLogo model
+program. We concluded that changing the values of n and d does little to change the time
+needed for last passenger to leave the station. As a result, wei suggest that train cars be
+H
+| made in the most convenient and realistic size, n= |     |     | 10 and d= | 12.  |     |
+| -------------------------------------------------- | --- | --- | --------- | ---- | --- |
+|                                                    |     |     | ：         |      |     |
+Part 2: Two Full Trains
+The commuter train platform has tracks on both adjacent sides. The worse case scenario for
+号
+the train station is if both trains, fully occupied, arrive and unload in the station at the same
+time. We optimized the values of n and d for this situation. To model this situation, we had to
+众
+modify our mathematical and computational models slightly.
+
+To modify the Excel approximation of the differential equations, we doubled the initial values
+公
+dc  dc  dc
+| of c , c | , c , etc. and doubled the values for  |     | 1, 2, 3, etc.  |     |     |
+| -------- | -------------------------------------- | --- | -------------- | --- | --- |
+| 1        | 2 3                                    |     | dt dt dt       |     |     |
+
+信
+The computational NetLogo model was simple to modify; we merely added a second train to
+the station, with both trains unloading at once. The time it takes to clear the train station when
+two trains 微arrive is significantly longer, as expected. (Table 3)
+
+Time Needed to Clear Train Station after Two Full Trains Arrive
+Number of cars on  Numbers of rows of  Excel data for the  NetLogo data for the
+train   seats on the train   time needed for last  time needed for last
+|     |      |      | passenger to leave  |            | passenger to leave  |
+| --- | ---- | ---- | ------------------- | ---------- | ------------------- |
+|     | (n)  | (d)  |                     | (seconds)  | (seconds)           |
+|     | 8    | 15   |                     | 666        | 666                 |
+|     | 10   | 12   |                     | 667        | 664                 |
+|     | 12   | 10   |                     | 666        | 664                 |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 12
+15 8 667 664
+Table 3: Both of the models’ result times for various values of n and d
+But once again, it appears that a change in the values of n and d have little effect on the time
+it takes for the last passenger to leave the platform. Once again, we suggest that the values of
+n and d be set in the most practical and reasonable manner possible. We suggest that n be
+set to 10 and d be set to 12.
+Part 3: Modifying the Staircase
+M
+Placement of the Staircase
+C
+One possible way to increase the efficiency of the train station isM to place the staircase in a
+different location. Currently, the staircase is placed at one end of the platform, meaning that
+passengers in the furthest car have to walk a longer distance than passengers in the first car.
+i
+We believed that this walking time discrepancy was not oHptimal for the setup of the staircase.
+：
+In Figure 6, we displayed possible locations of stairwells. We defined x as the distance of a
+train car d. Hence the staircase is currently positioned at x = 0. However, you can see that if
+we placed the staircase at x = 2, then the号 stairs would be at the end of train car 2.
+众
+公
+信
+微
+Figure 6: A Diagram explaining Stairwell Placement
+We found the the time needed for last passenger to leave the platform for various values of x
+using both of our models and recorded them in the table below. We only calculated results for
+values of x between 0 and 5 because the system is symmetrical (the effect of stairs at x= 0 is
+the same as the result of x= 10).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 13
+Changing Staircase Placement
+Location of stairwell in terms  Excel data for the time  NetLogo data for the time
+of number of train cars  needed for last passenger to  needed for last passenger to
+|     | leave (seconds)  |     | leave (seconds)  |
+| --- | ---------------- | --- | ---------------- |
+ (x)
+| 0    |     | 356  | 367   |
+| ---- | --- | ---- | ----- |
+| 0.5  |     | 355  | 366   |
+| 1    |     | 352  | M368  |
+| 1.5  |     | 355  | 366   |
+C
+| 2   |     | 352  | 365  |
+| --- | --- | ---- | ---- |
+M
+| 2.5  |     | 355  | 366  |
+| ---- | --- | ---- | ---- |
+i
+| 3   |     | 352  | 364  |
+| --- | --- | ---- | ---- |
+H
+| 3.5  |     | 355：  | 366  |
+| ---- | --- | ----- | ---- |
+| 4    |     | 352   | 362  |
+号
+| 4.5  |       | 355  | 366  |
+| ---- | ----- | ---- | ---- |
+| 5    | 众352  |      | 362  |
+Table 4: The times needed to clear the train station based on n = 10, and d = 12 and various values of x
+
+公
+There is a clear pattern in the data. According to both models, the best position for the
+staircase occurs when x equals either 4 or 5. Conceptually, this makes sense because the
+staircase is in the 信middle of the train and reduces the maximum distance that a passenger
+has to walk. Unfortunately, this value of x = 4 or 5 is not universal, because a train can vary in
+length; n could equal 10 cars, or n could equal 20 cars. Therefore, we cannot make a
+微
+sweeping generalization that the stairwell placement of x equals 4 or 5 is optimal; we can only
+say that the best place to put a staircase would be halfway down the length of a train.
+
+Part 4: Adding more Stairwells
+
+After determining that changing the location of the stairwell is not useful because it depends
+on the length of the train, we wanted to see if adding multiple stairwells would be useful as
+well. This portion of our model was conducted entirely in Excel due to limitations in our
+NetLogo computational program. The Excel program was modified under the assumption that
+people will go toward the stairwell closest to them.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 14
+We tested whether implementing 2 or even 3 stairwells improves the time it takes for the train
+station to clear. Once again, placement of our stairwells were dependent on x, which was
+relative to the length of a train car d.
+First we placed two and three stairwells side­by­side at the end of the platform near the front
+car of the train, this is analogous to doubling and tripling the width of the first stairwell. We
+found that the time it takes is 223 seconds and 183 seconds respectively to clear the train
+station. This is equal to the time it takes if you were to widen one stairwell from 2 columns to 4
+or 6 columns (shown in Part 5).
+M
+We then placed stairwells in different locations. The location of 2 stairwells that minimizes the
+time needed to empty the train station is one at the very front of the platform, and one 10x
+C
+away. (This time value is 221 seconds). Any other arrangement of two staircases was no
+shorter than 223 seconds, meaning that you might as well widenM the staircase rather than add
+more staircases. And once again, this placement varies with the length of a train car. So if a
+train is longer than n = 10, then the stairs would need to be in a different location, which is
+i
+impossible after stairs have already been built. The locatHion of 3 stairwells that minimizes the
+time is actually when all three are at the end of the platform near the front car of the train. All
+：
+other arrangements have an average clearing time of 250 seconds. In light of this, we further
+analyze simply adjusting the parameter k, the number of columns in each staircase.
+号
+Part 5: Changing the Width of the Staircase
+众
+From our NetLogo program, differential equations, and from common sense, you can see that
+one the main problems with this train station is that people crowd around the staircase, trying
+公
+to exit the platform. However, only 2 people can go up the staircase at once, meaning that a
+queue builds up where people wait to walk up the stairs. Time is lost just waiting for the stairs.
+Hence one way to信 solve this problem is to widen the staircase and allow more people to walk
+up at once. If k people can walk up the staircase at once, then the width of the staircase is
+also defined as k.
+微
+By modifying the width of our stairwell in NetLogo, we can easily account for this change.
+Modifying our Excel model was equally simple. In the original dQ, Q decreases at a rate of 2S
+dt
+because there are only 2 columns of people who can walk up the stairs at once. But with an
+increasing width k, Q decreases at a maximum rate of ks.
+We simplified this issue and assumed that only one train arrives at a time. We tested different
+k values in both our Excel spreadsheet and our computational model, with the set parameters
+of walking speed (w) = 1.4 m/s, stair­climbing speed (s) = 1 m/s, the number of cars (n) = 10,
+the length of the car (d) = 12, and the number of steps on the stairs (q) = 40. In both models,
+we found that after k = 6, the time it takes to clear the train station does not change. At k = 6,
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 15
+the estimated time is 183 seconds in Excel and 209 seconds in NetLogo. Yet until k = 6, there
+is a significant decrease in time for every increase in k (Figure 7).
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Figure 7: These are the times needed to clear the train station based on n = 10, and d = 12. The k value is the new
+width of t微he staircase. The number of columns of people that can walk up the staircase is equal to the width k.
+From the above graphs we can conclude that, according to both models, the minimum time to
+empty the platform occurs at values of k= 6,7 and 8. To differentiate between these values,
+we must look at additional factors that influence the train station designer’s decision such as
+the cost of additional columns and the revenue lost from high wait times. While every column
+carries construction costs, it also increases the number of train cycles that can be scheduled
+per hour because passengers are exiting more quickly. Using an average ticket cost of
+approximately $30.00 [3] and cost per column added of $4,000.00 [4]. From this data, we
+created the following cost benefit analysis chart.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 16
+k  One Time Cost  1­Year Percent Change in  1­Year Percent Change in
+|     |             | Revenue Excel  |     | Revenue NetLogo  |     |
+| --- | ----------- | -------------- | --- | ---------------- | --- |
+| 2   | $0.00       | 0.00%          |     | 0.00%            |     |
+| 3   | $4,000.00   | 36.67%         |     | 32.97%           |     |
+| 4   | $8,000.00   | 65.47%         |     | 60.96%           |     |
+| 5   | $12,000.00  | 89.23%         |     | 73.11%           |     |
+M
+| 6   | $16,000.00  | 101.64%  |     | 75.60%  |     |
+| --- | ----------- | -------- | --- | ------- | --- |
+C
+| 7   | $20,000.00  | 101.64%  |     | 75.59%  |     |
+| --- | ----------- | -------- | --- | ------- | --- |
+M
+| 8   | $24,000.00  | 101.63%  |     | 75.59%  |     |
+| --- | ----------- | -------- | --- | ------- | --- |
+Table 5: This table compares the 1­Year Percent Change in Revenue for both models and various values of k
+i
+  H
+From this table, we can conclude that the most cost effective value of k is 6 columns. Thus,
+：
+we suggest that 4 stairwells be added to reach maximum cost­effectiveness.
+
+| Other Extensions  |     | 号   |     |     |     |
+| ----------------- | --- | --- | --- | --- | --- |
+
+| Escalators  |     | 众   |     |     |     |
+| ----------- | --- | --- | --- | --- | --- |
+
+Another way that the train stations can reduce the blockage in front of the steps is with the
+公
+implementation of escalators. Because escalators move faster than the average person can,
+the escalator can move people significantly faster. To model this we changed our value for S,
+the speed at which passengers climb stairs per second to account for the speed of the
+信
+escalator (S=1.3 m/s) [5]. The results are depicted in the table below.
+
+微
+Escalators?  Excel data for the time  NetLogo data for the time
+|      |                                                                | needed for last passenger to  |      | needed for last passenger to  |      |
+| ---- | -------------------------------------------------------------- | ----------------------------- | ---- | ----------------------------- | ---- |
+|      |                                                                | leave (seconds)               |      | leave (seconds)               |      |
+| No   |                                                                |                               | 369  |                               | 367  |
+| Yes  |                                                                |                               | 199  |                               | 192  |
+|      | Table 6: Escalators vs Stairs data for both models using n=10, |                               |      | d=12, and k=2                 |      |
+
+From this table, we can conclude that an escalator is significantly faster than the stairs. We
+suggest that the stairs should be replaced with escalators.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 17
+Sensitivity Analysis
+To test how sensitive our results are to changes in the inputs, we can change our
+independent variables and see how much the resulting time is affected. We changed one
+variable by a certain percent with the rest remaining constant. Below is a chart showing tests
+for n, d and S.
+Independent Variable and Percent Change in the Percent Change in the
+Percent Change Resulting Time Excel Resulting Time Netlogo
+M
++75% n +62.2% +56.25%
+C
++75% d +61.5% +61.6%
+M
++80% S ­46% ­47.7%
+Table 7: This is Sensitivity Analysis for the independent variables n, d, and S
+i
+H
+The results show that the system is sensitive to changes in n, and d, and less sensitive to S.
+Furthermore, all of our results suggest that there： is little variation between our
+compartment­based and agent­based models. Thus, we conclude that our model is not
+sensitive to the virtually random variations in walking speed and direction for passengers.
+号
+Strengths and Weaknesses
+众
+Strengths
+公
+Our model is easily adaptable to changes in different variables: Our model can represent
+many different situations by simply changing the variables, such as walking speed, length of
+信
+platform, stair­climbing speed. Thus, it is easily applicable.
+The two p微arts of our model confirm each other: Both our computational and mathematical
+models give similar values, which allows relative confidence in the accuracy of both of our
+models.
+Our model can account for some randomness: Due to the computational model’s usage of
+the random movement of agents along with given values, our model is relatively realistic. In
+addition, randomness can be easily programmed into our NetLogo model, allowing us to more
+accurately represent a real world situation. Specifically, our NetLogo model incorporates
+individuals’ variation from the average walking speed and accounts for the decrease in speed
+for passengers when walking in a crowd.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 18
+Weaknesses
+Our model runs slower with high amounts of passengers: This is especially true for our
+computational model. High numbers of agents in our computational model slows the program
+down considerably. In addition, the excel sheet used to approximate our values from our
+differential equation becomes very lengthy with large numbers of passengers. This impedes
+our ability to run large numbers of trials for more robust analysis.
+Our model lacks robustness to extreme situations: For example, if there were to be an
+M
+extremely slow or extremely fast person that disrupts the flow of traffic, our model would not
+be able to take that into account. In addition, our model would not take extenuating
+C
+circumstances, like stair breakdown, into account well.
+M
+Our model is based on estimated values: Our values are based on the Excel
+approximation of the solutions of our differential equations. Though the approximations were
+i
+relatively accurate when we compared a few to the actuaHl solutions of the differential
+equations, they are still not completely accurate.
+：
+Our NetLogo model is unable to increase the number of stairwells: Our NetLogo
+program cannot account for increased nu号mber of stairways due to programming limitations.
+This means that we must rely on the Excel spreadsheet and differential equations
+mathematical model to test the timeframe needed to clear the train station.
+众
+Conclusion
+公
+Using both of our models, we determined and minimized the time it took for the last person to
+exit the station. W信e determined that with our set capacity of 600 passengers, the best train
+dimensions to have was a train with 10 cars each with a length of 12 meters, in our case 12
+rows. This is true for both one and two full trains pulling up to the station. In addition, we found
+微
+that, if staircases are movable and the train length is known, the optimal place for the
+staircase is in the center. However, train lengths vary, so the optimal staircase place will also
+vary. Hence it is simpler to leave the staircase where it is at the head of the platform near the
+first train car.
+We determined that based on our model and realistic assumptions, it would be best to
+increase the width of the staircase instead of adding new staircases. Though adding new
+staircases causes about a few seconds decrease compared to increasing staircase width, it is
+not worth the extra cost. Thus, an increase in the width, specifically to 6 columns, would
+greatly improve traffic flow. We also chose to extend our model to incorporate escalators,
+determining that they were definitely beneficial to have in this system. Doing these
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 19
+adjustments and comparisons have demonstrated that our model is strong and easily
+adjustable for many important variables.
+We would improve our model by using actual rather than estimated values for the solutions of
+our differential equations, increasing our accuracy. We would also further our sensitivity
+analysis, testing the effect of other variables, like p and q, on our model. Since we chose to
+minimize the overall exit time, minimizing each individual’s exit time and the standard
+deviation between the passengers would improve our model too.
+Furthermore, we would like, with more time, to examine other methods that the station could
+M
+use to decrease congestion after the unloading of a crowded train. Specifically, we would look
+into model that would give a more random movement of the people, since in reality people
+C
+vary in their walking speed and path direction. Another approach to the problem we would like
+to investigate is how door size affects the time. We want to see how allowing more people to
+M
+fit through a door at once will affect our optimization.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 20
+References/Citations
+(1) Walking." Princeton University. CC­BY­SA, n.d. Web. 16 Nov. 2014.
+(2) Hodgekiss, Anna. "The Cheat's Guide to Exercise: Taking the Stairs One at a Time
+Burns MORE Calories than Leaping up Them." Mail Online. Associated Newspapers,
+13 Dec. 2012. Web. 16 Nov. 2014.
+(3) Amtrak. "Fares." Amtrak. National Railroad Passenger Corporation, 2014. Web. 16
+Nov. 2014.
+(4) Fixr. "Interior Staircase Installation Cost." Cost to Install an Interior Staircase. Fixr,
+2014. Web. 16 Nov. 2014.
+M
+(5) Smith, Melinda, and William V. Thayer. "A Report On How Fast Escalators Move." A
+Report On How Fast Escalators Move. Jug.net, 2001. Web. 16 Nov. 2014.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 21
+Appendix
+A:
+M
+C
+M
+i
+H
+：
+号
+众
+Appendix Equation 1: Differential equation for (n,d) pair (8,15)
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #5086 Page 22
+M
+C
+M
+i
+H
+：
+Appendix Equation 2: Solution to Appendix Equation 1
+号
+众
+公
+信
+微
+Appendix Equation 3: Solution to the differential equation for (n,d) pair (10,12)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

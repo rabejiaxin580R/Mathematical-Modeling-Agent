@@ -1,0 +1,2069 @@
+M
+C
+M
+Redesign Staircases to Optimize Trains’
+i
+H
+Unloading Time
+：
+号
+Team # 4671
+众
+November 16, 2014
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 1 of 40
+Summary
+During our investigation of this situation, our team aimed to build an op-
+timization model to analyze and minimize the unloading time of trains.
+To achieve this goal, we put forward two models, the mathematical mod-
+el based on queuing theory and the simulation model based on cellular
+automaton model. Two models proved each other very well. M
+We first built our mathematical model, in which the exiting process is
+C
+divided into four time periods: alighting, walking on platforms, queuing,
+and walking on staircases. We used the knowledge of former research and
+M
+d/d/s queuing model in order to calculate the time of the four periods.
+Using this model, we determined that when there are two staircases, each
+stair of which contains 2 passengers, the total unloiading time for one
+H
+train is around 261 seconds, while that for two trains is approximately
+498 seconds.
+：
+In addition, we adopted a simulation approach based on cellular automa-
+ton model. Different from the mathematical model, the simulation model
+号
+simulated several periods of unloading processes as a complete process,
+and considered the effects of congestion on the moving speed and moving
+rule of passengers. In addition, the model could visualize the simulation
+众
+process. The simulation model gave the approximately same result as
+the mathematical model: the unloading time for one train is 251 seconds,
+while that for t公wo train is 498 seconds. The results convinced us that
+both of our models are reliable and accurate.
+To unde信rstand the effect of different factors, we changed variables such
+as the number of trains arriving, the location and number of staircases,
+and the capacity of each staircase to see their impact on unloading time.
+微Running our simulation model, we found that: the most effective way to
+minimize the unloading time is to increase the number of staircases; the
+capacity of the staircase is also a very important factor; the location of
+staircases does not affect the unloading time very much.
+Lastly, we wrote an letter to the director of transportation to recommend
+that our model be used to help design platforms’ layout and schedule
+transit system. Although the context of our problem is simple, our sim-
+ulation model can be applied to design of any complex transfer stations
+by slightly adjusting some parameters.
+1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 2 of 40
+1 Introduction and Problem Restatement
+1.1 Introduction
+Nowadays, more and more people choose to travel by public transporta-
+tion. As an important part of public transportation,the train stMation
+system is playing a key role in people’s everyday life. Meanwhile, the
+popularity of traveling by train puts greater pressure on a station’s oper-
+C
+ationandbringsaboutmanynewproblemssuchasemergencyresponseto
+fires, explosions and terrorist attacks. Therefore, how to properly design
+M
+a station’s layout to minimize passengers’ exiting time becomes a vital
+problem to the designers and operators of public transit systems. We
+i
+wanted to help solve these problems. For this purpose we built a mathe-
+H
+matical model and a simulation model to analyze the unloading time in
+different situations. We analyzed the rel：ationships of different parameters
+in order to determine the key factors for unloading time. Our model can
+help operators of public transportation system to optimize their design
+and scheduling, provide better s号ervices and reduce accident rates.
+众
+1.2 Problem restatement
+We wanted to b公uild a model to analyze and optimize the time traveled
+from the train to the street level exit of the station. We addressed situ-
+ations with one fully occupied trains and two full occupied trains. Also,
+we adju信sted the moving speed of passengers and number of passengers to
+see the impact. We then took other factors such as the location of the
+staircases, the number of staircases and the capacity of the staircases into
+微
+consideration.
+The most important factor is the total time it takes to evacuate all the
+passengers.
+2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # | 4671 |     |     |     |     |     |     | Page 3 | of 40 |
+| ------ | ---- | --- | --- | --- | --- | --- | --- | ------ | ----- |
+Period 1:
+( Queuing for exiting the train)
+M
+Period 4: Upstairs
+Period 2: Free-walking
+C
+M
+Period 3: Queuing before the staircase
+i
+H
+|     |     |     | Figure | 1: The | exiting | process |     |     |     |
+| --- | --- | --- | ------ | ------ | ------- | ------- | --- | --- | --- |
+：
+| 2 Definitions, |     |     |     | Assumptions |     |     | and Variables |     |     |
+| -------------- | --- | --- | --- | ----------- | --- | --- | ------------- | --- | --- |
+号
+| 2.1 | Definitions |     |     |     |     |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- |
+众
+As shown in Fig.1, the process what a passenger exits the station includes
+four periods:
+公
+| 1. waits | at  | the queue | inside | a   | car to | exit the | train; |     |     |
+| -------- | --- | --------- | ------ | --- | ------ | -------- | ------ | --- | --- |
+信
+| 2. walks  | towards | the       | staircase; |              |     |     |     |     |     |
+| --------- | ------- | --------- | ---------- | ------------ | --- | --- | --- | --- | --- |
+| 微3. waits | in      | the queue | to         | go upstairs; |     |     |     |     |     |
+| 4. moves  | upwards |           | on a       | staircase.   |     |     |     |     |     |
+Now we define some terms what will be used in the whole paper.
+unloading time: the time when the last passenger walks onto the foot
+of a staircase. In this paper we are mainly researching unloading time.
+evacuation time: the time when the last passenger leave a staircase to
+| exit the | station. | We  | also call | it exiting | time | in this | paper. |     |     |
+| -------- | -------- | --- | --------- | ---------- | ---- | ------- | ------ | --- | --- |
+3
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team # | 4671 |     |     |     | Page 4 | of 40 |
+| ------ | ---- | --- | --- | --- | ------ | ----- |
+2.2 Assumptions
+In order to streamline our model, we have made several key assumptions.
+| Assumption: | Each car | of a train can | contain | 90 people. |     |     |
+| ----------- | -------- | -------------- | ------- | ---------- | --- | --- |
+Justification: There are 5 seats in each row in the given information.
+The seating plans[1] searched from the Internet show that one car of a
+M
+train holds around 16 to 19 rows of seats, so we assume one car holds 18
+| rows in | this paper. |     |     |     |     |     |
+| ------- | ----------- | --- | --- | --- | --- | --- |
+C
+Assumption: The staircases are distributed uniformlyMalong the longi-
+| tudinal | direction of the | platform. |     |     |     |     |
+| ------- | ---------------- | --------- | --- | --- | --- | --- |
+Justification: The uniform distribution can make passengers’ walking
+i
+| distance | the shortest. |     |     |     |     |     |
+| -------- | ------------- | --- | --- | --- | --- | --- |
+H
+：
+Assumption: When a train arrives at the station, all passengers on the
+| train will | unload. |     |     |     |     |     |
+| ---------- | ------- | --- | --- | --- | --- | --- |
+Justification: From the given号information, the station is a central sta-
+| tion which | is the destination | or transfer | station | of most | people. |     |
+| ---------- | ------------------ | ----------- | ------- | ------- | ------- | --- |
+众
+Assumption: Each queue in cars waiting to exit the train is a single
+queue. Passengers get off the train by leaving the head of queue one by
+| one in order. | 公   |     |     |     |     |     |
+| ------------- | --- | --- | --- | --- | --- | --- |
+Justification: There are 5 seats in each row, so the center aisles in cars
+are narrow.
+信
+Assumption: Passengers would choose only one from two exits of a car
+| 微 to leave.    | They are distributed | equally | to two queues      | of the | car. |     |
+| -------------- | -------------------- | ------- | ------------------ | ------ | ---- | --- |
+| Justification: | Passengers           | always  | select the nearest | exit.  |      |     |
+Assumption: There are no people waiting on the platform to get on the
+| train when | the train arrives. |     |     |     |     |     |
+| ---------- | ------------------ | --- | --- | --- | --- | --- |
+Justification: No given information mentions the passengers waiting for
+the train.
+Assumption: When a passenger disembarks from train, he chooses one
+staircase as his moving target based on crowding level and distance and
+4
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team  | # 4671  |     |         |     |     |     | Page 5 | of 40 |
+| ----- | ------- | --- | ------- | --- | --- | --- | ------ | ----- |
+| never | changes | the | target. |     |     |     |        |       |
+Justification: Most people move in this way. Changing a moving target
+| consumes |     | both | time | and effort. |     |     |     |     |
+| -------- | --- | ---- | ---- | ----------- | --- | --- | --- | --- |
+Assumption: We do not differentiate the moving speed of the passen-
+| gers | with | different | ages | and | genders. |     |     |     |
+| ---- | ---- | --------- | ---- | --- | -------- | --- | --- | --- |
+Justification: Although this assumption simplifies the real worMld, it
+could still satisfy the requirement of the models which estimate the aver-
+| age | evacuation |     | time. |     |     |     | C   |     |
+| --- | ---------- | --- | ----- | --- | --- | --- | --- | --- |
+M
+Assumption: Once a passenger reaches the upper level of the station,
+| he  | exits the | complex. |     |     |     |     |     |     |
+| --- | --------- | -------- | --- | --- | --- | --- | --- | --- |
+i
+Justification: From the given information, to exit a station, passengers
+H
+must exit the car, and then make their way to a staircase to get to the
+next level.
+：
+| 2.3 | Variables |     |     |     | 号   |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- | --- | --- |
+• N is the number of trains arriving at the same time. N is 1 or 2.
+众
+• n is the number of car to a train. A full train contains 90n passen-
+gers.
+公
+|     | • d is | the length |     | of each | car in | meters. |     |     |
+| --- | ------ | ---------- | --- | ------- | ------ | ------- | --- | --- |
+• p is 信 the length of the platform in meters. For simplicity we assume
+|     | p =     | d∗n.      |     |        |          |            |     |     |
+| --- | ------- | --------- | --- | ------ | -------- | ---------- | --- | --- |
+| 微•  | w is    | the width |     | of the | platform | in meters. |     |     |
+|     | • q the | number    | of  | stairs | in each  | staircase. |     |     |
+• k is the number of people that each staircase can accommodate. k
+|     | is an | integer | greater | than | one. |     |     |     |
+| --- | ----- | ------- | ------- | ---- | ---- | --- | --- | --- |
+• c is the number of passenger a single stair can accommodate. c =
+|     | k/q.       | c is   | an integer. |               |     |                  |     |     |
+| --- | ---------- | ------ | ----------- | ------------- | --- | ---------------- | --- | --- |
+|     | • s is the | number |             | of staircases |     | in the platform. |     |     |
+5
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 6 of 40
+• v is the moving speed of the passengers on the platform in meters
+p
+per second.
+• λ is the input rate of the queue before each staircase in persons per
+second.
+• µ is the output rate of each staircase in persons per second.
+M
+• t is the time for all passengers to get off the train in seconds.
+0
+• t
+1
+isthetimeforapassengerontheplatformtowalktothCeentrance
+queue of the stairway in seconds.
+M
+• t is the maximum time for a passenger to wait at the queue before
+2
+the stairway in seconds.
+i
+H
+• t is the time for a passenger to move on the stairway in seconds.
+3
+：
+• t is the max time for a passenger to exit the station in seconds. We
+named it evacuation time. t = t +t +t +t .
+0 1 2 3
+• t(cid:48) is the max time for a pa号ssenger to walk on a staircase in seconds.
+We named it unloading time. t(cid:48) = t +t +t .
+0 1 2
+众
+3 Mathematical Model
+公
+3.1 Modeling Alighting Time
+信
+Wemodeledthealightingtimefirst. Existingworkshavedoneresearchon
+alighting and boarding time of the rail traffic passengers. The research[2]
+微
+completedbyHongKongPolytechnicUniversityhasbuiltamathematical
+model to estimate the dwelling time of trains in relation to the crowding
+conditions at the stations, which is given as follows:
+DT = C +C ∗A +C ∗B
+0 1 l 2 o
+where:
+DT is dwelling time of train(s);
+A is the number of alighting passengers per train, and
+l
+B is the number of boarding passengers per train;
+o
+C is a constant (s), C and C are coefficients.
+0 1 2
+6
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # | 4671 |     |     |     |     |     | Page | 7 of 40 |
+| ------ | ---- | --- | --- | --- | --- | --- | ---- | ------- |
+Since there is no given information of the number of boarding passengers
+for this paper, we simplify the model to research the relation between
+alighting time and the number of alighting passengers. The research[3]
+completed by Shouhua Cao has shown that there is a linear relation be-
+tween alighting time and the number of alighting passengers in Beijing
+rail transit as shown in Fig. 2. The data what we observed from Shanghai
+| subway | stations | shows | the similar | tendency. |     |     |     |     |
+| ------ | -------- | ----- | ----------- | --------- | --- | --- | --- | --- |
+M
+C
+M
+Alighting time(seconds)
+i
+H
+：
+号
+|     |     |     | 众 number of alighting passengers |     |     |     |     |     |
+| --- | --- | --- | -------------------------------- | --- | --- | --- | --- | --- |
+Figure 2: Fitted curve for alighting time and number of alighting
+公
+|     | passengers |     | in Beijing | Rail | Transit. | Cited from[3] |     |     |
+| --- | ---------- | --- | ---------- | ---- | -------- | ------------- | --- | --- |
+According to the formula, the alighting time of 45 passengers (half pas-
+信
+| sengers | in one | car)would | be:              |     |     |             |     |     |
+| ------- | ------ | --------- | ---------------- | --- | --- | ----------- | --- | --- |
+|         |        | t =       | 0.5385∗45+1.1167 |     | ≈   | 26(seconds) |     | (1) |
+| 微       |        | 0         |                  |     |     |             |     |     |
+So the max time for a passenger to get off the train is 26 seconds.
+| 3.2 | Modeling |     | moving | on platform |     |     |     |     |
+| --- | -------- | --- | ------ | ----------- | --- | --- | --- | --- |
+In this subsection we calculate t , time a passenger walks from the exit
+1
+| of the train | to  | the queue | before | the landing |     | of stairway. |     |     |
+| ------------ | --- | --------- | ------ | ----------- | --- | ------------ | --- | --- |
+|              |     |           |        | p           | 5×d |              |     |     |
+|              |     |           | t =    | ( )/v       | =   |              |     | (2) |
+|              |     |           | 1      |             | p   |              |     |     |
+|              |     |           |        | 2×s         | s×v |              |     |     |
+p
+7
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team | # 4671 |     |     |     | Page 8 | of 40 |
+| ---- | ------ | --- | --- | --- | ------ | ----- |
+where p is the length of the platform, s is the number of stairways and
+v is the moving speed of the passengers on the platform. From Fig.3
+p
+we could see the average walking distance for one passenger is p/(2∗s),
+because the platform is separated into (2 ∗ s) parts by s stairways. So
+the key to this model is to calculate v , the average walking speed of
+p
+| passengers | on  | the platform. |     |     |     |     |
+| ---------- | --- | ------------- | --- | --- | --- | --- |
+M
+C
+M
+|     |     | 向上  |     | 向上  |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+i
+|     |     | p/4 | p/4 | p/4 Hp/4 |     |     |
+| --- | --- | --- | --- | -------- | --- | --- |
+|     |     |     | p   | ：        |     |     |
+号
+|     | Figure | 3: Four partitions | of a | platform with 2 | stairways |     |
+| --- | ------ | ------------------ | ---- | --------------- | --------- | --- |
+众
+Many research works have studied people’s walking speeds under different
+circumstances. Qingmei Hu gave a summary[4] on these studies. The
+| conclusions | were公: |     |     |     |     |     |
+| ----------- | ------ | --- | --- | --- | --- | --- |
+persons/m2,
+| 1.  | If the crowd | density | ≤ 1.5 | people can | walk nonblock- |     |
+| --- | ------------ | ------- | ----- | ---------- | -------------- | --- |
+ingly. 信
+2. People walk at an average speed of 1.34m/s in a nonblocking envi-
+微ronment.
+persons/m2,
+| 3.  | If the crowd                               | density  | ≥ 4      | people stagnate | and walk       | at  |
+| --- | ------------------------------------------ | -------- | -------- | --------------- | -------------- | --- |
+|     | an average                                 | speed of | 0.25m/s. |                 |                |     |
+| 4.  | Whenthecrowddensityrangesfrom1.5persons/m2 |          |          |                 | to4persons/m2, |     |
+the moving speed and crowd density have an approximate linear
+relation. Fig.4 is the summarized density-speed relationships for
+|     | underground | stations. |     |     |     |     |
+| --- | ----------- | --------- | --- | --- | --- | --- |
+In this paper we use the result [3] observed from Beijing’s rail transit
+directly, which is a linear relation between density and speed as shown in
+8
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 9 of 40
+M
+speed
+C
+M
+i
+H
+Density(person/m2)
+：
+Figure 4: Density-speed relationship for underground stations.
+Cited from [4]
+号
+Fig.5 :
+众
+v = −0.4778∗density +1.759 (3)
+p
+For example, if公the effective width of the platform is w = 6m ( although
+the width of the platform may larger than 6m, people tend to walk in
+the center area on the platform, which is narrower than 6m), length of
+a car is信d = 20m, 900 passengers held by a fully occupied train with 10
+cars get off from the train. The length of the platform can be calculated
+as 20∗10 = 200m approximately. The density on the platform would be
+微
+900/(200∗6) = 0.75person/m2. The average walking speed of passenger
+is (−0.4778 ∗ 0.75 + 1.759) = 1.40m/s. However, if two fully occupied
+trains arrive at the station at the same time, the crowd density would be
+1800/(6∗200) = 1.5person/m2. The average walking speed of passenger
+becomes −0.4778∗1.5+1.759 = 1.04m/s.
+According to the equation(2), when there are s = 2 stairways on the
+platform, the average moving time on the platform of a passenger who
+gets off one train is:
+200
+t = ( )/1.40 ≈ 36(seconds)
+1
+2∗2
+9
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 10 of 40
+M
+C
+M
+i
+H
+Density ( person / m2)
+：
+号
+众
+公
+信
+微
+Speed
+(
+m
+/
+s)
+Figure 5: Fitted Linear Density-speed relationship observed at
+Beijing rail transit. Cited from [3]
+The average moving time on the platform of a passenger on the occasion
+when two trains arrive together is:
+200
+t = ( )/1.04 ≈ 48(seconds)
+1
+2∗2
+3.3 Modeling queuing
+When passengers get off the train, they walk through the stairways to
+get to the next level of the station. When there is a large number of
+passengers, some of them would gather before the stairways in a short
+time, and then wait in a queue to walk up the stairs.
+We can regard the passenger flow attracted by a stairway as a queuing
+system. As shown in Fig.6, the queuing system includes three processes:
+1. Inputting: Passengers walk to the nearest stairway for service. λ
+is the input rate of the queue(unit: persons/second), which is the
+number of passengers that arrive at the queue in unit time. For
+10
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 11 of 40
+queue stairway
+向上
+qsteps on the stairway
+M
+: input rate of queue
+: output rate of queue and stairway
+C
+Figure 6: d/d/s queuing model of the stairway inMrail station
+each stairway, the number of passengers it proviides service with is
+H
+(90 ∗ n ∗ N)/s. If we assume that the walking speed and walking
+distance of each passenger on the platform are the same, we can
+：
+simply calculate the time interval between the first and the last
+passenger arriving at the queue as the maximum alighting time t .
+0
+Then the input time of ea号ch stairway t = t , we can represent
+input 0
+λ as:
+90∗n∗N
+λ =
+众s∗t
+0
+2. Queuing: When a passenger arrives at the queue before the stair-
+case, if the stair is vacant,the passenger can use the stair immedi-
+公
+ately. If the stair is occupied, the passenger will wait until the stair
+becomes vacant. The service rule of the stair is ”first come first
+ser信vice”.
+3. Outputting: The queue before the staircase has same output rate
+微as the staircase. We use µ (unit: persons/second)to denote the
+outputrateofastairway. Accordingtotheexistingresearchwork[5]
+anddesignspecificationsforundergroundinChina[6],themaximum
+capacityofastairwayinthestationsisaround3600p/m/hour, that
+is 1 person/m/s, the width of the stairway is 1 meter. From our
+observation in Shanghai subway stations, a stair of 1- meter width
+can only accommodate 1 person. Since the given information does
+not describe the width of stairway, we can calculate that one stair
+of the stairway could contain c = k/q people. k is the number of
+people a stairway could accommodate, q is the number of stairs in
+11
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 12 of 40
+each stairway. Hence:
+k
+µ = c = (person/s).
+q
+M
+C
+M
+i
+H
+：
+Output
+Input amount
+amount
+t
+号μt
+众
+公
+time
+信
+微
+input
+and
+output
+passengers
+Cumulative
+number
+of
+Q
+1
+Q
+0
+t t input output
+Figure 7: The input and output rate of the d/d/s queuing system. Cited
+from [7]
+From the assumptions and analysis we know that the service system of
+each stairway is a fixed-length input, fixed-length output and single chan-
+nel queuing system. The s stairways on the platform are a fixed-length
+input, fixed-length output and multiple channel queuing system, that is
+d/d/s queuing system. Fig. 7 is an approximate representation of the
+d/d/s queuing system. The horizontal axis represents time, and the ver-
+tical axis shows the cumulative number of input or output passengers.
+The input number and output number are shown with two curves: λt
+and µt.
+The parameters in Fig.7 are:
+12
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #  | 4671 |      |        |         |       |     |     | Page 13 | of 40 |
+| ------- | ---- | ---- | ------ | ------- | ----- | --- | --- | ------- | ----- |
+| t : the | end  | time | of the | queue’s | input |     |     |         |       |
+input
+| t : | the end | time | of the | queue’s | output |     |     |     |     |
+| --- | ------- | ---- | ------ | ------- | ------ | --- | --- | --- | --- |
+output
+Q : the total output amount at the end time of the queue’s input
+0
+Q : the total input and output amount of the queue. For each stairway
+1
+| Q   | = 90nN/s. |     |     |     |     |     |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- | --- | --- | --- |
+1
+M
+| λ : the | input | rate of | the | queue |     |     |     |     |     |
+| ------- | ----- | ------- | --- | ----- | --- | --- | --- | --- | --- |
+C
+| µ : the | output | rate | of the | queue |     |     |     |     |     |
+| ------- | ------ | ---- | ------ | ----- | --- | --- | --- | --- | --- |
+M
+| Then we | can calculate |     | some | important |     | result. |     |     |     |
+| ------- | ------------- | --- | ---- | --------- | --- | ------- | --- | --- | --- |
+i
+H
+| the maximum |     | number | of  | waiting | passengers: |     |     |     |     |
+| ----------- | --- | ------ | --- | ------- | ----------- | --- | --- | --- | --- |
+：
+|         |         | Q   | = Q     | −Q =    | λ×t | −µ×t  |       |     |     |
+| ------- | ------- | --- | ------- | ------- | --- | ----- | ----- | --- | --- |
+|         |         |     | 1       | 0       |     | input | input |     |     |
+| the end | time of | the | queue’s | output: |     |       |       |     |     |
+号
+|     |     |     |     | t      | =   | Q /µ |     |     |     |
+| --- | --- | --- | --- | ------ | --- | ---- | --- | --- | --- |
+|     |     |     |     | output |     | 1    |     |     |     |
+众
+| the maximum |     | delay | time | in the | queue: |        |     |     |     |
+| ----------- | --- | ----- | ---- | ------ | ------ | ------ | --- | --- | --- |
+|             |     |       |      |        | Q      | 90∗n∗N |     |     |     |
+1
+|     | t   | = t     | −t  | =     |     | −t = |     | −t  | (4) |
+| --- | --- | ------- | --- | ----- | --- | ---- | --- | --- | --- |
+|     | 2   | 公output |     | input | µ   | 0    | s∗c | 0   |     |
+信
+| 3.4 Walking |     | on  | the | stairway |     |     |     |     |     |
+| ----------- | --- | --- | --- | -------- | --- | --- | --- | --- | --- |
+微When a passenger walk on the foot of the stairway, he passes through the
+stairway and then exit the station. Now we calculate t , the time used to
+3
+| pass through | the | stairway. |     |     |     |     |     |     |     |
+| ------------ | --- | --------- | --- | --- | --- | --- | --- | --- | --- |
+The research work[3] of Shouhua Cao collected many samples in Beijing
+rail transit. The work observed the average pace of the passengers on the
+| up-going | stairways | is  | 1.85 | steps/second. |     | Hence, |     |     |     |
+| -------- | --------- | --- | ---- | ------------- | --- | ------ | --- | --- | --- |
+q
+|     |     |     |     | t   | =      |     |     |     | (5) |
+| --- | --- | --- | --- | --- | ------ | --- | --- | --- | --- |
+|     |     |     |     |     | 3 1.85 |     |     |     |     |
+where q is the number of stairs(steps) on the stairway. If there are q = 15
+| stairs in | each | stairway, | t   | ≈ 8s. |     |     |     |     |     |
+| --------- | ---- | --------- | --- | ----- | --- | --- | --- | --- | --- |
+3
+13
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team | # 4671      |     |     |       |           |     |      |     | Page 14 | of 40 |
+| ---- | ----------- | --- | --- | ----- | --------- | --- | ---- | --- | ------- | ----- |
+| 3.5  | Calculating |     | the | total | unloading |     | time |     |         |       |
+Since t is a constant in our assumption, and it is a short time if compared
+3
+with other periods, in the later part of the paper, we mainly focus on op-
+timizing unloading time, which is the process before a passenger walks on
+a staircase. The total unloading time of a train includes: alighting time,
+walking time on platform, and queuing time. According to equation(1)
+M
+| to (4), | we can | get: |     |     |     |     |     |     |     |     |
+| ------- | ------ | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+C
+|     |     | t(cid:48) | = t +t | +t  | = t +t | +t  | −t     |     |     |     |
+| --- | --- | --------- | ------ | --- | ------ | --- | ------ | --- | --- | --- |
+|     |     |           | 0      | 1 2 | 0      | 1   | output | 0   |     |     |
+M(6)
+|     |     |     | 5×d | 90×n×N |     |     |     |     |     |     |
+| --- | --- | --- | --- | ------ | --- | --- | --- | --- | --- | --- |
+|     |     |     | =   | +      |     |     |     |     |     |     |
+|     |     |     | s×v |        | s×c |     |     |     |     |     |
+p
+i
+H
+(cid:26)
+|     |     |     | 1.4m/s, |     | if N=1, | one train | arrives |     |     |     |
+| --- | --- | --- | ------- | --- | ------- | --------- | ------- | --- | --- | --- |
+|     | v   | =   |         |     |         | ：         |         |     |     |     |
+p
+|     |       |     | 1.04m/s, |           | if N=2,  | two trains | arrive |     |     |     |
+| --- | ----- | --- | -------- | --------- | -------- | ---------- | ------ | --- | --- | --- |
+|     |       |     |          | 号         |          | t(cid:48)  |        |     |     |     |
+|     | Table | 1:  | The      | unloading | time(s), |            | = t +t | +t  | ,   |     |
+|     |       |     |          |           |          |            | 0      | 1   | 2   |     |
+t=t(cid:48)
+|     |        |          |     | +8(d=     | 20,n= | 10)   |     |           |     |     |
+| --- | ------ | -------- | --- | --------- | ----- | ----- | --- | --------- | --- | --- |
+|     | number | of train | 众 s | stairways |       | t t   | t   | t(cid:48) | t   |     |
+|     |        |          |     |           |       | 0     | 1 2 |           |     |     |
+|     | N = 1  |          |     | s = 2,c   | = 2   | 26 36 | 199 | 261       | 269 |     |
+|     | N = 2  |          |     | s = 2,c   | = 2   | 26 48 | 424 | 498       | 506 |     |
+公
+|     | N = 1  |     |     | s = 2,c | = 3 | 26 36 | 124 | 186 | 194 |     |
+| --- | ------ | --- | --- | ------- | --- | ----- | --- | --- | --- | --- |
+|     | N = 2  |     |     | s = 2,c | = 3 | 26 48 | 274 | 348 | 356 |     |
+|     | 信N = 1 |     |     | s = 3,c | = 2 | 26 24 | 124 | 174 | 182 |     |
+|     | N = 2  |     |     | s = 3,c | = 2 | 26 32 | 274 | 332 | 340 |     |
+微Table 1 shows the total unloading time in different situations. The worst
+case is: if there are only 2 stairways which contain 2 people on each stair,
+when 2 trains arrives at the same time, the total unloading time is 498s.
+Theresultalsoshowsthatthismodeldoesnotdistinguishsomesituations
+such as 2 stairways which contains 3 person on each stair and 3 stairways
+which contains 2 person on each stair. In the mathematical model, the
+output rate of the stairways service provided by these two circumstances
+is the same, so the estimated unloading time of these two situations are
+| slightly | different. |     |     |     |     |     |     |     |     |     |
+| -------- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+14
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 15 of 40
+3.6 Strengths and weaknesses
+Strengths:
+• Our model gives a simple theoretical approach to calculate the ex-
+iting time. We separate the exiting process into different periods
+and calculate the average time or maximum time of each paMrt. In
+this way, we get relatively accurate exiting time.
+C
+Weakness:
+M
+• We assume that all people walk at a fixed speed on the platform
+i
+which does not meet the real expectation because people who come
+H
+outfirstwalkatafasterspeed,whereaspeoplewhogetofflaterwalk
+at a slower speed since the platfor：m is more and more crowded.
+• In our theoretical model, the output rate of the stairways’ service is
+(s×c), which could not di号stinguish the difference of two situations:
+more staircase with narrow stairs and less staircase with wide stairs.
+• Our theoretical model assume the stairways are distributed uni-
+众
+formly on the platform and could not calculate different unloading
+time, particularly when the location of the stairways is changed.
+公
+• We assume passenger’s walking speed on staircase is a constant,
+once a passenger stands on the staircase, he will exit the station
+aft信er a fixed time. This assumption could be optimized further.
+To solve these problems, we add a simulation approach based on the
+微
+cellular automaton model.
+4 Simulation Approach
+To understand the effect of congestion level and number and location of
+the stairways, we simulate the whole unloading process with a cellular
+automaton model. We represent the plan of the platform in a grid of
+cells. Passengers can move from one cell to another cell according the
+15
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 16 of 40
+(a)Passengers begin to get off from the train
+M
+C
+(b)Passengers gather before the staircases
+M
+i
+H
+(c) More and more passengers wait before the staircases
+：
+号
+(d) Most of the passengers have walked on the staircases
+众
+Figure 8: The unloading process(N=2, n=5,d=20)
+公
+specified moving rules. Fig. 8 is the simulation of unloading process of 2
+trains arriving at the same time.
+信
+In this simulation, the platform is partitioned into a grid structure, each
+withasizeof0.5m∗0.5m. Thebasisforthispartitionisthattheminimum
+微
+space requirement for a person is 0.28m2, which is the result[8] pointed
+out by National research council.
+Cell is the basic unit of the grid structure. Each cell can contain only one
+passenger at one time step(1 second). The location of a passenger can be
+represented as the location of cell on the grid map. As shown in Fig.9,
+the adjacent 8 cells are the possible moving directions of a passenger.
+The model not only can simulate the movement of passengers, but also
+simulate passengers changing speed under different crowd densities. From
+Fig.9 we can see that in each time step, a passenger can move from 0 to
+2 cells in different directions based on the crowd degrees.
+16
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 17 of 40
+In addition, the initial setup of the simulation includes: the length of each
+car is 20m; each train has 10 cars; the length of platform is 200m; the
+width of platform is 10m. Besides, the program can adjust the length and
+width of the staircase according to its capacity. The detailed algorithm
+used in the simulation is introduced in the next subsection.
+M
+C
+M
+i
+H
+：
+号
+众
+Figure 9: The moving direction of a passenger
+公
+4.1 Algorithm
+信
+The program was run with Javascript, an interpreted scripting language
+that can run only in an interpreter such as Internet Explorer. The process
+微
+of the simulation program is shown in Fig.11. The complete code is given
+in Appendix B.
+In the simulation program, each passenger first selects the nearest stair-
+way as his target, then moves to the staircase according to the given
+moving rule. Fig.10 is an example of the moving rule. In this example,
+the staircase is the nearest one to the source node. Since each stair could
+contain 3 passengers, the source has three moving targets. In our model,
+we first calculate the shortest routes from the source to the three targets
+with A∗ algorithm[9], then calculate the weights of each route according
+17
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # | 4671 |     |     |     |     | Page 18 | of 40 |
+| ------ | ---- | --- | --- | --- | --- | ------- | ----- |
+target
+|     |     |     | source | A cell block bya passenger  |     | Weight=2 |     |
+| --- | --- | --- | ------ | --------------------------- | --- | -------- | --- |
+|     |     |     |        | A cell non-blocked by  any  |     | Weight=1 |     |
+A stair contains 3 people
+passenger
+M
+RouCte A
+M
+Route B
+Route C
+i
+H
+：
+|     |     |     | Route A   |     |     | Route C   |     |
+| --- | --- | --- | --------- | --- | --- | --------- | --- |
+|     |     |     | Weight 25 |     |     | Weight 22 |     |
+号
+|     |     |     | Route B | Weight of Route = ∑Weight of all cell |     |     |     |
+| --- | --- | --- | ------- | ------------------------------------- | --- | --- | --- |
+Weight 23
+众
+Figure 10: Use A∗ algorithm and weight value to find the best route
+公
+to the equation:
+(cid:88)
+|     | weight | of a route | = weight | of cells | on the | route |     |
+| --- | ------ | ---------- | -------- | -------- | ------ | ----- | --- |
+信
+(cid:26)
+|     |     |     | 1, if no | passenger | holds | the cell |     |
+| --- | --- | --- | -------- | --------- | ----- | -------- | --- |
+微
+|     | weight of | a cell = |           |           |       |          |     |
+| --- | --------- | -------- | --------- | --------- | ----- | -------- | --- |
+|     |           |          | 2, if one | passenger | holds | the cell |     |
+From Fig 10. we can see the current best route of the source is route
+C, because it has smallest weight. This moving rule can assure that a
+source node selects his target by considering both distance and crowd
+level. This rule conforms to reality. Algorithm 1 is the description of the
+| moving | rule. |     |     |     |     |     |     |
+| ------ | ----- | --- | --- | --- | --- | --- | --- |
+The simulation process is shown in Figure 11. In each timestep, the
+program moves the passengers on the cells of the grid map simultaneously
+and iterate the loop until all passengers are moved out of the staircases.
+18
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 19 of 40
+Start
+Initialize N, d, w, c, s, n; timestep=0;
+Initialize location of sstaircases
+Initialize number of passengers;
+M
+Initialize queues to each exit of each car;
+Initialize size of a cell;
+Partition platform into a grid of cells
+C
+M
+if there are passengers
+(waiting in queues to exit train) N
+or (walking on the cells to exit staircase ) i
+H
+Y：
+For each exit move a passenger in train into the
+adjacent vacant cell;号 determine thenearest staircase as
+themoving target of this passenger
+众
+For each cell, if there is a passenger in the cell
+公move the passenger according to the moving rule
+信
+For each staircase, if there is a passenger standing in
+the cell adjacent to the staircase, move the passenger
+微 out of the cell
+timestep+1
+end
+Figure 11: The flow chart of the simulation program
+19
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team      | #   | 4671     |       |     |     |     | Page | 20  | of 40 |
+| --------- | --- | -------- | ----- | --- | --- | --- | ---- | --- | ----- |
+| Algorithm |     | 1 Moving | rule. |     |     |     |      |     |       |
+Input:
+|     | source: | location | of the | passenger. |     |     |     |     |     |
+| --- | ------- | -------- | ------ | ---------- | --- | --- | --- | --- | --- |
+|     | c: the  | capacity | of one | stair.     |     |     |     |     |     |
+target[1..c]: c cells on the grid map, represent the parallel c exits of
+|     | one staircase. |     |     |     |     |     |     |     |     |
+| --- | -------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+gridmap[ ]: All cells on the grid map, record the locations of all
+M
+|     | passengers | on the | platform. |     |     |     |     |     |     |
+| --- | ---------- | ------ | --------- | --- | --- | --- | --- | --- | --- |
+Output:
+C
+|     | best target: | select  | one | from target[1..c] |     | as the moving | target; |     |     |
+| --- | ------------ | ------- | --- | ----------------- | --- | ------------- | ------- | --- | --- |
+|     | best route:  | a route | to  | best target;      |     |               |         |     |     |
+M
+1: calculateshortestroutesfromsourcetotarget[1..c]withA∗ algorithm,
+get route[1..c];
+2: calculate the weight value of route[1..c], for eachicell on the route, if
+H
+|     | no passenger | hold      | the  | cell, then | weight+=1, | else weight+=2; |     |     |     |
+| --- | ------------ | --------- | ---- | ---------- | ---------- | --------------- | --- | --- | --- |
+|     | select       | the route | with | smallest   | weight     | as best route;  |     |     |     |
+3:
+：
+|     | select | the target | of best | route | as best | target; |     |     |     |
+| --- | ------ | ---------- | ------- | ----- | ------- | ------- | --- | --- | --- |
+4:
+if the first two cells in best route are vacant, move source to the
+5:
+|     | second | cell in best | route | .   |     |     |     |     |     |
+| --- | ------ | ------------ | ----- | --- | --- | --- | --- | --- | --- |
+号
+6: ifthefirstcellinbest routeisvacantbutsecondcellisoccupied, move
+|     | source | to the first | cell | in best | route | .   |     |     |     |
+| --- | ------ | ------------ | ---- | ------- | ----- | --- | --- | --- | --- |
+7: if the first two cells众in best route are all occupied, no movement for
+source.
+| 8:  | return | best route | and | best target; |     |     |     |     |     |
+| --- | ------ | ---------- | --- | ------------ | --- | --- | --- | --- | --- |
+公
+| 4.2 | S信imulation |     | result |     |     |     |     |     |     |
+| --- | ----------- | --- | ------ | --- | --- | --- | --- | --- | --- |
+微Table 2: Compare the theoretical and simulated unloading time(s)
+|     | Number |     |     | Simulation |     | model Mathematic |     | model |     |
+| --- | ------ | --- | --- | ---------- | --- | ---------------- | --- | ----- | --- |
+Stairways
+|     | of train |       |     |     | t(cid:48) |     | t(cid:48) |     |     |
+| --- | -------- | ----- | --- | --- | --------- | --- | --------- | --- | --- |
+|     | N =      | 1 s = | 2,c | = 2 | 251       |     | 261       |     |     |
+|     | N =      | 2 s = | 2,c | = 2 | 498       |     | 498       |     |     |
+|     | N =      | 1 s = | 2,c | = 3 | 203       |     | 186       |     |     |
+|     | N =      | 2 s = | 2,c | = 3 | 373       |     | 348       |     |     |
+|     | N =      | 1 s = | 3,c | = 2 | 170       |     | 174       |     |     |
+|     | N =      | 2 s = | 3,c | = 2 | 322       |     | 332       |     |     |
+All simulation results are achieved through running the program 10 times
+20
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team | # 4671 |     |     |     |     |     |     |     | Page 21 | of 40 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+for each group of parameters to calculate the average values. We selected
+6 different situations to prove the reliability of our model. Table 2 shows
+the comparison of the simulated result and the result of mathematical
+analysis. The two results are similar, so they prove each other very well.
+Aftercarefulobservationwefindthatthesimulationresultismorecloseto
+reality. Itsuccessfullydistinguishedthedifferencebetweentwosituations:
+more staircases with narrow stairs and less staircases with wide stairs.
+M
+In the simulation result, the unloading time at the case (s=2,c=3) is
+larger than the one at (s=3,c=2). This result is reasonable because more
+movCe
+staircases can alleviate the crowd level to help passengers faster.
+M
+| 4.3 | Sensitive |     | analysis |     |     |     |     |     |     |     |
+| --- | --------- | --- | -------- | --- | --- | --- | --- | --- | --- | --- |
+i
+H
+To determine how the simulation model responds to the fluctuations in
+theoriginalsetup,werunourmodelusin：gdifferentgridsize(equivalentto
+changepeople’swalkingspeed.) Ourmodelprovestobenotverysensitive
+to small changes. After increasing the width of a cell by 10%, maximum
+unloading time decreases less th号an 3%; after a similar decrease, maximum
+unloading time increases less than 3%. As we can see, the unloading time
+does not change much as the walking speed fluctuates. Our model is
+| proven | to be  | stable. |            | 众         |           |                 |           |         |           |     |
+| ------ | ------ | ------- | ---------- | --------- | --------- | --------------- | --------- | ------- | --------- | --- |
+|        |        | Table   | 3:         | The       | simulated | unloading       |           | time(s) |           |     |
+|        |        | 公       | with       | different |           | grid sizes(m*m) |           |         |           |     |
+|        | trains |         | staircases |           | 0.5*0.5   |                 | 0.45*0.45 |         | 0.55*0.55 |     |
+|        | 信 N    | = 1     | s =        | 2,c =     | 2         | 251             | 252       |         | 249       |     |
+|        | N      | = 2     | s =        | 2,c =     | 2         | 498             | 499       |         | 494       |     |
+|        | N      | = 1     | s =        | 2,c =     | 3         | 203             | 209       |         | 199       |     |
+微
+|     | N         | = 2 | s = | 2,c = | 3          | 373 | 381 |     | 364 |     |
+| --- | --------- | --- | --- | ----- | ---------- | --- | --- | --- | --- | --- |
+|     | N         | = 1 | s = | 3,c = | 2          | 170 | 177 |     | 164 |     |
+|     | N         | = 2 | s = | 3,c = | 2          | 322 | 330 |     | 318 |     |
+| 4.4 | Strengths |     |     | and   | weaknesses |     |     |     |     |     |
+Strengths:
+| •   | Our model |     | visualizes | the | whole | process. |     |     |     |     |
+| --- | --------- | --- | ---------- | --- | ----- | -------- | --- | --- | --- | --- |
+21
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team | # 4671 |     |     |     |     |     |     |     | Page 22 | of 40 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+• The moving rule considers the effect of congestion level on moving
+|     | speed and | moving |     | direction, | which |     | is more | realistic. |     |     |
+| --- | --------- | ------ | --- | ---------- | ----- | --- | ------- | ---------- | --- | --- |
+• The layout of the grid structure not only considers the space re-
+quirements of passengers, but also considers the space requirement
+|     | of staircases, | which |     | is more | realistic. |     |     |     |     |     |
+| --- | -------------- | ----- | --- | ------- | ---------- | --- | --- | --- | --- | --- |
+• Our model is flexible that it can be easily applied to more comMplex
+|     | transfer | stations’ | design |     | only | after adapting |     | some | parameters. |     |
+| --- | -------- | --------- | ------ | --- | ---- | -------------- | --- | ---- | ----------- | --- |
+C
+Weaknesses:
+M
+• Our model uses A* algorithm to calculate the shortest route to the
+target at each time step, so the time complexityiof the algorithm is
+H
+|     | high. Optimization |     |     | of the | algorithm |     | will | be our future | work. |     |
+| --- | ------------------ | --- | --- | ------ | --------- | --- | ---- | ------------- | ----- | --- |
+：
+• In this model we still assume passenger‘s walking time on staircase
+is a constant, we only simulate the process before passengers stand
+|     | on the | staircases. |     |     |     |     |     |     |     |     |
+| --- | ------ | ----------- | --- | --- | --- | --- | --- | --- | --- | --- |
+号
+| 5   | Redesign |             | th众e | Stairways |             |          |        |            |        |     |
+| --- | -------- | ----------- | ---- | --------- | ----------- | -------- | ------ | ---------- | ------ | --- |
+| 5.1 | More     | 公 stairways |      |           |             |          |        |            |        |     |
+|     | 信Table   | 4:          | The  | unloading |             | time(s), | c=2,   | s= 2       | to 5   |     |
+|     | Number   |             |      |           | theoretical |          | result | simulation | result |     |
+Stairways
+| 微of | train |     |       |     | Max=t | +t  | +t  | Max | Avg. |     |
+| --- | ----- | --- | ----- | --- | ----- | --- | --- | --- | ---- | --- |
+|     |       |     |       |     |       | 0   | 1   | 2   |      |     |
+|     | N = 1 | s   | = 2,c | = 2 |       | 261 |     | 251 | 154  |     |
+|     | N = 2 | s   | = 2,c | = 2 |       | 498 |     | 498 | 320  |     |
+|     | N = 1 | s   | = 3,c | = 2 |       | 174 |     | 170 | 99   |     |
+|     | N = 2 | s   | = 3,c | = 2 |       | 332 |     | 322 | 202  |     |
+|     | N = 1 | s   | = 4,c | = 2 |       | 131 |     | 136 | 72   |     |
+|     | N = 2 | s   | = 4,c | = 2 |       | 249 |     | 274 | 154  |     |
+|     | N = 1 | s   | = 5,c | = 2 |       | 104 |     | 101 | 55   |     |
+|     | N = 2 | s   | = 5,c | = 2 |       | 199 |     | 241 | 112  |     |
+22
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 23 of 40
+As we assumed, the staircases are placed uniformly along the longitudinal
+direction of the platform. When staircases are added, the platform is
+divided into more parts, which results in the change of passenger flow.
+With the cellular automaton model, we assumed the situation where N
+trains arrive at the same time. Each train has 10 cars with 900 people.
+In this occasion, we varied the number of staircases (s = 2,3,4,5) to find
+out how the unloading time varies with s. We compare the theorMetical
+result with the simulated one, which is shown in Table 4. Fig.12 shows
+how the unloading time varies with the number of staircasesCwhen two
+trains arrive.
+M
+Overall, more stairways is an effective solution to reduce the total unload-
+ing time of trains. From the result we can see the unloading time reduces
+i
+greatly when we add a new stairway (s=3). The total unloading time for
+H
+one train decreases by 81 seconds. Nevertheless, the unloading time does
+not decrease linearly with the increase：of the number of staircases. The
+subsequent additional staircase does not seem as effective as the former
+one, as the decreasing time is 34 sec and 35 sec respectively. The pattern
+is more obvious in such case as号two fully loaded trains reach the station
+at the same time.
+众
+600 公
+498 498
+500
+400 332 322
+信 274
+300 249 241
+199
+200
+100
+微
+0
+2 3 4 5
+)s(emit
+gnidaolnu
+theoretical simulated
+s: number of staircases
+Figure 12: The unloading time varies with the number of staircases.
+( N=2, c=2)
+23
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | # 4671   |           |     |     |     |     |     | Page 24 | of 40 |
+| ---- | -------- | --------- | --- | --- | --- | --- | --- | ------- | ----- |
+| 5.2  | Widening | staircase |     |     |     |     |     |         |       |
+we analyzed how the unloading time varies with the alteration of c(the
+number of passengers a single stair can accommodate.) We set a similar
+occasion: N trains arrive at the same time and each train has 10 cars
+with 900 people. We compare the theoretical result with simulated one
+in Table 5. The results show that widening staircase is still an effective
+M
+way to reduce the unloading time. But when we compare the results in
+Table 4 and Table 5, we find that adding new staircases is more effective
+C
+| than | widening | staircases. |     |     |     |     |     |     |     |
+| ---- | -------- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+M
+|     | Table 5: | The simulated |     | unloading   | time(s),  | s=2,       | c=  | 2 to 5 |     |
+| --- | -------- | ------------- | --- | ----------- | --------- | ---------- | --- | ------ | --- |
+|     | Number   |               |     | theoretical | result    | simulation |     | result |     |
+|     |          | Stairways     |     |             |           | i          |     |        |     |
+|     | of train |               |     | Max=t       | +t +tHMax |            |     | Avg.   |     |
+|     |          |               |     |             | 0 1       | 2          |     |        |     |
+|     | N = 1    | s = 2,c       | = 2 |             | 261       | 251        |     | 154    |     |
+：
+|     | N = 2 | s = 2,c | = 2 |     | 498 | 498 |     | 320 |     |
+| --- | ----- | ------- | --- | --- | --- | --- | --- | --- | --- |
+|     | N = 1 | s = 2,c | = 3 |     | 186 | 203 |     | 118 |     |
+|     | N = 2 | s = 2,c | = 3 |     | 348 | 373 |     | 241 |     |
+号
+|     | N = 1 | s = 2,c | = 4 |     | 149 | 179 |     | 99  |     |
+| --- | ----- | ------- | --- | --- | --- | --- | --- | --- | --- |
+|     | N = 2 | s = 2,c | = 4 |     | 273 | 324 |     | 192 |     |
+|     | N = 1 | s = 2,c | = 5 |     | 126 | 168 |     | 86  |     |
+众
+|     | N = 2 | s = 2,c | = 5 |     | 228 | 296 |     | 160 |     |
+| --- | ----- | ------- | --- | --- | --- | --- | --- | --- | --- |
+公
+|     |     |     | theoretical |     | simulated |     |     |     |     |
+| --- | --- | --- | ----------- | --- | --------- | --- | --- | --- | --- |
+信600
+498 498
+)s(emit gnidaolnu 500
+373
+|     | 400 |     |     | 348 |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+324
+| 微   |     |     |     |     | 273 |     | 296 |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+300
+228
+200
+100
+0
+|     |     | 2   |     | 3   | 4   |     | 5   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+c: capacity of a single stair
+Figure 13: The unloading time varies with the capacity of staircases.
+|     |     |     |     | ( N=2, s=2) |     |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | --- | --- | --- | --- |
+24
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team # | 4671     |     |          |              |     | Page 25 | of 40 |
+| ------ | -------- | --- | -------- | ------------ | --- | ------- | ----- |
+| 5.3    | Changing | the | location | of stairways |     |         |       |
+To minimize the evacuation time, we search the best location of the stair-
+ways in the simulation program. The search process is shown in Fig.14.
+Initially, we placed the stairways averagely distributed on the platform
+as shown in Fig.2, then we moved the stairways outward and inward in a
+changing distance to search for the best location of the stairways which
+M
+| can yield | the shortest | unloading | time. |     |     |     |     |
+| --------- | ------------ | --------- | ----- | --- | --- | --- | --- |
+C
+M
+i
+|     | 向上  |     |     |     | H向上 |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+：
+|     | p/4 |     | p/4 | p/4 |     | p/4 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+p
+号
+(a)Moving outwards the two staircases
+众
+公
+|     |     | 向上  |     | 向上  |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+信
+|     | p/4 |     | p/4 | p/4 |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+p/4
+微
+p
+(b)Moving inwards the two staircases
+|     | Figure | 14: Search | the best | location | of the stairways |     |     |
+| --- | ------ | ---------- | -------- | -------- | ---------------- | --- | --- |
+In the example we simulate the situation of N(=1 or 2) trains arriving at
+the same time. There are 10 cars in each trains and 90 people will get off
+from each car. The length of the platform is 200 meters and there are 2
+25
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team # | 4671 |     |     |     | Page 26 | of 40 |
+| ------ | ---- | --- | --- | --- | ------- | ----- |
+stairways on the platform. Initially, the platform is separated by the two
+stairway into an average of 4 partitions. Then we move the locations of
+the stairway inward and outward x (= 5, 10, 15, 20) meters respectively.
+The processes are run 10 times to calculate the average time. From the
+result in Table 6 we find that the effect of changing locations of staircases
+is not significant. Compared with the original symmetrical distribution of
+the stairways, the unloading time of new lactations only changes a little
+M
+| which can | be ignored. |     |     |     |     |     |
+| --------- | ----------- | --- | --- | --- | --- | --- |
+We proved this result through investigating two platforms iCn People’s
+SquareundergroundstationinShanghai. Theplatformofline2isdivided
+by four stairways into five parts averagely, while the plaMtform of line 8 is
+separated unequally, with two stairways in center and two stairways at
+start and end of the platform. Both distributions do not show obvious
+i
+| imbalanced | passenger | flows. |     |     |     |     |
+| ---------- | --------- | ------ | --- | --- | --- | --- |
+H
+|     |     | Table 6: The   | unloa：ding | time(s)   |     |     |
+| --- | --- | -------------- | ---------- | --------- | --- | --- |
+|     |     | with different | stairways’ | locations |     |     |
+|     |     | Locatio号ns     | N=1        | N=2       |     |     |
+|     |     | uniform        | 251        | 498       |     |     |
+|     |     | →←5m           | 253        | 506       |     |     |
+|     |     | 众 →←10m        | 251        | 488       |     |     |
+|     |     | →←15m          | 240        | 494       |     |     |
+|     |     | →←20m          | 243        | 500       |     |     |
+公
+|     |     | ←→5m  | 254 | 501 |     |     |
+| --- | --- | ----- | --- | --- | --- | --- |
+|     |     | ←→10m | 248 | 502 |     |     |
+|     |     | ←→15m | 250 | 496 |     |     |
+信
+|     |     | ←→20m | 243 | 487 |     |     |
+| --- | --- | ----- | --- | --- | --- | --- |
+微
+6 Conclusion
+We model the unloading process in a central station with two approach-
+es: theoretical mathematics and computational simulation. By dividing
+the process into four periods, we can compute exact alighting time, time
+on the platform, queuing time and time on the staircase. However, this
+method can not represent some factors, such as staircases’ different lo-
+cations. Therefore, we also use a computational model to simulate the
+exiting process. By comparing the results of theoretical and simulation
+26
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 27 of 40
+approaches, we are able to see that the two results are approximately the
+same, while the result of the simulation approach may be better because
+it takes many real factors into consideration. Also, we are able to vindi-
+cate the accuracy and reliability of our simulation model, so we can use it
+in further analysis when taking more complex factors into consideration.
+Our computational simulation suggests that the number of staircases con-
+tributes most to the decreasing of excavating time. While the widMth of
+each staircase is an important relevant variable, it does not contribute as
+much as the the number of staircases. On the contrary, theClocation of
+staircases does not have a great impact on the unloading time.
+M
+Therefore, we give following suggestions to help relieve the traffic stress
+on public transit stations. First, if two trains arrive at the same time,
+i
+1800 passengers will exit the station through 2 staircases, the operator
+H
+shouldarrangeforthenexttraintoarriveinnolessthan500secondssince
+unloading time for 2 trains is 498 secon：ds. Secondly, when the layouts of
+platform at present can not bear the flow of people, the transportation
+station can simply add a staircase anywhere on the platform because the
+location is not important and b号ecause widening the existing staircases is
+neither efficient nor cost-effective.
+Inthefuture,wecanapp众lyoursimulationmodeltomorecomplextransfer
+stations with criss-cross platforms and different train lines. Also, it would
+be interesting to consider the distribution of walking speed rather than
+公
+set it to a fix number. Our model can be applied to different situations
+and help rail transit designers to find the best plan for platforms and
+staircases.
+信
+微
+27
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 28 of 40
+7 A letter to Director of Transportation
+Dear Director of Transportation:
+We built a mathematical model to examine the exiting process of a large
+number of passengers. In the model we adapted some factors to reflect
+the practical design requirements. These factors include the locatioMn and
+number of the staircases and the capacity of each staircase. In addition
+we used a computational approach to simulate the exiting process. Both
+C
+approaches could calculate the exiting time under different kinds of situa-
+tions. We were glad to find out that the results of the mathematics model
+M
+and the simulation model are consistent with each other. According to
+the model and simulation we created for the stations’ original condition
+i
+(2 staircases at a platform, 1 or 2 trains unloading at a time, every stair
+H
+holds 2 commuters at a time), the total time of unloading the passengers
+is around 251 seconds for one train wh：ile approximately 498 seconds for
+two trains.
+The result revealed a problem号: it took nearly 10 minutes, which is a
+relative long time to evacuate passengers from two trains. Besides, if the
+next train arrives at the station in 10 minutes before all the passengers
+of the last train have ex众ited the station, more and more passengers would
+gather on the platform. This may lead to increased risk of accident.
+To solve the problem, our model provided the solutions: to increase the
+公
+number of staircases or to expand the capacity of staircases. In addition
+we concluded that the locations of staircases are not the key factors to
+affect the exiting time.
+信
+We strongly recommend you to use our model to help design your trans-
+portation system. The benefits of our model are that it can visualize the
+微
+wholeunloadingprocessandshowthecongestionlevelinadirectwayand
+that it can be applied to more complex transfer stations with criss-cross
+platforms and different train lines after slightly adjusting some variables.
+Our model is also strong because all the assumptions we make are con-
+sistent with the real situation and are not arbitrary. The passengers’
+moving speeds and moving rule were based on observation data given in
+some former research. We feel confident that our models are fairly accu-
+rate. Therefore, we respectfully recommend that the model be used to
+help design the platforms for complex transform stations.
+Sincerely yours, Himcm 2014 team 4671
+28
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 29 of 40
+References
+[1] www.virgintrains.co.uk/assets/pdf/global/seating-plan.pdf
+[2] WilliamH.K.Lam,Chung-YuCheung,C.F.Lam.Astudyofcrowding
+effects at the Hong Kong light rail transit stations. Transportation
+Research A, 33: 401-415, 1999. M
+[3] Shouhua Cao. Analysis and Modeling on Passengers Traffic Charac-
+C
+teristics for Urban Rail Transit. Ph.D Thesis. Beijin Jiaotong Univ.
+2009.
+M
+[4] Qingmei Hu, Weining Fang, Guangyan Li, Yuquan Jia. Review on
+Pedestrian Behavior Characteristics and Crowdiing Mechanism in
+Public Buildings. China Safety Science JouHrnal. Vol.18, No.8, Aug.
+2008.
+：
+[5] J.J.Fruin. Pedestrian Planning and Design. Metropolitan Association
+of Urban Designers and Environmental Planners Inc, 1971.
+号
+[6] GB50157-2003, Design Specifications for Underground. China Plan-
+ning Press.Beijin, 2003.
+众
+[7] Xueping Rao, An analysis of passenger delays in stairs and escalators
+of urban rail transit station. Traffic and Transportation. 2005,7.
+公
+[8] Transportation research board. Highway capacity manal 2000. Wash-
+ington DC, National research council, 2000.
+信
+[9] Thomas H. Cormen, Charles E. Leiserson,Ronald L. Rivest, Clifford
+Stein, Introduction to Algorithms. MIT press. 2005.
+微
+29
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 4671 |     |     |     | Page 30 | of 40 |
+| ----------- | --- | --- | --- | ------- | ----- |
+8 Appendix
+| 8.1 Appendix | A. The | unloading | time | with varied |     |
+| ------------ | ------ | --------- | ---- | ----------- | --- |
+parameters
+M
+Table 7: The simulated unloading time with varied parameters(s),
+N=1
+C
+|     | s =       | 2 s = 3 s = | 4 s = 5 |     |     |
+| --- | --------- | ----------- | ------- | --- | --- |
+|     | c = 2 251 | 170 136     | 101 M   |     |     |
+|     | c = 3 203 | 142 112     | 94      |     |     |
+|     | c = 4 179 | 133 91      | 83      |     |     |
+i
+|     | c = 5 168 | 126 93 | H74 |     |     |
+| --- | --------- | ------ | --- | --- | --- |
+：
+Table 8: The simulated unloading time with varied parameters(s),
+N=2
+号
+|     | s =       | 2 s = 3 s = | 4 s = 5 |     |     |
+| --- | --------- | ----------- | ------- | --- | --- |
+|     | c = 2 498 | 322 274     | 241     |     |     |
+|     | c = 3 373 | 317 236     | 204     |     |     |
+众
+|     | c = 4 324 | 225 168 | 150 |     |     |
+| --- | --------- | ------- | --- | --- | --- |
+|     | c = 5 296 | 154 204 | 151 |     |     |
+公
+信
+微
+30
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+| Team | # 4671   |                    |       |         |            |     |         |     | Page 31 | of 40 |
+| ---- | -------- | ------------------ | ----- | ------- | ---------- | --- | ------- | --- | ------- | ----- |
+| 8.2  | Appendix |                    |       | B. The  | simulation |     | program |     |         |       |
+| var  | astar    | = require(’./astar |       |         | 1.js’);    |     |         |     |         |       |
+| var  | scale    | size =             | 6;    |         |            |     |         |     |         |       |
+| var  | length   | car =              | 20;   |         |            |     |         |     |         |       |
+| var  | number   | car                | = 10; |         |            |     |         |     |         |       |
+| var  | number   | passenger          |       | per car | = 90;      |     |         |     |         |       |
+M
+| var | width  | room      | = 10; |      |     |     |     |     |     |     |
+| --- | ------ | --------- | ----- | ---- | --- | --- | --- | --- | --- | --- |
+| var | length | staircase | =     | 5;   |     |     |     |     |     |     |
+| var | width  | staircase | =     | 3;   |     |     |     |     | C   |     |
+| var | length | passenger | =     | 0.5; |     |     |     |     |     |     |
+| var | width  | passenger | =     | 0.5; |     |     |     |     |     |     |
+M
+| var | passenger | per       | staircase | =   | 2;           |     |     |     |     |     |
+| --- | --------- | --------- | --------- | --- | ------------ | --- | --- | --- | --- | --- |
+| var | number    | staircase | =         | 2;  |              |     |     |     |     |     |
+| var | left =    | 1; //the  | direction |     | of staircase |     |     |     |     |     |
+i
+| var | right | = 2; |     |     |     |     |     |     |     |     |
+| --- | ----- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+| var | staircase | direction |     | = right; |     |     |     |     |     |     |
+| --- | --------- | --------- | --- | -------- | --- | --- | --- | --- | --- | --- |
+：
+| var | empty     | entry       | = 0x000001; |             |     |     |     |     |     |     |
+| --- | --------- | ----------- | ----------- | ----------- | --- | --- | --- | --- | --- | --- |
+| var | passenger | =           | 0x000004;   |             |     |     |     |     |     |     |
+| var | blocked   | = 0xffffff  |             | ;           |     |     |     |     |     |     |
+| var | car body  | =           | 0xffffff    | ;           | 号   |     |     |     |     |     |
+| var | car door  | = 0         | xffffff     | ;           |     |     |     |     |     |     |
+| var | staircase | entrance    |             | = 0x000008; |     |     |     |     |     |     |
+| var | staircase | exit        | = 0         | x众ffffff    | ;   |     |     |     |     |     |
+| var | stair     | = 0 xffffff | ;           |             |     |     |     |     |     |     |
+| var | number    | train       | = 2;        |             |     |     |     |     |     |     |
+公
+| var | num col | = Math.floor(length |                  |     | car ∗ | number  | car / length | passenger); |     |     |
+| --- | ------- | ------------------- | ---------------- | --- | ----- | ------- | ------------ | ----------- | --- | --- |
+| var | num row | =                   | Math.floor(width |     | room  | / width | passenger    | + 2);       |     |     |
+信
+| var    | total     | number   | passenger    | =                | number              | car ∗ | number passenger |     | per car ∗ |     |
+| ------ | --------- | -------- | ------------ | ---------------- | ------------------- | ----- | ---------------- | --- | --------- | --- |
+|        | number    | train;   |              |                  |                     |       |                  |     |           |     |
+| 微var   | passenger | in       | car =        | total            | number passenger;   |       |                  |     |           |     |
+| var    | passenger | out      | station      | =                | 0;                  |       |                  |     |           |     |
+| var    | staircase | entrance |              | list =           | new Array();        |       |                  |     |           |     |
+| var    | staircase | queue    | =            | new Array();     |                     |       |                  |     |           |     |
+| var    | staircase | queue    | max          | length           | = 10;               |       |                  |     |           |     |
+| var    | staircase | offset   | =            | [8, −8];         |                     |       |                  |     |           |     |
+| var    | car list  | = new    | Array(number |                  | train);             |       |                  |     |           |     |
+| // car | list      | [1] =    | new          | Array(number     | car);               |       |                  |     |           |     |
+| for    | (var i    | = 0;     | i < car      | list.length;     | ++i)                | {     |                  |     |           |     |
+|        | car       | list     | [i] =        | new Array(number |                     | car); |                  |     |           |     |
+|        | for       | (var     | j = 0;       | j <              | car list[i].length; |       | ++j) {           |     |           |     |
+|        |           |          | car list     | [i][j]           | = {’passenger       |       | in car’ :        |     |           |     |
+31
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 32 of 40
+number passenger per car};
+}
+}
+var station = new Array(num row);
+for (var i = 0; i < num row; ++i) {
+station[i] = new Array(num col);
+for (var j = 0; j < num col; ++j) {
+if (i == 0 || i == num row − 1) { M
+station[i][j] = car body;
+} else {
+C
+station[i][j] = empty entry;
+}
+} M
+}
+var flag matrix = new Array(num row);
+i
+for (var i = 0; i < num row; ++i) {
+H
+flag matrix[i] = new Array(num col);
+for (var j = 0; j < num col; ++j) {
+：
+flag matrix[i][j] = true;
+}
+}
+号
+function buildCar() {
+for (var index car = 0; index car < number car; ++index car) {
+station [0][Math.floor(index car ∗ (length car /
+众
+length passenger))] = empty entry;
+station[num row − 1][Math.floor(index car ∗ (length car /
+length passenger))] = empty entry;
+公
+station [0][Math.floor((index car + 1) ∗ (length car /
+length passenger)) − 1] = empty entry;
+station[num row − 1][Math.floor((index car + 1) ∗ (length car
+信/ length passenger)) − 1] = empty entry;
+car list [0][index car][’row’] = 0;
+car list [0][index car][’left door’] = Math.floor(index car ∗ (
+length car / length passenger));
+微
+car list [0][index car][’right door’] = Math.floor((index car
++ 1) ∗ (length car / length passenger)) − 1;
+if (number train == 2) {
+car list [1][index car][’row’] = num row − 1;
+car list [1][index car][’left door’] = Math.floor(
+index car ∗ (length car / length passenger));
+car list [1][index car][’right door’] = Math.floor((
+index car + 1) ∗ (length car / length passenger))
+− 1;
+}
+}
+}
+32
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 33 of 40
+function buildStaircase() {
+var start staircase row = Math.floor((num row − width staircase /
+width passenger) / 2);
+var end staircase row = Math.floor(num row − (num row −
+width staircase / width passenger) / 2);
+var interval = Math.floor((num col / number staircase −
+length staircase / length passenger) / 2);
+//setup staircase blocks M
+for (var index staircase = 0; index staircase < number staircase; ++
+index staircase) {
+C
+//var start col = interval ∗ (index staircase + 1);
+//var end col = start col + Math.floor(length staircase /
+length passenger); M
+var start col =
+Math.floor(index staircase / number staircase ∗ num col +
+i
+interval) + staircase offset [index staircase ];
+H
+var end col =
+Math.floor((index staircase + 1) / number staircase ∗ num col
+：
+− interval) + staircase offset [index staircase ];
+for (var row = start staircase row; row <= end staircase row;
+++row) {
+for (var c号ol = start col; col <= end col; ++col) {
+if (row == Math.floor((start staircase row +
+end staircase row) / 2) ||
+row == Math.floor((
+众
+start staircase row +
+end staircase row) / 2) + 1) {
+station[row][col] = stair;
+公
+} else {
+station[row][col] = blocked;
+}
+信
+if ( staircase direction == left) {
+if (col == start col && row <
+start staircase row +
+微
+passenger per staircase) {
+station[row][col] =
+staircase entrance;
+staircase entrance list .push
+({
+’row’: row,
+’col’: col
+});
+var tmp queue = new Array();
+for (var i = 0; i <
+staircase queue max length
+; ++i) {
+tmp queue.push(
+33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team # 4671 |     |     |     | Page 34 | of 40 |
+| ----------- | --- | --- | --- | ------- | ----- |
+empty entry);
+}
+|     |     |     | staircase queue.push(    |            |     |
+| --- | --- | --- | ------------------------ | ---------- | --- |
+|     |     |     | tmp queue);              |            |     |
+|     |     |     | } else if (col == end    | col && row | <   |
+|     |     |     | start staircase row      | +          |     |
+|     |     |     | passenger per staircase) | {          |     |
+|     |     |     | station[row][col]        | =          |     |
+|     |     |     | staircase                | exit;      | M   |
+}
+|     |     | } else { |     |     |     |
+| --- | --- | -------- | --- | --- | --- |
+C
+|     |     |     | if (col == start col      | && row <   |     |
+| --- | --- | --- | ------------------------- | ---------- | --- |
+|     |     |     | start staircase row       | +          |     |
+|     |     |     | passenger per staMircase) | {          |     |
+|     |     |     | station[row][col]         | =          |     |
+|     |     |     | staircase                 | exit;      |     |
+|     |     |     | } else if (col == i end   | col && row | <   |
+H
+|     |     |     | start staircase row      | +          |     |
+| --- | --- | --- | ------------------------ | ---------- | --- |
+|     |     |     | passenger per staircase) | {          |     |
+|     |     |     | ： station[row][col]      | =          |     |
+|     |     |     | staircase                | entrance;  |     |
+|     |     |     | staircase entrance       | list .push |     |
+|     |     | 号   | ({                       |            |     |
+’row’: row,
+’col’: col
+});
+众
+|     |     |     | var tmp queue | = new Array();   |     |
+| --- | --- | --- | ------------- | ---------------- | --- |
+|     |     |     | for (var i =  | 0; i <           |     |
+|     |     |     | staircase     | queue max length |     |
+|     | 公   |     | ; ++i) {      |                  |     |
+tmp queue.push(
+empty entry);
+| 信   |     |     | }                     |     |     |
+| --- | --- | --- | --------------------- | --- | --- |
+|     |     |     | staircase queue.push( |     |     |
+|     |     |     | tmp queue);           |     |     |
+}
+微
+}
+}
+}
+|     | if ( staircase | direction | == left) { |     |     |
+| --- | -------------- | --------- | ---------- | --- | --- |
+|     | staircase      | direction | = right;   |     |     |
+} else {
+|     | staircase | direction | = left; |     |     |
+| --- | --------- | --------- | ------- | --- | --- |
+}
+}
+}
+34
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 35 of 40
+function distance(row1, col1, row2, col2) {
+return Math.max(Math.abs(row1 − row2), Math.abs(col1 − col2));
+}
+function findPathToNearestStaircase(row, col) {
+var staircase list = findNearestStaircaseList(row, col);
+var path list = new Array();
+var graph = new astar.Graph(station, { diagonal: true });
+var start = graph.grid[row][col]; M
+// console.log( staircase list );
+C
+for (var index = 0; index < staircase list .length; ++index) {
+var staircase position = staircase list [indexM];
+var end = graph.grid[ staircase list [index][’row’]][
+staircase list [index][’col’ ]];
+i
+var result = astar.astar.search(graph, start, end);
+H
+var distance left = 0;
+for (var i = 0; i < result.length; ++i) {
+：
+distance left += station[result[i][’x’ ]][ result[i][’y’
+]];
+}
+号
+var local path = {
+’path’: result,
+’ distance left ’: distance left
+众
+// − station[ staircase list [index][’row’]][
+staircase list [index][’col’]]
+}
+公
+path list.push(local path);
+}
+信return path list;
+}
+function distanceLeft(row, col) {
+微
+// var staircase list = findNearestStaircaseList(row, col);
+var path list = findPathToNearestStaircase(row, col);
+var min left = num row + num col;
+for (var i = 0; i < path list.length; ++i) {
+min left = Math.min(min left, path list[i][’ distance left ’]);
+}
+return min left;
+}
+function findNearestStaircaseList(row, col) {
+var nearest staircase = null;
+35
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 36 of 40
+var min distance = −1;
+var distance list = new Array();
+for (var index staircase = 0; index staircase <
+staircase entrance list .length; ++index staircase) {
+distance list .push({
+’row’: staircase entrance list [index staircase ][’row’
+],
+’col’: staircase entrance list [index staircase ][’col’
+], M
+’distance’: distance(row, col, staircase entrance list
+[index staircase ][’row’], staircase entrance list
+C
+[index staircase ][’col’])
+})
+} M
+// console.log( distance list );
+distance list .sort(function (m, n) {
+i
+return m[’distance’] > n[’distance’] ? 1 : (m[’distance’] < n[
+H
+’distance’] ? −1 : 0);
+})
+：
+return distance list .slice(0, passenger per staircase);
+}
+号
+function contains(path, position) {
+for (var i = 0; i < path.length; ++i) {
+if (path[i][’row’] == position[’row’] &&
+众
+path[i][’col’] == position[’col’]) {
+return true;
+}
+公
+}
+return false;
+}
+信
+var time counter = 0;
+var passenger in station list = new Array();
+var passenger time cost = new Array();
+微
+function get passenger time cost(row, col) {
+for (var index = 0; index < passenger in station list .length; ++
+index) {
+if ( passenger in station list [index][’row’] === row &&
+passenger in station list [index][’col’] === col) {
+return passenger in station list [index][’time’];
+}
+}
+return 0;
+}
+function move passenger into station(row, col) {
+36
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | # 4671    |          |            |                     |         |     |       |     | Page | 37 of 40 |
+| ---- | --------- | -------- | ---------- | ------------------- | ------- | --- | ----- | --- | ---- | -------- |
+|      | var       | distance | left       | = distanceLeft(row, |         |     | col); |     |      |          |
+|      | passenger |          | in station | list                | .push({ |     |       |     |      |          |
+’row’: row,
+’col’: col,
+|     |     | ’time’: | 0,         |     |          |      |     |     |     |     |
+| --- | --- | ------- | ---------- | --- | -------- | ---- | --- | --- | --- | --- |
+|     |     | ’min    | distance’: |     | distance | left |     |     |     |     |
+});
+}
+M
+| function | move | passenger |         | out of   | station(row, |     | col) { |         |               |     |
+| -------- | ---- | --------- | ------- | -------- | ------------ | --- | ------ | ------- | ------------- | --- |
+|          | for  | (var      | index = | 0; index | < passenger  |     | in     | station | list .length; | ++  |
+C
+|     |     | index) | {           |           |            |            |                      |           |            |        |
+| --- | --- | ------ | ----------- | --------- | ---------- | ---------- | -------------------- | --------- | ---------- | ------ |
+|     |     | if     | ( passenger |           | in station | list       | [index][’row’]       |           | === row    | &&     |
+|     |     |        |             | passenger | in         | station    | list [index][’colM’] |           | ===        | col) { |
+|     |     |        | passenger   |           | time       | cost.push( |                      | passenger | in station | list [ |
+index][’time’]);
+|     |     |     |     | passenger | in  | station | list .splice(index, |     | i 1); |     |
+| --- | --- | --- | --- | --------- | --- | ------- | ------------------- | --- | ----- | --- |
+H
+|     |     |     | station[row][col] |                  |     | =   | staircase | entrance; |     |     |
+| --- | --- | --- | ----------------- | ---------------- | --- | --- | --------- | --------- | --- | --- |
+|     |     |     | flag              | matrix[row][col] |     |     | = false;  |           |     |     |
+|     |     |     | break;            |                  |     | ：   |           |           |     |     |
+}
+}
+| }        |      |           |         |          | 号           |           |     |         |               |     |
+| -------- | ---- | --------- | ------- | -------- | ----------- | --------- | --- | ------- | ------------- | --- |
+| function | move | passenger |         | to(row   | from,       | col from, | row | to, col | to) {         |     |
+|          | for  | (var      | index = | 0; index | < passenger |           | in  | station | list .length; | ++  |
+众
+|     |     | index) | {           |     |            |      |                |     |         |      |
+| --- | --- | ------ | ----------- | --- | ---------- | ---- | -------------- | --- | ------- | ---- |
+|     |     | if     | ( passenger |     | in station | list | [index][’row’] |     | === row | from |
+&&
+|     |     | 公   |     | passenger | in  | station | list [index][’col’] |     | === | col from |
+| --- | --- | --- | --- | --------- | --- | ------- | ------------------- | --- | --- | -------- |
+&&
+|     |     |     | (station[row |           | to][col     |         | to] ===           | empty | entry ||     |     |
+| --- | --- | --- | ------------ | --------- | ----------- | ------- | ----------------- | ----- | ------------ | --- |
+|     | 信   |     |              |           | station[row |         | to][col           | to]   | ===          |     |
+|     |     |     |              |           | staircase   |         | entrance))        |       | {            |     |
+|     |     |     | var          | distance  | left        | =       | distanceLeft(row  |       | to, col to); |     |
+|     |     |     |              | passenger | in          | station | list [index][’min |       | distance’]   | =   |
+微
+|     |     |     |             | distance   | left;     |         |                     |            |        |     |
+| --- | --- | --- | ----------- | ---------- | --------- | ------- | ------------------- | ---------- | ------ | --- |
+|     |     |     |             | passenger  | in        | station | list [index][’row’] |            | = row  | to; |
+|     |     |     |             | passenger  | in        | station | list [index][’col’] |            | = col  | to; |
+|     |     |     | flag        | matrix[row |           | to][col | to]                 | = false;   |        |     |
+|     |     |     | station[row |            | to][col   |         | to] =               | passenger; |        |     |
+|     |     |     | station[row |            | from][col |         | from]               | = empty    | entry; |     |
+break;
+}
+}
+}
+buildCar();
+buildStaircase();
+37
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team # 4671 Page 38 of 40
+var timer = 0;
+function move passenger() {
+for (var index = 0; index < passenger in station list .length; ++
+index) {
+++passenger in station list[index][’time’];
+}
+M
+for (var row = 0; row < num row; ++row) {
+for (var col = 0; col < num col; ++col) {
+C
+flag matrix[row][col] = true;
+}
+} M
+for (var index passenger = 0; index passenger <
+i
+passenger in station list .length; ++index passenger) {
+H
+var current passenger = passenger in station list [
+index passenger];
+：
+// if (current passenger[’min distance’] === 0) {
+// // continue;
+// console.log(current passenger);
+// } 号
+// console.log(current passenger);
+var path list = findPathToNearestStaircase(current passenger[
+’row’], current passenger[’col’]);
+众
+var next position = undefined;
+var min left = num row + num col;
+公
+var choosen path;
+for (var i = 0; i < path list.length; ++i) {
+var path = path list[i];
+信if (path[’ distance left ’] < min left) {
+min left = path[’distance left ’];
+choosen path = path[’path’];
+}
+微
+// console.log(path[’ distance left ’]);
+}
+var empty entry counter = 0;
+for (var j = 0; j < choosen path.length &&
+empty entry counter < 2; ++j) {
+var position = choosen path[j];
+if ((station[position[’x’ ]][ position[’y’]] ===
+empty entry ||
+station[position[’x’ ]][ position[’y’]] ===
+staircase entrance) &&
+flag matrix[position[’x’ ]][ position[’y’]]) {
+++empty entry counter;
+38
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 39 of 40
+} else if (station[position[’x’ ]][ position[’y’]] ===
+passenger) {
+break;
+}
+next position = position;
+}
+if (next position !== undefined && flag matrix[next position[
+’x’]][next position[’y’]]) { M
+move passenger to(current passenger[’row’],
+current passenger[’col’], next position[’x’],
+C
+next position[’y’]);
+}
+} M
+passenger in station list .sort(function (m, n) {
+i
+return m[’min distance’] > n[’min distance’] ? 1 : (m[’
+H
+min distance’] < n[’min distance’] ? −1 : 0);
+})
+：
+for (var index staircase = 0; index staircase <
+staircase entrance list .length; ++index staircase) {
+var staircase tmp号= staircase entrance list [index staircase ];
+if (station[staircase tmp[’row’]][staircase tmp[’col’]] ===
+passenger) {
+if (time counter % 2 == 0) {
+众
+passenger time cost.push(
+get passenger time cost(staircase tmp[’
+row’], staircase tmp[’col’]));
+公
+}
+move passenger out of station(staircase tmp[’row’],
+staircase tmp[’col’]);
+信++passenger out station;
+}
+}
+微
+//get passenger out of car
+for (var i = 0; i < car list.length; ++i) {
+for (var j = 0; j < car list[i].length; ++j) {
+var row = car list[i][j][’row’];
+var col = car list[i][j][’left door’];
+if ( car list [i][j][’passenger in car’] > 0) {
+if (station[row][col] == empty entry) {
+station[row][col] = passenger;
+// setBitmap(row, col, passenger);
+car list [i][j][’passenger in car’]
+−= 1;
+move passenger into station(row, col);
+}
+39
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team # 4671 Page 40 of 40
+}
+col = car list[i][j][’right door’];
+if ( car list [i][j][’passenger in car’] > 0) {
+if (station[row][col] == empty entry) {
+station[row][col] = passenger;
+// setBitmap(row, col, passenger);
+car list [i][j][’passenger in car’]
+−= 1;
+move passenger into station(row, cMol);
+}
+}
+C
+}
+}
+M
+++time counter;
+++timer;
+i
+}
+H
+：
+while (passenger out station !== total number passenger) {
+move passenger();
+}
+passenger time cost.sort(function号(m, n) {
+return m > n ? 1 : (m < n ? −1 : 0);
+})
+众
+var total time cost = 0;
+for (var i = 0; i < passenger time cost.length; ++i) {
+total time cost += passenger time cost[i];
+公
+}
+console.log(total time cost / total number passenger);
+信
+微
+40
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

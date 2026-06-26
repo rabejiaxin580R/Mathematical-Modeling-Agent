@@ -1,0 +1,94 @@
+{
+  "schema_version": 3,
+  "concept_id": "pred.regularize",
+  "title": "回归正则化（Ridge/Lasso）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "预测方法",
+    "回归正则化（Ridge/Lasso）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.7",
+  "aliases": [
+    "正则化",
+    "Ridge",
+    "Lasso",
+    "岭回归",
+    "Elastic Net"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "回归正则化是一种在训练模型时给参数大小加“罚款”的方法，防止模型太复杂而记住噪声，从而在新数据上表现更好。",
+    "intuition": "想象你是一个学生，要背很多公式（特征）来准备考试。如果背得太细（过拟合），考试题目稍微变一下就不会了。正则化就像老师告诉你：不要死记硬背每个公式的每个细节，只记住最重要的部分，这样遇到新题也能灵活应对。Ridge（L2）会温和地压缩所有公式，让它们都变小但保留；Lasso（L1）则更狠，直接让一些不重要的公式变成零，只留下关键公式。",
+    "when_to_use": "当特征数量很多（甚至比样本还多）、特征之间高度相关、或者模型在训练集上表现很好但在测试集上很差（过拟合）时，就该考虑正则化。",
+    "definition": "回归正则化是在线性回归的损失函数（如均方误差）基础上，加入一个惩罚项来限制回归系数的大小，从而防止过拟合。常见的正则化方法有Ridge回归（L2惩罚）、Lasso回归（L1惩罚）和Elastic Net（L1+L2混合）。",
+    "math_principle": "线性回归的标准损失函数为均方误差：$\\text{MSE} = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\hat{y}_i)^2$，其中$\\hat{y}_i = \\beta_0 + \\sum_{j=1}^p \\beta_j x_{ij}$。正则化后的目标函数为：$J(\\beta) = \\text{MSE} + \\lambda \\cdot \\text{Penalty}(\\beta)$。对于Ridge，惩罚项为$\\lambda \\sum_{j=1}^p \\beta_j^2$；对于Lasso，惩罚项为$\\lambda \\sum_{j=1}^p |\\beta_j|$；Elastic Net则为$\\lambda_1 \\sum_{j=1}^p |\\beta_j| + \\lambda_2 \\sum_{j=1}^p \\beta_j^2$。$\\lambda$是超参数，控制惩罚力度：$\\lambda$越大，系数被压缩得越厉害。Lasso的L1惩罚会使一些系数精确为零，实现特征选择；Ridge的L2惩罚使系数趋近于零但不为零，适合处理多重共线性。",
+    "step_by_step": [
+      "1. 数据预处理：标准化所有特征（均值为0，标准差为1），因为正则化对特征尺度敏感。",
+      "2. 选择正则化方法：根据需求选择Ridge、Lasso或Elastic Net。",
+      "3. 确定超参数λ：通过交叉验证（如k折交叉验证）选择使验证集误差最小的λ值。",
+      "4. 训练模型：用选定的λ和正则化方法拟合训练数据，得到回归系数。",
+      "5. 评估模型：在测试集上评估性能，检查是否缓解过拟合。"
+    ],
+    "worked_example": "假设有3个样本，2个特征：X = [[1,2], [2,3], [3,4]]，y = [2, 3, 5]。先标准化特征（略）。使用Ridge回归，λ=0.1。目标函数：$J(\\beta) = \\frac{1}{3}\\sum (y_i - \\beta_0 - \\beta_1 x_{i1} - \\beta_2 x_{i2})^2 + 0.1(\\beta_1^2 + \\beta_2^2)$。通过最小化得到系数（计算略），假设结果为β0=0.2, β1=0.8, β2=0.5。对比普通线性回归（无正则化）可能得到β1=1.2, β2=0.9，可见Ridge压缩了系数。",
+    "pitfalls": [
+      "1. 需要特征标准化，否则正则化效果受特征尺度影响。",
+      "2. λ的选择很关键：太小则正则化效果不足，太大则欠拟合。通常用交叉验证确定。",
+      "3. Lasso在特征数量多于样本时最多只能选出n个非零系数（n为样本数），可能不够用。",
+      "4. 对于高度相关的特征组，Lasso会随机选择其中一个，而Ridge会保留所有但压缩系数，Elastic Net则能平衡。"
+    ],
+    "tools": "Python的scikit-learn库提供了Ridge、Lasso和ElasticNet类。最小可运行代码：\n```python\nfrom sklearn.linear_model import Ridge, Lasso, ElasticNet\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.model_selection import train_test_split\nimport numpy as np\n\n# 生成示例数据\nX = np.random.rand(100, 10)\ny = np.random.rand(100)\n\n# 标准化\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X)\n\n# Ridge回归\nridge = Ridge(alpha=0.1)  # alpha即λ\nridge.fit(X_scaled, y)\nprint(ridge.coef_)\n\n# Lasso回归\nlasso = Lasso(alpha=0.1)\nlasso.fit(X_scaled, y)\nprint(lasso.coef_)\n\n# Elastic Net\nenet = ElasticNet(alpha=0.1, l1_ratio=0.5)  # l1_ratio控制L1比例\nenet.fit(X_scaled, y)\nprint(enet.coef_)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "J(\\beta) = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_{ij})^2 + \\lambda \\sum_{j=1}^p \\beta_j^2",
+      "variables": {
+        "n": "样本数量",
+        "p": "特征数量",
+        "y_i": "第i个样本的真实值",
+        "x_{ij}": "第i个样本的第j个特征值",
+        "\\beta_0": "截距项",
+        "\\beta_j": "第j个特征的回归系数",
+        "\\lambda": "正则化强度超参数"
+      }
+    },
+    {
+      "latex_code": "J(\\beta) = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_{ij})^2 + \\lambda \\sum_{j=1}^p |\\beta_j|",
+      "variables": {
+        "n": "样本数量",
+        "p": "特征数量",
+        "y_i": "第i个样本的真实值",
+        "x_{ij}": "第i个样本的第j个特征值",
+        "\\beta_0": "截距项",
+        "\\beta_j": "第j个特征的回归系数",
+        "\\lambda": "正则化强度超参数"
+      }
+    },
+    {
+      "latex_code": "J(\\beta) = \\frac{1}{n}\\sum_{i=1}^n (y_i - \\beta_0 - \\sum_{j=1}^p \\beta_j x_{ij})^2 + \\lambda_1 \\sum_{j=1}^p |\\beta_j| + \\lambda_2 \\sum_{j=1}^p \\beta_j^2",
+      "variables": {
+        "n": "样本数量",
+        "p": "特征数量",
+        "y_i": "第i个样本的真实值",
+        "x_{ij}": "第i个样本的第j个特征值",
+        "\\beta_0": "截距项",
+        "\\beta_j": "第j个特征的回归系数",
+        "\\lambda_1": "L1正则化强度",
+        "\\lambda_2": "L2正则化强度"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C31",
+      "supp_I04"
+    ],
+    "from_papers": []
+  }
+}

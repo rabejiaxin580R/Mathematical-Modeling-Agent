@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.overfit",
+  "title": "过拟合与欠拟合",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "模型验证方法",
+    "过拟合与欠拟合"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.1",
+  "aliases": [
+    "过拟合",
+    "欠拟合",
+    "泛化"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "过拟合是模型在训练数据上表现太好，但在新数据上表现很差；欠拟合是模型连训练数据都学不好，表现很差。",
+    "intuition": "想象你准备一场考试：过拟合就像你死记硬背了所有练习题（包括印刷错误），结果考试题目稍微一变就不会了；欠拟合就像你只学了课本目录，连练习题都做不对。",
+    "when_to_use": "当你训练一个模型后，发现它在训练集上准确率很高，但在测试集上准确率很低时，要想到过拟合；当模型在训练集和测试集上准确率都很低时，要想到欠拟合。",
+    "definition": "过拟合：模型在训练数据上误差很低，但在测试数据上误差很高，通常因为模型过于复杂或训练数据不足。欠拟合：模型在训练数据和测试数据上误差都很高，通常因为模型过于简单或特征不足。",
+    "math_principle": "设训练集误差为 $E_{train}$，测试集误差为 $E_{test}$。过拟合时 $E_{train} \\ll E_{test}$，欠拟合时 $E_{train} \\approx E_{test} \\gg 0$。期望测试误差可分解为 $\\mathbb{E}[E_{test}] = \\text{Bias}^2 + \\text{Variance} + \\text{Irreducible Error}$。过拟合对应高方差（模型对训练数据波动敏感），欠拟合对应高偏差（模型假设过于简单）。",
+    "step_by_step": [
+      "1. 将数据集划分为训练集和测试集（或使用交叉验证）。",
+      "2. 训练一个初始模型（如线性回归、多项式回归等）。",
+      "3. 计算训练集误差和测试集误差。",
+      "4. 比较两者：若训练误差远小于测试误差，则可能过拟合；若两者都高，则可能欠拟合。",
+      "5. 针对过拟合：增加训练数据、降低模型复杂度（如减少多项式次数）、使用正则化（如L1/L2）、早停等。",
+      "6. 针对欠拟合：增加特征、提高模型复杂度（如增加多项式次数）、减少正则化强度等。",
+      "7. 重复步骤2-6，直到训练误差和测试误差都较低且接近。"
+    ],
+    "worked_example": "假设我们有一组数据点 $(x,y)$，尝试用多项式回归拟合。使用一次多项式（线性）时，训练误差为0.8，测试误差为0.9，两者都高，属于欠拟合。使用九次多项式时，训练误差为0.01，测试误差为1.2，训练误差远小于测试误差，属于过拟合。使用三次多项式时，训练误差为0.3，测试误差为0.35，两者都较低且接近，是合适的模型。",
+    "pitfalls": [
+      "过拟合不一定只发生在高次多项式，任何复杂模型都可能过拟合。",
+      "欠拟合不一定只因为模型简单，也可能因为特征选择不当或数据噪声大。",
+      "不要仅凭训练误差低就认为模型好，一定要用测试集或交叉验证评估。",
+      "正则化强度需要调参，太强会导致欠拟合，太弱则无法抑制过拟合。"
+    ],
+    "tools": "Python的scikit-learn库：使用`train_test_split`划分数据，`PolynomialFeatures`生成多项式特征，`LinearRegression`拟合，`Ridge`或`Lasso`进行正则化。示例代码：\n```python\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression, Ridge\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\n\n# 过拟合例子：高次多项式\npoly = PolynomialFeatures(degree=9)\nX_train_poly = poly.fit_transform(X_train)\nX_test_poly = poly.transform(X_test)\nmodel = LinearRegression().fit(X_train_poly, y_train)\ntrain_err = mean_squared_error(y_train, model.predict(X_train_poly))\ntest_err = mean_squared_error(y_test, model.predict(X_test_poly))\nprint(f\"Train error: {train_err:.3f}, Test error: {test_err:.3f}\")\n\n# 正则化缓解过拟合\nridge = Ridge(alpha=1.0).fit(X_train_poly, y_train)\ntrain_err_ridge = mean_squared_error(y_train, ridge.predict(X_train_poly))\ntest_err_ridge = mean_squared_error(y_test, ridge.predict(X_test_poly))\nprint(f\"Ridge - Train error: {train_err_ridge:.3f}, Test error: {test_err_ridge:.3f}\")\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\mathbb{E}[E_{test}] = \\text{Bias}^2 + \\text{Variance} + \\text{Irreducible Error}",
+      "variables": {
+        "\\mathbb{E}[E_{test}]": "期望测试误差",
+        "\\text{Bias}^2": "偏差平方",
+        "\\text{Variance}": "方差",
+        "\\text{Irreducible Error}": "不可约误差"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "lec005_007_02",
+      "lec006_007_02",
+      "supp_I03"
+    ],
+    "from_papers": []
+  }
+}

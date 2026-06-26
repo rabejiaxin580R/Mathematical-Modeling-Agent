@@ -1,0 +1,64 @@
+{
+  "schema_version": 3,
+  "paper_id": "2561",
+  "meta": {
+    "paper_id": "2561",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\B\\2561.pdf",
+    "kind": "pdf"
+  },
+  "concepts_used": [
+    {
+      "concept_id": "pred.multireg",
+      "title": "多元回归",
+      "stage": "build",
+      "how_used": "将变量分为四组（人口、教育、失业、监禁），从每组中选取与暴力犯罪相关性最高的一个变量，构建多元线性回归模型，并用相关系数加权组合三个单变量线性回归方程。",
+      "source_excerpt": "Finally, when we combined the three linear regressions together, we weighted each of the three equations by their correlation coefficient, and compiled it into one single multiple regression model. The correlation coefficient of the selected variables added up to 1.08 due to slight overlap, so we divided the result by 1.08 to get a multiple regression model to predict how county population, graduation rate and % of parole violation combined influence incidences of violent crime."
+    },
+    {
+      "concept_id": "corr.pearson",
+      "title": "Pearson 相关系数",
+      "stage": "build",
+      "how_used": "计算每个解释变量与暴力犯罪（或杀人案）的 Pearson 相关系数，用于筛选每组中最重要的变量。",
+      "source_excerpt": "Then, we just used calculator regressions to compare the correlation coefficients (r-squared) of the given variables and the incidents of violence. The correlation coefficients are on the following table:"
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "title": "非线性与指数模型拟合",
+      "stage": "solve",
+      "how_used": "对每个自变量（县人口、毕业率、假释违规百分比）分别拟合关于时间的高次多项式（八次、四次、三次），以得到变量随时间变化的函数，再代入多元回归模型。",
+      "source_excerpt": "As a result, for purposes of simplicity, a much simpler and direct cubic or quartic regression function was determined for all three variables."
+    },
+    {
+      "concept_id": "valid.residual",
+      "title": "残差分析与模型诊断",
+      "stage": "evaluate",
+      "how_used": "绘制预测值与实际值的残差图，观察残差是否随机分布，以判断模型拟合效果。",
+      "source_excerpt": "Figure 1.2.3: Residual graph of model. While the residuals comparing the actual graph and the predicted graph and are significant, they are fairly random and are within a reasonable margin considering how unpredictable real life statistics often are."
+    },
+    {
+      "concept_id": "math.matrix",
+      "title": "矩阵运算",
+      "stage": "solve",
+      "how_used": "使用矩阵求逆方法求解高次多项式插值系数，构造范德蒙德矩阵 [A] 和值向量 [B]，通过 [A]^{-1}[B] 得到多项式系数。",
+      "source_excerpt": "We started off by using matrices to solve for polynomial functions that would pass through every point on the statistics given using the following method [A]: [B]: ... Performing the operation [A]^{-1}[B] gave nine coefficients [a,b,c,d,e,f,g,h,i] which could be entered into the following function: f(x) = ax^0 + bx^1 + cx^2 + dx^3 + ex^4 + fx^5 + gx^6 + hx^7 + ix^8"
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "title": "模型假设的写法",
+      "stage": "assume",
+      "how_used": "列出6条模型假设，包括失业的周期性、毕业率等变量的因果性、犯罪报告率、政府干预限制等，为模型简化提供依据。",
+      "source_excerpt": "Assumptions: • Unemployment is cyclical... • Graduation rate, county population and parole violations are causative factors without any other variables... • This hypothetical county is in the United States of America... • All violent crimes are reported... • The government cannot do much about families in general... • The words 'curbing violence' in the question refers to violent crimes and disregards property crimes..."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "title": "常用图表类型及选择指南",
+      "stage": "write",
+      "how_used": "使用散点图展示失业率与暴力犯罪的关系（图1.1），以及预测值与实际值的对比图（图1.2.1、1.2.2等），并绘制残差图（图1.2.3）。",
+      "source_excerpt": "Figure 1.1: Incidents of violent crime as a function of unemployment rate. Figure 1.2.1: (Predicted model) Elastic multiple regression model for incidence of violence as a function of time. Figure 1.2.2: (Actual model) Incidence of violence as a function of time. Figure 1.2.3: Residual graph of model."
+    }
+  ]
+}

@@ -1,0 +1,1532 @@
+Team Control Number
+For office use only For office use only
+8206
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+Problem Chosen
+T3 ________________ F3 ________________
+A
+T4 ________________ F4 ________________
+2017
+HiMCM
+Summary Sheet
+Step aside, fireworks - traditional pyrotechnics now have a new competitor for
+lighting up the night sky! Intel recently performed a 3D light show using 500 LED-carrying
+M
+drones and captivated the world’s attention. The Mayor of our city asked our team to analyze
+the viability of a potential light show for our annual city festival, which would contain three
+separate displays: a Ferris wheel, a dragon, and a third display of our choCosing, which we
+elected to be an expanding balloon.
+M
+Intel’s Shooting Star drones are not commercially available, so we chose the DJI
+Phantom 3, a mid-priced drone with a long battery life and a pre-programmable GPS control
+system. The DJI Phantom 3s will be placed in a rectangular grid on the ground before the
+i
+show for easy set up. We mathematically modeled the paHths that each of these drones would
+take in performing a display demonstration using both MATLAB and Python algorithms. Our
+：
+drone’s paths were split up into three major phases: Transition from Grid to Display,
+Animation, and Transition from Display to Grid. The model we developed computed the
+position and velocity of the drones in each of these phases and generated an animation of
+号
+drone movement for each display.
+During the first phase (Transition from Grid to Display), a Python script uses the
+Hungarian Algorithm to compute the shortest set of paths between the grid location and the
+众
+initial points of the display. Our model also implements a collision avoidance protocol,
+which uses the predicted flight paths of the drones to fine-tune their velocities such that no
+drones collide.
+公
+Once the initial display image was formed during the first phase, we made the image
+dynamic by moving it around the aerial space in the Animation phase. The Ferris wheel’s
+spokes and wheel spin around its center while the entire Ferris wheel rotates around its
+信
+vertical axis so that the entire crowd can view it. The dragon follows a helical toroid curve,
+mimicking the traditionally portrayed movement of dragons. The balloon gradually expands
+as if it is being inflated by using a center of homothety at the bottom of the balloon to scale it
+微
+up over time. At the end of each animation phase, the drones return to the grid pattern before
+transforming into the next animation (Transition from Display to Grid).
+Our model indicates that this 3-display light show requires 196 drones (worth
+$97,804) and an airspace the size of a right cylinder whose base has a radius of 250 meters
+and whose height ranges from 10 meters to 115 meters above the ground. The show lasts 9.7
+minutes. We recommend that all viewers stand at least 15 meters away in the all directions
+from the drone-occupied airspace and that drones are only flown when wind speed is less
+than 11.72 m/s for safety reasons.
+Overall, our planned light show uses a variety of mathematical models to create a
+fluid and dynamic light display without any collisions, and is protected by enough regulations
+to ensure viewer safety. We’ve demonstrated that a drone light show is a viable and exciting
+prospect for our city’s festival.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 1 of 38
+Dear Mayor,
+Our team has looked into your proposal of hosting a drone light show for the upcoming
+annual festival for our city, and believe it would be a fantastic addition to the festival! Of
+course, drone light shows are a radiant display of cutting edge technology, so our city’s
+residents would be thrilled to have the chance to see one. Beyond spectacular visuals, drone
+light shows are also extremely beneficial to the city. Drone light shows seem expensive at
+first: the light show we have planned uses 196 DJI Phantom 3 Standards, which cost a
+total of $97,804. Nevertheless, the light show drones are an investment which will probably
+be profitable in the long-term; large cities like ours normally spend upwards of $100,000
+M
+on annual firework shows. By cutting back on the annual firework show and showing a
+drone display instead, the city can save some of its firework costs. Unlike fireworks, light
+show drones are reusable, so the city will continue to save moneyCat every festival where
+it shows the drone display. Replacing fireworks with drones also has health benefits for
+M
+the city. Studies have shown that fireworks can increase water and air pollution levels by
+orders of magnitude. We wholeheartedly recommend the drone show because it will save the
+city’s money, reduce pollution, and most importantly, bringia new exciting attraction to the
+H
+festival!
+We have mathematically modeled a full d：rone light show containing three animated
+formations: the Ferris wheel and Dragon you requested, and an expanding balloon of our
+own choice. Not only does our wheel in the Ferris wheel rotate normally, but the entire
+号
+Ferris wheel rotates sideways as well to show the complete three dimensions of the drone
+display. The Dragon is created through carefully placed circular and square drone sections.
+We programmed the Dragon to move along a helical torus pathway around the display area,
+众
+resembling a Dragon twisting and turning through the sky. For our final display, we used
+scalar vectors of homothety to mimic a slowly inflating balloon. The show lasts just under
+ten minutes, but the dro公nes have a battery life of 22 minutes in flight, so the show could
+conceivably be repeated twice within the drones’ battery life. We’ve included a diagram
+below do give you an idea of what the show may look like.
+信
+微
+To ensure that the drone fleet moves fluidly through the show without any collisions,
+we designed an algorithm to plot the optimal paths for each drone such that the entire
+fleet can move and transform at once without any crashes or hiccups. The algorithm uses
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 2 of 38
+a complex optimization algorithm called the Hungarian algorithm to assign each drone in
+the fleet to a position on the display while minimizing total flight distance and preventing
+path intersections. Then, the algorithm predicts the flight paths of every drone and adjusts
+the speed of each drone to prevent any possible collisions. Drones guided by this algorithm
+are incredibly coordinated and will not crash into each other, unless by a widespread major
+malfunction or disturbance outside of our control.
+Though our model does not take into account wind speed or turbulence, we have taken
+some precautions to have an idea of the effects they will cause. We have noted that a
+wind speed of more than 11.72 m/s can cause our drones to fail to follow their paths and
+potentially crash. As much as we would like to see this show succeed, we advise you to avoid
+M
+using these drones in harsh wind conditions and consider cancelling the drone show should
+the weather at the festival not permit it. In addition, we modeled the effects if we were
+C
+to unfortunately lose contact with on of our drones and have the drone fall uncontrollably.
+In order to ensure the safety of the viewers under catastrophic circumstances, viewers must
+M
+stay at least 15 meters away from the display area.
+Our launching area for the light show is quite small, only requiring a 45.4 m by 39.4 m
+i
+area. This launch area is efficient to set up and allows all 196 drones to be launched at once:
+H
+a team of two could accomplish it in a matter of hours. The show will require an airspace
+in the shape of a cylinder whose base radius i：s 250 meters and whose height ranges from
+10 m to 115 m from the ground, with a 15 m perimeter around it to ensure viewer safety.
+Although this is a large area to cover, it is necessary to rope off this area to ensure viewer
+号
+safety. Because the show is airborne, it could be held over a body of water if a 250 m by 250
+m area is unfeasible to clear off on land.
+Detailed descriptions and figures of the light show images, animations, computer algo-
+众
+rithms, launch requirements, safety analysis, and model testing are available in the attached
+paper. We hope you will support our proposal and if so, we look forward to seeing the show
+at the festival! 公
+信
+Sincerely,
+Team 8206
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 3 of 38
+1 Introduction
+1.1 Problem Restatement
+Drone Light Shows have recently captivated the world’s attention, and millions of people
+have been awed by the colorful, dynamic sights present in these demonstrations. Intel(cid:13)R
+has shown in the past year that automated drones that house LED lights have immense
+potential to perform spectacular light shows and customized performances [1]. In October
+2016, Intel(cid:13)R set the Guinness World Record of largest drone fleet, with 500 drones flying in
+a custom drone LED light show. In January 2017, 300 of these drones made a reappearance
+in the Super Bowl LI Half-Time Show with Lady Gaga [2]. While onlyMa few large-scale
+drone light shows have been conducted, many people are already claiming that this new
+form of entertainment will “Make Fireworks Obsolete” [3]. The MayCor of our city wishes to
+provide their residents with this incredible experience, and has requested us to investigate
+the potential of conducting a drone light show the city’s upcoMming annual festival.
+In order to model, coordinate, and execute a drone light show, there are a multitude of
+factors to consider. First, and perhaps the most economicailly important question, is how
+many drones are needed for the light show; having tooHfew would form an image that is not
+sharp enough, while using too many is not financially viable.
+：
+Next, it is important to determine the initial locations and paths of each of the drones for
+each of the 3 displays so we know location from which the drones should be launched. We
+must also take into consideration the lau号nch area, safety regulations, air space, and duration
+of the light show.
+Tosuccessfullyexecutethelightshow, eachdroneneedstobeautonomouslyprogrammed
+众
+to follow a specific path. More specifically, the drone must be able to fly the given route in
+time and avoid collisions with other drones on the way to its destination. In this paper, we
+describe our mathematical modeling of a drone light show which contains a Ferris wheel, a
+公
+Dragon, and a balloon.
+信
+1.2 Analysis of the Problem
+Although Intel(cid:13)R established the precedent for drone light shows, the Shooting StarTM LED
+微
+drones Intel(cid:13)R uses are not available for retail. We reviewed commercially available alterna-
+tives to the Intel(cid:13)R Shooting StarTM, and propose using DJI’s Phantom 3 Standard drone in
+our light show. It is a mid-priced drone, retailing at $499.00 [4], and its speed, battery life,
+and control range are fairly standard of drones of similar price ranges. However, what makes
+the Phantom 3 stand out is its autopilot flight control mode. Before flight, the Phantom 3’s
+path can be pre-programmed into GPS “waypoints,” allowing the user to define its position,
+altitude, speed, and heading at each waypoint [5]. This feature can be used to control the
+flight paths of every drone in the light show. For our light show, we have mathematically
+modeled the flight paths of each drone formation. These models can be used to parametri-
+cally program the Phantom 3s to autopilot through the formations of the light show. The
+Phantom 3 also comes equipped with a video camera, which can be easily removed and
+replaced with a bright LED. Because of its autopilot features and relative inexpensiveness,
+we believe that the Phantom 3 is the most suitable drone for our purposes.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 4 of 38
+The light show we designed use a total of 196 drones. As each Phantom 3 costs $499.00,
+the drone fleet for our show will cost approximately $97,804. This seems like a hefty price
+for a light show, but in the long term it is an investment that will actually save the city
+money. Large cities spend enormous amounts of money on their firework shows: in 2016,
+Houston spent $100,000 on its 4th of July fireworks show [6]. By investing in a drone light
+show, our city can save money over the next several years by cutting back on fireworks and
+reusing the light show drones instead. Fireworks are also a hazard to health and safety: a
+study in the journal Environmental Science & Technology found that perchlorate levels in
+the water of Oklahoma Lake rises up to 1,028 times above background levels within 14 hours
+of July 4th, and a Chinese study found the air pollution levels in Beijing five times higher
+M
+than normal during the 2006 Lantern Festival, a celebration in which fireworks are heavily
+used [7]. By switching to drone light shows, we can save money and reduce pollution in the
+C
+city by cutting back on fireworks used during the festival.
+M
+2 Assumptions and Justifications
+i
+• Assumption: The light show occurs during favHorable weather conditions for drone
+flight.
+：
+– Justification: Weatherisaseriousfactorinthesafetyandviabilityofdroneflights.
+Intel(cid:13)R engineers have stated they “buffer in some days for environmental factors”
+号
+for their public light shows drones [8]. We expect the mayor to have scheduled
+the show during favorable weather and to call off the show if the weather is not
+suitable for flight. 众
+• Assumption: Drones cannot move faster than 16 m/s horizontally or 3 m/s vertically.
+公
+– Justification: DJI lists these as the maximum Phantom 3 flight speeds [4].
+• Assumption信: Drones have a maximum acceleration of 3.725 m/s2.
+– Justification: The Phantom 3 can accelerate from 0 to 40 mph in 4.8 seconds.
+微This is equivalent to 17.88 m/s in 4.8 seconds, or 3.725 m/s2 [9].
+• Assumption: Drone LED lights are visible within the entire arena
+– Justification: The LED lights can be seen clearly in the given video of Intel(cid:13)R’s
+drone light show from several hundred feet away. We will be using comparable
+LEDs, so they should be similarly viewable.
+• Assumption: Drones can not fly above human viewers and must remain below 121.92
+m in altitude.
+– Justification: AfundamentalFederalAviationAdministration(FAA)requirement
+for unmanned aerial vehicles is that they cannot exceed 121.92 m (400 ft) in
+altitude [10]. In addition, the FAA requires that drones are not flown directly
+above human viewers for safety purposes [11].
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206 |     |     | HiMCM 2017 | Page 5 | of 38 |
+| --------- | --- | --- | ---------- | ------ | ----- |
+• Assumption: Drones cannot fly within 3 meters of each other horizontally and 1 meters
+| of  | each other | vertically. |     |     |     |
+| --- | ---------- | ----------- | --- | --- | --- |
+– Justification: The accuracy of the drones’ GPS positioning system is ± 1.5 meters
+horizontally and ± 0.5 meters vertically [4], so they must be spaced appropriately
+|     | to avoid | collisions. |     |     |     |
+| --- | -------- | ----------- | --- | --- | --- |
+• Assumption: The drone light show must last 20 minutes or less.
+– Justification: The Phantom 3 has a battery life of 22 minutes of flight time [4].
+Landing the drones after 20 minutes gives a few minutes of buMffer time to ensure
+|     | no drones | lose power | in flight. |     |     |
+| --- | --------- | ---------- | ---------- | --- | --- |
+C
+• Assumption: Droneswillnotgreatlyinterferewitheachotherdrones’flightpathswhen
+| spaced | properly. |     |     |     |     |
+| ------ | --------- | --- | --- | --- | --- |
+M
+– Justification: Calculatingtheturbulenceandairpressurescausedbyeachindivid-
+ual drone on the air would greatly complicate ourimodel. NASA modeled the air
+H
+turbulence of drones earlier this year, and used several supercomputers to model
+it computationally [12]. This is not：feasible in our model, so we assume that the
+drone’s auto-pilot will be able to account for any minor air fluctuations during
+|     | the light | show. |     |     |     |
+| --- | --------- | ----- | --- | --- | --- |
+号
+| 3 Problem |     | Analysis |     |     |     |
+| --------- | --- | -------- | --- | --- | --- |
+众
+| 3.1 | Initial Drone | Positions |     |     |     |
+| --- | ------------- | --------- | --- | --- | --- |
+公
+Theinitialpositionofthedronesarecrucialinensuringthattheoperatorsplacethedronesin
+the proper configuration. While the operators could place the drones in a display-dependent
+prearranged pattern on the ground to make the model’s computation easier, we chose to
+信
+arrange the drones in a rectangular grid. This results in a slightly more complex flight
+path computation, but significantly decreases the difficulty associated with setting up the
+and微results Intel(cid:13)R
+drone in less work for the operators. uses the same technique, so the grid
+| arrangement | is a | tested and | proven method. |     |     |
+| ----------- | ---- | ---------- | -------------- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 6 of 38
+M
+Figure 1: The initial grid arrangement Intel(cid:13)R Shooting StarTM Drones during a 2016 test
+flight in Palm Springs, California [13]
+C
+The DJI Phantom 3 drone has a horizontal GPS hover accuMracy is ±1.5 m [4]. Therefore,
+in order to ensure our drones do not collide into each other because of variations in GPS
+signal, we spaced the drones out by 3 m in each direction. The drone operators would place
+i
+the drones on the ground in this grid pattern, and onceHthe drones are turned on, they would
+hover in this grid pattern before starting the display. Additionally, the drones will return to
+：
+this initial grid pattern upon completing a display before moving to a subsequent display.
+An example grid configuration for the Ferris wheel display is shown below.
+号
+众
+公
+信
+微
+Figure 2: Diagram illustrating the initial positions for drones in Ferris wheel display. 99
+drones are arranged in a grid pattern separated by 3.0 m.
+3.2 Drone Spatial Range
+Due to FFA regulations, we must constrain our drone altitudes to below 121.92 m. While
+the FAA does not provide a specific requirement for the minimum altitude of drones during
+public demonstrations, we established a lower altitude limit to ensure complete visibility for
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 7 of 38
+all viewers on the ground. We computed this lower altitude limit to be 10 m, as shown by
+the below illustration.
+M
+C
+M
+i
+H
+：
+Figure 3: Diagram demonstrating why the drone display must begin at least 10 m. The
+average male height is approximately 1.号75 m and the average female height is 1.5 m. Given
+that they stand a meter apart and the display is 100 ft away from them, the drone display
+must be at least 10 m above the ground to allow all viewers to see the entire display.
+众
+Thus, our altitude range for operating drones was determined to be 10 m to 121.92 m,
+approximately 110 meters of vertical space. The lateral range (length and width) of the
+公
+demonstration arena was different for each display, as these parameters not regulated by the
+FAA. The DJI Phantom 3 has an FCC-Compliant control range of 5 km, so the range of the
+drone does not re信strict our lateral range at all either [4].
+3.3 Number of Drones
+微
+We took the approach of attempting to maximize the size of each display in order to appeal
+to the large number of viewers. The number of drones was determined by using Python
+software to generate point clouds which resembled each illustration. The number of drones
+was changed by adjusting the resolution of the pointcloud. Once we determined that the
+object could most likely be properly identified as a Ferris wheel or as a Dragon, we stopped
+adding points. The specifics of the drones used in each display are detailed within Sections
+5-7.
+4 Drone Pathing and Collision Avoidance
+Our model splits the drone’s path into three major parts for each display. Part 1 is referred
+to as the Transition from Grid to Display, in which the drones move from their static hover
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206 |     |     | HiMCM 2017 |     | Page 8 | of 38 |
+| --------- | --- | --- | ---------- | --- | ------ | ----- |
+state above the ground into their display configuration. Part 2 is referred to as Animation, in
+which the drones move about the area and animate their particular display object to convey
+movement. Part 3 is referred to as Transition from Display to Grid, in which the drones
+move back to hovering in a grid formation after completing the animation. The algorithms
+used for parts 1 and 3 are described in general in this section and more specifically for each
+display in Sections 5-7. Part 2, Animation, is display-specific, and is detailed in Sections 5-7.
+| 4.1 Drone | Path | Mapping |     |     |     |     |
+| --------- | ---- | ------- | --- | --- | --- | --- |
+Our model creates a path for each drone from its initial position in the grid to one point
+M
+on the display formation. Since the shortest path between two points is a linear path, we
+decided to assign all drones to a linear path to their destination in the display. Our decision
+Intel(cid:13)R tCo
+to use linear paths is corroborated by the fact that appears be using linear paths
+StarTM
+for their Shooting drones in public demonstrations [1]. We developed an algorithm in
+M
+which the sum of the flight path distances was minimized. This shortest linear path method
+| improves efficiency | by  | reducing battery | drain. |     |     |     |
+| ------------------- | --- | ---------------- | ------ | --- | --- | --- |
+Minimizing path length not only minimizes transition tiime, but also contains no inter-
+H
+secting paths, as proven by the Extremal Principle. Consider for the sake of contradiction
+a mapping between two graphs with two inters：ecting paths that also minimizes the sum of
+| path lengths, | S , as shown | in Figure | 4.  |     |     |     |
+| ------------- | ------------ | --------- | --- | --- | --- | --- |
+m
+号
+众
+公
+信
+微
+Figure 4: This is a intersection of the paths between red and blue with A traveling to C and
+| B traveling | to D.                |           |             |          |     |     |
+| ----------- | -------------------- | --------- | ----------- | -------- | --- | --- |
+| By the      | Triangle Inequality, |           |             |          |     |     |
+|             |                      | AE        | +DE ≥ AD,BE | +CE ≥ BC |     |     |
+|             |                      | So,AE +DE | +BE +CE     | ≥ AD+BC  |     |     |
+|             |                      |           | AC +BD      | ≥ AD+BC  |     |     |
+So if there was an intersection in S , then that is not the mapping with the shortest
+m
+sum of flight paths since connecting A to D and B to C produces a shorter mapping. This
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 9 of 38
+contradicts the previous assumption of S having a intersection. A successful mapping and
+m
+computation of shortest sum of paths means that there are no intersection between the paths
+of the drones. This proof validates our theory that the shortest sum of flight paths method
+is effective and will contain no intersections, so we proceeded with this method.
+Finding the matching of the shortest sum of flight paths is an example of the well known
+assignmentproblem. Theassignmentproblemfindstheminimumsumtomatchthepointsof
+a weighted bipartite graph together. In the scenario of a drone light show, it is the mapping
+with the smallest sum of distances between the initial and final points in a formation. We
+designed a drone pathing algorithm to find the optimal transition mapping and prevent as
+many drone collisions as possible.
+M
+4.2 Computational Model
+C
+The Hungarian Algorithm is a common solution to the assignment problem that solves
+M
+the problem in O(n3) time, which is computationally fast enough considering n’ is on the
+magnitude of 100’s. A flowchart of the Hungarian Algorithm is show in Figure 5 below.
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 5: The Hungarian Algorithm works by observing the distance matrix and progres-
+sively reducing rows and columns, until an optimal solution occurs where each chosen worker
+and job, there is no better worker to complete this job and no other job the worker could
+better do.
+Although employing the Hungarian algorithm in our solution prevent the drone paths
+from crossing, the drones occupy a physical space around their respective paths, so the
+Hungarian algorithm alone is insufficient to prevent collisions. For two drones with closely-
+intersecting paths to not collide and crash, they must travel down their respective paths at
+different speeds so they cross the point of incidence at different times. Thus, each drone must
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 10 of 38
+move at a specific speed down its path such that the space of no two drones will overlap
+during the whole transition. To find these speeds, we simulated drone movement during
+transitions using a Python program. A flowchart of the program is shown in Figure 6 below:
+M
+C
+M
+i
+H
+：
+号
+众
+Figure 6: Diagram of drone transition simulation. The program takes in a set of initial
+and final coordinates, max drone speed, a time iteration step size, and x, y, and z collision
+distancesasinputs, ando公utputsthetimeneededfortheformationtoassemble. Theprogram
+starts by pairing initial and final points using the Hungarian algorithm, then creating drones
+at each of the starting locations. 3 m/s maximum speed, 0.1 second step size, ±0.5 meter x
+and y collisions di信stances, and ±0.2 meter z collision distances were used in our simulations.
+In each iteration of the simulation, the program checks for collisions. If any collisions are
+detected, the paths of the two colliding drones are offset by reducing the speed of the drone
+微
+with the shorter path length. Then, the simulation is reset with the updated speed(s). This
+back-propagating speed determination method is repeated until all drones complete their
+paths without colliding.
+We used the Python program to simulate the formation of all three designs described
+later in the paper. The program calculated that it would take 38.0 seconds to form the Ferris
+wheel and 19.6 seconds to form the balloon. Unfortunately, due to the high computational
+cost and runtime, we were unable to predict the formation time of the Dragon display within
+permitted time limit, so we estimated it to take about 30 seconds based on other results.
+We suspect that the Dragon display’s complex geometry produced this high runtime.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 11 of 38
+4.3 Transition from Display to Grid
+Planningapathforthedronestomovebackfromthedisplaytothegridaftertheycompleted
+the animation is relatively simple. We reversed the paths that the drones took in Part 1 of
+their path (Transition from Grid to Display) to compute their paths for their transition back
+to the grid. The paths still do not intersect and are the most efficient way to return to the
+grid. So, only Part 1 (Transition from Grid to Display) is discussed in Sections 5-7 to avoid
+redundancy.
+5 Ferris Wheel Model
+M
+5.1 Definition
+C
+From now on, we introduce some notation to properly describe the paths of the drones.
+M
+Define the position vector as (cid:126)s(t) and the velocity vector as (cid:126)v(t). Any vector with a hat
+written in the form uˆ represents a unit vector of a vector (cid:126)u.
+i
+H
+5.2 Number of Drones
+：
+Our model of the Ferris wheel consists of one wheel of a inner and outer circle, with 12 spokes
+connecting the inner and outer circle. On either side of the wheel are 2 legs of an isosceles
+号
+triangle serving as a base to “support” the wheel. 36 drones were used to create the outer
+circle and another 36 were used to create the spokes. 1 drone was used for the center, and
+13 were used for each of the two triangular bases, resulting in a total of 99 drones.
+众
+5.3 Transition from Grid to Ferris Wheel
+公
+The Ferris wheel required 99 drones, so the drones were arranged on the ground in a 9 by 11
+grid of drones whose center would be directly beneath the center of the Ferris wheel. Each
+信
+drone was assigned a target position on the Ferris wheel to transition from the grid to the
+Ferris wheel display. In order to compute the ideal target Ferris wheel position and the path
+of each drone, the Hungarian algorithm described in Section 3.4 was used.
+微
+The initial grid locations are illustrated in left the section of the below figure. The drones
+then moved along their linear paths to arrive at their Ferris wheel display destinations, as
+illustrated in right section of the below figure.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 12 of 38
+M
+C
+M
+i
+H
+Figure 7: Left: The initial points of the drones before transitioning to the Ferris wheel.
+Right: Drones after movement to Ferris wheel display. The drones are color-coded based
+：
+on their initial location, showing that the Hungarian algorithm sorts the drones laterally to
+avoid collisions. Different perspectives of the Ferris wheel are in Appendix C.
+号
+A digital animation which illustrates the movement of the points from their initial grid
+to display positions can be found at: https://www.youtube.com/watch?v=NDoO-spFgyk
+众
+We computed vectors which represent the path of each drone from their optimized initial
+positions to their final position in the display, illustrated below in Figure 8.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 13 of 38
+M
+C
+M
+i
+H
+：
+Figure 8: Mapping of all of the points from the grid to the Ferris wheel by using the
+Hungarian Algorithm. Due to the Extremal Principal, none of the mapped lines cross over
+each other.
+号
+Additionally, we graphed the distanced traveled by each drone along their respective
+paths, displayed in Figure 9 belo众w.
+公
+信
+微
+Figure 9: The distance traveled by the drones while transitioning to the Ferris wheel display.
+The Drone ID is simply a unique number assigned to each of the drones. The Hungarian
+algorithm ensures that all distances travelled are relatively low and eliminates any outliers
+in mapping.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206     |     |     |        | HiMCM | 2017 |     | Page 14 | of 38 |
+| ------------- | --- | --- | ------ | ----- | ---- | --- | ------- | ----- |
+| 5.4 Animation |     | of  | Ferris | Wheel |      |     |         |       |
+For our Ferris wheel display, we wanted the viewer to be able to not only see the rotation
+of the Ferris wheel’s wheel, but also to view the sides and back of the Ferris wheel. To
+accomplish this, we made our Ferris wheel rotate on the vertical axis from the top of the
+wheel to the base in addition to having the wheel rotate. This would allow viewers to see
+| the all parts | of the | Ferris wheel, | not | just | one side. |     |     |     |
+| ------------- | ------ | ------------- | --- | ---- | --------- | --- | --- | --- |
+M
+C
+M
+i
+H
+：
+Figure 10: Diagram of the motion of th号e Ferris wheel. The isolated wheel rotates about the
+axis orthogonal to z and r. The whole wheel, including the base, rotates about the z axis.
+The r axis moves dynamically with the rotation of the Ferris wheel.
+众
+If we consider the rotation of the Ferris wheel (excluding the base)about the dynamic axis
+orthagonal to z and r, we can model the path of the drones on that wheel as a parametric
+公
+| equation | of a circle.   | This can | be  | expressed | in two axes | z and r.  |     |     |
+| -------- | -------------- | -------- | --- | --------- | ----------- | --------- | --- | --- |
+|          | 信(cid:126)s(t) |          | =<  | r,z >=<   | r cos(bt),r | sin(bt) > |     |     |
+|          |                |          |     |           | 0           | 0         |     |     |
+b is 2π/P, where P is the period of the wheel, and r is the radius of the Ferris wheel which
+0
+is 40 m on微the outer wheel and decreases by 10 m for each subsequent ring.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM 2017 |     |     |     | Page 15 | of 38 |
+| --------- | --- | --- | ---------- | --- | --- | --- | ------- | ----- |
+M
+C
+M
+i
+H
+：
+|     | Figure | 11: A graph | of the relation | between | (cid:126)r and | x,y. |     |     |
+| --- | ------ | ----------- | --------------- | ------- | -------------- | ---- | --- | --- |
+号
+However r is not a constant axis: it rotates with the Ferris wheel. If we say the Ferris
+wheel rotates on a period of 2π/a, we can express x and y in terms of a,b,t.
+whee众l:
+| Vector | function for      | the                                     |     |     |     |          |     |     |
+| ------ | ----------------- | --------------------------------------- | --- | --- | --- | -------- | --- | --- |
+|        | (cid:126)s(t) = r | < cos(at)cos(bt),cos(at)sin(bt),cos(bt) |     |     | > + | < 0,0,80 | >   |     |
+0
+公
+We now wish to find the velocity and make sure the max velocity is under 3 m/s.
+(cid:126)v(t) = r < −a∗sin(at)cos(bt)−b∗cos(at)sin(bt),a∗cos(at)cos(bt)−b∗sin(at)sin(bt),b∗cos(bt) >
+0
+信
+|     |     | ((cid:107)(cid:126)v(t)(cid:107))2 | = r2 ∗(a2cos2(bt)+b2) |     |     |     |     |     |
+| --- | --- | ---------------------------------- | --------------------- | --- | --- | --- | --- | --- |
+0
+This shows that the highest speed a drone would have to fly in this configuration is equal to
+| √   | 微   |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+r a2 +b2. To confine the drone speed below 3 m/s, we defined a = 1 and b = 1 . Thus,
+| 0   |     |     |     |     |     | 20  | 20  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+the wheel of the Ferris Wheel has a period of 40π seconds which is the same as the entire
+| Ferris Wheel’s | rotational | period. |     |     |     |     |     |     |
+| -------------- | ---------- | ------- | --- | --- | --- | --- | --- | --- |
+The rotation of the bases of the Ferris wheel can be modeled based on the rotation of
+the entire Ferris Wheel using(cid:126)s(t) =< rcos(at),rsin(at),z >, where r is the drone’s distance
+| from the   | z-axis. |        |     |     |     |     |     |     |
+| ---------- | ------- | ------ | --- | --- | --- | --- | --- | --- |
+| 6 Dragon   | Model   |        |     |     |     |     |     |     |
+| 6.1 Number | of      | Drones |     |     |     |     |     |     |
+To model the Dragon, we juxtaposed rings and squares of similar size along a line parallel
+| to the x axis | as shown | below. |     |     |     |     |     |     |
+| ------------- | -------- | ------ | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 16 of 38
+M
+C
+Figure 12: A 3D point cloud of the rings and squares placed to create the image of the
+Dragon.
+M
+AlthoughthemodeldoesnotperfectlyaestheticallyrepresentaDragon, thecrosssections
+i
+of the Dragon (the rings and squares) can be modifiedHto account for this by adding ears,
+eyes, teeth, and legs in future iterations. The particular cross sections of this model and the
+：
+number of drones found in each cross section is described in Appendix A. The total number
+of drones used for our Dragon was 196.
+号
+6.2 Transition from Grid to Dragon
+As with the transition to the Fe众rris wheel, the paths of the drones used in the transition to
+the Dragon display were found by using the Hungarian algorithm.
+The initial grid locations are illustrated in left the section of the below figure. The drones
+公
+then moved along their linear paths to arrive at their Ferris wheel display destinations, as
+illustrated in right section of the below figure.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 17 of 38
+M
+C
+M
+Figure 13: Left: The initial points of the drones before transitioning to the Dragon display.
+Right: Drones after movement to Dragon display. Differentiperspectives of the Dragon are
+H
+found in Appendix D.
+：
+A digital animation which illustrates the movement of the points from their initial grid
+to display positions can be found here: https://www.youtube.com/watch?v=4D8Gh0yg 00
+We computed vectors which represen号t the path of each drone from their optimized initial
+positions to their final position in the display, and they are illustrated below.
+众
+公
+信
+微
+Figure 14: The paths of each drone moving from its respective initial location to final
+location.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206 |     |     | HiMCM | 2017 |     | Page 18 | of 38 |
+| --------- | --- | --- | ----- | ---- | --- | ------- | ----- |
+Additionally, we computed the distance traveled by each drone along its respective path,
+| which is displayed | below. |     |     |     |     |     |     |
+| ------------------ | ------ | --- | --- | --- | --- | --- | --- |
+M
+C
+M
+i
+Figure 15: The distance traveled by of each of the drones H while transitioning to the Dragon
+display.
+：
+| 6.3 Animation |     | of Dragon |     |     |     |     |     |
+| ------------- | --- | --------- | --- | --- | --- | --- | --- |
+号
+In order to accurately represent the movement of a mythical Dragon, we wanted the Dragon
+to move around the field in a twisting, helical path. So, we made our Dragon follow the
+众
+vector path of a helical toroid around the city, to mimic Dragons’ movement patterns.
+| A general | diagram | of a toroid | is shown below. |     |     |     |     |
+| --------- | ------- | ----------- | --------------- | --- | --- | --- | --- |
+公
+信
+微
+|             | Figure   | 16: Representation |     | of a general | toroid.[14] |     |     |
+| ----------- | -------- | ------------------ | --- | ------------ | ----------- | --- | --- |
+| The general | equation | of a toroid        | is  |              |             |     |     |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |      | HiMCM                   | 2017         |     | Page 19 | of 38 |
+| --------- | --- | ---- | ----------------------- | ------------ | --- | ------- | ----- |
+|           |     | x(t) | = R+r∗cos(w∗t))∗cos(t)  |              |     |         |       |
+|           |     | y(t) | = (R+r∗cos(w∗t))∗sin(t) |              |     |         |       |
+|           |     |      | z(t)                    | = r∗sin(w∗t) |     |         |       |
+where r represents the minor radius of the torus, R represents the major radius of the
+torus, and w represents the number of winds that the function makes throughout one loop
+of the torus.
+Wechosetousethebelowparameterstoconstructareasonably-sizedpathfortheDragon
+M
+|     |     | R = | 100m, | r = 25m, | w = 4 |     |     |
+| --- | --- | --- | ----- | -------- | ----- | --- | --- |
+C
+| Our specific | toroid with | the Dragon | overlaid | is displayed | below. |     |     |
+| ------------ | ----------- | ---------- | -------- | ------------ | ------ | --- | --- |
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 17: The Dragon on the helical toroidal path. Different perspectives are found in
+| Appendix | D.  |     |     |     |     |     |     |
+| -------- | --- | --- | --- | --- | --- | --- | --- |
+We wanted the center of the head and the center of each circular section to follow the
+path of the toroid. This was done by orienting the plane of each circular section and the
+medial plane of the head of the Dragon to be perpendicular to the path on which the circular
+section or head is traveling. To find the path that each ring and the head would follow, we
+generated the following vector curve from the shape of the torus using our previously defined
+parameters.
+(cid:126)s(t) =< (100+25cos(4at))cos(at),(100+25cos(4at))sin(at),25sin(4at)+75 >
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM 2017 |     |     | Page 20 | of 38 |
+| --------- | --- | --- | ---------- | --- | --- | ------- | ----- |
+We included the +75 in the z-component, to be the average height of the helical torus to
+ensure the Dragon was in the air at 75 m, and a = 2π/P, where P is the period of the
+| Dragon | to revolve | around the helical | toroidal path. |     |     |     |     |
+| ------ | ---------- | ------------------ | -------------- | --- | --- | --- | --- |
+To find the direction the Dragon is moving along, we calculated the velocity vector.
+|     |     |     | (cid:126)v(t) =< V ,V ,V | >=  |     |     |     |
+| --- | --- | --- | ------------------------ | --- | --- | --- | --- |
+x y z
+|     |     | < −asin(at)(100+25cos(4at))−100asin(4at)cos(at), |     |     |     |     |     |
+| --- | --- | ------------------------------------------------ | --- | --- | --- | --- | --- |
+acos(at)(100+25cos(4at))−100asin(4at)sin(at),
+|     |     |     | 100acos(4at) | >   |     |     |     |
+| --- | --- | --- | ------------ | --- | --- | --- | --- |
+M
+C
+M
+i
+H
+：
+号
+众
+公
+|     | 信Figure | 18: This | shows the relation | between the | vectors. |     |     |
+| --- | ------- | -------- | ------------------ | ----------- | -------- | --- | --- |
+As we want the plane of each ring to move along the helical torus in the direction that
+微
+its center is moving, we oriented the plane to be perpendicular to the velocity vector. We
+(cid:126)
+do this by finding a vector N(t) perpendicular to the (cid:126)v(t) such that the normal vector can
+be rotated about (cid:126)v(t) to create the Dragon’s circular section. Thus
+(cid:126)
+|     |     |     | N(t)·(cid:126)v(t) | = 0 |     |     |     |
+| --- | --- | --- | ------------------ | --- | --- | --- | --- |
+The set of points that the terminal ends of each of the rotations of this vector N (cid:126) would be
+| each of | the drones, | in the oriented | plane. |     |     |     |     |
+| ------- | ----------- | --------------- | ------ | --- | --- | --- | --- |
+For a given ring, we wish to set the top drone such that is it’s projection on the xy-plane
+is the same direction as the velocity vector’s projection. So we wish for
+(cid:126)
+|     |     |     | N(t) =< v ,v | ,N > |     |     |     |
+| --- | --- | --- | ------------ | ---- | --- | --- | --- |
+x y z
+|     |     | (cid:126) |     |     | (V  | 2+V 2) |     |
+| --- | --- | --------- | --- | --- | --- | ------ | --- |
+for some N such that N (t)·(cid:126)v(t) = 0; solving for N gives us N = − x y .
+|     | z   |     |     | z   | z   | Vz  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM | 2017 | Page 21 | of 38 |
+| --------- | --- | --- | ----- | ---- | ------- | ----- |
+Next, we equally space the number of drones throughout that ring. We do this by finding
+|                |                | ˆ     | N(cid:126)(t) |     |     |     |
+| -------------- | -------------- | ----- | ------------- | --- | --- | --- |
+| the normalized | normal vector: | N (t) | = .           |     |     |     |
+(cid:107)N(cid:126)(t)(cid:107)
+ˆ
+To rotate N(t) around (cid:126)v(t) we use a rotation matrix, R that rotates vectors by a
+(θ,uˆ)
+| angle θ around | a given axis | u.  |     |     |     |     |
+| -------------- | ------------ | --- | --- | --- | --- | --- |
+| R =            |              |     |     |     |     |     |
+(θ,ˆ)
+M
+Then for each circular section C , with D drones in that section,Cthe drones would follow
+|     |     |     | i i |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+ˆ
+a path of (cid:126)s(t)+R ∗N (t)∗T, where θ = 2π for 1 ≤ n ≤ D and T is the radius of
+(n∗θ,(cid:126)v(t)) x
+Di M
+| the dragon’s | body. |     |     |     |     |     |
+| ------------ | ----- | --- | --- | --- | --- | --- |
+i
+H
+：
+号
+众
+公
+信
+ˆ
+Figure 19: This shows how TN(t) is rotated around (cid:126)v(t) to create the drones to form a ring
+| of a Drago微n. | This example | showcases | when D | = 8. |     |     |
+| ------------- | ------------ | --------- | ------ | ---- | --- | --- |
+i
+To calculate our initial parameter a, which represents the speed at which the Dragon
+moves through the toroid curve, we attempt to approximate the max velocity of the Dragon.
+The curve moves around the torus circle of radius R every 2π/a seconds, so it travels at R/a
+m/s on average. Doing so again for the circle of radius r in the torus, gives us a velocity of
+r/a m/s. Adding these together tell us the velocity of the drone is at most (R+r)/a = 125/a
+m/s. To ensure the velocity is lower than 3 m/s, we set a = 1 , so the period of the entire
+50
+| toroid curve | is 50π seconds. |     |     |     |     |     |
+| ------------ | --------------- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 22 of 38
+7 Balloon Model
+7.1 Number of Drones
+For our custom model, we decided to to create a balloon slowly being blown up and then
+eventually bursting when it became too big. To model this we assume the balloon is initially
+formed at some starting volume of 1 breath. Its geometry is shown in the figure below.
+M
+C
+M
+i
+H
+：
+号
+众
+Figure 20: A graphical description of the balloon’s initial starting position. Only the balloon
+公
+in the upper half will be affected by homothety, the string will remain constant.
+The balloon is信comprised of two hemispheres of radius 5 m, where the bottom hemisphere
+is stretched by a factor of 1.5 in the z-axis. The string is modeled by a sine wave of two
+periods with amplitude 5 m. The bottommost part of the string starts at z = 10m.
+微
+For drone placements, we plan to use 21 drones for the string, each drone placed π/5
+radians away along the sin curve.. This includes the drone at the center of homothety.
+Wemodeledtheballoonbyhorizontalringsplacedinaltitudes2.5mapart,startingatthe
+bottom of the balloon, z = 35m and ending at the top, z = 60m. We then created a grid of
+points such that distance between drones is roughly constant in both vertical and horizontal
+distances. To accomplish this we try to make drones on the same ring approximately 3 m
+apart from each other. We calculated the radius of either hemisphere at given heights.
+r(z) =
+ (cid:113)
+10 1−(1− z−35)2 35 ≤ z ≤ 50
+15
+(cid:113)
+10 1−(z−50)2 50 ≤ z ≤ 60
+10
+We then used this to calculate the circumference, 2πr(z) and put d(z) = (cid:98)2πr(z)(cid:99) drones
+3
+on each ring. We then spaced all the drones an equal distance from each other along the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206 |     |     |     | HiMCM | 2017 |     | Page 23 | of 38 |
+| --------- | --- | --- | --- | ----- | ---- | --- | ------- | ----- |
+circle of the balloon. This results in a total of 176 drones for the balloon. The locations of
+| the drones    | on a given   | ring   | at height  | z can be described | below.     |          |     |     |
+| ------------- | ------------ | ------ | ---------- | ------------------ | ---------- | -------- | --- | --- |
+| (cid:126)s(0) | =< r(z)∗cos( | 2π     | ,r(z)∗sin( | 2π ),z             | >, for 1 ≤ | i ≤ d(z) |     |     |
+|               |              | i∗d(z) |            | i∗d(z)             |            |          |     |     |
+A chart of the drone placement on the rings is attached in Appendix B.
+| 7.2 Transition |     | from | Grid | to Balloon |     |     |     |     |
+| -------------- | --- | ---- | ---- | ---------- | --- | --- | --- | --- |
+As with the transition to the Ferris wheel and the Dragon, the paths of the drones used
+in the transition to the balloon display were found by using the Hungarian algorithm. The
+initial grid locations are illustrated in left the section of the below figure. The drones then
+M
+moved along their linear paths to arrive at their Balloon display destinations, as illustrated
+| in right | section of | the below | figure. |     |     |     |     |     |
+| -------- | ---------- | --------- | ------- | --- | --- | --- | --- | --- |
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 21: Left: The initial points of the drones before transitioning to the Balloon. Right:
+| Drones | after movement | to  | Balloon | display. |     |     |     |     |
+| ------ | -------------- | --- | ------- | -------- | --- | --- | --- | --- |
+A digital animation which illustrates the movement of the points from their initial grid
+to display positions can be found here: https://www.youtube.com/watch?v=N6eDCU Aco8
+We computed vectors which represent the path of each drone from their optimized initial
+positions to their final position in the display, and they are illustrated below.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 24 of 38
+M
+C
+M
+i
+H
+：
+号
+Figure 22: The paths of each drone moving from its respective initial location to final
+location.
+众
+Additionally, we computed the distance traveled by each drone along its respective path,
+which is displayed below公.
+信
+微
+Figure 23: The distance traveled by of each of the drones while transitioning to the balloon
+display.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206     |     |            | HiMCM | 2017 |     | Page 25 | of 38 |
+| ------------- | --- | ---------- | ----- | ---- | --- | ------- | ----- |
+| 7.3 Animation |     | of Balloon |       |      |     |         |       |
+We use the bottom point of the balloon as a center of homothety to base our scaling of the
+balloon as it is. To determine the scaling factor k(t) we assume a cubic relation between
+| length and | volume. So |     |        |       |     |     |     |
+| ---------- | ---------- | --- | ------ | ----- | --- | --- | --- |
+|            |            |     | V(t) ∝ | k(t)3 |     |     |     |
+Wewishtodisplaytheprocessoftheballoonbeingblownupandtheneventuallypopping.
+We assume a person blows an equal amount of air each breath and takes 1 second to inhale
+and 3 seconds to exhale from personal testing. We assume a constant rate of breath while
+M
+| exhaling | we can express | V(t) as such. | V(t) = |     |     |     |     |
+| -------- | -------------- | ------------- | ------ | --- | --- | --- | --- |
+(cid:40)
+N C
+|     |     | x − n−4 | 4n−4 ≤ | x ≤ 4n−1,n | ∈   |     |     |
+| --- | --- | ------- | ------ | ---------- | --- | --- | --- |
+|     |     | 3 3     |        |            |     |     |     |
+|     |     | n+1     | 4n−1 ≤ | x ≤ 4n,n   | ∈ N |     |     |
+M
+| So k(t) | = (V(t))1. | Since V(0) = | 1, we can | say k(t) = | (V(t))1 |     |     |
+| ------- | ---------- | ------------ | --------- | ---------- | ------- | --- | --- |
+|         | 3          |              |           |            | 3       |     |     |
+|         | V(0)       |              |           |            | i       |     |     |
+H
+：
+号
+众
+公
+信
+|     | Figure | 24: The | graphs of V(t) | and k(t) | for 0 ≤ t ≤ 10. |     |     |
+| --- | ------ | ------- | -------------- | -------- | --------------- | --- | --- |
+Scaling微works by first finding the displacement vector between, (cid:126)x, between the center of
+homothety and the original drone position. When scaled by a factor k, the new displacement
+x(cid:126)(cid:48)
+| vector should | satisfy | = k(cid:126)x. |     |     |     |     |     |
+| ------------- | ------- | -------------- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM 2017 |     |     | Page 26 | of 38 |
+| --------- | --- | --- | ---------- | --- | --- | ------- | ----- |
+M
+C
+Figure 25: An example of using a homothety center to scale an image I. Notice A and its
+M
+|        |                         |             |               | (cid:126)        | (cid:126) |     |     |
+| ------ | ----------------------- | ----------- | ------------- | ---------------- | --------- | --- | --- |
+| scaled | version A(cid:48). Here | the scaling | factor k = 4. | So O A(cid:48) = | 4O A      |     |     |
+So the paths of a given drone starting at (cid:126)s is (cid:126)s(t) =< 0,0i,35 > +k(t)∗((cid:126)s− < 0,0,35 >).
+H
+We wish to show that our drones can actually fly this path so we attempt to find the max
+| velocity | a drone must | fly. | ：   |     |     |     |     |
+| -------- | ------------ | ---- | --- | --- | --- | --- | --- |
+k(cid:48)(t)∗(cid:126)s
+(cid:126)v(t) =
+号
+(cid:107)(cid:126)v(t)(cid:107) = k(cid:48)(t)∗(cid:107)(cid:126)s(cid:107)
+众
+1
+k(t) = V(t)
+3
+| By implicit | differentiatio公n, |     |     |     |     |     |     |
+| ----------- | ----------------- | --- | --- | --- | --- | --- | --- |
+1
+V(t)−2
+|     |     |     | k(cid:48)(t) = | V(cid:48)(t) |     |     |     |
+| --- | --- | --- | -------------- | ------------ | --- | --- | --- |
+3
+|     | 信   |     | 3   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+ThemaxvalueofV(t)−2
+|     |     | occursatt | = 0whereV(t)isminimized. |     | Atthattime,V(t) |     | = 1, |
+| --- | --- | --------- | ------------------------ | --- | --------------- | --- | ---- |
+3
+therefore V(t)−2 = 1. At this time V(cid:48)(t) also reaches its maximal value of 1. So the max
+微3
+3
+value of k(cid:48)(t) is 1. The max value of (cid:107)(cid:126)s(cid:107) is 25, which occurs for the drone at the top of the
+9
+balloon. So even in worst conditions the max velocity of a drone in this display is 25 m/s,
+9
+| which | is under the | 3 m/s vertical speed | limit. |     |     |     |     |
+| ----- | ------------ | -------------------- | ------ | --- | --- | --- | --- |
+We plan for the balloon to enlarge until k(t) = 3, where the max height of a drone is 110
+m, still within the allowed airspace. This occurs first at t = 103 s. A visualization of the
+| enlarged      | balloon is    | present in Appendix | E.  |     |     |     |     |
+| ------------- | ------------- | ------------------- | --- | --- | --- | --- | --- |
+| 8 Sensitivity |               | Analysis            |     |     |     |     |     |
+| 8.1           | Drone Failure |                     |     |     |     |     |     |
+A major risk in the light show is drone failure. All drones, even the DJI Phantom 3 that
+we are using, are susceptible to signal loss and control loss. If this occurs, there is no way
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM 2017 |     | Page 27 | of 38 |
+| --------- | --- | --- | ---------- | --- | ------- | ----- |
+for the operator’s computer to control it. Luckily, the DJI autopilot should automatically
+try to land safely if connection is lost with the pilot, but many reports claim that this
+safety mechanism has failed in the past[4]. Additionally, other failure conditions, such as
+the battery dying or disconnecting could cause the drone to become uncontrollable. So, we
+wondered, what distance away would the crowd have to be to be safe? How long would it
+take for the drone crash into a nearby lower drone, and how much warning time do we have
+to change the course of nearby drones directly underneath the failed drone?
+To account for these scenarios we calculated a kinematics scenario.
+M
+C
+M
+i
+H
+：
+号
+众
+Figure26: Aworstcasescenarioofadisconnectedbattery, wherethedroneisheadedstraight
+| towards the | crowd. |     |     |     |     |     |
+| ----------- | ------ | --- | --- | --- | --- | --- |
+公
+| We assume   | the drone   | follows projectile | motion while | falling. |     |     |
+| ----------- | ----------- | ------------------ | ------------ | -------- | --- | --- |
+| Considering | the y-axis, | we see             |              |          |     |     |
+|             | 信           |                    | 1            |          |     |     |
+a t2 = ∆y
+y
+2
+| where a = | g =9.8 m/s |     |     |     |     |     |
+| --------- | ---------- | --- | --- | --- | --- | --- |
+| y 微       |            |     |     |     |     |     |
+1
+|     |     |     | (9.8m/s)t2 = 120m |     |     |     |
+| --- | --- | --- | ----------------- | --- | --- | --- |
+2
+t = 4.95s
+Since ∆x = v t, we only need to know v . The maximum horizontal speed that our drones
+|     | x   |     | x   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+fly is 3 m/s, so as long as the crowd is 3∗4.95 = 14.85m away, drones should not crash into
+the crowd.
+| 8.2 Wind | Conditions |     |     |     |     |     |
+| -------- | ---------- | --- | --- | --- | --- | --- |
+Our model does not consider any air resistance during the light show. However, strong
+winds could be fatal to the light display. Although we cannot predict the effects of strong
+winds on the drone formations, we can calculate an upper bound permissible winds using
+m/s2
+drag mechanics. The 1.280 kg drone can accelerate at 3.725 in still air conditions [4].
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 28 of 38
+Newton’s second law, F = ma, can be used to calculate the maximum thrust of the drone’s
+propellers, 4.768 N. The force of the wind on a drone is determined using the drag force
+equation:
+1
+F = ρv2C A
+D D
+2
+where F is the drag force, ρ is the density of air, v is the relative velocity of the air to
+D
+the drone, C is drag coefficient, and A is the cross-sectional area of the drone. To retain
+D
+flight control, the drag force on the drone cannot exceed the thrust force of the propeller.
+Rearranging this equation for maximum relative wind velocity yields:
+(cid:115)
+2F M
+T
+v =
+max
+ρC A
+D
+C
+where F is the thrust of the propellers. The cross-sectional shape and drag coefficient,
+T
+which depends on the shape, of the drone is unknown, so we will assume the drone is a
+M
+hemisphere for this calculation. The drone is 0.5 m x 0.5 m x 0.2 m in size [15]. This
+gives its semi-circle cross section approximation an average radius of 0.23 m and an area of
+i
+A = π(0.23m)2 = 0.0855m2. A hemisphere has a drag coefficient of 0.42 [16] and air has a
+H
+2
+density of 1.225 kg/m3 at regular temperature and pressure [17]. Substituting all of these
+variables into the velocity equation yields a ma：ximum relative velocity of
+(cid:115)
+2∗4.768N
+v = = 14.72m/s
+max 1.225kg/m 号 3 ∗0.42∗0.0855m2
+Drones will experience the highest relative wind speed when flying upwind. The drones
+众
+fly at most 3 m/s during all displays, so if the wind velocity is greater than 11.72 m/s, our
+drones are at risk of losing control.
+公
+8.3 Collision Avoidance Algorithm
+To test the sensit信ivity of the collision avoidance algorithms, we re-ran the Python program
+with varying collision distances. Due to the large computation time, we only had time to
+analyze the sensitivity of the Ferris wheel transition. The results of our analysis are shown
+微
+in the table below:
+Figure 27: Calculated transition times of Ferris wheel transformation for varying collision
+distances, where collision distance represents the minimum distance at which the program
+considers the drones to be collided. The consistency in the data shows that the collision
+avoidance algorithm used is very efficient at pathing drones around each other regardless of
+collision distances.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206 |     |     |     |     | HiMCM | 2017 |     | Page 29 | of 38 |
+| --------- | --- | --- | --- | --- | ----- | ---- | --- | ------- | ----- |
+Although we were only able to test the sensitivity of one configuration, the consistency
+in our results suggests that the collision avoidance algorithm is not very sensitive to changes
+in drone factors. Given more time, we would want to repeat this sensitivity test with the
+| other two    | drone | configurations. |        |              |        |            |      |     |     |
+| ------------ | ----- | --------------- | ------ | ------------ | ------ | ---------- | ---- | --- | --- |
+| 9 Overall    |       | Display         |        | Requirements |        |            |      |     |     |
+| 9.1 Required |       |                 | Number | of           | Drones | and Launch | Area |     |     |
+As the largest number of drones in a display is 196 for the Dragon dispMlay, this number is
+| the required | number |      | of drones. |        |               |             |     |     |     |
+| ------------ | ------ | ---- | ---------- | ------ | ------------- | ----------- | --- | --- | --- |
+| The          | launch | area | of the     | drones | is calculated | as follows: |     |     |     |
+C
+Foragridintheshapea∗b, thewidthandlengthwouldbe(a−1)∗3+0.4mand(b−1)∗3+0.4
+| m.  |     |     |     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+• For the 9x11 grid (ferris wheel), the launch area required is 24.4 m by 30.4 m.
+i
+H
+• For the 14x14 grid (Dragon), the launch area required is 39.4 m by 39.4 m.
+：
+• For the 16x11 grid (balloon), the launch area required is 45.4 m by 30.4 m.
+As the longest width required is 45.4 m and the longest length required is 39.4 m, a
+号
+rectangle of these side lengths would be required for the launch area.
+众
+| 9.2 Air | Space |     |     |     |     |     |     |     |     |
+| ------- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+As mentioned in Section 3, the altitude range for the drones is 10 m to 121.92 m, restricted
+公
+by FAA regulations and human safety considerations. However, the highest drone in our
+light show only goes up to 115 m, in the Ferris wheel. For the length and width dimensions,
+the Dragon travels the furthest, traveling at a maximum of 250 m away from the origin.
+信
+Thus, the airspace is a right cylinder whose bases are centered at the (x,y) origin. Its bases
+| have a radius | of  | 250 | m while | its height | runs | from 10 m to 115 | m.  |     |     |
+| ------------- | --- | --- | ------- | ---------- | ---- | ---------------- | --- | --- | --- |
+微
+| 9.3 Safety |     | Considerations |     |     |     |     |     |     |     |
+| ---------- | --- | -------------- | --- | --- | --- | --- | --- | --- | --- |
+There are two safety considerations to address during the operation of the drones in the
+light show, the first of which is how far away the viewers should stand from the airspace. As
+calculated in our sensitivity analysis, the viewers should stand at least 15 m away from the
+| airspace | with regards |     | to the | position | based | on x and y. |     |     |     |
+| -------- | ------------ | --- | ------ | -------- | ----- | ----------- | --- | --- | --- |
+The second safety consideration is one that has already been addressed: how far up the
+drone show should be placed so that they do not hit a person. We decided to place the
+lowest drone in the show at a minimum of 10 m above the ground, so that there is a minimal
+| probability | of a | drone | hitting | a person. |     |     |     |     |     |
+| ----------- | ---- | ----- | ------- | --------- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 30 of 38
+9.4 Time
+Our team calculated the time it would take each display to arrange itself from the starting
+launch grid, perform the animated display, and then return to the launch grid.
+Figure 28: A time table of the 3 transitions for each of the threeMdisplays.
+Launch times were calculated using our collision simulating alCgorithm. Though this
+simulation was not able to run the Dragon display, we interpolated based on the height the
+drones had to gain to reach their initial animation points. WeMpredicted the Dragon display
+would take 30 s to form since the average height for the Dragon was 75 m, while the balloon
+had 65 m and the Ferris wheel has 115. This is a high estimaite since they’re a larger amount
+H
+of collisions and congestion for the drones to reach the initial Dragon positions.
+The animation time was based on the modeled curves. The Ferris wheel rotates one time
+：
+on a period of 40π second. The Dragon did one full period of 50π seconds. The balloon
+was planned to continue growing until it hit 27 times larger than its initial size. This would
+cause the highest balloon length to be 1号10 m and take 103 seconds.
+The display to grid times are identical to the grid to display times except for the fact
+that the balloon takes twice the time, since the balloon’s final positions are twice as high as
+众
+its initial conditions, causing a longer flight path.
+Overall, we predict that 581.4 seconds (approximately 9.7 minutes) for the all three
+displays to be performed公. This falls well within the DJI Phantom Drone’s maximum flight
+time of 22 minutes, and two drown shows could most likely be executed without changing
+batteries [4].
+信
+10 Strengths & Weaknesses
+微
+10.1 Strengths
+• Our model mathematically describes the linear path (including initial and final posi-
+tions) for each drone for both transitions and animations. We are able to calculate
+a definitive start and end point by optimizing each drone’s destination in the display
+using the Hungarian algorithm. This concept can be witnessed within Figure 7. The
+blue drones, which start towards the left of the x-axis move to the left of the Ferris
+wheel. Similarly, the red drones, which start towards the right of the x-axis move to
+the right of the Ferris wheel. The brown drones, which are closest to the center of
+the Ferris wheel, form the wheel’s center. This notion is also seen in the Dragon and
+Balloon models, indicating our optimization of shortest-distance linear paths is highly
+functional.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 31 of 38
+• Our model outputs the velocity for each drone during all transitions and animations.
+Using our path functions and collisions avoidance program, a drone (such as a DJI
+Phantom 3) could be easily loaded with a matrix of velocity commands and can follow
+the path accurately.
+• The pathing algorithm prevents drone collisions without sacrificing overall fluidity by
+optimizing drone transition formations and finely tuning drone velocities such that all
+drones will move to their target locations as efficiently as possible while not colliding.
+• Safety analysis predicts the highest wind speed in which our drones may fly so that
+event organizers can plan a safe light show date based on weather fMorecasts.
+• Thecollisionavoidancealgorithmtomovethedronessuchthattheinteractionbetween
+C
+them is minimized. This algorithm is based on the idea that the drones move to their
+target points such that the sum of the distances collectively traveled is minimized,
+M
+otherwise known as the Extremal Principle.
+i
+10.2 Weaknesses H
+• Our model does not account for turbulenc：e between drones. Turbulence is a significant
+real word phenomenon that does occur between aircraft. Though the drones are spaced
+significantly away, there is a chance that turbulence could interfere with the drone
+号
+flights when they are more densely packed (such as during takeoff or landing).
+• Our model does not account for luminous flux; essentially, it does not account for the
+众
+fact that objects get less bright the further away they are seen. We are assuming that
+the drones’ lights will always be seen, but should take into account factors like light
+pollution and dimin公ishing intensity.
+• Thepathingalgorithmisverycomputationallyexpensive: theruntimeincreasesrapidly
+with increas信ing data set complexity, increasing collision radius, decreasing time step
+size, and decreasing change in velocity with each trial. However, if the time step or
+velocity change factor is too large, the drones will choke up on each other and the
+微
+simulation will jam. If the collision radius is too small, the simulation may not be
+sufficient to account for real-world drone collisions.
+• The algorithm cannot calculate the collision avoidance routes for the drones’ transition
+from the 14x14 grid to the Dragon, due to the program’s excessive runtime for complex
+designs. This could be remedied by using a more powerful computing platform or
+having a longer period of time for computations.
+11 Future Work
+• To account for luminous flux, we could compare the light pollution in the city to the
+luminous flux emanating from the individual light sources. If the difference in light
+pollution and luminous flux is small enough such that the drones are not visible, then
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 32 of 38
+the show is not viable at that specific distance from the viewer; we must decrease the
+distance.
+• To model (without collisions) the paths of the drones as they form the Dragon, using
+a more powerful computational platform which could handle the number of intense
+calculations that arise from the collision avoidance protocol.
+• Conduct more in-depth sensitivity analysis on the two untested drone configurations.
+• Accounting for differences in velocity and position caused by wind turbulence would be
+challenging but worthwhile goal. Using concepts such as curl and divergence to model
+M
+common wind patterns in the air would correct any error in the drones’ positions and
+velocities.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 33 of 38
+A Diameters and Side Lengths for Dragon’s Cross-
+Sections
+M
+C
+M
+i
+H
+：
+号
+众
+公
+Figure 29: The diameters of the rings and the side lengths of the squares that are the cross
+sections of the Dragon.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 8206    |     |     |        | HiMCM | 2017      |             | Page 34 | of 38 |
+| ------------ | --- | --- | ------ | ----- | --------- | ----------- | ------- | ----- |
+| B Dimensions |     | and | Number |       | of Drones | for Balloon | Rings   |       |
+M
+C
+M
+i
+Figure 30: The number of drones in and circumference of each ring that make up the balloon,
+H
+| along with | their | respective | heights. |     |     |     |     |     |
+| ---------- | ----- | ---------- | -------- | --- | --- | --- | --- | --- |
+：
+| C Figures |     | for Ferris |     | Wheel | Tranformations |     |     |     |
+| --------- | --- | ---------- | --- | ----- | -------------- | --- | --- | --- |
+号
+众
+公
+信
+微
+|     |     | Figure 31: | Different | perspectives | of the Ferris | wheel. |     |     |
+| --- | --- | ---------- | --------- | ------------ | ------------- | ------ | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     |     | HiMCM | 2017 |     | Page 35 | of 38 |
+| --------- | --- | --- | ----- | ---- | --- | ------- | ----- |
+M
+C
+M
+i
+H
+：
+Figure 32: Two different perspectives of the transition vectors from the 9x11 grid to the
+Ferris wheel.
+号
+| D Figures | for | Dragon | Transformations |     |     |     |     |
+| --------- | --- | ------ | --------------- | --- | --- | --- | --- |
+众
+公
+信
+微
+|     | Figure 33: | The path | taken by | a Dragon along | a toroidal | curve. |     |
+| --- | ---------- | -------- | -------- | -------------- | ---------- | ------ | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 8206 |     | HiMCM 2017 |     |     | Page 36 | of 38 |
+| --------- | --- | ---------- | --- | --- | ------- | ----- |
+M
+|     | Figure 34: | Different perspectives | of the Dragon. | C   |     |     |
+| --- | ---------- | ---------------------- | -------------- | --- | --- | --- |
+M
+| E Figures | for Balloon | Tranformations |     |     |     |     |
+| --------- | ----------- | -------------- | --- | --- | --- | --- |
+i
+The initial balloon display drone locations are illustrated in left the section of the below
+H
+figure. The drones then moved along their paths to arrive at their blown-up or expanded
+display destinations, as illustrated in right sect：ion of the below figure.
+号
+众
+公
+信
+微
+Figure 35: Left: The positions of the drones representing a non-expanded balloon. Right:
+Drones after “blowing up” of the balloon to enlarged balloon display.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 8206 HiMCM 2017 Page 37 of 38
+M
+C
+M
+i
+H
+：
+Figure 36: Two different perspectives of the transition vectors from the 16x11 grid to the
+balloon.
+号
+F References
+众
+[1] Ken Kaplan. 500 Drones Light Night Sky to Set Record. url: https://iq.intel.com/500-
+drones-light-show-sets-record/.
+公
+[2] Brian Barret. Lady Gaga’s Halftime Shown Drones Have a Bright Future. url: https:
+//www.wired.com/2017/02/lady-gaga-halftime-show-drones/.
+信
+[3] Ian Morris. Intel Has Drones That Will Make Fireworks Obsolete. url: https://www.
+forbes.com/sites/ianmorris/2017/09/19/intel-has-drones-that-will-make-fireworks-
+obso微lete/.
+[4] Phantom 3 Standard - Specs. url: https://www.dji.com/phantom-3-standard.
+[5] DJI Phantom 3 4K WiFi Quadcopter 4K Video Drone (DJI Refurbished Unit). url:
+http://www.dronenerds.com/products/refurbished/phantom-3-refurbished/dji-
+phantom-3-4k-wifi-quadcopter-dji-refurbished-unit-cp-pt-000308-r-dji.html?gclid=
+EAIaIQobChMIwLXshOi31wIVaTPTCh052A5uEAkYAyABEgLwp D BwE.
+[6] Sally French. Walt Disney World announces its first drone light show. url: https:
+//www.marketwatch.com/story/can-drones-replace-fireworks-2016-11-04.
+[7] Leo Hickman. Enough of those toxic firework displays! url: https://www.theguardian.
+com/environment/2007/nov/01/ethicalliving.pollution.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 8206 HiMCM 2017 Page 38 of 38
+[8] Natalie Cheung. Technology Behind the Intel Drone Light Shows. url: https://www.
+roboticstomorrow.com/article/2017/05/technology-behind-the-intel-drone-light-
+shows/10022.
+[9] drvonhoss. DJI Phantom 3 Acceleration Test. url: https://www.youtube.com/watch?
+v=sNPLnX4wk4Y.
+[10] Federal Aerospace Administration. Getting Started: Unmmanned Aircraft Systems.
+url: https://www.faa.gov/uas/getting started/.
+[11] CBS News. Behind the making of a synchronized drone light show. url: https://www.
+cbsnews.com/news/synchronized-drones-Intel-light-show/.
+M
+[12] Andrew Lizeswki. NASA’s Supercomputers Reveal the Incredible Turbulence Produced
+By a Drone. url: https://sploid.gizmodo.com/nasas-supercomputers-reveal-the-
+C
+incredible-turbulence-p-1791179507.
+[13] Billy Steele. Intel’s latest light show was the first FAAM-approved drone swarm. url:
+https://www.engadget.com/2016/05/05/intel-faa-approved-drone-swarm-light-
+show/. i
+H
+[14] Do These Equations Create A Helix Wrapped Into A Torus. url: https://math.
+stackexchange.com/questions/324527/d：o-these-equations-create-a-helix-wrapped-
+into-a-torus.
+[15] Phantom 3 size: Complete Measu号rements. url: http://www.engabao.com/phantom-
+3-size-complete-measurements/.
+[16] Drag Coefficient. url: https://en.wikipedia.org/wiki/Drag coefficient.
+众
+[17] Density of Air. url: https://en.wikipedia.org/wiki/Density of air.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

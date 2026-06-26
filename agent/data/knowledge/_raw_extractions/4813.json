@@ -1,0 +1,91 @@
+{
+  "paper_id": "4813",
+  "meta": {
+    "paper_id": "4813",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2014,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2014\\A\\4813.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出了10条一般假设和5条数值假设，每条假设都附有合理性论证，为模型简化提供依据。",
+      "formulas": [],
+      "source_excerpt": "1.2 Assumptions\nGeneral Assumptions:\n1. People are reasonable and use the exit closest to their seat.\n...\nNumerical Assumptions:\n11. People shuffle out of their seats at a constant velocity of 145 ft/min inside the car. As they move to the exit through the aisle of the train car, they walk at a constant velocity of 250 ft/min. Passengers also walk across the platform at 250 ft/min."
+    },
+    {
+      "concept_id": "stoch.queue",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将楼梯底部的人群聚集建模为排队系统，计算队列中每人占用4平方英尺空间，并推导队列中行走速度与楼梯容量和队列宽度的关系。",
+      "formulas": [
+        {
+          "latex_code": "v_q = \\frac{k}{w} \\cdot v_p",
+          "variables": {
+            "v_q": "队列中人的行走速度",
+            "k": "楼梯每步能容纳的人数（侧向）",
+            "w": "队列宽度（平台宽度）",
+            "v_p": "平台上正常行走速度"
+          }
+        }
+      ],
+      "source_excerpt": "To simulate this effect, we allowed a person waiting in the queue to take up about 4 sq ft of space and calculated a new reduced walking speed for people standing in the queue."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "通过线性关系计算乘客从座位到车门的时间，以及从车门到队列的时间，建立总时间与列车长度、车厢数等变量的函数。",
+      "formulas": [
+        {
+          "latex_code": "t = \\frac{l_p}{v_p} + \\frac{l_q}{v_q}",
+          "variables": {
+            "t": "总时间",
+            "l_p": "平台上行走距离",
+            "v_p": "平台上行走速度",
+            "l_q": "队列中行走距离",
+            "v_q": "队列中行走速度"
+          }
+        }
+      ],
+      "source_excerpt": "We began by obtaining the rate at which people arrive at the queue by finding the amount of time it takes the average passenger to leave the train car. Then, we calculated the distance traveled in the queue and the distance traveled on the platform."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过改变车厢行数（d）和车厢数（n）观察对总时间的影响，发现队列形成阈值（d>19行）并给出优化建议。",
+      "formulas": [],
+      "source_excerpt": "Using the functions we developed, we found that a queue around the bottom of the stairway would only collect when the train cars had more than 19 rows."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用曲面图（surface plot）展示单列火车情况下时间与车厢行数、车厢数的三维关系，直观呈现优化结果。",
+      "formulas": [],
+      "source_excerpt": "Surface plot for one fully occupied train"
+    },
+    {
+      "concept_id": "writing.intro",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "引言部分清晰阐述了问题背景（火车站拥堵）、研究目标（优化出站时间）和论文结构概述。",
+      "formulas": [],
+      "source_excerpt": "1 Introduction and General Interpretation\nCongestion in train stations is a major issue for large cities. Thus, optimizing the time for a commuter to travel from their seat in the train car to the exit of the station is crucial to maintain a steady pedestrian flow and maintain efficiency within the station."
+    },
+    {
+      "concept_id": "writing.evaluation",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "在模型分析部分（Section 6）讨论了模型局限性，如假设的合理性、参数取值的依据，并给出非技术性信件总结。",
+      "formulas": [],
+      "source_excerpt": "6 Model Analysis"
+    }
+  ]
+}

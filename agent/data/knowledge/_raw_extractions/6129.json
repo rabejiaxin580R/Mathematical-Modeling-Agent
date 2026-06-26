@@ -1,0 +1,89 @@
+{
+  "paper_id": "6129",
+  "meta": {
+    "paper_id": "6129",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2015,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2015\\B\\6129.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将犯罪按严重性分为10个等级，每个等级赋予权重（0-10），然后对每个犯罪类别的犯罪率用逻辑函数输出一个缩放值，最后加权求和得到安全指数。",
+      "formulas": [],
+      "source_excerpt": "We categorized and weighted crimes based on their severity in the calculation, and, to calculate our safety index, we inputted the crime rate of a crime category into a logistic function."
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "使用逻辑函数（logistic function）将犯罪率映射到安全指数，利用其单调性和有界性，确保安全指数在0-100之间。",
+      "formulas": [
+        {
+          "latex_code": "f(x) = \\frac{L}{1 + e^{-k(x - x_0)}}",
+          "variables": {
+            "f(x)": "安全指数贡献值",
+            "L": "最大值（10）",
+            "k": "陡峭度参数",
+            "x": "犯罪率",
+            "x_0": "中点犯罪率"
+          }
+        }
+      ],
+      "source_excerpt": "We opted to use logistic functions to describe the effect of crime rate on the safety of a city. ... a logistic function is bounded above and below, yielding a bounded safety index."
+    },
+    {
+      "concept_id": "meta.ga",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "使用遗传算法优化逻辑函数的参数（L, k, x0），通过多代迭代逐渐逼近最优解，使模型拟合预设数据。",
+      "formulas": [],
+      "source_excerpt": "We choose our solution set of logistic functions using a genetic algorithm. This process iterates over many generations, gradually shifting the set toward better fits for the predetermined data and eventually converging to a single solution if the conditions are selective enough."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出9条假设，每条假设都有详细理由，包括犯罪严重性由惩罚决定、仅考虑初犯惩罚、取中位数惩罚、忽略位置影响等。",
+      "formulas": [],
+      "source_excerpt": "Assumption 1: The relative severity of a crime can be directly determined from the severity of the potential maximum penalty for committing said crime... Assumption 2: If the penalty for committing a crime becomes more severe after the first offense, only the penalty for the first offense is taken into consideration."
+    },
+    {
+      "concept_id": "viz.modelcompare",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "将模型得到的城市安全排名与CQ Press和Numbeo的公开排名进行比较，验证模型有效性。",
+      "formulas": [],
+      "source_excerpt": "When we ranked the cities using our simple model, the results were surprisingly similar to two published rankings of the 11 cities."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过调整逻辑函数的参数（如陡峭度k和中点x0）来观察安全指数变化，评估模型对参数变化的敏感度。",
+      "formulas": [],
+      "source_excerpt": "We determined the importance of different offenses when considering public safety. We determined that basing these rankings on the first punishment for the crime was almost always suitable in determining the safety hazard the crime had."
+    },
+    {
+      "concept_id": "writing.figcaption",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文中使用了编号表格（Table 1）和图表（Figure 1），并配有标题和编号，符合规范。",
+      "formulas": [],
+      "source_excerpt": "Table 1. State of Illinois classification of misdemeanors and felonies, their corresponding penalties, and our assigned severity on a scale of 0 to 10."
+    },
+    {
+      "concept_id": "comp.teamroles",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文结构清晰，分工明确，摘要、引言、模型、假设、求解、评价等部分完整，体现了团队协作。",
+      "formulas": [],
+      "source_excerpt": "Summary, Introduction, The Model, Variables and Definitions, Assumptions and Justifications, Model Concept"
+    }
+  ]
+}

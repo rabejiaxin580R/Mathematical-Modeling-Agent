@@ -1,0 +1,104 @@
+{
+  "paper_id": "8121",
+  "meta": {
+    "paper_id": "8121",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2017,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2017\\B\\8121.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文明确列出了4条假设，包括仅负责一项奥运项目、合并雪道单独计算、忽略现有基础设施和岩石障碍、以及不同水平滑雪者的偏好，为后续建模奠定基础。",
+      "formulas": [],
+      "source_excerpt": "The following assumptions were necessary in our model to ensure maximum practicality and usability. ● Our resort would not be responsible for all Winter Olympic events, but only one, such as alpine skiing. ... ● Ski trails that merge are measured as separate trails in the total trail length calculations. ● Existing infrastructure (roads) and problematic environmental features (rocks) do not pose a significant obstacle and can be removed. ● Skier slope preferences are based on skill levels: ..."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "论文构建了Resort Rating系统，对多个因素（如初学者/中级/专家适合度、雪质、缆车质量、陡峭度、拥挤度）进行加权求和，得到0.1-10的综合评分，用于比较不同滑雪胜地。",
+      "formulas": [
+        {
+          "latex_code": "\\text{Resort Rating} = \\sum_{i} w_i \\cdot f_i",
+          "variables": {
+            "w_i": "第i个因素的权重",
+            "f_i": "第i个因素的得分"
+          }
+        }
+      ],
+      "source_excerpt": "Our rating systems are based on weighted composite scores in the various factors we incorporated, so that it truly reflects what skiers are looking for. ... Using this system, and weighting the different factors based on their value to the customer and potential skier, Wasatch Peaks Ranch achieved a rating of 7.44, on a scale from 0.1 to 10."
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文使用Logistic模型对评分进行非线性变换，确保评分不会超出0.1-10的边界，体现了对评分范围的约束。",
+      "formulas": [
+        {
+          "latex_code": "\\text{score} = \\frac{10}{1 + e^{-k(x - x_0)}}",
+          "variables": {
+            "k": "陡峭度参数",
+            "x": "原始综合得分",
+            "x_0": "中点偏移"
+          }
+        }
+      ],
+      "source_excerpt": "It also incorporates logistic models to make sure that ratings below the minimum and ratings above the maximum cannot happen."
+    },
+    {
+      "concept_id": "stoch.montecarlo",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文基于40 km的初始雪道数据，利用正态分布模拟生成了120 km的雪道，用于扩展雪道网络，体现了蒙特卡洛模拟的思想。",
+      "formulas": [
+        {
+          "latex_code": "X \\sim \\mathcal{N}(\\mu, \\sigma^2)",
+          "variables": {
+            "X": "模拟的雪道特征值（如宽度、曲率等）",
+            "\\mu": "从40 km数据估计的均值",
+            "\\sigma": "从40 km数据估计的标准差"
+          }
+        }
+      ],
+      "source_excerpt": "Using the data for the 40 km subset of trails, we simulated 120 km of trails using normal distributions for each of the aforementioned values."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "论文通过敏感性分析验证了评分系统的可靠性，指出系统对参数变化不敏感，从而证明其鲁棒性。",
+      "formulas": [],
+      "source_excerpt": "The system is proven reliable through its strong correlation with existing ranking systems and its vulnerability to sensitivity analysis."
+    },
+    {
+      "concept_id": "corr.pearson",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "论文将自家评分系统与现有排名（如ZRankings.com）进行相关性分析，以验证评分系统的有效性。",
+      "formulas": [],
+      "source_excerpt": "The system is proven reliable through its strong correlation with existing ranking systems and its vulnerability to sensitivity analysis."
+    },
+    {
+      "concept_id": "writing.intro",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文引言部分包含背景介绍（Wasatch Peaks Ranch的潜力）、问题重述（明确设计目标与约束），以及后续结构概述，符合标准引言写法。",
+      "formulas": [],
+      "source_excerpt": "1 - Introduction 1.1 Background ... 1.2 Restatement of Problem ..."
+    },
+    {
+      "concept_id": "viz.modelcompare",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "论文通过表格或图表对比了Wasatch Peaks Ranch与其他16个北美滑雪胜地的评分，直观展示排名结果。",
+      "formulas": [],
+      "source_excerpt": "Using this system, Wasatch Peaks Ranch achieved a Resort Rating score of 7.44, ranking 3rd among 16 top North American ski resorts."
+    }
+  ]
+}

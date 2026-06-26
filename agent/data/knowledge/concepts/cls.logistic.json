@@ -1,0 +1,85 @@
+{
+  "schema_version": 3,
+  "concept_id": "cls.logistic",
+  "title": "逻辑回归",
+  "taxonomy_path": [
+    "常用建模方法",
+    "分类与识别方法",
+    "逻辑回归"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.6",
+  "aliases": [
+    "逻辑回归",
+    "logistic regression",
+    "sigmoid",
+    "二分类"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "逻辑回归是一种用于二分类问题的模型，它通过一个S形曲线将线性回归的结果转换为概率，从而判断一个样本属于哪一类。",
+    "intuition": "想象你是一个医生，要根据病人的一些指标（如年龄、血压）来判断他是否患有某种疾病。逻辑回归就像是一个打分系统：先给每个指标分配一个权重，然后计算一个总分，最后通过一个S形曲线（Sigmoid函数）把这个总分转换成0到1之间的概率。如果概率大于0.5，就预测患病；否则不患病。这个S形曲线保证了输出始终在0和1之间，而且当总分很大时概率接近1，总分很小时概率接近0。",
+    "when_to_use": "当你需要解决二分类问题（即只有两个类别，如是/否、正/负）时，可以考虑逻辑回归。常见场景包括：垃圾邮件检测（垃圾/非垃圾）、信用风险评估（违约/不违约）、疾病诊断（患病/健康）等。如果数据特征与对数几率大致呈线性关系，逻辑回归效果较好。",
+    "definition": "逻辑回归是一种广义线性模型，用于二分类问题。它假设给定特征向量 $\\mathbf{x}$ 的条件下，样本属于正类（$y=1$）的对数几率（log-odds）是特征 $\\mathbf{x}$ 的线性函数。模型输出为 $P(y=1|\\mathbf{x}) = \\sigma(\\mathbf{w}^T \\mathbf{x} + b)$，其中 $\\sigma(z) = 1/(1+e^{-z})$ 是 Sigmoid 函数，$\\mathbf{w}$ 是权重向量，$b$ 是偏置。",
+    "math_principle": "逻辑回归的核心是使用 Sigmoid 函数将线性回归的输出 $z = \\mathbf{w}^T \\mathbf{x} + b$ 映射到 $(0,1)$ 区间，得到概率 $p = \\sigma(z)$。Sigmoid 函数具有 S 形曲线，当 $z \\to +\\infty$ 时 $p \\to 1$，当 $z \\to -\\infty$ 时 $p \\to 0$。模型训练通过最大化似然函数（即最小化对数损失）来估计参数 $\\mathbf{w}$ 和 $b$。对于二分类，似然函数为 $L(\\mathbf{w}, b) = \\prod_{i=1}^n p_i^{y_i} (1-p_i)^{1-y_i}$，取对数后得到对数似然 $\\ell(\\mathbf{w}, b) = \\sum_{i=1}^n [y_i \\log p_i + (1-y_i) \\log(1-p_i)]$。通常使用梯度下降法或牛顿法优化。",
+    "step_by_step": [
+      "1. 收集数据：准备特征矩阵 $\\mathbf{X}$ 和标签向量 $\\mathbf{y}$（二分类，0或1）。",
+      "2. 数据预处理：处理缺失值、标准化特征（可选）、划分训练集和测试集。",
+      "3. 初始化参数：设置权重向量 $\\mathbf{w}$ 和偏置 $b$ 的初始值（通常为0或随机小值）。",
+      "4. 定义模型：计算线性组合 $z = \\mathbf{w}^T \\mathbf{x} + b$，然后通过 Sigmoid 函数得到概率 $p = \\sigma(z)$。",
+      "5. 定义损失函数：使用对数损失（交叉熵）$J(\\mathbf{w}, b) = -\\frac{1}{n} \\sum_{i=1}^n [y_i \\log p_i + (1-y_i) \\log(1-p_i)]$。",
+      "6. 优化参数：使用梯度下降法迭代更新参数，计算梯度 $\\frac{\\partial J}{\\partial \\mathbf{w}} = \\frac{1}{n} \\sum_{i=1}^n (p_i - y_i) \\mathbf{x}_i$，$\\frac{\\partial J}{\\partial b} = \\frac{1}{n} \\sum_{i=1}^n (p_i - y_i)$，并更新 $\\mathbf{w} := \\mathbf{w} - \\alpha \\frac{\\partial J}{\\partial \\mathbf{w}}$，$b := b - \\alpha \\frac{\\partial J}{\\partial b}$，其中 $\\alpha$ 是学习率。",
+      "7. 预测：对于新样本，计算概率 $p$，若 $p \\ge 0.5$ 则预测为正类（1），否则为负类（0）。",
+      "8. 评估模型：使用准确率、精确率、召回率、F1分数、ROC-AUC等指标评估模型性能。"
+    ],
+    "worked_example": "假设我们有一个简单的数据集，包含两个特征 $x_1$ 和 $x_2$，以及二分类标签 $y$。数据如下：\n- 样本1: $x_1=2, x_2=3, y=1$\n- 样本2: $x_1=1, x_2=1, y=0$\n- 样本3: $x_1=3, x_2=2, y=1$\n- 样本4: $x_1=0, x_2=1, y=0$\n\n初始化参数：$\\mathbf{w}=[0,0]^T$, $b=0$，学习率 $\\alpha=0.1$。\n\n第一次迭代：\n- 样本1: $z=0*2+0*3+0=0$, $p=\\sigma(0)=0.5$, 梯度贡献: $(p-y)x_1=(0.5-1)*2=-1$, $(p-y)x_2=(0.5-1)*3=-1.5$, $(p-y)=-0.5$\n- 样本2: $z=0$, $p=0.5$, 梯度贡献: $(0.5-0)*1=0.5$, $(0.5-0)*1=0.5$, $(0.5-0)=0.5$\n- 样本3: $z=0$, $p=0.5$, 梯度贡献: $(0.5-1)*3=-1.5$, $(0.5-1)*2=-1$, $(0.5-1)=-0.5$\n- 样本4: $z=0$, $p=0.5$, 梯度贡献: $(0.5-0)*0=0$, $(0.5-0)*1=0.5$, $(0.5-0)=0.5$\n\n平均梯度: $\\frac{\\partial J}{\\partial w_1} = (-1+0.5-1.5+0)/4 = -0.5$, $\\frac{\\partial J}{\\partial w_2} = (-1.5+0.5-1+0.5)/4 = -0.375$, $\\frac{\\partial J}{\\partial b} = (-0.5+0.5-0.5+0.5)/4 = 0$\n\n更新参数: $w_1 = 0 - 0.1*(-0.5) = 0.05$, $w_2 = 0 - 0.1*(-0.375) = 0.0375$, $b = 0 - 0.1*0 = 0$\n\n重复迭代直到收敛。最终模型可以对新样本进行预测。",
+    "pitfalls": [
+      "1. 特征共线性：逻辑回归对特征之间的高度相关性敏感，可能导致参数估计不稳定。",
+      "2. 线性决策边界：逻辑回归假设决策边界是线性的，对于非线性问题效果不佳，需要特征工程或使用核方法。",
+      "3. 类别不平衡：当正负样本比例悬殊时，模型可能偏向多数类，需要调整类别权重或使用采样方法。",
+      "4. 过拟合：当特征数量远大于样本数量时，容易过拟合，可通过正则化（L1或L2）缓解。",
+      "5. 异常值敏感：异常值可能对模型训练产生较大影响，需要预处理。"
+    ],
+    "tools": "Python 中常用 scikit-learn 库实现逻辑回归。最小可运行代码片段：\n```python\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.datasets import make_classification\nfrom sklearn.model_selection import train_test_split\n\n# 生成示例数据\nX, y = make_classification(n_samples=100, n_features=2, n_informative=2, n_redundant=0, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# 创建并训练模型\nmodel = LogisticRegression()\nmodel.fit(X_train, y_train)\n\n# 预测\npredictions = model.predict(X_test)\nprobabilities = model.predict_proba(X_test)[:, 1]\n\n# 评估\naccuracy = model.score(X_test, y_test)\nprint(f\"Accuracy: {accuracy}\")\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "P(y=1|\\mathbf{x}) = \\sigma(\\mathbf{w}^T \\mathbf{x} + b) = \\frac{1}{1 + e^{-(\\mathbf{w}^T \\mathbf{x} + b)}}",
+      "variables": {
+        "P(y=1|\\mathbf{x})": "给定特征 $\\mathbf{x}$ 时样本属于正类的概率",
+        "\\mathbf{x}": "特征向量",
+        "\\mathbf{w}": "权重向量",
+        "b": "偏置",
+        "\\sigma": "Sigmoid 函数"
+      }
+    },
+    {
+      "latex_code": "\\ell(\\mathbf{w}, b) = \\sum_{i=1}^n \\left[ y_i \\log \\sigma(\\mathbf{w}^T \\mathbf{x}_i + b) + (1-y_i) \\log (1 - \\sigma(\\mathbf{w}^T \\mathbf{x}_i + b)) \\right]",
+      "variables": {
+        "\\ell": "对数似然函数",
+        "n": "样本数量",
+        "y_i": "第 i 个样本的真实标签（0 或 1）",
+        "\\mathbf{x}_i": "第 i 个样本的特征向量"
+      }
+    },
+    {
+      "latex_code": "J(\\mathbf{w}, b) = -\\frac{1}{n} \\sum_{i=1}^n \\left[ y_i \\log \\hat{y}_i + (1-y_i) \\log (1-\\hat{y}_i) \\right]",
+      "variables": {
+        "J": "损失函数（交叉熵）",
+        "\\hat{y}_i": "模型预测的概率 $\\sigma(\\mathbf{w}^T \\mathbf{x}_i + b)$"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C26"
+    ],
+    "from_papers": []
+  }
+}

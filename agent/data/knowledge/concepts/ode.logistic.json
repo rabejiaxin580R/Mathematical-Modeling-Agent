@@ -1,0 +1,75 @@
+{
+  "schema_version": 3,
+  "concept_id": "ode.logistic",
+  "title": "Logistic 增长模型",
+  "taxonomy_path": [
+    "常用建模方法",
+    "微分方程建模",
+    "Logistic 增长模型"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.1",
+  "aliases": [
+    "逻辑斯蒂",
+    "阻滞增长",
+    "Logistic方程"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "Logistic 增长模型描述一个种群在有限资源下，从快速增长到逐渐饱和的S形增长过程。",
+    "intuition": "想象一个池塘里养鱼：一开始鱼很少，食物充足，鱼的数量翻倍增长（指数增长）；但随着鱼越来越多，食物和空间变得紧张，每条鱼的生存压力增大，增长速度逐渐减慢，最终鱼的数量稳定在池塘能容纳的最大数量（环境容纳量）。整个过程就像字母S一样，先陡后平。",
+    "when_to_use": "当数据或问题表现出以下特征时：1）初始阶段近似指数增长；2）增长速率随时间减慢；3）存在一个上限或饱和值；4）常见于人口预测、生物种群、新产品市场渗透、传染病传播等场景。",
+    "definition": "Logistic 增长模型是一种微分方程模型，用于描述在有限资源下种群数量的增长规律，其核心是引入环境容纳量（carrying capacity）K，使得增长率随种群数量接近K而下降。",
+    "math_principle": "基本假设：种群增长率与当前种群数量成正比，但受剩余资源比例限制。微分方程：\n\\[ \\frac{dN}{dt} = r N \\left(1 - \\frac{N}{K}\\right) \\]\n其中，\\(N\\) 是种群数量，\\(t\\) 是时间，\\(r\\) 是内禀增长率（最大增长率），\\(K\\) 是环境容纳量。\n当 \\(N \\ll K\\) 时，\\(1 - N/K \\approx 1\\)，方程退化为指数增长；当 \\(N \\to K\\) 时，增长率为0。\n求解该微分方程（分离变量法）得到解析解：\n\\[ N(t) = \\frac{K}{1 + \\left(\\frac{K}{N_0} - 1\\right) e^{-rt}} \\]\n其中 \\(N_0\\) 是初始种群数量。",
+    "step_by_step": [
+      "1. 确定问题：明确要预测的变量（如种群数量、用户数）及其增长环境是否存在上限。",
+      "2. 收集数据：获取时间序列数据，包括初始值 \\(N_0\\) 和多个时间点的观测值。",
+      "3. 估计参数：使用非线性最小二乘法或最大似然估计拟合 \\(r\\) 和 \\(K\\)。常用方法：将数据转换为线性形式（如 \\(\\ln((K-N)/N)\\) 对时间回归），或直接用优化算法。",
+      "4. 验证模型：检查残差、预测值与实际值的吻合度，必要时调整参数或考虑更复杂模型。",
+      "5. 预测应用：利用拟合的模型预测未来趋势，并给出置信区间。"
+    ],
+    "worked_example": "以论文3797中麋鹿种群为例：假设初始种群 \\(N_0=50\\)，内禀增长率 \\(r=0.3\\)（每年），环境容纳量 \\(K=500\\)。则第10年的种群数量为：\n\\[ N(10) = \\frac{500}{1 + (500/50 - 1) e^{-0.3 \\times 10}} = \\frac{500}{1 + 9 e^{-3}} \\approx \\frac{500}{1 + 9 \\times 0.0498} = \\frac{500}{1 + 0.4482} \\approx 345 \\]\n即10年后麋鹿数量约为345只。",
+    "pitfalls": [
+      "1. 环境容纳量K可能随时间变化（如资源波动），模型假设K恒定可能不准确。",
+      "2. 模型假设种群内所有个体相同，忽略年龄结构、性别比例等。",
+      "3. 随机性（环境波动、灾难事件）未被考虑，实际数据可能偏离S形曲线。",
+      "4. 参数估计对数据质量敏感，少量数据点可能导致过拟合或不可靠估计。"
+    ],
+    "tools": "Python 中可使用 `scipy.optimize.curve_fit` 拟合 Logistic 模型。示例代码：\n```python\nimport numpy as np\nfrom scipy.optimize import curve_fit\nimport matplotlib.pyplot as plt\n\ndef logistic(t, N0, r, K):\n    return K / (1 + (K/N0 - 1) * np.exp(-r * t))\n\n# 示例数据（时间，种群数量）\nt_data = np.array([0, 1, 2, 3, 4, 5])\nN_data = np.array([50, 80, 130, 200, 280, 350])\n\n# 拟合参数，初始猜测\npopt, pcov = curve_fit(logistic, t_data, N_data, p0=[50, 0.5, 500])\nN0_fit, r_fit, K_fit = popt\nprint(f\"N0={N0_fit:.2f}, r={r_fit:.3f}, K={K_fit:.2f}\")\n\n# 预测\nt_future = np.linspace(0, 10, 100)\nN_pred = logistic(t_future, *popt)\nplt.plot(t_data, N_data, 'o', label='data')\nplt.plot(t_future, N_pred, '-', label='fit')\nplt.legend()\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\frac{dN}{dt} = r N \\left(1 - \\frac{N}{K}\\right)",
+      "variables": {
+        "N": "种群数量",
+        "t": "时间",
+        "r": "内禀增长率",
+        "K": "环境容纳量"
+      }
+    },
+    {
+      "latex_code": "N(t) = \\frac{K}{1 + \\left(\\frac{K}{N_0} - 1\\right) e^{-rt}}",
+      "variables": {
+        "N(t)": "t时刻的种群数量",
+        "N_0": "初始种群数量",
+        "r": "内禀增长率",
+        "K": "环境容纳量"
+      }
+    }
+  ],
+  "cases": [
+    "2159",
+    "3797"
+  ],
+  "provenance": {
+    "from_lectures": [],
+    "from_papers": [
+      "2159",
+      "3797"
+    ]
+  }
+}

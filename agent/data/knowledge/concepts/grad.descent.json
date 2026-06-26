@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "concept_id": "grad.descent",
+  "title": "梯度下降法",
+  "taxonomy_path": [
+    "模型求解算法",
+    "梯度类方法",
+    "梯度下降法"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.3",
+  "aliases": [
+    "梯度下降",
+    "SGD",
+    "学习率",
+    "批量梯度下降"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "梯度下降法是一种通过反复沿最陡下降方向调整参数来最小化目标函数的迭代优化算法。",
+    "intuition": "想象你站在一座山上，周围大雾弥漫，只能感觉到脚下的坡度。你想尽快下山，于是每次沿着最陡的下坡方向迈出一步。梯度下降法就是这样的过程：每一步都朝着当前点下降最快的方向（即梯度的反方向）移动，直到到达山谷（最小值）。",
+    "when_to_use": "当你需要最小化一个可微的目标函数（如机器学习中的损失函数），且无法直接解析求解时，梯度下降法是最常用的选择。特别适用于参数数量大、数据量大的场景。",
+    "definition": "梯度下降法是一种一阶迭代优化算法，用于最小化目标函数 $J(\\theta)$，其中 $\\theta$ 是参数向量。它通过沿目标函数梯度的负方向更新参数，逐步逼近局部最小值。",
+    "math_principle": "设目标函数 $J(\\theta)$ 关于参数 $\\theta$ 可微。梯度 $\\nabla J(\\theta)$ 是 $J$ 对 $\\theta$ 的偏导数向量，指向函数增长最快的方向。因此，负梯度方向 $-\\nabla J(\\theta)$ 是函数下降最快的方向。参数更新规则为：$$\\theta := \\theta - \\eta \\nabla J(\\theta)$$其中 $\\eta$ 是学习率（步长）。重复此步骤直到收敛（如梯度接近零或目标函数变化很小）。",
+    "step_by_step": [
+      "1. 初始化参数 $\\theta$（通常随机或全零）。",
+      "2. 设定学习率 $\\eta$ 和迭代次数（或收敛阈值）。",
+      "3. 计算目标函数 $J(\\theta)$ 关于当前 $\\theta$ 的梯度 $\\nabla J(\\theta)$。",
+      "4. 更新参数：$\\theta := \\theta - \\eta \\nabla J(\\theta)$。",
+      "5. 检查收敛条件（如梯度范数小于阈值或目标函数变化很小），若未收敛则返回步骤3。",
+      "6. 输出最终参数 $\\theta$。"
+    ],
+    "worked_example": "考虑简单线性回归：目标函数 $J(\\theta) = (\\theta - 3)^2$，初始 $\\theta=0$，学习率 $\\eta=0.1$。梯度 $\\nabla J(\\theta) = 2(\\theta-3)$。迭代：第1步：梯度=2*(0-3)=-6，更新 $\\theta=0-0.1*(-6)=0.6$；第2步：梯度=2*(0.6-3)=-4.8，更新 $\\theta=0.6-0.1*(-4.8)=1.08$；第3步：梯度=2*(1.08-3)=-3.84，更新 $\\theta=1.08-0.1*(-3.84)=1.464$；... 最终逼近 $\\theta=3$。",
+    "pitfalls": [
+      "学习率选择困难：过大导致震荡不收敛，过小导致收敛缓慢。",
+      "可能陷入局部最小值（非凸函数）或鞍点。",
+      "对特征尺度敏感：特征尺度差异大时，梯度下降路径曲折，建议归一化。",
+      "批量梯度下降（BGD）每次使用全部数据，计算量大；随机梯度下降（SGD）噪声大，收敛不稳定。"
+    ],
+    "tools": "Python中常用库为scikit-learn和TensorFlow/PyTorch。最小可运行代码（使用scikit-learn的SGDRegressor）：\n```python\nfrom sklearn.linear_model import SGDRegressor\nimport numpy as np\nX = np.array([[1], [2], [3]])\ny = np.array([2, 4, 6])\nmodel = SGDRegressor(max_iter=1000, tol=1e-3, eta0=0.01)\nmodel.fit(X, y)\nprint(model.coef_, model.intercept_)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\theta := \\theta - \\eta \\nabla J(\\theta)",
+      "variables": {
+        "\\theta": "参数向量",
+        "\\eta": "学习率（步长）",
+        "\\nabla J(\\theta)": "目标函数关于参数的梯度"
+      }
+    }
+  ],
+  "cases": [
+    "5086"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_D10"
+    ],
+    "from_papers": [
+      "5086"
+    ]
+  }
+}

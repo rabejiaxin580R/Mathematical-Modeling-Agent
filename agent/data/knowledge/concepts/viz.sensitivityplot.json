@@ -1,0 +1,80 @@
+{
+  "schema_version": 3,
+  "concept_id": "viz.sensitivityplot",
+  "title": "灵敏度分析的可视化展示",
+  "taxonomy_path": [
+    "结果可视化与解释",
+    "结果解释",
+    "灵敏度分析的可视化展示"
+  ],
+  "module_id": "G",
+  "subcat_id": "G.2",
+  "aliases": [
+    "灵敏度可视化",
+    "参数敏感图"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder",
+    "writer"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "灵敏度分析的可视化展示就是用图表直观地告诉你：模型结果对哪些参数变化最敏感，以及参数变化时结果如何变化。",
+    "intuition": "想象你在调音响的音量和均衡器。音量旋钮（一个参数）转动时，声音大小（输出）会变化，你可以画一条线：横轴是音量位置，纵轴是分贝数，斜率大的地方说明声音对音量很敏感。均衡器有多个旋钮（多个参数），你可以用热力图：两个旋钮的位置决定颜色，颜色变化快的地方说明联合影响大。这样你一眼就能看出哪个旋钮最影响音质。",
+    "when_to_use": "当你建立了一个模型（比如预测拥堵、评估方案成本），需要知道哪个输入参数对结果影响最大，或者想评估模型在参数波动下的稳定性时，就应该做灵敏度分析并可视化。常见于优化问题、风险评估、系统设计等。",
+    "definition": "灵敏度分析的可视化展示是指通过折线图、热力图等图形方式，直观呈现模型输出结果随关键参数变化的趋势与幅度，帮助识别敏感参数并评估模型稳定性。",
+    "math_principle": "设模型输出为 $y = f(x, \\theta)$，其中 $\\theta$ 为待分析参数。灵敏度分析通过扰动参数 $\\theta$ 得到输出变化 $\\Delta y$。对于单一参数，绘制折线图：横轴为参数值 $\\theta$，纵轴为输出 $y$，曲线斜率 $dy/d\\theta$ 表示灵敏度。对于双参数，绘制热力图：以参数 $\\theta_1$ 和 $\\theta_2$ 为坐标轴，颜色表示输出值 $y$，颜色变化梯度反映联合灵敏度。常用指标包括相对灵敏度 $S = \\frac{\\Delta y/y}{\\Delta \\theta/\\theta}$ 或绝对灵敏度 $dy/d\\theta$。",
+    "step_by_step": [
+      "1. 确定模型输出 $y$ 和待分析参数 $\\theta$（一个或多个）。",
+      "2. 设定参数变化范围（如 $\\theta$ 从最小值到最大值，步长适当）。",
+      "3. 对于每个参数值（或参数组合），运行模型得到输出 $y$。",
+      "4. 若为单参数，绘制折线图：横轴为 $\\theta$，纵轴为 $y$，观察曲线斜率。",
+      "5. 若为双参数，绘制热力图：横轴为 $\\theta_1$，纵轴为 $\\theta_2$，颜色映射 $y$，观察颜色梯度。",
+      "6. 计算灵敏度指标（如相对灵敏度 $S$）并标注在图上或单独列出。",
+      "7. 分析图表：识别斜率大或颜色变化剧烈的区域，这些参数敏感。"
+    ],
+    "worked_example": "假设模型为 $y = \\theta^2$，参数 $\\theta$ 范围 [0, 10]，步长 0.5。计算得到 $y$ 值。绘制折线图：横轴 $\\theta$，纵轴 $y$，曲线为抛物线，斜率 $2\\theta$ 随 $\\theta$ 增大而增大，说明 $\\theta$ 越大，输出对 $\\theta$ 越敏感。再考虑双参数模型 $y = \\theta_1 + \\theta_2^2$，$\\theta_1 \\in [0,5]$，$\\theta_2 \\in [0,5]$，步长 0.5。计算所有组合的 $y$，绘制热力图：横轴 $\\theta_1$，纵轴 $\\theta_2$，颜色从浅到深表示 $y$ 增大。观察颜色变化：沿 $\\theta_2$ 方向颜色变化更快（因为平方项），说明 $\\theta_2$ 更敏感。",
+    "pitfalls": [
+      "1. 参数范围选择不当：范围太小可能看不到趋势，范围太大可能掩盖局部敏感区。",
+      "2. 步长过大：导致曲线或热力图粗糙，错过细节。",
+      "3. 忽略参数交互：单参数分析可能遗漏联合效应，双参数热力图能部分弥补。",
+      "4. 误读热力图：颜色映射需合理，否则梯度不明显。",
+      "5. 模型计算成本高：参数扫描可能耗时，需权衡精度与效率。"
+    ],
+    "tools": "Python 中常用 Matplotlib 和 Seaborn。单参数折线图用 `plt.plot(theta, y)`；双参数热力图用 `plt.pcolormesh(theta1, theta2, Y)` 或 `sns.heatmap`。示例代码：\n```python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ntheta = np.linspace(0, 10, 21)\ny = theta**2\nplt.plot(theta, y)\nplt.xlabel('theta')\nplt.ylabel('y')\nplt.title('Sensitivity Plot')\nplt.show()\n```\n双参数热力图：\n```python\ntheta1 = np.linspace(0, 5, 11)\ntheta2 = np.linspace(0, 5, 11)\nT1, T2 = np.meshgrid(theta1, theta2)\nY = T1 + T2**2\nplt.pcolormesh(T1, T2, Y, shading='auto')\nplt.colorbar(label='y')\nplt.xlabel('theta1')\nplt.ylabel('theta2')\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "S = \\frac{\\Delta y / y}{\\Delta \\theta / \\theta}",
+      "variables": {
+        "S": "相对灵敏度",
+        "Δy": "输出变化量",
+        "y": "原始输出值",
+        "Δθ": "参数变化量",
+        "θ": "原始参数值"
+      }
+    },
+    {
+      "latex_code": "\\frac{dy}{d\\theta}",
+      "variables": {
+        "dy/dθ": "绝对灵敏度（导数）"
+      }
+    }
+  ],
+  "cases": [
+    "6770",
+    "8506",
+    "9564"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_G07"
+    ],
+    "from_papers": [
+      "6770",
+      "8506",
+      "9564"
+    ]
+  }
+}

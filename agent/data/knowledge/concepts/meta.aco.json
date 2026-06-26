@@ -1,0 +1,77 @@
+{
+  "schema_version": 3,
+  "concept_id": "meta.aco",
+  "title": "蚁群算法（ACO）",
+  "taxonomy_path": [
+    "模型求解算法",
+    "启发式/元启发式算法",
+    "蚁群算法（ACO）"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.2",
+  "aliases": [
+    "蚁群算法",
+    "ACO",
+    "信息素"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "蚁群算法是一种模仿蚂蚁找食物时留下信息素来标记路径的群体智能方法，用于在复杂问题中找到近似最优解。",
+    "intuition": "想象一群蚂蚁从蚁穴出发寻找食物。一开始它们随机走，但一旦某只蚂蚁找到食物，它会在回程路上留下一种叫“信息素”的化学物质。其他蚂蚁更倾向于走信息素浓度高的路，于是更多蚂蚁走那条路，留下更多信息素，形成正反馈。最终，所有蚂蚁都聚集到最短路径上。蚁群算法就是模拟这个过程，用“人工蚂蚁”在解空间里搜索，用“信息素”记录好解，逐步逼近最优解。",
+    "when_to_use": "当问题可以转化为在图上找路径（如旅行商问题、车辆路径问题、网络路由），且解空间大、传统方法难解时，适合用蚁群算法。尤其适合组合优化问题，比如安排路线、分配资源、调度任务等。",
+    "definition": "蚁群算法（Ant Colony Optimization, ACO）是一种基于群体的元启发式算法，通过模拟蚂蚁觅食行为中信息素的正反馈机制，在解空间中迭代搜索最优或近似最优解。算法中，人工蚂蚁在图上移动，根据信息素浓度和启发式信息选择路径，并更新信息素以引导后续蚂蚁。",
+    "math_principle": "设图 $G=(V,E)$，$n=|V|$，蚂蚁数量为 $m$。在时刻 $t$，蚂蚁 $k$ 从节点 $i$ 转移到节点 $j$ 的概率为：\n$$p_{ij}^k(t) = \\begin{cases} \\frac{[\\tau_{ij}(t)]^\\alpha \\cdot [\\eta_{ij}]^\\beta}{\\sum_{l \\in N_i^k} [\\tau_{il}(t)]^\\alpha \\cdot [\\eta_{il}]^\\beta}, & j \\in N_i^k \\\\ 0, & \\text{otherwise} \\end{cases}$$\n其中 $\\tau_{ij}(t)$ 是边 $(i,j)$ 上的信息素浓度，$\\eta_{ij}$ 是启发式信息（如距离的倒数），$\\alpha$ 和 $\\beta$ 分别控制信息素和启发式信息的相对重要性，$N_i^k$ 是蚂蚁 $k$ 在节点 $i$ 的可行邻域。\n\n每只蚂蚁走完一条路径后，会更新信息素：\n$$\\tau_{ij}(t+1) = (1-\\rho) \\cdot \\tau_{ij}(t) + \\sum_{k=1}^m \\Delta \\tau_{ij}^k$$\n其中 $\\rho$ 是信息素挥发系数（$0<\\rho<1$），$\\Delta \\tau_{ij}^k$ 是蚂蚁 $k$ 在边 $(i,j)$ 上留下的信息素增量，通常与路径质量成正比（如 $\\Delta \\tau_{ij}^k = Q/L_k$，$L_k$ 是蚂蚁 $k$ 的路径长度，$Q$ 是常数）。",
+    "step_by_step": [
+      "1. 初始化：设置参数（蚂蚁数量 $m$，信息素重要程度 $\\alpha$，启发式重要程度 $\\beta$，挥发系数 $\\rho$，信息素常数 $Q$），初始化信息素矩阵 $\\tau_{ij}$ 为一个小正数。",
+      "2. 构建解：每只蚂蚁从随机起点出发，根据概率公式选择下一个节点，直到走完所有节点（如TSP）或满足终止条件。",
+      "3. 评估解：计算每只蚂蚁路径的目标函数值（如总距离）。",
+      "4. 更新信息素：先对所有边挥发信息素（乘以 $1-\\rho$），然后对每只蚂蚁经过的边增加信息素（$\\Delta \\tau_{ij}^k = Q/L_k$）。",
+      "5. 记录最优解：更新全局最优路径。",
+      "6. 迭代：重复步骤2-5，直到达到最大迭代次数或收敛。",
+      "7. 输出：返回全局最优路径及其目标值。"
+    ],
+    "worked_example": "以旅行商问题（TSP）为例，有4个城市A、B、C、D，坐标如下：A(0,0), B(1,0), C(1,1), D(0,1)。距离矩阵：AB=1, AC=√2≈1.414, AD=1, BC=1, BD=√2≈1.414, CD=1。设蚂蚁数量 $m=2$，$\\alpha=1$，$\\beta=2$，$\\rho=0.5$，$Q=1$，初始信息素 $\\tau_0=0.1$。\n\n迭代1：\n- 蚂蚁1从A出发：计算到B、C、D的概率。启发式信息 $\\eta_{ij}=1/d_{ij}$，所以 $\\eta_{AB}=1$，$\\eta_{AC}=1/1.414≈0.707$，$\\eta_{AD}=1$。概率分母：$[0.1]^1*[1]^2 + [0.1]^1*[0.707]^2 + [0.1]^1*[1]^2 = 0.1*1 + 0.1*0.5 + 0.1*1 = 0.1+0.05+0.1=0.25$。所以 $p_{AB}=0.1/0.25=0.4$，$p_{AC}=0.05/0.25=0.2$，$p_{AD}=0.4$。假设随机选择B。然后从B出发，剩余C、D：$\\eta_{BC}=1$，$\\eta_{BD}=1/1.414≈0.707$，分母：$0.1*1 + 0.1*0.5=0.15$，$p_{BC}=0.1/0.15≈0.667$，$p_{BD}=0.05/0.15≈0.333$，假设选C。最后从C到D，概率1。路径A-B-C-D，长度=1+1+1=3。\n- 蚂蚁2从B出发：类似过程，假设得到路径B-A-D-C，长度=1+1+1=3。\n- 更新信息素：挥发后所有边乘以0.5，变为0.05。然后蚂蚁1经过的边AB、BC、CD各增加 $\\Delta=1/3≈0.333$，所以这些边变为0.05+0.333=0.383。蚂蚁2经过的边BA、AD、DC各增加0.333，注意BA与AB同边，所以AB边信息素为0.383+0.333=0.716（因为两只蚂蚁都经过）。其他边不变。\n\n迭代2：信息素差异导致蚂蚁更可能走AB、BC、CD等边，最终收敛到最短路径（如A-B-C-D或A-D-C-B，长度3）。实际最优路径可能是A-B-C-D或A-D-C-B，长度3，而A-B-D-C长度=1+1.414+1=3.414，所以算法找到近似最优。",
+    "pitfalls": [
+      "1. 参数敏感：$\\alpha$、$\\beta$、$\\rho$、$m$等参数对性能影响大，需要调参。",
+      "2. 易早熟收敛：信息素正反馈可能导致所有蚂蚁快速集中到局部最优，失去探索能力。",
+      "3. 计算量大：每只蚂蚁每步都要计算概率，对于大规模问题，迭代次数多时耗时较长。",
+      "4. 对动态问题适应性差：环境变化后，信息素需要时间重新调整。"
+    ],
+    "tools": "Python 中可使用 scikit-opt 库的 ACA_TSP 函数，或自行实现。以下是一个使用 scikit-opt 求解TSP的最小代码示例：\n```python\nimport numpy as np\nfrom sko.ACA import ACA_TSP\n\n# 定义城市坐标（示例：5个城市）\npoints = np.array([[0,0], [1,0], [1,1], [0,1], [0.5,0.5]])\n\n# 计算距离矩阵\ndef cal_total_distance(routine):\n    num_points, = routine.shape\n    return sum(np.linalg.norm(points[routine[i % num_points]] - points[routine[(i + 1) % num_points]]) for i in range(num_points))\n\n# 初始化蚁群算法\naca = ACA_TSP(func=cal_total_distance, n_dim=5, size_pop=10, max_iter=20, alpha=1, beta=2, rho=0.5)\n\n# 运行\nbest_x, best_y = aca.run()\nprint('最佳路径:', best_x)\nprint('最短距离:', best_y)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "p_{ij}^k(t) = \\begin{cases} \\frac{[\\tau_{ij}(t)]^\\alpha \\cdot [\\eta_{ij}]^\\beta}{\\sum_{l \\in N_i^k} [\\tau_{il}(t)]^\\alpha \\cdot [\\eta_{il}]^\\beta}, & j \\in N_i^k \\\\ 0, & \\text{otherwise} \\end{cases}",
+      "variables": {
+        "p_{ij}^k(t)": "蚂蚁k在时刻t从节点i转移到节点j的概率",
+        "\\tau_{ij}(t)": "边(i,j)上的信息素浓度",
+        "\\eta_{ij}": "启发式信息，通常为1/d_{ij}",
+        "\\alpha": "信息素重要程度因子",
+        "\\beta": "启发式信息重要程度因子",
+        "N_i^k": "蚂蚁k在节点i的可行邻域"
+      }
+    },
+    {
+      "latex_code": "\\tau_{ij}(t+1) = (1-\\rho) \\cdot \\tau_{ij}(t) + \\sum_{k=1}^m \\Delta \\tau_{ij}^k",
+      "variables": {
+        "\\tau_{ij}(t+1)": "更新后的信息素浓度",
+        "\\rho": "信息素挥发系数 (0<ρ<1)",
+        "\\Delta \\tau_{ij}^k": "蚂蚁k在边(i,j)上留下的信息素增量，通常为Q/L_k",
+        "Q": "信息素常数",
+        "L_k": "蚂蚁k的路径长度"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_D08"
+    ],
+    "from_papers": []
+  }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>极简 IDE · 数学建模助教</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- CodeMirror 5（轻量代码编辑器） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+
+  <!-- 复用聊天页的配色变量与字体 -->
+  <link rel="stylesheet" href="/static/style.css?v=anim1" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+
+  <style>
+    .ide { display: flex; flex-direction: column; height: 100vh; }
+
+    .ide-top {
+      height: 54px; flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(247,247,246,0.9);
+    }
+    .ide-brand {
+      font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 15px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ide-brand .mark {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      background: var(--rouge); color: #fff; border-radius: 6px; font-size: 14px;
+    }
+    .ide-top input.path {
+      flex: 1; min-width: 120px; padding: 7px 10px;
+      border: 1px solid var(--line); border-radius: 7px;
+      font-family: inherit; font-size: 13px; background: var(--paper); color: var(--ink);
+    }
+    .ide-top input.fname { width: 150px; }
+    .ide-btn {
+      padding: 7px 14px; border: 1px solid var(--line); border-radius: 7px;
+      background: var(--paper); color: var(--ink); font-family: inherit; font-size: 13px;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .ide-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+    .ide-btn.run { background: var(--rouge); color: #fff; border-color: var(--rouge-deep); }
+    .ide-btn.run:hover { background: var(--rouge-deep); color: #fff; }
+    .ide-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .ide-link { color: var(--ink-soft); font-size: 13px; text-decoration: none; padding: 6px; }
+    .ide-link:hover { color: var(--rouge); }
+
+    .ide-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+    .ide-editor { flex: 1; min-height: 0; border-bottom: 1px solid var(--line); }
+    .CodeMirror { height: 100%; font-size: 14px; font-family: "Consolas", "Courier New", monospace; }
+
+    /* 控制台：运行输出 + 命令 + 交互输入 合并在一处 */
+    .ide-console {
+      height: 38%; min-height: 160px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+      background: #1e1f22; color: #e4e4e6;
+    }
+    .console-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 12px; font-size: 12px; color: #9a9ca2;
+      border-bottom: 1px solid #2e2f33;
+    }
+    .console-head .status { font-size: 12px; }
+    .console-head .status.running { color: var(--gold); }
+    .console-head .btn-clear { background: none; border: none; color: #9a9ca2; cursor: pointer; font-size: 12px; }
+    .console-head .btn-clear:hover { color: #fff; }
+
+    .console-log {
+      flex: 1; overflow-y: auto; padding: 10px 12px;
+      font-family: "Consolas", "Courier New", monospace; font-size: 13px; line-height: 1.55;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .console-log .echo { color: #7fc7ff; }      /* 用户输入回显 */
+    .console-log .sys  { color: var(--gold); }   /* 系统提示 */
+    .console-log .err  { color: #ff8f8f; }
+
+    .console-imgs { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 12px; }
+    .console-imgs img { max-height: 180px; border: 1px solid #2e2f33; border-radius: 4px; background: #fff; }
+
+    .console-input-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-top: 1px solid #2e2f33;
+    }
+    .console-prompt { color: var(--gold); font-family: "Consolas", monospace; font-size: 13px; white-space: nowrap; }
+    .console-input {
+      flex: 1; background: #2a2b2f; border: 1px solid #3a3b40; border-radius: 6px;
+      color: #e4e4e6; padding: 7px 10px; font-family: "Consolas", monospace; font-size: 13px;
+    }
+    .console-input:focus { outline: none; border-color: var(--rouge); }
+    .console-hint { font-size: 11px; color: #76787e; padding: 0 12px 6px; }
+  </style>
+</head>
+<body>
+  <div class="ide">
+    <div class="ide-top">
+      <div class="ide-brand"><span class="mark">绣</span>极简 IDE</div>
+      <input type="text" class="path" id="workdir" placeholder="工作目录（项目文件夹绝对路径，留空用临时目录）" />
+      <input type="text" class="path fname" id="filename" placeholder="文件名 main.py" value="main.py" />
+      <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
+      <button class="ide-btn run" id="btn-run" title="运行（Ctrl+Enter）">▶ 运行</button>
+      <button class="ide-btn" id="btn-stop" title="停止当前进程" disabled>⛔ 停止</button>
+      <a class="ide-link" href="/" title="返回助教聊天">← 返回助教</a>
+    </div>
+
+    <div class="ide-body">
+      <div class="ide-editor"><textarea id="editor"></textarea></div>
+
+      <div class="ide-console">
+        <div class="console-head">
+          <span>终端 / 控制台</span>
+          <span class="status" id="con-status">就绪</span>
+          <button class="btn-clear" id="btn-clear">清空</button>
+        </div>
+        <div class="console-log" id="con-log"></div>
+        <div class="console-imgs" id="con-imgs"></div>
+        <div class="console-input-row">
+          <span class="console-prompt" id="con-prompt">$</span>
+          <input type="text" class="console-input" id="con-input"
+                 placeholder="运行中：在此回答程序的输入（input/y-n）；空闲时：输入命令回车执行（dir、pip install …）" />
+        </div>
+        <div class="console-hint">命令在你本机以子进程运行，仅限信任环境使用。交互式输入支持 input()/y-n；全屏程序（vim 等）不支持。</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/ide.js?v=anim1"></script>
+</body>
+</html>

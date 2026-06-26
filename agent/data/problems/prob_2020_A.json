@@ -1,0 +1,307 @@
+{
+  "id": "prob_2020_A",
+  "title": "最佳暑期工作选择模型",
+  "year": 2020,
+  "contest": "HiMCM",
+  "difficulty": "Beginner",
+  "tags": [
+    "层次分析法",
+    "多准则决策",
+    "综合评价"
+  ],
+  "background": "2020 HiMCM\nProblem A: The Best Summer Job\n\nAlthough it’s only November, you need to start planning for your 2021 summer job. You have a variety of\nchoices this year and want to determine your “best” choice. You pose this problem for your team of math\nfriends:\n\nWe have many opportunities for a summer job. Some allow us to work from home virtually/electronically, some\nare a walk or bike ride away, and others require us to drive or take a train. Each job offers differing numbers of\nhours each week and the hourly rates also vary. Some involve physical activity, or at least not sitting at a desk\n(e.g. cashier at a store, lifeguarding, or wait staff at a restaurant), while others are mostly sedentary and\nperhaps use analytical and organizational skills (e.g. data analysis, office administration, or research).\n\nLet’s develop a model that will evaluate the choices we have for our summer jobs and help us all find the\n“best” job. While we certainly want to earn and save some money, we also want to have time for recreation\nactivities (e.g. exercise, outings, and social time with friends). Let’s make our model one that will be helpful for\nall high school students to think about and analyze their summer job options.\n\n1. What factors should high school students who are looking for a summer job consider? List and describe the\nvarious factors your team identifies. Note that factors may be quantitative or qualitative, constant or variable,\nand deterministic or probabilistic. Be sure to include units as appropriate.\n\n2. Use your factors to develop a model or algorithm (or set of models/algorithms) for a high school student to\nuse to evaluate their summer job options based on their own situation and preferences as inputs to your model.\n\n3. Test your model with at least ten fictional persons that you create with reasonable data. Explain your\ndevelopment of these fictional persons and the data you chose. Analyze the results of the application of your\nmodel on these persons.\n\n4. Describe and show how you would present your model for a person to understand and use. For example, you\nmight use a webpage or an app or a school newspaper article. NOTE: You do not need to publish an actual\nwebpage or develop an actual app, but describe and provide the layout of your proposed presentation.\n\nYour PDF solution of no more than 25 total pages should include:\n\n  One-page Summary Sheet.\n  Table of Contents.\n  Your complete solution.\n  References list.\n\nNote: The HiMCM Contest now has a 25 page limit. All aspects of your submission count toward the 25 page\nlimit (Summary Sheet, Table of Contents, Reference List and any Appendices).\n\nGlossary\n\nDeterministic: processes that have only one (predetermined) outcome.\n\nFictional: not real or true; made up.\n\nProbabilistic: processes based on the theory of probability or that randomness plays a role in predicting\nfuture events.\n\nSedentary: characterized by much sitting and little physical activity.\n\n微信公众号：HiMCM关注HiMCM获取更多资讯+−×÷HiCM微信公众号：HiMCM",
+  "data_files": [],
+  "total_max_score": 100,
+  "steps": [
+    {
+      "id": "s1",
+      "stage_key": "restate",
+      "modality": "key-points",
+      "guide_style": "苏格拉底式追问，引导分点列举，不直接给答案",
+      "deliverable": "子问题清单 + 关键约束",
+      "title": "问题分析与重述",
+      "prompt": "请阅读题目，用自己的话重述问题：我们要解决什么问题？目标是什么？有哪些关键要求？请写出不超过200字的问题重述。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "准确理解问题目标",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "清晰列出关键要求",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "语言简洁、逻辑清晰",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "问题要求为高中生建立一个模型，用于评估和选择最佳暑期工作。模型需考虑多种因素（如收入、工作时间、工作类型、个人偏好等），并能根据个人情况给出推荐。最终需测试模型并设计展示方式。",
+      "hint": "注意题目中提到的因素类型：定量/定性、确定/随机。",
+      "paper_points": []
+    },
+    {
+      "id": "s2",
+      "stage_key": "assume",
+      "modality": "key-points",
+      "guide_style": "质疑每条假设的必要性与合理性",
+      "deliverable": "假设清单 + 理由",
+      "title": "模型假设",
+      "prompt": "列出至少5条合理的模型假设，并简要说明每条假设的合理性。例如：假设所有工作信息已知且准确。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "假设数量足够（≥5）",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "假设合理且必要",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "有合理性说明",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "1. 所有工作信息（工资、时长、地点等）已知且准确。2. 学生偏好稳定且可量化。3. 工作机会之间相互独立。4. 学生每周可用于工作的时间固定。5. 不考虑工作之间的竞争或录取概率。",
+      "hint": "考虑简化现实，使模型可解。",
+      "paper_points": []
+    },
+    {
+      "id": "s3",
+      "stage_key": "notation",
+      "modality": "formula",
+      "guide_style": "检查符号一致性与单位是否齐全",
+      "deliverable": "符号表",
+      "title": "符号说明与变量定义",
+      "prompt": "定义模型中使用的符号和变量，包括决策变量、输入参数、输出变量等。至少列出8个变量，并注明单位。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "变量定义完整、清晰",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "包含单位",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "符号使用规范",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "设工作集合 $J = \\{1,2,...,n\\}$，对工作 $j$：$w_j$ 为时薪（美元/小时），$h_j$ 为每周工作小时数，$d_j$ 为通勤距离（英里），$t_j$ 为工作类型（1=体力，0=久坐），$s_j$ 为技能要求（1-5分）。学生偏好：$\\alpha$ 为收入权重，$\\beta$ 为休闲权重，$\\gamma$ 为通勤权重。输出：$S_j$ 为工作 $j$ 的综合得分。",
+      "hint": "可参考获奖论文中的变量列表。",
+      "paper_points": []
+    },
+    {
+      "id": "s4",
+      "stage_key": "build",
+      "modality": "formula",
+      "guide_style": "推敲方程是否自洽、可解、贴合题意",
+      "deliverable": "核心方程组",
+      "title": "模型建立",
+      "prompt": "基于你定义的变量，建立一个综合评价模型来计算每个工作的得分。可以使用加权和、层次分析法（AHP）或其他方法。写出模型公式，并解释各部分的含义。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "模型结构清晰、合理",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "公式正确，变量对应",
+          "weight": 6,
+          "detail": ""
+        },
+        {
+          "dim": "解释充分",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "考虑个人偏好输入",
+          "weight": 4,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "采用加权和模型：$S_j = \\alpha \\cdot \\text{norm}(w_j \\cdot h_j) + \\beta \\cdot \\text{norm}(\\text{休闲时间}) + \\gamma \\cdot \\text{norm}(1/d_j)$，其中 $\\text{norm}$ 为归一化函数（如min-max归一化）。休闲时间 = $168 - h_j - \\text{通勤时间}$。权重 $\\alpha,\\beta,\\gamma$ 由用户输入或通过AHP确定。",
+      "hint": "注意不同量纲的指标需要归一化。",
+      "paper_points": []
+    },
+    {
+      "id": "s5",
+      "stage_key": "solve",
+      "modality": "code",
+      "guide_style": "逐步调试，关注可运行性与结果合理",
+      "deliverable": "可运行代码 + 结果",
+      "title": "模型求解",
+      "prompt": "假设有5个虚构工作，数据如下：工作A（时薪$10，每周20小时，通勤5英里，体力型），工作B（$15，15小时，2英里，久坐），工作C（$8，25小时，10英里，体力型），工作D（$12，10小时，1英里，久坐），工作E（$20，5小时，0英里，久坐）。假设学生偏好：收入权重0.5，休闲权重0.3，通勤权重0.2。计算每个工作的得分，并排序。",
+      "max_score": 20,
+      "criteria": [
+        {
+          "dim": "正确归一化数据",
+          "weight": 5,
+          "detail": ""
+        },
+        {
+          "dim": "正确计算得分",
+          "weight": 8,
+          "detail": ""
+        },
+        {
+          "dim": "排序结果正确",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "展示计算过程",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "先归一化：收入（$w_j \\cdot h_j$）：A=200，B=225，C=200，D=120，E=100；归一化后：A=0.8，B=1，C=0.8，D=0.16，E=0。休闲时间：A=168-20-0.5=147.5，B=168-15-0.2=152.8，C=168-25-1=142，D=168-10-0.1=157.9，E=168-5-0=163；归一化后：A=0.31，B=0.62，C=0，D=0.89，E=1。通勤距离倒数：A=0.2，B=0.5，C=0.1，D=1，E=∞（设为1）；归一化后：A=0.11，B=0.44，C=0，D=1，E=1。得分：A=0.5*0.8+0.3*0.31+0.2*0.11=0.515，B=0.5*1+0.3*0.62+0.2*0.44=0.774，C=0.5*0.8+0.3*0+0.2*0=0.4，D=0.5*0.16+0.3*0.89+0.2*1=0.547，E=0.5*0+0.3*1+0.2*1=0.5。排序：B > D > A > E > C。",
+      "hint": "注意通勤时间可估算为距离/速度（假设步行速度3mph）。",
+      "paper_points": []
+    },
+    {
+      "id": "s6",
+      "stage_key": "analyze",
+      "modality": "prose",
+      "guide_style": "追问结果是否可信、与现实是否吻合",
+      "deliverable": "结果解读",
+      "title": "结果分析与检验",
+      "prompt": "基于上一步的结果，分析为什么工作B得分最高？工作C得分最低？讨论模型结果是否符合直觉。然后，改变学生偏好（例如收入权重0.8，休闲0.1，通勤0.1），重新计算并比较结果。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "合理解释原结果",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "正确进行敏感性分析",
+          "weight": 4,
+          "detail": ""
+        },
+        {
+          "dim": "比较并讨论差异",
+          "weight": 3,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "原结果中B收入高、通勤短、休闲适中，综合最优；C收入低、通勤长、休闲少，最差。改变权重后：新得分A=0.8*0.8+0.1*0.31+0.1*0.11=0.682，B=0.8*1+0.1*0.62+0.1*0.44=0.906，C=0.8*0.8+0.1*0+0.1*0=0.64，D=0.8*0.16+0.1*0.89+0.1*1=0.317，E=0.8*0+0.1*1+0.1*1=0.2。排序不变，但差距变化，说明收入权重主导。",
+      "hint": "敏感性分析可以改变一个权重，观察排序变化。",
+      "paper_points": []
+    },
+    {
+      "id": "s7",
+      "stage_key": "sensitivity",
+      "modality": "code",
+      "guide_style": "引导设计扰动实验并解读",
+      "deliverable": "灵敏度表 / 图",
+      "title": "灵敏度分析",
+      "prompt": "选择模型中的一个参数（如收入权重），在0到1之间变化，其他权重按比例调整，观察前3名工作的排序变化。画出灵敏度图或表格。",
+      "max_score": 10,
+      "criteria": [
+        {
+          "dim": "参数选择合理",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "变化范围覆盖全面",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "结果展示清晰（图或表）",
+          "weight": 3,
+          "detail": ""
+        },
+        {
+          "dim": "分析结论合理",
+          "weight": 2,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "设收入权重从0到1，休闲和通勤权重等比例分配剩余权重。当收入权重<0.3时，工作D（休闲多）成为第一；当收入权重>0.7时，工作B保持第一；中间区域B和D交替。说明模型对权重敏感，用户需谨慎设定偏好。",
+      "hint": "可以使用Excel或手算几个关键点。",
+      "paper_points": []
+    },
+    {
+      "id": "s8",
+      "stage_key": "evaluate",
+      "modality": "prose",
+      "guide_style": "对照假设找局限，避免空泛",
+      "deliverable": "优缺点 + 改进",
+      "title": "模型评价",
+      "prompt": "列出你的模型的至少3个优点和3个缺点。优点如简单易懂，缺点如忽略不确定性等。",
+      "max_score": 5,
+      "criteria": [
+        {
+          "dim": "优点合理且具体",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "缺点合理且具体",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "语言客观",
+          "weight": 1,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "优点：1. 模型简单，易于理解和实现。2. 考虑个人偏好，个性化强。3. 可扩展更多因素。缺点：1. 权重主观性强，可能不准确。2. 忽略工作之间的竞争和录取概率。3. 归一化方法可能影响结果。",
+      "hint": "从模型假设和简化角度思考。",
+      "paper_points": []
+    },
+    {
+      "id": "s9",
+      "stage_key": "extend",
+      "modality": "prose",
+      "guide_style": "强调创新点与清晰表达",
+      "deliverable": "推广 + 摘要要点",
+      "title": "模型推广与论文写作要点",
+      "prompt": "提出至少2种模型推广方向（如加入风险因素、考虑实习等）。另外，列出论文写作中需要包含的关键部分（如摘要、假设、模型、测试、结论等）。",
+      "max_score": 5,
+      "criteria": [
+        {
+          "dim": "推广方向合理且有创意",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "论文结构完整",
+          "weight": 2,
+          "detail": ""
+        },
+        {
+          "dim": "表述清晰",
+          "weight": 1,
+          "detail": ""
+        }
+      ],
+      "reference_outline": "推广：1. 加入COVID-19风险因素，调整工作评分。2. 扩展至实习岗位，考虑技能匹配。论文结构：摘要、问题重述、假设、变量定义、模型建立、求解、测试、灵敏度分析、优缺点、结论、参考文献。",
+      "hint": "参考获奖论文的目录结构。",
+      "paper_points": []
+    }
+  ],
+  "schema_version": 2,
+  "papers": [],
+  "review": {
+    "curated": false
+  }
+}

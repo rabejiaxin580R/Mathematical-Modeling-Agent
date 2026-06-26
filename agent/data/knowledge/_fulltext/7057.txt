@@ -1,0 +1,990 @@
+Team #7057 Page 1 of 24
+2016
+19th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+Team Control Number: 7057
+Problem Chosen: B
+Summary
+Our team was tasked to minimize the number of warehouses needed to offer one-day ground
+shipping throughout the contiguous United States for an expanding recreation company. We
+created a method to determine the location of the warehouses based on its ZIPM code and the
+location’s proximity to a major roadway. Given the ranges of ZIP codes in each state, we found
+the most central ZIP codes in the given range and examined cities withinC that range whose
+proximity was close to major roadways. After implementing this method, we found that the
+M
+company would need to build 28 new warehouses. However, three of those warehouses would
+exclusively cover uninhabited area, and therefore would be a waste of money and materials. This
+i
+reasoning decreased the number of warehouses to 25 new Hwarehouses, roughly the same as the
+amount of FedEx ground hubs [2].
+：
+After establishing the locations of the warehouses, we analyzed the tax rates and populations of
+号
+each state. A metric, L, was created for each state to rank the effect of tax liability on the total
+​ ​
+consumer base. By calculating the metric for every state, we found which states had the most
+people and the highest sales tax. T众o improve consumer sales, warehouses were moved to
+decrease tax liability for certain states that had high per capita and total tax liability. The metric
+was modified once we took into account clothing and the apparel tax for every state.
+公
+Our final solution places warehouses so that the company can offer one-day ground shipping to
+信
+the entire inhabited continental United States of America. We determined the locations based on
+a method that combines physical connectivity with relative placement in the state. Taking into
+account the微 sales and apparel taxes of each state, we optimized the locations of our warehouses
+while decreasing total consumer tax liability.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 2 of 24
+Dear M. President,
+Thank you for allowing us to aid you in the decision of where to build the new warehouses. As
+you know, the successful placement of new warehouses is vital to the continued growth of your
+company. By providing one-day shipping to all four corners of the nation, we will be able to
+drastically increase our customer base.
+After carefully analyzing this problem, we have determined that the best solution is to build an
+additional 25 warehouses in select cities across the nation. These 25 warehouses will take into
+M
+account the varying state taxes for both sales tax and apparel tax exemptions, striving to provide
+the most number of customers with the cheapest option for your items so that they are more
+C
+inclined to buy again from your company.
+M
+This solution allows the entire nation to be served with only 25 additional warehouses (Fig. 9).
+This covers all inhabited land in the nation, as opposed to all lanid in the nation. There are several
+​ ​ H
+places in the nation, most notably places in Idaho, Nevada, and Maine, that are difficult to reach,
+mainly due to mountainous or forested terrain. Be：cause of this, the only realistic way to ensure
+one-day shipping to these locations is to build a warehouse exclusive to these parts of each state.
+However, these three locations correspond号 with a significant decrease in population, to the point
+that it is unadvisable to put forth the time and money required to build another warehouse.
+众
+While this solution attempts to minimize the number of warehouses needed, it still requires that
+25 additional warehouses be built, which is impractical to do all at once. While these could be
+公
+built east to west, gradually pushing westward, there is a better way to disperse the warehouses.
+By building only four of these additional warehouses at Denver, Colorado; Marion, Arkansas;
+Fresno, California;信 and Janesville, Wisconsin, we are able to provide two-day shipping to a vast
+majority of the contiguous United States. Doing so will lead to an increase in our customer base
+and profit that we could use to build the other 21 warehouses and provide one-day shipping
+微
+nationwide.
+The adoption of our recommendations would allow for your company to move into its next stage
+as safely as possible, minimizing the risk as your net profit increases. We hope that you consider
+our recommendations as you guide your company through this exciting period.
+Thank you,
+Team #7057
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 3 of 24
+Introduction and Restatement of Problem
+Online commerce has increased greatly with the growth of the Internet. It offers the ability to
+purchase items without going to a store, saving the consumer time. However, online shopping
+brings into account other factors, such as the shipping location and the tax rate for the items. A
+warehouse in Oregon will have different implications than a warehouse in Ohio for a shopper in
+Ohio. A recreation equipment company is looking to expand its online business by building
+warehouses across the United States. The company wishes to offer one-day ground shipping to
+the 48 states of the continental U.S. The goal of our paper was to find the optimal number and
+locations of warehouses for a recreation equipment company that would cover the entirety of the
+M
+contiguous United States, using the UPS Ground Time-in-Transit maps [1].
+C
+Assumptions and Justifications
+In the analysis of this problem, certain assumptions were made thaMt reduced the number of
+variables taken into account.
+i
+H
+Assumption 1: The approximate delivery areas for one-day shipping are accurate
+on the given UPS w：ebsite [1]. That is, if an item is claimed to
+arrive in one day it will always arrive within one day.
+Justification: We must ass号ume that the times provided to us by the official
+website are accurate in order to have a source of data.
+众
+Assumption 2: Variances in speed limit, traffic flow and routes are negligible
+when calculating delivery date and any outside occurrences
+公
+(hurricanes, accidents, detours, etc.) that will drastically affect
+delivery date will not occur.
+Justification: 信It is impossible to predict how these factors will affect our model
+on any given day as they change frequently. By removing them,
+we can simplify our model. Furthermore, it is likely that the
+微
+estimated delivery date received from the UPS website already
+takes these factors into account. While such factors do naturally
+occur, they are impossible to predict and generally unlikely to
+occur.
+Assumption 3: The warehouse in New Hampshire cannot be moved.
+Justification: The company’s headquarters are in New Hampshire, and moving
+this would be an unnecessary expense for the company.
+Assumption 4: There is no limit to the number of people that a warehouse is able
+to service. In other words, if a warehouse is able to ship to an area
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 4 of 24
+it will always have the resources available to do so no matter how
+much demand they receive.
+Justification: This is a factor which affects the delivery date. However, it is
+based upon the current demand for the product which fluctuates
+and is thus hard to incorporate into our calculations, especially
+without prior knowledge of demand for these products. Removing
+this factor allows us to simplify the calculations. Furthermore, it is
+likely that the company will research the surrounding area before
+M
+building a warehouse and will adjust the size of the warehouse
+accordingly.
+C
+Assumption 5: The number of consumers in each stMate is proportional to the
+state’s total population.
+Justification: Although different states may be miore inclined to buy the
+H
+company’s recreational equipment, for the sake of the metric and
+measuring taxes we： assume that the state’s population correlates
+with the number of consumers from that state to simplify
+calculations号.
+Assumption 6: The cost of building a warehouse is equal in all areas of the United
+众
+States.
+Justification: In reality, the cost of real-estate would be much higher in certain
+公
+areas. We will disregard the cost of property in order to obtain the
+best and/or largest one-day shipping area.
+信
+Assumption 7: The shipping occurs on Monday, November 14, 2016,
+which is used on the UPS website to find one-day shipping area.
+微
+Justification: We wish to model the situation that occurs most of the time, which
+is not during “rush season,” or between Black Friday and
+Christmas. Shipping also only occurs during business days, so
+sending a package on Friday would be received by Monday. We
+chose November 14, 2016, as it is not during “rush season” and is
+a Monday, so it is uninterrupted by non-business days.
+Assumption 8: Each state buys the same fraction of apparel versus outdoor gear.
+Justification: Different states could buy more or less gear than other states,
+but for the purposes of this project we are equalizing the percent of
+apparel bought by each state.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 5 of 24
+Placement of Warehouses
+Our goal was to place the minimum number of warehouses that could offer one-day ground
+shipping throughout the contiguous United States, and when met, will indicate the success of this
+method. Cities with large populations are more likely to be connected with other areas as people
+frequently travel to and from such cities, so we first placed warehouses in the twenty largest
+cities of the US. However, the cities tended to be close to one another, and the areas for one-day
+ground shipping consistently overlapped (Fig. 1).
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Afterwards, we chose to add warehouses on cities close to major roadways and interstates. We
+hypothesized that places near the intersection of highways would be easier to access than
+微
+warehouses away from major roadways (Fig. 2).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 6 of 24
+M
+C
+M
+i
+H
+：
+号
+This method worked well for some众 areas, like the light blue region near Indiana, Ohio, West
+Virginia, Kentucky, and Tennessee (warehouse location: Lexington, KY). However, this made it
+harder to cover small sections of the US, and wasted warehouses on unnecessary locations, like
+公
+the small dark green section in Idaho (warehouse location: Idaho Springs). This gave us an idea
+for our final and most successful method.
+信
+When we based our warehouse locations on their proximity to major highways and interstates,
+there was a微 lot of coverage that was provided. However, we reached a point where we had
+predicted the addition of over 30 warehouses and we still had more areas to cover. We felt that
+while it did provide a good amount of coverage in some areas, we could add another component
+to the method that would make it more optimal and selective. Because the ZIP code of a
+warehouse determines how far surrounding cities can be from the warehouse in order to qualify
+for one-day shipping, we decided to combine ZIP codes and highways in order to better optimize
+our outcomes.
+ZIP codes are numbers created by the US Postal Service in order to facilitate the delivery of
+mail, increasing as one moves east to west in the United States. For this method, we examined
+the first three digits. The first digit represents its national area and the second and third digits
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 7 of 24
+represent the sectional center or large city post office that the mail will be sorted at. Using the
+ZIP code system, we worked our way from west to east, starting with Utah. Utah was selected
+because it is fairly central in the west half of the country, which has fewer major highways and
+roads than the East side and is thus more difficult to ship to. Our final method consisted of
+finding the central ZIP code in each state according to the map of ZIP codes provided (Fig. 3).
+M
+C
+M
+i
+H
+：
+号
+众
+公
+After finding the mean ZIP code, we allowed a ± 20% range (Table 1), which allowed for
+freedom in states t信hat are oddly shaped, have inconsistent labelling patterns or have few major
+roadways, and used the ZIP code within that range that was closest to an interstate or highway.
+The closer a ZIP code is to the median amount, the more preferable it was. It was most optimal
+微
+to find a location near an intersection of highways and interstates. We tested all possible ZIP
+codes by putting them into the UPS website [1] and compared them to determine which covered
+the most area.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 8 of 24
+M
+C
+M
+i
+H
+：
+号
+We followed this method for all 48 states except for the corner and irregularly shaped states of
+众
+Maine and Florida. Below, our final map (Fig. 4) shows the areas covered by the ZIP codes listed
+in Table 2.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 9 of 24
+M
+C
+M
+i
+H
+：
+
+号
+
+| State  |           | City  |        |           |       |
+| ------ | --------- | ----- | ------ | --------- | ----- |
+|        | Zip Code  |       | State  | ZIP Code  | City  |
+众
+| Florida  | 32068  | Jacksonville  |         |        |          |
+| -------- | ------ | ------------- | ------- | ------ | -------- |
+|          |        |               | *Maine  | 04736  | Caribou  |
+公
+| Colorado    | 80204  | Denver       | Pennsylvania   | 18062  | Macungie     |
+| ----------- | ------ | ------------ | -------------- | ------ | ------------ |
+| New Mexico  |        | Albuquerque  |                |        |              |
+|             | 87107  |              | West Virginia  | 26104  | Parkersburg  |
+信
+| Montana  | 59832   | Drummond  |             |        |         |
+| -------- | ------- | --------- | ----------- | ------ | ------- |
+|          |         |           | California  | 93722  | Fresno  |
+微
+Glendive
+| Montana  | 59330  |          | North Carolina  | 27518  | Cary      |
+| -------- | ------ | -------- | --------------- | ------ | --------- |
+| Texas    | 77002  | Houston  | Oklahoma        | 73119  | Oklahoma  |
+City
+El Paso
+| Texas    | 79901  |         | Idaho    | 83301  | Twin Falls  |
+| -------- | ------ | ------- | -------- | ------ | ----------- |
+| *Nevada  | 89406  | Fallon  | Arizona  | 85004  | Phoenix     |
+Lexington
+| Kentucky  | 40503  |             | Oregon  | 97214  | Portland  |
+| --------- | ------ | ----------- | ------- | ------ | --------- |
+| Iowa      | 50309  | Des Moines  | *Idaho  | 83469  | Shoup     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 10 of 24
+South Dakota 57105 Sioux Falls Illinois 62049 Hillsboro
+Tennessee 38104 Memphis Alabama 36117 Montgomery
+New 03301 Concord Kansas 66606 Topeka
+Hampshire
+Michigan 49781 Saint Ignace Nebraska 69101 North Platte
+Wisconsin 53548 Janesville
+M
+Table 2: A list all the ZIP codes and the corresponding cities that allow for one day shipping
+to the entire contiguous US using our method. Cities with asterisks are uninhabited.
+C
+Table 2 shows the list of all locations of our proposed warehouses. States with asterisks next to
+M
+them indicate that the warehouse could be disregarded. After finding the warehouses that
+covered the entirety of the contiguous US, we thought of ways to minimize the addition of 28
+i
+new warehouses, one of which included looking at areas oHf the US that were uninhabited. After
+overlaying our final solution on a map that had all the uninhabited areas, we found that the
+：
+warehouses in Nevada, Maine, and Shoup, Idaho were in areas that, for the most part, have a
+population near zero, as seen below (Fig. 5).
+号
+众
+公
+信
+微
+Having a total of 26 warehouses is an acceptable amount due to the fact that in order for one day
+shipping to be available for all inhabited parts of the United States, the warehouses must be close
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 11 of 24
+to a hub. A hub is a facility that processes packages for a shipping company. When a package is
+shipped, it is first sent to the hub and then delivered to the final location as opposed to making a
+trip directly to the location. A similar service to UPS, FedEx has 25 hubs across the nation as
+seen in figure 6 [2]. It stands to reason that UPS would have a similar number of hubs placed
+across the United States, and it follows that we should have a similar number of warehouses -
+approximately one per hub.
+M
+C
+M
+i
+H
+：
+号
+众
+Justification of Model One
+公
+The combination of ZIP codes and their proximity to interstates and highways was done in order
+to improve the interstate/highway method by making it more selective. The interstate/highway
+信
+method was pretty effective in that it had great coverage. However, there were some areas that
+couldn’t be covered well or didn’t have many intersections near them. We used ZIP codes
+微
+because the built-in feature on the website of the United Parcel Service calculates the areas that
+receive one-day shipping based off of the ZIP code of the warehouse building. In order to
+efficiently combine ZIP codes and the interstate/highway method, we wanted to use the central
+ZIP code within each given range per state. We couldn’t use the middle point of each state due to
+the fact that each state is structured and shaped differently. Therefore, we had to put a rule into
+place that would standardize all the states to some degree. In order to accomplish this, we
+decided to take the middle range of the ZIP code range per state [5].
+We also decided to take into account uninhabited areas due to the fact that there were small areas
+in states such as Idaho and Nevada that wouldn’t be reached until a day later when compared to
+the areas around them. After looking into these cases, we found that there were geographic
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 12 of 24
+barriers such as mountains and forests that separated that part of the state from the rest and that
+they required their own warehouses in order to be covered for one-day shipping. While there
+were a lot of uninhabited areas in the west, a majority of them were covered by warehouses in
+other areas. There were three uninhabited areas that required their own warehouses due to their
+isolation. When taking this into account, it doesn’t make sense for a company to build an entire
+warehouse in an area that is not populated.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Tax Liability
+The tax liability is the amount a consumer must pay to a tax authority as a result of a taxable
+微
+event [7]. The company will attract more consumers in a certain state if we can remove the
+warehouse in state, because the sales tax for that company would become zero. In this section,
+we attempt to find which states would most benefit from not having to pay taxes for the
+company’s products. Since we assume that each state’s population is proportional to the number
+of consumers in that state, we can create a metric L that describes the total tax liability of
+​ ​
+consumers in that state,
+p
+L = ( state) * r
+p
+total
+where p is the population of the state, p is the total population of the country, and r is the
+​ ​ ​ ​ state ​ total ​
+​ ​ ​
+tax rate multiplied by 100 (so for a tax rate of 4%, r is equal to 4). The state populations were
+​ ​
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 13 of 24
+based off of the 2010 Census [8]. We assume that the consumer base for a state and the tax rate
+of a state have equal weights on the metric L, which means that a state with 5 consumers and a
+​ ​
+tax rate of 6% will have the same tax weight as a state with 10 consumers and a tax rate of 3%
+for the company.
+We then calculated L for each state (See Appendix 1). A high L value means that a state has a
+​ ​ ​ ​
+higher total tax liability, based on its fraction of the country’s population and its tax rate. Some
+states, such as North Carolina or New York, have high L values because they have large
+​ ​
+populations, which means the gross amount of taxation for those states is very large because
+M
+more people are taxed. Other states, like New Jersey or Michigan, have lower populations than
+most states with high L values, but have higher tax rates making the per consumer taxation
+​ ​ C
+greater. Other states, like California and Florida, have high sales tax rates and very high
+populations. M
+With our current placement of warehouses (Fig. 5), the average isales tax that a consumer must
+H
+pay anywhere in the United States is 3.76%. This average was calculated by finding the L value
+​ ​
+of every state with a warehouse, and then summin：g those numbers. Since consumers in a state
+with no warehouse have to pay no tax, their weighted taxes are zero. The sum is the average
+sales tax any consumer in the US must pay号. However, the actual sales tax a consumer pays is
+completely based on their location. For example, the 12.3% of the US population that lives in
+California must pay a sales tax of 7.5%.
+众
+Adhering to the previous assumptions about the taxes of online orders in or outside a state with a
+公
+warehouse, we could determine which states were more likely to benefit from moving a
+warehouse. We decided to focus on the states that had L values greater than 0.18, because there
+​ ​
+is a visible drop be信tween the L values of North Carolina and Michigan (Fig. 8). These nine states
+​ ​
+were Michigan, New Jersey, Ohio, Pennsylvania, New York, Illinois, Florida, Texas, and
+California.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 14 of 24
+M
+C
+M
+i
+H
+While rearranging the warehouses based on these new guidelines for sales tax, we did not add
+：
+any extra warehouses. The cost of building another warehouse would be currently
+indeterminable since the amount of time needed to pay off the cost of an additional warehouse is
+号
+determined by a variety of unknown factors, such as net profit of the company over time.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 15 of 24
+The only changes in Figure 9 are the movement of the Des Moines, Iowa warehouse to
+Davenport, Iowa and the Hillsboro, Illinois warehouse to Evansville, Indiana. This allows us to
+avoid placing a warehouse in Illinois, which has the fourth highest L value, and therefore those in
+​ ​
+Illinois would now be more inclined to purchase items. Those in Indiana, however, would be less
+inclined to purchase items. Ultimately, Indiana’s population is nearly half of Illinois so the
+population of Illinois has a larger impact on the L values of our model. We also move a
+​ ​
+warehouse in Memphis, Tennessee to Marion, Arkansas. Our decision to place these new
+warehouses were not based on our final method, as these new warehouses were usually on
+borders of states in order to reach surrounding states. Our method was to try ZIP codes that were
+M
+both located in the center of the area we needed to cover and ones that were close to highways.
+C
+Although some states had high L values, we could not move their warehouses because those
+​ ​
+states made up the borders of the U.S. Since no other states could Mcover the area of the state that
+made up that border, we could not place a warehouse in another state because we would miss
+that area of the state. This statement applies to states like Califoirnia, Texas, and Florida, which
+H
+make up considerable portions of the national border.
+：
+Apparel Tax Liability
+With the addition of apparel to the compan号y, the overall tax liability per state changes. Now, we
+factor in the apparel tax into our state tax metric L, to create a modified metric L :
+​ ​ ​ ​ a
+​
+众
+p
+L = state(nr + (1 − n )r)
+a a (Eq. 2: Modified tax metric per state)
+​ p ​ ​
+total
+公
+where p is the population of the state, p is the total population of the country, n is the
+​ ​ ​ ​ state ​ total ​
+​ ​ ​
+percent of purchases that are apparel, r is the tax rate, and r is the tax rate for clothing (which is
+​ ​ ​ 信 ​ ​ a
+​
+either r or zero). In some states, there is no tax on clothing and shoes, which will change the tax
+​ ​
+liability of the consumers in a certain state.
+微
+An n-value of 0.3 was first used to compute L for each state, which resulted in some shifts in the
+​ ​ ​ ​ ​ a
+​
+L-rankings of the states. States with high L values that had limited apparel tax, like New York
+​ ​ ​
+and Pennsylvania, had lower L values and fell in the rankings. These states became better
+​ ​ a
+​
+candidates than other high L states.
+​ ​
+Our previous n of 0.3 was an estimation by our team, but we realized that we could improve the
+​ ​
+n-value based on sales data of outdoor gear stores. Using the online shop of Great Outdoor
+​
+Provision Company, we estimated the amount of apparel that was sold when compared to the
+total number of items sold, which was around 52.8% [6]. Although the amount of apparel sold by
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 16 of 24
+different stores are varied, we tested our metric L with an n of .528 to see the results with a
+​ ​ ​ a ​
+​
+real-life n value.
+​ ​
+Sensitivity
+Our apparel tax liability model did not change from the model that just considered state sales tax
+liability, despite over a 20% increase in apparel out of the total number of items. While some
+states only moved two or three places upwards towards higher L values (see appendix 2),
+​ ​ a
+​ ​
+Pennsylvania and New York were the only states that significantly jumped up by seven places.
+M
+We did not place any warehouses in New York and the warehouse in Pennsylvania proved to be
+good decision as a decrease in L gave those in Pennsylvania a tax reduction. This proves that
+​ ​ a C
+​
+our model is robust and is not heavily influenced by the varying state apparel taxes.
+M
+Strengths
+i
+H
+● The most important facet of our model is that it allows for one-day delivery to the entire
+contiguous United States, while only utiliz：ing 26 warehouses. While it is difficult to
+determine if this is the absolute minimum number of warehouses needed to service the
+entire United States, this is fewer w号arehouses than our first two attempts at a model
+required.
+● Our use of a 20% range around the center of the mean ZIP code for each state attempted
+众
+to mitigate this by allowing for a larger range of ZIP codes to be tested. By testing
+multiple ZIP codes within the range, we were able to explore more possibilities which
+公
+helped our model take more possibilities into account and choose the most optimum
+location.
+● Our model 信accounts for regions that are mostly uninhabited. We identified three such
+regions in the United States: one in Idaho, one in Maine and one in Nevada. These three
+regions are all isolated from the rest of the country, by forests, lack of roads and
+微
+mountains respectively, and require a warehouse to be placed inside of the area to ensure
+one-day shipping. By recognizing that these areas typically have few to no people living
+in them, we are able to remove up to three warehouses which is a large improvement
+upon our initial plan.
+● The number of warehouses our model uses is similar to the number of hubs used by
+Fedex, a major postal service. It is likely that the number of hubs used by the UPS is
+similar, indicating that our warehouses are likely near hubs, increasing the speed with
+which the packages can be delivered.
+● The tax liability metric L is simple and easy to modify. As exemplified by the added
+​ ​
+variable of the apparel tax, the metric L could be easily modified for other variables. The
+​ ​
+metric can also be used for different areas. If the company only wanted to expand in the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 17 of 24
+East Coast, the same metric could be used by finding the total population of the eastern
+coast of the US.
+Weaknesses
+● Our final method used Utah as a starting point. The east half of the country has a higher
+number of roads and highways than the west half, which means that shipping locations
+can cover more area than in the east half. Because of this, Utah was chosen as it is the
+approximate center of the west half of the country. A different starting state or different
+M
+states along the way could be chosen to test if it is possible to have fewer warehouses
+using a different starting state.
+C
+● Our model assumes that ZIP codes are always assigned east to west. This is not always
+the case, which means that our model excludes some ZIP cModes that could have been
+more centered than the ZIP codes chosen for our final model. Similarly, the fact that
+states are rarely symmetrical means that the average ZIPi codes didn’t always cover the
+H
+most area.
+● Our model takes into account the state’s fr：action of the total population and the state’s tax
+rate equally, which may not be true of how tax liability is actually calculated as
+companies may choose to weigh o号ne factor more than the other.
+Conclusion and Final Recommendation
+众
+We determined the minimum number and optimal placement of warehouses depending on their
+ZIP codes and their proximity to major roadways. The minimum number of warehouses added
+公
+that would allow the 48 states to receive one-day shipping is 25. The optimal placement of
+warehouses can be seen in Figure 5, which only takes into account the inhabited area of the
+nation and leaves o信ut the three uninhabitable parts of Idaho, Nebraska, and Maine that would
+require a warehouse to be placed within these uninhabited parts in order to cover it.
+微
+We found that the placement of these warehouses will affect the customer’s tax liability, which
+we examined using a metric L that relates a state’s population in comparison with the total
+​ ​
+population of the US and the tax rate of that state. By calculating L for every state, we could find
+​ ​
+which states would have the largest tax impact on its consumers. We modified L to take into
+​ ​
+account the apparel tax, and rearranged the location of the warehouses to decrease the total tax
+liability of the consumers. We moved the warehouse in Illinois to Indiana, the warehouse in Des
+Moines, to Davenport, IA, and the warehouse in Tennessee to Arkansas.
+Ultimately, this plan will have to be physically implemented. Because the company currently
+only has one warehouse, located in New Hampshire, it is impractical to assume 25 new
+warehouses can be built all at once. In reality, the warehouses will have to be built one at a time.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 18 of 24
+While the new warehouses could be built east to west, gradually expanding our customer base,
+there is a better way.
+
+We propose that the company build new warehouses in the following four cities: Denver,
+Colorado; Marion, Arkansas; Fresno, California; and Janesville, Wisconsin. Building these four
+bases ensures that a majority of the United States will have access to two-day shipping from the
+company. This will allow for a massively increased income for the company, which will allow
+for faster expansion as they continue to build the 21 remaining warehouses to ensure one-day
+shipping nationwide.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+
+信
+| State            | Zip Code  | City          | State           | ZIP Code  | City         |
+| ---------------- | --------- | ------------- | --------------- | --------- | ------------ |
+| Florida  微32068  |           | Jacksonville  |                 |           |              |
+|                  |           |               | Pennsylvania    | 18062     | Macungie     |
+| Colorado         |           | Denver        |                 |           |              |
+|                  | 80204     |               | West Virginia   | 26104     | Parkersburg  |
+| New Mexico       |           | Albuquerque   |                 |           |              |
+|                  | 87107     |               | California      | 93722     | Fresno       |
+| Montana          | 59832     | Drummond      | North Carolina  | 27518     | Cary         |
+Glendive
+| Montana  | 59330  |     | Oklahoma  | 73119  | Oklahoma  |
+| -------- | ------ | --- | --------- | ------ | --------- |
+City
+Houston
+| Texas  | 77002  |     | Idaho  | 83301  | Twin Falls  |
+| ------ | ------ | --- | ------ | ------ | ----------- |
+El Paso
+| Texas  | 79901  |     | Arizona  | 85004  | Phoenix  |
+| ------ | ------ | --- | -------- | ------ | -------- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 19 of 24
+| Kentucky  | 40503  | Lexington  | Oregon   | 97214  | Portland    |
+| --------- | ------ | ---------- | -------- | ------ | ----------- |
+| Iowa      | 52801  | Davenport  | Indiana  | 47713  | Evansville  |
+Sioux Falls
+| South Dakota  | 57105  |     | Alabama  | 36117  | Montgomery  |
+| ------------- | ------ | --- | -------- | ------ | ----------- |
+Marion
+| Arkansas  | 72364  |          | Kansas    | 66606  | Topeka        |
+| --------- | ------ | -------- | --------- | ------ | ------------- |
+| New       | 03301  | Concord  | Nebraska  | 69101  | North Platte  |
+Hampshire
+M
+| Michigan  | 49781  | Saint Ignace  | Wisconsin  | 53548  | Janesville  |
+| --------- | ------ | ------------- | ---------- | ------ | ----------- |
+Table 3: A list all the ZIP codes and the corresponding cities that allow foCr one day shipping
+to the entire contiguous US using our final method.
+M
+
+Future Work
+i
+While our work produced one method for building new warehouses across the 48 states of the
+H
+contiguous United States, there are other methods that will also accomplish this. To be sure our
+：
+model uses the fewest possible warehouses - or to find the method that does - our process will
+need to be repeated. By changing certain factors - starting on the East coast, or using South
+Carolina instead of North Carolina, for ex号ample - we can observe different possible outcomes to
+determine if this method truly is optimal. While it is hard to be certain that there are no solutions
+| more optimal than this one, this testing would help to investigate any solutions that may be more  |     | 众   |     |     |     |
+| -------------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- |
+optimal.
+
+公
+Using the above method, one unique case that should be investigated is building a layout around
+states with low tax rates. In our analysis of the problem, we altered our model to avoid states
+| with high tax rates. However, there is only so much that can be done with this method as the  | 信   |     |     |     |     |
+| --------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- |
+arrangement is mostly set in stone. One possible way to arrive at an arrangement with lower
+overall tax微 rates is to ensure that all states with low tax rates are chosen by starting with them.
+This arrangement could then be compared to our final method to check 1) which is more optimal
+and 2) which has lower overall tax rates.
+
+|     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #7057 Page 20 of 24
+References, Bibliographies and Sources of Data
+[1] Ground time-in-transit maps. (1994). Retrieved November 12, 2016, from United Parcel
+​​
+Service, https://www.ups.com/maps/
+​
+[2] FedEx distribution - FedEx distribution center - FedEx transportation. (2011). Retrieved
+November 12, 2016, from FedEx SmartPost® Network,
+http://www.fedex.com/us/smart-post/network.html
+[3] SmartyStreets. ZIP codes 101. Retrieved November 12, 2016, from SmartyStreets,
+https://smartystreets.com/articles/zip-codes-101
+[4] USNaviguide, J. C. -. (1996). Click for a zip code boundary map. Retrieved November 12,
+M
+2016, from http://www.zipmap.net/
+​
+[5] US zip code map, USA zip codes by state. (2013). Retrieved November 12, 2016, from
+C
+whereig, http://www.whereig.com/usa/zipcodes/
+​
+[6] Hiking gear, camping supplies | great outdoor provision Co. (2M016). Retrieved November 13,
+2016, from GreatOutdoorProvision, http://greatoutdoorprovision.com/
+​
+[7] Tax liability. (2016). Retrieved November 13, 2016, from Inivestigating Answers,
+H
+http://www.investinganswers.com/financial-dictionary/tax-center/tax-liability-1534
+[8] U.S. Census Bureau - Population Division. (n.：d.). Population Estimates. Retrieved November
+13, 2016, from http://www.census.gov/popest/data/state/totals/2015/
+​
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 21 of 24
+Appendix
+
+1) Table 4. Tax rates, populations, and L values for each of the 48 states
+| States    | Tax Rate  | Population  |            | L   | L(a) 30%  |     | L(a) 52.8%  |     |
+| --------- | --------- | ----------- | ---------- | --- | --------- | --- | ----------- | --- |
+| Delaware  |           | 0           | 945,934    |     | 0         |     | 0           | 0   |
+| Montana   |           | 0           | 1,032,949  |     | 0         |     | 0           | 0   |
+New
+| Hampshire  |     | 0   | 1,330,608  |     | 0   |     | 0   | 0   |
+| ---------- | --- | --- | ---------- | --- | --- | --- | --- | --- |
+M
+| Oregon  |     | 0   | 4,028,977  |     | 0   |     | 0   | 0   |
+| ------- | --- | --- | ---------- | --- | --- | --- | --- | --- |
+C
+| Vermont  |     | 6   | 626,042  | 0.0118  |     | 0.0083  | 0.0056  |     |
+| -------- | --- | --- | -------- | ------- | --- | ------- | ------- | --- |
+M0.0074
+| Wyoming       |     | 4   | 586,107  | 0.0074  |     |         | 0.0074  |     |
+| ------------- | --- | --- | -------- | ------- | --- | ------- | ------- | --- |
+| South Dakota  |     | 4   | 858,469  | 0.0108  |     | 0.0108  | 0.0108  |     |
+i
+H
+| Rhode Island  |     | 7   | 1,056,298  | 0.0232  |     | 0.0162  | 0.0110  |     |
+| ------------- | --- | --- | ---------- | ------- | --- | ------- | ------- | --- |
+：0.0119
+| North Dakota  |     | 5    | 756,927    |         |     | 0.0119  | 0.0119  |     |
+| ------------- | --- | ---- | ---------- | ------- | --- | ------- | ------- | --- |
+| Maine         |     | 5.5  | 1,329,328  | 0.0229  |     | 0.0229  | 0.0229  |     |
+号
+| Idaho     |     | 6    | 1,654,930  | 0.0312  |     | 0.0312  | 0.0312  |     |
+| --------- | --- | ---- | ---------- | ------- | --- | ------- | ------- | --- |
+| Nebraska  |     | 5.5  | 1,896,190  | 0.0327  |     | 0.0327  | 0.0327  |     |
+众
+| New Mexico     |     | 5.13  | 2,085,109  | 0.0336  |     | 0.0336  | 0.0336  |     |
+| -------------- | --- | ----- | ---------- | ------- | --- | ------- | ------- | --- |
+| West Virginia  |     | 公6    | 1,844,128  | 0.0347  |     | 0.0347  | 0.0347  |     |
+| Colorado       |     | 2.9   | 5,456,574  | 0.0497  |     | 0.0497  | 0.0497  |     |
+| Oklahoma       | 信   | 4.5   | 3,911,338  | 0.0552  |     | 0.0552  | 0.0552  |     |
+| Utah           |     | 5.95  | 2,995,919  | 0.0560  |     | 0.0560  | 0.0560  |     |
+微
+| Minnesota      |     | 6.88  | 5,489,594  | 0.1186  |     | 0.0830  | 0.0560  |     |
+| -------------- | --- | ----- | ---------- | ------- | --- | ------- | ------- | --- |
+| Louisiana      |     | 4     | 4,670,724  | 0.0586  |     | 0.0586  | 0.0586  |     |
+| Iowa           |     | 6     | 3,123,899  | 0.0588  |     | 0.0588  | 0.0588  |     |
+| Kansas         |     | 6.5   | 2,911,641  | 0.0594  |     | 0.0594  | 0.0594  |     |
+| Arkansas       |     | 6.5   | 2,978,204  | 0.0608  |     | 0.0608  | 0.0608  |     |
+| Alabama        |     | 4     | 4,858,979  | 0.0610  |     | 0.0610  | 0.0610  |     |
+| Nevada         |     | 6.85  | 2,890,845  | 0.0622  |     | 0.0622  | 0.0622  |     |
+| Massachusetts  |     | 6.25  | 6,794,422  | 0.1333  |     | 0.0933  | 0.0629  |     |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+        Team #7057     Page 22 of 24
+| Mississippi  |     | 7     | 2,992,333  | 0.0657  | 0.0657  | 0.0657  |
+| ------------ | --- | ----- | ---------- | ------- | ------- | ------- |
+| Connecticut  |     | 6.35  | 3,590,886  | 0.0716  | 0.0716  | 0.0716  |
+| Missouri     |     | 4.23  | 6,083,672  | 0.0808  | 0.0808  | 0.0808  |
+| Kentucky     |     | 6     | 4,425,092  | 0.0833  | 0.0833  | 0.0833  |
+| Wisconsin    |     | 5     | 5,771,337  | 0.0906  | 0.0906  | 0.0906  |
+South
+| Carolina  |     | 6   | 4,896,146  | 0.0922  | 0.0922  | 0.0922  |
+| --------- | --- | --- | ---------- | ------- | ------- | ------- |
+M
+| Maryland      |     | 6    | 6,006,401   | 0.1131  | 0.1131    | 0.1131  |
+| ------------- | --- | ---- | ----------- | ------- | --------- | ------- |
+| Pennsylvania  |     | 6    | 12,802,503  | 0.2411  | 0.C1688   | 0.1138  |
+| New York      |     | 4    | 19,795,791  | 0.2486  | M 0.1740  | 0.1173  |
+| Arizona       |     | 5.6  | 6,828,065   | 0.1200  | 0.1200    | 0.1200  |
+i
+| Georgia     |     | 4    | 10,214,860  | 0.1H283   | 0.1283  | 0.1283  |
+| ----------- | --- | ---- | ----------- | --------- | ------- | ------- |
+| Virginia    |     | 5.3  | 8,382,993   | ： 0.1395  | 0.1395  | 0.1395  |
+| Tennessee   |     | 7    | 6,600,299   | 0.1450    | 0.1450  | 0.1450  |
+| Indiana     |     | 7    | 6,619号,680  | 0.1455    | 0.1455  | 0.1455  |
+| Washington  |     | 6.5  | 7,170,351   | 0.1463    | 0.1463  | 0.1463  |
+众
+North
+| Carolina  |     | 4.75  | 10,042,802  | 0.1497  | 0.1497  | 0.1497  |
+| --------- | --- | ----- | ----------- | ------- | ------- | ------- |
+公
+| Michigan    |     | 6   | 9,922,576  | 0.1869  | 0.1869  | 0.1869  |
+| ----------- | --- | --- | ---------- | ------- | ------- | ------- |
+| New Jersey  |     | 7   | 8,958,013  | 0.1968  | 0.1968  | 0.1968  |
+信
+| Ohio             |     | 5.75  | 11,613,423    | 0.2096  | 0.2096  | 0.2096  |
+| ---------------- | --- | ----- | ------------- | ------- | ------- | ------- |
+| Illinois  微6.25  |     |       | 12,859,995    | 0.2523  | 0.2523  | 0.2523  |
+| Florida          |     | 6     | 20,271,272    | 0.3818  | 0.3818  | 0.3818  |
+| Texas            |     | 6.25  | 27,469,114    | 0.5389  | 0.5389  | 0.5389  |
+| California       |     | 7.5   | 39,144,818    | 0.9216  | 0.9216  | 0.9216  |
+| Total            |     |       | 318,576,557   |         |         |         |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 23 of 24
+   2)   Table 5. Rankings of the 48 states based on different L values (most tax liable to least)
+​
+|              | Ranking     | Ranking     |
+| ------------ | ----------- | ----------- |
+| Ranking (L)  | (30%)       | (52.8%)     |
+| California   | California  | California  |
+| Texas        | Texas       | Texas       |
+| Florida      | Florida     | Florida     |
+| Illinois     | Illinois    | Illinois    |
+M
+| New York      | Ohio        | Ohio        |
+| ------------- | ----------- | ----------- |
+| Pennsylvania  | New Jersey  | New Jersey  |
+C
+| Ohio  | Michigan  | Michigan  |
+| ----- | --------- | --------- |
+M
+| New Jersey  | New York      | North Carolina  |
+| ----------- | ------------- | --------------- |
+| Michigan    | Pennsylvania  | Washinigton     |
+H
+| North  | North  |     |
+| ------ | ------ | --- |
+：
+| Carolina    | Carolina    | Indiana    |
+| ----------- | ----------- | ---------- |
+| Washington  | Washington  | Tennessee  |
+号
+| Indiana     | Indiana    | Virginia  |
+| ----------- | ---------- | --------- |
+| Tennesse众e  | Tennessee  | Georgia   |
+| Virginia    | Virginia   | Arizona   |
+公
+| Massachusetts Georgia  |          | New York      |
+| ---------------------- | -------- | ------------- |
+| Georgia                | Arizona  | Pennsylvania  |
+信
+| Arizona    | Maryland                      | Maryland  |
+| ---------- | ----------------------------- | --------- |
+| Minnesota  | Massachusetts South Carolina  |           |
+微
+South
+| Maryland  | Carolina  | Wisconsin  |
+| --------- | --------- | ---------- |
+South
+| Carolina     | Wisconsin    | Kentucky       |
+| ------------ | ------------ | -------------- |
+| Wisconsin    | Kentucky     | Missouri       |
+| Kentucky     | Minnesota    | Connecticut    |
+| Missouri     | Missouri     | Mississippi    |
+| Connecticut  | Connecticut  | Massachusetts  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+        Team #7057     Page 24 of 24
+| Mississippi  | Mississippi  | Nevada     |
+| ------------ | ------------ | ---------- |
+| Nevada       | Nevada       | Alabama    |
+| Alabama      | Alabama      | Arkansas   |
+| Arkansas     | Arkansas     | Kansas     |
+| Kansas       | Kansas       | Iowa       |
+| Iowa         | Iowa         | Louisiana  |
+| Louisiana    | Louisiana    | Minnesota  |
+M
+| Utah  | Utah  | Utah  |
+| ----- | ----- | ----- |
+C
+| Oklahoma  | Oklahoma  | Oklahoma  |
+| --------- | --------- | --------- |
+ColoradoM
+| Colorado       | Colorado       |                |
+| -------------- | -------------- | -------------- |
+| West Virginia  | West Virginia  | West Virginia  |
+i
+| New Mexico  | New Mexico  | New Mexico  H |
+| ----------- | ----------- | ------------- |
+Nebraska：
+| Nebraska  |        | Nebraska  |
+| --------- | ------ | --------- |
+| Idaho     | Idaho  | Idaho     |
+号
+| Rhode Island  | Maine         | Maine         |
+| ------------- | ------------- | ------------- |
+| Maine         | Rhode Island  | North Dakota  |
+众
+| North Dakota  | North Dakota  | Rhode Island  |
+| ------------- | ------------- | ------------- |
+| V公ermont      | South Dakota  | South Dakota  |
+| South Dakota  | Vermont       | Wyoming       |
+| 信 Wyoming     | Wyoming       | Vermont       |
+| Delaware      | Delaware      | Delaware      |
+微
+| Montana    | Montana    | Montana    |
+| ---------- | ---------- | ---------- |
+| New        | New        | New        |
+| Hampshire  | Hampshire  | Hampshire  |
+| Oregon     | Oregon     | Oregon     |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

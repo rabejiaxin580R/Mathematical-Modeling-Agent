@@ -1,0 +1,104 @@
+{
+  "paper_id": "2581",
+  "meta": {
+    "paper_id": "2581",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\A\\2581.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "stoch.montecarlo",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文使用蒙特卡洛模拟来模拟自行车在芝加哥各区域的流动，通过随机数确定每个时间步离开的自行车数量，并跟踪自行车在各区域的分布。",
+      "formulas": [
+        {
+          "latex_code": "N_{\\text{leave}} = \\text{random number between 0 and total bikes}",
+          "variables": {
+            "N_{\\text{leave}}": "离开的自行车数量",
+            "total bikes": "该区域当前可用自行车总数"
+          }
+        }
+      ],
+      "source_excerpt": "The number of bikes in use at any point in time is randomly determined as a number between zero and the total number of bikes available."
+    },
+    {
+      "concept_id": "stoch.markov",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文将自行车共享系统建模为马尔可夫链，状态为各区域的自行车数量，转移概率由用户行为（如租车和还车）决定。",
+      "formulas": [
+        {
+          "latex_code": "P(X_{t+1} = j | X_t = i) = \\text{transition probability}",
+          "variables": {
+            "X_t": "t时刻各区域的自行车数量向量",
+            "i": "当前状态",
+            "j": "下一状态"
+          }
+        }
+      ],
+      "source_excerpt": "We model the movement of bikes as a Markov chain, where the state is the number of bikes at each station."
+    },
+    {
+      "concept_id": "viz.geo",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文使用芝加哥地图的Voronoi图将城市划分为四个区域（Zone A, B, C, D），并基于此进行自行车分布模拟和可视化。",
+      "formulas": [],
+      "source_excerpt": "We created a Voronoi diagram of the region, dividing the city into portions based on proximity to bike stations."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "论文通过改变初始自行车数量、用户兴趣点权重等参数，观察系统性能（如空站或满站概率）的变化，进行灵敏度分析。",
+      "formulas": [],
+      "source_excerpt": "We varied the initial number of bikes and the weights of points of interest to see how the system performance changes."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文明确列出了模型假设，如用户不会步行长距离、自行车归还到最近站点、每个站点容量有限等。",
+      "formulas": [],
+      "source_excerpt": "Assumptions: People will not walk long distances; bikes are returned to the nearest station; each station has a capacity limit."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文使用折线图展示随时间变化的自行车数量，使用柱状图比较不同区域的自行车使用情况，使用地图展示站点分布。",
+      "formulas": [],
+      "source_excerpt": "Figure 1 shows the number of bikes over time; Figure 2 compares bike usage across zones."
+    },
+    {
+      "concept_id": "tool.matlab",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "论文使用MATLAB编程实现蒙特卡洛模拟和数据分析，包括随机数生成、循环迭代和结果可视化。",
+      "formulas": [],
+      "source_excerpt": "We used MATLAB to run the Monte Carlo simulation and generate the plots."
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "论文使用空站或满站的概率作为性能指标，评估不同初始配置和策略的效果。",
+      "formulas": [
+        {
+          "latex_code": "P(\\text{empty}) = \\frac{\\text{number of times station empty}}{\\text{total time steps}}",
+          "variables": {
+            "P(\\text{empty})": "站点空置概率",
+            "number of times station empty": "站点空置的次数",
+            "total time steps": "总时间步数"
+          }
+        }
+      ],
+      "source_excerpt": "We measured the probability of a station being empty or full as a performance metric."
+    }
+  ]
+}

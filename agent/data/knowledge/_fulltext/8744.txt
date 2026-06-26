@@ -1,0 +1,2333 @@
+Team #8744 Page 1
+For office use only Team Control Number For office use only
+8744
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ Problem Chosen F3 ________________
+T4 ________________ A F4 ________________
+2018
+HiMCM
+Summary Sheet
+To many of the world’s roller coaster enthusiasts, a recurrent problem would be tMhe decision of the
+next ride to experience. Indeed, as there are almost 4000 roller coasters across the globe, exactly which
+one should riders choose to go? To answer that question, we decided to create an algorithm that rates
+C
+roller coasters objectively based on their statistical data, creating a comparable index and a ranking,
+effectively letting the roller coasters “speak for themselves.” M
+Before we begin modeling, we analyzed the dataset in the provided spreadsheet and found out that
+there are large numbers of missing, noisy, or inconsistent values in the data, and the variables in the
+i
+dataset are not in the same scale. To solve this, we first norHmalized all factors using the Box-Cox
+Transformation and then standardized them into a unified range of [0,1]. Then, we use mean imputation
+：
+and regression imputation to fill in the missing values and filter out the noise.
+The first part of our model establishes the concept of a Thrill Index. We propose that the more
+thrilling the roller coaster is, the more people will like it, and thus should be ranked higher. We
+号
+constructed this part of the model by aggregating the factors that may contribute the experience of thrill
+during a ride: the height, maximum speed, G-force, inversions, and type of roller coaster.
+The second part of our model 众establishes the concept of a Discomfort Index. We propose that the
+more discomfort the riders feel during or after a ride, the fewer people will like the experience, and thus
+the roller coaster should be ranked lower. This part of the model is constructed around factors that may
+公
+contribute to the discomfort of the rider: G-force and inversions. We used logistic functions to simulate
+people’s discomfort level caused by these two factors since they have non-linear relationships.
+We think bo信th the Thrill Index and the Discomfort Index are related to the overall experience of a
+rider, but none of them is comprehensive enough. Therefore, the third part of our model establishes the
+concept of a Comprehensive Index, which combines the effects of the Thrill Index and the Discomfort
+Index. 微The result of the Comprehensive Model is shown in the table below.
+Rank 1 2 3 4 5 6 7 8 9 10
+Name Steel
+Fury Millennium Formula Intimidator Steel
+Dragon Fujiyama Leviathan Desperado Titan
+325 Force Rossa 305 Vengeance
+2000
+We also design an app named “Roller Ranker” for our model so that users can obtain our
+recommendations of highest-ranked roller coasters directly on their phone. In our app, users can view
+the default ranking, which is the one we ranked according to the Comprehensive Index, or they can
+customize settings concerning factors that may appear as more important to them, and our model will
+generate their personal recommendations using an adapted version of AHP (Analytic Hierarchy
+Process). Also, to improve the accuracy of the default rankings, we conduct a survey online about
+people’s preferences over different factors and add weight to the factors of the Comprehensive Model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 2
+Press Release
+Team 8744 releases a new algorithm, ranking and mobile app for thrill seekers
+worldwide.
+(Foshan, Guangdong, China – November 13, 2018) Team 8744 in the HiMCM Competition
+today announced the availability of their new objectivity-promising mobile application, Roller Ranker,
+to users of the Android and iOS platforms through digital marketplaces such as Google Play and App
+Store. By now, the utility application has gained comprehensive data on many of the world’s most
+popular roller coasters and would continue to expand in time, according to the spokesman of Team
+8744, demonstrating a constant commitment to provide knowledge to rookies and enMthusiasts alike.
+The initiative is part of Team 8744’s mobile project, which focuses on reaching the millions of riders
+around the world whose primary method of Internet access is via a mobile device.
+C
+“Our team strives to remove bias in traditional methods of ranMking determination, and for our
+customers around the world right now, having to refer to subjective experience and lack of factual
+science are the two major complications,” says Hunter Zhang, CEO of Roller Ranker. “We created a
+i
+comprehensive index for those looking to compare real informaHtion and enhance their riding experience,
+minimizing the time wasted on decisions and enabling the pursuit of the most efficient solutions.”
+：
+Based on a large 300-entry dataset, Team 8744 determined the thrill, discomfort and overall
+experience riding on each of the individual roller coasters with statistical analysis. Each coaster was
+号
+then rated against its competitors and ranked into a long list, presented in the application beside
+customization options for the user.
+众
+“We are delighted to bring our followers our latest achievement – the Ranker app that offers
+vital services with a significant outreach,” says Edison Chen, Chief Writer and Head of Technology.
+公
+“With the app completed, we could conclude the first stage of our work and start the provisioning of
+Data-as-a-Service on demand to users regardless of their geographic location, bringing a vast organized
+knowledge sourc信e to underserved communities.”
+The mobile application, in its design, would provide options for the user to either leave
+微
+decisions to the core algorithms or provide their own preferences on roller coaster types, height, speed
+and so on.
+For more information on Team 8744’s Roller Rider and related algorithms, please visit their
+website, follow them on LinkedIn, YouTube and Facebook.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 3
+Content
+1 - INTRODUCTION ........................................................................................................................................... 4
+1.1 BACKGROUND ................................................................................................................................................... 4
+1.2 PROBLEM RESTATEMENT ..................................................................................................................................... 4
+2 - ASSUMPTIONS AND VARIABLES .................................................................................................................. 4
+2.1 ASSUMPTIONS AND JUSTIFICATIONS ....................................................................................................................... 4
+2.2 VARIABLES........................................................................................................................................................ 5
+3 - DATA ANALYSIS, AND MISSING VALUE IMPUTATION .................................................................................... 6
+3.1 DATA DESCRIPTION ............................................................................................................................................ 6
+3.2 CORRELATION ANALYSIS ..........................................................................................................M............................ 7
+3.3 MISSING VALUE IMPUTATION ............................................................................................................................... 8
+4 - MODEL PART 1: DATA STANDARDIZATION ..............................................................C..................................... 9
+5 - MODEL PART 2: THRILL INDEX ................................................................................................................... 10
+M
+5.1 INCORPORATING THE FEELING OF WEIGHTLESSNESS ................................................................................................ 10
+5.2 INCORPORATING MAXIMUM SPEED ..................................................................................................................... 11
+5.3 INCORPORATING ACCELERATION ...................................................................i...................................................... 12
+5.4 INCORPORATING INVERSIONS ............................................................H................................................................. 12
+5.5 INCORPORATING THE TYPE OF ROLLER COASTERS..................................................................................................... 12
+：
+6 - MODEL PART 3: DISCOMFORT INDEX ........................................................................................................ 14
+6.1 INCORPORATING G FORCE ................................................................................................................................. 14
+6.2 INCORPORATING INVERSION FREQUENCY ............号.................................................................................................. 15
+6.3 DISCOMFORT INDEX ......................................................................................................................................... 16
+7 - MODEL PART 4: COMPREHENSIVE INDEX .................................................................................................. 17
+众
+8 - APP: ROLLER RANKER ................................................................................................................................ 18
+8.1 GOALS AND CONCEPTS OF THE APP ..................................................................................................................... 18
+8.2 POTENTIAL USERS AND AP公P DESIGN .................................................................................................................... 19
+8.3 INCORPORATING CUSTOMIZED SETTINGS INTO THE COMPREHENSIVE MODEL ............................................................... 20
+STEP 1: PREPARING THE DATA .................................................................................................................................. 21
+STEP 2: CHECKING FOR INCONSISTENCIES ................................................................................................................... 22
+信
+STEP 3: CALCULATING THE WEIGHT VECTOR ............................................................................................................... 24
+STEP 4: OUTPUT ................................................................................................................................................... 25
+9 - ADDING WEIGHTS TO THE COMPREHENSIVE MODEL ................................................................................ 25
+微
+10 - RESULTS .................................................................................................................................................. 27
+10.1 COMPARISON WITH OTHER RANKINGS SYSTEMS .................................................................................................. 27
+11 - EVALUATION............................................................................................................................................ 29
+12 - REFERENCES ............................................................................................................................................ 30
+APPENDIX ...................................................................................................................................................... 31
+APPENDIX A: THE PROTOTYPE OF OUR APPLICATION .................................................................................................... 31
+APPENDIX B: CODE ................................................................................................................................................ 32
+APPENDIX C: OUR DATA SPREADSHEET ...................................................................................................................... 36
+APPENDIX D: SURVEY RESULTS FOR PART 9 ................................................................................................................. 39
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 4
+1 - Introduction
+1.1 Background
+Roller coasters are becoming one of the most symbolic landmarks in the eyes of visitors. The
+number of visitors to amusement parks and the number of roller coasters built every year arrives at
+unprecedented peaks, and many new coasters break records that those a decade ago would never even
+have a chance of achieving. Meanwhile, some enthusiasts miss the classic wooden feeling that differs
+from modern steel coasters, some challenge themselves to high drops and speeds, and seeking for the
+best personal experience is increasingly essential for visitors and potential riders. Current rankings
+about roller coasters are primarily based on subjective input with limited reference of objective input
+such as inversions and peak speed, which may lead to new visitors gaining biased conclusions.
+M
+Therefore, for the aforementioned new visitors’ sake, we are developing a ranking system that looks
+C
+at operational roller coasters worldwide in an objective stance in order to give a credible score and
+ranking based on calculations upon the roller coasters’ data.
+M
+With the results, we evaluate the feasibility of our model, analyze its objectivity and statistical
+i
+validity, and we demonstrate our model and the app in a news release for publishers worldwide,
+H
+establishing a benchmark for future reviews and recommendations.
+：
+1.2 Problem Restatement
+The inherent challenge in providing an objective ranking of roller coasters worldwide lies analyzing
+号
+all data about all roller coasters. As current rankings rely heavily on subjective measurements, we have
+to differ from them and develop a mathematical model for an objective ranking system. This model
+would have to consider the most 众important factors that contribute to the experience of riding roller
+coasters, and these should all be present in the given dataset. The model then should be compared with
+current rankings. Finally, we must design a user-friendly app that helps people find roller coasters that
+公
+they prefer to ride and compose a news release to highlight our model and app.
+2 - Assumptions and Variables
+信
+2.1 Assumptions and Justifications
+ 微Assumption 1: External factors that are not related to the roller coaster is ignored when
+different roller coasters are compared.
+ Justification: Though the external factors (weather, infrastructure of the amusement park)
+may affect riders’ overall experience, they do not reflect the experience of the ride itself.
+ Assumption 2: The imputed data approximates the real data of the roller coasters.
+ Justification: There are a lot of missing data in the provided dataset, and we use imputation
+to fill them in. We made this assumption because without the full data, valid comparison
+between roller coasters cannot be made.
+ Assumption 3: People may feel discomfort after a ride.
+ Justification: Although people come to ride roller coasters to experience the thrill, if a ride is
+too extreme, the person might feel sick. This is because roller roasters simulate an
+environment that people are not used to be in.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 5
+ Assumption 4: People start to feel discomfort when G-force approach 5 and inversion
+frequency approaches 0.133 inversions per second.
+ Justification: These values are selected based on existing studies which can be found in the
+references.
+ Assumption 5: The database of our application’s server is well protected so that the integrity
+of our data is preserved.
+ Justification: We assume only we can change the data in the server, so that no malicious
+actions are performed against our data.
+M
+2.2 Variables
+We use not capitalized Latin or Greek letters for denoting factors of a roller coaster. It is important to
+C
+note that all of these variables have been transformed into the same scale, which is explained in Part 4.
+𝑙 = the length of a roller coaster.
+M
+𝛿 = the drop of a roller coaster.
+𝑡 = the duration of a ride of a roller coaster.
+𝑛 = the number of inversions of a roller coaster. i
+𝐼 H
+𝜔 = the inversion frequency of a roller coaster.
+𝑏 = the numeric score deduced by the Borda point of the type of a roller coaster.
+𝑇 ：
+ℎ = the maximum height of a roller coaster.
+𝑚𝑎𝑥
+𝑠 = the maximum speed of a roller coaster.
+𝑚𝑎𝑥
+𝑔
+𝑚𝑎𝑥
+= the maximum magnitude of G号 Force of a roller coaster. Note that G Force is
+actually an acceleration.
+We use bold, capitalized letter f众or denoting matrices.
+𝑨, 𝑩= examples of comparison matrix.
+We use bold, not capita公lized letters for denoting vectors.
+𝟎 = the zero vector.
+𝒈 = the acceleration caused by the gravitational force on the earth surface.
+𝒘 = the unad信justed weight vector of a user’s comparison matrix.
+𝒘′= the adjusted weight vector of a user’s comparison matrix.
+𝒘 = the weight vector calculated from the survey.
+𝐜
+微
+We use capital letters for denoting indices.
+𝑇𝐼 = the Thrill Index.
+𝐷𝐼 = the Discomfort Index,
+where 𝐷𝐼 = the discomfort index contributed by G-force,
+𝑔
+and 𝐷𝐼 = the discomfort index contributed by inversion frequency.
+𝜔
+ℂ = the Comprehensive Index.
+𝐶𝐼 = the Consistency Index.
+𝑅𝐼 = the Random Index.
+We define the set of terms we incorporate in our model’s formula as ℱ, and we assign each
+term an index as shown in the table below:
+Factor ℎ 𝑠 𝑔 𝜔 𝑏 −𝐷𝐼 −𝐷𝐼
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝑇 𝑔 𝜔
+Index of it in 𝓕 1 2 3 4 5 6 7
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 6
+3 - Data Analysis, and Missing Value Imputation
+3.1 Data Description
+The dataset that we will use throughout this text to develop our models is a subset of operational
+roller coasters whose height, speed, and/or drop are above the average of worldwide operating coasters.
+There are 300 entries in the dataset, each with thirteen (13) factors. As shown in table 3.1, there are 9
+numerical factors, 3 categorical factors and one binary factor. Also listed are the unit or values each
+factor is calculated in, if applicable.
+Year Opened
+Height (in feet)
+Speed (in mph) M
+Length (in feet)
+Numerical Factors Number of Inversions
+C
+Drop (in feet)
+Duration (in minutes: secondMs)
+G Force
+Vertical Angle (in degrees)
+i
+H
+Construction
+Categorical Factors Type
+：
+Status
+Binary Factor I号nversions (YES or NO)
+Table 3.1: An overview of the variables in the dataset
+众
+We also calculated the mean, standard deviation, and other statistics of the numerical data to
+interpret the dataset better (missing values are not included in the calculation), the result of which is
+公
+summarized in table 3.2.
+信
+Vertical
+Year/Date Height Speed Length Number of Drop G
+Duration(sec) Angle
+Opened (feet) (mph) (feet) Inversions (feet) Force
+(degrees)
+微
+# of
+300.00 299.00 296.00 295.00 300.00 141.00 223.00 82.0 91.00
+Observations
+Mean 2000.66 135.52 59.68 3149.94 2.22 153.18 126.87 4.3 74.74
+Standard
+13.16 66.40 16.25 1454.48 2.60 73.85 47.35 0.6 17.94
+Deviation
+Minimum 1924.00 28.96 28.00 215.00 0.00 27.00 28.00 2.8 45.00
+25% 1996.00 98.00 49.70 2260.50 0.00 95.00 96.00 4.0 60.00
+50% 2002.00 116.50 55.90 3024.80 1.00 144.00 120.00 4.3 77.00
+75% 2009.00 169.00 70.00 4008.80 4.00 205.00 154.50 4.7 90.00
+Maximum 2018.00 456.00 149.10 8133.20 14.00 418.00 325.00 5.2 121.00
+Table 3.2: The statistics of the numerical data
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 7
+3.2 Correlation Analysis
+Correlation analysis of the dataset is a very important step to do before the modeling because in the
+process of creating an objective model, no single factor of a roller coaster should be emphasized more
+than any other. However, we can predict that several factors in the dataset are highly correlated. For
+example, height and drop conveys the same aspect of a roller coaster: the feeling of weightlessness;
+Duration and Length may also be correlated, as well as the Number of Inversions and G force.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+Figure 3.1 Correlation heatmap
+微
+To find out the exact correlation between factors, we plot a correlation heatmap using the Pearson
+correlation coefficient (r value) for the dataset, as shown in figure 3.1.
+In the figure, it is shown that some of the factors in the dataset are highly correlated. For example,
+Height and Drop having a correlation coefficient of 0.95 and Speed and Drop having a correlation
+coefficient of 0.97 both indicates near perfect positive linear relationships. Also, Length and G Force
+exhibits a high possibility of an inversely proportional relationship. In the process of our analysis,
+prominent relationships of the graph are being considered in the modeling process, so all factors of a
+roller coaster are emphasized equally, preserving objectivity for our models.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 8
+3.3 Missing Value Imputation
+There are a lot of missing data in our dataset, for example, 53% of the dataset is missing the Drop
+value, as shown in table 3.3.
+Year # of G Vertical
+Height Speed Length Drop Duration
+Opened Inversions Force Angle
+% of
+Missing 0 0.3 1.3 1.67 0 53 25.67 72.67 69.67
+Values
+Table 3.3: The table shows the percentage of missing values in the dataset
+M
+For factors such as height, speed, and length, which have a very low percentage of missing values,
+we used mean imputation to fill missing values.
+C
+However, for factors such as drop, duration, G force, and vertical Mangles, simple imputation with
+an arithmetic mean would not be appropriate because the percentage of missing values is too big that it
+will undermine the dataset.
+i
+H
+Thus, we need another approach to recover these data. According to the correlation matrix shown
+：
+in figure 3.1, the factors height and drop are highly correlated, with a correlation coefficient of 0.95;
+Duration and length also shows a strong correlation, with an r value of 0.62; G force is related to length,
+with an r value of -0.61; Vertical angle is c号orrelated with G force as well, with the coefficient at 0.56.
+We plotted a linear regression plot between these factors to visualize this relationship. We determined
+that regression imputation, which approximates the missing data with other factors in the dataset, will
+be an effective approach to fill in t众he missing values.
+公
+信
+微
+Figure 3.2: Linear regression plot for Height, Drop, Duration, Length, G force,
+and Vertical Angle
+Since the factors with a high percentage of missing data are correlated with the factors with a small
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 9
+percentage of missing data, we can impute the missing values using the least squares linear regression
+line, as shown in figure 3.2. With all the data filled, we can move on to our model.
+4 - Model Part 1: Data Standardization
+The dataset contains information of many factors; however, they are not in the same scale. In order
+to use the data in our model, it is crucial to give each value in the data a standardized score, so that they
+will be in the same range. To transform all factors into the same scale, it would be reasonable to
+standardize each factors according to its percentile position among other values of that factors.
+M
+C
+Figure 4.1: The distribution of eight numericMal factors
+However, the distributions of values of the numerical factors in the dataset are skewed, as shown in
+i
+figure 4.1. To transform our skewed data into a normal distribuHtion, Box-Cox transformation is applied.
+The effect of which is shown in figure 4.2.
+：
+Height Length Inversion Density
+(𝝀=𝟎.𝟎𝟐𝟖, 𝝁=𝟓.𝟏𝟓, 𝝈=𝟎.𝟓𝟐) (𝝀=𝟎.𝟔𝟕𝟑, 𝝁=𝟑𝟐𝟕, 𝝈=𝟏𝟎𝟕) (𝝀=𝟎.𝟒𝟕𝟔, 𝝁=−𝟏.𝟔𝟕, 𝝈=𝟎.𝟏𝟎𝟏)
+号
+众
+公
+Drop Duration G Force
+(𝝀=𝟎.𝟐𝟗𝟔, 𝝁=𝟏𝟏.𝟐, 𝝈=𝟐.𝟏𝟒) (𝝀=𝟎.𝟓𝟓𝟑, 𝝁=𝟐𝟒.𝟏, 𝝈=𝟓.𝟒𝟕) (𝝀=𝟏.𝟒𝟐𝟐, 𝝁=𝟒.𝟗𝟐, 𝝈=𝟏.𝟎𝟗)
+信
+微
+Number of Inversions Speed Vertical Angle
+(𝝀=𝟎.𝟑𝟏𝟎, 𝝁=𝟏.𝟓𝟒, 𝝈=𝟎.𝟖𝟖𝟖) (𝝀=−𝟎.𝟏𝟖𝟔, 𝝁=𝟐.𝟖𝟒, 𝝈=𝟎.𝟏𝟐) (𝝀=𝟎.𝟒𝟔𝟒, 𝝁=−𝟏.𝟔𝟔, 𝝈=𝟎.𝟏𝟎𝟏)
+Figure 4.2: The distribution of eight numerical variables before Box-Cox transformation (blue)
+And the distribution of eight numerical variables after Box-Cox transformation (orange)
+After converting the skewed data distribution into a normal one, we used the cumulative distribution
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 10
+function of normal distributions to calculate the percentile position of all values in the dataset. With
+such transformation, all the values in our dataset will have the same range, from 0 to 1 inclusive. These
+transformed values can then be used in the following parts of our model.
+5 - Model Part 2: Thrill Index
+To create a descriptive roller coaster ranking system based only on numerical and descriptive
+specification data, we deliberated on methods of comparing different roller coasters, and concluded that
+the logical way is to develop a quantitative algorithm comparing how much thrill each of them brings
+to a rider. Theoretically, the more thrilling a roller coaster is, the more people will rate it higher, and
+thus its rank should be higher in our model. We can then stand on a statistical viewpoint and consider
+M
+the aggregate effects of the rider population’s opinions on an index evaluating the thrill of each roller
+coaster. Therefore, the goal of the first part of our model is to rank roller coasters according to the level
+C
+of thrill they bring onto the average rider.
+M
+After researching into both objective sources such as Wikipedia and Encyclopaedia Britannica and
+subjective sources like Quora and roller coaster enthusiast forums, we concluded that there are several
+i
+major factors overall that contributes to the experience or sensation of thrill:
+H
+- The feeling of weightlessness,
+- The maximum velocity, ：
+- the maximum G-force experienced,
+- Inversions, and
+- The type of roller coaster. 号
+As these factors are statistically independent of each other, we would develop a formula that
+performs accumulation of each factor into a comparative index, namely 𝑇𝐼, the Thrill Index, in the
+众
+following text.
+5.1 Incorporating the 公Feeling of Weightlessness
+One of the most important reasons that people would want to ride a roller coaster is that the feeling
+of weightlessnes信s when they are dropped from a high position is thrilling. Weightlessness or decreased
+weight is experienced when the acceleration downwards approaches 9.8m/s2 or 32.17ft/s2, the
+gravitational acceleration near the surface of the earth, and the formula for weight in this scenario, mg
+- ma, ap微proaches zero. The higher the roller coaster is designed, the longer a person on that roller coaster
+will be able to drop, experiencing larger downwards acceleration and thus weightlessness, and the more
+thrilling the experience.
+In the provided dataset, there are two variables that should be directed related to the feeling of
+weightlessness: height and drop, both denoting the maximum value experienced in one trip on the roller
+coaster. However, when we plotted the two variables against each other in a scatterplot and drew the
+line of best fit, we discovered that these two variables are very highly correlated (r=0.95), as
+demonstrated in figure 5.1.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 11
+M
+C
+M
+i
+H
+：
+Figure 5.1 Scatterplot between height and drop
+Since we can use any of the two varia号bles to estimate the level of weightlessness that a rider is
+going to feel when falling, we decided to use the variable height and exclude the variable drop, as there
+is only a mere 1.67% of all entries in the dataset has the variable height missing, while an overwhelming
+众
+53% of all entries miss the variable drop in the dataset. And because of the high correlation between
+these variables, we can use a roller coaster’s height to predict its drop.
+公
+Thus, the elementary formula for the thrill index is equal to the maximum height of the roller coaster.
+信 𝑇𝐼 =ℎ (5.1)
+𝑚𝑎𝑥
+5.2 Incorporating Maximum Speed
+微
+After taking the feeling of weightlessness into account, we think it is reasonable that the maximum
+speed a roller coaster train is capable of reaching during one trip is also related to the feeling of thrill.
+For an analogy, people experiencing the thrill of putting their head outside of their cars’ window when
+they are on a high-speed road such as a freeway is similar to the experience of riders on a roller coaster.
+The seemingly dangerous actions give people the sensation of thrill, and the feeling of air blowing right
+at people’s face maximizes the sensation and produces excitement, which is where screaming aloud
+seems reasonable on a roller coaster. Therefore, the faster the roller coaster goes, the more thrilling the
+experience will be, and the thrill index should account for this factor as well.
+So, the formula is adjusted into the following:
+𝑇𝐼 =ℎ +𝑠 (5.2)
+𝑚𝑎𝑥 𝑚𝑎𝑥
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 12
+5.3 Incorporating Acceleration
+People come to an amusement park and ride a roller coaster to experience what they cannot in daily
+life, and vertical acceleration greater than 9.8m/s2 or 32.17ft/s2, the natural gravitational acceleration of
+free fall near the surface of earth (denoted 𝒈), is sure to be one of these experiences. This greater
+acceleration is usually denoted in convention by the value of g-force, a scalar multiplier on the value of
+𝒂
+𝒈 that results in a downward vector of acceleration (𝑔 ≝ ). Therefore, the higher the G force the roller
+𝒈
+coaster exerts on the rider, the higher the vertical or downwards acceleration is, and the more thrilling
+the experience becomes.
+𝑇𝐼 = ℎ +𝑠 +𝑔 (5.3)
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 M
+5.4 Incorporating Inversions
+C
+After incorporating the physical traits and maximums of roller coasters, we propose that the design
+M
+of the track of each roller coaster can also influence the overall experience of the rider, and should be
+viewed from a statistical standpoint. An effective way to increase the experience of thrill is increasing
+the number of inversions, which is when the rider and the train is piositioned upside-down, usually at
+H
+the top of a vertically circular track, from a ground perspective. This is another experience people do
+not encounter in daily life, and many would come： to ride a roller coaster for it. Numerically and
+theoretically, the more inversions there are, the more thrilling a roller coaster ride becomes.
+𝑇𝐼 = ℎ 号 +𝑠 +𝑔 +𝑛 (5.4)
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝐼
+However, when we are comparing two or more roller coasters having the same number of inversions,
+众
+we propose that the coaster with a higher number of inversions per unit time should make the ride more
+intense, and thus more thrilling. Therefore, we divide the number of inversions of each roller coaster
+track by the one-time dur公ation of its ride to get the inversion frequency 𝜔 of the roller coaster.
+𝑛
+𝐼
+𝜔 ≝ (5.5)
+信 𝑡
+And so, the formula for the thrill index of each roller coaster should be readjusted to be the following,
+微
+where the inversion frequency replaces the number of inversions:
+𝑇𝐼 = ℎ +𝑠 +𝑔 +𝜔 (5.6)
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥
+5.5 Incorporating the type of roller coasters
+Finally, we should consider the many types of roller coasters that exists, some constructed
+specifically to attract enthusiast riders, and many of which are unique in experience. Thus, the type of
+the roller coaster contributes to the thrill a lot more than many would think. It is part of the design of
+the roller coaster, and as it affects each car in the roller coaster, goes on to affect the experience and
+thrill of the rider directly.
+𝑇𝐼 = ℎ +𝑠 +𝑔 +𝜔+𝑏 (5.7)
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝑇
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 13
+But then, the type of roller coasters is a categorical variable, not numerical, so the calculation into
+the thrill index cannot be accomplished. So, we decided to convert the categorical variable into a
+numerical one, one that we could quantify based on values, while being as objective as possible.
+Arbitrary numbering is possible, but it would reduce the objectivity of our index, and so we decided to
+find the popularity of each type of roller coaster with samples statistically.
+M
+C
+M
+i
+H
+：
+Figure 5.2: Data about the type of roller coaster
+are co号llected from websites
+To determine the overall popul众arity of each type of roller coasters, we searched for existing data on
+the Internet that was voluntarily answered on forums (Reddit and CoasterForce) and collected a valid
+sample of 46 answering under the threads in a spreadsheet.
+公
+And so, we turned to voting theory, using the extended Borda Count method to determine the final
+信
+微
+Figure 5.3: This figure shows the poll of different users on internet,
+rank from highest to lowest.
+ranking of types of roller coasters. In the extended Borda Count method, each position on an answer is
+assigned points, 1 for the last place to 7 for the first place in this instance. The points are tallied for each
+type of roller coaster, and is sorted to determine the final ranking.
+For Borda points to fit in the range of other data, we scale them into numbers from 0 to 1 by dividing
+the Borda points of each type by 264, the Borda points of the roller coaster that has a rank of number
+one, namely the type Inverted, as shown in table 5.1.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 14
+Rank Types of Roller Coaster Borda Points Contribution to Thrill Index (0-1)
+1 Inverted 264 1
+2 Flying 186 0.704
+3 Wing 178 0.674
+4 Sit Down 156 0.591
+5 Floorless 155 0.587
+6 Stand 64 0.24
+Table 5.1: The table shows the conversion of the type of a roller coaster to a numerical value using
+Borda Count Method
+M
+This ranking method naturally conforms to the Monotonicity Criterion, and in this instance, with a
+relatively large number of types, satisfies the Majority and Condorcet Criterion.
+C
+Note that in order to make the answers on the websites conform to our defined types of roller
+M
+coasters, the type ‘Floorless’ is changed to ‘Suspended’, type ‘Dive’ is combined with ‘Sit Down’ and
+other small types are ignored as preferences are transitive.
+i
+H
+6 - Model Part 3: Discomfort Index
+：
+It is a common sight to see people with a pale face right after a roller coaster ride – that is because
+roller coasters stimulate an experience that our body is not used to. After considering the thrill
+号
+experienced during a roller coaster ride as one of our major ranking criteria, we propose the idea of
+accounting for the level of discomfort as well. A roller coaster may be extremely thrilling to ride, but if
+people experience discomfort on the trip, the overall experience of the ride can be seriously degraded.
+众
+After researching into the subject of discomfort on Wikipedia and Quora, we located two variables
+in the dataset that may co公ntribute to a person’s feeling of discomfort – G force and inversions.
+6.1 Incorporating G Force
+信
+Although a higher G force could emphasize the thrill of the overall experience of a roller coaster
+ride, it is also a major factor that causes discomfort in a typical roller coaster ride. Generally, a higher
+G force微 causes the discomfort to be greater on average for a rider.
+According to previous studies, a human can tolerate an acceleration up to 4 G on average without
+feeling great discomfort. Above this threshold, symptoms like grey-out or even black-out are often
+reported by those untrained. Grey-out causes a person’s vision to lose hue, tunnel vision causes a person
+to lose peripheral vision, and black-out causes a complete loss of sight. Thus, G-force should be
+considered a factor that contributes to the probability of a rider experiencing discomfort.
+We propose that the relationship between the probability of discomfort and G force is nonlinear, as
+most humans do not feel much discomfort from 1 G to 4 G acceleration, while it arises rapidly as G
+force approaches 5 and 6 G.
+Therefore, we decided to use a logistic function, as shown in formula 6.1, to approximate the
+probability that the average rider will feel discomfort at a certain G force. The range of the predicted
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 15
+probability should be between 0 and 1 inclusive because other variables in the dataset are scaled this
+way as explained in part 4.
+1
+𝐷𝐼 = (6.1)
+𝑔 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 )
+The parameter of the logistic regression is set with our assumption that the average rider can endure
+5 G acceleration in average but cannot endure 6 G acceleration. As existing studies shows, 50% of the
+population cannot endure 5 G and 99.9% of the population cannot endure 6 G. Thus, we first
+transformed the critical values (5 G and 6 G) into the standardized scale, and then used them to
+determine the logistic function. The resulting points are (0.89, 0.5) for 5 G and (0.99, 0.99) for 6 G, and
+M
+the shape of the logistic function is shown in figure 6.1.
+C
+M
+i
+H
+：
+号
+众
+Figure 6.1: The graph of 𝐷𝐼
+𝑔
+公
+The discomfort probability function starts with a long, continuous horizontal line when the G force,
+plotted in the ho信rizontal axis, increases from 0 to 4, indicating very little discomfort, then arises sharply
+as it approaches 5. When G force exceeds 6, about all riders should feel sick and the probability of
+discomfort gets near 1 (the maximum).
+微
+6.2 Incorporating Inversion Frequency
+Another factor that may cause discomfort during a roller coaster ride is the number of inversions.
+Many inversions in a single roller coaster ride causes the balance system inside the human brain to
+malfunction, leading to motion sickness and the feeling of discomfort. Generally, the more inversions
+there is, the more likely discomfort occurs for a rider.
+When we are comparing two roller coaster rides with the same number of inversions, the one with
+a shorter duration will have a higher probability of generating more discomfort for the rider, since the
+average inversion frequency is higher on that ride. Remind that
+𝑛
+𝐼
+𝜔 = .
+𝑡
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 16
+Frequent inversions can impair the balance system of human further, and may lead to complete loss
+of spatial vision and vomiting. The more frequent the inversion is, the dizzier people might feel.
+According to previous studies, about 90% of all people will have a strong feeling of dizziness when the
+inversion frequency is close to 0.133 inversions per second.
+1
+𝐷𝐼 = (6.3)
+𝜔 1+𝑒30(0.85−𝜔)
+Similar to our approach to G force, we use a logistic function to approximate the probability of
+discomfort. The range of the function is also from 0 to 1 inclusive. As the aforementioned study shows,
+M
+the discomfort probability increases rapidly when inversion approaches 0.133 inversions per second [7],
+which after the Box-Cox transformation, described in part 4, is nearly equal to 0.922.
+C
+The resulting shape of the figure is as follows.
+M
+i
+H
+：
+号
+众
+公
+Figure 6.2 The graph of 𝐷𝐼
+𝜔
+信
+6.3 Discomfort Index
+In conclusion, the discomfort index is equal to the sum of G-force probability of discomfort and the
+微
+probability of inversion frequency discomfort, and its formula would be
+1 1
+𝐷𝐼 = + (6.4)
+1+𝑒45(0.88−𝐺) 1+𝑒30(0.85−𝜔)
+As shown below, we also plot this function in a 3D cube view for a better visualization. The
+discomfort is expressed in the plot both by the vertical axis and the colors of the rainbow, from purple
+representing the least discomfort and red representing the most.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 17
+M
+C
+M
+Figure 6.3: The 3D cube view plot of DI function
+i
+H
+7 - Model Part 4: Comprehensive Index
+：
+As we have presented in the part 2 of this model, people come to ride a roller coaster in search of
+the “thrill”. The more thrilling the experience, the larger possibility that the rider will like it. We have
+号
+then analyzed the many factors that contribute to this experience of thrill:
+- The feeling of weightlessness,
+- The maximum velocity,
+众
+- the maximum g-force experienced,
+- Inversions, and
+- The type of roller coaster.
+公
+And in model part 2, the index measuring thrill is the aggregate of these factors, as in the formula:
+𝑇𝐼 = ℎ +𝑠 +𝑔 +𝜔+𝑏 (7.1)
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝑇
+信
+As discussed in the third part of the model, the feeling of discomfort arises from the maximums of
+G force and Inversion Frequency, and this also affects the overall experience of a roller coaster ride.
+微
+The formula to calculate discomfort takes both variables into account:
+1 1
+𝐷𝐼 = + (7.2)
+1+𝑒45(0.88−𝑔𝑚𝑎𝑥) 1+𝑒30(0.85−𝜔)
+The higher the thrill index is, the larger possibility that riders will like it, but the higher the
+discomfort index is, the more likely that people will regret taking the ride. Both parts of the model aim
+to measure the experience of riding a particular roller coaster, but neither have taken all factors into
+account. Certainly, it is undesired that our ranking recommends roller coasters that simply have the
+highest drop, fastest speed, or the greatest number of inversions, while people feel horrible after riding
+it; equally undesired is that our ranking recommends people to ride roller coasters that does not create
+any discomfort but is not thrilling at all.
+Therefore, an objective and comprehensive ranking system should take both sides into account
+with the equation
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 18
+ℂ = 𝑇𝐼−𝐷𝐼 (7.3)
+which expands to
+1 1
+ℂ = ℎ +𝑠 +𝑔 +𝜔+𝑏 − −
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝑇 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 ) 1+𝑒30(0.85−𝜔)
+7
+= ∑ℱ (7.4)
+𝑖
+𝑖=1
+M
+where ℂ is the comprehensive index that measures the experience on any selected roller coaster.
+By creating the equation as we did so, it is possible to penalize roller coCasters that either gives
+excess emphasis to the experience of thrill or neglects the discomfort of the rider, or coasters that is
+M
+incapable of thrill and emphasizes comfort overmuch.
+The 𝐶𝑜𝑚𝑝𝑟𝑒ℎ𝑒𝑛𝑠𝑖𝑣𝑒 index give a more objective and comprehenisive reference for the comparison
+H
+of different roller coasters and offers insight into our rank of Top 10 Roller Coasters in the world. And
+as we aim to create an authoritative ranking that appeal both to roller enthusiasts and new riders, we
+：
+can encourage roller coaster designers not to only go after the physical limits of a roller coaster (for
+example, speed, drop, and inversion frequency), but consider also the experience of discomfort the
+design might have on the average rider. 号
+However, in this part, we omitted the relative importance of these factors affecting the final ranking
+众
+(for example some might think the number of inversions that a roller coaster has is more important than
+its height, while others might think the opposite). To consider the relative importance, a weight should
+be added to each factors i公n the formula.
+In order to take the relative importance between these factors into account of the Comprehensive
+Model, we adde信d weights to each factor, which is explained in part 9.
+微
+8 - App: Roller ranker
+After the construction for our model of ranking roller coasters is complete, for the convenience of
+both potential riders seeking for their next ride and enthusiasts seeking for thrill, we decided that it is
+necessary to design a mobile app named Roller Ranker so that they can receive the recommendations
+of our model directly in their phones.
+8.1 Goals and Concepts of the App
+1. User-Friendly
+Our app should be designed to be as friendly to the user as possible, in ways that people
+will find it easy to use and understand.
+2. Personalized
+In our app, the users should be able to adjust settings according to their personal preferences
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 19
+so that the app offers a customized recommendation for all individual users (for example,
+some might think the number of inversions that a roller coaster has is more important than
+its height, while others might think the opposite).
+3. Self-improving
+Our app should be able to learn the preference of users for different factors in our model
+automatically, so that our default recommendation will become more accurate in time.
+8.2 Potential Users and App Design
+Before designing the functions of the app, we shall first analyze the different groups of potential
+users of our app: those that are new to roller coasters, those who have ridden roller coasters before, and
+those who are roller coaster enthusiasts. M
+Those who are new to roller coasters might simply want our recommendation of roller coasters,
+C
+which is based on our default ranking, as they do not know much about roller coasters.
+M
+Those who have some experience with riding roller coasters should know that some roller coasters
+can be extreme and causes discomfort (such as dizziness or grey-out), and others can be too boring and
+i
+lacks excitement. Therefore, they may want to adjust the settHings so that our model can recommend
+roller coasters that is perfect for them.
+：
+For Roller Coaster Enthusiasts who may have knowledge of every aspect of roller coasters, a very
+flexible customization of the settings may be desired so that they can find roller coasters that fits their
+号
+specific preferences. For example, some enthusiasts may think the number of inversions that a roller
+coaster is more important than its height, and our app should let them express the preference.
+众
+Type of Users What we offer
+公
+Beginner to roller coasters Default Recommendation
+Customized setting for the weights of Thrill
+信
+Experienced riders Index and Discomfort Index in the
+Comprehensive Model
+Customized setting for weights of all factors
+微Roller Coaster Enthusiasts
+in the Comprehensive Model
+Table 8.1: The table shows various offers to different type of users
+To accommodate the need of those different types of users, our app should offer a default
+recommendation for beginners (ranked by the output of the Comprehensive index), an adjustable weight
+for the Thrill index and Discomfort index in our model for those who have some experience in riding
+roller coasters, and adjustable weights for all factors for Roller Coaster Enthusiasts.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 20
+M
+C
+M
+Figure 8.1 Prototype of “Roller Raniker”
+Left: Front page of theH app
+Middle: 3 options for setup
+Right: The pers：onalized ranking
+8.3 Incorporating customized settings号 into the Comprehensive Model
+We have already developed a Comprehensive Model that takes many factors or variables into
+consideration. In that model, we assume that people will view each factor as having equal importance
+众
+to them, so the default weight for each variable is set to be the same. However, as we have analyzed in
+part 8.2, different users might think of some factors as being more important to them than others.
+Therefore, we should in公corporate the users’ setting into the Comprehensive Model so that our
+recommendation is flexible to their choice.
+8.3.1 Basic C信ustomization: Thrill Index vs Discomfort Index
+For the basic customization algorithm, in a screen that asks for the user’s preference, a value 𝑥
+betwee微n 1 to 9 is retrieved from users’ input. The value 𝑥 reflects the user’s absolute preference between
+𝑥 𝑥
+Thrill and Comfort. We transform this value using 𝛼 = and 𝛽 = 1− and apply it in our
+5 5
+Comprehensive Model formula for finding out a weighted index for our ranking. Thus, the formula
+based on this basic customization would be:
+ℂ = 𝛼∙𝐷𝐼−𝛽∙𝑇𝐼 (8.1)
+8.3.2 Advanced Customization: Detailed weights
+For a more advanced customization process, in which a user can adjust weights for each individual
+factor in the Comprehensive Model, the user’s comparative preferences over each factor are collected
+in the Advanced Customization application interface.
+This means that the method we use for basic customization, which handles an absolute preference,
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #8744  |     |     |     |     |     |     |     |     |     | Page 21  |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------- |
+
+cannot be applied here to comparative ones. Thus, we shall refer to the Analytic Hierarchy Process
+(AHP) method which uses relative importance of criteria and a pairwise comparison matrix to sort
+possible solutions to an operational problem. However, we only need a part of AHP, the Criteria layer,
+for our model. This is because the pairwise comparisons layer can be replaced by the similar scaling
+and normalization process in part 4.
+
+We now use an example of the relative preferences of Katie, a roller coaster enthusiast and user of
+our app, on factors of roller coasters to illustrate how the modified method give the absolute weight of
+the factors. By these absolute weights, we can determine the preferences of the user exactly and
+recommend roller coasters by factors with larger weights.
+
+M
+For the sake of simplicity in our discussion, we first assign a number to each factor in the formula:
+| Number  |     | 1   | 2   | 3   | 4   |     | 5   | 6   |     | 7   |
+| ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+C
+| Factor  |     | ℎ   | 𝑠   |   𝑔 |   𝜔  |     | 𝑏   | 𝐷𝐼   | 𝐷𝐼  |     |
+| ------- | --- | --- | --- | --- | ---- | --- | --- | ---- | --- | --- |
+|         |     | 𝑚𝑎𝑥 | 𝑚𝑎𝑥 | 𝑚𝑎𝑥 |      |     | 𝑇   | 𝑔    |     | 𝜔   |
+|         |     |     |     |     |      |     | M   |      |     |     |
+Table 8.2: The table shows the number corresponding with specific factor
+
+Using these numbers, we can denote the various aspects of the maitrices in our following discussion
+| with ease.  |     |     |     |     |     | H   |     |     |     |     |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+：
+Step 1: Preparing the Data
+First, users input their comparative preference for two factors at a time in our app. For example,
+Katie can slide the slider from 1 to 9 to indic号ate their comparative preference between the factors height
+and speed, as illustrated in figure 8.2.
+众
+公
+信
+微
+
+Figure 8.2: A sample setting page in the Advanced Customization setting
+
+If Katie chose the values in the following table,
+|     | ℎ   |   𝑠 |     | 𝑔   |   𝜔  |     | 𝑏   | 𝐷𝐼   |     | 𝐷𝐼   |
+| --- | --- | --- | --- | --- | ---- | --- | --- | ---- | --- | ---- |
+|     | 𝑚𝑎𝑥 |     | 𝑚𝑎𝑥 | 𝑚𝑎𝑥 |      |     | 𝑐   | 𝑔    |     | 𝜔    |
+| ℎ   |     |     |     |     |      |     |     |      |     |      |
+𝑚𝑎𝑥
+| 𝑠   | 5.5  |     |     |     |     |     |     |     |     |     |
+| --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+𝑚𝑎𝑥
+| 𝑔   | 6   | 5.25  |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+𝑚𝑎𝑥
+| 𝜔   | 6.5  | 5.5   |     | 5.17  |        |     |     |     |     |     |
+| --- | ---- | ----- | --- | ----- | ------ | --- | --- | --- | --- | --- |
+| 𝑏   | 7    | 5.75  |     | 5.33  | 5.125  |     |     |     |     |     |
+𝑐
+| 𝐷𝐼   | 7.5  | 6   |     | 5.5  | 5.25  | 5   |     |     |     |     |
+| ---- | ---- | --- | --- | ---- | ----- | --- | --- | --- | --- | --- |
+𝑔
+| 𝐷𝐼   | 8   | 6.25  |     | 5.67  | 5.375  | 5.9  | 5   |     |     |     |
+| ---- | --- | ----- | --- | ----- | ------ | ---- | --- | --- | --- | --- |
+𝜔
+
+Table 8.3: The table shows the weight choosing by Katie
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 22
+
+Then Katie’s inputs can be transformed into values that can be used in the AHP by the formula
+
+|     |     |     |      | 2𝑥−9,𝑥 |     | ≥ 5                                                                   |     |     |     |
+| --- | --- | --- | ---- | ------ | --- | --------------------------------------------------------------------- | --- | --- | --- |
+|     |     |     | 𝑥′ = | { 1    |     |                                                                (8.2)  |     |     |     |
+|     |     |     |      |        | ,𝑥  | < 5                                                                   |     |     |     |
+11−2𝑥
+
+To calculate the relative weight for n different factors, a 7×7 comparison matrix A must be made
+to contain the user’s relative preference data, produced following these rules:
+
+1
+| 1)  𝑨 = |  (Rule of Reciprocity)  |     |     |     |     |     |     |     | M   |
+| ------- | ----------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+𝑖𝑗
+𝑨𝑗𝑖
+2)  The value in matrix 𝑨  represents the comparative importance between factor i and
+𝑖𝑗
+C
+factor j. If factor i is equally or more important when compared to factor j, the scale of
+𝑨  is from 1-9, with 1 meaning equally important and 9 meaning factor i is preferred
+𝑖𝑗
+M
+substantially more over factor j.
+
+i
+The transformed comparison matrix produced using Katie’s preferences could be
+H
+
+|     |     |     | 1 1⁄2       | 1⁄3：1⁄4 |     | 1⁄5 | 1⁄6 | 1⁄7     |     |
+| --- | --- | --- | ----------- | ------- | --- | --- | --- | ------- | --- |
+|     |     |     |             |         |     |     |     |         |     |
+|     |     |     | 2 1         | 2⁄3     | 1⁄2 | 2⁄5 | 1⁄3 | 2⁄7     |     |
+|     |     |     |             |         |     |     |     |         |     |
+|     |     |     | 3 3⁄2       | 1       | 3⁄4 | 3⁄5 | 1⁄2 | 3⁄7     |     |
+|     |     |     |             |         |     |     |     |         |     |
+|     |     | 𝑨   | =   4 2号4⁄3 |         | 1   | 4⁄5 | 2⁄3 | 4⁄7     |     |
+|     |     |     |  5 5⁄2      | 5⁄3     | 5⁄4 | 1   | 5⁄6 | 5⁄7     |     |
+|     |     |     |  6 3        | 2       | 3⁄2 | 6⁄5 | 1   | 6⁄7     |     |
+|     |     |     | 众[7 7⁄2     | 7⁄3     | 7⁄4 | 7⁄5 | 7⁄6 | 1 ]     |     |
+
+公
+Or, if she chose some other preferences, the importance of which we will illustrate later, the matrix
+could be
+|   信 |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+|     |     |     | 1 1⁄2  | 1⁄3 | 1⁄4 | 1⁄5 | 1⁄6 | 1⁄8   |     |
+| --- | --- | --- | ------ | --- | --- | --- | --- | ----- | --- |
+|     |     |     |        |     |     |     |     |       |     |
+| 微   |     |     | 2 1    | 2⁄3 | 1⁄2 | 2⁄5 | 1⁄3 | 2⁄7   |     |
+|     |     |     |        |     |     |     |     |       |     |
+|     |     |     | 3 3⁄2  | 1   | 3⁄4 | 3⁄5 | 1⁄2 | 3⁄7   |     |
+|     |     |     |        |     |     |     |     |       |     |
+|     |     | 𝑩   | = 4 2  | 4⁄3 | 1   | 4⁄5 | 2⁄3 | 1⁄2   |     |
+|     |     |     |        |     |     |     |     |       |     |
+|     |     |     | 5⁄2    | 5⁄3 | 5⁄4 |     |     | 5⁄7   |     |
+|     |     |     |  5     |     |     | 1   | 1   |       |     |
+|     |     |     |  6 3   | 2   | 3⁄2 | 1   | 1   | 1     |     |
+|     |     |     | [8 7⁄2 | 7⁄3 | 2   | 7⁄5 | 1   | 1 ]   |     |
+
+Step 2: Checking for Inconsistencies
+Before applying a comparison matrix to calculate the relative importance of criteria, we need to
+check if it is rational, which is, not self-contradictory or inconsistent in opinions. For example, if A is
+preferred over B and B is preferred over C, it is irrational that C is preferred over A. Several steps are
+required to achieve this.
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744 Page 23
+If a person’s preference of the factors (being more or less important to them) is perfectly consistent,
+then the comparison matrix 𝑨 derived from his or her preferences should satisfy
+𝑨 ∙𝑨 = 𝑨 (8.3)
+𝑖𝑗 𝑗𝑘 𝑖𝑘
+A matrix that satisfies this property is a consistent matrix. It can be proved that a 𝑛×𝑛 reciprocal
+matrix is consistent if and only if its greatest eigenvalue
+𝜆 = 𝑛 (8.4)
+𝑚𝑎𝑥 M
+This illustrates a method to test if a person’s opinion is perfectly consistent. For the Katie’s example,
+C
+the 7×7 comparison matrix 𝑨 is consistent because
+M
+max{𝜆:(𝑨−𝜆𝑬)𝒙= 𝟎} = 7 (8.5)
+i
+while the comparison matrix 𝑩 is not consistent because H
+：
+max{𝜆:(𝑩−𝜆𝑬)𝒙= 𝟎} ≈ 7.011> 7. (8.6)
+号
+However, people do not always hold consistent opinions, and thus we need to use a consistency
+index 𝐶𝐼 to measure the extent to the consistency of a comparison matrix. For a 𝑛×𝑛 matrix with the
+众
+greatest eigenvalue 𝜆 , its consistency index 𝐶𝐼 can be defined as
+𝑚𝑎𝑥
+𝜆 −𝑛
+𝑚𝑎𝑥
+公 𝐶𝐼 = (8.7)
+𝑛−1
+Note that m信atrices having smaller 𝐶𝐼 is more consistent. The calculated 𝐶𝐼 is then compared with
+the random index 𝑅𝐼. The random index 𝑅𝐼 is defined to be the average 𝐶𝐼 of random comparison
+matrices with same order. Typically, we can tolerate a matrix with a consistency index that satisfies
+微
+𝐶𝐼
+< 0.1 (8.8)
+𝑅𝐼
+Returning to the example of Katie, as we know that the comparison matrix 𝑩 she produced is not
+perfectly consistent, to check whether the inconsistency of opinions represented by matrix 𝑩 is tolerable,
+we will first refer to table 8.2 for the value of 𝑅𝐼 when 𝑛 = 7, which is 𝑅𝐼 = 1.32.
+10
+𝑛 2 3 4 5 6 7 8 9
+1.51
+𝑅𝐼 0 0.58 0.90 1.12 1.24 1.32 1.41 1.45
+Table 8.4: RI value for different n
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744  Page 24
+
+Then, we test if
+
+|     |     | 𝜆   | −𝑛  | 7.011−7 |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | --- | --- | --- |
+𝑚𝑎𝑥
+|     |     | 𝐶𝐼  | 𝑛−1 |     | 7−1  |              |     |     |
+| --- | --- | --- | --- | --- | ---- | ------------ | --- | --- |
+|     |     | =   |     | =   |      | =0.0014<0.1  |     |     |
+|     |     | 𝑅𝐼  | 𝑅𝐼  |     | 1.32 |              |     |     |
+
+is true. As 0.0014 < 0.1 holds true, we can state that the inconsistency of matrix 𝑩 is in the tolerable
+range, and the data collected is considered valid.
+
+Step 3: Calculating the Weight Vector
+After checking the consistency of the comparison matrix, we continue with calculMating the absolute
+weight of each factor. We first deduce the normalized pairwise comparison matrix 𝑨̅ from a 𝑛×𝑛
+comparison matrix 𝑨 using the formula
+C
+
+𝑨
+|     |     |     |     | 𝑨̅  |     | 𝑖𝑗                     |     | M                                                     |
+| --- | --- | --- | --- | --- | --- | ---------------------- | --- | ----------------------------------------------------- |
+|     |     |     |     |     | =   | ,                      |     |                                                (8.9)  |
+|     |     |     |     | 𝑖𝑗  | ∑   | 𝑨                      |     |                                                       |
+|     |     |     |     |     | 𝑘   | 𝑘𝑗                     |     |                                                       |
+
+i
+
+H
+then build the criteria weight vector 𝒘 using the formula
+：
+
+∑ 𝑨
+|     |     |     |     |     |     | 𝑗 𝑖𝑗                                                                       |     |     |
+| --- | --- | --- | --- | --- | --- | -------------------------------------------------------------------------- | --- | --- |
+|     |     |     |     | 𝒘   | =   | .                                                                  (8.10)  |     |     |
+𝑖
+|     |     |     |     | 号   |     | 𝑛   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+众
+Thus,  the  resulting  normalized  pairwise  comparison  matrices 𝑨̅  and 𝑩̅  for  the  comparison
+matrices 𝑨 and 𝑩 in Katie’s example would be
+
+公
+|     |     |     | 1   | 1   | 1   | 1 1   | 1   | 1   |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+|     |     |     |     |     |     |       |     |     |
+|     |     |     | 28  | 28  | 28  | 28 28 | 28  | 28  |
+|     |     |     |     |     |     |       |     |     |
+|     |     |     | 1   | 1   | 1   | 1 1   | 1   | 1   |
+|     | 信   |     |     |     |     |       |     |     |
+|     |     |     |  14 | 14  | 14  | 14 14 | 14  | 14  |
+|     |     |     |  3  | 3   | 3   | 3 3   | 3   | 3   |
+|     |     |     |  28 |     |     |       |     | 28  |
+| 微   |     |     |     | 28  | 28  | 28 28 | 28  |     |
+|     |     |     |  1  | 1   | 1   | 1 1   | 1   | 1   |
+𝑨̅ =
+|     |     |     |     |     |     |       |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+|     |     |     | 7   | 7   | 7   | 7 7   | 7   | 7   |
+|     |     |     |   5 | 5   | 5   | 5 5   | 5   | 5   |
+|     |     |     |     |     |     |       |     |     |
+|     |     |     | 28  | 28  | 28  | 28 28 | 28  | 28  |
+|     |     |     |     |     |     |       |     |     |
+|     |     |     | 3   | 3   | 3   | 3 3   | 3   | 3   |
+|     |     |     |     |     |     |       |     |     |
+|     |     |     |  14 | 14  | 14  | 14 14 | 14  | 14  |
+|     |     |     |  1  | 1   | 1   | 1 1   | 1   | 1   |
+|     |     |     | [4  | 4   | 4   | 4 4   | 4   | 4 ] |
+
+and
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 25
+
+|     |     | 1/29 | 1/28 | 1/28 | 1/29 | 1/27 | 1/28 | 7/227  |     |
+| --- | --- | ---- | ---- | ---- | ---- | ---- | ---- | ------ | --- |
+|     |     |      |      |      |      |      |      |        |     |
+|     |     | 2/29 | 1/14 | 1/14 | 2/29 | 2/27 | 1/14 | 16/227 |     |
+|     |     |      |      |      |      |      |      |        |     |
+|     |     | 3/29 | 3/28 | 3/28 | 3/29 | 1/9  | 3/28 | 24/227 |     |
+|     |     |      |      |      |      |      |      |        |     |
+𝑩̅
+|     |     | =   4/29 | 1/7  | 1/7  | 4/29 | 4/27 | 1/7  | 28/227  |   .  |
+| --- | --- | -------- | ---- | ---- | ---- | ---- | ---- | ------- | ---- |
+|     |     |  5/29    | 5/28 | 5/28 | 5/29 | 5/27 | 3/14 | 40/227  |      |
+|     |     |  6/29    | 3/14 | 3/14 | 6/29 | 5/27 | 3/14 | 56/227  |      |
+|     |     | [8/29    | 1/4  | 1/4  | 8/29 | 7/27 | 3/14 | 56/227] |      |
+
+| The criteria weight vectors 𝒘 |     |     |  and 𝒘 |  will be  |     |     |     |     |     |
+| ----------------------------- | --- | --- | ------ | --------- | --- | --- | --- | --- | --- |
+|                               |     |     | 𝑨      | 𝑩         |     |     |     |     |     |
+
+M
+1/28
+|     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+1/14
+|     |     |     |     |     |        |     |     |     |     |
+| --- | --- | --- | --- | --- | ------ | --- | --- | --- | --- |
+|     |     |     |     |     | 3/28   |     |     | C   |     |
+|     |     |     |     |     |        |     |     |     |     |
+|     |     |     |     | 𝒘 = | 1/7    |     |     |     |     |
+|     |     |     |     | 𝑨   |        |     |     |     |     |
+|     |     |     |     |     |  5/28  |     | M   |     |     |
+ 3/14
+|     |     |     |     |     | [ 1/4 | ]   |     |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- |
+i
+
+H
+and
+|     |     |     |     |     | ：   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+1214239/34837326
+|     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+1236163/17418618
+|     |     |     |     |                    |     |     |     |     |     |
+| --- | --- | --- | --- | ------------------ | --- | --- | --- | --- | --- |
+|     |     |     |     | 号 1236163/11612412 |     |     |     |     |     |
+|     |     |     |     |                    |     |     |     |     |     |
+|     |     |     | 𝒘   | = 1214239/8709309  |     |     | .   |     |     |
+|     |     |     |     | 𝑩                  |     |     |     |     |     |
+  1589639/8709309
+|     |     |     | 众   | 1763141/8709309  |     |     |     |     |     |
+| --- | --- | --- | --- | ---------------- | --- | --- | --- | --- | --- |
+
+[ 2204656/8709309]
+
+公
+Step 4: Output
+After Katie’s settings are converted to the criteria weight vectors 𝒘  or 𝒘 , we can apply these
+|     |     |     |     |     |     |     |     | 𝑨 𝑩 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+信
+weights into the Comprehensive Model directly, as shown in the formula below.
+
+| 微ℂ  |     | = 𝒘 ℎ           | +𝒘  | 𝑠 +𝒘  | 𝑔             | +𝒘  | 𝜔+𝒘                           | 𝑏                              |     |
+| --- | --- | --------------- | --- | ----- | ------------- | --- | ----------------------------- | ------------------------------ | --- |
+|     |     | 1 𝑚𝑎𝑥           |     | 2 𝑚𝑎𝑥 | 3 𝑚𝑎𝑥         | 4   | 5                             | 𝑇                              |     |
+|     |     |                 | 1   |       |               | 1   |                               |                                |     |
+|     | −𝒘  |                 |     |       | −𝒘            |     |                               |                                |     |
+|     |     | 6               |     |       | 7             |     |                               |                                |     |
+|     |     | 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 |     | )     | 1+𝑒30(0.85−𝜔) |     |                               |                                |     |
+7
+|     |     = | ∑𝒘  | ℱ                                                                                 (8.11)  |     |     |     |     |     |     |
+| --- | ----- | --- | ----------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+𝑖 𝑖
+𝑖=1
+
+Using this formula, the app recalculates the Comprehensive index for each roller coasters, and rank
+them accordingly. With this customized ranking for each user, our recommendation would be flexible
+to individual preferences.
+
+9 - Adding Weights to the Comprehensive Model
+As we discussed in part 8.2, users that are new to roller coasters simply want to leave all the
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744 Page 26
+customization as default and have our recommendation. The unweighted version of Comprehensive
+Model we built in part x gives a default ranking; however, it is under the assumption that people view
+each factor with equal importance, but it is certainly not the case in real life. After considering this
+problem, we think that we can improve the default recommendation by adding weights to each factor.
+Recall that the unweighted version of the Comprehensive Model in part x:
+1 1
+ℂ=ℎ +𝑠 +𝑔 +𝜔+𝑏 − −
+𝑚𝑎𝑥 𝑚𝑎𝑥 𝑚𝑎𝑥 𝑇 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 ) 1+𝑒30(0.85
+M
+−𝜔)
+7
+=∑ℱ (9.1)
+𝑖 C
+𝑖=1
+M
+After we add weights to the Comprehensive Model, it can be represented by the formula
+ℂ = 𝒘 ℎ +𝒘 𝑠 +𝒘 𝑔 +i𝒘 𝜔+𝒘 𝑏
+1 𝑚𝑎𝑥 2 𝑚𝑎𝑥 3 𝑚𝑎𝑥 4 5 𝑇
+1 H1
+−𝒘 −𝒘
+6 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 ) 7 1+𝑒30(0.85−𝜔)
+：
+7
+= ∑𝒘 ℱ (9.2)
+𝑖 𝑖
+𝑖=1
+号
+where 𝒘 is the weight vector.
+𝒄
+To find the values of 𝒘, we us众ed the same method in Section 8.3.2, the part where we customized
+a ranking for different users using the AHP method.
+公
+First of all, we conducted a survey online (the result of which is in Appendix D) to find people’s
+comparative preference between each factors of our model (similar to Section 8.3.2 Advanced
+Customization: 信Detailed weights where we ask the users of our app to input their customized settings).
+We asked people questions like “is the height of the roller coaster or the speed of the roller coaster more
+important to you? please scale from 1 to 9, 5 means equally important”. The study was done with 60
+differen微t users, each fully complete 21 questions about the preference of one factor over another scaling
+from 1 to 9.
+Using the transformation described in Section 8.3.2, we calculate the 7×7 Comparison Matrix 𝑨 :
+𝒄
+1 0.33 7.0 7.0 7.0 5.0 5.0
+3 1 7.0 7.0 7.0 5.0 5.0
+0.14 0.14 1 1 3 1 3
+𝑨 𝒄 = 0.14 0.14 1 1 5 0.33 1 (9.3)
+0.14 0.14 0.33 0.2 1 1 1
+0.2 0.2 1 3 1 1 1
+[0.2 0.2 0.33 1 1 1 1 ]
+After that, we follow the exact same steps in Section 8.3.2 Advanced Customization: Detailed
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744  Page 27
+
+| weights, and the resulting 𝒘 |  is this:  |     |     |
+| ---------------------------- | ---------- | --- | --- |
+𝒄
+
+1.24
+
+1.69
+
+0.35
+
+𝒘 = 0.30                                                                             (9.4)
+𝒄
+ 0.18
+ 0.31
+[0.23]
+
+Thus, the final version of the Comprehensive Model is this:  M
+
+ℂ = 1.24∗ℎ 𝑚𝑎𝑥 +1.69∗𝑠 𝑚𝑎𝑥 +0.35∗𝑔 𝑚𝑎𝑥 +0,3∗𝜔+0.18∗𝑏 C𝑇
+|     | 1   |     | 1   |
+| --- | --- | --- | --- |
+−0.31∗ −0.23∗
+|     | 1+𝑒45(0.88−𝑔𝑚𝑎𝑥 | ) 1+𝑒30(0 | .85−𝜔) |
+| --- | --------------- | --------- | ------ |
+M
+7
+    = ∑𝒘 ℱ                                                                                                                  (9.5)
+𝑐 𝑖
+| 𝑖=1 |     |     | i   |
+| --- | --- | --- | --- |
+H
+
+| 10 - Results  |     | ：   |     |
+| ------------- | --- | --- | --- |
+Using the weighted Comprehensive Model (part 9), we calculated the Comprehensive Index of each
+| roller coasters; and each roller coasters are ranked accordingly, and the Steel Dragon 2000 from  | 号   |     |     |
+| ------------------------------------------------------------------------------------------------- | --- | --- | --- |
+Nagashima Spa Land park ranks number one, with comprehensive index equals to 1.72.
+The following table shows our rank of “Top 10 Roller Coasters in the World”:
+众
+
+Comprehensive
+| Name  | Park  |     |     |
+| ----- | ----- | --- | --- |
+Index
+公
+| Steel Dragon 2000  | Nagashima Spa Land  |     | 1.72  |
+| ------------------ | ------------------- | --- | ----- |
+| Fury 325           | Carowinds           |     | 1.71  |
+信
+| Millennium Force  | Cedar Point      |     | 1.70  |
+| ----------------- | ---------------- | --- | ----- |
+| Fujiyama          | Fuji-Q Highland  |     | 1.66  |
+微
+| Leviathan        | Canada's Wonderland             |     | 1.65  |
+| ---------------- | ------------------------------- | --- | ----- |
+| Formula Rossa    | Ferrari World Abu Dhabi         |     | 1.65  |
+| Desperado        | Buffalo Bill's Resort & Casino  |     | 1.62  |
+| Intimidator 305  | Kings Dominion                  |     | 1.62  |
+| Titan            | Six Flags Over Texas            |     | 1.62  |
+| Steel Vengeance  | Cedar Point                     |     | 1.61  |
+
+Table 10.1: The table shows the ranking based on comprehensive index
+
+10.1 Comparison with Other Rankings Systems
+In order to evaluate our model, we compared our model with two other ranking systems we found
+online.
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 28
+
+The first one is found on ranker.com, which is a large community (over 1200 voters on this topic)
+where everyone can upvote and downvote roller coasters that they like or dislike (with more than 9000
+operations already), and the system will adjust its ranking according to user preference.
+
+This model might represent the general preference of the population toward roller coasters, but it
+may be biased because this is a voluntary survey, which may result in undercoverage bias.
+
+The second ranking system that we found is in a personal blog, written by a roller coaster enthusiast
+named Shannon George. This ranking reflects the preference of an expert who have ridden a great
+number of roller coasters. However, this ranking is very subjective.
+M
+|     |     |     |     |
+| --- | --- | --- | --- |
+The reason we choose these two rankings to compare with our model is because their ranking
+C
+concept differs from our model’s greatly. Our model emphasizes on the balance between objectiveness
+and subjectiveness, while the ranking on ranker.com uses purely rider feedbacks and George’s ranking
+M
+is based on the preference of one person. The comparison of the top 10 roller coasters that ranks in these
+three models are compared in Table 10.2.
+i
+
+H
+It can be observed that there are many common roller coasters on our Top 10 ranking from Table
+| 10.2.    |            | ：           |                    |
+| -------- | ---------- | ----------- | ------------------ |
+| Ranking  | Our Model  | Ranker.com  | Enthusiast George  |
+号
+| 1   | Steel Dragon 2000  | Millennium Force  | Bizarro  |
+| --- | ------------------ | ----------------- | -------- |
+众
+| 2   | Fury 325          | Steel Vengeance      | Millennium Force  |
+| --- | ----------------- | -------------------- | ----------------- |
+| 3   | Millennium Force  | Top Thrill Dragster  | El Toro           |
+公
+| 4   | Fujiyama  |           |                     |
+| --- | --------- | --------- | ------------------- |
+|     |           | Maverick  | Expedition GeForce  |
+信
+| 5   | Leviathan        | El Toro           | The Voyage       |
+| --- | ---------------- | ----------------- | ---------------- |
+| 微6  | Formula Rossa    | Fury 325          | Kingda Ka        |
+| 7   | Desperado        | Intimidator 305   | Intimidator 305  |
+| 8   | Intimidator 305  | The Voyage        | Goliath          |
+| 9   | Titan            | Kingda Ka         | Behemoth         |
+| 10  | Steel Vengeance  | Apollo’s Chariot  | Nemesis          |
+Table 10.2: Comparison Table between our ranking and two other ranking found online (common items
+are marked with a common color)
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744 Page 29
+11 - Evaluation
+There are both strengths and weaknesses in our model:
+Strengths
+Our model is very comprehensive. We have taken many factors that may contribute to the ranking
+of roller coasters, including its maximum speed, maximum G force, height, inversion density, and its
+type. We have also considered that both the feeling of thrill and the feeling of discomfort contributes to
+overall experience of ride; therefore, the model also penalize extreme roller coasters.
+Our model is very objective. This is because it is based on data and all data are standardized and
+normalized using Box-Cox transformation so that the unit of each variables will not affect the final
+M
+ranking.
+The results of our model are easy to interpret. The index is designed to be straightforward ‘bigger
+C
+is better’ and one can effectively compare two roller coasters with the need to understand its mechanism.
+The model quantifies the amount of thrilling each type of roller coasters brings to a rider with the
+M
+Borda Count Method.
+Our model is flexible for missing data. This is because we have analyzed correlation relationships
+i
+between variables so that missing values can be filled by mean imputation or regression imputation.
+H
+The default recommendations of our app can improve itself by learning the customized settings of
+different users. ：
+Limitations
+号
+Each variable in our calculation of the Comprehensive Model is not weighted, meaning that they
+are equally important when a person is judging a roller coaster. However, this is not the case in real life.
+This problem is solved in our app, which uses the customized setting of our users to offer
+众
+recommendations that fits them the most.
+The dataset that we used to rank our “Top 10 Roller Coasters in the World” only have the data of
+300 roller coasters, which公 is far lesser than the total number (about 3950) of roller coasters worldwide.
+Therefore, our rank does not consider other roller coasters which are not included in the dataset.
+There are a lot of missing data and they are replaced by means of imputation, which may be
+信
+inaccurate and lead to biased results on some operational roller coasters
+The Borda count method — which we used to quantify the amount of thrilling each type of roller
+coasters brings to a rider — do not satisfy all fairness criterions, as stated by Arrow’s impossibility
+微
+theorem. It also does not satisfy the Independence-of-Irrelevant-Alternatives Criterion (IIA), which in
+this scenario means that the ranking is prone to change because of lowly-ranked roller coasters closing.
+The Discomfort probability curve is derived from a study instead of real data and may be inaccurate
+of representation for the general public.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 30
+12 - References
+1. “Random Roller Coaster.” Roller Coaster DataBase, www.rcdb.com.
+2. “Ultimate Rollercoaster.” Coney Island | Roller Coaster History,
+www.ultimaterollercoaster.com.
+3. “Coasterpedia The Roller Coaster Wiki.” Coasterpedia, coasterpedia.net.
+4. “Rank the B&M Types • r/Rollercoasters.” Reddit,
+www.reddit.com/r/rollercoasters/comments/56sz3e/rank_the_bm_types/.
+5. “Rank the B&M Coaster Types.” COASTERFORCE, coasterforce.com/forums/threads/rank-
+M
+the-b-m-coaster-types.39119/.
+6. Pandolf, Kent B., and R. E. Burr. Medical Aspects of Harsh Environments. Office of the
+C
+Surgeon General, United States Army, 2001.
+7. DeZio, Paul A, and James R Lackner. “Perceived Orientation, MMotion, and Configuration of
+the Body during Viewing of an off-Vertical, Rotating Surface.” Perception & Psychophysics,
+i
+Jan. 1986, pp. 39–46.
+H
+8. “Material Design.” Wikipedia, Wikimedia Foundation, 26 Oct. 2018,
+：
+en.wikipedia.org/wiki/Material_Design.
+9. Ergonomic Requirements for Office Work with Visual Display Terminals, ISO 9241-11, ISO,
+号
+Geneva, 1998.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 31
+Appendix
+Appendix A: The Prototype of Our Application
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 32
+Appendix B: Code
+Code #1 Data Analysis and Visualization
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+get_ipython().run_line_magic('matplotlib', '')
+# Import dataset
+data =
+pd.read_excel("COMAP_RollerCoasterData_2018.xlsx")[0:300].drop(["Park","City/Region","City/State/Reg
+ion","Country/Region","Geographic Region","Status"],axis=1)
+M
+data
+C
+# Output basic statistics about the dataset
+data.describe() M
+data = data.rename({"Year/Date Opened":"Year",
+"Height (feet)":"Height", i
+H
+"Speed (mph)":"Speed",
+"Length (feet)":"Length",
+：
+"Number of Inversions":"#of Inversions",
+"Drop (feet)":"Drop",
+"Vertical Angle (degrees)":"Vertical Angle",
+号
+"Duration (min:sec)":"Duration"
+},
+axis="columns")
+众
+# Convert python Datetime Object to seconds
+for i in range(data.shape[0]):
+if(type(data.Duration[i])公 != float):
+data.Duration[i] = (data["Duration"][i].hour*60 + data["Duration"][i].minute)
+# Type conversio信n
+data["Inversion Density"] = data["#of Inversions"] / data["Duration"]
+data["Inversion Density"] = pd.to_numeric(data["Inversion Density"]).astype(float)
+data["D微uration"] = pd.to_numeric(data["Duration"]).astype(float)
+data["Duration"] = pd.to_numeric(data["Duration"]).astype(float)
+# Correlation Matrix
+data["Inversion Density"] = pd.to_numeric(data["Inversion Density"]).astype(float)
+data["Duration"] = pd.to_numeric(data["Duration"]).astype(float)
+Correlation = data.corr()
+Correlation[abs(Correlation)>0.4]
+plt.figure(figsize=(8,8))
+plt.title("Correlation Matrix (|r| >= 0.4)")
+sns.heatmap(Correlation[abs(Correlation)>0.4],xticklabels=Correlation.columns,
+yticklabels=Correlation.columns,annot=True,
+cmap = sns.diverging_palette(250, 10, as_cmap=True),)
+# Regression Plots
+plt.plot(data.Height,data.Drop,".")
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 33
+plt.title("Height vs Drop")
+sns.regplot(x="Height", y="Drop", data=data,label="scatter");
+sns.regplot(x="G Force", y="Length", data=data,scatter=False,label="no scatter");
+sns.pairplot(data,kind="reg",diag_kind='kde')
+Code #2 Comprehensive Model
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+get_ipython().run_line_magic('matplotlib', '')
+M
+# Import dataset
+data = pd.read_excel("Standardized Data.xlsx")
+C
+data["Type Score"] = np.zeros(data.shape[0])
+data["Thrill Index"] = np.zeros(data.shape[0])
+data["Discomfort Index"] = np.zeros(data.shape[0]) M
+data["Comprehensive Index"] = np.zeros(data.shape[0])
+data = data.drop(["Park","City/Region","City/State/Region","Country/Region","Geographic
+i
+Region","Status"],axis=1) H
+data ：
+# Calculates type score
+for i in range(0,data.shape[0]):
+号
+if data["Type"][i] == "Inverted":
+data["Type Score"][i] = 1.0
+elif data["Type"][i] == "Flying":
+众
+data["Type Score"][i] = 0.704
+elif data["Type"][i] == "Wing":
+data["Type Score"][i] = 0.674
+公
+elif data["Type"][i] == "Sit Down":
+data["Type Score"][i] = 0.591
+elif data["Type"][i] == "Suspended":
+信
+data["Type Score"][i] = 0.587
+elif data["Type"][i] == "Stand Up":
+data["Type Score"][i] = 0.24
+else: 微
+data["Type Score"][i] = 0.2
+# Set Weight values
+W_thrill = 1
+W_discomfort = 1
+Wheight = 0.28957165
+Wspeed = 0.39279611
+WG = 0.08114455
+Wtype = 0.06912188
+WInversion = 0.06912188
+WDG = 0.0725201
+WDI = 0.052985
+# CalculateThrill Index
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 34
+data["Thrill Index"] = data["Length"] + Wtype*data["Type Score"] + Wheight*data["Height"] +
+Wspeed*data["Speed"] + WG*data["G Force"] + WInversion*data["Inversion Density"]
+# Calculates discomfort index
+x = np.array(data['G Force'])
+y = np.array(data['Inversion Density'])
+data["Discomfort Index"] = WDG*(1 / (1 + np.exp(45 * (0.88 - x)))) + WDI*(1 / (1 + np.exp(30 * (0.85 - y))))
+# Calculates Overall
+data["Comprehensive Index"] = W_thrill*data["Thrill Index"] - W_discomfort*data["Discomfort Index"]
+# Sort by Comprehensive Index
+sort = data.sort_values("Comprehensive Index", ascending=False) M
+sort
+C
+# Output
+data.to_csv("Overall Ranking(Weighted).csv")
+M
+Code #2 AHP
+import numpy as np
+i
+RI = 1.32 H
+# Function to convert users' input to Comparison Matr：ix used by AHP
+def t(x):
+if x>=5:
+return 2*x-9
+号
+else:
+return 1/(11-2*x)
+众
+user_input = [[None,None,None,None,None,None,None],
+[6,None,None,None,None,None,None],
+[2,2,None,None,None,None,None],
+公
+[2,2,5,None,None,None,None],
+[2,2,4,3,None,None,None],
+[3,3,5,6,5,None,None],
+信
+[3,3,4,5,5,5,None]]
+# A = Comparison Matrix
+A = np.o微nes((7,7))
+for i in range(0,7):
+for j in range(0,7):
+if i==j:
+A[i][j]=1
+continue
+if user_input[i][j]==None:
+A[i][j]=1/t(user_input[j][i])
+else:
+A[i][j]=t(user_input[i][j])
+l, _ = np.linalg.eig(A)
+# Check for Inconsistency
+if max(l) - 7 > 0.00000001:
+if (max(l)-7)/6/RI < 0.1:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 35
+print('tolerable inconsistency')
+else:
+print('intolerable inconsistency')
+quit()
+col_sum = np.sum(A, axis=0)
+# Calculate Normalized matrix A
+adjA = np.ones((7,7))
+for i in range(0,7):
+for j in range(0,7):
+adjA[i][j] = A[i][j] / col_sum[j]
+M
+# Calculate Weight Vector
+w = np.sum(adjA, axis=1)
+C
+w /= 7
+print(w) M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 36
+Appendix C: Our Data Spreadsheet
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 37
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744 Page 38
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8744  Page 39
+
+Appendix D: Survey Results for part 9
+
+Q1：Height of Roller Coaster vs G Force of Roller Coaster
+Mean score：4.5
+|                          | Options  | Count  |     | Proportion  |
+| ------------------------ | -------- | ------ | --- | ----------- |
+| 1Prefer Height the Most  |          | 17     |     | 27.42%      |
+| 2                        |          | 6      |     | 9.68%       |
+| 3                        |          | 3      |     | 4.84%       |
+| 4                        |          | 4      |     | 6.45% M     |
+| 5 same                   |          | 12     |     | 19.35%      |
+C
+| 6   |     | 3   |     | 4.84%  |
+| --- | --- | --- | --- | ------ |
+M
+| 7   |     | 1   |     | 1.61%  |
+| --- | --- | --- | --- | ------ |
+i
+| 8                          |     | 4     | H6.45%  |         |
+| -------------------------- | --- | ----- | ------- | ------- |
+| 9 Prefer G force the most  |     | 12  ： |         | 19.35%  |
+| Total survey collected     |     | 62    |         |         |
+号
+
+Q2: Height vs Speed
+| Mean score：5.31  | 众        |        |     |             |
+| ---------------- | -------- | ------ | --- | ----------- |
+|                  | Options  | Count  |     | Proportion  |
+公
+| 1Prefer height  |     | 10  |     | 16.13%  |
+| --------------- | --- | --- | --- | ------- |
+| 2               |     | 3   |     | 4.84%   |
+信
+| 3   |     | 10  |     | 16.13%  |
+| --- | --- | --- | --- | ------- |
+微
+| 4                       |     | 2     |     | 3.23%   |
+| ----------------------- | --- | ----- | --- | ------- |
+| 5                       |     | 10    |     | 16.13%  |
+| 6                       |     | 1     |     | 1.61%   |
+| 7                       |     | 4     |     | 6.45%   |
+| 8                       |     | 7     |     | 11.29%  |
+| 9 Prefer Speed          |     | 15    |     | 24.19%  |
+| Total survey collected  |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 40
+
+Q3: Height vs Inversions
+Mean score：6.16
+|           | Options  | Count  |     | Proportion  |
+| --------- | -------- | ------ | --- | ----------- |
+| 1 Height  |          | 7      |     | 11.29%      |
+| 2         |          | 3      |     | 4.84%       |
+| 3         |          | 4      |     | 6.45%       |
+| 4         |          | 2      |     | 3.23%       |
+M
+| 5   |     | 8   |     | 12.9%   |
+| --- | --- | --- | --- | ------- |
+| 6   |     | 4   |     | 6.45C%  |
+| 7   |     | 8   |     | 12.9%   |
+M
+| 8   |     | 5   |     | 8.06%  |
+| --- | --- | --- | --- | ------ |
+i
+| 9 Inversions            |     | 21      | H   | 33.87%  |
+| ----------------------- | --- | ------- | --- | ------- |
+| Total survey collected  |     | 62    ： |     |         |
+
+Q4: Height vs Type
+号
+Mean score：4.73
+|     | Options  | Count  |     | Proportion  |
+| --- | -------- | ------ | --- | ----------- |
+众
+| 1 Height  |     | 11  |     | 17.74%  |
+| --------- | --- | --- | --- | ------- |
+| 2         | 公4  |     |     | 6.45%   |
+| 3         |     | 10  |     | 16.13%  |
+信
+| 4   |     | 4   |     | 6.45%   |
+| --- | --- | --- | --- | ------- |
+| 5   |     | 10  |     | 16.13%  |
+微
+| 6                       |     | 6     |     | 9.68%   |
+| ----------------------- | --- | ----- | --- | ------- |
+| 7                       |     | 5     |     | 8.06%   |
+| 8                       |     | 1     |     | 1.61%   |
+| 9 Type                  |     | 11    |     | 17.74%  |
+| Total survey collected  |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 41
+
+Q5: Height vs Discomfort arise from G force
+Mean score：5.71
+|           | Options  |     | Count  |     | Proportion  |
+| --------- | -------- | --- | ------ | --- | ----------- |
+| 1 Height  |          |     | 8      |     | 12.9%       |
+| 2         |          |     | 1      |     | 1.61%       |
+| 3         |          |     | 4      |     | 6.45%       |
+| 4         |          |     | 3      |     | 4.84%       |
+M
+| 5   |     |     | 17  |     | 27.42%  |
+| --- | --- | --- | --- | --- | ------- |
+| 6   |     |     | 3   |     | C4.84%  |
+| 7   |     |     | 5   |     | 8.06%   |
+M
+| 8   |     |     | 7   |     | 11.29%  |
+| --- | --- | --- | --- | --- | ------- |
+i
+| 9 Discomfort arise from G force  |     |     | 14      | H   | 22.58%  |
+| -------------------------------- | --- | --- | ------- | --- | ------- |
+| Total survey collected           |     |     | 62  ：   |     |         |
+
+号
+Q6: Height vs Discomfort arise from Inversions
+Mean score：6.32
+|           | Options  | 众Count  |     |     | Proportion  |
+| --------- | -------- | ------- | --- | --- | ----------- |
+| 1 Height  |          |         | 5   |     | 8.06%       |
+公
+| 2   |     |     | 2   |     | 3.23%  |
+| --- | --- | --- | --- | --- | ------ |
+| 3   |     |     | 5   |     | 8.06%  |
+信
+| 4   |     |     | 2   |     | 3.23%  |
+| --- | --- | --- | --- | --- | ------ |
+微
+| 5                                   |     |     | 10  |     | 16.13%  |
+| ----------------------------------- | --- | --- | --- | --- | ------- |
+| 6                                   |     |     | 2   |     | 3.23%   |
+| 7                                   |     |     | 8   |     | 12.9%   |
+| 8                                   |     |     | 10  |     | 16.13%  |
+| 9 Discomfort arise from Inversions  |     |     | 18  |     | 29.03%  |
+| Total survey collected              |     |     | 62  |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 42
+
+Q7: G force vs speed
+Mean score：5.37
+|            | Options  | Count  |     | Proportion  |
+| ---------- | -------- | ------ | --- | ----------- |
+| 1 G Force  |          | 8      |     | 12.9%       |
+| 2          |          | 3      |     | 4.84%       |
+| 3          |          | 5      |     | 8.06%       |
+| 4          |          | 4      |     | 6.45%       |
+M
+| 5   |     | 13  |     | 20.97%  |
+| --- | --- | --- | --- | ------- |
+| 6   |     | 6   |     | 9.68%C  |
+| 7   |     | 8   |     | 12.9%   |
+M
+| 8   |     | 4   |     | 6.45%  |
+| --- | --- | --- | --- | ------ |
+i
+| 9 Speed                 |     | 11      | H   | 17.74%  |
+| ----------------------- | --- | ------- | --- | ------- |
+| Total survey collected  |     | 62    ： |     |         |
+
+号
+Q8: G force vs Inversions
+Mean score：5.94
+|            | Options  | 众Count  |     | Proportion  |
+| ---------- | -------- | ------- | --- | ----------- |
+| 1 G force  |          | 3       |     | 4.84%       |
+公
+| 2   |     | 4   |     | 6.45%  |
+| --- | --- | --- | --- | ------ |
+| 3   |     | 4   |     | 6.45%  |
+信
+| 4   |     | 4   |     | 6.45%  |
+| --- | --- | --- | --- | ------ |
+微
+| 5                       |     | 14    |     | 22.58%  |
+| ----------------------- | --- | ----- | --- | ------- |
+| 6                       |     | 5     |     | 8.06%   |
+| 7                       |     | 9     |     | 14.52%  |
+| 8                       |     | 5     |     | 8.06%   |
+| 9 Inversions            |     | 14    |     | 22.58%  |
+| Total survey collected  |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 43
+
+Q9: G force vs Type
+Mean score：5
+|            | Options  | Count  |     | Proportion  |
+| ---------- | -------- | ------ | --- | ----------- |
+| 1 G force  |          | 10     |     | 16.13%      |
+| 2          |          | 2      |     | 3.23%       |
+| 3          |          | 8      |     | 12.9%       |
+| 4          |          | 6      |     | 9.68%       |
+M
+| 5   |     | 12  |     | 19.35%   |
+| --- | --- | --- | --- | -------- |
+| 6   |     | 7   |     | 11.2C9%  |
+| 7   |     | 2   |     | 3.23%    |
+M
+| 8   |     | 3   |     | 4.84%  |
+| --- | --- | --- | --- | ------ |
+i
+| 9 Type                  |     | 12      | H   | 19.35%  |
+| ----------------------- | --- | ------- | --- | ------- |
+| Total survey collected  |     | 62    ： |     |         |
+
+号
+
+Q10: G force  vs Discomfort G Force
+众
+Mean score：5.71
+|     | Options  | Count  |     | Proportion  |
+| --- | -------- | ------ | --- | ----------- |
+公
+| 1 G force  |     | 6   |     | 9.68%  |
+| ---------- | --- | --- | --- | ------ |
+| 2          |     | 1   |     | 1.61%  |
+信
+| 3   |     | 4   |     | 6.45%  |
+| --- | --- | --- | --- | ------ |
+微
+| 4                          |     | 2     |     | 3.23%   |
+| -------------------------- | --- | ----- | --- | ------- |
+| 5                          |     | 18    |     | 29.03%  |
+| 6                          |     | 5     |     | 8.06%   |
+| 7                          |     | 13    |     | 20.97%  |
+| 8                          |     | 2     |     | 3.23%   |
+| 9 Discomfort from G force  |     | 11    |     | 17.74%  |
+| Total survey collected     |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 44
+
+Q11: G force vs Discomfort from inversions
+Mean score：6.44
+|            | Options  |     | Count  |     | Proportion  |        |
+| ---------- | -------- | --- | ------ | --- | ----------- | ------ |
+| 1 G force  |          |     | 2      |     |             | 3.23%  |
+| 2          |          |     | 3      |     |             | 4.84%  |
+| 3          |          |     | 1      |     |             | 1.61%  |
+| 4          |          |     | 2      |     |             | 3.23%  |
+M
+| 5   |     |     | 16  |     |     | 25.81%  |
+| --- | --- | --- | --- | --- | --- | ------- |
+| 6   |     |     | 4   |     |     | C6.45%  |
+| 7   |     |     | 12  |     |     | 19.35%  |
+M
+| 8   |     |     | 6   |     |     | 9.68%  |
+| --- | --- | --- | --- | --- | --- | ------ |
+i
+| 9 Discomfort from inversions  |     |     | 16      | H   |     | 25.81%  |
+| ----------------------------- | --- | --- | ------- | --- | --- | ------- |
+| Total survey collected        |     |     | 62  ：   |     |     |         |
+
+号
+Q12: Speed vs Inversions
+Mean score：5.65
+|          | Options  | 众Count  |     |     | Proportion  |     |
+| -------- | -------- | ------- | --- | --- | ----------- | --- |
+| 1 Speed  |          |         | 5   |     | 8.06%       |     |
+公
+| 2   |     |     | 2   |     | 3.23%  |     |
+| --- | --- | --- | --- | --- | ------ | --- |
+| 3   |     |     | 5   |     | 8.06%  |     |
+信
+| 4   |     |     | 3   |     | 4.84%  |     |
+| --- | --- | --- | --- | --- | ------ | --- |
+微
+| 5                       |     |     | 19    |     | 30.65%  |     |
+| ----------------------- | --- | --- | ----- | --- | ------- | --- |
+| 6                       |     |     | 6     |     | 9.68%   |     |
+| 7                       |     |     | 4     |     | 6.45%   |     |
+| 8                       |     |     | 7     |     | 11.29%  |     |
+| 9 Inversions            |     |     | 11    |     | 17.74%  |     |
+| Total survey collected  |     |     | 62    |     |         |     |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 45
+
+Q13: Speed vs Type
+Mean score：4.39
+|         | Options  |     | Count  |     | Proportion  |         |
+| ------- | -------- | --- | ------ | --- | ----------- | ------- |
+| 1Speed  |          |     | 13     |     |             | 20.97%  |
+| 2       |          |     | 4      |     |             | 6.45%   |
+| 3       |          |     | 6      |     |             | 9.68%   |
+| 4       |          |     | 6      |     |             | 9.68%   |
+M
+| 5   |     |     | 16  |     |     | 25.81%  |
+| --- | --- | --- | --- | --- | --- | ------- |
+| 6   |     |     | 5   |     |     | 8.06C%  |
+| 7   |     |     | 3   |     |     | 4.84%   |
+M
+| 8   |     |     | 3   |     |     | 4.84%  |
+| --- | --- | --- | --- | --- | --- | ------ |
+i
+| 9 Type                  |     |     | 6       | H   |     | 9.68%  |
+| ----------------------- | --- | --- | ------- | --- | --- | ------ |
+| Total survey collected  |     |     | 62    ： |     |     |        |
+
+号
+Q14: Speed vs Discomfort from G force
+Mean score：5.1
+|          | Options  | 众Count  |     |     |     | Proportion  |
+| -------- | -------- | ------- | --- | --- | --- | ----------- |
+| 1 Speed  |          |         | 12  |     |     | 19.35%      |
+公
+| 2   |     |     | 4   |     |     | 6.45%  |
+| --- | --- | --- | --- | --- | --- | ------ |
+| 3   |     |     | 4   |     |     | 6.45%  |
+信
+| 4   |     |     | 1   |     |     | 1.61%  |
+| --- | --- | --- | --- | --- | --- | ------ |
+微
+| 5                          |     |     | 13    |     |     | 20.97%  |
+| -------------------------- | --- | --- | ----- | --- | --- | ------- |
+| 6                          |     |     | 5     |     |     | 8.06%   |
+| 7                          |     |     | 6     |     |     | 9.68%   |
+| 8                          |     |     | 10    |     |     | 16.13%  |
+| 9 Discomfort from G force  |     |     | 7     |     |     | 11.29%  |
+| Total survey collected     |     |     | 62    |     |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 46
+
+Q15: Speed vs Discomfort from inversions
+Mean score：5.37
+|          | Options  | Count  |     | Proportion  |
+| -------- | -------- | ------ | --- | ----------- |
+| 1 Speed  |          | 7      |     | 11.29%      |
+| 2        |          | 4      |     | 6.45%       |
+| 3        |          | 3      |     | 4.84%       |
+| 4        |          | 4      |     | 6.45%       |
+M
+| 5   |     | 19  |     | 30.65%  |
+| --- | --- | --- | --- | ------- |
+| 6   |     | 4   |     | C6.45%  |
+| 7   |     | 4   |     | 6.45%   |
+M
+| 8   |     | 7   |     | 11.29%  |
+| --- | --- | --- | --- | ------- |
+i
+| 9 Discomfort from inversions  |     | 10      | H   | 16.13%  |
+| ----------------------------- | --- | ------- | --- | ------- |
+| Total survey collected        |     | 62  ：   |     |         |
+
+号
+
+Q16: Type vs Inversions
+众
+Mean score：5.23
+|     | Options  | Count  |     | Proportion  |
+| --- | -------- | ------ | --- | ----------- |
+公
+| 1 Inversions  |     | 8   |     | 12.9%  |
+| ------------- | --- | --- | --- | ------ |
+| 2             |     | 3   |     | 4.84%  |
+信
+| 3   |     | 7   |     | 11.29%  |
+| --- | --- | --- | --- | ------- |
+微
+| 4                       |     | 3     |     | 4.84%   |
+| ----------------------- | --- | ----- | --- | ------- |
+| 5                       |     | 14    |     | 22.58%  |
+| 6                       |     | 8     |     | 12.9%   |
+| 7                       |     | 5     |     | 8.06%   |
+| 8                       |     | 2     |     | 3.23%   |
+| 9 Type                  |     | 12    |     | 19.35%  |
+| Total survey collected  |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 47
+
+Q17: Type vs Discomfort from G force
+Mean score：4.84
+|         | Options  |     | Count  |     | Proportion  |
+| ------- | -------- | --- | ------ | --- | ----------- |
+| 1 Type  |          |     | 12     |     | 19.35%      |
+| 2       |          |     | 5      |     | 8.06%       |
+| 3       |          |     | 4      |     | 6.45%       |
+| 4       |          |     | 2      |     | 3.23%       |
+M
+| 5   |     |     | 14  |     | 22.58%  |
+| --- | --- | --- | --- | --- | ------- |
+| 6   |     |     | 5   |     | C8.06%  |
+| 7   |     |     | 10  |     | 16.13%  |
+M
+| 8   |     |     | 2   |     | 3.23%  |
+| --- | --- | --- | --- | --- | ------ |
+i
+| 9 Discomfort From G force  |     |     | 8       | H   | 12.9%  |
+| -------------------------- | --- | --- | ------- | --- | ------ |
+| Total survey collected     |     |     | 62  ：   |     |        |
+
+号
+Q18: Type vs Inversions
+Mean score：4.63
+|         | Options  | 众Count  |     |     | Proportion  |
+| ------- | -------- | ------- | --- | --- | ----------- |
+| 1 Type  |          |         | 11  |     | 17.74%      |
+公
+| 2   |     |     | 8   |     | 12.9%  |
+| --- | --- | --- | --- | --- | ------ |
+| 3   |     |     | 4   |     | 6.45%  |
+信
+| 4   |     |     | 1   |     | 1.61%  |
+| --- | --- | --- | --- | --- | ------ |
+微
+| 5                       |     |     | 17    |     | 27.42%  |
+| ----------------------- | --- | --- | ----- | --- | ------- |
+| 6                       |     |     | 5     |     | 8.06%   |
+| 7                       |     |     | 5     |     | 8.06%   |
+| 8                       |     |     | 5     |     | 8.06%   |
+| 9 Discomfort            |     |     | 6     |     | 9.68%   |
+| Total survey collected  |     |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 48
+
+Q19: Type vs Discomfort from Inversions
+Mean score：5.73
+|         | Options  |     | Count  | Proportion  |         |
+| ------- | -------- | --- | ------ | ----------- | ------- |
+| 1 Type  |          |     | 9      |             | 14.52%  |
+| 2       |          |     | 1      |             | 1.61%   |
+| 3       |          |     | 1      |             | 1.61%   |
+| 4       |          |     | 2      |             | 3.23%   |
+M
+| 5   |     |     | 16  |     | 25.81%  |
+| --- | --- | --- | --- | --- | ------- |
+| 6   |     |     | 6   |     | 9C.68%  |
+| 7   |     |     | 9   |     | 14.52%  |
+M
+| 8   |     |     | 8   |     | 12.9%  |
+| --- | --- | --- | --- | --- | ------ |
+i
+| 9 Discomfort from Inversions  |     |     | 10      | H   | 16.13%  |
+| ----------------------------- | --- | --- | ------- | --- | ------- |
+| Total survey collected        |     |     | 62  ：   |     |         |
+
+号
+Q20: Type vs Discomfort from Inversions
+Mean score：5.82
+|         | Options  | 众Count  |     | Proportion  |        |
+| ------- | -------- | ------- | --- | ----------- | ------ |
+| 1 Type  |          |         | 5   |             | 8.06%  |
+公
+| 2   |     |     | 3   |     | 4.84%  |
+| --- | --- | --- | --- | --- | ------ |
+| 3   |     |     | 5   |     | 8.06%  |
+信
+| 4   |     |     | 1   |     | 1.61%  |
+| --- | --- | --- | --- | --- | ------ |
+微
+| 5                             |     |     | 15    |     | 24.19%  |
+| ----------------------------- | --- | --- | ----- | --- | ------- |
+| 6                             |     |     | 6     |     | 9.68%   |
+| 7                             |     |     | 8     |     | 12.9%   |
+| 8                             |     |     | 7     |     | 11.29%  |
+| 9 Discomfort from Inversions  |     |     | 12    |     | 19.35%  |
+| Total survey collected        |     |     | 62    |     |         |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team #8744  Page 49
+
+Q21: Discomfort from Inversions vs Discomfort from G force
+Mean score：4.79
+|                            | Options  | Count  | Proportion  |         |
+| -------------------------- | -------- | ------ | ----------- | ------- |
+| 1 Discomfort from G force  |          | 10     |             | 16.13%  |
+| 2                          |          | 7      |             | 11.29%  |
+| 3                          |          | 4      |             | 6.45%   |
+| 4                          |          | 3      |             | 4.84%   |
+M
+| 5   |     | 17  |     | 27.42%  |
+| --- | --- | --- | --- | ------- |
+| 6   |     | 5   |     | C8.06%  |
+| 7   |     | 3   |     | 4.84%   |
+M
+| 8   |     | 4   |     | 6.45%  |
+| --- | --- | --- | --- | ------ |
+i
+| 9 Discomfort from Inversions  |     | 9       | H   | 14.52%  |
+| ----------------------------- | --- | ------- | --- | ------- |
+| Total survey collected        |     | 62  ：   |     |         |
+
+号
+
+众
+
+公
+信
+微
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯

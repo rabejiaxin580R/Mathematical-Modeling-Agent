@@ -1,0 +1,2058 @@
+10057 Page 1 of 39
+For office use only
+For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+F3 ________________
+T3 ________________
+F4 ________________
+T4 ________________
+M
+2019
+C
+22nd Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+Team Control Number: 10M057
+Problem Chosen: A
+i
+Our paper aims to identify and predict trends of free energyH consumption from 2011-2021, model the
+implicit and monetary costs of free charging, analyze the costs from multiple perspectives, and optimize
+costs to maximize societal welfare. We split the ques：tions into two categories: electrical vehicles (EVs)
+charging stations and devices (phones and laptops) charging outlets, and considered data from four regions:
+Global, China, United States, and Europe.
+In Q1, we deduced that the total free energ号y consumed by EVs is a function of the number of EVs, the
+mileage per year, and the energy per mile. Similarly, for devices, the total is an aggregate of the number of
+devices, time use per year, and energy per unit time. We first collected data on the sales of EVs and devices,
+using Matlab to apply regression. Th众en, we considered the wear-off, or lifetime of an EV/device, utilizing
+a moving integral to obtain the operating number of EVs and devices in any year. After that we fitted our
+data with a suitable rates of energy use to determine a general function for energy consumption. Then, we
+used Keynes’ Law that state公s demand creates its own supply to prove the positive correlation between the
+total free energy consumption and number of free charging stations for both devices and EVs. Our results
+quantitatively showed that free energy sources are projected to increase into 2021 for all regions in general,
+with this result lead信ing to large impacts on public places that fulfill a certain set of requirements.
+For Q2, we broke down the costs for EVs and devices into four components: monetary cost (measurable
+fixed and variable costs), space cost (opportunity cost and space hogging), security cost (juice jacking and
+theft), and 微convenience benefits (negative costs; positive externalities of the ports). To do so, we analyzed
+a wealth of data from online sources, combining this exterior data with our own personal knowledge to
+derive quantitative relationships that generally apply to all places, considering in detail how these costs are
+shared over the different stakeholders. This includes exponential charging functions and Cobb-Douglas
+econometrics functions that allow us to accurately model the cost relationship. For Q3, we considered
+consumer demand, location of ports, and level of security to determine how each component influences the
+Cost Model when it is moved into a different area. Then, for Q4, we used Lagrange optimization to perform
+multivariable minimization on the Cost Function by dividing it into four functions representing the four
+smaller costs and determining restrictive relationships between the variables. We calculated the partial
+derivatives and combined the equations to determine the multiple Lagrange multipliers, determining the
+saddle points that minimize the cost function for the entire model.
+As a whole, our model has a strong foundational research that synthesizes over 70 web sources with
+complex methodology and a high level of generalizability through consideration of both regional and global
+data and realistic assumptions. Our results show a high degree of prediction, showing that we can
+specifically, explicitly determine how to optimize our energy uses.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 2 of 39
+Table of Contents
+Newspaper Release ......................................................................................................................... 3
+1. INTRODUCTION ...................................................................................................................... 4
+1.1 Background ......................................................................................................................................... 4
+1.2 Restatement of Problem ...................................................................................................................... 4
+1.3 Assumptions & Justifications .............................................................................................................. 4
+2. Question One: Change & Predictions ...................................................................................... 5
+2.1 Defining the Terms ............................................................................................................................. 5
+2.2 Change and Predictions for EVs ......................................................................................................... 5
+2.3 Change and Prediction for Mobile Devices ........................................................................................ 7
+M
+2.4 Additional Considerations ................................................................................................................... 8
+2.5 Requirements for Public Places .......................................................................................................... 9
+2.6 Impacts on Public Places ..................................................................................................................... 9
+C
+3. Question 2: The Cost Model .................................................................................................... 10
+3.1 Costs for EVs and How They Are Paid ........................................M.................................................... 10
+3.2 Costs for Devices How They Are Paid ............................................................................................. 14
+4. Question 3: Changes in the Cost Model ..............................i................................................... 17
+4.1 Changes in EVCS Costs ..................................................
+H
+.................................................................. 17
+4.2 Changes in Devices Station Costs ..................................................................................................... 17
+：
+5. Question 4: Optimizing the Cost Model ................................................................................. 18
+5.1 Optimizing Convenience ................................................................................................................... 19
+5.2 Optimizing Monetary Cost ................................................................................................................ 20
+号
+5.3 Optimizing Space Costs .................................................................................................................... 20
+5.4 Optimizing Security Costs ................................................................................................................ 21
+6. Sensitivity Analysis .............众..................................................................................................... 21
+7. Model Testing ........................................................................................................................... 22
+8. Conclusion .............公................................................................................................................... 23
+8.1 Strengths and Limitations ................................................................................................................. 23
+8.2 Reflection .......................................................................................................................................... 23
+信
+APPENDIX A ............................................................................................................................... 24
+A.1 Bibliography ..................................................................................................................................... 24
+A.2 Table of Tables ................................................................................................................................. 28
+A.3
+微
+Table of Figures ............................................................................................................................... 28
+A.4 Variables and Definitions ................................................................................................................. 29
+Appendix B ................................................................................................................................... 31
+B.1 Additional Graphs ............................................................................................................................ 31
+B.2 Additional Data and Statistics .......................................................................................................... 31
+B.3 Additional Formulas ......................................................................................................................... 35
+B.3 Code .................................................................................................................................................. 36
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 3 of 39
+Newspaper Release
+Charge: The Secret Costs
+Behind Free Energy
+Written by: Team 10057 | 19 November 2019
+Have you ever charged your phone in a public emissions, use renewable energy, and are
+outlet or brought your electrical vehicle to a majorly made up of eco-friendly materials
+M
+free charging station? If so, you have already [49]. With the current global crises of climate
+had first hand experience with the increasingly change and environmental degradation, this
+popular trend of “free” energy consumption. increasing trend of ECV charging stations is a
+This type of energy consumption is offered in significant step to reducing pollution and
+both private and government owned maintaining a Mhealthier relationship with the
+institutions such as cafés, schools, and airports. Earth.
+i
+Our team tracked the development of these However, even though free energy sources are
+H
+“free” sources of energy from 2011-2018 becoming more ubiquitous, that does not mean
+globally and across China, Europe, and the ：one should take advantage of these public
+United States. We divided the sources into two services by hogging the mobile device
+the
+key categories: electrical vehicles and mobile chargers in cafés or stealing charging phones
+devices, and found an overall increasing tr号end in public airports. These actions will only
+for both types. Then, we predicted future expand the space and security costs for firms
+developments from 2019-2021. As a whole, providing these services, making it less likely
+free energy consumption is pr众ojected to that this trend of free energy will continue
+continue increasing in the short term, with EVs increasing in the future. The concept of “free”
+growing more rapidly than devices and China energy is a misnomer as there are definitely
+in the lead. 公 implicit and explicit costs to consider.
+The concept of ever-increasing free energy With this in mind, our team set up a model to
+sources seems nea信rly too good to be true; but minimize the costs and develop methods to
+is this really free? After in depth analysis of optimize societal welfare. Using a strategy
+both implicit and explicit costs during the called the Lagrange Multiplier, we preformed
+creation o微f these charging stations, our team multivariable optimization with partial
+came up with a list of four significant derivatives. Using a series of these multipliers
+components: monetary costs, space costs, and derivatives, we obtained the final optimal
+security costs, and convenience benefits. point that maximizes benefit and minimizes
+the cost, so that you all can freely enjoy the
+Yet, these costs do not mean “free” energy
+conveniences that this free energy brings!
+sources are a lost cause. Charging stations for
+EVs and outlets for mobile devices are both Therefore, with the joint cooperation of the
+essential for the success of businesses as well communities surrounding these charging
+as environment protection. Electrical vehicles, stations, we can, and we have optimized these
+especially, are more beneficial for the costs to provide a better future for everyone to
+environment because they have zero exhaust share the fruits of technology.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 4 of 39
+1. INTRODUCTION
+*All citations throughout the paper are done with [x]; x refers to the number in the bibliography (see Appendix A.1);
+definitions are recorded in footnotes; due to page limits, much of the intermediate data is stored in Appendix B.
+1.1 Background
+With the onset of the digital age, technology has developed rapidly, leading to the proliferated use of
+electronic devices, particularly mobile devices and electric vehicles. This trend is matched by a
+similar expansion in global public charging sources in forms such as electrical outlets and charging
+stations. A majority of these public sources of electricity provide their services for free or a very low
+price. Yet, while this concept seems beneficial to social welfare, there still remains a number of costs
+M
+and consequences of these “free” charging sites. In this paper, we intend to discover and quantify the
+costs, and then propose a possible way of minimizing the costs in a number of scenarios.
+C
+1.2 Restatement of Problem
+§ Q1: Determine the trend of “free” energy consumption over reMcent years and to predict future
+patterns of usage and identify impacts of this trend on public places, and the requirements that
+must be met for places to install these public charging stations.
+i
+§ Q2: Develop a model that analyzes the previously identifHied costs and how they are paid.
+§ Q3: Apply the model to various scenarios (i.e.: different public places)
+§ Q4: Determining methods to minimize cost and： using them to adjust the cost model
+1.3 Assumptions & Justifications
+号
+Table 1: Assumptions and Justifications
+Assumptions Justifications
+众
+The data for average per-mile energy For model simplification, we assume the data collected is accurate. Even
+consumption is accurate and applicable if it is possible to create a weighted average per-mile energy
+to our model. consumption, the process will be unnecessarily complicated.
+公
+All EVs that are sold in the market are Without this assumption, there will be unquantifiable discrepancies in
+used to their maximum potential. data that make our model unnecessarily complicated.
+There is a positive c信orrelation between
+As there is limited data on the actual amount of charging stations and
+the amount of energy consumed and the
+especially mobile device chargers, we used Keynes’ Law that demand
+supply of charging stations and device
+creates supply to estimate the number.
+outlets.
+微
+Energy / mile is constant for all
+calculations related to electric vehicles
+globally, and in China, US, and Europe. These constants are assumed for model simplification, as the values are
+relatively similar across regions and it would be too complex to take all
+Unit electricity cost per kWh is constant
+the models of each EV and mobile device into consideration.
+for all EVs and mobile devices.
+Wear-off ratio1 is constant world wide.
+There is insufficient data on mileage driven by EVs, so we used the
+Annual mileage of EVs is constant and closest alternative. EVs are more cost-efficient2, which encourages
+equals to mileage driven on a normal people to drive more; but range anxiety3 acts as a counter-factor. Hence,
+gasoline car. it is reasonable to assume that EV mileage is equal to that of a regular
+gasoline car.
+1 Amount of time an electric vehicle or mobile device can be used before having to be replaced
+2 eGallons are $1.43 cheaper on average than regular gasoline [1]
+3 The fear that EVs can not go far enough on a single charge [2]
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 5 of 39
+2. Question One: Change & Predictions
+2.1 Defining the Terms
+We first divided free energy consumption into two categories: electrical vehicle (EV) charging
+stations and mobile devices (i.e.: phones and laptops) charging outlets because they are the two largest
+sources of “free” energy provided to the public. We defined “recent years” as the period from 2011-
+2018, because 2011 is the year when EVs emerged in global markets at a relatively lower price [3],
+and a majority of the accessible data online for both categories is within this time range.
+2.2 Change and Predictions for EVs
+As we were faced with a lack of data around number of charging stations around the world, we applied
+the concept of Keynes’ Law4 that suggests demand creates its own supply[4]. In this scenario, demand
+M
+refers to the total energy consumption by electric vehicles, and supply refers to the number of
+charging stations required to meet these demands. We are aware that not all energy consumption is
+C
+free, but it does constitute 5% of all energy consumption in EVs [16]. Hence, we assume that there is
+a positive correlation between the amount of energy consumed (the amount of electric vehicles
+M
+demanded) and the supply of charging stations (the source of free energy).
+i
+H
+Figure 1: Breakdown of
+：
+EV Energy Consumption
+号
+众
+公
+Figure 1 illustrates a breakdown of our process to find the energy consumption. First, we found the
+total number of EVs globally and per region (China, Europe, and the United States5) and determine
+the wear-off ratio6 信. Second, we found the mileage per year of the average car globally and regionally.
+Third, we found the energy used per mile when driving a car. Then, we combined the three factors
+together with the formula: 𝐸(𝑛) = 𝑛 × 𝑚 × 𝐸 where 𝐸(𝑛) refers to the total energy
+&' &' +,-.
+consumpt微ion, 𝑛 refers to the total number of electrical vehicles per year, 𝑚 refers to the average
+&' &'
+mileage per year7, and 𝐸 refers to the amount of energy expended per mile.
++,-.
+Number of EVs—To obtain the data on number of EVs, we found statistics on the EV sales globally
+and regionally (China, Europe, US) (see Appendix B.2.5) [6][7][8][9]. The wear off ratio is assumed
+to be constant world-wide, and is set to be 8 years, which is the length of battery coverage [10]. Our
+analysis of the datasets to get the number of EVs will be discussed later in the paper.
+Mileage Per Year—We set the annual mileage to be constant in every region because the rate of
+change in vehicle miles does not change drastically across time in the same country8. From a
+4 From John Maynard Keynes’s The General Theory of Employment, Interest, and Money (1936) [46]
+5 We chose these three regions because they are the largest EV markets [5], making them most relevant to our paper.
+6 The amount of years each EV can last before a new one is required.
+7 Average length driven per car, per year
+8 Evidence of this is in data of mileage in the United States from 2010 to 2017 (see Appendix B.1.1)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 6 of 39
+compilation of multiple sources, we concluded the per region and global annual mileages (see
+Appendix B.2.8).
+Energy Per Mile—We kept energy per mile driven as a constant 18kWh/100km [15].
+M
+Figure 2: flow chart for finding free energy consumption trend per region, per year
+C
+Figure 2 shows our thought process for analyzing the raw data for each of the three factors9 to get the
+final amount of free energy consumed per year10 and per region11. FiMrst, we took the data of EV sales
+per region collected earlier and used a cubic regression to find the function for the trend of sales in
+each region, because with only 8 data points, a higher-degree polynomial will over-fit the curve; a
+i
+lower-degree polynomial will under-fit the curve; and an exponential function is illogical because we
+H
+cannot ensure that the rapid growth in sales will sustain over a long term period. In the regression
+model, we set the n-axis to be the difference betwee：n the current year and 201012. As the curve must
+pass through the origin to make the function nonnegative, we assumed that EV production in recent
+years only begins in 2011. The regression function for global EV sales is shown below. (Regression
+formulas for the other three regions are in A号ppendix B.3.1.)
+S(n) = 7.1795n3−41.8630n2+132.9368n
+众
+Then, we considered the wear off value of 8 years. We deduced that the total EVs available in the
+market will be a moving integral that crosses 8 units in x for 𝑛 > 8. In other words, for 𝑛 < 8, the
+available EVs will be the definite integral of the sales function between 𝑥 = 0 and 𝑥 = 𝑛, and for
+公
+𝑛 > 8, the number will be the definite integral of the sales function between 𝑥 = 𝑛−8 and 𝑥 = 𝑛.
+Summing the two separate functions, we obtain the final function for total number of EVs available:
+信 n
+EV(n) = S(n) dn
+∫
+max(0,n−8)
+微
+For our prediction model, we wanted to find the trend in from 2019-2021. Hence, we substitute 9, 10,
+and 11 for 𝑛 in the equation for 𝐸(𝑛). (To see total number of EVs 𝐸(𝑛) from 2011-2021, see
+Appendix B.2.1). Then, we combined the result with the two other factors: mileage (per year per
+region) and energy per mile (constant). The factor is the product of average mileage driven in the
+region and per-mile energy consumption, which is set to be the same throughout. The formula for
+total energy consumed globally is: E(n) = 11,500×0.289682×n, where 𝐸(𝑛) is the total energy,
+0.289682 is the energy per mile; 𝑛 is the number of years from 2010; 11,500 is the mileage. (To see
+the formulas for the other three regions, see Appendix B.3.2; To see the calculated data on total energy
+consumed from 2011-2021, see Appendix B.2.2.)
+9 Number of EVs, mileage per year, and energy per mile
+10 2011-2018
+11 Globally, China, US, and Europe
+12 For example, in 2018, the n value will be 8; in 2012, the n value will be 2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 7 of 39
+After we got the total energy consumption, we calculated the free energy consumption 𝐸 𝑛 by
+567
+multiplying 5% to 𝐸(𝑛), as 5% of all energy consumption is from public charging stations [16]. The
+final trends of free energy consumption per region from 2011-2018 and the predicted trends from
+2019-2021 are illustrated in Figure 3 (for the processed data, see Appendix B.2.3) [5].
+Figure 3: Total free
+energy consumption
+per region 2011-2021
+M
+C
+M
+2.3 Change and Prediction for Mobile Devices
+i
+H
+：
+Figure 4: Breakdown of process for finding total free energy in devices
+号
+We divided mobile devices into two smaller subcategories: mobile phones and laptops, for they have
+the largest market share [17]. The figure shows the breakdown of our process for finding the total
+free energy use in mobile devices. 众First, we gathered the data of the total sales of laptops and phones
+from 2011-2018 [18]. Again, we used Keynes’ Law and assumed the the demand of devices
+(illustrated through sales), would indicate the trend in supply of free energy (public charging ports).
+To predict future trends, w公e used a cubic regression with a relatively high R-squared value of 0.9624.
+The graph of global laptop sales is shown below, with the y-value (s(Y)) being global laptop sales
+per year in millions of years, and the x-value (n) being number of years after 2010.
+信
+Figure 5: Regression Model for Sale of Laptops 2011-2018
+微
+𝑠 𝑛 = 0.4199𝑛B−4.438𝑛D+3.744𝑛+204.3
+-9:;<:=
+𝑠 𝑛 = 10.3284𝑛D − 140.422𝑛 + 457.34
+:H<I.=
+After determining the total sales per year, we applied a moving integral to calculate the total amount
+of operating laptops and phones in any year, because the change in total number of phones and laptops
+is equivalent to the total sales per year minus the number of laptops or phones that had already worn
+out and needed to be replaced. We had the total sales for each year, and a wear off ratio of 4 years for
+laptops and 2 years for phones [19]. The general and laptop/phone specific integral functions are as
+follows, 𝑛 is year, 𝑤 is wear out rate, and 𝑠(𝑛)is sales.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |                      |     | 10057       |                  |            |     | Page 8 of 39  |     |
+| --- | --- | -------------------- | --- | ----------- | ---------------- | ---------- | --- | ------------- | --- |
+|     |     | I                    | I   |             |                  | I          |     |               |     |
+|     |     | 𝑠(𝑛)𝑑𝑛												   |     | 𝑠(𝑛 -9:;<:= | )𝑑𝑛													 | 𝑠(𝑛 :H<I.= | )𝑑𝑛 |               |     |
+|     |     | ILM                  | ILO |             |                  | ILD        |     |               |     |
+This will return the total amount of operating laptops and phones in the year being studied (listed in
+Appendix B.2.4.) Then, we used the equations to predict the total number of operating laptops and
+phones in future years, focusing on 2019-2021 to guarantee the applicability of our data (Data of
+laptop and phone sales from 2019-2021 are in Appendix B.2.9); To see additional data on the percent
+error of predicted sales, see Appendix B.2.7). Once these data values had been calculated, we used
+the formula 𝐸  to calculate total energy consumption, where 𝑛  represents the
+|     | ;<;9- = | 𝑛 P.Q 	×	ℎ𝑟	×	𝐸 HT |     |     |     |     |     | P.Q |     |
+| --- | ------- | ------------------ | --- | --- | --- | --- | --- | --- | --- |
+number of devices, ℎ𝑟 stands for how many hours an average person uses their device per day, and
+𝐸  stands for energy use per hour. Inputting the average values found online, we calculated the two
+HT
+equations to be [20][21]:
+|     | 𝐸      | = 𝑛 	×	4.117	×	75																𝐸 |     |     |        | = 𝑛    | 	×	4.658	×	5.5	 |     |     |
+| --- | ------ | ---------------------------------- | --- | --- | ------ | ------ | --------------- | --- | --- |
+|     | -9:;<: | -9:;<:                             |     |     | :H<I.= | :H<I.= |                 | M   |     |
+Next, we summed the energy consumption per day and converted the data into the standard unit of
+kWh per year to align with the earlier data for EVs. We also multiplied the nCumber by 0.05, assuming
+that the coefficient is the same for EVs and mobile devices. The final datasets are in Table 2.
+M
+Table 2: Predicted number of laptops and phones and energy consumption 2019-2021
+|       |             |                  | Operating   |     | Daily    | Daily 𝐸   | Annual 𝐸 |     | Annual   |
+| ----- | ----------- | ---------------- | ----------- | --- | -------- | --------- | -------- | --- | -------- |
+|       | Operating   |                  |             |     |          | iP.Q      |          | P.Q |          |
+|       |             | Daily 𝐸 X9:;<:   | Phones      |     | 𝐸 (MWh)  | (MWh)     | (kWh)    |     | 𝐸 (kWh)  |
+| Year  | Laptops     |                  |             |     | 5H<I.=   | H         |          |     | P.QY     |
+|       | (millions)  | (MWh)            | (millions)  |     |          |           |          |     |          |
+
+：
+651.646  1428.77  36600.141  237796.141  86795226470  4339761324
+| 2019  |     | 201195  |     |     |     |     |     |     |     |
+| ----- | --- | ------- | --- | --- | --- | --- | --- | --- | --- |
+2020  690.913  213319  1531.22  39224.403  252543.403  92430885500  4621544275
+号
+775.297  1667.20  42707.726  281979.726  102922600000  5146130000
+| 2021  |     | 239272  |     |     |     |     |     |     |     |
+| ----- | --- | ------- | --- | --- | --- | --- | --- | --- | --- |
+众
+公
+Figure 6: Total Energy
+Consumption for Mobile
+| Devices  | 信   |     |     |     |     |     |     |     |     |
+| -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+微
+Figure 6 shows that total energy consumption is increasing per year, so by Keynes’s Law, the total
+amount of sockets supplied will increase as well, meaning the number of free charging ports and free
+energy consumption has increased and will continue to do so in 2019-2021.
+2.4 Additional Considerations
+Besides the quantitative trends in energy consumption, there are a few other considerations that are
+less quantifiable but should still be considered.
+2.4.1 Trend in consumer preferences: Phones vs Laptops—There is an increasing trend in both the
+total number of phones and laptops. This is in accordance with the larger global trend of increased
+consumer preferences towards mobile electronics [23]. In general, our model predicts that more
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+10057 Page 9 of 39
+charging stations will be built around the world, from urban metropolitans to the rapidly digitalizing
+suburbs.
+2.4.2 Trend in consumer preferences: Electric Vehicles—There is an increased preference for EVs
+in comparison to regular gasoline cars. The global gasoline car numbers are expected to double
+once every 20 years at most, while our calculated number of EVs will triple every two years [24].
+Therefore, EV charging stations are likely to replace gasoline stations in the near future.
+2.4.3 Trend in public industries—Public, government-supported institutions (e.g.: airports, train
+stations) have demonstrated an increase in supply of free public charging. Airports such as
+London’s Heathrow have dedicated much of their funds towards increasing the number of ports,
+resulting in an average of one charging port for every two passengers [25]. Hence, as consumer
+demands for EVCS rises, public industries are projected to increase their supply to meet them.
+M
+2.4.4 Trend in private industries—Yet, for private industries that have limited space usage (e.g.:
+coffee shops, restaurants), there is a decreasing trend of public free power consumption in device
+C
+outlets. Many Starbucks shops in costly metropolitan area places such as Manhattan are blocking up
+many of their charging ports to discourage people who spend all their time hogging the space that
+M
+could otherwise used for more customers [26]. However, shops that are decreasing their ports should
+also consider the greater benefits they bring, namely more customers attracted to the idea of free
+charging. Similarly, for EVs, CS that are placed in high-traffic ienvironments like popular malls
+H
+encourage users to visit these malls, hence increasing the revenue for the shops within. This cost-
+benefit analysis will be explored in more detail later on in the paper [27].
+：
+2.5 Requirements for Public Places
+• Physical Environment—There must be a号 high level of traffic through the area, so each station and
+port is used to its maximum potential, and the power grid in the area must be able to support the
+increased demand for energy [47]. The location of these stations should also include a high
+population density of EV and众 device users that place great value on such stations so that an
+increase in EVCS or charging ports would lead to a greater quantity of users.
+• Social-political Environment—Government policy can greatly influence the supply of charging
+stations, especially for公 EVs by creating regulations, subsidies, and taxes [48]. Though this is not
+directly quantifiable (and will not be used in our cost model), it is still worth considering.
+2.6 Impacts on Pu信blic Places
+The impacts, or costs, on public places with free energy consumption sources for EVs and devices
+can be divided into four types: monetary cost and implicit costs (i.e.: space cost, security cost, and
+微
+convenience benefit [negative cost]).
+• Monetary costs refer to the relatively direct, easily measurable financial costs that are separated
+into fixed costs (i.e.: installation cost for charging stations and outlets; maintenance costs) and
+variable costs (i.e.: per unit electricity cost).
+• Space costs refer to the the opportunity cost of one person taking up the spot for free charging
+(i.e.: space hogging), hence depriving others of the chance to charge at that location. Security
+costs (i.e.: juice jacking and stolen vehicles for EV CS; stolen devices for mobile devices outlets)
+are the implicit cost of the risk to the owners of the EVs or devices when they choose to charge
+at these public areas. Finally, convenience benefits (or negative costs) are the benefits brought to
+the places with such sources through increased customers, popularity, and revenue. These costs
+will be quantified and explored in further detail in the following section.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 10 of 39
+3. Question 2: The Cost Model
+Figure 7:
+Breakdown of
+costs for EVs and
+Mobile Devices
+M
+3.1 Costs for EVs and How They Are Paid
+C
+3.1.1 Monetary costs
+M
+We divided monetary costs for EVs into fixed costs (TFC) and variable costs (TVC):
+𝑇𝐶 = 𝑇𝐹𝐶 +𝑇𝑉𝐶 = (𝐶 ×∆𝑛 ) +i𝐶 ×𝐸
+:-^_ :-^_ &-.a &'
+H
+𝐶 and 𝐶 refer to the unit cost of electrical plugs and electricity respectively, while 𝑛
+5-^_ &-.a ： 5-^_
+represents the number of plugs added every year, and 𝐸 refers to the total energy consumption. To
+&'
+calculate TFC of one charging station, we first found the number of public charging stations globally.
+As there is a lack of data, we could only us号e the data of charging stations in the US from 2011-2018
+and expand it to global number of charging stations [28]. We did this by using data of the number of
+EVs in the US (Q1) to get the ratio of electrical vehicles to charging stations in the US per year. After
+we got this ratio (generally increasi众ng per year), we used regression to predict the ratio of future years
+from 2019-2021 (full data of EVs, CSs, and ratios from 2011-2018 in Appendix B.2.6). Then, we
+used the data of the ratios from 2019-2021 and did the following calculations. First, due to lack of
+data on charging stations g公lobally, we assumed the US ratio is equal to the global ratio of EVs to CS.
+Then, we divided the global ratio of EV to CS by the number of EVs globally (collected from previous
+question) to get the number of charging stations globally. Then, we calculated the change in number
+of CSs across 2 ye信ars. This change demonstrates the number of CSs we need to add per year, which
+helps us identify the marginal cost per year of CSs globally:
+微Table 3: Ratio of EV:CS, Number of CS, Change in Number of CS from 2019-2021
+Year Ratio of EV:CS Number of CSs Change in Number of CSs
+2019 17.58 394374 + 110040
+2020 19.82 527664 + 133290
+2021 22.25 691258 + 163594
+With this data of number of new CS per year, we continued to calculate the total cost (TC)’s two
+components total fixed costs (TFC) and total variable costs (TVC) (Figure 8). Here, the TFC refers
+to the amount required to set up one charging station, and the TVC refers to the electricity cost per
+unit electricity consumed. To calculate the TFC, we divided the number of charging stations into
+public charging stations (85%) and private workplace charging stations (15%). We further divided
+these into different levels (L1-L3 in increasing speed of charging) [29]. We determined a unit price
+for each of the levels shown in the following table [31] [32]:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 11 of 39
+Table 4: Unit Price and Costs for L1-L3 CS
+Public Unit Price Private Unit Price
+Additional Costs Additional Costs
+Level ($) Level ($)
+Level 1 from $0 to $1000 Level 1 from $0 to $1000
+Public Private
+$1,000 Public requires pedestal & POS13 $500 Private requires data-recording
+L1 L1
+About $100 maintenance fee About $100 maintenance fee
+Public Level 2 from $500 to $6000 Private Level 2 from $500 to $6000
+$3,300 $2000
+L2 Public requires pedestal & POS L2 Private requires data-recording
+Level 3 from $10,000 to $40000
+Public Private
+$30,000 Public requires pedestal & POS Unused
+L3 L3
+Significant maintenance fee
+Figure 8: Calculating Total Cost From
+Change in Number of Charging Stations
+M
+C
+M
+i
+H
+：
+Multiplying this unit price by the number of charging stations of each kind, we got the TFC for private
+and public and combined them to get the total TFC. For TVC, we got the unit electricity cost per kWh
+号
+(assumed to be constant $0.11/kWh [30]), and the electricity consumed globally per year (from Q1)
+and multiplied them together to get the total TVC. Finally, we added TFC and TVC to get TC:
+众
+Table 5: Total Number of CS in L1-L3 and Costs
+Total No. of Public CS No. of Private CS
+Year No. of TFC ($) TVC ($) TC ($)
+CSs CS L1 CS公 L2 CS L3 CS L1 CS L2
+2019 110040 4677 74827 14030 1561 14855 702996600 138579205 841575805
+2020 133290 5信665 90637 16994 1999 17994 851574600 209041107 1060615707
+2021 163594 6953 111244 20858 2454 22085 1,045,195,200 307444315 1352639515
+微
+3.1.2 Space Costs—Space hogging refers to one single person taking up a large amount of space in a
+public property. For most public places, this is not a big problem, as places such as malls or airports
+are large enough that no single person can appreciably affect the area available for other guests [51].
+Also, for EVs, there are laws14 known as “anti ICE-ing Laws” against staying at a charging station
+once one finishes using it [52]. Hence, space costs are negligible to our cost model.
+3.1.3 Security Cost—The largest security consideration is car theft. When cars are left to charge, they
+are sometimes left unattended. Hence, there is an inherent risk carried in the action. However, this
+risk is often more on the burden of the owner of the vehicle, as most public charging ports have
+clauses about personal responsibility of vehicles [54]. Hence, the cost is not significant to the overall
+cost of the company in charge of the station [44]. In addition, theft of electric vehicles is not a large
+issue, as a majority of the 10 vehicles with the lowest whole-vehicle theft claims are EVs [53].
+13 POS: point of sale terminal; an electronic device used to process card payments at retail locations
+14 US States that have enacted these laws include California, Oregon, Washington, Florida, and 7 more
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     |     |     |     | 10057  |     |     |     |     | Page 12 of 39  |     |
+| --- | --- | --- | --- | --- | --- | --- | ------ | --- | --- | --- | --- | -------------- | --- |
+3.1.4 Convenience Benefit (negative costs)
+The main formula that we used to calculate the convenience benefit is:
+𝑛𝑃𝑙𝑢𝑔
+−
+|     |     |     |     |     | 𝑇𝐵 = | 𝑠×𝑃 | ×𝐸𝑉%(𝑌,𝐸,𝐴)×(1−𝑒 |     |     | 𝜏 )  |     |     |     |
+| --- | --- | --- | --- | --- | ---- | --- | ---------------- | --- | --- | ---- | --- | --- | --- |
+|     |     |     |     |     | 𝐶𝑜𝑛𝑣 | 0   |                  |     |     |      |     |     |     |
+Where 𝑠 is the average spending of a consumer, 𝑃  refers to the maximum population, or peak
+o
+population, of the public place; 𝐸𝑉%(𝑌,𝐸,𝐴) is the probability of a randomly selected person
+owning an EV, and 𝜏 is the constant such that 𝜏 EV charging stations would attract 63%, or 100(1−
+𝑒Lp%) of peak population. To compute the convenience cost of EVs, we used the following formula:
+|     |     |     |     | %𝐸𝑉 | 𝑌,𝐸,𝐴 | =𝛽×%𝐸𝑉 | 𝑌   | .r×%𝐸𝑉 | 𝐴   | .s×%𝐸𝑉(𝐸)𝑒 |     |     |     |
+| --- | --- | --- | --- | --- | ----- | ------ | --- | ------ | --- | ---------- | --- | --- | --- |
+&
+Which is derived from the Codd-Douglas production function [67]. In the formula above, our
+M
+objective function was the likelihood of a randomly selected person having an EV, which was
+dependent on the income (Y), age (A), and education level (E) of the person. The results were then
+raised to the power of the elasticity of input, respectively. In specific, the elaCsticity was calculated by
+such [67]:
+M
+|     |     |     |     |     |       | 𝑑%𝐸𝑉(𝑥) |     |     | 𝑥     |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | ------- | --- | --- | ----- | --- | --- | --- | --- |
+|     |     |     |     |     | 𝑒 |   | =       |     | |   | ×     |     |     |     |     |
+|     |     |     |     |     | 𝑥 𝑥=0 |         |     | 𝑥=0 |       |     |     |     |     |
+|     |     |     |     |     |       |         | 𝑑𝑥  |     | %𝐸𝑉(𝑥 | )   |     |     |     |
+0 i
+H
+The coefficient 𝛽 is defined such that the combination of inputs  𝑌 ,𝐸 ,𝐴  that would each lead to
+|     |     |     |     |     |     |     |     |     |     | p   | p p |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+&'(I)
+a desirable output at the regional average (%𝐸𝑉 𝑌：= , where 𝐸𝑉(𝑛) and 𝑃(𝑛) are number of
+5(I)
+EVs and population of a region in a certain year) would also result in the regional average, i.e.
+|     |        |      |     |      |        |     | &'(I) | .    | After  | collecting  | relevant  | data  | about  the  |
+| --- | ------ | ---- | --- | ---- | ------ | --- | ----- | ---- | ------ | ----------- | --------- | ----- | ----------- |
+| %𝐸𝑉 | 𝑌,𝐸 ,𝐴 | =%𝐸𝑉 | 𝑌   | =%𝐸𝑉 | 𝐸 =%𝐸𝑉 |     | 𝐴 =   |      |        |             |           |       |             |
+|     | p p    | p    |     | p    | p      | 号p  |       | 5(I) |        |             |           |       |             |
+demographics and EV statistics [68], we created two regression graphs: relationship between the input
+and the percentage of EV owners which exhibits the characteristics, or:
+众
+|     |     |     |     |     | %	𝑜𝑓	𝐸𝑉𝑠 |     | =𝑓 𝑌 | =𝑓  | 𝐸 =𝑓(𝐴)  |     |     |     |     |
+| --- | --- | --- | --- | --- | -------- | --- | ---- | --- | -------- | --- | --- | --- | --- |
+And the relationship between the demographic data depending on the inputs:
+公
+|     |     |     |     |     | %	𝑜𝑓	𝑝𝑜𝑝𝑢𝑙𝑎𝑡𝑖𝑜𝑛 |     | =𝑔  | 𝑌 =𝑔 | 𝐸   | =𝑔(𝐴)  |     |     |     |
+| --- | --- | --- | --- | --- | --------------- | --- | --- | ---- | --- | ------ | --- | --- | --- |
+In order to find the percentage of EVs as a function of each input, we did the following calculation:
+信
+|     |     |     |     |     |         |                   | 𝐸𝑉(𝑖𝑛𝑝𝑢𝑡) |     | 𝑓(𝑖𝑛𝑝𝑢𝑡)×𝐸𝑉(𝑛) |     |     |     |     |
+| --- | --- | --- | --- | --- | ------- | ----------------- | --------- | --- | -------------- | --- | --- | --- | --- |
+|     |     |     |     | %𝐸𝑉 | 𝑖𝑛𝑝𝑢𝑡 = |                   |           |     | =              |     |     |     |     |
+|     |     |     |     |     |         | 𝑃𝑜𝑝𝑢𝑙𝑎𝑡𝑖𝑜𝑛(𝑖𝑛𝑝𝑢𝑡) |           |     | 𝑔(𝑖𝑛𝑝𝑢𝑡)×𝑃(𝑛)  |     |     |     |     |
+微
+(‚{ƒ.„„ƒ)|
+|     | -  Education: %𝐸𝑉 |     |     | 𝐸 = |     | p   |     | ×𝑒  | L   |     |     |     |     |
+| --- | ----------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|×….†‡ˆ|
+|     |     |     |     |     | o.zOpz&{|.|}~×o.z(cid:127)€× |     |     | D(cid:129) |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ---------------------------- | --- | --- | ---------- | --- | --- | --- | --- | --- |
+(s{ƒ„.„ˆ†)|
+{
+|     |               |     |     |                  | %&' ‰ Š           | „……      | ×.               | |×‡.‡‹|   |      |     |     |     |     |
+| --- | ------------- | --- | --- | ---------------- | ----------------- | -------- | ---------------- | --------- | ---- | --- | --- | --- | --- |
+|     | -  Age: : %𝐸𝑉 |     | 𝐴   | =                |                   | ‡.‡‹× |Œ |                  |           |      |     |     |     |     |
+|     |               |     |     |                  |                   | |        |                  |           | |    |     |     |     |     |
+|     |               |     |     |                  | { Ž(cid:143)|.…ˆ„ |          |                  | { Ž{‹….ˆ~ |      |     |     |     |     |
+|     |               |     |     | o.z(cid:141)o€×. | ‹|.„‹             |          | (cid:144)p.OOD×. |           | |~.‡ |     |     |     |     |
+(‘’r{ƒ.ƒ‡‹|~)|
+|     |                |     |     |         | „   | {        |     |     |     |     |     |     |     |
+| --- | -------------- | --- | --- | ------- | --- | -------- | --- | --- | --- | --- | --- | --- | --- |
+|     |                |     |     |         | ×.  | |×….‡‹‡| |     |     |     |     |     |     |     |
+|     |                |     |     | ….‡‹‡r× | |Œ  |          |     |     |     |     |     |     |     |
+|     | -  Income: %𝐸𝑉 |     |     | 𝑌 =     |     |          |     |     |     |     |     |     |     |
+(‘’r{|.‡ˆ~)|
+|     |     |     |     |         | „   | {           |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |         |     | ×. |×„.…„‡| |     |     |     |     |     |     |     |
+|     |     |     |     | „.…„‡r× | |Œ  |             |     |     |     |     |     |     |     |
+After finding out the percentage of EVs as a function of input, we found the first derivative of the
+input function to get the functions for elasticity of input.
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+10057 Page 13 of 39
+&'(I)
+Then, we inputted the function of %𝐸𝑉 𝑖𝑛𝑝𝑢𝑡 to figure out the input value for a result of .
+5(I)
+After obtaining the respective inputs 𝑌 ,𝐸 ,𝐴 and output %𝐸𝑉 𝑖𝑛𝑝𝑢𝑡 , we calculated the point
+p p p p
+elasticity for each input at the point 𝑖𝑛𝑝𝑢𝑡 ,%𝐸𝑉(𝑖𝑛𝑝𝑢𝑡 ) . Below are the calculation results:
+p p
+𝑒 = −5.564540×10Lz 𝑒 = 3.636997×10LB 𝑒 = −1.460129×10L(cid:127)
+𝑌 & ‰
+𝛽 = 0.00218643o.““€Bz(cid:141) = 2.23548×10LB
+Once the percentage of EV ownership based on the consumer profile is determined, we had to use
+that number to calculate the marginal result of adding one additional charging station. To do so, we
+considered a variety of functions. We knew that the function should increase rapidly initially, before
+gradually slowing to approximate an extreme value. In the end, we took inspiration from the title of
+the problem and applied the equation of a charging capacitor: M
+;
+𝑄 = 𝑄 (1−𝑒L •)
+o C
+We converted this equation to better fit our needs by changing some of the variables, with 𝑃
+9;;
+M
+referring to the attracted number of people, 𝑃 referring to the total population, %𝐸𝑉 referring to the
+:
+percentage of people with EVs in the area, 𝐶𝑆 referring to the current number of charging stations,
+and α referring to the coefficient to reflect the responsiveness of thie change.
+H
+I67
+𝑃 = 𝑃 ×%𝐸𝑉×(1−𝑒L — )
+9;; : ：
+To calculate marginal results, we simply incremented 𝐶𝑆 by 1:
+号
+67(cid:144)p
+𝑃 = 𝑃 ×%𝐸𝑉×(1−𝑒L — )
+9;; :
+We knew that a feasible number for total current charging stations at a decently sized mall was 5, and
+众
+from this number we calculated α to equal 5, as this would indicate 63% of EV drivers currently
+shopped at the mall with the free charging, as well as increasing the number of charging stations
+would equal 6.67% more o公f these drivers deciding to switch malls. Both of these numbers align with
+real life estimates. The formula 𝑅 = 𝑃 ×𝑠 shows that, multiplying this value by the average
+,Ia 9;;
+spending of consumers 𝑠, we calculate the total increase in revenue 𝑅 . In this way, if we have the
+,Ia
+number of chargi信ng stations and population of an area, combined with the consumer profile of
+income, age, education, and average spending, we can accurately determine the increase in spending
+from the marginal adding of one charging station.
+微
+3.1.5 How it is paid?
+Monetary Costs—The bearer of monetary cost depends on the type of costs. Since TC=TFC+TVC,
+we can separate the cost into two parts. Total fixed costs (costs of installation) is paid solely by the
+businesses. No matter if the area is a workplace or a public charging station, rational managers of
+businesses compare the marginal cost of the cost of installation and the cost of electricity with the
+marginal benefit of the implicit benefits brought by the addition of an electrical outlet [55]. However,
+the variable cost is sometimes paid by the consumers through other costs (e.g.: additional parking
+permit payments at a public parking lot [56]).
+Space Costs—EVs occupying charging stations will have a greater impact on producers than on
+consumers. For consumers, there are alternative charging stations [57]; however, for public places,
+especially for free public charging places one EV hogging the spot for a long time would result in a
+business losing the potential revenue. However, this cost is minimal as previously mentioned [52].
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     | 10057  |     |     | Page 14 of 39  |     |
+| --- | --- | --- | --- | ------ | --- | --- | -------------- | --- |
+Security Cost—For EVs, the burden on security cost lies on both sides. On the consumer side, car
+thefts  (though  unlikely)  would  result  in  heavy  monetary  cost  as  well  as  the  time  cost  and
+inconvenience of buying a new car [58]. For firms, car theft would result in damaging the reputation
+of public places, adversely reducing the potential traffic and profitability of the business [59].
+Convenience Benefits—Those on the receiving end of these benefits are mainly producers of nearby
+stores that gain from the presence of these CSs that encourage more consumers to spend at nearby
+places while they wait for their cars to charge [57].
+3.2 Costs for Devices How They Are Paid
+3.2.1 Monetary Costs
+Figure 9: Total
+|     |     |     |     |     |     |     | monetary cost  |     |
+| --- | --- | --- | --- | --- | --- | --- | -------------- | --- |
+M
+breakdown for
+
+mobile devices
+|     |     |     |     |     |     |     | C   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     | M   |     |     |
+
+i
+The figure above shows our total monetary cost breakdown for mobile devices. Like with EVs, we  H
+split the costs into variable costs and fixed costs. In a simpler manner, we used the equation:
+：
+|     |     | 𝑇𝐶 =𝑇𝐹𝐶+𝑇𝑉𝐶 |     | =𝐶   | ×	𝑛 +𝐶 | 	×	𝐸     |     |     |
+| --- | --- | ----------- | --- | ---- | ------ | -------- | --- | --- |
+|     |     |             |     | 5-^_ | 5-^_   | &-.a P.Q |     |     |
+In the equation above, 𝐶  and  𝐶  r号efer to the unit cost of electrical plugs and electricity
+|     |     | 5-^_ | &-.a |     |     |     |     |     |
+| --- | --- | ---- | ---- | --- | --- | --- | --- | --- |
+respectively, 𝑛  represents the number of plugs added every year, and 𝐸  refers to the total
+|     | 5-^_ |     |     |     |     |     | P.Q |     |
+| --- | ---- | --- | --- | --- | --- | --- | --- | --- |
+energy consumption by charging. Breaking down the equation, we need to calculate TFC and TVC
+| respectively. For TVC, we multiplied the unit cost for electricity (assumed to be the same $0.11/kWh  |     | 众   |     |     |     |     |     |     |
+| ----------------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+[30]) by the total energy consumed by charging mobile devices in public places (from Q1 data).
+Second, to calculate TFC, we first found the unit cost per plug of $350 [35]. Then, we calculated the
+公
+number of plugs added every year by the equation on the left. Then, we used the data on total energy
+consumption from Q1 and to get the formula:
+信∆𝐸
+|     |     |          | P.Q               |     |          | (𝑛−1)  |     |     |
+| --- | --- | -------- | ----------------- | --- | -------- | ------ | --- | --- |
+|     |     | 𝑛 5-^_ = | 															∆𝐸 | P.Q | =𝐸 P.Q 𝑛 | −𝐸 P.Q |     |     |
+𝐸
+By doing so, we found the difference between 2018-2019, 2019-2020, and 2020-2021 to get the
+微
+change in energy consumption. To obtain 𝐸, we multiplied the number of hours by 𝐸 , the average
+P.Q™
+hourly energy consumption of a plug. Using the formula: 𝐸 = ℎ×𝐸 . Assuming the outlet is used
+P.Q™
+7 hours/day, a total of 2555 hours are used per year, or 2562 hours in year 2020. As phones consume
+5.5W per hour and laptops consume 75W per hour [20][21], we calculated the weighted average to
+get an average of 𝐸 = 20𝑊. After that, we divided it by the average energy consumption (𝐸) per
+š
+plug. The numerical process and final results of TVC, TFC, and TC are shown in the table:
+Table 6: Data Process: Finding Costs for Mobile Devices 2019-2021
+| Year  | 𝐶    | 	𝑛   | 𝐶    |     | 𝐸   | TVC  | TFC  | TC  |
+| ----- | ---- | ---- | ---- | --- | --- | ---- | ---- | --- |
+|       | 5-^_ | 5-^_ | &-.a |     | P.Q |      |      |     |
+2019  $350  1160991  $0.11/kWh  4339761324  477373745.6  406346850  883720595.6
+2020  $350  5514343  $0.11/kWh  4621544275  508369870.3  1930020050  2438389920
+5146130000
+2021  $350  10265865  $0.11/kWh  566074300  3593052750  4159127050
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     |     |     |     |     |     | 10057  |     |     |     | Page 15 of 39  |
+| --- | --- | --- | --- | --- | --- | ------ | --- | --- | --- | -------------- |
+3.2.2 Space Costs—Though space costs are negligible for EVs, for smaller-sized establishments like
+coffee shops that are heavy in mobile device users, these space-hoggers can greatly reduce the total
+potential revenue, as other potential customers will not be able to charge their devices [50]. In fact,
+these free charging ports are one of the most attractive features of a shop to space-hoggers [36]. As a
+result, as more charging ports are added in response to the increasing demand for energy, the implicit
+costs a shop will experience will also increase. We calculated this cost using the process as follows:
+𝐶  equals the cost per seat in the shop per hour, and 𝑡 equals the time hogged in hours. To calculate
+=.9;
+𝐶 , we analyzed the data available to us [45]. 𝑇 represents the average total revenue earned
+| =.9; |     |     |     |     |     | T.Q.I^.	 |     |     |     |     |
+| ---- | --- | --- | --- | --- | --- | -------- | --- | --- | --- | --- |
+by this type of shop, and 𝑇  represents the total number of seats in the store.
+=.9;=
+|     |     |       |                     |     |      | œ(cid:157)žŸž ¡ž            𝑇 |     |      | œ(cid:157)žŸž ¡ž×𝑡   |     |
+| --- | --- | ----- | ------------------- | --- | ---- | ----------------------------- | --- | ---- | -------------------- | --- |
+|     |     | 𝑇 = 𝐶 | ×	𝑡 														𝐶 |     |      | =                             |     |      | =                    |     |
+|     |     | a<=;  | =.9;                |     | =.9; |                               |     | a<=; |                      |     |
+|     |     |       |                     |     |      | œ¢ž£¤¢                        |     |      | œ¢ž£¤¢               |     |
+M
+Next, we used a probability function to get the number of people hogging a shop at any given time:
+|     |     |     | 𝑃 𝐻𝑜𝑔 | =𝑃(𝐻 | ,𝐻  | ,𝑇 )=𝐻 | ×𝐻 ×𝑇 |       |     |     |
+| --- | --- | --- | ----- | ---- | --- | ------ | ----- | ----- | --- | --- |
+|     |     |     |       |      | p   | D a<=; | p D   | =.9;= | C   |     |
+This function took the form of the product of the probability that a store would have a people hogging
+M
+it (H ), the percentage of seats that are usually hogged by these people (H ), and the total number of
+| 1   |     |     |     |     |     |     |     |     | 2   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+seats (T ). Combining all the functions:
+seats
+i
+|     |     |     |     |     | 𝑇         |      | H     |     |     |     |
+| --- | --- | --- | --- | --- | --------- | ---- | ----- | --- | --- | --- |
+|     |     |     |     | 𝑇   | = T.Q.I^. | ×𝑡×𝑃 | 𝐻𝑜𝑔   |     |     |     |
+a<=;
+|     |     |     |     |     |     | 𝑇 =.9;= |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | ------- | --- | --- | --- | --- |
+：
+|     |     | ∴𝑇 = | œ(cid:157)žŸž ¡ž×𝑡×𝐻 | ×𝐻  | ×𝑇  | 											 ∴𝑇 | =𝑇   |         | ×𝑡×𝐻 ×𝐻 |     |
+| --- | --- | ---- | -------------------- | --- | --- | -------------- | ---- | ------- | ------- | --- |
+|     |     | a<=; |                      | p   | D   | =.9;=          | a<=; | T.Q.I^. | p       | D   |
+œ¢ž£¤¢
+To test our model, we considered the avera号ge coffee shop in a larger city, so as to fit with our data
+type of choice. The average total revenue of such a shop would be approximately $260,000 per year,
+and there would be around 25 seats in such a small-scale store [37] [38].
+众
+|     |     |     |      | 𝑇 T.Q.I^. |     | 260000             |     |     |     |     |
+| --- | --- | --- | ---- | --------- | --- | ------------------ | --- | --- | --- | --- |
+|     |     |     | 𝐶    | =         | =   | =$10,400	𝑝𝑒𝑟	𝑦𝑒𝑎𝑟  |     |     |     |     |
+|     |     |     | =.9; | 𝑇         |     | 25                 |     |     |     |     |
+=.9;=
+公
+|     |     |                      |     |     |     | 𝑑𝑎𝑦𝑠 | ℎ𝑟𝑠               |     |     |     |
+| --- | --- | -------------------- | --- | --- | --- | ---- | ----------------- | --- | --- | --- |
+|     |     | $10,400	𝑝𝑒𝑟	𝑦𝑒𝑎𝑟÷365 |     |     |     | ÷10  | =$2.85	𝑝𝑒𝑟	ℎ𝑜𝑢𝑟	  |     |     |     |
+|     |     |                      |     |     |     | 𝑦𝑒𝑎𝑟 | 𝑑𝑎𝑦               |     |     |     |
+Considering that 1信2.5% of seats are occupied for the full 10 hours per working day for an average
+coffee shop, we substituted that data into the equation [39].
+|     | 微𝑇  | =𝐶        | ×𝐻 ×𝑇 | ×𝑡             ∴𝑇 |     |      | =2.85×12.5%×25×10=$89/𝑑𝑎𝑦  |     |     |     |
+| --- | --- | --------- | ----- | ----------------- | --- | ---- | -------------------------- | --- | --- | --- |
+|     |     | a<=; =.9; | D     | =.9;              |     | a<=; |                            |     |     |     |
+Factoring in that only 80% of coffee shops experience significant space hogging and multiplying to
+compare with total year revenue [40]:
+D(cid:127)“(cid:141)(cid:141)
+𝑇 a<=; =𝑇 a<=; ×𝐻 p               ∴𝑇 a<=; =89×0.8=$71.2/𝑑𝑎𝑦 =$25988/𝑦𝑒𝑎𝑟            =9.95%
+D€oooo
+From our calculations, we determined that the average coffee shop will lose 9.95% of its total revenue
+to space cost losses. Seeing as the actual estimated losses to space-hoggers is 10%, our calculated
+model is acceptably close, being within a 0.5% percent loss [41].
+3.2.3 Security Cost—With the increasingly rapid increase in demand for energy and subsequent
+increase in public free charging, there has also been a related increase and development of new risks
+associated with these new trends. One such risk is the possibility of juice jacking, a method in which
+a hacker will take advantage of the fact that both data and power travel along the same cord, meaning
+that a hacker can potentially transfer data to and from a device while said device is being charged
+[42]. We calculated the potential cost of this juice jacking using the formula below:
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+10057 Page 16 of 39
+𝑇 = 𝛼×𝑃(𝐽𝐽,𝐶)×𝑇 . In this formula, the total cost equals the probability of a charging
+a<=; :H<I.=
+station being used maliciously (JJ) combined with the probability that someone would use that
+specific charging station without questioning its security (C). This probability would then be
+multiplied by a coefficient 𝛼 to reflect the growing ability of phones to negate such an attack. To
+model this data, we used the only known large scale juice jacking test, performed by Wall of Sheep.
+They set up a free charging station that they had infected with juice jacking software at a conference
+of, at the time the experiment was conducted, 10,000 people [43]. Of these 10,000 people,
+approximately 360 of them directly used the charging station without even asking about the security
+risks, yielding a probability 𝑃 𝐽𝐽,𝐶 of:
+360
+𝑃 𝐽𝐽,𝐶 = =3.6%
+10000
+Assuming a relatively uniform distribution of people, this 𝑃 𝐽𝐽,𝐶 can be apMplied to the larger
+population. After calculating this probability value, we had to determine the coefficient of this
+probability that would be applied to account for the increasing defensive prowess of phones. We set
+C
+this coefficient to equal 1%, for there is no real data on this, but we do know that the value should
+approach zero; most modern phone models can only pass data along the charging line after the user
+M
+explicitly changes a setting. Therefore, T = 0. There is the second security concern of devices being
+cost
+stolen while unattended. However, like the EVs, this is the sole responsibility of the owner, and hence,
+i
+does not contribute to a significant amount of the cost of a company/shop that provides the charger.
+H
+3.2.4 Convenience Cost (Benefit)—For mobile devices, it is difficult to quantify the marginal benefit
+：
+of one additional outlet. Hence, we can only figure out the general benefit of outlets as a whole to a
+retail store. Of course, we are aware that the addition of numerous outlets does include multiple
+advantages, as studies have shown that customers who charge their phones stay in the store 2.27 times
+号
+longer than those who don’t; there’s a 54% increase in conversion for customers who charge their
+phones; and customers who charge their phones spend 29% more than those who don’t [50].
+However, we do not know the specific quantity that must be reached (i.e.: the threshold quantity) in
+众
+order for devices to bring such advantages to stores. One additional outlet likely does not do a lot,
+but, say, 50 more outlets would likely bring many benefits. To solve this issue, we used the previous
+convenience benefits for EVs. Though EVs and devices themselves are fundamentally different, the
+公
+concept of convenience benefits for both are the same. Hence, we decided to multiply a coefficient
+in front of the convenience benefits for EVs to get the cost for devices. This coefficient is 0.01,
+because the total a信mount of charging sockets at Heathrow is more than 3000. However, an airport has
+an average of 30 EV charging stations [63]. Hence, the estimated ratio is 0.01.
+3.2.5 How It Is Paid
+微
+Monetary Costs— Monetary costs for devices, like the EVs, can also be separated into fixed costs
+and variable costs. However, unlike the EVs, the businesses will almost always bear the whole burden
+of monetary cost [60]. They, not the consumers, pay to hire the electrician and buy the materials for
+installation of electrical outlets. They also must pay for the variable costs of electricity, as the energy
+consumed is recorded in the businesses’ electricity bill [60].
+Space Costs—Businesses also take the majority of the cost of space hogging. However, this cost does
+not show up as a negative on the accounting book, with it being paid in the form of decreased venue
+on behalf of the shop [60]. As more seats are hogged up, the total revenue of the shop decreases; there
+is no net loss in revenue because of seat hogging.
+Security Cost— In contrast, the security cost of these public charging stations is almost entirely on
+the users, for it is the responsibility of these people to take care of their own belongings [61]. For
+most businesses, they do not claim any liability for any stolen or misplaced items, with the total cost
+of businesses being only the discomfort of hearing consumers complain about the missing items or
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 17 of 39
+loss of brand loyalty [60]. Moreover, the burden on consumers may not be in the form of monetary
+payment, with security issues such as juice jacking potentially leading to greater losses in the form
+of missing data [62]. In this way, consumers pay for the security issues through their many
+inconveniences.
+Convenience Benefits—The stakeholders that benefit from convenience benefits are the producers, as
+they reap the positive externalities of these outlets. As previously mentioned, the presence of outlets
+would increase sales, build engagement and customer loyalty with better onsite service, market to
+consumers in and out of the store, and help stores gain greater appeal [50].
+4. Question 3: Changes in the Cost Model
+M
+4.1 Changes in EVCS Costs
+4.1.1 Monetary Costs—To determine the change in the monetary cost in diCfferent public places, we
+can consider TFC and TVC separately. TFC is dependent on the unit cost of an EV outlet and number
+of EV outlet. This, in turn, depends on the demand for charging Mpowers of EV outlets and total
+demand for EV charging, respectively. If the consumers demand high charging power, then the
+businesses (e.g.: airports, train stations) have to supply more level 2 or even level 3 EV outlets, while
+i
+public places with lower power demand (e.g.: coffee shops) Hcan lower the costs by using more level
+1 AC charging stations [56]. Similarly, public places with higher electricity demand usually face both
+a higher fixed cost and a higher variable cost than： public places with lower demand for electricity
+due to increased demand for more EV outlets and increased electricity consumption [57].
+4.1.2 Space costs–Although space costs f号or EVCS are less significant, the situation still differs
+between public places for electric vehicles. In this situation, the cost of space hogging is dependent
+solely on the number of charging stations [52]. The cost of space hogging in public areas with less
+charging stations will be a lot great众er of that of the public areas with more charging stations.
+4.1.3 Security Costs—Different public places have different security costs for electric vehicles,
+although the difference is sometimes negligible and hard to calculate. The main factor of the security
+公
+cost will be the level of security of the public places. If the place itself has higher levels of security
+(usually a government owned institution such as an airport), then it likely contains a more holistic
+security protocol (信i.e.: security cameras, guards, etc.) [63]. However, if the place has generally has a
+lower level of security, they might not be willing to spend more budget on security and hence will
+have a higher risk.
+微
+®¡¯¢
+4.1.4 Convenience Benefits— As the function is given by ∆𝑅 =𝑠×𝑃 1−𝑒 L ° there are a lot of
+o
+factors of influence. Public places with both a higher general average spending, population base, and
+number of EV outlets will result in a higher convenience benefit for businesses. Hence, locations with
+a greater population density (i.e.: metropolitan areas), will have a greater benefit than locations with
+lower population density (i.e.: rural areas). Similarly, EVCSs in wealthier neighborhoods will have a
+greater marginal benefit from convenience because its population will be more willing to spend.
+4.2 Changes in Devices Station Costs
+4.2.1 Monetary Costs—Again, we separate the total cost into fixed cost and marginal cost. Fixed cost
+is directly proportional to the number of plugs installed, which is a function of energy consumed;
+meanwhile, variable cost is directly proportional to the electricity consumed, assuming the unit cost
+holds constant. Hence, demand for electricity for device charging is the sole determinant of a
+company’s monetary costs for devices.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 18 of 39
+4.2.2 Space Costs—Similar to the space costs for EV, the cost of space hogging for electronic devices
+is dependent on the number of charging outlets for devices [60]. The cost of space hogging in public
+areas with less charging stations bear higher costs for space hogging than the ones with more outlets.
+4.2.3 Security Costs—Different public places have different security costs for electric vehicles,
+although the difference is sometimes negligible and hard to calculate [64]. Similar to security costs
+for electric vehicles, leaving a phone or a laptop at a public charging place will result in serious
+consequences, especially because stealing a personal device is easier than stealing an EV [65]. Traffic
+also plays a role in determining the security costs, as public places with more traffic tend to have a
+higher chance of theft [66].
+4.2.4 Convenience Benefit—This is similar to EVs, because as general population density and wealth
+increase, the benefits for producers increase as well. (See 4.1.4 for more details).
+M
+5. Question 4: Optimizing the Cost Model C
+M
+Figure 10: Breakdown of
+i
+Optimization of Costs with
+H
+Lagrange
+：
+号
+众
+公
+信
+微
+For Q4, we recognized that an optimization of the cost function was required. As such, our first step
+was to split the net cost function back into its components [69].
+𝑇 = 𝐶𝑜𝑛𝑣,𝑇 = 𝑀𝐶,𝑇 = 𝑆𝐻,𝑇 = 𝑆𝐶
+ap aD aB aO
+Then, we implemented the principle of Greedy programming [70], which states that in many cases,
+the best solution to a multistep problem can be found by following the best solution for each of the
+individual steps. In this case, the multistep problem is optimizing the net cost, with the individual
+pieces of the cost being the individual steps.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 19 of 39
+5.1 Optimizing Convenience
+Out of all of the variables, the convenience cost is unique in that it demands a maximization instead
+of a minimization to find the most beneficial point. Convenience uses the formula below [69]:
+67
+𝑃 = 𝑃 ×%𝐸𝑉×(1−𝑒L —)×𝑠
+9;; o
+²³
+To optimize, we first determined that 𝑃 o , 1−𝑒L ´ , and 𝑠 are all not the inputs that would need to be
+examined in this case, for they are properties of the area itself and cannot be changed in any significant
+way by policy. Therefore, we focused on the %𝐸𝑉 aspect of the optimization, noting that, because of
+the way the formula is organized, maximizing %𝐸𝑉 is equivalent to maximizing the whole benefit
+equation. However, %𝐸𝑉 is split into 3 different inputs itself (Y for income, A for age, and E for
+education level), leading us to use the method of Lagrange optimization.
+M
+𝑓 𝑌,𝐴,𝐸 : %𝐸𝑉 = 𝜌×𝑌.r×𝐴.s×𝐸.‚
+C
+From this initial equation, we determined our restrictions through regression, picking quadratic values
+for their high R-squared values without over-fitting, on other sets of Mdata [69]:
+𝑔 𝐸,𝐴 : 𝐸 = −0.006367𝐴D+0.4462A+29.82
+i
+ℎ 𝑌,𝐸 : 𝑌 = 19.01×𝑒o.DH(cid:127)€“&
+𝑗 𝑌,𝐴 : 𝑌 = −0.019𝐴D +：1.9341𝐴−11.5204
+These equations can then be written into a Lagrange function, where the lambda values are
+Lagrangian multipliers [69]: 号
+ℒ 𝑌,𝐴,𝐸 = 𝑓 𝑌,𝐴,𝐸 −𝜆 ×𝑔 𝐸,𝐴 −𝜆 ×ℎ 𝑌,𝐸 −𝜆 ×𝑗 𝑌,𝐴
+p D B
+众
+∇𝑔 𝐸,𝐴 ,∇h E,A ,∇j(Y,A) ≠ 0
+To optimize the equation, we need to determine where the gradients are parallel by finding the partial
+公
+derivatives of all of the equations:
+ÂÃ ÂÃ ÂÃ Â_ Â_
+∇ 𝑓(𝑌,𝐴,𝐸) = ( , , ), ∇ 𝑔(𝑌,𝐴,𝐸) = (0, , ),
+信Á,‰,&
+ÂÁ Â‰ Â&
+Á,‰,&
+Â‰ Â&
+𝜕ℎ 𝜕ℎ 𝜕𝑗 𝜕𝑗
+𝛻 ℎ(𝑌,𝐴,𝐸) = ,0, , 𝛻 𝑗(𝑌,𝐴,𝐸) = ( ,0, )
+Á,‰,& 𝜕𝑌 𝜕𝐸 Á,‰,& 𝜕𝑌 𝜕𝐴
+微
+Substituting values into the equations and rewriting the format
+𝜌𝑒 Á 𝑌.rLp𝐴.s𝐸.‚ 0
+∇ 𝑓 = 𝜌𝑒 𝐴.sLp𝑌.r𝐸.‚ ∇ 𝑔 = 0.1273𝐴−0.4462 ,
+Á,‰,& ‰ Á,‰,&
+𝜌𝑒 𝐸.‚Lp𝑌.r𝐴.s 1
+&
+1 1
+𝛻 ℎ = 0 𝛻 𝐽 = 0.0388𝐴−1.9341
+Á,‰,& Á,‰,&
+−0.488𝑒Æ 0
+Therefore, the tangency condition ends up looking like:
+𝐴𝐸 0 1 1
+𝐼𝐸 = 𝜆 0.1273𝐴−0.4462 +𝜆 0 +𝜆 0.0388𝐴−1.9341
+p D B
+𝐼𝐴 1 −0.488𝑒Æ 0
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     |     | 10057  |     |     |     | Page 20 of 39  |
+| --- | --- | --- | --- | --- | ------ | --- | --- | --- | -------------- |
+Solving this equation with the other restriction equations yields the optimal values in regards to the
+specific inputs. In regards to how exactly this model can be optimized in real life, businesses will
+now have a target audience for their products, seeing as it is these calculated people who are most
+likely to enjoy the company’s products. Therefore, increased attraction directed at this group of
+people can actually lead to great returns in the larger picture of company revenue, for they will be
+able to offset more of the other three costs.
+5.2 Optimizing Monetary Cost
+We applied the same general Lagrangian method to the monetary costs, with only the functions and
+restrictions changed to reflect the difference in aspect.
+|     |     |     | 𝑓 𝐸 | ,𝑛  | :	𝑇 = 𝑛 | ×𝑐 +𝐸 | ×𝑐  |     |     |
+| --- | --- | --- | --- | --- | ------- | ----- | --- | --- | --- |
+|     |     |     | '   | :   | a       | : :   | &'  | &   |     |
+M
+In this case, we explore the values of 𝑛  and 𝐸  in details, for 𝑐  and 𝑐  ae just coefficients that
+|     |     |     |     | :   | &'  |     |     | : & |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+reflect prices. For our restrictions, we considered that a change in energy consumption 𝐸  would
+&'
+lead to a relatively large change in 𝑛  to meet this demand, while the inverse is not true because the  C
+:
+amount of energy consumed does not depend on the number of available ports. However, both
+M
+variables must rely on another input of population (p), that is determined in a specific area’s
+information. As such, our restriction function and derived Lagrange formula as follows:
+i
+𝑔 𝐸 ,𝑛 :	𝐸 = (𝑛 )D×𝑝              ℒ 𝐸 ,𝑛 H= 𝑓 𝐸 ,𝑛 +𝜆×𝑔(𝐸 ,𝑛 )
+|     | ' : | &'  | :   |     |     | ' : |     | ' : | ' : |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Applying Lagrange multipliers and solving for the p：artial derivatives,
+|     |     |     |     |     |     | 𝜕𝑓 𝜕𝑓 |     | 𝑐   |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+:
+|     |     | ∇   | 𝑓(𝐸   | ,𝑛   | ) = | ,     | =   | [ ]  |     |
+| --- | --- | --- | ----- | ---- | --- | ----- | --- | ---- | --- |
+|     |     |     | &É,I  | ' 号: |     | 𝜕𝐸 𝜕𝑛 |     | 𝑐    |     |
+|     |     |     |       |      |     | '     | :   | &    |     |
+|     |     |     |       |      |     | 𝜕𝑔 𝜕𝑔 |     |      |     |
+2𝑛
+|     |     | ∇   | 众𝑔    | 𝐸 ,𝑛 | =   | ,     | =   | [ :]  |     |
+| --- | --- | --- | ----- | ---- | --- | ----- | --- | ----- | --- |
+|     |     |     | &É,I  | '    | :   |       |     |       |     |
+|     |     |     |       |      |     | 𝜕𝐸 𝜕𝑛 |     | 1     |     |
+|     |     |     |       |      |     | '     | :   |       |     |
+Finally, the final value calculated by solving all of these equations is:
+公
+𝑐
+:
+𝑛 =
+|     |     |     |     |     | :   | 2𝑐 ×𝑝 |     |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+&
+|     | 信   |     |     |     |     | D   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+𝑐
+:
+|     |     |     |     | 𝐸   | =   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+&'
+|     |     |     |     |     | 4   | 𝐶 D×𝑝 |     |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+.
+微
+The optimization of this problem is also somewhat similar, with us having control over how many
+sockets we can buy and how much energy we can consume. Approaching these values will, in reality,
+greatly contribute to the reduction of monetary costs, with these ideal values resulting in the lowest
+possible cost of energy, which is obviously good for businesses.
+5.3 Optimizing Space Costs
+In much the same way as the previous two, optimizing space costs also consists of a target cost
+function, requirement, and a Lagrangian solution: 𝑓 𝑥 :	𝑇 = 𝐻 ×𝐻 ×𝑇 ×𝑡.
+|     |     |     |     |     |     | a   | p   | D Ê |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+For this specific situation, we focused on the variables 𝐻  (the probability a specific chair will be
+D
+hogged) and 𝑡 (time) as the other variables are properties of the area itself. For the restriction of this
+function, we considered that the probability H  would increase at a much faster rate than the time, for
+2
+if people spend more time at a specific place charging, then intuitively, there will be a build up of
+people, causing the probability to drastically increase. This relationship is represented by the equation
+;
+| below where c is a constant:  |     |     | = 𝑐.  |     |     |     |     |     |     |
+| ----------------------------- | --- | --- | ----- | --- | --- | --- | --- | --- | --- |
+.Ë|
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+10057 Page 21 of 39
+When optimizing this equation, it can be seen that it does not really bound the function, meaning that
+the smallest possible values of f(x) will exist at the natural extrema. Indeed, in this case, the most
+cost-optimizing choice is to try to reduce H to zero, which aligns with the already understood
+2
+correlation between a decrease in revenue and the total number of seat hoggers. We can directly apply
+policies that ban people from staying in shops after a certain amount of time, and with firm enough
+enforcement of these policies, we can minimize the amount of time and number of seats that these
+people take up. As such, the cost function is more gradual, for the space cost is dramatically reduced.
+5.4 Optimizing Security Costs
+In contrast to the other two equations, we did not apply any restriction equations or variable in solving
+the answer. Indeed, the only way to reduce this cost is to tell people to be more attentive and careful
+of their own belongings. This would most likely lead to a rise in public safety for personal items,
+which is the largest reason for the security cost of electronic devices and sockMets. Other possible
+initiatives are similar to the ones that companies have already enacted in removing the possibility for
+data to pass along the charging line. In this way, dangers such as juice jacking can be completely
+C
+eradicated.
+M
+6. Sensitivity Analysis
+i
+H
+We conducted a sensitivity analysis on the Monetary Cost Model, testing the total cost:
+：
+𝑇𝐶 =𝑇𝐹𝐶+𝑇𝑉𝐶 =𝐶 × 𝑛 +𝐶 ×𝐸
+5-^_ 5-^_ &-.a &'
+Here, we can only change the number of EV charging stations, or 𝑛 . If we adjust the change in
+号 5-^_
+number of CSs by 5%, we get the following, which we plugged into our model to derive Table 7:
+Table 7: Monetary Cost Sensitivity
+Year Change in number of CS +5% Change in number of CS – 5%
+众
+2019 +115542 +104538
+2020 公+139955 +126626
+2021 +171774 +155414
+信
+Table 8: Results of sensitivity test for monetary cost model
+Year New TFC New TC Change New TFC New TC Change
+微
+2019 738197838 876777043 +4.18% 667893282 806472487 -4.17%
+2020 894172495 1103213602 +4.02% 809013514 1018054621 -4.01%
+2021 1097464086 1404908401 +3.86% 992940046 1300384361 -3.86%
+The results of the analysis indicate that the model of total monetary costs is not very sensitive to
+changes in number of charging stations, with the change in result being less than the change in input.
+This aligns with our expectations, because the increase in number of charging stations demanded is
+not enough to appreciatively affect the market for these products; the output changes little.
+Table 9: Results of sensitivity testing for space cost model
+Variable +5% Percent Change -5% Percent Change Original Result
+H $93.51/day 5.07% $84.6/day -4.93% $89/day
+2
+Time $93.52/day 5.07% $84.61/day -4.93% $89/day
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 22 of 39
+In regards to the space cost model, we first began with the sample calculation we provided in the
+paper, before exploring the variables we had explicitly pointed to. As can be seen, both of the
+variables have the same effect on the end result, which makes sense considering that they talk about
+fundamentally the same phenomena but from two different angles, with one being probability and
+another an average. In addition, both of these factors impact the model by more than the amount that
+they are changed, indicating that our model is relatively sensitive to changes these variables, which
+is intuitive based on how the problem of space hogging is defined by how much time is spent.
+Table 10: Result of sensitivity testing for convenience model
+Variable Percent Change Percent Change Original Result
+Y 7.6% -7.6% 1.3%
+A 3.7% -4.1% 1.3%
+M
+E 5.05% -5.61% 1.%
+C
+𝛽 -2.54% 3.33% 63%
+M
+In regards to our convenience model, we first analyzed the results in regards to the three main inputs
+that make up our consumer profile. For the income, we determined that this would actually greatly
+affect the determined percentage, in accordance with our researchi on consumer preferences. On the
+H
+other hand, the results for age and education are much smaller, with especially age being not as
+important of a factor; more distinguished elder citizens also seem to enjoy using EVs and new devces.
+：
+After that, we also took an in-depth view of the variable beta, and how changing that coefficient
+would affect the result. As can be seen, changing that coefficient does not affect the end result more
+than the variable itself was changed, meaning that the model is relatively insensitive towards this data
+号
+point. This implies that small fluctuations in timing will not deter the trend of electric vehicles and
+the benefits of driving these cars.
+众
+7. Model Testing
+公
+To test out our model on the consumer profile of convenience benefits, we chose a random sample of
+a combination of income, education level and age: 𝑌,𝐸,𝐴 = (17,2,22). As all three values are
+信
+similar to the value of 1.2% from the regression model, we expected a result that was similar to 1.2.
+According to our calculation (calculation process will be included in the appendix), we obtained a
+result of 1.1368%, which was very close to the estimated data of 1.2%. The percent error is calculated
+微
+below:
+|1.1368−1.2|
+% 𝐸𝑟𝑟𝑜𝑟 = ×100% = 5.27%
+1.2
+We thought this was a relatively good result, considering the level of detail described by our model.
+However, the fact remains that this error could be reduced, if we had considered more variable, such
+as, but not limited to gender, race, and cultural differences. Despite this, we still believe that our
+model can significantly represent the larger more important trends in the modern world, for we can
+predict to a relatively high degree of accuracy the benefits that free energy sources can provide.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 23 of 39
+8. Conclusion
+8.1 Strengths and Limitations
+Table 11: Strengths and Weaknesses
+Areas Strengths Limitations
+Our research forms a strong foundation for our
+paper because it triangulates data from multiple One limitation is the lack of data on this research
+different sources (Appendix A.1). All our topic. It is nearly impossible to find the data on
+conclusions and deductions are based on number of charging ports in each small café or airport
+researched knowledge, so it adds credibility to our in China, or energy per mile expended by every EV
+later claims. After long hours of searching, we model from 2011-2018. This had an impact on our
+Research
+were able to find data on the most significant model as we had to simplify many areas and reduce
+parts of our model and move on to compile, sort, certain factors to constants (such as the energy per
+and analyze them in an effective manner. We also mile for EVs). This could potentially be solved with
+have a total of 70 number of sources, which is a access to a larger database, crMoss-checking data, or
+significant amount and reinforces the validity of averaging the data to get a more accurate model.
+our model’s conclusions.
+Our model design is holistic because we
+A large part of our daCta analysis is built on the concept
+of correlation (e.g.: demand leading to supply and
+considered multiple perspectives and divided
+assuming that an increase in EVs will lead to a
+energy consumption into many categories and
+proportionaMl increase in charging stations). However,
+subcategories. We individually considered EVs,
+we must consider that correlation does not equal
+mobile devices (phones, and laptops). We took
+causation, and there could be possible third variables
+into consideration four different regions (Global,
+that may alter future trends. However, as we are
+US, China, and Europe) for EVs, and a significant i
+Model Design unable to conduct a legitimate experiment that fully
+recent year period of 2011-2018 to obtain the H
+controls the environment that the EV charging stations
+most accurate trends. We also predicted three
+develops in, it is impossible to account for all
+years into the future 2019-2021 and cross-checked
+：extraneous variables that may impact our analysis of
+it against other predictions to test our model. We
+the data. This limitation applies to a majority of our
+also incorporated a complex methodology (i.e.:
+models, and could be fixed with access to a greater
+regression, integration, the LaGrange multiplier,
+database, so we can add more factors into
+Keynes’ Law, etc.) to produce results.
+号 consideration.
+Our model is reasonably realistic because it takes
+into consideration multiple different regions The model is slightly reductionist because, although
+around the globe instead of just focusing on only we considered multiple regions, they are all
+the global data. Globa众l data is likely subject to developed, wealthy, industrialized countries with
+variations due to outliers and does not fully access to abundant resources for technological
+capture the recent patterns of development. development and security. This is especially
+Hence, for our EV data analysis, we considered significant for the charging stations funded by
+Generalizability
+not only th公e global statistics, but also the statistics government institutions (e.g.: those located in
+of the three largest markets for EVs: China, US, airports). Hence, we can only generalize this model to
+and Europe [5]. Through this, we can cross check countries in the same category. Given the time to
+the trends for each region and see if they further develop our model, we could also consider
+correspond to each other, adding credibility and countries that are slightly less developed and compare
+信
+validity to our model. Hence, with this broader the two to see the difference in costs and optimization.
+spectrum of considerations, our model is high in However, this remains an ideal model as there is little
+generalizability because it is more applicable to data on EVs and devices in less developed countries.
+the detailed cases.
+微
+8.2 Reflection
+Humans are moving into an increasingly digital age and simultaneously becoming more concerned with
+energy conservation and preserving a healthy relationship with the Earth. Thus, the topic of free energy
+consumption is more important than ever. How has this type of energy consumption changed over time?
+How will it continue to change? What are the costs, benefits, and impacts to various places with these
+sources? And finally, how do we optimize the costs to ensure maximum benefit to society as a whole?
+Our paper offers a realistic, multifaceted model that addresses all these questions. Through regression,
+integration, and the LaGrange multiplier we have illustrated recent trends of free energy consumption in
+EVs and mobile devices from 2011-2018, and predicted trends into 2021. We have also found the cost
+model and analyzed methods to change and optimize it. Although our model faces a fair level of obstacles,
+specifically lack of available data, our team has found a way to overcome them through justifiable
+simplification of values into constants and synthesis of research from multiple sources. As a whole, our
+team has successfully responded to the prompt and created a reliable model that has great applications for
+the upcoming future.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 24 of 39
+APPENDIX A
+A.1 Bibliography
+*All citations throughout the paper are referenced with a bracket [x], where x corresponds to the
+number in the following list
+[1] “Saving on Fuel and Vehicle Costs.” Energy.gov, 26 Oct. 2019.
+[2] Luft, Oliver. “What Will It Take to Completely Eliminate EV Range Anxiety?” HERE 360,
+16 May 2019.
+[3] “Timeline: History of the Electric Car.” Energy.gov.
+M
+[4] Farmer, Roger. “Demand Creates Its Own Supply.” Roger E. A. Farmer, Roger E. A. Farmer,
+24 Oct. 2015.
+C
+[5] “Electric Car Use by Country.” Wikipedia, Wikimedia Foundation, 14 Nov. 2019.
+M
+[6] “Shanghai 2019: Chinese EV demand boost.” Jato. 16 April 2019.
+[7] “Plug-in Vehicles Sold in the United States.” Office of Energy Efficiency & Renewable
+i
+Energy. 26 Nov 2018. H
+[8] Total Number of AF Vehicles” European Al：ternative Fuels Observatory. 2019.
+[9] “Electrical Vehicle Sales: Facts & Figures.” EEI. April 2019.
+号
+[10] Gorzelany, Jim. “EVALUATING ELECTRIC VEHICLE WARRANTIES.” Buyer’s and
+Seller’s Advice. 15 January 2019.
+众
+[11] Cox, Wendell. “AVERAGE CHINESE CAR TRAVELS AS MUCH AS AMERICAN
+CAR.” Newgeography. 23 September 2019.
+[12] Richter, Wolf. “A公verage Miles Driven per Vehicle Drop to 1992 Level: Automakers Not
+Amused.” WOLF STREET. 29 June 2019.
+[13] “Europea信n LEAF owners on average drive 50% more per year than European ICE average.”
+Green Car Congress. 9 January 2015.
+[14] Kahan, Ari. “Annual passenger travel tends to increase with income.” U.S. Energy
+微
+Information Administration. 11 May 2016.1
+[15] “Energy consumption of full electric vehicles.” Electric Vehicle Database.
+[16] Muzi, Nico. “Only 5 percent of EV charging happens at public charging points.” Transport
+& Environment. 7 September 2018.
+[17] “Desktop vs Mobile vs. Tablet Market Share Worldwide.” StatCounter Global Stats.
+[18] “Global No.1 Business Data Platform.” Statista - The Statistics Portal for Market Data,
+Market Research and Market Studies.
+[19] Hale, James Loke. “When Is It Time To Buy A New Computer?” Bustle. Bustle. 29 Nov.
+2017.
+[20] “How Much Power Does a Computer Use? And How Much CO2 Does That Represent?”
+Energuide.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 25 of 39
+[21] Rathore, Sandeep. “Americans Spend the 12th Most Amount of Time In Front of Screens.”
+Small Business Trends, 8 Sept. 2019.
+[22] Admin. “Airports Increasing Power Sockets for Passenger Convenience.” Airport
+Technology, 21 Apr. 2015.
+[23] “Desktop vs Mobile vs Tablet Market Share Worldwide.” StatCounter Global Stats.
+[24] Campbell, Matt, et al. “How Many Cars Are There in the World?” CarsGuide.
+[25] Admin. “Airports Increasing Power Sockets for Passenger Convenience.” Airport
+Technology, 21 Apr. 2015.
+[26] Aune, Sean P. “Starbucks Cutting Power Outlets for Laptops?” TechnoBuffalo,
+M
+TechnoBuffalo, 4 Aug. 2011.
+[27] “Electric Vehicle Charging Stations for Malls.” EV Charging Installers.
+C
+[28] “EV Charging Statistics.” EVAdoption.
+M
+[29] “Charging.” DriveClean Plug-in Electric Vehicle Resource Center.
+i
+[30] “Electric Power Monthly”. U.S. Energy Information Administration. 24 October 2019.
+H
+[31] Smith, Margaret. “Non-Residential Electric Vehicle Supply Equipment Costs.” U.S.
+：
+Department of Energy. 17 February, 2015.
+[32] Smith, Margaret, Johathan Castellano. “Costs Associated with Non-Residential Electric
+号
+Vehicle Supply Equipment – factors to consider in the implementation of electric vehicle charging
+stations.” U.S. Department of Energy. November 2015.
+众
+[33] Rastogi, Nina Shen. “Is charging your cell phone over night a waste of energy”. Slate.com.
+16 March 2012.
+[34] “How Many Watt公s Does a Laptop Use When Charging?” Why Laptops. 18 October 2019.
+[35] “How much does it cost to an electrical outlet?” Improvenet. 28 July 2017
+信
+[36] Oh, Rachel. “How to solve the perennial problem of seat-hogging?” The Straits Times. 2
+June 2016
+微
+[37] “How Much Do Coffee Shop Owners Make?” Coffee Shop Startups.
+[38] Support Staff. “HOW TO CREATE AN AWESOME COFFEE SHOP FLOOR PLAN (ANY
+SIZE OR DIMENSION)”. FOODTRUCKEMPIRE. 2 May 2019.
+[39] Oh, Rachel. “How to solve the perennial problem of seat-hogging?” The Straits Times. 2
+June 2016
+[40] McSweeney, Philip. “Freeloaders, table hogs and ‘coffices’: the etiquette of working from a
+cafe” Stuff.Co.nz. 22 November 2016
+[41] Oh, Rachel. “How to solve the perennial problem of seat-hogging?” The Straits Times. 2
+June 2016
+[42] Christensen, Doreen. “Juice Jacking: Don’t plug into public USB charging stations at airports
+and malls, official warn”. SunSentinel. 15 November 2019
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 26 of 39
+[43] Krebs. “Beware of Juice-Jacking.” KrebsonSecurity. 17 August 2011
+[44] MacDonald, Chris. “Laptop Thefts: Starbucks Scandal?” The Business Ethics Blog. 2 May
+2011
+[45] Jeni, Xoxo. “The ultimate guide to working from a coffee shop.” Leisure hacker. 30
+September 2018.
+[46] “The General Theory of Employment, Interest and Money.” Wikipedia, Wikimedia
+Foundation, 16 Aug. 2019.
+[47] Wu Han, “Study on Influence Factors of Electric Vehicles Charging Station Location Based
+on ISM and FMICMAC.” North China Electric Power University, 24 March 2017.
+M
+[48] Toh, Michelle. “China Has Been Slashing Its Electric Car Subsidies. That Could Backfire.”
+CNN, Cable News Network, 12 Nov. 2019
+C
+[49] “Benefits Of Electric Cars.” Ergon Energy, Ergon Energy.
+M
+[50] ChargeItSpot. “5 Reasons Retailers Need Phone Charging Stations.” ChargeItSpot,
+ChargeItSpot, 6 Dec. 2016.
+i
+[51] Sawe, Benjamin Elisha. “The Largest Airports in thHe World.” WorldAtlas, 22 Feb. 2017.
+[52] “Legislation Reference - Reserved Parking： for Plug-In Vehicle Charging.” PlugInSites.
+[53] Pesce, Nicole Lyn. “Relax, Tesla Drivers - Thieves Don't Want Your Electric Cars.”
+MarketWatch, 3 Aug. 2019. 号
+[54] “Use of Electric Vehicle Charging Stations Terms and Conditions.” Oriongroup, 1 Mar.
+2016.
+众
+[55] Hall, Mary. “Marginal Revenue and Marginal Cost of Production.” Investopedia,
+Investopedia, 18 Nov. 2019.
+公
+[56] “Electrical Vehicle Charging Stations.” UCLA Transportation. UCLA.
+[57] “Electric信 Vehicle Charging Station Locations.” Alternative Fuels Data Center, US
+Department of Energy, 2018.
+[58] H微older, Jim. “Are Electric Cars More Expensive to Insure?” What Car?, What Car?, 4 Nov.
+2019.
+[59] “Car Theft Payouts 'at Seven-Year High'.” BBC News, BBC, 28 May 2019.
+[60] “The Ultimate Cafe Owner's Guide: Make It Cheaper.” Make It Cheaper.
+[61] “Management Notice.” Pat Dennehy Signs.
+[62] Whittaker, Zack. “LA Warns of 'Juice-Jacking' Malware, but Admits It Has No Cases.”
+TechCrunch, TechCrunch, 15 Nov. 2019.
+[63] “Airport Security.” Wikipedia, Wikimedia Foundation, 17 Nov. 2019.
+[64] Goldberg, Jillian. “Why the Market Needs an Electric Vehicle (EV) Charging Solution.”
+Guardknox, 5 Mar. 2019.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 27 of 39
+[65] TechOrchard. “This Is How Easy It Is to Steal a Smartphone: TechOrchard.” Tech Orchard,
+24 Feb. 2015.
+[66] “Security Advice for Mobile Device Users.” Security.
+[67] “Cobb–Douglas Production Function.” Wikipedia, Wikimedia Foundation, 17 Sept. 2019.
+[68] “干货！2019新能源汽车消费市场研究报告（建议收藏).” 万位科技. 23 August. 2019.
+[69] “Lagrange Multiplier.” Wikipedia, Wikimedia Foundation, 17 Nov. 2019.
+[70] “Greedy Approach vs Dynamic Programming.” GeeksforGeeks, 23 Oct. 2019.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 28 of 39
+A.2 Table of Tables
+Table 1: Assumptions and Justifications.............................................................................................. 4
+Table 2: Predicted number of laptops and phones and energy consumption 2019-2021 ................... 8
+Table 3: Ratio of EV:CS, Number of CS, Change in Number of CS from 2019-2021 ....................... 10
+Table 4: Unit Price and Costs for L1-L3 CS ..................................................................................... 11
+Table 5: Total Number of CS in L1-L3 and Costs ............................................................................. 11
+Table 6: Data Process: Finding Costs for Mobile Devices 2019-2021 ............................................. 14
+Table 7: Monetary Cost Sensitivity .................................................................................................... 21
+Table 8: Results of sensitivity test for monetary cost model .............................................................. 21
+Table 9: Results of sensitivity testing for space cost model ............................................................... 21
+Table 10: Result of sensitivity testing for convenience model ........................................................... 22
+Table 11: Strengths and Weaknesses ................................................................................................. 23
+M
+A.3 Table of Figures
+C
+Figure 1: Breakdown of EV Energy Consumption .............................................................................. 5
+Figure 2: flow chart for finding free energy consumption trend per rMegion, per year ........................ 6
+Figure 3: Total free energy consumption per region 2011-2021 ........................................................ 7
+Figure 4: Breakdown of process for finding total free energy in devices ........................................... 7
+i
+Figure 5: Regression Model for Sale of Laptops 2011-2018 .H............................................................. 7
+Figure 6: Total Energy Consumption for Mobile Devices .................................................................. 8
+Figure 7: Breakdown of costs for EVs and Mobile D：evices .............................................................. 10
+Figure 8: Calculating Total Cost From Change in Number of Charging Stations ........................... 11
+Figure 9: Total monetary cost breakdown for mobile devices .......................................................... 14
+Figure 10: Breakdown of Optimization of C号osts with LaGrange ...................................................... 18
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     | 10057  |     | Page 29 of 39  |
+| --- | --- | ------ | --- | -------------- |
+A.4 Variables and Definitions
+| Variables  | Definitions                                     |     |     |     |
+| ---------- | ----------------------------------------------- | --- | --- | --- |
+| 𝑬(𝒏)       | Total energy consumption of EVs                 |     |     |     |
+| 𝒏          |   Total number of electrical vehicles per year  |     |     |     |
+𝑬𝑽
+| 𝒎   |   Average mileage per year of electrical vehicles  |     |     |     |
+| --- | -------------------------------------------------- | --- | --- | --- |
+𝑬𝑽
+| 𝑬   |   Average energy per mile  |     |     |     |
+| --- | -------------------------- | --- | --- | --- |
+𝒎𝒊𝒍𝒆
+Difference between current year and 2010
+| 𝒏 	 |     |     |     |     |
+| --- | --- | --- | --- | --- |
+M
+| 𝑬𝑽(𝒏)  | Aggregate number of EVs at n  |     |     |     |
+| ------ | ----------------------------- | --- | --- | --- |
+C
+| 𝑬   | 𝒏   Free energy consumption at n  |     |     |     |
+| --- | --------------------------------- | --- | --- | --- |
+𝑷𝑪𝑺
+M
+| 𝒔 𝒏 |   Laptop sales at n  |     |     |     |
+| --- | -------------------- | --- | --- | --- |
+𝒍𝒂𝒑𝒕𝒐𝒑𝒔
+i
+| 𝒔 𝒏 |   Phone sales at n  |     | H   |     |
+| --- | ------------------- | --- | --- | --- |
+𝒑𝒉𝒐𝒏𝒆𝒔
+：
+| 𝑬   | Total energy consumption  |     |     |     |
+| --- | ------------------------- | --- | --- | --- |
+𝒕𝒐𝒕𝒂𝒍(𝒍𝒂𝒑𝒕𝒐𝒑,𝒑𝒉𝒐𝒏𝒆𝒔)
+| 𝒉𝒓  | Average number of hours on average  |     |     |     |
+| --- | ----------------------------------- | --- | --- | --- |
+号
+| 𝑬   | Energy use per hour  |     |     |     |
+| --- | -------------------- | --- | --- | --- |
+𝒉𝒓
+众
+| 𝒏   | Number of devices  |     |     |     |
+| --- | ------------------ | --- | --- | --- |
+𝑫𝒆𝒗(𝒍𝒂𝒑𝒕𝒐𝒑,𝒑𝒉𝒐𝒏𝒆𝒔)
+| 𝑬 𝑫𝒆𝒗(𝒍𝒂𝒑𝒕𝒐𝒑,𝒑𝒉𝒐𝒏𝒆𝒔)  | E公nergy consumption of devices           |     |     |     |
+| --------------------- | ---------------------------------------- | --- | --- | --- |
+| 𝑬                     | Energy consumption of devices in public  |     |     |     |
+| 𝑫𝒆𝒗𝑷                  |                                          |     |     |     |
+信
+| 𝑻𝑪  | Total cost  |     |     |     |
+| --- | ----------- | --- | --- | --- |
+
+微
+| 𝑻𝑭𝑪 | Total fixed cost  |     |     |     |
+| --- | ----------------- | --- | --- | --- |
+
+| 𝑻𝑽𝑪  | Total variable cost            |     |     |     |
+| ---- | ------------------------------ | --- | --- | --- |
+| 𝑪    |   Unit cost per electric plug  |     |     |     |
+𝑷𝒍𝒖𝒈
+| 𝒏   |   Number of electric plugs added per year  |     |     |     |
+| --- | ------------------------------------------ | --- | --- | --- |
+𝑷𝒍𝒖𝒈
+| 𝑪   |   Unit cost of electricity  |     |     |     |
+| --- | --------------------------- | --- | --- | --- |
+𝑬𝒍𝒆𝒄
+| 𝑬   |   Total electrical energy for EVs  |     |     |     |
+| --- | ---------------------------------- | --- | --- | --- |
+𝑬𝑽
+| 𝑬   |   Total electrical energy for devices  |     |     |     |
+| --- | -------------------------------------- | --- | --- | --- |
+𝑫𝒆𝒗
+| ∆𝑬  |   Change in electrical energy for devices  |     |     |     |
+| --- | ------------------------------------------ | --- | --- | --- |
+𝑫𝒆𝒗
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     |                                                         | 10057  | Page 30 of 39  |
+| --- | ------------------------------------------------------- | ------ | -------------- |
+| 𝑬   | Annual average electrical energy per electrical outlet  |        |                |
+| 𝒉   | Average charging hours                                  |        |                |
+| 𝑬   | Average hourly energy consumption                       |        |                |
+𝑫𝒆𝒗𝑼
+| 𝑻   | Total cost of specific section  |     |     |
+| --- | ------------------------------- | --- | --- |
+𝒄𝒐𝒔𝒕
+| 𝑪   | The total cost per seat in a shop  |     |     |
+| --- | ---------------------------------- | --- | --- |
+𝒔𝒆𝒂𝒕
+| 𝒕   | Time hogged in hours  |     |     |
+| --- | --------------------- | --- | --- |
+M
+| 𝑻   | Total revenue made by a shop in a year  |     |     |
+| --- | --------------------------------------- | --- | --- |
+𝒓𝒆𝒗𝒆𝒏𝒖𝒆
+| 𝑻   | Total number of seats in a shop  |     | C   |
+| --- | -------------------------------- | --- | --- |
+𝒔𝒆𝒂𝒕𝒔
+M
+𝑷 𝑯𝒐𝒈   The probability that a seat will be hogged at a certain point
+𝑯   The probability that a store will have seati hoggers at any specific time
+𝟏
+H
+| 𝑯   | The percent of seats that are occupied at any time  |     |     |
+| --- | --------------------------------------------------- | --- | --- |
+𝟐
+：
+| 𝜶   | The coefficient of phone security  |     |     |
+| --- | ---------------------------------- | --- | --- |
+号
+The probability that a kiosk will be infected after taking into account the
+𝑷 𝑱𝑱,𝑪
+probability of using the infected kiosk
+| 𝑻   | The total n众umber of phones  |     |     |
+| --- | ---------------------------- | --- | --- |
+𝒑𝒉𝒐𝒏𝒆𝒔
+| 𝑷   | The attracted number of people  |     |     |
+| --- | ------------------------------- | --- | --- |
+𝒂𝒕𝒕
+公
+| 𝑷   | Total population  |     |     |
+| --- | ----------------- | --- | --- |
+𝒑
+信
+| %𝑬𝑽  | The percentage of people with EVs in the area  |     |     |
+| ---- | ---------------------------------------------- | --- | --- |
+| 𝒏𝑪𝑺  | Current number of charging stations            |     |     |
+微
+| 𝜶   | Coefficient to reflect the responsiveness of the change  |     |     |
+| --- | -------------------------------------------------------- | --- | --- |
+| 𝑹   | The total increase in revenue                            |     |     |
+𝒊𝒏𝒄
+| 𝒔   | The average spending of consumers  |     |     |
+| --- | ---------------------------------- | --- | --- |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     |     | 10057  |     | Page 31 of 39  |
+| --- | --- | ------ | --- | -------------- |
+Appendix B
+B.1 Additional Graphs
+Appendix B.1.1 Data On Annual Mileage for the US from 1975-2017
+M
+C
+M
+i
+H
+：
+From this graph, we can see that from 201号1-2017, there is not a drastic change in annual mileage
+across time. Hence, we can assume that this value stays constant for our calculations in a given region.
+B.2 Additional Data and Statistics
+众
+B.2.1 Total Number of EVs from 2011-2021
+| Year  | 公 Global  | China   | US      | Europe  |
+| ----- | --------- | ------- | ------- | ------- |
+| 2011  | 54,300    | 14,700  | 24,400  | 4,000   |
+信
+| 2012  | 183,000  | 32,600  | 82,200   | 23,100  |
+| ----- | -------- | ------- | -------- | ------- |
+| 2013  | 366,800  | 38,600  | 157,700  | 67,900  |
+微
+| 2014  | 629,900     | 49,900     | 245,500    | 149,300    |
+| ----- | ----------- | ---------- | ---------- | ---------- |
+| 2015  | 1,039,200   | 115,700    | 349,900    | 278,300    |
+| 2016  | 1,704,900   | 317,600    | 485,400    | 466,100    |
+| 2017  | 2,780,100   | 769,300    | 676,700    | 723,800    |
+| 2018  | 4,461,200   | 1,616,700  | 958,100    | 1,063,000  |
+| 2019  | 6,933,100   | 3,023,200  | 1,349,900  | 1,491,300  |
+| 2020  | 10,458,300  | 5,210,500  | 1,897,700  | 2,009,200  |
+| 2021  | 15,381,400  | 8,436,300  | 2,681,800  | 2,618,100  |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     |     | 10057  |     | Page 32 of 39  |
+| --- | --- | ------ | --- | -------------- |
+B.2.2 Total Energy Consumed 2017-2021 (in kWh)
+| Year  | Global      | China       | US          | Europe     |
+| ----- | ----------- | ----------- | ----------- | ---------- |
+| 2011  | 180921840   | 57403899    | 95403672    | 7772978    |
+| 2012  | 609493454   | 127359213   | 321331219   | 44781602   |
+| 2013  | 1222052477  | 150909686   | 616772794   | 131777880  |
+| 2014  | 2098441205  | 195003494   | 959939035   | 289803787  |
+| 2015  | 3462006601  | 452493242   | 1368261056  | 540191263  |
+| 2016  | 5679600285  | 1242135964  | 1898390455  | 904562214  |
+M
+| 2017  | 9261466674  | 3008506895   | 2646375427   | 1404801272  |
+| ----- | ----------- | ------------ | ------------ | ----------- |
+| 2018  | 1486178739  | 6322440007   | 3746848377C  | 2063144172  |
+| 2019  | 2309653415  | 11822849402  | 5279063379   | 2894418536  |
+M
+| 2020  | 3484018450  | 20376738824  | 7421348674    | 3899594799  |
+| ----- | ----------- | ------------ | ------------- | ----------- |
+| 2021  | 5124071922  | 32991897464  | 10i487734033  | 5081390176  |
+H
+
+：
+B.2.3 Total free energy consumed per region 2011-2021 (in kWh)
+号
+| Year  | Global   | China    | US       | Europe  |
+| ----- | -------- | -------- | -------- | ------- |
+| 2011  | 9046092  | 2870195  | 4770184  | 388649  |
+众
+| 2012  | 30474673   | 6367961  | 16066561  | 2239080   |
+| ----- | ---------- | -------- | --------- | --------- |
+| 2013  | 6公1102624  | 7545484  | 30838640  | 6588894   |
+| 2014  | 104922060  | 9750175  | 47996952  | 14490189  |
+信
+| 2015  | 173100330  | 22624662  | 68413053  | 27009563  |
+| ----- | ---------- | --------- | --------- | --------- |
+| 2016  | 283980014  | 62106798  | 94919523  | 45228111  |
+微
+| 2017  | 463073334   | 150425345   | 132318771  | 70240064   |
+| ----- | ----------- | ----------- | ---------- | ---------- |
+| 2018  | 743089370   | 316122000   | 187342419  | 103157209  |
+| 2019  | 1154826710  | 591142470   | 263953169  | 144720927  |
+| 2020  | 1742009230  | 1018836941  | 371067434  | 194979740  |
+| 2021  | 2562035960  | 1649594873  | 524386702  | 254069509  |
+
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+|     |     |     |     | 10057  |     |     |     | Page 33 of 39  |     |
+| --- | --- | --- | --- | ------ | --- | --- | --- | -------------- | --- |
+B.2.4 Total amount of global laptop and cellphone sales (in millions of units) 2011-2018
+Year  Global Laptop Sales (millions of units)  Global Operating Laptops (millions of units)
+| 2011  | 209  |     |     |     |     | 752.405  |     |     |     |
+| ----- | ---- | --- | --- | --- | --- | -------- | --- | --- | --- |
+| 2012  | 201  |     |     |     |     |          |     |     |     |
+793.531
+| 2013  | 180.9   |     |     |     |     | 799.153  |     |     |     |
+| ----- | ------- | --- | --- | --- | --- | -------- | --- | --- | --- |
+| 2014  | 174.28  |     |     |     |     | 779.348  |     |     |     |
+| 2015  | 163.1   |     |     |     |     | 744.195  |     |     |     |
+| 2016  | 156.8   |     |     |     |     |          |     |     |     |
+703.771
+M
+| 2017  | 161.6  |     |     |     |     | 668.153  |     |     |     |
+| ----- | ------ | --- | --- | --- | --- | -------- | --- | --- | --- |
+| 2018  | 162.3  |     |     |     |     | 647.419  |     |     |     |
+C
+|     |     |     |     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+B.2.5 Total Number of EV sales per region from 2011-2018
+i
+| Year  | 2011  | 2012  | 2013  | 2014  |     | 2015  H | 2016  | 2017  | 2018  |
+| ----- | ----- | ----- | ----- | ----- | --- | ------- | ----- | ----- | ----- |
+China [6]  1,000  3,000  3,800  41,00：0  150,000  282,000  596,000  1,120,000
+US [7]  17,000  55,000  96,000  119,000  115,000  157,000  200,000  358,000
+号
+Europe [8]  8,900  26,000  62,000  91,000  183,000  224,000  269,000  396,000
+Global [9]  54,000  141,000  众223,000  341,000  573,000  813,000  1,277,000  2,099,000
+
+公
+B.2.6 Ratio of Charging Stations to EVs in US from 2011-2021
+|         | Nu信mber of Charging Stations (𝑛 |         |     |       | Number of EVs (𝑛 |          | )   |                 |     |
+| ------- | ------------------------------- | ------- | --- | ----- | ---------------- | -------- | --- | --------------- | --- |
+| Year    |                                 |         |     | 67 )  |                  |          | &'  | Ratio of EV:CS  |     |
+| 2011    |                                 | 3,394   |     |       |                  | 24,400   |     | 7.19            |     |
+| 2012  微 |                                 | 13,392  |     |       |                  | 82,200   |     | 6.14            |     |
+| 2013    |                                 | 19,410  |     |       |                  | 157,700  |     | 8.13            |     |
+| 2014    |                                 | 25,602  |     |       |                  | 245,500  |     | 9.59            |     |
+| 2015    |                                 | 30,945  |     |       |                  | 349,900  |     | 11.31           |     |
+| 2016    |                                 | 42,029  |     |       |                  | 485,400  |     | 11.55           |     |
+| 2017    |                                 | 50,627  |     |       |                  | 676,700  |     | 13.37           |     |
+| 2018    |                                 | 61,067  |     |       |                  | 958,100  |     | 15.69           |     |
+| 2019    |                                 | /       |     |       |                  | /        |     | 17.58           |     |
+| 2020    |                                 | /       |     |       |                  | /        |     | 19.82           |     |
+| 2021    |                                 | /       |     |       |                  | /        |     | 22.25           |     |
+关注 HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     | Hi  | CM  |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+获取更多资讯
+
+|     |     |     |     |     |     | 10057  |     |     |     | Page 34 of 39  |     |
+| --- | --- | --- | --- | --- | --- | ------ | --- | --- | --- | -------------- | --- |
+B.2.7 Percent Error of Laptop Sales (Model Predicted-Online Predicted)
+Year  Model Predicted Sales  Online Predicted Sales  Percent Error
+| 2019  |     |     |     | 184.6251  |     |     |     |     | 166  |     | 10.8%  |
+| ----- | --- | --- | --- | --------- | --- | --- | --- | --- | ---- | --- | ------ |
+| 2020  |     |     |     | 217.84    |     |     |     |     | 181  |     | 20.4%  |
+| 2021  |     |     |     | 267       |     |     |     |     | 203  |     | 31.5%  |
+B.2.8 Annual Mileage of Regions (China, US, Europe, Global)
+|     | Region  |     |     | Annual Mileage  |     |     |     | Region  |     | Annual Mileage  |     |
+| --- | ------- | --- | --- | --------------- | --- | --- | --- | ------- | --- | --------------- | --- |
+M
+|     | China [11]  |     |     | 13,500 mi / year  |     |     |     | Europe [13]  |     | 6700 mi / year  |     |
+| --- | ----------- | --- | --- | ----------------- | --- | --- | --- | ------------ | --- | --------------- | --- |
+United States [12]  13,500 mi / year  Global [14]  11,500 mi / year
+C
+M
+
+B.2.9 Global Laptop and Phone Sales [and operating] 2019-2021 (millions of units)
+i
+H
+Global Operating
+|       |     | Global Laptop Sales  |     |     | Global Operating Laptops  |                       |     | Global Phone Sales   |     |                      |     |
+| ----- | --- | -------------------- | --- | --- | ------------------------- | --------------------- | --- | -------------------- | --- | -------------------- | --- |
+| Year  |     |                      |     |     |                           |                       |     |                      |     | Phones (millions of  |     |
+|       |     | (millions of units)  |     |     |                           | (millions of un：its)  |     | (millions of units)  |     |                      |     |
+units)
+| 2019  |     |     | 184.6251  |     |     | 651.646  |     |     | 5.01  |     | 1509.3  |
+| ----- | --- | --- | --------- | --- | --- | -------- | --- | --- | ----- | --- | ------- |
+号
+| 2020  |     |     | 217.84  |     |     | 690.913  |     |     | 30.14  |     | 1520    |
+| ----- | --- | --- | ------- | --- | --- | -------- | --- | --- | ------ | --- | ------- |
+| 2021  |     |     | 267     |     |     | 775.297  |     |     | 85.96  |     | 1576.5  |
+众
+
+公
+B.2.10 Ratio of EV:CS, Number of CS, Change in Number of CS from 2019-2021
+Year  信 Ratio of EV:CS  Number of CSs  Change in Number of CSs
+| 2019  |     |     |     | 17.58  |     |     | 394374  |     |     | + 110040  |     |
+| ----- | --- | --- | --- | ------ | --- | --- | ------- | --- | --- | --------- | --- |
+微
+| 2020  |     |     |     | 19.82  |     |     | 527664  |     |     | + 133290  |     |
+| ----- | --- | --- | --- | ------ | --- | --- | ------- | --- | --- | --------- | --- |
+| 2021  |     |     |     | 22.25  |     |     | 691258  |     |     | + 163594  |     |
+
+关注 HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+获取更多资讯
+
+|     |     |     | 10057  |     | Page 35 of 39  |
+| --- | --- | --- | ------ | --- | -------------- |
+B.3 Additional Formulas
+B.3.1 Regression formulas for EV Sales in 4 regions (Global, US, China, Europe)
+| Region  | Regression Formula for EV Sales S(n)  |                              |     |     |     |
+| ------- | ------------------------------------- | ---------------------------- | --- | --- | --- |
+| China   | S(n) =                                | 5.3658n3−31.6838n2+47.7970n  |     |     |     |
+1.6715n3−15.3221n2+58.1700n
+| US      | S(n) = |                               |     |     |     |
+| ------- | ------ | ----------------------------- | --- | --- | --- |
+| Europe  | S(n) = | 0.0249n3+5.2340n2+4.5080n     |     |     |     |
+| Global  |        | 7.1795n3−41.8630n2+132.9368n  |     |     |     |
+S(n) =
+| B.3.2 Formulas for finding total energy per region  |     |     |     |     | M   |
+| --------------------------------------------------- | --- | --- | --- | --- | --- |
+Region  Total Energy E(n) and Factor (mileage per year × energy per mile)
+C
+| China  | E(n) | 13,500×0.289682×n  |     |     |     |
+| ------ | ---- | ------------------ | --- | --- | --- |
+=
+M
+| US  | E(n) | 13,500×0.289682×n  |     |     |     |
+| --- | ---- | ------------------ | --- | --- | --- |
+=
+| Europe  | E(n) = | 6,700×0.289682×n  |     | i   |     |
+| ------- | ------ | ----------------- | --- | --- | --- |
+H
+Global
+|     | E(n) = | 11,500×0.289682×n  |     |     |     |
+| --- | ------ | ------------------ | --- | --- | --- |
+：
+B.3.3 Regression formulas for laptop and phone sales
+|     |     | 0.4199𝑛B 号 | −4.438𝑛D |                |     |
+| --- | --- | ---------- | -------- | -------------- | --- |
+|     | 𝑠 𝑛 | =          |          | +3.744𝑛+204.3  |     |
+-9:;<:=
+|     | 𝑠 𝑛 | = 10.3284𝑛D	−	140.422𝑛	+	457.34	  |     |     |     |
+| --- | --- | --------------------------------- | --- | --- | --- |
+:H<I.=众
+
+|     | 公   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- |
+信
+微
+关注 HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+10057 Page 36 of 39
+B.3 Code
+B.3.1 Code for Income Simulation
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 37 of 39
+B.3.2 Codd Dogulas Code
+M
+C
+M
+i
+H
+：
+号
+B.3.3 Education Data Code
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 38 of 39
+B.3.4 Income to Education Restriction Code
+B.3.5 Income to Age Restriction Code
+M
+C
+M
+i
+H
+：
+B.3.6 Demographic Factors Model
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10057 Page 39 of 39
+B.3.7 Processing Age Code
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

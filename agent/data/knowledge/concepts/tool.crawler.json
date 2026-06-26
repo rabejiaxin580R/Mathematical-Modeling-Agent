@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.crawler",
+  "title": "简单爬虫基础",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "数据获取",
+    "简单爬虫基础"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.3",
+  "aliases": [
+    "爬虫",
+    "requests",
+    "BeautifulSoup"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "简单爬虫就是让电脑自动帮你从网页上复制粘贴需要的数据，省去手动收集的麻烦。",
+    "intuition": "想象你是一个图书管理员，需要从成千上万本书中找出所有关于数学建模的书。手动翻找太慢，于是你训练了一只小猴子（爬虫），告诉它：'去这些书架上（URL），把每本书的标题和作者（数据）抄下来给我。' 小猴子会用固定的方式（HTTP请求）拿到书，然后根据你给的标签（CSS选择器）找到信息，最后整理成一张表格。",
+    "when_to_use": "当需要从公开网站上获取结构化数据（如表格、列表、特定字段）用于分析，且数据量较大或需要定期更新时，就该用爬虫。例如：爬取天气数据、股票价格、论文信息、商品价格等。",
+    "definition": "网络爬虫是一种自动获取网页内容的程序。简单爬虫通常使用 requests 库发送 HTTP 请求获取网页 HTML，再用 BeautifulSoup 库解析 HTML 并提取所需数据。",
+    "math_principle": "爬虫本身不涉及复杂数学，但数据提取过程可抽象为：给定目标URL集合U，对每个u∈U，通过HTTP GET请求获取响应R(u)，然后使用CSS选择器或XPath表达式f从R(u)的HTML树中提取目标数据d = f(R(u))。若需处理分页，则需构造URL模式或模拟点击。数据清洗后形成结构化表格。",
+    "step_by_step": [
+      "1. 确定目标网站和要爬取的数据（如表格、列表）。",
+      "2. 分析网页结构，找到数据所在的HTML标签和属性（如class、id）。",
+      "3. 安装必要的Python库：requests, beautifulsoup4。",
+      "4. 使用requests.get(url)获取网页内容，设置headers模拟浏览器。",
+      "5. 用BeautifulSoup解析HTML：soup = BeautifulSoup(response.text, 'html.parser')。",
+      "6. 使用soup.select()或soup.find_all()根据CSS选择器提取数据。",
+      "7. 将提取的数据存储到列表或字典中，最后转为DataFrame或CSV。",
+      "8. 处理分页：循环改变URL参数或模拟点击下一页。",
+      "9. 添加延时和异常处理，避免被封IP。"
+    ],
+    "worked_example": "假设我们要从UPS网站提取地面运输时间地图数据（类似论文6829）。目标：获取某个区域到其他点的运输时间。步骤：1. 分析UPS地图页面，发现运输时间数据以像素点颜色表示。2. 使用requests获取地图图片或JSON数据（实际中可能更复杂）。3. 解析图片颜色或JSON，将颜色映射为时间值。4. 将像素坐标转换为地理坐标。5. 输出为表格：经度、纬度、运输时间。",
+    "pitfalls": [
+      "1. 网站反爬机制：如IP封锁、验证码、动态加载。需设置User-Agent、使用代理、模拟浏览器行为。",
+      "2. 网页结构变化：选择器失效，需定期维护。",
+      "3. 法律风险：遵守robots.txt，不要爬取敏感或版权数据。",
+      "4. 数据量大时效率低：考虑异步或分布式爬虫。",
+      "5. 动态内容：JavaScript渲染的页面需用Selenium等工具。"
+    ],
+    "tools": "Python库：requests, beautifulsoup4, lxml。最小可运行代码：\n```python\nimport requests\nfrom bs4 import BeautifulSoup\n\nurl = 'http://example.com'\nheaders = {'User-Agent': 'Mozilla/5.0'}\nresponse = requests.get(url, headers=headers)\nsoup = BeautifulSoup(response.text, 'html.parser')\n# 假设数据在class为'data'的div中\ndata = soup.select('div.data')\nfor item in data:\n    print(item.text)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "d = f(R(u))",
+      "variables": {
+        "u": "目标URL",
+        "R(u)": "HTTP响应内容（HTML）",
+        "f": "CSS选择器或XPath表达式",
+        "d": "提取的数据"
+      }
+    }
+  ],
+  "cases": [
+    "6829"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_H11"
+    ],
+    "from_papers": [
+      "6829"
+    ]
+  }
+}

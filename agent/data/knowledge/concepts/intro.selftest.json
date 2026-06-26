@@ -1,0 +1,90 @@
+{
+  "schema_version": 3,
+  "concept_id": "intro.selftest",
+  "title": "阶段性自测题目",
+  "taxonomy_path": [
+    "新手入门与学习路径",
+    "学习路径规划",
+    "阶段性自测题目"
+  ],
+  "module_id": "B",
+  "subcat_id": "B.2",
+  "aliases": [
+    "自测",
+    "阶段测试"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder",
+    "writer"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "阶段性自测题目是学完每个模块后设计的独立实践任务，用来检验你对核心方法的掌握程度和应用能力。",
+    "intuition": "就像学完一个单元后做一次小测验，但这里不是选择题，而是让你动手完成一个完整的预测项目。比如学完回归分析，就给你一个CO2浓度数据集，让你自己建立模型、预测未来浓度、评估效果。这样能真正检验你是否会“用”而不是只会“背”。",
+    "when_to_use": "当你完成一个数学建模方法的学习模块（如回归分析、分类、聚类等）后，想检验自己是否真正理解并能独立应用该方法时，就应该做阶段性自测题目。它通常出现在学习路径的节点处，作为自我评估和巩固的环节。",
+    "definition": "阶段性自测题目是学习路径中每个模块结束后设计的独立实践任务，要求学生运用刚学到的数学建模方法，在给定数据集上完成从数据预处理、模型建立、参数估计、预测到评估的完整流程，以检验其综合应用能力。",
+    "math_principle": "以回归分析预测CO2浓度为例，核心是线性回归模型：y = Xβ + ε，其中y是CO2浓度（响应变量），X是设计矩阵（包含时间等自变量），β是回归系数，ε是误差项。参数估计采用最小二乘法，最小化残差平方和RSS(β) = (y - Xβ)^T (y - Xβ)，解得β̂ = (X^T X)^{-1} X^T y。预测时，对于新观测值x_new，预测值为ŷ = x_new^T β̂。模型评估常用均方根误差RMSE = sqrt((1/n) Σ(y_i - ŷ_i)^2) 和决定系数R² = 1 - (Σ(y_i - ŷ_i)^2) / (Σ(y_i - ȳ)^2)。",
+    "step_by_step": [
+      "1. 获取数据集：例如CO2浓度数据集，包含时间（年、月）和CO2浓度值。",
+      "2. 数据预处理：处理缺失值，将时间转换为数值特征（如年份序号），划分训练集和测试集。",
+      "3. 建立模型：选择线性回归模型，设定因变量y为CO2浓度，自变量X为时间特征。",
+      "4. 参数估计：使用最小二乘法计算回归系数β̂ = (X^T X)^{-1} X^T y。",
+      "5. 模型预测：对测试集或新数据点x_new，计算预测值ŷ = x_new^T β̂。",
+      "6. 模型评估：计算RMSE和R²，评估预测精度。",
+      "7. 结果分析：绘制真实值与预测值的对比图，分析误差来源。"
+    ],
+    "worked_example": "假设CO2浓度数据集包含1959年至1997年每月平均CO2浓度（单位：ppm）。我们取前80%数据（1959-1989年）作为训练集，后20%（1990-1997年）作为测试集。建立线性回归模型：y = β0 + β1 * t，其中t为从1959年1月开始的月份序号（t=1,2,...）。用最小二乘法求得β0≈315, β1≈0.012。对测试集第一个点（1990年1月，t=373），预测值ŷ = 315 + 0.012*373 ≈ 319.5 ppm，实际值为354.0 ppm，误差较大，说明线性模型可能不够，需考虑非线性或季节性。计算测试集RMSE≈5.2 ppm，R²≈0.85。",
+    "pitfalls": [
+      "1. 数据泄露：在预处理时不小心使用了测试集信息（如用全局均值填充缺失值），导致评估结果过于乐观。",
+      "2. 过拟合：模型过于复杂（如高阶多项式），在训练集上表现很好但测试集上很差。",
+      "3. 忽略时间序列特性：CO2数据是时间序列，直接做普通线性回归可能忽略自相关和趋势，需考虑时间序列模型。",
+      "4. 评估指标单一：仅看R²可能不够，需结合残差分析、交叉验证等。"
+    ],
+    "tools": "Python + scikit-learn + pandas + matplotlib。最小可运行代码：\n```python\nimport pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.metrics import mean_squared_error, r2_score\n\n# 假设数据已加载为DataFrame df，包含列 'time' (月份序号) 和 'co2'\nX = df[['time']]\ny = df['co2']\n# 划分训练集和测试集\nsplit_idx = int(0.8 * len(df))\nX_train, X_test = X[:split_idx], X[split_idx:]\ny_train, y_test = y[:split_idx], y[split_idx:]\n# 训练模型\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n# 预测\ny_pred = model.predict(X_test)\n# 评估\nrmse = np.sqrt(mean_squared_error(y_test, y_pred))\nr2 = r2_score(y_test, y_pred)\nprint(f'RMSE: {rmse:.2f}, R²: {r2:.2f}')\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "y = X\\beta + \\varepsilon",
+      "variables": {
+        "y": "响应变量（CO2浓度）",
+        "X": "设计矩阵（自变量）",
+        "\\beta": "回归系数",
+        "\\varepsilon": "误差项"
+      }
+    },
+    {
+      "latex_code": "\\hat{\\beta} = (X^T X)^{-1} X^T y",
+      "variables": {
+        "\\hat{\\beta}": "回归系数的最小二乘估计",
+        "X^T": "设计矩阵的转置",
+        "X^T X": "信息矩阵",
+        "X^T y": "正规方程右侧"
+      }
+    },
+    {
+      "latex_code": "\\text{RMSE} = \\sqrt{\\frac{1}{n} \\sum_{i=1}^n (y_i - \\hat{y}_i)^2}",
+      "variables": {
+        "n": "样本数量",
+        "y_i": "第i个真实值",
+        "\\hat{y}_i": "第i个预测值"
+      }
+    },
+    {
+      "latex_code": "R^2 = 1 - \\frac{\\sum_{i=1}^n (y_i - \\hat{y}_i)^2}{\\sum_{i=1}^n (y_i - \\bar{y})^2}",
+      "variables": {
+        "\\bar{y}": "真实值的均值",
+        "\\sum_{i=1}^n (y_i - \\hat{y}_i)^2": "残差平方和",
+        "\\sum_{i=1}^n (y_i - \\bar{y})^2": "总平方和"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_B08"
+    ],
+    "from_papers": []
+  }
+}

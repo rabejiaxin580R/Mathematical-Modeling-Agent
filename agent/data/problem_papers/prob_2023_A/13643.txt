@@ -1,0 +1,1789 @@
+|     |     |     |     | Team | Control Number |
+| --- | --- | --- | --- | ---- | -------------- |
+13643
+|     |     |     |     | Problem | Chosen |
+| --- | --- | --- | --- | ------- | ------ |
+A
+2023
+HiMCM
+|     |     |     |     |     | Summary Sheet |
+| --- | --- | --- | --- | --- | ------------- |
+Summary
+M
+The dandelion, officially named Taraxacum officinale, is known as an invaCsive species, which is
+M
+likely to cause economic or environmental harm or harm to human health.
+M C
+In this paper, we design a Dandelion Spread Model by using the Monte Carlo method.
+M
+Provided there is one dandelion at the edge of an open one-hectare i plot of land, we need to
+H
+| predict | the spread | of dandelions |     | over time. |     |
+| ------- | ---------- | ------------- | --- | ---------- | --- |
+i
+We input 3 groups of random variables to our modelH, i.e., temperature, wind and humidity.
+Some details like equivalent temperature curve, di：spersal distances under horizontal wind and
+：
+updrafts, and random biological characteristics/behaviors are also taken into account.
+We output all the locations of dandelions spreading on the land over time. In order to get
+stable results, we run the model with 2 p号号hases. For each phase we run 1000 times. In the first
+phase, we determine optimal starting time. In the second phase, we fix the starting time and get
+| the most | probable | outcome. |     |     |     |
+| -------- | -------- | -------- | --- | --- | --- |
+众
+We apply our model to 6 loca众tions and conclude the statistic characteristics. We also conduct
+| a sensitivity | analysis | and | discuss | the strengths | and weaknesses. |
+| ------------- | -------- | --- | ------- | ------------- | --------------- |
+公
+Inthispaper, wealso公devisea Plant Impact Factor Modeltomeasuretheimpactofinvasive
+plants on humans an信d the environment. We define a global impact factor and a local impact factor
+| for different | purposes. |     |     |     |     |
+| ------------- | --------- | --- | --- | --- | --- |
+We conside信r many attributes, including the plant’s characteristics, its effects on humans and
+微
+the environment, and its local adaptation, and use the Analytic Hierarchy Process to get the
+| weights | for each attribute. |     |     |     |     |
+| ------- | ------------------- | --- | --- | --- | --- |
+微
+We apply our model to 226 invasive plants and calculate their global impact factors. We also
+choose 4 plants and calculate their local impact factors at 3 locations. Likewise, we conduct a
+| sensitivity | analysis | and discuss | the | strengths | and weaknesses. |
+| ----------- | -------- | ----------- | --- | --------- | --------------- |
+At the end of this paper, we write an article to elaborate on our viewpoint regarding invasive
+species. Rather than think they are enemies, we need to learn how to get along with them. To us
+| human | beings, they | are just | vigorous | friends. |     |
+| ----- | ------------ | -------- | -------- | -------- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 2 of 25
+Contents
+1 Introduction 3
+1.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.2 Problem Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+2 Dandelion Spread Model 4
+2.1 Assumptions and Justifications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+M
+2.2 Model Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.3 Temperature Curve . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.4 Dispersal Mechanisms . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+C
+M
+2.4.1 Normal Distance s . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+N
+2.4.2 Long Distance s . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+L
+M
+2.4.3 Dandelion Density . . . . . . . . . . . . . . . . . . . C. . . . . . . . . . . . . 8
+2.5 Adaptation Factor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+M
+2.6 Dandelion Life Cycle . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+i
+2.7 Algorithm . . . . . . . . . . . . . . . . . . . . . . .H. . . . . . . . . . . . . . . . . . 9
+2.8 Dandelion Spread Results . . . . . . . . . . . . . . .i. . . . . . . . . . . . . . . . . 10
+H
+2.8.1 Locations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+：
+2.8.2 First Phase Results . . . . . . . .：. . . . . . . . . . . . . . . . . . . . . . . . 11
+2.8.3 Second Phase Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.9 Sensitivity Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+2.10 Strengths and Weaknesses . . .
+.号号
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3 Plant Impact Factor Model 16
+众
+3.1 Assumptions and Justifications . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+众
+3.2 Model Description . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.2.1 Model Over公view . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.2.2 Attribute values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+公
+3.2.3 Attribute weights . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+信
+3.2.4 Algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+3.3 Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.3.1 信Global Impact Factor Results . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+微
+3.3.2 Local Impact Factor Results . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.4 Sensitivity Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+3.5微Strengths and Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+Our Vigorous Friend 24
+References 25
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 3 of 25
+1 Introduction
+1.1 Background
+The dandelion is a very common plant with scientific name Taraxacum officinale, which is
+stemless, lactiferous and perennial[17]. We can find them at roadsides, in wild fields or at incon-
+spicuous locations. Just imagine that these little herbs with beautiful yellow flowers have been
+evolving on this planet for about 30 million years[5] - even longer than we human bMeings!
+But currently they are labeled as an invasive plant. Invasive species is a relative concept. It
+means a non-native species whose introduction does or is likely to cause economic or environmental
+C
+M
+harm or harm to human health[7]. In some regions, dandelions do have some traits that make
+them invasive. They can adapt to different environments. They have high growth rate and spread
+M
+C
+fast. They are likely to cuddle together and crowd out desirable plants, particularly in lawns.
+Also, they have deep taproots that enable them to pull available water out of the soil. It is also
+M
+mentioned that dandelions could cause significant economic damagie and infestation of other crops
+worldwide[17]. H
+i
+To disclose the reason that dandelions become invasiveH, researchers have done many studies on
+how the environment affects dandelions. Laborator：y and field studies have discussed the impact
+：
+of climatic factors on its growth. Laboratory studies have been conducted on the relationship
+between germination rate and ambiances, such as light and temperature[10]. Field studies have
+also been conducted on the same topic, providing credibility for the theoretical conclusions[24].
+号号
+Studies have provided insights on the drought tolerance of dandelions[2]. In the meanwhile, soil
+pollution and geographic factors are also being considered[23].
+众
+Researchers have also paid great attention to dandelion dispersal, which is a major way for
+众
+dandelion propagation. Past papers have analyzed the structure of dandelion seeds and the effects
+of humidity on their struct公ure, which affect the dispersal speed[8]. Scientists have modeled the
+aerodynamics of the seeds and demonstrated the effects of wind speed and directions. It has also
+公
+been proved that updrafts could not be neglected[18].
+信
+Beside this particular species, researchers have discussed invasive species more generally. Ecol-
+ogistshaveusedspeciesnativetotheinvadedrangeas“controlspecies”inattemptingtodetermine
+信
+the traits ass微ociated with invasive plant species[12]. A protocol has been developed for categoriz-
+ing non-native plants according to their negative impacts on biodiversity in a large area such as
+a state, nation, or ecological region[15]. Some online tools like PIMDAT[14] have been provided
+微
+to help people make strategic decisions about invasive species control projects. Currently we also
+have Best Management Practices to prevent the introduction and spread of invasive species[1].
+Public databases play an important role in the research of invasive species, especially for plants.
+Byconferringtosomedatabase, wecanfindplantdatatostudybiologicalattributesoftheinvasive
+species[19]. Another database for tracking introduced species provides a baseline for effective
+modeling of species trends and interactions, geospatially and temporally[20]. US Government’s
+Open Data provides a lot of data for current invasive plants[3].
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 4 of 25
+1.2 Problem Restatement
+In this paper, we will solve 2 problems.
+For the first problem, we will predict the spread of dandelions within a year (360 days).
+Suppose that a dandelion in its dispersal period happens to be adjacent to an open one-hectare
+plot of land. We need to create a mathematical model to describe how the dandelion will spread
+its seeds and how its offspring will scatter on the land. And we will have to consider the effects of
+various climatic conditions, such as temperate, arid, and tropical climates, on dandelion growth.
+M
+For the second problem, we will need to devise an “impact factor” for invasive species. We
+will formulate a mathematical model to determine this factor and apply it to dandelions and some
+C
+other invasive plants. We also need to make sure the plants are invasive in tMhe regions we choose.
+M
+C
+2 Dandelion Spread Model
+M
+i
+H
+2.1 Assumptions and Justifications
+i
+H
+1. The initial dandelion is at the midpoint of the left edge of a one-hectare square
+：
+plot of land. Seeds blown out of the ar：ea are neglected.
+Justification: According to the problem, the initial dandelion is adjacent to an open one-
+hectare plot of land. In order to acquire maximum spread effect, we set the plant in
+号号
+the middle of the left edge and make the right side our spread area. The seeds drifting
+to the left of the edge will be neglected. We may imagine a river or a forest is at the
+left side, so seeds cannot众spread back to our spread area.
+众
+2. The field is planar.
+Justification: We on公ly consider the case of flat terrain. This helps us limit the spread to
+two dimensions. Flat terrain simplifies the calculation of dispersal distance since the
+公
+wind can be at a constant height and the seed landing will not be affected by different
+信
+topography.
+3. There a信re no other plants in the spread area.
+微
+Justification: Considering other plants would add complicity to our model, for example,
+we need to collect data of those plants and study the competitive interactions between
+微plants. So, simplification is necessary.
+Morespecifically, weassumethatnootherplantshinderthespreadofdandelions, which
+means
+a. Dandelion seeds are not intercepted by other plants;
+b. Dandelions do not have to compete with other plants.
+4. Wind direction is uniformly distributed from 0◦ to 360◦.
+Justification: Wind speed and direction can be affected by different topography, especially
+near the ground. At the height of dandelions, there could be vortices and updrafts that
+would greatly affect dispersal. Though we can obtain wind data from meteorological
+stations, the data may not be accurate for a small area. Therefore, we decided not to
+use the real-time wind direction data.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 5 of 25
+Moreover, thoughwindrosemapsprovidetheprobabilitiesforeachdirection, wecannot
+decide the relative wind direction to the area without knowing the edge orientation of
+our spread area. So we assume wind direction is uniformly distributed from 0◦ to 360◦.
+In this way, all directions have same odds and we can pin the dandelion on an arbitrary
+edge.
+| 5. Dandelion |     | number |     | always | increases. |     |     |     |     |     |
+| ------------ | --- | ------ | --- | ------ | ---------- | --- | --- | --- | --- | --- |
+Justification: More specifically, we assume that there are none of the followings:
+M
+|     | a.  | Human   | intervention; |     |             |     |     |     |     |     |
+| --- | --- | ------- | ------------- | --- | ----------- | --- | --- | --- | --- | --- |
+|     | b.  | Natural | enemies;      |     |             |     |     |     |     |     |
+|     | c.  | Extreme | weather       |     | conditions. |     |     |     |     | C   |
+M
+This assumption simplifies our model. Without considering above conditions, it will
+be an carefree place for dandelion growth. And if we noMtice that the dandelion is a
+C
+perennial herb, it is safe to assume the number will always increase.
+M
+i
+H
+| 2.2 | Model | Overview |     |     |     |     |     |     |     |     |
+| --- | ----- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+H
+We will use a Monte Carlo simulation model to solve the problem.
+：
+：
+In reality, we find that sometimes dandelions grow in clusters, and at other times they are
+very sparse. Actually, the spread process is affected by many random factors, including climate
+conditions, wind speed and direction, topo 号号graphical features and so on. In order to eliminate this
+randomness, we need a method to find statistical patterns from repeating the process many times.
+Candidates are neural networks, deep learning, stochastic processes, etc. Among them, the Monte
+众due
+Carlo method becomes an option to its simplicity. Its underlying concept is to introduce
+众
+randomness to solve problems. It relies on repeated random sampling to obtain numerical results.
+We will simulate dandelion spread process by going through the process many times, observing
+公
+the results from a statistical perspective and drawing some conclusions.
+公
+We consider five environmental factors as input parameters, as shown in Table 1.
+信
+|     |     |     |     |     | Table | 1 Environmental |     | factors |     |     |
+| --- | --- | --- | --- | --- | ----- | --------------- | --- | ------- | --- | --- |
+信
+微
+|     |     |     |     | Symbol |     |     | Description |     | Unit |     |
+| --- | --- | --- | --- | ------ | --- | --- | ----------- | --- | ---- | --- |
+◦C
+|     |     |     |     | µ T |          | Mean      | temperature |                |     |     |
+| --- | --- | --- | --- | --- | -------- | --------- | ----------- | -------------- | --- | --- |
+|     |     |     |     | σ   | Standard | deviation |             | of temperature | ◦C  |     |
+| 微   |     |     |     | T   |          |           |             |                |     |     |
+|     |     |     |     | µ   |          | Mean      | wind        | speed          | m/s |     |
+W
+|     |     |     |     | σ   | Standard | deviation |     | of wind speed | m/s |     |
+| --- | --- | --- | --- | --- | -------- | --------- | --- | ------------- | --- | --- |
+W
+|     |     |     |     | µ H |     | Mean | humidity |     | %   |     |
+| --- | --- | --- | --- | --- | --- | ---- | -------- | --- | --- | --- |
+And we will do the following steps to consider the environmental influence on the dandelion
+spread process:
+| • Construct |     | a temperature |            |        | curve in   | Section    | 2.3; |     |     |     |
+| ----------- | --- | ------------- | ---------- | ------ | ---------- | ---------- | ---- | --- | --- | --- |
+| • Model     |     | dispersal     | mechanisms |        | in Section |            | 2.4; |     |     |     |
+| • Introduce |     | an            | adaptation | factor | k          | in Section | 2.5. |     |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #13643 |     |     |     |     |     |     |     |     |     |     |     |     | Page | 6 of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | ------- |
+Then our model will simulate the spread of dandelions by tracking every single dandelion
+according to a life cycle pattern, which we will model in Section 2.6.
+Wewillchoose6locationsintheUS.Foreachlocation, wehaveonesetof5inputenvironmental
+factors. We will run our model in 2 phases. In the first phase, we will run 1000 times to get the
+optimal starting date for each location. In the second phase, we will fix the starting date we get
+from the first phase and run another 1000 times to get the final outcome.
+We choose to run 1000 times because we find that the data with 1000 runs will exhibit an
+M
+approximately normal distribution with a small margin of error for the mean.
+As the output of our model, we get all the dandelion locations for each day within 360 days.
+weMcConclude
+In order to depict the statistical characteristics of dandelion spread, all the loca-
+tions into 2 variables – one is the number of dandelions and the other is the mean distance
+of dandelions from the initial one. The first variable reflects spread iMntensity and the second one
+C
+| reflects |     | spread | range. |     |     |     |     |     |     |     |     |     |     |     |     |
+| -------- | --- | ------ | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+i
+H
+| 2.3 |     | Temperature |     |     | Curve |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----------- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+i
+H
+|     | We  | assume | that | the | temperature |     | follows | a si- |     |     |     |     |     |     |     |
+| --- | --- | ------ | ---- | --- | ----------- | --- | ------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+：T(◦C)
+con-：
+| nusoidal |     | curve, | as  | shown | in Fig.1. |     | We  | only |     |     |     |     |     |     |     |
+| -------- | --- | ------ | --- | ----- | --------- | --- | --- | ---- | --- | --- | --- | --- | --- | --- | --- |
+T =−Acos 2πt+B
+| sider   | locations |        | in   | the northern |        | hemisphere, |             | so we |     |     |     |     |     | 360 |     |
+| ------- | --------- | ------ | ---- | ------------ | ------ | ----------- | ----------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+| further |           | assume | that | the          | lowest |             | temperature |       | is  |     |     |     |     |     |     |
+A
+号号
+| reached |      | on  | Jan.1st, | when | time      | t   | = 0.   | We ob-    |     |     |     |     |     |     |     |
+| ------- | ---- | --- | -------- | ---- | --------- | --- | ------ | --------- | --- | --- | --- | --- | --- | --- | --- |
+| serve   | that | the | period   | of   | the curve |     | is 360 | (for con- |     | B   |     |     |     |     |     |
+360
+| venience, |     | we  | set each | month |     | to 30众days). |     | Thus, |     |     |     |     |     |     |     |
+| --------- | --- | --- | -------- | ----- | --- | ------------ | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+t(day)
+| we  | write | the | equation | as  |     | 众   |     |     |     |     |     |     |     |     |     |
+| --- | ----- | --- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+2π公
+|     |     |     | T = | −Acos |     | t+B. |     |     |     |     | Fig. | 1 Temperature | curve |     |     |
+| --- | --- | --- | --- | ----- | --- | ---- | --- | --- | --- | --- | ---- | ------------- | ----- | --- | --- |
+公360
+|     | The | following |     | con信ditions | should |     | be satisfied: |     |     |     |     |     |     |     |     |
+| --- | --- | --------- | --- | ----------- | ------ | --- | ------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+∫
+|     |     |     | 信   |     |     |     | 1   | 360    |     | 2π      |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------ | --- | ------- | --- | --- | --- | --- | --- |
+|     |     |     | 微   |     |     |     |     | (−Acos |     |         |     |     |     |     |     |
+|     |     |     |     |     |     | µ = |     |        |     | t+B)dt, |     |     |     |     |     |
+|     |     |     |     |     |     | T   | 360 |        |     | 360     |     |     |     |     |     |
+0
+|     |     |     |     |     |     |     | ∫   | [      |     |        |     | ]   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------ | --- | ------ | --- | --- | --- | --- | --- |
+|     | 微   |     |     |     |     | 1   | 360 |        | 2π  |        |     | 2   |     |     |     |
+|     |     |     |     |     | σ2  | =   |     | (−Acos |     | t+B)−µ |     | dt. |     |     |     |
+|     |     |     |     |     | T   |     |     |        |     |        |     | T   |     |     |     |
+|     |     |     |     |     |     | 360 |     |        | 360 |        |     |     |     |     |     |
+0
+|     | Solving | for | A and | B,  | we get |     |     |     |     |     |     |     |     |     |     |
+| --- | ------- | --- | ----- | --- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+√
+2π
+−
+|     |     |           |     |            |     |     | T = | 2σ  | cos | t+µ | .   |     |     |     | (1) |
+| --- | --- | --------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |           |     |            |     |     |     | T   | 360 |     | T   |     |     |     |     |
+| 2.4 |     | Dispersal |     | Mechanisms |     |     |     |     |     |     |     |     |     |     |     |
+For the direction of seed dispersal, we assume that the seed always follows the direction of
+|     |     |     |     |     |     |     |     | 0◦  | 360◦ |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | --- | --- | --- | --- | --- | --- |
+the wind, which is uniformly distributed from to according to Assumption 4.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     |     | Hi  | CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --------- | --- |
+
+| Team #13643 |     |     |     |     |     |     |     |     |     |     |     |     | Page 7 of 25 |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+For the distance of seed dispersal, we consider two types of wind, horizontal winds and up-
+drafts[18] (see Fig.2). The seed travels either a normal distance s due to horizontal winds or a
+N
+long distance s due to updrafts. We set dispersal distance as the greater one between s and s .
+|     |     | L   |     |     |     |     |     |     |     |     |     |     | N L |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+v
+h
+Updraft
+M
+v
+v
+|     | h   |     |     |     |     |     |     |     |     |     |     | C   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+M C
+S
+N
+M
+S
+|     |     |     |     |     |     |     |     |     | L   | i   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+|     |     |     |     |     | Fig. | 2 Dandelion |     | dispersal | distanice |     |     |     |     |
+| --- | --- | --- | --- | --- | ---- | ----------- | --- | --------- | --------- | --- | --- | --- | --- |
+H
+：
+：
+| 2.4.1 | Normal | Distance |     | s   |     |     |     |     |     |     |     |     |     |
+| ----- | ------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+N
+号号
+In the case of horizontal wind, due to large air drag on the seed’s pappus, we assume the seed
+| moves | at a constant |     | velocity |     | in a statistical |     | sense[18]. |     | we have |     |     |     |     |
+| ----- | ------------- | --- | -------- | --- | ---------------- | --- | ---------- | --- | ------- | --- | --- | --- | --- |
+众
+|     |     |     |     |     | 众s  |     |     |     | h   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+N
+|     |     |     |     |     |     |     |     | =   | ,   |     |     |     | (2) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     |     | v   | v   |     |     |     |     |     |
+|     |     |     |     |     |     |     |     | h   | v   |     |     |     |     |
+公
+where:
+公
+| h is | the | height | of the | puffball, |     | which | is evaluated |     | in Section | 2.6; |     |     |     |
+| ---- | --- | ------ | ------ | --------- | --- | ----- | ------------ | --- | ---------- | ---- | --- | --- | --- |
+信
+v is the vertical component of the velocity of the seed, which is a constant value, 0.4 m/s[18].
+v
+v is the sp信eed of the horizontal wind, which follows a normal distribution whose mean equals
+| h     |          | 微   |           |        |     |     |     |     |     |     |     |     |     |
+| ----- | -------- | --- | --------- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| µ and | standard |     | deviation | equals |     | σ ; |     |     |     |     |     |     |     |
+| W     |          |     |           |        |     | W   |     |     |     |     |     |     |     |
+微
+| 2.4.2 | Long | Distance |     | s   |     |     |     |     | p   |     |     |     |     |
+| ----- | ---- | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+L
+1
+| In      | the case       | of  | updraft,         | we  | suppose | that | s   | 1−0.5% |     |     |     |     |             |
+| ------- | -------------- | --- | ---------------- | --- | ------- | ---- | --- | ------ | --- | --- | --- | --- | ----------- |
+|         |                |     |                  |     |         |      |     | L      |     |     |     |     | <s)=1−ae−bs |
+| follows | an exponential |     | distribution[13] |     |         | with | cu- |        |     |     |     | P(s |             |
+L
+| mulative | distribution |     | function |     | P(s | <   | s) = |     |     |     |     |     |     |
+| -------- | ------------ | --- | -------- | --- | --- | --- | ---- | --- | --- | --- | --- | --- | --- |
+L
+| 1 − ae−bs. | We  | know | P(s | <   | 0) = | 0. We | also |     |     |     |     |     |     |
+| ---------- | --- | ---- | --- | --- | ---- | ----- | ---- | --- | --- | --- | --- | --- | --- |
+L
+| know that | the   | probability |      | of a         | seed    | being   | blown |     |                   |     |              |     |             |
+| --------- | ----- | ----------- | ---- | ------------ | ------- | ------- | ----- | --- | ----------------- | --- | ------------ | --- | ----------- |
+| further   | than  | 10 meters   |      | is 0.5%[18]. |         | Solving | for   |     |                   |     |              |     |             |
+| a and     | b, we | get         |      |              |         |         |       |     |                   |     |              |     |             |
+|           |       |             |      |              |         |         |       |     |                   |     |              | 10  | s(m)        |
+|           |       |             |      | 1−e          | −0.53s. |         |       |     |                   |     |              |     |             |
+|           | P(s   | <           | s) = |              |         |         | (3)   |     | Fig. 3 Cumulative |     | distribution |     | function of |
+L
+|     |     |     |     |     |     |     |     |     |     | long-distance |     | dispersal |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------- | --- | --------- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #13643 Page 8 of 25
+| 2.4.3 Dandelion |     | Density |     |     |     |     |
+| --------------- | --- | ------- | --- | --- | --- | --- |
+The leafs of dandelions have a radius of around 15cm. If a seed lands without falling on the
+≈
+leaf of another dandelion, the dandelion density should be less than (1/0.15)2 45 plants/m2. If a
+seed arrives at a location whose vicinity has a density greater than this maximum value, the seed
+| fails to land, | which | means it is | not counted | in our model. |     |     |
+| -------------- | ----- | ----------- | ----------- | ------------- | --- | --- |
+| 2.5 Adaptation |       | Factor      |             |               |     | M   |
+Weintroduceanadaptationfactork whichisevaluatedusingtemperatureT andmeanhumidity
+C
+µ . Dandelions prefer temperate climates and relatively high humidity. WMe divide temperature
+H
+into three ranks, which indicate if the temperature is suitable for the dandelion. We also divide
+humidity into three ranks, which indicate if the humidity is suitable foMr C the dandelion. On a given
+day, we calculate k by computing the arithmetic mean of the rank for temperature and humidity
+| and scaling | k so that | 0 ≤ k ≤ 1. |     |     | M   |     |
+| ----------- | --------- | ---------- | --- | --- | --- | --- |
+i
+We use k to determine the mean value of some parameterHs of dandelions, such as the height of
+the puffball. To allow for some variation, we let the parametersifollow normal distributions whose
+H
+( )
+|     |     |     |     | best−w：orst | best−worst |     |
+| --- | --- | --- | --- | ----------- | ---------- | --- |
+：+k
+|     |     | µ =       | worst+ |     |     | ,   |
+| --- | --- | --------- | ------ | --- | --- | --- |
+|     |     | parameter |        | 4   | 2   |     |
+(4)
+best−worst
+|     |     |     | σ   | =   | .   |     |
+| --- | --- | --- | --- | --- | --- | --- |
+parame号号ter
+12
+The worst and best values for relevant parameters will be given in Section 2.6. If the parameter
+li众mit.
+| exceeds | the limits, | it is set to the |     |     |     |     |
+| ------- | ----------- | ---------------- | --- | --- | --- | --- |
+众
+| 2.6 Dandelion |     | Life公Cycle |     |     |     |     |
+| ------------- | --- | ---------- | --- | --- | --- | --- |
+公
+A dandelion can transfer between 6 stages: seed, developing, dispersal, inter-dispersal,
+信
+| hold, and | dormancy. |     |     |     |     |     |
+| --------- | --------- | --- | --- | --- | --- | --- |
+信
+微
+dispersal
+developing
+微
+inter-dispersal
+seed
+|     |     |     | Fig. | 4 Dandelion life cycle |     |     |
+| --- | --- | --- | ---- | ---------------------- | --- | --- |
+• Out of all seeds, only 2% germinate successfully[9]. These seeds spend 3 days growing into
+关注 HiMCM
+| the | developing | stage[17]. |     |     |     |     |
+| --- | ---------- | ---------- | --- | --- | --- | --- |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #13643 |     |     |     |     |     |     |     |     |     | Page | 9 of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | ------- |
+• The developing stage is the time from sprouting to seed ripening. It takes a sprout 60–95
+days to grow into a flower, and additional 9–12 days for the flower to ripen[4]. The exact
+duration of this stage is determined by the adaptation factor k (worst = 107 days, best =
+|     | 69 days) | per | Section |     | 2.5. |     |     |     |     |     |     |     |
+| --- | -------- | --- | ------- | --- | ---- | --- | --- | --- | --- | --- | --- | --- |
+• The dispersal stage lasts 10 days. A dandelion plant can produce around 10 seed heads per
+year and it usually flowers twice, so it produces 5 heads every time it flowers. The number
+of seeds on each head is determined by k (worst = 150, best = 200)[11]. It takes each head 2
+(Mworst
+days to disperse its seeds. The height of the puffball, h, is determined by k = 12cm,
+best = 40cm)[6]. The seeds are dispersed per the method stated in Section 2.4.
+• The inter-dispersal stage is the stage between two dispersal stages ofMaCplant. In this stage,
+dandelions regrow their scapes and flowers. Since most dandelions that flowered in spring
+usually flower again in fall[17], the duration of this stage is seMt to be half a year, which is
+C
+|     | 180 | days. |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+i
+| We  | also consider |     | two | additional |     | stages, | hold | and | dormancy. | H   |     |     |
+| --- | ------------- | --- | --- | ---------- | --- | ------- | ---- | --- | --------- | --- | --- | --- |
+i
+• When the temperature T is greater than 24◦C, only H 12.5% of the flowers bloom and disperse
+their seeds[25]. We let dandelions enter dispe：rsal by probability 12.5% and move the rest
+：
+into the hold stage. In this stage, flowers are held in buds. As soon as T falls below 24◦C,
+|     | flowers | can | bloom | and | disperse | seeds | by  | 100%. |     |     |     |     |
+| --- | ------- | --- | ----- | --- | -------- | ----- | --- | ----- | --- | --- | --- | --- |
+号号
+0◦C.
+• Dandelions enter the dormancy stage when the temperature T falls below When the
+temperature is low, it is likely to snow and all life activities of dandelions are paused. As
+|     |      |      |       |       | 0◦C, | da众ndelions |     |        |     |                 |     |     |
+| --- | ---- | ---- | ----- | ----- | ---- | ----------- | --- | ------ | --- | --------------- | --- | --- |
+|     | soon | as T | rises | above |      |             |     | resume | its | previous stage. |     |     |
+众
+| 2.7 | Algorithm |     |     |     | 公   |     |     |     |     |     |     |     |
+| --- | --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+|     | Monte | Carlo | simulation |     | algorithm |     | for | dandelion |     | spread |     |     |
+| --- | ----- | ----- | ---------- | --- | --------- | --- | --- | --------- | --- | ------ | --- | --- |
+信
+INPUT: run times n and environment factors µ , σ , µ , σ and µ
+|     |     |     |     |     |     |     |     |     | T   | T W W | H   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+信
+微
+|     | for 1 to n | do        |     |          |       |     |     |     |     |     |     |     |
+| --- | ---------- | --------- | --- | -------- | ----- | --- | --- | --- | --- | --- | --- | --- |
+|     | for all    | t in days | of  | one year | (360) | do  |     |     |     |     |     |     |
+←
+|     | T   | evaluate | current |     | temperature | per | Eq.1 |     |     |     |     |     |
+| --- | --- | -------- | ------- | --- | ----------- | --- | ---- | --- | --- | --- | --- | --- |
+微
+|     | k ← | evaluate  | adaptation |         | factor         | per | Section | 2.5 |     |     |     |     |
+| --- | --- | --------- | ---------- | ------- | -------------- | --- | ------- | --- | --- | --- | --- | --- |
+|     | for | dandelion | in         | current | all dandelions |     | do      |     |     |     |     |     |
+if T < 0 then previousstage ← currentstage, currentstage ← Dormancy
+←
+if currentstage is Dormancy and T > 0 then currentstage previousstage
+←
+|     |     | if currentstage |         | is           | Hold       | and T < | 24 then         | currentstage |            | previousstage   |      |     |
+| --- | --- | --------------- | ------- | ------------ | ---------- | ------- | --------------- | ------------ | ---------- | --------------- | ---- | --- |
+|     |     | if currentstage |         | is           | Developing |         | or currentstage |              | is         | Inter-dispersal | then |     |
+|     |     | if              | days of | currentstage |            | reaches | the             | next         | stage then |                 |      |     |
+|     |     |                 | if T >  | 24 then      |            |         |                 |              |            |                 |      |     |
+←
+|     |     |     | currentstage |              |          | Dispersal   | with | probability |     | 0.125 |     |     |
+| --- | --- | --- | ------------ | ------------ | -------- | ----------- | ---- | ----------- | --- | ----- | --- | --- |
+|     |     |     | if           | Dispersal    | succeeds |             | then |             |     |       |     |     |
+|     |     |     |              | currentstage |          | ← Dispersal |      |             |     |       |     |     |
+else
+←
+|     |     |     |     | previousstage |     | currentstage |     |     |     |     |     | 关注 HiMCM |
+| --- | --- | --- | --- | ------------- | --- | ------------ | --- | --- | --- | --- | --- | -------- |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #13643 |     |     |     |     |     |     |     |     |     |     | Page 10 | of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+←
+|     |     |     | currentstage |     | Hold |     |     |     |     |     |     |     |     |
+| --- | --- | --- | ------------ | --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     | end if       |     |      |     |     |     |     |     |     |     |     |
+else
+|     |     |        | currentstage | ←   | Dispersal |     |     |     |     |     |     |     |     |
+| --- | --- | ------ | ------------ | --- | --------- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     | end    | if           |     |           |     |     |     |     |     |     |     |     |
+|     |     | end if |              |     |           |     |     |     |     |     |     |     |     |
+end if
+|     |     | if currentstage |     | is Seed | then |     |     |     |     |     |     |     |     |
+| --- | --- | --------------- | --- | ------- | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+M
+if days of currentstage reaches the next stage then currentstage ← Developin g
+end if
+|     |     | if currentstage |     | is Dispersal | then |     |     |     |     |     |     |     |     |
+| --- | --- | --------------- | --- | ------------ | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+C
+determine the seed count that needs to be dispersed per Section 2.6 M
+|     |     | for all   | seed in   | dispersing | seeds    | do  |                 |     |     |     |     |     |     |
+| --- | --- | --------- | --------- | ---------- | -------- | --- | --------------- | --- | --- | --- | --- | --- | --- |
+|     |     | calculate | dispersal |            | distance | per | Section         | 2.4 |     | M   | C   |     |     |
+|     |     | calculate | land      | location   | and      | add | it to locations |     |     |     |     |     |     |
+M
+|     |     | generate | a   | newdandelion |     | with stage | Seed |     |     |     |     |     |     |
+| --- | --- | -------- | --- | ------------ | --- | ---------- | ---- | --- | --- | --- | --- | --- | --- |
+i
+|     |     | end for |     |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+if days of currentstage reaches the next stage then currentstage ← Inter-dispersal
+i
+|     |     | end if |     |     |     |     |     | H   |     |     |     |     |     |
+| --- | --- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | end | for    |     |     |     |     |     | ：   |     |     |     |     |     |
+：
+| end | for |     |     |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+end for
+| calculate | numbers | and | meandistances |     | from | locations |     |     |     |     |     |     |     |
+| --------- | ------- | --- | ------------- | --- | ---- | --------- | --- | --- | --- | --- | --- | --- | --- |
+号号
+| Return | locations | ,   | numbers | and meandistances |     |     |     |     |     |     |     |     |     |
+| ------ | --------- | --- | ------- | ----------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+众
+OUTPUT: dandelion spread locations, numbers and meandistances over days
+众
+公
+| 2.8 | Dandelion |     | Spread |     | Results |     |     |     |     |     |     |     |     |
+| --- | --------- | --- | ------ | --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+| 2.8.1 | Locations |     | 信   |     |     |     |     |     |     |     |     |     |     |
+| ----- | --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+We choose 6信locations in the US so that we have a variety of temperature and wind conditions.
+微
+AK is cold; CA, DC, and KS are warm; and FL and HI are relatively hot. AK, DC, and KS
+have distinct seasons; CA and FL show moderate temperature fluctuations; and HI has very stable
+temperature. The wind conditions also exhibit different patterns. DC has notably large wind
+微
+speed. The values of the five environmental factors are listed in Table 4.
+|     |          |             | Table | 4            | Environmental |       | factors | for six | locations[21] |     |         |       |     |
+| --- | -------- | ----------- | ----- | ------------ | ------------- | ----- | ------- | ------- | ------------- | --- | ------- | ----- | --- |
+|     |          | State       |       | Abbreviation |               | µ     | (◦C)    | σ (◦C)  | µ (m/s)       |     | σ (m/s) | µ (%) |     |
+|     |          |             |       |              |               | T     |         | T       | W             |     | W       | H     |     |
+|     |          | Alaska      |       |              | AK            |       | -0.05   | 9.08    | 7.27          |     | 1.42    | 81.46 |     |
+|     |          | California  |       |              | CA            | 16.20 |         | 4.99    | 6.02          |     | 0.90    | 80.36 |     |
+|     | District | of Columbia |       |              | DC            | 12.64 |         | 8.63    | 13.97         |     | 9.51    | 77.49 |     |
+|     |          | Florida     |       |              | FL            | 22.11 |         | 4.76    | 6.51          |     | 1.71    | 77.05 |     |
+|     |          | Hawaii      |       |              | HI            | 22.75 |         | 1.40    | 6.23          |     | 0.69    | 74.64 |     |
+|     |          | Kansas      |       |              | KS            | 12.58 |         | 9.98    | 8.58          |     | 1.55    | 79.37 |     |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| Team  | #13643  |       |         |           |     |     |     |     |     |     |     |     | Page 11 | of 25 |
+| ----- | ------- | ----- | ------- | --------- | --- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+| 2.8.2 | First   | Phase | Results |           |     |     |     |     |     |     |     |     |         |       |
+| We    | run the | model | for     | 2 phases. |     |     |     |     |     |     |     |     |         |       |
+In the first phase, we determine the optimal starting month of simulation. For all 6 locations,
+we run the model with 12 cases that start respectively on the first day of each month, and get the
+| number | and | mean | distance | for | each case | and | each | location. |     |     |     |     |     |     |
+| ------ | --- | ---- | -------- | --- | --------- | --- | ---- | --------- | --- | --- | --- | --- | --- | --- |
+As an example, the results for Florida are shown in Fig.5. The dandelion numbers vary greatly
+among the case, but the mean distances are approximately the same. We can see that M for Florida,
+we get the maximum dandelion number when the starting date is May 1st. So we will use May as
+| the starting |     | month | in the | next | phase. |     |     |     |     |     |     |     |     |     |
+| ------------ | --- | ----- | ------ | ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+C
+M
+| 1000 |     |     |     |     |     |     |     |     |     |     |     |     |     | 6   |
+| ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+M C
+5
+800
+Mean distance (m)
+|     |     |     |     |     |     |     |     |     |     | M   |     |     |     | 4   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+rebmuN 600
+i
+3
+H
+400
+|     |     |     |     |     |     |     |     |     |     | i   |     |     |     | 2   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+H
+200
+1
+：
+：
+|     | 0   |     |     |     |     |     |     |     |     |     |     |     |     | 0   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Jan. Feb.Mar.Apr.MayJun. Jul. Aug.Sept.Oct.Nov.Dec. Jan. Feb.Mar.Apr.MayJun. Jul. Aug.Sept.Oct.Nov.Dec.
+|     |     |     |     | Starting month |     |            |     |     |      | Starting month |      |     |     |     |
+| --- | --- | --- | --- | -------------- | --- | ---------- | --- | --- | ---- | -------------- | ---- | --- | --- | --- |
+|     |     |     |     | 1st            |     | 2nd 号3rd 号 |     |     | 4th  | 5th            | 6th  |     |     |     |
+|     |     |     |     | 7th            |     | 8th        | 9th |     | 10th | 11th           | 12th |     |     |     |
+Fig. 5 Number and mean distance 众 in Florida when simulation starts at different months
+众
+Table 5 lists all the data from the run of the first phase. The headers indicate the starting
+公
+months, and the numbers in the table are the dandelion numbers at the end of 12 months. The
+numbers corresponding 公 to the optimal starting months are marked in blue. In this way, we can
+determine that the optimal starting month is September for AK, August for CA, September for
+信
+| DC, May | for | FL, September |     | for | HI, and | August |     | for KS. |     |     |     |     |     |     |
+| ------- | --- | ------------- | --- | --- | ------- | ------ | --- | ------- | --- | --- | --- | --- | --- | --- |
+Table 信 5 Number at six locations when simulation starts at different dates
+微
+State Jan. Feb. Mar. Apr. May Jun. Jul. Aug. Sept. Oct. Nov. Dec.
+|     | 微AK | 74  | 79  | 70  | 35  | 44  | 75  | 43  | 49  | 82  | 72  | 74  | 75  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     | CA  | 547 | 567 | 545 | 532 | 585 | 561 | 544 | 596 | 564 | 566 | 581 | 563 |     |
+DC 1611 1589 1609 1563 1680 1657 1673 1733 1808 1696 1677 1658
+|       | FL     | 424   | 417 | 505     | 895 | 905 | 453 | 375 | 384  | 706 | 436 | 435 | 736 |     |
+| ----- | ------ | ----- | --- | ------- | --- | --- | --- | --- | ---- | --- | --- | --- | --- | --- |
+|       | HI     | 519   | 329 | 610     | 593 | 586 | 596 | 308 | 543  | 618 | 383 | 385 | 600 |     |
+|       | KS     | 823   | 276 | 268     | 405 | 548 | 274 | 266 | 1067 | 287 | 288 | 950 | 834 |     |
+| 2.8.3 | Second | Phase |     | Results |     |     |     |     |      |     |     |     |     |     |
+In the second phase, we run the model 1000 times for each location beginning at the optimal
+starting month from the first phase. The resulting frequency histogram for Florida is shown in
+Fig.6. We can see that both the number and the mean distance follow an approximately normal
+|     |     |     |     |     |     |     |     |     |     |     |     |     | 关注  | HiMCM |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+distribution.
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi  | CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --------- | --- |
+
+| Team #13643           |     |     |     |     |     |     |     |     |     | Page 12                 | of 25 |
+| --------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------------------- | ----- |
+| 0.0030                |     |     |     |     |     |     |     |     |     | 6                       |       |
+| htdiw nib / ycneuqerF |     |     |     |     |     |     |     |     |     | 5 Frequency / bin width |       |
+0.0025
+| 0.0020 |     |     |     |     |     |     |     |     |     | 4   |     |
+| ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0.0015 |     |     |     |     |     |     |     |     |     | 3   |     |
+| 0.0010 |     |     |     |     |     |     |     |     |     | 2   |     |
+| 0.0005 |     |     |     |     |     |     |     |     |     | 1   |     |
+M
+| 0.0000 |     |     |         |     |           |     |     |                   |         | 0   |     |
+| ------ | --- | --- | ------- | --- | --------- | --- | --- | ----------------- | ------- | --- | --- |
+|        | 200 |     | 400 600 | 800 | 1000 1200 | 4.8 | 4.9 | 5.0 5.1           | 5.2 5.3 | 5.4 |     |
+|        |     |     | Number  |     |           |     |     | Mean distance (m) |         |     |     |
+C
+Fig. 6 Frequency distribution of number and mean distance in Florida M
+M C
+We calculated several statistical characteristics for each location, as shown in Table 6 and
+Table 7. We examine the statistics for dandelion number. The confidence intervals of the means
+M
+are relatively small for all locations, which implies the means areiquite accurate. The standard
+spreaHd
+deviations and ranges are large, which shows that the of dandelions is easily affected by
+i
+random factors such as fluctuations in the environment. For all locations except California, the
+H
+distributions are platykurtic. For all locations except Alaska, the distributions are skewed to the
+：
+：
+left. Their masses are concentrated on the right, so the dandelion numbers are slightly more
+likely to be greater than the means rather than smaller. However, because of the unfavorable
+environmental conditions in Alaska, the number is more likely to be smaller than the mean.
+号 号
+|     |     |     | Table 6 | Descriptive | statistics | of number |     | at six locations |     |     |     |
+| --- | --- | --- | ------- | ----------- | ---------- | --------- | --- | ---------------- | --- | --- | --- |
+众
+Location Mean Standard Deviation Kurtosis Skewness Range Median Confidence Level (95.0%)
+众
+| AK  | 72.7  |     | 26.5    |     | -0.11 | 0.38  | 150  | 71     |     | 1.64 |     |
+| --- | ----- | --- | ------- | --- | ----- | ----- | ---- | ------ | --- | ---- | --- |
+| CA  | 595.1 |     | 82.48 公 |     | 3.78  | -1.32 | 744  | 609    |     | 5.11 |     |
+| DC  | 1780  |     | 484.9   |     | -0.04 | -0.03 | 3274 | 1772.5 |     | 30.1 |     |
+公
+| FL  | 886.4 |     | 140.4  |     | 1.04 | -0.72 | 981  | 905  |     | 8.71 |     |
+| --- | ----- | --- | ------ | --- | ---- | ----- | ---- | ---- | --- | ---- | --- |
+| HI  | 607.5 |     | 信 81.9 |     | 1.12 | -0.79 | 565  | 617  |     | 5.08 |     |
+| KS  | 1066  |     | 186.4  |     | 1.05 | -0.72 | 1403 | 1096 |     | 11.6 |     |
+信
+微
+|     |     | Table | 7 Descriptive |     | Statistics | of the mean | distance | at six | locations |     |     |
+| --- | --- | ----- | ------------- | --- | ---------- | ----------- | -------- | ------ | --------- | --- | --- |
+Loca微tion Mean Standard Deviation Kurtosis Skewness Range Median Confidence Level (95.0%)
+| AK  | 4.29  |     | 0.18 |     | 0.44  | 0.25  | 1.28 | 4.29  |     | 0.01 |     |
+| --- | ----- | --- | ---- | --- | ----- | ----- | ---- | ----- | --- | ---- | --- |
+| CA  | 4.52  |     | 0.09 |     | 0.51  | -0.53 | 0.67 | 4.52  |     | 0.01 |     |
+| DC  | 11.84 |     | 0.21 |     | 1.5   | -0.51 | 1.93 | 11.85 |     | 0.01 |     |
+| FL  | 5.21  |     | 0.07 |     | 1.91  | -0.64 | 0.66 | 5.21  |     | 0.00 |     |
+| HI  | 4.99  |     | 0.08 |     | 0.138 | -0.27 | 0.5  | 4.99  |     | 0.00 |     |
+| KS  | 6.52  |     | 0.05 |     | 0.8   | -0.36 | 0.44 | 6.52  |     | 0.00 |     |
+Out of the 1000 runs, we select the run that has dandelion number closest to the mean value.
+The positions and current stages of the dandelions at the end of 12 months are shown in Fig.7. For
+all locations except the District of Columbia, most dandelions grow in a semicircular ring centered
+at the origin. Alaska is apparently unsuitable for dandelions to spread. In California, Hawaii,
+|          |     |         |            |     |           |            |        |     |     | 关注  | HiMCM |
+| -------- | --- | ------- | ---------- | --- | --------- | ---------- | ------ | --- | --- | --- | ----- |
+| Florida, | and | Kansas, | dandelions | all | spread to | a moderate | range. |     |     |     |       |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #13643 |     |     |     |     |     |     |     |     |     | Page | 13  | of 25 |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | --- | ----- |
+10
+5
+M
+0
+C
+M
+-5
+M C
+|     | AK  |     | CA  |     |     | HI  |     |       | FL  |     | KS  |       |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- | ----- |
+| -10 |     |     |     |     |     |     |     | M     |     |     |     |       |
+| 0 5 | 100 | 5   | 100 |     | 5   |     | 100 | 5i100 |     | 5   |     | 10(m) |
+DispersaHl
+|     | Seed | Developing / inter-dispersal |     |     |     |     |     | Dormancy / hold |     |     |     |     |
+| --- | ---- | ---------------------------- | --- | --- | --- | --- | --- | --------------- | --- | --- | --- | --- |
+i
+|     | Fig. 7 The | spread | at  | the end | of 12 | monthHs | at  | different | locations |     |     |     |
+| --- | ---------- | ------ | --- | ------- | ----- | ------- | --- | --------- | --------- | --- | --- | --- |
+：
+：
+30
+号号
+15
+众
+众
+0
+公
+公
+-15
+信
+The end of Sept. The end of Oct. The end of Nov. The end of Dec. The end of Jan. The end of Feb.
+-30
+| 30  | 信   |     |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+微
+15
+微
+0
+-15
+The end of Mar. The end of Apr. The end of May The end of Jun. The end of Jul. The end of Aug.
+-30
+| 0 15 | 300 15     |                              | 300    | 15  | 300    | 15        | 300          |                 | 15 300   | 15  |     | 30(m) |
+| ---- | ---------- | ---------------------------- | ------ | --- | ------ | --------- | ------------ | --------------- | -------- | --- | --- | ----- |
+|      | Seed       | Developing / inter-dispersal |        |     |        | Dispersal |              | Dormancy / hold |          |     |     |       |
+|      | Fig. 8 The | spread                       | during | 12  | months | in        | the District | of              | Columbia |     |     |       |
+|      |            |                              |        |     |        |           |              |                 |          |     | 关注  | HiMCM |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #13643 |     |     |     |     |     |     |     |     | Page 14 | of 25 |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+The District of Columbia has the most dandelions at the end of 12 months. We plot dandelion
+spread at the end of each month at this location (see Fig.8) so that it can be clearly seen how the
+dandelions spread in the course of time. Compared to other locations, the District of Columnbia
+has greater wind speed so that the dandelions spread much further and they form a semicircle
+instead of a ring. The closer to the origin, the denser the plants. Additionally, there is a sudden
+increase every three months, which is caused by the flowering of a new generation of dandelions.
+Finally, we draw a graph of the natural logarithm of dandelion number in Fig.9. The lines
+have several step changes and platforms. The dandelion number increases exponentially M at the
+end of each fixed period. This conclusion coincides with our observation in Fig.8. Again, Alaska
+is different. Dandelions in Alaska are dormant in the first three months of a year, and eventually
+| produce | fewer offspring |     | than other | locations. |     |     |     | C   |     |     |
+| ------- | --------------- | --- | ---------- | ---------- | --- | --- | --- | --- | --- | --- |
+M
+|     |     |     |     |     |     |     | M C |     | 12  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+7
+|     |     |     |     |     |     |     | M   |     | 10  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+6
+i
+Mean distance (m)
+| 5   |     |     |     |     |     |     | H   |     | 8   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+)rebmun(nl
+| 4   |     |     |     |     |     |     | i   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+6
+H
+3
+|     |     |     |     |     |     | ：   |     |     | 4   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+：
+2
+| 1   |     |     |     |     |     |     |     |     | 2   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0   |     |     |     |     | 号 号 |     |     |     | 0   |     |
+0 30 60 90 120 150 180 210 240 270 300 330 360 0 30 60 90 120 150 180 210 240 270 300 330 360
+|     |     |     | Time (day) |     |     |     | Time (day) |     |     |     |
+| --- | --- | --- | ---------- | --- | --- | --- | ---------- | --- | --- | --- |
+众
+|     |     |     | AK  | CA  | HI  | FL  | KS DC |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+众
+|     |     |     | Fig. 9 | Number | and mean | distance | over time |     |     |     |
+| --- | --- | --- | ------ | ------ | -------- | -------- | --------- | --- | --- | --- |
+公
+公
+| 2.9 | Sensitivity | 信 Analysis |     |     |     |     |     |     |     |     |
+| --- | ----------- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- |
+We conduc信t a sensitivity analysis on the five environmental factors from Table 1 by varying
+微
+| one of | them while | keeping | the other | four | fixed. |     |     |     |     |       |
+| ------ | ---------- | ------- | --------- | ---- | ------ | --- | --- | --- | --- | ----- |
+|        |            |         |           |      |        |     | 7◦C |     |     | 23◦C, |
+Fig.10 shows the results for temperature. When µ falls below or rises above
+T
+dande微lion
+number decreases sharply. This is because dandelions are transferred to the dormancy
+or hold stages at certain temperatures. The number is very sensitive to extreme temperatures, but
+19◦C,
+only moderately sensitive to mild temperatures. The mean distance increases with µ up to
+T
+where it temporarily levels off and begins to fall at 23◦C. It has medium sensitivity to µ .
+T
+Both number and mean distance decrease as σ increases. They decrease relatively slowly
+T
+below σ = 5◦C and rapidly above that temperature. However, the overall sensitivity is not high
+T
+| for either | number | or mean | distance. |     |     |     |     |     |     |     |
+| ---------- | ------ | ------- | --------- | --- | --- | --- | --- | --- | --- | --- |
+Fig.11 shows the results for wind speed. The number and mean distance have positive corre-
+lations with µ and σ and change drastically when the two factors vary. When µ increases,
+|     | W   | W   |     |     |     |     |     |     | W   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+seeds are dispersed farther and land further apart from each other. When σ increases, there is
+W
+greater variation in dispersal distance. In both cases it is less likely for seeds to land on other
+plants or exceed the density, making dandelion number rise quickly. 关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| Team | #13643 |     |     |     |     |     |     |     |     |     |     |     | Page | 15  | of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- | --- | ----- |
+900
+|     | 800        |     |     |     |     |     | 5.0 Mean distance (m) |            |     |     |     |     |     | 5.2 | Mean distance (m) |
+| --- | ---------- | --- | --- | --- | --- | --- | --------------------- | ---------- | --- | --- | --- | --- | --- | --- | ----------------- |
+|     | rebmuN 600 |     |     |     |     |     |                       | rebmuN 850 |     |     |     |     |     |     |                   |
+5.1
+|     |     |     |     |     |     |     | 4.5 | 800 |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+400
+5.0
+|     | 200 |     |     |     |     |     |     | 750 |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+4.0
+|     |     | 0   |         |     |      |                |     | 700       |             |      |      |      |      | 4.9 |     |
+| --- | --- | --- | ------- | --- | ---- | -------------- | --- | --------- | ----------- | ---- | ---- | ---- | ---- | --- | --- |
+|     |     | 0   | 10 20   | 30  | 0 10 | 20             | 30  |           | 0           | 5    | 10 0 | 5    |      | 10  |     |
+|     |     |     | T  ( C) |     |      | T  ( C)        |     |           |             | T  ( | C)   | T  ( | C) M |     |     |
+|     |     |     |         |     | Fig. | 10 Sensitivity |     | analysis: | temperature |      |      |      |      |     |     |
+C
+M
+|     |     |     |     |     |     |     |     |                   | 1500 |     |     |     |     | 9   |                   |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----------------- | ---- | --- | --- | --- | --- | --- | ----------------- |
+|     |     |     |     |     |     |     | 10  | Mean distance (m) |      |     |     |     |     |     | Mean distance (m) |
+1250
+|     |        |      |     |     |     |     |     |        | 1250 |     | M C |     |     | 8   |     |
+| --- | ------ | ---- | --- | --- | --- | --- | --- | ------ | ---- | --- | --- | --- | --- | --- | --- |
+|     | rebmuN |      |     |     |     |     |     | rebmuN |      |     |     |     |     |     |     |
+|     |        | 1000 |     |     |     |     | 8   |        |      |     |     |     |     |     |     |
+|     |        |      |     |     |     |     |     |        | 1000 |     |     |     |     | 7   |     |
+M
+|     |     | 750 |     |     |     |     | 6   |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |     |     |     |     | 750 |     | i   |     |     |     |     |
+6
+H
+|     |     | 500 |        |       |     |        | 4   |     | 500 |        |        |        |     |     |     |
+| --- | --- | --- | ------ | ----- | --- | ------ | --- | --- | --- | ------ | ------ | ------ | --- | --- | --- |
+|     |     |     |        |       |     |        |     |     |     | i      |        |        |     | 5   |     |
+|     |     | 0   | 5      | 10 15 | 0   | 5 10   | 15  |     | H 0 |        | 5 10 0 |        | 5   | 10  |     |
+|     |     |     |  (m/s) |       |     |  (m/s) |     |     |     |  (m/s) |        |  (m/s) |     |     |     |
+|     |     |     | W      |       |     | W      |     | ：   |     | W      |        | W      |     |     |     |
+：
+|     |     |     |     |     | Fig. | 11 Sensitivity |     | analysis: | wind | speed |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ---- | -------------- | --- | --------- | ---- | ----- | --- | --- | --- | --- | --- |
+号 号
+Fig.12 shows the results for humidity. There are three levels of number and mean distance
+corresponding to different humidity. This is because of the three ranks for humidity that are used
+| in  | the calculation |     | of the | adaptation |     | 众 factor | k (see | Section | 2.5). |     |     |     |     |     |     |
+| --- | --------------- | --- | ------ | ---------- | --- | -------- | ------ | ------- | ----- | --- | --- | --- | --- | --- | --- |
+众
+5.6
+公 1000
+Mean distance (m)
+5.4
+公
+rebmuN 900
+5.2
+信
+5.0
+800
+4.8
+信
+微
+|      |     |           |     |     |            | 0 50           | 100 | 0         | 50       | 100 |     |     |     |     |     |
+| ---- | --- | --------- | --- | --- | ---------- | -------------- | --- | --------- | -------- | --- | --- | --- | --- | --- | --- |
+|      |     |           |     |     |            |  (%)           |     |           |  (%)     |     |     |     |     |     |     |
+|      |     |           |     |     |            | H              |     |           | H        |     |     |     |     |     |     |
+|      | 微   |           |     |     | Fig.       | 12 Sensitivity |     | analysis: | humidity |     |     |     |     |     |     |
+| 2.10 |     | Strengths |     | and | Weaknesses |                |     |           |          |     |     |     |     |     |     |
+Strengths
+• Our model is realistic. We use data for real locations. And we consider how environmental
+factors and random variations contribute to dandelion spread. Besides, we track every plant
+|     | during |     | the entire | spread | process. |     |     |     |     |     |     |     |     |     |     |
+| --- | ------ | --- | ---------- | ------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+• Our model is easy to understand and implement. The simulation method is very
+intuitive, and the model only requires five input parameters that are easily acquired from
+|     | meteorological |     | databases. |     |     |     |     |     |     |     |     |     |     | 关注  | HiMCM |
+| --- | -------------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ | --- |
+
+Team #13643 Page 16 of 25
+• Our model is extensible. We can easily consider other factors by adding a component to the
+model. For example, if we want to consider the effect of rain, we can determine the effects of
+rain on the different stages of dandelions and add this new component to our current model.
+Weaknesses
+• Our model is time-intensive. To get a fairly accurate result, we have to run 1000 times for
+every location. Compared to other possible models, the efficiency of our model is relatively
+low.
+M
+• The adaptation factor may be an over-simplification. It may not represent the reality very
+accurately. If we can acquire the relationship between dandelion parameters and climate
+conditions, we will be able to substitute the adaptation factor with Csome more accurate
+M
+components.
+• Our model misses certain factors. We do not consider rain, which stops flowers from
+M
+C
+blooming and hinders seed dispersal. Other missed factors include interactions with other
+plants and human intervention. Also, regarding long dispersal distance, the wind speed is
+M
+not considered. These can be added as new components in thie future.
+H
+i
+H
+3 Plant Impact Factor Model
+：
+：
+3.1 Assumptions and Justifications
+号号
+1. A plant’s impact has a positive correlation with its biological characteristics.
+Justification: Study shows that the invasiveness of a plant species is closely related to its
+众
+performance-related traits[22]. Thus we can think of biological characteristics as fairly
+众
+reliable indicators on the invasiveness, which is the plant’s ability to cause harm to the
+environment and公to humans.
+2. A plant’s impac公t can be lessened by its benefits.
+Justification:信Ifplantsareedibleforanimalsorbeneficialfortheenvironmentinsomeother
+ways, it is likely that the environment will be subject to less harm overall. Likewise,
+if p信lants can be made into products or utilized in other ways, they can benefit the
+微
+economy and cause less harm to humans.
+3. At locations with higher population density, the impact of a plant is greater.
+微
+Justification: At places with higher population density, it is likely that people try harder to
+control undesirable species. This leads to more expenditure, which means the impact
+is greater. At places with low population density, there is less human intervention.
+Non-native plants may reach an equilibrium with native ones, thus causing less impact.
+3.2 Model Description
+3.2.1 Model Overview
+The impact factor is a measure of adverse impact that an invasive plant can make on the
+environment and human beings.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #13643 |     |     |     |     |     |     |     |     |     |     | Page 17 | of 25 |
+| ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+We define two types of impact factors, namely global impact factor and local impact
+factor.
+With global impact factor, we can compare the invasiveness between species in general per-
+spective. For example, by using global impact factor, we can tell which one has more invasiveness
+| between | dandelion | and | clover, | by  | and large. |     |     |     |     |     |     |     |
+| ------- | --------- | --- | ------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- |
+Local impact factor does more refined work. By introducing more local adaptation attributes,
+we can tell the difference of invasiveness between locations for one species . We can also compare
+M
+| the invasiveness |     | for different |     | species | in  | different | places. |     |     |     |     |     |
+| ---------------- | --- | ------------- | --- | ------- | --- | --------- | ------- | --- | --- | --- | --- | --- |
+The impact factor is determined by a group of impact attributes. We break down all the
+attributes into 3 categories. Category A is related to plant characteristCics, Category B is
+M
+related to human and environment and Category C is related to plant’s local adaptation. Global
+impact factor considers attributes from both Category A and Category B. Local impact factor
+M C
+| considers | attributes | from    | all       | 3 categories. |         |        |      |        |     |     |     |     |
+| --------- | ---------- | ------- | --------- | ------------- | ------- | ------ | ---- | ------ | --- | --- | --- | --- |
+| Table     | 8 lists    | all the | variables |               | we will | use in | this | model. |     | M   |     |     |
+i
+H
+|     |     |     |     |     | Table | 8 Variable |     | definition |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | ---------- | --- | ---------- | --- | --- | --- | --- |
+i
+H
+|     |     |     |     |     | Symbol |     | Definition |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ------ | --- | ---------- | --- | --- | --- | --- | --- |
+：
+|     |     |     |     |     | IF  | Global：impact |     |     | factor |     |     |     |
+| --- | --- | --- | --- | --- | --- | ------------- | --- | --- | ------ | --- | --- | --- |
+G
+|     |     |     |     |     | IF  | Local |     | impact | factor |     |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | ------ | ------ | --- | --- | --- |
+L
+|     |     |     |     |     | ρ   | Invasion |     | level coefficient |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | -------- | --- | ----------------- | --- | --- | --- | --- |
+号号
+|     |     |     |     |     | a   | Attribute |     | value     | for A |     |     |     |
+| --- | --- | --- | --- | --- | --- | --------- | --- | --------- | ----- | --- | --- | --- |
+|     |     |     |     |     | i   |           |     |           |       | i   |     |     |
+|     |     |     |     |     | b j | Attribute |     | value     | for B | j   |     |     |
+|     |     |     |     |     | c   | Attribute |     | value     | for C |     |     |     |
+|     |     |     |     |     | 众k  |           |     |           |       | k   |     |     |
+|     |     |     |     |     | α   | Weight    | for | attribute |       | A   |     |     |
+|     |     |     |     |     | 众i  |           |     |           |       | i   |     |     |
+|     |     |     |     |     | β   | Weight    | for | attribute |       | B   |     |     |
+|     |     |     |     |     | j   |           |     |           |       | j   |     |     |
+|     |     |     |     | 公γ  |     | Weight    | for | attribute |       | C   |     |     |
+|     |     |     |     |     | k   |           |     |           |       | k   |     |     |
+公
+The formulas for信calculating global impact factor and local impact factor are as follows:
+|     |     |     |     |     |        | (   |     |     |     | )   |     |     |
+| --- | --- | --- | --- | --- | ------ | --- | --- | --- | --- | --- | --- | --- |
+|     |     |     |     |     |        |     | ∑   |     | ∑   |     |     |     |
+|     |     | 信   |     | IF  | = 100ρ |     | α   | a + | β   | b , |     | (5) |
+|     |     | 微   |     |     | G      |     |     | i i |     | j j |     |     |
+|     |     |     |     |     | (      |     |     |     |     | )   |     |     |
+|     |     |     |     |     |        | ∑   |     | ∑   |     | ∑   |     |     |
+微
+|     |     |     | IF  | =   | 100ρ | α   | a + | β   | b + | γ c . |     | (6) |
+| --- | --- | --- | --- | --- | ---- | --- | --- | --- | --- | ----- | --- | --- |
+|     |     |     |     | L   |      | i   | i   | j   | j   | k k   |     |     |
+• Invasion level coefficient ρ is 0.9 if a plant is less widespread invasive; otherwise, it is 1.0.
+• Attribute values a , b and c are determined per Section 3.2.2.
+|     |     |     | i   | j   | k   |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+• Attribute weights α , β and γ are determined per Section 3.2.3.
+|       |           |        |     | i j | k   |     |     |     |     |     |     |     |
+| ----- | --------- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 3.2.2 | Attribute | values |     |     |     |     |     |     |     |     |     |     |
+Every attribute contains a list of options described in words than in numbers. In order to
+leverage Eq.5 and Eq.6, we need to map the options from words to numbers per Table 9.
+|     |     |     |     |     |     |     |     |     |     |     | 关注  | HiMCM |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #13643 |           |                 |     |        |              |      |             |       |               |     |     | Page | 18 of 25 |
+| ----------- | --------- | --------------- | --- | ------ | ------------ | ---- | ----------- | ----- | ------------- | --- | --- | ---- | -------- |
+|             |           |                 |     | Table  | 9 Attributes |      | values      |       |               |     |     |      |          |
+| Symbol      |           | Attributes      |     |        |              |      | a ,         | b and | c Evaluation  |     |     |      |          |
+|             |           |                 |     |        |              |      | i           | i     | i             |     |     |      |          |
+| Category    | A - Plant | Characteristics |     |        |              |      |             |       |               |     |     |      |          |
+| A           | Duration  |                 |     | a =0.5 | (Annual),    | 0.75 | (Biennial), |       | 1 (Perennial) |     |     |      |          |
+| 1           |           |                 |     | 1      |              |      |             |       |               |     |     |      |          |
+A Growing Habit a =0(Tree),0.25(Shrub),0.5(Vine),0.75(Graminoid),1(Forb/herb)
+| 2   |     |     |     | 2   |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+A Growth Rate The growth rate after successful establishment.
+3
+|     |     |     |     | a =0.5 | (Slow), | 0.75 | (Moderate), |     | 1 (Rapid) |     |     | M   |     |
+| --- | --- | --- | --- | ------ | ------- | ---- | ----------- | --- | --------- | --- | --- | --- | --- |
+3
+A 4 Lifespan a 4 = 0.25 (when a 1 = 0.5 or 0.75), 0.5 (Short), 0.75 (Moderate), 1
+(Long)
+A Fertility Requirement Relative level of nutrition (N, P, K) required foCr normal growth and
+| 5   |     |     |     |     |     |     |     |     |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+development.
+|     |            |     |           | a =0.5     | (Low),  | 0.75  | (Medium), |      | 1 (High)  |     |          |     |     |
+| --- | ---------- | --- | --------- | ---------- | ------- | ----- | --------- | ---- | --------- | --- | -------- | --- | --- |
+|     |            |     |           | 5          |         |       |           |      |           | M C |          |     |     |
+| A 6 | Fruit/Seed |     | Abundance | The number | of      | seeds | produced. |      |           |     |          |     |     |
+|     |            |     |           | a =0.25    | (None), | 0.5   | (Low),    | 0.75 | (Medium), |     | 1 (High) |     |     |
+|     |            |     |           | 6          |         |       |           |      | M         |     |          |     |     |
+A Propagated Methods Thenumberofpropagationmethodsiisn . ThemethodscanbePropa-
+| 7   |     |     |     |     |     |     |     |     |     | 7   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Bulb,Hby
+|     |     |     |     | gated by | Bare | Root, | by  |     | Container, | by  | Corm, | by Cuttings, | by  |
+| --- | --- | --- | --- | -------- | ---- | ----- | --- | --- | ---------- | --- | ----- | ------------ | --- |
+i
+|     |     |     |     | Seed, by | Sod, | by Sprigs, | or  | by Tubers. |     |     |     |     |     |
+| --- | --- | --- | --- | -------- | ---- | ---------- | --- | ---------- | --- | --- | --- | --- | --- |
+H
+≥4)
+|     |     |     |     | a 7 =0.25 | (n 7 | =1), | 0.5 (n | 7 =2), | 0.75 (n | 7 =3), | 1 (n | 7   |     |
+| --- | --- | --- | --- | --------- | ---- | ---- | ------ | ------ | ------- | ------ | ---- | --- | --- |
+：
+A Seed Spread Rate The capability of：the plant to spread through its seed production.
+8
+|     |     |     |     | a =0.25 | (None), | 0.5 | (Slow), | 0.75 | (Moderate), |     | 1 (Rapid) |     |     |
+| --- | --- | --- | --- | ------- | ------- | --- | ------- | ---- | ----------- | --- | --------- | --- | --- |
+8
+A Seedling Vigor The expected seedling survival percentage of the plant.
+9
+=0.5号号
+|          |           |     |                 | a 9 | (Low), | 0.75 | (Medium), |     | 1 (High) |     |     |     |     |
+| -------- | --------- | --- | --------------- | --- | ------ | ---- | --------- | --- | -------- | --- | --- | --- | --- |
+| Category | B - Human |     | and Environment |     |        |      |           |     |          |     |     |     |     |
+众
+B 1 Toxicity The relative toxicity of the plant to either humans or livestock.
+众
+|     |     |     |     | b =0 (None), |     | 0.5 (Slight), |     | 0.75 | (Moderate), |     | 1 (Severe) |     |     |
+| --- | --- | --- | --- | ------------ | --- | ------------- | --- | ---- | ----------- | --- | ---------- | --- | --- |
+1
+B Product The level of the plant known to be suitable for multiple types of prod-
+| 2   |     |     | 公   |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+ucts.
+公b
+|     |     |     |     | =0 (Copiousness), |     |     | 0.25 | (Many), | 0.5 | (Some), | 0.75 | (few), 1 (None) |     |
+| --- | --- | --- | --- | ----------------- | --- | --- | ---- | ------- | --- | ------- | ---- | --------------- | --- |
+2
+B 3 Palatable 信Animal The relative palatability of this plant to browsing animals or to grazing
+animals.
+|     |     |     |     | b =0 (High), |     | 0.5 (Moderate), |     | 0.75 | (Low), | 1   | (None) |     |     |
+| --- | --- | --- | --- | ------------ | --- | --------------- | --- | ---- | ------ | --- | ------ | --- | --- |
+|     |     | 信   |     | 3            |     |                 |     |      |        |     |        |     |     |
+微
+B Palatable Human Theplantproduceberries,nuts,seeds,orfruitsarepalatabletohumans.
+4
+|     |     |     |     | b =0.5 | (Yes), | 1 (No) |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | ------ | ------ | ------ | --- | --- | --- | --- | --- | --- | --- |
+4
+B 5 Commercial Availability The plant propagules are in the commercial marketplace.
+微
+|     |     |     |     | b =0.5 | (Yes), | 1 (No) |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | ------ | ------ | ------ | --- | --- | --- | --- | --- | --- | --- |
+5
+| Category | C - Location |            |     |          |            |     |        |     |     |     |     |     |     |
+| -------- | ------------ | ---------- | --- | -------- | ---------- | --- | ------ | --- | --- | --- | --- | --- | --- |
+| C        | Soil         | Adaptation |     | The soil | adaptation |     | level. |     |     |     |     |     |     |
+1
+|     |     |     |     | c =0 (Low), |     | 0.5 (Medium), |     | 1 (High) |     |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | ------------- | --- | -------- | --- | --- | --- | --- | --- |
+1
+| C   | TemperatureAdaptation |     |     | The temperature |     | adaptation |     | level. |     |     |     |     |     |
+| --- | --------------------- | --- | --- | --------------- | --- | ---------- | --- | ------ | --- | --- | --- | --- | --- |
+2
+|     |       |            |     | c 2 =0 (Low), |            | 0.5 (Medium), |        | 1 (High) |     |     |     |     |     |
+| --- | ----- | ---------- | --- | ------------- | ---------- | ------------- | ------ | -------- | --- | --- | --- | --- | --- |
+| C   | Humid | Adaptation |     | The humid     | adaptation |               | level. |          |     |     |     |     |     |
+3
+|     |     |     |     | c =0 (Low), |     | 0.5 (Medium), |     | 1 (High) |     |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | ------------- | --- | -------- | --- | --- | --- | --- | --- |
+3
+| C   | Population |     | Density | The level | of population |     | density. |     |     |     |     |     |     |
+| --- | ---------- | --- | ------- | --------- | ------------- | --- | -------- | --- | --- | --- | --- | --- | --- |
+4
+|     |     |     |     | c =0 (Low), |     | 0.5 (Medium), |     | 1 (High) |     |     |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | ------------- | --- | -------- | --- | --- | --- | --- | --- |
+4
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team #13643 Page 19 of 25
+Attributes B (Product), B (Palatable Animal), B (Palatable Human), and B (Commercial
+2 3 4 5
+Availability) are special since they measure benefits rather than harms. Per Assumption 2, the
+greater the benefit, the less the impact. Therefore, when the palatability is higher, or when the
+plant has more uses, the corresponding values are smaller.
+3.2.3 Attribute weights
+We use the Analytic Hierarchy Process (AHP) to obtain the weight vector. WMhen it is not
+easy to construct a weight vector by conferring to research results, AHP is an option. Since AHP
+makes pairwise comparisons and has a method to evaluate the rationality for those comparisons,
+it can reach a relatively reasonable result. M C
+We make comparisons between attributes according to Saaty’s fundamental scale of absolute
+M
+numbers[16]. When two attributes are equally important, we get 1; wChen one attribute is mod-
+erately more important than the other, we get 3; when one attribute is strongly more important
+M
+than the other, we get 5; when one attribute is much strongly more important than the other, we
+i
+get 7; when one attribute is extremely more important thanHthe other, we get 9. Number 2, 4, 6
+and 8 are used to express intermediate values. i
+H
+The resulting comparison matrix is shown in Table 10.
+：
+：
+Table 10 AHP comparison matrix
+号号
+A A A A A A A A A B B B B B C C C C
+1 2 3 4 5 6 7 8 9 1 2 3 4 5 1 2 3 4
+A 1 1/3 1/7 1/3 1 1/7 1/4 1/7 1/5 1/9 1/5 1/3 1/4 1/4 1/5 1/5 1/5 1/3
+1
+众
+A 3 1 1/5 1 3 1/5 1/2 1/5 1/3 1/7 1/3 1 1/2 1/2 1/3 1/3 1/3 1
+2 众
+A 7 5 1 5 7 1 4 1 3 1/3 3 5 4 4 3 3 3 5
+3
+公
+A 3 1 1/5 1 3 1/5 1/2 1/5 1/3 1/7 1/3 1 1/2 1/2 1/3 1/3 1/3 1
+4
+A 1 1/3 1/7 1/3公1 1/7 1/4 1/7 1/5 1/9 1/5 1/3 1/4 1/4 1/5 1/5 1/5 1/3
+5
+信
+A 7 5 1 5 7 1 4 1 3 1/3 3 5 4 4 3 3 3 5
+6
+A 4 2 1/4 2 4 1/4 1 1/4 1/2 1/4 1/2 2 1 1 1/2 1/2 1/2 2
+7
+信
+A 7 5微1 5 7 1 4 1 3 1/3 3 5 4 4 3 3 3 5
+8
+A 5 3 1/3 3 5 1/3 2 1/3 1 1/5 1 3 2 2 1 1 1 3
+9
+微
+B 9 7 3 7 7 3 4 3 5 1 5 7 4 4 5 5 5 7
+1
+B 5 3 1/3 3 5 1/3 2 1/3 1 1/5 1 3 2 2 1 1 1 3
+2
+B 3 1 1/5 1 3 1/5 1/2 1/5 1/3 1/7 1/3 1 1/2 1/2 1/3 1/3 1/3 1
+3
+B 4 2 1/4 2 4 1/4 1 1/4 1/2 1/4 1/2 2 1 1 1/2 1/2 1/2 2
+4
+B 4 2 1/4 2 4 1/4 1 1/4 1/2 1/4 1/2 2 1 1 1/2 1/2 1/2 2
+5
+C 5 3 1/3 3 5 1/3 2 1/3 1 1/5 1 3 2 2 1 1 1 3
+1
+C 5 3 1/3 3 5 1/3 2 1/3 1 1/5 1 3 2 2 1 1 1 3
+2
+C 5 3 1/3 3 5 1/3 2 1/3 1 1/5 1 3 2 2 1 1 1 3
+3
+C 3 1 1/5 1 3 1/5 1/2 1/5 1/3 1/7 1/3 1 1/2 1/2 1/3 1/3 1/3 1
+4
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | #13643 |     |     |     |     |     |     |     |     |     |     |     |     | Page 20 | of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+Note that attribute B (Toxicity) is a predominant attribute in our model. Toxic plants can
+1
+poison the local environment and lead to a large expenditure for humans to control them. At-
+tributes A (Growth Rate), A (Fruit/Seed Abundance), A (Seed Spread Rate) are also important
+|     |     | 3   |     |     | 6   |     |     |     |     | 8   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+because they determine the spread rate of a plant when it is introduced to a new place.
+For the global impact factor, the comparison matrix is comprised of the numbers from first 14
+rows and first 14 columns. For the local impact factor, the comparison matrix is comprised of all
+| the | numbers | in  | the table. |     |     |     |     |     |     |     |     |     |     |     |     |
+| --- | ------- | --- | ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+resuMlting
+We conduct a consistency test on the global matrix and the local one. The CRs are
+| small | enough | for | both | matrices, |     | so both | matrices |     | pass | the test. |     |     |     |     |     |
+| ----- | ------ | --- | ---- | --------- | --- | ------- | -------- | --- | ---- | --------- | --- | --- | --- | --- | --- |
+C
+|     |     |     |     |     |     | Table |     | 11 Consistency |     | test |     |     | M   |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | -------------- | --- | ---- | --- | --- | --- | --- | --- |
+−n
+|     | Impact | Factor | Attribute |     | Number | Max | Eigenvalue |     |     | λ   |     |           | CI  |         |     |
+| --- | ------ | ------ | --------- | --- | ------ | --- | ---------- | --- | --- | --- | --- | --------- | --- | ------- | --- |
+|     |        |        |           |     |        |     |            |     | CI= | max |     | R M ICCR= |     | CR<0.1? |     |
+n−1
+|     | Type   |     |     | n   |     |     | λ      | max |     |        |       |     | RI     |     |     |
+| --- | ------ | --- | --- | --- | --- | --- | ------ | --- | --- | ------ | ----- | --- | ------ | --- | --- |
+|     | Global |     |     | 14  |     |     | 14.501 |     |     | 0.0386 | M1.49 |     | 0.0259 | Yes |     |
+i
+|     | Local |     |     | 18  |     |     | 18.561 |     |     | 0.0330 |     | 1.49 | 0.0221 | Yes |     |
+| --- | ----- | --- | --- | --- | --- | --- | ------ | --- | --- | ------ | --- | ---- | ------ | --- | --- |
+H
+i
+H
+For each matrix, we normalize the columns so that each column adds up to 1. Then, we
+：
+calculate the sum of each row to get a sum vect：or. Last, we divide the sum vector by n (the
+| attribute |        | number | in Table |     | 11) to | get      | the final | weight |     | vector. |     |     |     |     |     |
+| --------- | ------ | ------ | -------- | --- | ------ | -------- | --------- | ------ | --- | ------- | --- | --- | --- | --- | --- |
+| The       | weight |        | results  | are | shown  | in Table |           | 12.    |     |         |     |     |     |     |     |
+号号
+|     |     |     |     |     |     | Table |     | 12 Weights |     | results |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | ---------- | --- | ------- | --- | --- | --- | --- | --- |
+众
+|     |     |     | Type   | α           | α     |     | α     | α     | α     | α     | α     | α     | α     |     |     |
+| --- | --- | --- | ------ | ----------- | ----- | --- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | --- | --- |
+|     |     |     |        | 1           |       | 2众3 |       | 4     | 5     | 6     | 7     | 8     | 9     |     |     |
+|     |     |     | Global | 0.014       | 0.027 |     | 0.134 | 0.027 | 0.014 | 0.134 | 0.044 | 0.134 | 0.066 |     |     |
+|     |     |     | Local  | 0.011公0.021 |       |     | 0.113 | 0.021 | 0.011 | 0.113 | 0.034 | 0.113 | 0.052 |     |     |
+公β
+|     |     |     |          | 1     | β     | 2   | β 3   | β 4   | β 5   | γ 1   | γ 2   | γ 3   | γ 4   |     |     |
+| --- | --- | --- | -------- | ----- | ----- | --- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | --- | --- |
+|     |     |     | Global 信 | 0.227 | 0.066 |     | 0.027 | 0.044 | 0.044 | -     | -     | -     | -     |     |     |
+|     |     |     | Local    | 0.192 | 0.052 |     | 0.021 | 0.034 | 0.034 | 0.052 | 0.052 | 0.052 | 0.021 |     |     |
+信
+微
+| 3.2.4 | Algorithm |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+| ----- | --------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+微
+| Analytic |     | Hierarchy |     | Process |     | Model |     | for Impact |     | Factor |     |     |     |     |     |
+| -------- | --- | --------- | --- | ------- | --- | ----- | --- | ---------- | --- | ------ | --- | --- | --- | --- | --- |
+INPUT: All the attribute options and Invasive level coefficient ρ
+globalvaluevector ← evaluate all the Attribute values from inputted attribute options per Table 9
+localvaluevector ← evaluate all the Attribute values from inputted attribute options per Table 9
+←
+| globalweightvector |     |     |     | Table | 12  |     |     |     |     |     |     |     |     |     |     |
+| ------------------ | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+←
+| localweightvector |     |     |     | Table | 12  |     |     |     |     |     |     |     |     |     |     |
+| ----------------- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+IF ← 100ρ times the dot product of globalweightvector and globalvaluevector
+G
+IF ← 100ρ times the dot product of localweightvector and localvaluevector
+L
+| OUTPUT: |     |     | IF and | IF  |     |     |     |     |     |     |     |     |     |     |       |
+| ------- | --- | --- | ------ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+|         |     |     | G      |     | L   |     |     |     |     |     |     |     |     |     |       |
+|         |     |     |        |     |     |     |     |     |     |     |     |     |     | 关注  | HiMCM |
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| Team | #13643 |     |     |     |     |     |     |     | Page 21 | of 25 |
+| ---- | ------ | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+3.3 Results
+| 3.3.1 | Global | Impact | Factor | Results |     |     |     |     |     |     |
+| ----- | ------ | ------ | ------ | ------- | --- | --- | --- | --- | --- | --- |
+We downloaded a database containing a list of invasive plants from US-RIIS[20] and chose 226
+plants from it. These plants belong to 3 classes, 26 orders and 53 families.
+In order to get all the plant attributes, we developed a web crawler to grab data from USDA
+Plants Database[19]. Thus, we have all the attribute options ready for each plant. M
+Then we implement this model to calculate the global impact factors for all 226 plants and
+| rank | them according |     | to the factor. | Table | 15 shows | some results. |     |     |     |     |
+| ---- | -------------- | --- | -------------- | ----- | -------- | ------------- | --- | --- | --- | --- |
+C
+M
+|     |     |     |     | Table | 15 Plant | Rankings |     |     |     |     |
+| --- | --- | --- | --- | ----- | -------- | -------- | --- | --- | --- | --- |
+|     |     |     |     |       |          |          | M   | C   |     |     |
+Rank Scientific Name Vernacular Name Duration Growing Habit IF G
+1 Melilotus officinalis Sweetclover PeMrennial Forb/herb 84.5
+i
+2 Senecio vulgaris Old-man-in-the-spring Biennial Forb/herb 83.3
+H
+|     | 3   | Ailanthus | altissima |     | Tree of | heaven | Perennial | Tree | 81.8 |     |
+| --- | --- | --------- | --------- | --- | ------- | ------ | --------- | ---- | ---- | --- |
+i
+4 Crotalaria spectabilis Showy rattlebox HAnnual Forb/herb 81.7
+5 Ranunculus repens Creeping buttercup Perennial Forb/herb 80.8
+：
+：
+6 Melilotus indicus Annual yellow sweetclover Annual Forb/herb 80.0
+|     | 7   | Digitalis | purpurea  |     | Purple       | foxglove | Biennial  | Forb/herb | 79.9 |     |
+| --- | --- | --------- | --------- | --- | ------------ | -------- | --------- | --------- | ---- | --- |
+|     | 8   | Sorghum   | halepense |     | Johnsongrass |          | Perennial | Graminoid | 78.9 |     |
+号 号
+9 Schedonorus arundinaceus Tall fescue Perennial Graminoid 76.8
+|     | 10  | Vicia | sativa |     | Garden | vetch | Annual | Forb/herb | 73.8 |     |
+| --- | --- | ----- | ------ | --- | ------ | ----- | ------ | --------- | ---- | --- |
+|     | . . |       |        | 众   |        |       |        |           |      |     |
+.
+众
+26 Taraxacum officinale Common dandelion Perennial Forb/herb 66.9
+.
+.
+|     | .   |     | 公   |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+We observe that half of the top-10 plants are perennials and 7 of them are forbs/herbs. Intrigu-
+信
+ingly, the tree of heaven, which is a tree, has made it to the third place. This is mostly because it
+| is toxic | and grows | rapidly. |     |     |     |     |     |     |     |     |
+| -------- | --------- | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+信
+微
+Dandelions have a relatively high ranking but are not among the top species. This is because
+dandelions are edible and have medicinal and culinary use, which lowers the global impact factor.
+微
+0.06
+htdiw nib / ycneuqerF
+0.05
+0.04
+0.03
+0.02
+0.01
+0.00
+|     |     |     |     | 40  | 50  | 60  | 70 80 |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+Global impact factor
+|     |     |     | Fig. 13 | Frequency | distribution | of global | impact factor |     |              |       |
+| --- | --- | --- | ------- | --------- | ------------ | --------- | ------------- | --- | ------------ | ----- |
+|     |     |     |         |           |              |           |               |     | 关注           | HiMCM |
+|     |     |     |         |           |              |           |               |     | ×+ −÷        |       |
+|     |     |     |         |           |              |           |               |     | Hi CM 获取更多资讯 |       |
+
+| Team | #13643 |     |       |     |             |            |     |               |        |        |     | Page 22 | of 25 |
+| ---- | ------ | --- | ----- | --- | ----------- | ---------- | --- | ------------- | ------ | ------ | --- | ------- | ----- |
+|      |        |     | Table | 16  | Descriptive | statistics |     | of the global | impact | factor |     |         |       |
+Mean Standard Deviation Kurtosis Skewness Range Median Confidence Level (95.0%)
+|     | 57.9 |     | 8.65 |     | 0.81 |     | 0.41 | 50.51 | 57.25 |     | 1.13 |     |     |
+| --- | ---- | --- | ---- | --- | ---- | --- | ---- | ----- | ----- | --- | ---- | --- | --- |
+We draw a histogram by using 226 global factors IF (see Fig.13), and calculate several statis-
+G
+| tical | characteristics |     | for | the distribution |     | (see | Table | 16). |     |     |     |     |     |
+| ----- | --------------- | --- | --- | ---------------- | --- | ---- | ----- | ---- | --- | --- | --- | --- | --- |
+M
+IF is roughly concentrated around the mean and the median but does not exactly follow a
+G
+normal distribution. The distribution is skewed to the right according to the table, meaning that
+there is a longer right tail. However, we can observe a left tail as well on the histogram. Neither
+C
+M
+tail is very long. There are no global impact factors below 30 or above 90.
+|       |       |        |     |        |         |     |     |     |     | M C |     |     |     |
+| ----- | ----- | ------ | --- | ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 3.3.2 | Local | Impact |     | Factor | Results |     |     |     |     |     |     |     |     |
+M
+i
+|     | For calculating |     | local | impact | factor | IF , |     |     |     |     |     |     |     |
+| --- | --------------- | --- | ----- | ------ | ------ | ---- | --- | --- | --- | --- | --- | --- | --- |
+|     |                 |     |       |        |        | L    |     |     | H   |     |     |     |     |
+• First, we choose 3 locations Alaska (AK), Florida (FL)i, and Nevada (NV). Alaska is ex-
+H
+tremely cold, Florida is warm and humid, and Nevada is hot and dry;
+：
+：
+• Then, we choose 4 plants that are invasive at these locations (there are two exceptions: no
+trees of heaven in Alaska and no yellow salsifies in Nevada). Sweetclover ranks the first in
+global impact factor; the tree of heaven is the highest ranking tree in terms of global impact
+号 号
+factor (rank 3); yellow salsify has the highest global impact factor among nontoxic plants
+|     | (rank | 21); | also, the | dandelion |     | is not left | out | (rank 26); |     |     |     |     |     |
+| --- | ----- | ---- | --------- | --------- | --- | ----------- | --- | ---------- | --- | --- | --- | --- | --- |
+众
+• Last, we prepare all the attributes options with regards to Category C and implement the
+众
+|     | model | to get | local | impact | factor | IF . |     |     |     |     |     |     |     |
+| --- | ----- | ------ | ----- | ------ | ------ | ---- | --- | --- | --- | --- | --- | --- | --- |
+L
+公
+|     | The results | are | shown | in  | Fig.14. |     |     |     |     |     |     |     |     |
+| --- | ----------- | --- | ----- | --- | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+For each plant, their impact would be greater at locations with more favorable environments,
+信
+| and | vice versa. |     |     |     |     |     |     |     |     |     |     |     |     |
+| --- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+For different plants, their local impact factor ranking roughly conforms to the global one, but
+信
+微
+there are exceptions. For example, though sweetclover has a IF higher than that of the tree of
+G
+heaven, the IF for sweetclover in Alaska is lower than that for the tree of heaven in Florida.
+L
+微
+|     |     |     |     | Sweetclover |     | Tree of heaven |     | Yellow salsify |     | Dandelion |     |     |     |
+| --- | --- | --- | --- | ----------- | --- | -------------- | --- | -------------- | --- | --------- | --- | --- | --- |
+80
+rotcaf tcapmi lacoL
+60
+40
+20
+|     |     |     |     | AK  | FL NV | FL  | NV    | AK            | NV  | AK FL NV |     |     |       |
+| --- | --- | --- | --- | --- | ----- | --- | ----- | ------------- | --- | -------- | --- | --- | ----- |
+|     |     |     |     |     | Fig.  | 14  | Local | impact factor |     |          |     |     |       |
+|     |     |     |     |     |       |     |       |               |     |          |     | 关注  | HiMCM |
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ | --- |
+
+| Team | #13643      |     |          |     |     |     |     |     | Page 23 | of 25 |
+| ---- | ----------- | --- | -------- | --- | --- | --- | --- | --- | ------- | ----- |
+| 3.4  | Sensitivity |     | Analysis |     |     |     |     |     |         |       |
+In Eq.5 and Eq.6, the impact factors are evaluated as 100ρ multiplied by a linear combination
+| of  | attribute | values. | We discuss | the | model’s | sensitivity | as follows: |     |     |     |
+| --- | --------- | ------- | ---------- | --- | ------- | ----------- | ----------- | --- | --- | --- |
+• For variable ρ, when other variables do not change, changing ρ from 1.0 to 0.9 will lead to a
+|     | 90% | discount | to current | IF  | value; |     |     |     |     |     |
+| --- | --- | -------- | ---------- | --- | ------ | --- | --- | --- | --- | --- |
+• For one certain attribute value, when other variables do not change, the change of impact
+M
+factor is in proportion with the change of the attribute value. The formula is as follows:
+|     |     |     |     |     |     | ∆IF | = 100ρ·w∆v |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | ---------- | --- | --- | --- |
+C
+M
+Where:
+M C
+|     |     | ∆IF is | the change | of     | impact factor | value; |     |     |     |     |
+| --- | --- | ------ | ---------- | ------ | ------------- | ------ | --- | --- | --- | --- |
+|     |     | ∆v is  | the change | of the | attribute     | value; |     | M   |     |     |
+attribute.i
+|     |     | w is the | attribute | weight | corresponding |     | to the |     |     |     |
+| --- | --- | -------- | --------- | ------ | ------------- | --- | ------ | --- | --- | --- |
+H
+For example, if only attribute B (Toxicity) changes fromi“Slight” to “Severe”, the change
+1
+H
+of attribute value ∆v equals 0.5 (Table 10). Considering that the weight of B for global
+1
+：
+impact factor is β = 0.227 and for local im：pact factor is β = 0.192 (Table 12), we will
+|     |     |     | 1   |     |     |     |     | 1   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+conclude that global impact factor will increase 11.4ρ and local impact factor will increase
+9.6ρ.
+号号
+| 3.5 | Strengths |     | and | Weaknesses |     |     |     |     |     |     |
+| --- | --------- | --- | --- | ---------- | --- | --- | --- | --- | --- | --- |
+众
+众
+Strengths
+• Our model is easy to公implement. For one plant, we can design a questionnaire to collect
+its attribute options and use our model to calculate the impact factors quickly.
+公
+Weaknesses
+信
+• Our model is subjective. The weights are subjectively determined. If we could involve more
+research 信 results in determining the attribute weights, our model could be more accurate.
+微
+• Our attribute design may be uncomprehensive. It is possible that we have overlooked
+|     | some | other | important | attributes. |     |     |     |     |     |     |
+| --- | ---- | ----- | --------- | ----------- | --- | --- | --- | --- | --- | --- |
+微
+|     |     |     |     |     |     |     |     |     | 关注  | HiMCM |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 24 of 25
+Our Vigorous Friend
+It is always a dreamlike scene to see dandelion seeds flying on a summer day. All those little
+parachutes drift in the air, slowly and gently, through a beam of light, like angels from the sky.
+We know how children love dandelions. They never tire of blowing puffballs and running after
+the parachutes. But we also know how adults dislike them. The dandelions cause allergy, grow
+with our crops, and spread like mad. Most of the time, we label them as invasive hMerbs that need
+great effort to take care of.
+Whether we like them or not, dandelions spread all over the world. They can adapt to almost
+C
+M
+all kinds of environments, regardless of what the soil quality, humidity and temperature are. They
+grow fast, have abundant seeds and propagate without relying on other creatures. They never tire
+M
+of dispersing, germinating and flowering. Looking at them, we have to Cadmit they are so vigorous
+and full of vitality.
+M
+That is why they cannot stop “invading”. But we need to be awiare that “invasion” should be
+H
+a neutral word than a derogatory one for nature species. When we talk about species invading, it
+i
+should be no difference from talking about the emergence, prosperity, mutation or even extinction
+H
+of species. These are all natural processes. Study has proved that without human intervention,
+：
+even invasive species can reach an equilibrium wi：th others. At some points, the invasive species
+could develop very fast and occupy a lot of resources, but gradually, when other species go into
+competition sufficiently, all the species will get along in harmony and share our planet peacefully.
+号号
+We believe it is the same for our human beings – we will get along well with all the species,
+including invasive ones.
+众
+Sometimes it is we humans who flap the butterfly’s wing. Brazilian red eared turtles were a hit
+众
+in the pet market. However, some people purchased them and released them in the wild due to
+their compassion. Soon the公turtles dominated the aquatic ecosystem with their tenacious vitality.
+Humans bring species from here to there and artificially raise them. Humans sometimes introduce
+公
+species which do not bring harm initially but do eventually. We humans break the balance of
+信
+nature and make the whole ecological system blink.
+The invasive species are just who they are. Most of them have a lot of merits to human beings.
+信
+They can pro微vide fodder for our livestock, or they can be food or medicine. They are so lovely
+when we learn to get along with them. Think about dandelions. They have never been labeled
+invasive until recently. But they have been evolving in this planet for about 30 million years! Long
+微
+enough to prove their innocence. It is not fair to treat them like an enemy. They are just old
+friends, sometimes sweet, sometimes petulant, and after all they are just very vigorous and full of
+vitality. We are so lucky that they are around – children will definitely agree with us, and how
+about adults?
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #13643 Page 25 of 25
+References
+[1] Best management practices (bmps) to prevent the introduction and spread of invasive species.[Online].Avail-
+able: https://www.forestasyst.org/invasive_species.cfm.
+[2] M.T.BrockandC.Galen,“Droughttoleranceinthealpinedandelion,”Taraxacum ceratophorum,pp.1311–
+1321, 2005.
+[3] Current invasive plants (feature layer).[Online].Available:https://catalog.data.gov/dataset/current-
+invasive-plants-feature-layer-9c83e.
+M
+[4] Dandelion.[Online].Available:https://www.gardenorganic.org.uk/expert-advice/garden-management/
+weeds/weed-datasheets/dandelion.
+[5] W. K. C. M. G. Elaine Anderson, Dandelions, 2012. [Online]. Available: https://web.archive.org/web/
+20120626161645/http://gardening.wsu.edu/column/05-04-03.htm. M C
+[6] Everythingyouneedtoknowaboutgrowingdandelions,2018.[Online].Available:https://veggiegardenseeds.
+com.au/products/dandelion-taraxacum-officinale-herb-x-100-seeds.
+M
+C
+[7] Executive order 13112, 1999. [Online]. Available: https://www.govinfo.gov/content/pkg/FR-1999-02-
+08/pdf/99-3184.pdf.
+M
+[8] D. Greene and E. Johnson, “A model of wind dispersal of winged or pluimed seeds,” Ecology, vol. 70, no. 2,
+pp. 339–347, 1989. H
+[9] A. Honek, Z. Martinkova, and P. Saska, “Post-dispersal predation oif taraxacum officinale (dandelion) seed,”
+H
+Journal of Ecology, vol. 93, no. 2, pp. 345–352, 2005.
+：
+[10] W. Letchamo and A. Gosselin, “Light, temperature and duration of storage govern the germination and
+：
+emergence of taraxacum officinale seed,” Journal of Horticultural Science, vol. 71, no. 3, pp. 373–377, 1996.
+[11] Meet a plant: Dandelion. [Online]. Available: https://gardens.duke.edu/sites/default/files/Duke%
+20Gardens%20-%20Meet%20a%20Plant%20Dandelion.pdf.
+号号
+[12] N.Z.MuthandM.Pigliucci,“Traitsofinvasivesreconsidered:Phenotypiccomparisonsofintroducedinvasive
+and introduced noninvasive plant species within two closely related clades,” American Journal of Botany,
+vol. 93, no. 2, pp. 188–196, 2006.
+众
+[13] A.OkuboandS.A.Levin,“Ath众eoreticalframeworkfordataanalysisofwinddispersalofseedsandpollen,”
+Ecology, vol. 70, no. 2, pp. 329–338, 1989.
+[14] Pimdat. [Online]. Available公: https://www.imapinvasives.org/decision-analysis-tool.
+[15] J. M. Randall, L. E. Morse, N. Benton, R. Hiebert, S. Lu, and T. Killeffer, “The invasive species assessment
+公
+protocol: A tool for creating regional and national lists of invasive nonnative plants that negatively impact
+biodiversity,” Inva信sive Plant Science and Management, vol. 1, no. 1, pp. 36–49, 2008.
+[16] T.L.Saaty,“Decisionmakingwiththeanalytichierarchyprocess,”Internationaljournalofservicessciences,
+vol. 1, no. 1, pp. 83–98, 2008.
+信
+[17] S. Stewar微t-Wade, S. Neumann, L. Collins, and G. Boland, “The biology of canadian weeds. 117. taraxacum
+officinale gh weber ex wiggers,” Canadian journal of plant science, vol. 82, no. 4, pp. 825–853, 2002.
+[18] O. Tackenberg, P. Poschlod, and S. Kahmen, “Dandelion seed dispersal: The horizontal wind speed does not
+微matter for long-distance dispersal-it is updraft!” Plant Biology, vol. 5, no. 05, pp. 451–454, 2003.
+[19] United states department of agriculture. [Online]. Available: https://plants.usda.gov/home.
+[20] Unitedstatesregisterofintroducedandinvasivespecies(us-riis).[Online].Available:https://www.sciencebase.
+gov/catalog/item/5b911a5ce4b0702d0e808588.
+[21] Usa location information - usa.com. [Online]. Available: http://www.usa.com/.
+[22] M. Van Kleunen, E. Weber, and M. Fischer, “A meta-analysis of trait differences between invasive and
+non-invasive plant species,” Ecology letters, vol. 13, no. 2, pp. 235–245, 2010.
+[23] K. J. Verhoeven and A. Biere, “Geographic parthenogenesis and plant-enemy interactions in the common
+dandelion,” BMC evolutionary biology, vol. 13, pp. 1–8, 2013.
+[24] K. Yoneda, H. Momose, and S. Kubota, “Effects of daylength and temperature on flowering in juvenile and
+adult phalaenopsis plants,” Journal of the Japanese Society for Horticultural Science, vol. 60, no. 3, pp. 651–
+657, 1991.
+[25] F. Yoshie, “Effects of day length and temperature on flowering in taraxacum platycarpum and t. officinale,”
+Bulletin of the Institute of Natural Sciences, Senshu University, no. 51, pp. 53–62, 2020. 关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

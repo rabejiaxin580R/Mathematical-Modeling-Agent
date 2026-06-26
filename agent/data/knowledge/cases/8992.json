@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "paper_id": "8992",
+  "meta": {
+    "paper_id": "8992",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2018,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2018\\A\\8992.pdf",
+    "kind": "pdf"
+  },
+  "concepts_used": [
+    {
+      "concept_id": "prep.missing",
+      "title": "缺失值处理",
+      "stage": "assume",
+      "how_used": "论文设计了线性迭代插补法，利用线性回归逐步插补缺失值，先插补速度，再插补长度等，共建立6个线性模型，多数R²超过0.5。",
+      "source_excerpt": "To correct for missing data, we designed Linear Iterative Imputation, a technique that uses linear regression to iteratively impute the features based on which useful features (statistically significant at 5%) are selected by the linear model: to impute the value of the missing one."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "title": "线性回归与最小二乘",
+      "stage": "build",
+      "how_used": "在GRR模型中，使用线性回归对归一化后的变量加权求和，得到每个过山车的评分，权重通过平衡各组重要性确定。",
+      "source_excerpt": "the first one, denoted General Rollercoaster Ranking (GRR), uses a linear model to give a rating for each rollercoaster, with the variables normalized and the weights chosen to balance the importance of each variable group."
+    },
+    {
+      "concept_id": "prep.normalize",
+      "title": "中心化/归一化/标准化",
+      "stage": "build",
+      "how_used": "在GRR模型中，对变量进行归一化处理，以消除量纲影响，使不同特征可比较。",
+      "source_excerpt": "with the variables normalized and the weights chosen to balance the importance of each variable group."
+    },
+    {
+      "concept_id": "eval.ahp",
+      "title": "层次分析法（AHP）",
+      "stage": "build",
+      "how_used": "在PRR模型中，使用层次分析法（AHP）让用户输入对三个变量组的偏好，从而生成个性化的回归权重，用于GRR模型得到最终排名。",
+      "source_excerpt": "the second one, called the Personalized Rollercoaster Ranking (PRR), employs the Analytic Hierarchy Process (AHP). As roller-coaster ranking is indeed a very subjective process, we ask the user to enter his/her own preference of the 3 variable groups. Then using AHP we can devise personalized regression weights to use in GRR in order to achieve a final ranking."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "title": "灵敏度分析",
+      "stage": "sensitivity",
+      "how_used": "对GRR模型中的三个权重参数β_t、β_f、β_I分别进行灵敏度分析，观察排名变化，验证模型稳定性。",
+      "source_excerpt": "3.5 Sensitivity Analysis 3.5.1 Sensitivity Against β_t 3.5.2 Sensitivity Against β_f 3.5.3 Sensitivity Against β_I"
+    },
+    {
+      "concept_id": "prep.dimreduce",
+      "title": "降维补充（t-SNE/LDA）",
+      "stage": "build",
+      "how_used": "将过山车的描述变量分为三组（Thrill, Fundamental, Inversion），降低维度，便于后续比较和APP界面设计。",
+      "source_excerpt": "After imputing the dataset, we grouped the descriptors of the rollercoaster into 3 groups: Thrill, Fundamental, and Inversion, based on their relations in the linear models identified above. The reason for clustering them is to reduce dimensionality in the comparisons conducted below, and improve ease of use for the app that we need to develop."
+    },
+    {
+      "concept_id": "writing.flowchart",
+      "title": "流程图绘制规范",
+      "stage": "write",
+      "how_used": "在APP设计部分绘制了流程图，展示用户交互流程，增强可读性。",
+      "source_excerpt": "6.1 Flowchart of App"
+    },
+    {
+      "concept_id": "viz.charttype",
+      "title": "常用图表类型及选择指南",
+      "stage": "write",
+      "how_used": "论文中使用了表格和图表展示缺失数据统计和灵敏度分析结果，符合数据可视化原则。",
+      "source_excerpt": "Table 1: Number of Missing Entries for Each Column"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数学建模助教 · 学习模式</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <!-- Markdown + 高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css?v=asm2" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+</head>
+<body>
+  <div class="learn">
+    <header class="learn-top">
+      <a class="learn-back" href="/home" title="返回主页">⌂</a>
+      <div class="learn-title"><span class="learn-mark">绣</span>学习模式 · 知识地图</div>
+      <div class="learn-controls">
+        <button id="asm-entry" class="learn-level-btn" title="入门测评 / 我的学习路径" hidden></button>
+        <select id="filter-cat" class="learn-select" title="按分类筛选"><option value="">全部模块</option></select>
+        <select id="filter-diff" class="learn-select" title="按难度筛选">
+          <option value="">全部难度</option>
+          <option value="Beginner">入门</option>
+          <option value="Intermediate">进阶</option>
+          <option value="Advanced">高阶</option>
+        </select>
+        <label class="learn-toggle"><input type="checkbox" id="show-ext" /> 只看未掌握</label>
+      </div>
+      <div class="learn-progress" id="progress"></div>
+    </header>
+
+    <div class="learn-scroll">
+      <section class="asm-path-banner" id="asm-path-banner" hidden></section>
+      <main class="learn-map" id="map"></main>
+    </div>
+  </div>
+  <!-- 首次进入引导：做测评 / 自选等级 / 先逛逛 -->
+  <div class="asm-gate" id="asm-gate" hidden>
+    <div class="asm-gate-scrim" id="asm-gate-scrim"></div>
+    <div class="asm-gate-card" role="dialog" aria-modal="true">
+      <div class="asm-gate-ico">🧭</div>
+      <h2 class="asm-gate-title">知识点很多，先定个方向？</h2>
+      <p class="asm-gate-sub">做个小测评给自己定级，我们按你的水平推荐一条从易到难的学习路径。也可以自己选，或先随便逛逛。</p>
+      <div class="asm-gate-actions">
+        <a class="asm-btn-primary" href="/assessment">做测评 / 选等级</a>
+        <button class="asm-btn-ghost" id="asm-gate-skip">先逛逛</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 我的学习路径侧滑面板 -->
+  <div class="asm-pathpanel" id="asm-pathpanel" hidden>
+    <div class="asm-pathpanel-scrim" id="asm-pathpanel-scrim"></div>
+    <aside class="asm-pathpanel-shell" role="dialog" aria-modal="true">
+      <header class="asm-pathpanel-top">
+        <h2 id="asm-pathpanel-title">我的学习路径</h2>
+        <button class="reader-close" id="asm-pathpanel-close" type="button" aria-label="关闭">✕</button>
+      </header>
+      <div class="asm-pathpanel-body" id="asm-pathpanel-body"></div>
+    </aside>
+  </div>
+
+  <!-- 全屏「学习卡片」阅读视图：点知识点节点后弹出，图谱留在底层做导航 -->
+  <div class="concept-reader" id="reader" hidden>
+    <div class="reader-scrim" id="reader-scrim"></div>
+    <div class="reader-shell" role="dialog" aria-modal="true" aria-labelledby="reader-title">
+      <header class="reader-top">
+        <div class="reader-top-meta">
+          <div class="reader-tags" id="reader-tags"></div>
+          <h1 class="reader-title" id="reader-title">加载中…</h1>
+        </div>
+        <div class="reader-top-actions">
+          <button class="reader-done" id="reader-done" type="button">标记为已掌握</button>
+          <button class="reader-close" id="reader-close" type="button" title="关闭（Esc）" aria-label="关闭">✕</button>
+        </div>
+      </header>
+      <div class="reader-progressbar"><span id="reader-rail"></span></div>
+      <div class="reader-body" id="reader-body"></div>
+    </div>
+  </div>
+
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/profile.js?v=anim1"></script>
+  <script src="/static/render.js?v=anim1"></script>
+  <script src="/static/learn.js?v=asm2"></script>
+</body>
+</html>

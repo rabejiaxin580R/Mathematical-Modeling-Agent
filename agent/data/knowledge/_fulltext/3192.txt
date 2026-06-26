@@ -1,0 +1,1413 @@
+Team 3192
+Losing objects is an inevitability of human existence. We lose objects, and occasionally,
+we lose ourselves.
+In the first section of the problem, we were tasked with finding a lost object in Hopkinton
+State Park with only a pen flashlight at our disposal and the sun quickly setting. We constructed
+four different scenarios that tailor our model to an individual’s search, depending on what the
+pre-existing conditions exist. Our four models take into account various contingencies,
+considering whether or not the individual knows generally where the object is, and whether or
+not the individual stayed on the path. In situations where the individual stayed on the path, we
+aimed to maximize efficiency by minimizing redundant edge traversal through the use of Euler
+M
+Circuits and Paths. If the individual knew a general area in which the object may be, we instead
+maximized area, increasing the probability that the object would be found by using an
+C
+Archimedean Spiral, which has been shown to be the most efficient search pattern for an open
+area. We established 100%, 100%, 70.46%, and 2.21% certainty that our object would be found
+M
+for each of the four scenarios. In the scenario with the the lowest probability, the low level of
+certainty is due to the complete lack of parameters for search; in this case, we maximized the
+i
+area covered.
+H
+The second part of the problem asked us to devise a model for finding a jogger who has
+gotten lost at night in Fort Ord, using the pen flash：light as our only light source. We determined
+that the jogger’s intention of going on a 5.0 mile run meant that he or she is no more than 5.5
+miles deep into the park, with 0.5 miles accounting for any wandering on the part of the jogger.
+For this scenario, we constructed two mod号els: one that accounts for when the jogger is stationary
+and another for when the jogger is mobile. If the jogger is unconscious (and therefore stationary),
+the searcher must travel along the Euler path that extends a maximum of 5.5 miles in trails into
+众
+the park depending on the jogger’s point of origin. If conscious, the jogger could rationally
+decide to remain in the same position, wander frantically, or wander out and return to the same
+starting point. Because we did not have any basis to accurately predict the behavior of the jogger,
+公
+we made certain assumptions about the jogger’s path of travel. We once again used Eulerization
+to calculate the optimal search path to find a jogger moving in the park, based on his or her
+starting area. If thi信s area-specific search along the Euler path is unsuccessful, then we decided
+that the searcher should travel along the most popular and prominent paths in the entire park. The
+combination of both methods greatly increases the efficiency and likelihood of finding the lost
+微
+jogger, regardless of whether the jogger is conscious or unconscious.
+While there were several limitations, such as the exclusion of terrain from our
+consideration, we believe that we have developed an optimal model with the given information
+that satisfies our logical assumptions. Our plan encompasses a variety of plausible
+scenarios,while minimizing total search time and maximizing probability of success.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Introduction
+Looking for lost objects is a common task, but one with general variation in efficiency.
+Sometimes we know the general location of the object, and other times, we simply have no idea.
+In context of Problem B, we are searching for a small object in Hopkinton State Park, and for a
+possibly unconscious jogger in Fort Ord Public Lands.
+Hopkinton State Park is located in Hopkinton, Massachusetts and features hiking trails,
+among other recreational activities, over its 1450 acre area. The area of study is a portion of
+Hopkinton State Park and encompasses Hopkinton Reservoir, and a swimming pool. We are
+searching for a small object, such as a ring, which was left somewhere in the park.
+Fort Ord Public Lands in Monterey County, California, is a former US Army post, now
+turned into a nature reserve with biking and jogging trails. Live rounds and explosives may still
+M
+remain in the park, considering the area was used for military purposes for over 60 years. The
+area of study encompasses a large space of unexploded ordnance, and features a combination of
+C
+paved roads and trails that are used for hiking, biking, and equestrian activities.
+In our paper, we have split the problem into two sections, B1 and B2. Problem B1 refers
+M
+to the search for a small object in Hopkinton State Park, and Problem B2 refers to the problem of
+finding a jogger on Fort Ord Public Land. We relied on the unique properties of Euler paths and
+i
+Archimedean spirals to comprehensively search the selected areas and achieve optimal
+H
+efficiency.
+：
+Assumptions and Justifications
+Problem B1
+Certain assumptions were clarified号 in the problem itself, and we used the given
+information as justification to determine:
+众
+• If the pen light flashlight is shined on the object, the object will be found.
+• The average person walks at 4 miles per hour, and the time allotted for the search is two
+hours. Therefore, the distance covered by the individual searching will be roughly 8
+公
+miles.
+In addition信 to the assumptions stipulated by the given problem, we determined that the
+pen light flashlight has the ability to illuminate a circle with a radius of five feet. The area
+illuminated by the flashlight can vary, depending on the angle of the flashlight to the ground, as
+微
+well as the intensity of the light. Full-size incandescent flashlights produce 15 to 20 lumens, a
+measure of how much total light the source generates, on average, and high-quality pen
+flashlights can generate up to 24 lumens of light. Because the individual can turn while
+searching, the area illuminated will be circular.
+In cases where our model determines an individual should begin their search in a
+particular location, we did not factor in the travel time from where the individual currently stood
+to the location where he or she would begin the search. Search, by definition, means “to look into
+or over carefully or thoroughly in an effort to find or discover something,” and therefore, travel
+time does not qualify as “searching.” Thus, the individual has the full two hours to search,
+because the search time begins when they arrive at the specified location. Because of the 15
+parking locations scattered around the area of the park, it is not unreasonable for the individual to
+drive to the parking location closest to his or her starting location of the search.
+There is a possibility that the small object being searched for has fallen into either
+Page 1 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Hopkinton Reservoir or the swimming pool nearby. We disregarded those cases, given the low
+likelihood of retrieval, as our flashlight would be insufficient to find and to retrieve the small
+object in water. Therefore, we excluded the area covered by bodies of water in our calculation of
+the total area of the park, since we would not be searching there.
+Additionally, we assumed that the individual searching for the object would be able to
+follow the path specified by the model. For instance, if our model indicated that the person
+should walk in a spiral, where the distance between two corresponding loops of the spiral was 10
+feet, then the individual would be able to follow the pattern. Because we were unable to
+determine whether any conditions in the park would hamper the individual’s search, we assumed
+that the individual can traverse the park’s grounds, uninhibited by any topographical conditions
+such as marshes, swamps, ravines, and other geographical features that would hamper the path of
+M
+the search. The contour map of the area does not show grossly steep features, so we assumed that
+the individual would have no difficulty in traversing the park in terms of altitude.
+C
+Additionally, we assume paths are 10 feet in width and will be completely illuminated by
+the pen flashlight.
+M
+Problem B2
+For the problem of finding the lost jogger we made several assumptions. Because joggers
+i
+typically run on paths, we assumed that the jogger did not stray from the trail. Path or trail refers
+H
+to roads and hiking trails. Therefore, in our search for the jogger, we only considered the trail.
+Moreover, we considered the safety of the searche：r in our decision to not stray from the path.
+Since the search is being conducted at night, the searcher himself may get lost if our model
+dictates he wander around the park. The safety of the searcher and most probable behavior of the
+jogger justifies this assumption. The park 号features several sensitive habitat areas and privately-
+owned areas that explicitly tell the jogger “Do not enter.” These locations provide additional
+caution to the jogger to avoid straying from the path. Also, mountain lions appear occasionally in
+众
+the park. Straying from the path could potentially cause increased danger to the jogger, and thus
+act as an additional incentive for the jogger to stay on the path.
+The problem stipulates that the jogger was planning on running and returning to his
+公
+starting location within 5 miles. It is unclear whether the jogger was in the middle of his jog
+when he got lost, or if he got lost after completing his five mile jog. Therefore, we establish a 5.5
+mile distance limit信ation, from the jogger’s starting point to his furthest probable location. The 0.5
+mile addition to the 5 mile jogging distance accounts for the contingency in which the jogger has
+completed the 5 mile jog and is now wandering along the paths.
+微
+In this scenario, we make the same assumption that the pen flashlight is able to illuminate
+a radius of 5 feet, as we had done earlier in problem B1. Moreover, we assume that if the light is
+shined upon the lost jogger, then the jogger will be found. Given that the searcher is actively
+looking for the individual, it is reasonable to conclude that if the searcher catches sight of the lost
+jogger, then the jogger will be discovered.
+The problem does not indicate whether or not we know the jogger’s location for starting
+the jog. However, based on assumptions we made, we can conclude the jogger’s starting
+location. Because the jogger most likely drove to the park to begin his jog, we determined that
+his starting location was one of the seven parking lots. Even if the parking lot is not his starting
+location for his jog, it is a known point where the jogger started his direction of travel. Moreover,
+because the park closes half an hour after sunset, and it is now dark, we can reasonably conclude
+that there will be no cars in the parking lot--except for the car of the lost jogger. Thus, we can
+pinpoint from which parking lot the jogger began traveling. We constructed a model that used
+Page 2 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+one of the parking lots as an example for conducting the search; this approach could easily be
+replicated for the other parking lots using the methodology we have outlined.
+We planned for two contingencies in this model, based on whether the jogger is
+conscious or unconscious. If the jogger was assumed to be unconscious, we assumed he or she
+remained stationary throughout the search. However, if the jogger is conscious, then we
+presumed movement; if the jogger consciously decided to stay in one location, then we would
+use the unconscious model. Predicting the behavior of the jogger relies on many factors,
+including personality and the jogger’s familiarity with the wilderness. There are several courses
+of action that the lost jogger could decide to pursue. These are factors we are unable to assess, as
+we do not know the jogger’s individual traits, so we could not conclusively presume what actions
+the jogger would take. Thus, we assumed that if the jogger was conscious, then he would be
+M
+moving. Logically, we can presume, the jogger would not be moving to evade the searcher,
+however.
+C
+Unlike problem B1 where there was a time constraint given, problem B2 provides no
+time constraint for the search to be conducted. Since temperatures in Salinas, California, where
+M
+the park is located tend to be mild around late fall, with temperatures ranging from a low of 40
+degrees Fahrenheit to a high of 60 degrees Fahrenheit, the jogger is unlikely to suffer frostbite.
+i
+Also, because humans can survive three to five days without water, and 21 days without food,
+H
+we can reasonably assume that the hiker will be alive for at least 36 hours under these conditions,
+allowing ample time for the search to be conducte：d.
+In the case that the jogger is conscious, we made certain assumptions about his path of
+travel. In his disoriented state, he would most likely choose to continue walking. When
+confronted with multiple roads, he would 号be more likely to choose the road that he is more
+familiar with. The roads more familiar to him would depend, but would more likely be the trails
+of the park that are frequented the most often by the various patrons of the park. Therefore, in
+众
+order to narrow down what can be an extremely and unrealistically elaborate search , during
+which our lost jogger’s condition could seriously deteriorate, trails which receive no traffic were
+excluded from our analysis for the dynamic search.
+公
+Model
+Problem B1 信
+Area of Hopkinton Park
+The area of the portion of Hopkinton Park that we studied was 0.6852 square miles. We
+微
+computed the area by importing the image into Adobe Photoshop, and using the magnetic lasso
+tool to outline the yellow portion of the park, excluding the water and surroundings. Factoring in
+the conversion scale provided, then we expanded the image so that the adjusted image size of the
+map encompassed an area that was one mile wide, and a mile and a half long. From there, we
+filled in the selected area with pink, and colored in the surroundings green. Using the histogram
+tools, we found the total number of pixels for the image, 656,042, and the number of pixels in the
+selected area, 299,679. Because the length and width of the entire map was one mile by one and
+a half miles, the area of the map was 1.5 square miles. Multiplying the entire area of the map by
+the pixel proportion, 299,679/656,042 yielded an area of 0.6852 square miles for the portion of
+the park we are studying. For additional information, please refer to Appendix D.
+1.5 (cid:5)(cid:6)(cid:7)(cid:8)(cid:9) (cid:16) (cid:5)(cid:6)(cid:7)(cid:8)(cid:9)
+=
+656,042 (cid:15)(cid:6)(cid:16)(cid:8)(cid:7)(cid:9) 299,609 (cid:15)(cid:6)(cid:16)(cid:8)(cid:7)(cid:9)
+Page 3 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Length of Trails in Hopkinton Park
+All the trails within the selection of Hopkinton Park were measured with the Pixel
+Proportion Method. Using the magnetic lasso tool found in Adobe Photoshop, we selected all the
+paved roads, hiking trails, and nature trails within the park. Then we “stroked” the selected
+lengths, meaning that a red line eight pixels wide traced all the paths. For ease of computation,
+the lengthy paved road at the far left of the map was excluded, because its inclusion would
+generate gross inefficiency in the model and because of the low probability the object would be
+found at that location, considering it lies on the periphery of the map, and time is of the essence.
+We determined the number of pixels the red line took up, which was 54,386, and then divided by
+eight to end up with 6798.2312 pixels, so that a line one pixel wide spanned all the paths in the
+M
+park. From there, we set up a proportion, with the pixel width of the adjusted park image, 830
+pixels, over the length of the park image in miles, 1.25 miles, set equal to 6798.2312 pixels, the
+C
+number of pixels the trails spanned, over X, the total length of the trails we sought to find.
+M
+1.25 (cid:5)(cid:6)(cid:7)(cid:8)(cid:9) (cid:16) (cid:5)(cid:6)(cid:7)(cid:8)(cid:9)
+= i
+830 (cid:15)(cid:6)(cid:16)(cid:8)(cid:7)(cid:9) 54,386
+(cid:21) (cid:15)H(cid:6)(cid:16)(cid:8)(cid:7)(cid:9)
+8
+：
+The reason that the number of miles spanning the park’s adjusted image width was
+different for finding the area of the park and finding the length of the trails is because we used
+different pictures in our calculations--but still made sure to set the lengths equal to the scale
+号
+provided on the map. Solving that proportion yields a total trail length of 10.2383 miles. Please
+refer to Appendix E for further information.
+众
+Scenarios
+For this model, we planned for various scenarios. If the individual knows the general area
+where the object might be,公 such as a picnic table, parking lot, or pavilion, for instance, it would
+be most efficient if he or she travelled back and searched these areas, where he or she believes
+the object would most likely be first. Also, whether the individual stayed on the park’s trails,
+信
+which included paved roads, as well as hiking and nature trails, or whether he or she wandered
+off into other areas of the park would influence which areas of the park should be searched. With
+these considerations in mind, we developed four scenarios:
+微
+1. General area of object’s location known, stayed on trails
+2. General area of object’s location known, did not stay on trails
+3. General area of object’s location unknown, stayed on trails
+4. General area of object’s location unknown, did not stay on trails
+Scenario 1
+Because we assume for these scenarios that the individual stayed on the trails throughout
+their wanderings in the park, we only need to examine the length of the trails, and not all the area
+of the park. We divided up the entire area of paths into three sections of the park, assuming that a
+person would only spend their time in one section of the park, and from there, assuming that the
+person is aware of the general location where they spent their time. In the odd case that the
+Page 4 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+individual lloosseess tthhee rriinngg rriigghhtt oonn tthhee bboorrddeerr bbeettwweeeenn rreeggiioonnss,, tthheenn tthhee iinnddiivviidduuaall still has time to
+sseeaarrcchh tthhee ootthheerr rreeggiioonnss bbeeccaauussee tthhee ttiimmee ttaakkeenn ttoo sseeaarrcchh eeaacchh rreeggiioonn iiss aapppprrooxxiimmaatteellyy oonnee hhoouurr..
+TTTooo mmmaaaxxxiiimmmiiizzzeee ttthhheee cccooovvveeerrraaagggeee,,, wwweee uuussseeeddd ttthhheee cccooonnnccceeepppttt ooofff EEEuuullleeerrr pppaaattthhh,,, wwwhhheeerrreee aaannn iiinnndddiiivvviiiddduuuaaalll gggoooeeesss
+tttooo eeevvveeerrryyy eeedddgggeee ooonnnccceee,,, aaannnddd ooonnnlllyyy ooonnnccceee,,, dddeeefffiiinnniiinnnggg eeedddgggeee aaasss ttthhheee pppaaarrrttt ooofff ttthhheee tttrrraaaiiilll ttthhhaaattt iiisss iiinnn bbbeeetttwwweeeeeennn tttwwwooo
+nnooddeess,, wwhhiicchh aarree eeiitthheerr aa ssttaarrttiinngg oorr eennding part of a trail (intersection).. EEaacchh nnooddee hhaass aa ddeeggrreeee,,
+wwwhhhiiiccchhh iiisss ttthhheee nnnuuummmbbbeeerrr ooofff eeedddgggeeesss eeexxxttteeennndddiiinnnggg fffrrrooommm ttthhheee nnnooodddeee... EEEuuullleeerrr pppaaattthhhsss ooonnnlllyyy eeexxxiiisssttt iiifff ttthhheeeyyy hhhaaavvveee tttwwwooo--
+and only two--vvveeerrrtttiiiccceeesss ooofff ooodddddd dddeeegggrrreeeeee... IIInnn ooouuurrr mmmooodddeeelll,,, wwweee sssiiimmmpppllliiifffiiieeeddd ttthhheee pppaaattthhh ooofff tttrrraaaiiilllsss bbbyyy cccrrreeeaaatttiiinnnggg aaa
+diiigggrrraaappphhh,,, aaa vvviiisssuuuaaalll rrreeeppprrreeessseeennntttaaatttiiiooonnn ooofff aaa gggrrraaappphhh uuusssiiinnnggg ooonnnlllyyy eeedddgggeeesss tttooo rrreeeppprrreeessseeennnttt ttthhheee tttrrraaaiiilllsss aaannnddd nnnooodddeeesss tttooo
+rrreeeppprrreeessseeennnttt ttthhheee iiinnnttteeerrrssseeeccctttiiiooonnn ooofff pppaaattthhhsss... BBBaaassseeeddd ooonnn ttthhhiiisss sssiiimmmpppllliiifffiiicccaaatttiiiooonnn,,, wwweee dddiiissscccooovvveeerrreeeddd ttthhheeerrreee wwweeerrreee nnnooo
+naturally existing Euler paths iinn tthhee ppaarrttiittiioonneedd rreeggiioonnss.. WWee eeuulerized eeaacchh ooff tthhee ppaarrttiittiioonneedd
+aaarrreeeaaasss bbbyyy aaarrrtttiiifffiiiccciiiaaallllllyyy cccrrreeeaaatttiiinnnggg aaa pppaaattthhh bbbeeetttwwweeeeeennn nnnooodddeeesss ooofff ooodddddd dddeeegggrrreeeeee sssooo ttthhhaaattt ttthhheeerrreee wwweeerrreee ooonnnlllyyy tttwwwooo
+M
+vvveeerrrtttiiiccceeesss ooofff ooodddddd dddeeegggrrreeeeee iiinnn ttthhheee eeennnddd,,, eeessstttaaabbbllliiissshhhiiinnnggg aaannn EEEuuullleeerrr pppaaattthhh... TTThhheeessseee aaarrrtttiiifffiiiccciiiaaalll pppaaattthhhsss,,, iiinnn rrreeeaaallliiitttyyy,,,
+rreepprreesseenntt aa ppeerrssoonn ggooiinngg bbaacckkwwaarrddss oonn tthhee ssaammee ttrraaiill.. BByy ddiissttaannccee mmeeaassuurreemmeennttss ooff eeaacchh ppaatthh
+C
+ssseeegggmmmeeennnttt,,, ttthhhiiisss sssyyysssttteeemmm mmmiiinnniiimmmiiizzzeeesss rrreeeddduuunnndddaaannncccyyy,,, ooorrr gggoooiiinnnggg ooovvveeerrr ttthhheee sssaaammmeee pppaaattthhh tttwwwiiiccceee,,, bbbyyy mmmiiinnniiimmmiiizzziiinnnggg
+ttthhheee dddiiissstttaaannnccceee ttthhheee iiinnndddiiivvviiiddduuuaaalll wwwooouuulllddd rrreeetttrrraaaccceee... IIInnn ttthhhiiisss wwwaaayyy,,, wwweee vvviiisssiiittt aaallllll ooofff ttthhheee tttrrraaaiiilllsss mmmooosssttt eeeffffffiiiccciiieeennntttlllyyy...
+M
+Tooo bbbrrriiieeeffflllyyy sssuuummmmmmaaarrriiizzzeee iiinnn ttthhheee cccooonnnttteeexxxttt ooofff ttthhheee ppprrrooobbbllleeemmm,,, eeeuuullleeerrriiizzzaaatttiiiooonnn mmmeeeaaannnsss cccooonnnvvveeerrrtttiiinnnggg aaa
+uuunnndddiiirrreeecccttteeeddd cccooonnnnnneeecccttteeeddd gggrrraaappphhh tttooo aaannn EEEuuullleeerrr PPPaaattthhh bbbyyy aaaddddddiiinnnggg aaaddddddiiitttiiiooonnnaaalll pppaaattthhhsss tttooo ttthhheee gggrrraaappphhh tttooo rrreeeddduuuccceee ttthhheee
+i
+aammoouunntt ooff oodddd vveerrttiicceess ttoo tthhee ppooiinntt tthhaatt tthhee ggrraapphh oonnllyy hhaass ttwwoo vveerrttiicceess ooff oodddd ddeeggrreeee.. TThheessee
+H
+aaaddddddiiitttiiiooonnnaaalll pppaaattthhhsss aaallllllooowww ttthhheee ssseeeaaarrrccchhheeerrr tttooo bbbaaaccckkktttrrraaaccckkk ooonnn aaa pppaaattthhh aaalllrrreeeaaadddyyy tttrrraaavvveeellleeeddd ooonnnccceee... FFFooorrr ttthhheee sssaaakkkeee ooofff
+ooouuurrr mmmooodddeeelll,,, oooppptttiiimmmaaalll eeeuuullleeerrriiizzzaaatttiiiooonnn iiisss ttthhheee mmmooodddeeelll ttthhhaaattt mmm：iiinnniiimmmiiizzzeeesss ttthhheee tttoootttaaalll dddiiissstttaaannnccceee ooofff bbbaaaccckkktttrrraaaccckkkiiinnnggg...
+FFoorr aallll tthhrreeee rreeggiioonnss,, wwee ccrreeaatteedd EEuulleerr ppaatthhss,, nnoott EEuulleerr cciirrccuuiittss,, tthhee ddiiffffeerreennccee bbeeiinngg tthhaatt
+wwwiiittthhh aaa pppaaattthhh,,, aaannn iiinnndddiiivvviiiddduuuaaalll wwwooouuulllddd gggooo ttthhhrrrooouuuggghhh aaallllll eeedddgggeeesss wwwiiittthhhooouuuttt eeennndddiiinnnggg uuuppp aaattt ttthhheee vvveeerrrttteeexxx ooofff ooorrriiigggiiinnn...
+MMMaaattthhheeemmmaaatttiiicccaaallllllyyy,,, ttthhheee ssstttaaarrrtttiiinnnggg pppoooiiinnnttt iiisss ooonnneee ooo号fff ttthhheee ooodddddd vvveeerrrtttiiiccceeesss,,, aaannnddd ttthhheee eeennndddiiinnnggg pppoooiiinnnttt wwwooouuulllddd bbbeee ttthhheee
+other odd veeerrrttteeexxx... WWWeee aaavvvoooiiidddeeeddd mmmaaakkkiiinnnggg aaannn EEEuuullleeerrr ccciiirrrcccuuuiiittt,,, wwwhhhiiiccchhh wwwooouuulllddd eeennnddd aaattt ttthhheee ssstttaaarrrtttiiinnnggg pppoooiiinnnttt,,,
+bbbeeecccaaauuussseee ttthhhiiisss mmmeeettthhhoooddd wwwooouuulllddd cccrrreeeaaattteee uuunnnnnneeeccceeessssssaaarrryyy rrreeessstttrrriiiccctttiiiooonnnsss aaannnddd iiimmmpppeeedddeee eeeffffffiiiccciiieeennncccyyy...
+众
+Graphs
+TTThhheee fffooollllllooowwwiiinnnggg gggrrraaappphhhsss dddeeepppiiicccttt ttthhheee pppaaarrrtttiiitttiiiooonnniiinnnggg ooofff RRReeegggiiiooonnnsss AAA (((gggrrreeeeeennn))),,, BBB (((bbbllluuueee))),,, aaannnddd CCC (((rrred). For the
+公
+sssaaakkkeee ooofff ccclllaaarrriiitttyyy,,, aaallllll ooofff ttthhheeessseee gggrrraaappphhhsss wwweeerrreee mmmeeerrrgggeeeddd iiinnntttooo ooonnneee... TTTooo ssseeeeee ttthhheee gggrrraaappphhh sssiiimmmpppllliiifffiiicccaaatttiiiooonnn ooofff eeeaaaccchhh
+rreeggiioonn oonnllyy,, sseeee AAppppeennddiixx AA FFiigguurreess 22,, 44,, aanndd 66..
+信
+NNNooottteee::: TTThhheee bbblllaaaccckkk nnnooodddeeesss aaannnddd llliiinnneeesss dddeeennnooottteee ssshhhaaarrreeeddd nnnooodddeeesss aaannnddd llliiinnneeesss... FFFooorrr eeexxxaaammmpppllleee,,, iiinnn ttthhheee ssseeerrriiieeesss ooofff
+blllaaaccckkk nnnooodddeeesss aaannnddd llliiinnneeesss iiinnn bbbeeetttwwweeeeeennn rrreeegggiiiooonnnsss BBB aaannnddd CCC,,, ttthhheeessseee nnnooodddeeesss aaannnddd llliiinnneeesss aaarrreee bbbooottthhh cccooouuunnnttteeeddd iiinnn eeeaaaccchhh
+微
+region.
+Page 5 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Region A - Eulerization
+There were 12 vertices of odd degree, so we had to eliminate 10 vertices of odd degree,
+which meant that we had to establish at least five redundant paths, in order for there to be an
+Euler path. Establishing a redundant path means that the individual would have to retrace their
+steps along the path in the opposite direction. See Appendix A Figure 2 and Appendix C Table 2
+for clarification.
+Region B - Eulerization
+In Region B, there were also 12 vertices of odd degree. However, there were instances
+M
+when the odd vertices were not directly connected to each other, meaning the only way to reach
+one odd vertex from another odd vertex would be to travel along multiple edges. For a more
+C
+detailed explanation of our eulerization method for this region, see Appendix A Figure 4 and
+Appendix C Table 2.
+M
+Region C - Eulerization
+i
+There were 12 vertices in region C, and we needed 5 additional edges to eulerize the
+H
+additional region. Using a method extremely similar to region A, we created an Euler path in
+region C. See Appendix A Figure 6 and Appendix： C Table 2.
+Scenario 1 Optimization Method
+For all cases, the optimal search pa号th is an Euler path which minimizes the aggregate
+distance of redundant paths. In order to do this, we developed a basic algorithm:
+众
+We first assumed that it is impossible to blaze a new path between unconnected nodes on
+the map.
+公
+• Connect one odd vertex/node to an adjacent odd vertex/node. Exhaust these
+possibilities by connecting all adjacent odd vertices possible. Continue to do this
+unti信l there are two odd vertices remaining.
+• If more than 2 odd vertices exist and said vertex is not adjacent to another odd
+vertex, take the following actions:
+微
+• If the odd vertex has exactly one even vertex en route to another odd vertex,
+create redundant paths from the first odd to even vertex and from the even vertex
+to the second odd vertex.
+• If the odd vertex has at least 2 even vertices en route to another odd vertex, allow
+this odd vertex to be the starting/ending point of the Euler path.
+• The remaining point will be the starting/ending point of the Euler path.
+This algorithm minimizes the amount of redundancy by prioritizing adjacent connection
+above all else, which ensures the least amount of paths, and therefore minimizes redundant
+distance. Afterwards, we used the distance data collected for each path to calculate various
+models that incorporated different redundant paths, and discovered that these setups minimized
+the distance of all possible redundant routes.
+Page 6 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Scenario 2
+For this scenario, because the general area of the object’s location is known, and because
+the individual did not stay on the trails, we must consider area. The most efficient pattern of
+searching was found to be a spiral, to cover the greatest area in the least time. Under the
+assumption that the flashlight shines a radius of five feet, we devised an Archimedean spiral,
+which according to studies done by Gal and Langetepe, maximizes the distance under this
+scenario.
+This way, the distance between θ and θ+2pi equals ten, allowing us to cover all the area
+that the individual walks over with the flashlight. Because the distance between the loops of an
+Archimedean spiral is always ten, this method yields a consistent and comprehensive search
+M
+pattern.
+To develop the equation for this spiral, we used a polar equation:
+C
+M
+10 5
+(cid:22)((cid:24)) = (cid:24) = (cid:24)
+2(cid:26) (cid:26)
+i
+10 represents the diameter that flashlight illuminates.
+H
+Since we know the individual can walk for two hours at rate of four miles per hour, he or
+she can cover a total of eight miles, or 5280 8 mi：les, or a total of 42,240 feet. We know the arc
+length is 42,280 feet, and we do not know ×, so we set:
+(cid:24)
+号
+25 25
+(cid:30)
+(cid:28) (cid:29) (cid:24) + "(cid:24)
+众(cid:30) (cid:30)
+Equal to 42,240 feet, resulting in: ! (cid:26) (cid:26)
+公
+25 25
+(cid:30)
+(cid:28) (cid:29) (cid:24) + "(cid:24) = 42,240
+(cid:30) (cid:30)
+We find tha信t θ=230.3772 r!adian (cid:26) s, which (cid:26) is as far as an individual would be able to go in
+two hours following the search pattern of the Archimedean spiral. Substituting θ=230.3772 back
+into the original equation,
+微
+10 5
+(cid:22)((cid:24)) = (cid:24) = (cid:24)
+2(cid:26) (cid:26)
+We find r=366.6568 feet, which is the radius of the area covered using this search pattern.
+In this way, the Archimedean spiral search pattern will cover an area whose diameter is the
+equivalent of approximately the length two football fields.
+If the individual has two locations in mind of where the lost object may be found, he or
+she would first begin searching at one of the likely locations, and start looking for the object with
+the pen flashlight an Archimedean spiral. After one hour of searching, if the object is not found,
+then the individual would move to the other hypothesized location where the object may be
+found. Here, instead of one large spiral, there would be two spirals. Because the individual is to
+devote one hour to each mini-spiral, we set the original Archimedean spiral equation’s arch-
+length equal to 4 5280 miles, and following the same method as mentioned in the previous two
+×
+Page 7 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+paragraphs, each mini-spiral yields an angle of 162.8923 radians, which corresponds to a radius
+of 259.2511 feet when θ is substituted into the original equation.
+This approach could be generalized to any number of potential search locations, where
+the radius and the area covered by the individual in each mini-spiral would progressively become
+smaller as the number of potential locations increased, but the total area of the park searched
+would remain the same, that is 8 5280 feet, or 42,240 feet. For a visualization of the
+Archimedean graph, see Append×ix A Figure 7.
+Scenario 3
+In this scenario where the individual stays on the path for the duration of his or her stay in
+the park, but does not know the general area where he or she dropped the object, we used a
+M
+method similar to Scenario 1. Because the probability of finding the object is equal along each
+edge, given that the individual has no idea where he may have dropped the item, and since no
+C
+edge is more likely to yield the discovery of the object than any other edge, the individual would
+start at the vertex of odd degree that is closest from them. With regards to the construction of the
+M
+efficient path, we took measures to avoid traveling along redundant edges for as long as possible.
+We create a preliminary path by tracing an edge from a starting vertex of odd degree,
+i
+progressing as far as possible without retracing any area. Our criteria for choosing which paths to
+H
+pursue were that when confronted with an intersection of multiple paths, we chose the path that
+extends the farthest. For instance, with a fork in th：e road, if going left yields a trail of 0.17 miles
+and turning right yields a path of 0.68 miles, we would turn right. Such a scenario is called a
+“turn.” If this edge leads to a vertex, which has no untraversed edge except for the one used to
+enter the location, then do not pursue it. T号his is a “dead end” and will add redundancy to our
+model, decreasing the path distance our individual will be able to search in two hours. Using
+these guidelines, we predict what the next two steps are for the individual to travel. If, within two
+众
+steps, this path leads to a dead end, then do not pursue the longest path that extends from your
+current vertex. Select the next longest edge, and if you would not reach a dead end within two
+steps from your current location, pursue that path of travel. Once you have reached a vertex that
+公
+has no edges that would not lead to dead ends in two “turns,” select the longest edge to follow.
+While this introduces redundancy, this is necessary to eulerize the graph, which would be able to
+traverse every edg信e exactly once, the most efficient method for searching.
+From this point, the individual would begin using Hierholzer’s algorithm to determine his
+or her path of travel. Hierholzer’s algorithm instructs the person searching to choose any starting
+微
+vertex on an Eulerian graph, and follow a trail of edges from that vertex until he or she returns
+to the vertex of origin. It is immaterial whether the individual chooses the shortest path or the
+longest to return to the original vertex; the algorithm works regardless. Once a path that begins
+and ends at the same vertex has been established, called a circuit, look for any vertices along the
+circuit that have unused edges. Because our web of trails has been eulerized, it is impossible to
+get stuck at a point other than at the vertex of origin, as the even degree of all the other vertices
+means that when an edge crosses a vertex, there is another edge that has not been travelled
+through, extending from that same vertex. Starting at one of these unused vertices, make another
+circuit with the unused edges. Add this circuit to the originally constructed circuit. Using
+Hierholzer’s algorithm results in an Euler circuit over the graph. The eulerization of the total
+park is as follows:
+Page 8 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+M
+C
+M
+TThhee nnooddeess wwiitthh aarrrroowwss ppooiinntt ttoo tthheemm rreepprreesseenntt tthhee oodddd nnooddeess..
+i
+The individuaall iiss aabbllee ttoo pprrooggrreessss aalloonngg 77..221144 mmiilleeHss wwiitthh nnoo rreedduunnddaannccyy.. TThhiiss ddiissttaannccee
+wwaass ccaallccuullaatteedd uussiinngg tthhee ppaatthh oouuttlliinneedd bbyy aa mostly greedy algorithm. FFoorr ffuurrtthheerr eexxppllaannaattiioonn ooff
+tthhiiss ppaarrttiiccuullaarr aallggoorriitthhmm,, sseeee AAppppeennddiixx FF.. AAtt tthhee 77：..221144 mmiillee mmaarrkk,, hhoowweevveerr,, tthhee iinnddiivvidual
+rrreeeaaaccchhheeesss aaa dddeeeaaaddd eeennnddd,,, aaannnddd mmmuuusssttt bbbaaaccckkktttrrraaaccckkk,,, cccaaauuusssiiinnnggg rrreeeddduuunnndddaaannncccyyy... FFFooorrr mmmooorrreee iiinnnfffooorrrmmmaaatttiiiooonnn rrreeegggaaarrrdddiiinnnggg ttthhheee
+eulerization of the ggrraapphh,, sseeee AAppppeennddiixx AA FFiigguurreess 88,, 99,, aanndd 1100.
+号
+Scenario 4
+IIInnn ttthhhiiisss sssccceeennnaaarrriiiooo,,, ttthhheee iiinnndddiiivvviiiddduuuaaalll ssseeeaaarrrccchhhiiinnnggg fffooorrr ttthhheee lllooosssttt ooobbbjjjeeecccttt dddiiiddd nnnooottt wwwaaannndddeeerrr exclusively on
+众
+the trails in the park and does nott kknnooww iinn wwhhaatt ggeenneerraall aarreeaa hhee oorr sshhee mmaayy hhaavvee lloosstt tthhee oobbjjeecctt—
+but does know that thhheee ooobbbjjjeeecccttt iiisss iiinnn ttthhheee pppaaarrrkkk sssooommmeeewwwhhheeerrreee... BBBeeecccaaauuussseee ooofff ttthhheeessseee fffaaaccctttooorrrsss,,, iiittt wwwooouuulllddd make
+no difference wwhheerree tthhee iinn公ddiivviidduuaall bbeeggaann tthheir search, so starting at his or her pprreesseenntt llooccaattiioonn
+wwwooouuulllddd bbbeee aaasss gggooooooddd aaa ssstttaaarrrtttiiinnnggg ppplllaaaccceee aaasss aaannnyyy... WWWeee uuussseee ttthhheee sssaaammmeee mmmeeettthhhoooddd ooofff ssseeeaaarrrccchhhiiinnnggg aaasss wwweee eeemmmpppllloooyyyeeeddd
+iiinnn sssccceeennnaaarrriiiooo 222,,, wwwiiittthhh ttthhheee AAArrrccchhhiiimmmeeedddeeeaaannn ssspppiiirrraaalll,,, cccooovvveeerrriiinnnggg aaannn aaarrreeeaaa ttthhhaaattt iiisss 333666666...666555666888 fffeeeeeettt iiinnn rrraaadddiiiuuusss...
+信
+This situation is eexxttrreemmeellyy uunnlliikkeellyy--tthhaatt tthhee iinnddiivviidduuaall wwoouulldd hhaavvee aabbssoolluutteellyy nnoo
+rrreeecccooolllllleeeccctttiiiooonnn ooofff wwwhhheeerrreee ttthhheeeiiirrr ooobbbjjjeeecccttt mmmaaayyy hhhaaavvveee bbbeeeeeennn lllooosssttt... BBBeeecccaaauuussseee eeeaaaccchhh aaarrreeeaaa ooofff ttthhheee pppaaarrrkkk hhhaaasss ttthhheee
+eeexxxaaacccttt sssaaammmeee llliiikkkeeellliiihhhooooooddd aaasss aaannnooottthhheeerrr ooottthhheeerrr aaarrreeeaaa ooofff cccooonnntttaaaiiinnniiinnnggg ttthhheee lllooosssttt ooobbbjjjeeecccttt,,, ttthhheeerrreee iiisss nnnooo
+微
+advantageouuusss lllooocccaaatttiiiooonnn ooofff bbbeeegggiiinnn ssseeeaaarrrccchhhiiinnnggg... AAAsss aaa rrreeesssuuulllttt,,, ttthhheee llliiikkkeeellliiihhhooooooddd ooofff fffiiinnndddiiinnnggg ttthhheee ooobbbjjjeeecccttt iiisss very
+low.
+Probability
+Scenario 1
+IIInnn ttthhhiiisss sssccceeennnaaarrriiiooo,,, ttthhheee gggeeennneeerrraaalll aaarrreeeaaa ooofff ttthhheee ooobbbjjjeeecccttt’’’sss lllooocccaaatttiiiooonnn iiisss kkknnnooowwwnnn,,, aaannnddd ttthhheee iiinnndddiiivvviiiddduuuaaalll dddiiiddd
+nnoott ssttaayy oonn tthhee ttrraaiill.. AAss lloonngg aass tthhee iinnddiivviidduuaall iiss ssuurree tthhee oobbjjeecctt iiss iinn tthhaatt ggeenneerraall llooccaattiioonn,, tthheerree iiss
+aa 110000%% pprroobbaabbiilliittyy tthhaatt tthhee oobbjjeecctt wwiillll bbee ffoouunndd within the two hours.. TThhee rreessttrriiccttiioonn ffoorr tthhiiss ttoo
+bbbeee tttrrruuueee iiisss ttthhheee fffaaacccttt ttthhhaaattt ttthhheee iiinnndddiiivvviiiddduuuaaalll mmmuuusssttt bbbeee aaabbbllleee tttooo pppiiinnnpppoooiiinnnttt ttthhheee gggeeennneeerrraaalll lllooocccaaatttiiiooonnn ooofff ttthhheee object in
+eeeiiittthhheeerrr rrreeegggiiiooonnn AAA,,, BBB,,, ooorrr CCC... IIIfff nnnooottt,,, ttthhheeennn ttthhhiiisss sssccceeennnaaarrriiiooo dddoooeeesss nnnooottt ppprrrooovvviiidddeee ttthhheee ppprrrooopppeeerrr ssseeeaaarrrccchhh pppaaatttttteeerrrnnn fffooorrr
+tthhee iinnddiivviidduuaall ttoo uussee;; sseeee sscceennaarriioo 33 iinnsstteeaadd..
+Scenario 2
+Page 9 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+For this scenario, because the general area of the object’s location is known, and because
+the individual did not stay on the trails, the probability of finding the object is 100%--as long as
+the individual’s prediction of the general area where the object should be is accurate-- that being,
+encompassed by the 422,400 square feet surrounding the starting point. Because the
+Archimedean spiral encompasses such a large area, we can assume that if the individual’s
+assessment of where the object was last seen or would most likely be found is correct, then the
+object will be found. Therefore, if these assumptions are correct, the probability of finding the
+object is 1.
+In the event that the individual strayed from the path and the general location of the
+object is known, but the possible locations span an area larger than 422,400 square feet, the same
+method of the Archimedean spiral would be employed, simply until the two hour limit was up. In
+M
+this case, it is impossible to search all of the possible locations, for the sum of the areas of the
+possible locations adds up to more than we can feasibly search within our time constraints and
+C
+with our flashlight. The probability of finding the lost item would then be 422400 divided by the
+total area in square feet of possible object locations.
+M
+Scenario 3
+Using the method for finding an object if the general area is unknown and the individual
+i
+stayed on the trail, the individual is able to cover at least 7.214 miles without repeating any
+H
+traversed land. Because the total length of all the trails is 10.2382 miles, there is a 70.4616%
+probability that the small object will be found. ：
+Scenario 4
+For this scenario, because the general area of the object’s location is unknown, and
+because the individual did not stay on the 号trails, we must consider area. The area encompassed
+by a person travelling at 4 miles per hour in an Archimedean spiral would be the arch length of
+the spiral, 8 miles, multiplied 10 feet, as that is the width of the spiral. This multiplication yields
+众
+0.01515 square miles. Because the total area of the park is 0.6852 square miles, there is a
+2.2145% probability that the object will be found when the general area of the object’s location
+is unknown. In this unlikely but unfortunate scenario, the individual has absolutely no
+公
+recollection of where he or she has been in the entire park. Given that the ring could be found
+anywhere in an area of 0.6852 miles, the likelihood of finding the ring within two hours is very
+small. 信
+微
+Page 10 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Problem B2
+Fort Ords Public Lands Park
+In order to find the lost jogger in the Fort Ord Public Lands Park, we employed a plan
+consisting of two methods to have a good chance of finding the jogger. We created two
+scenarios, one where the jogger is stationary, and another where the jogger is moving. The first
+method aims to specifically modify the search to the area by finding the trails the jogger would
+take after entering the park,. The jogger would have entered near a parking lot where the jogger
+parked his or her car. Using eulerization, the searcher can optimize the distance covered and
+minimize time used. If these trails are exhausted and the jogger is still not found, the searcher
+then switches to the second method, which maps the trails with the highest traffic and walks
+M
+along the Euler path created from the model.
+C
+Situation 1-Unconscious Jogger
+Because the jogger is unconscious, we are searching for a stationary target. His location
+M
+should not be more than 5.5 miles from the parking lot, because he went on the jog with the
+intention of running 5 miles. Most likely, the jogger went on the run with the intention of coming
+i
+back, so he would only have progressed 2.5 miles into the park. However, we have planned for
+H
+the scenario where the jogger is 5.5 miles into the park, accounting for some frantic wandering
+on the part of the jogger. Based upon our assumpt：ions, we began at the parking lot where the
+jogger’s car is located, tracing out all the possible paths of distance less than 5.5 miles accessible
+from the parking lot. The exact distances of each path were found using Adobe Photoshop, the
+histogram tool, and then proportions, as ha号s been used in Problem B1. From there, we
+constructed a graph, placing nodes with the park’s trails intersections and drawing edges to
+represent each trail’s path. Using Adobe Photoshop, we truncated the paths to precisely 5.5 miles
+众
+in path distance from the parking lot.
+There are seven parking lots in Fort Ord, and to apply this strategy to other parking lots
+would involve the same methodology. To see our numbering for these parking lots, see
+公
+Appendix B Figure 3. Given the starting location of the jogger is at one of the parking lots, and
+assuming that the jogger has progressed no more than 5.5 miles from the parking lot, there is a
+100% probability t信hat the stationary jogger will be found, because all the paths within the area
+will be traversed, and there is no pressing time constraint placed on the rescuer. However, the
+searcher still seeks to find the jogger in the least amount of time. To accomplish this task, we
+微
+employed eulerization so that the traversal of all the trails within the 5.5 mile path distance is
+optimized, and thus the most efficient method of covering the length of all the trails where the
+unconscious jogger may be is pinpointed.
+Page 11 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+TTTooo dddeeemmmooonnnssstttrrraaattteee ttthhhiiisss mmmeeettthhhoooddd,,, hhheeerrreee iiisss ppprrroooccceeeddduuurrreee fffooorrr ssseeeaaarrrccchhhiiinnnggg fffooorrr ttthhheee jjjoooggggggeeerrr,,, iiifff hhheee bbbeeegggaaannn fffrrrooommm
+parking lot 1:
+Non-Eulerized Graph Eulerized Graph
+M
+C
+M
+i
+H
+：
+Note: Star indicates location of PParking Lot 1
+TThhiiss iiss aa ssiimmpplliiffiieedd ggrraapphh ooff Figure号 1(in Appendix B)).. OOnn tthhee lleefftt,, tthhee nnoonn-eulerized
+gggrrraaappphhh ttthhheeeooorrreeetttiiicccaaallllllyyy ssshhhooowwwsss aaa rrrooouuuttteee wwwiiittthhh nnnooo rrreeeddduuunnndddaaannnccciiieeesss wwwhhhaaatttsssoooeeevvveeerrr iiinnn tttrrryyyiiinnnggg tttooo fffiiinnnddd ttthhheee lllooosssttt
+jjooggggeerr.. TThhiiss ggrraapphh rreepprreesseennttss tthhee ooppttiimmaall wwaayy ttoo ttrraavveell aallll eeddggeess ffrroomm tthhee ssttaarrtt ooff oonnee ooff tthhee
+ssseeevvveeennn pppaaarrrkkkiiinnnggg llloootttsss... IIInnn ttthhheee sssccceeennnaaarrriiiooo众,,, ttthhheee pppaaarrrkkkiiinnnggg lllooottt iiisss dddeeennnooottteeeddd wwwiiittthhh aaa ssstttaaarrr... TTThhheee eeennndddiiinnnggg pppoooiiinnnttt wwwiiillllll
+also be at the star.
+However, the non-eeeuuullleeerrriiizzzeeeddd gggrrraaappphhh iiisss,,, bbbyyy nnnaaatttuuurrreee,,, nnnooottt ttthhheee mmmooosssttt eeeffffffiiiccciiieeennnttt pppaaattthhh ooofff ssseeeaaarrrccchhh...
+公
+Therefore, thereee iiisss nnnooo pppuuurrreee oooppptttiiimmmaaalll pppaaattthhh ttthhhaaattt cccaaannn ggguuuaaarrraaannnttteeeeee fffiiinnndddiiinnnggg ttthhheee lllooosssttt jjjoooggggggeeerrr bbbaaassseeeddd ooonnn
+wwwhhheeerrreee ttthhheee jjjoooggggggeeerrr’’’sss cccaaarrr wwwaaasss pppaaarrrkkkeeeddd... TTThhheee mmmooosssttt oooppptttiiimmmaaalll wwwaaayyy tttooo eeeuuullleeerrriiizzzeee ttthhheee gggrrraaappphhh iiisss tttooo mmmiiinnniiimmmiiizzzeee
+redundancy, or the back-tttrrraaaccckkkiiinnnggg ooofff sssttteeepppsss... AAAfffttteeerrr ssseeevvveeerrraaalll mmmooodddeeelllsss ooofff eeeuuullleeerrriiizzzaaatttiiiooonnn,,, ttthhheee graph on the
+信
+rrriiiggghhhttt wwwaaasss dddiiissscccooovvveeerrreeeddd tttooo bbbeee ttthhheee bbbeeesssttt eeeuuullleeerrriiizzzaaatttiiiooonnn (((uuusssiiinnnggg ttthhheee SSSccceeennnaaarrriiiooo 111 OOOppptttiiimmmiiizzzaaatttiiiooonnn MMMeeettthhhoooddd)))...
+Using the PPiixxeell PPrrooppoorrttiioonn MMeetthhoodd, the distance calculated ttoo ttrraavveerrssee ffoorr ppaarrkkiinngg lloott 11’’ss
+eulerized g微raph is 11.8 miles.
+Note: This is just for one ooff tthhee sseevveenn ppaarrkkiinngg lloott mmeetthhooddss.. TThhee ssaammee mmeetthhoodd ttoo ccaallccuullaattee
+ttthhheee pppaaarrrkkkiiinnnggg lllooottt mmmeeettthhhoooddd fffooorrr ttthhheee ooottthhheeerrr sssiiixxx cccaaannn bbbeee eeemmmpppllloooyyyeeeddd iiinnn ttthhheee eeexxxaaacccttt sssaaammmeee mmmaaannnnnneeerrr,,, uuusssiiinnnggg ttthhheee
+tttoootttaaalll pppaaattthhh dddiiissstttaaannnccceee ooofff 555...555 aaalllooonnnggg aaannnyyy bbbrrraaannnccchhh ooofff ttthhheee dddiiiffffffeeerrreeennnttt pppaaarrrkkkiiinnnggg lllooottt pppaaattthhhsss... TTThhhiiisss eeexxxaaammmpppllleee wwwaaasss
+shown for clarity of the reader.
+Situation 2-Conscious Jogger
+IIIfff ttthhheee jjjoooggggggeeerrr iiisss cccooonnnsssccciiiooouuusss,,, wwweee nnnooo lllooonnngggeeerrr aaassssssuuummmeee ttthhhaaattt ttthhheee jjjoooggggggeeerrr wwwooouuulllddd ooonnnlllyyy bbbeee wwwiiittthhhiiinnn 555...555
+mmmiiillleeesss ooofff ttthhheee pppaaarrrkkkiiinnnggg lllooottt... TTThhheeeooorrreeetttiiicccaaallllllyyy,,, gggiiivvveeennn eeennnooouuuggghhh tttiiimmmeee aaafffttteeerrr ttthhheee rrreeepppooorrrtttiiinnnggg ooofff ttthhheee iiinnnccciiidddeeennnttt,,, ttthhheee
+jogger cccooouuulllddd bbbeee aaannnyyywwwhhheeerrreee wwwiiittthhhiiinnn ttthhheee bbbooouuunnndddaaarrriiieeesss ooofff ttthhheee pppaaarrrkkk... TTTooo ssseeeaaarrrccchhh ttthhheee eeennntttiiirrreee pppaaarrrkkk wwwooouuulllddd
+cclleeaarrllyy bbee uunnffeeaassiibbllee,, ccoonnssiiddeerriinngg tthhee aaggggrreeggaattee lleennggtthh iiss aabboouutt 4400 mmiilleess aass ddeetteerrmmiinneedd bbyy tthhee
+Pixel Proportion Method, aassssuummiinngg tthheerree wwoouulldd bbee nnoo bbaacckkttrraacckkiinngg wwhhaattssooeevveerr to get to all of
+ttthhheee tttrrraaaiiilllsss... IIInnncccllluuudddiiinnnggg bbbaaaccckkktttrrraaaccckkkiiinnnggg,,, ttthhheee tttoootttaaalll eeeuuullleeerrriiizzzaaatttiiiooonnn wwwooouuulllddd llliiikkkeeelllyyy bbbeee wwweeellllll ooovvveeerrr 555555 mmmiiillleeesss...
+GGGiiivvveeennn ttthhheee tttiiimmmeee cccooonnnssstttrrraaaiiinnntttsss aaassssssoooccciiiaaattteeeddd wwwiiittthhh lllooocccaaatttiiinnnggg ttthhheee jjjoooggggggeeerrr bbbeeefffooorrreee hhhiiisss ooorrr hhheeerrr hhheeeaaalllttthhh ssseeerrriously
+Page 12 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+deteriorates, the map of trails nneecceessssiittaatteess simplification.
+Graph Simplification by PPooppuullaarriittyy
+IIInnn ooorrrdddeeerrr tttooo ssstttiiillllll mmmaaaiiinnntttaaaiiinnn aaa gggooooooddd ccchhhaaannnccceee ooofff fffiiinnndddiiinnnggg ttthhheee jjjoooggggggeeerrr wwwhhhiiillleee cccuuuttttttiiinnnggg dddooowwwnnn ooonnn ttthhheee
+ssseeeaaarrrccchhh tttiiimmmeee,,, wwweee dddeeevvviiissseeeddd aaa dddiiiaaagggrrraaammm ttthhhaaattt ooonnnlllyyy iiinnncccllluuudddeeeddd ttthhheee mmmooosssttt pppooopppuuulllaaarrr tttrrraaaiiilllsss... WWWeee uuussseeeddd dddaaatttaaa ooofff
+how frequently certaiinn ttrraaiillss aarree uusseedd iinn FFoorrtt OOrrdd. Using tthhee ddaattaa ooff tthhee hhiikkeerrss’’ uussaaggee ooff tthhee
+park’s trails, ffoouunndd ffrroomm tthhee 22001100 BBiiccyyccllee-EEqquueessttrriiaann TTrraaiillss AAssssiissttaannccee ((BBEETTAA)) OObbsseerrvvaattiioonn
+rreeppoorrtt,, wwee ddeetteerrmmiinneedd tthhaatt 4455 ttrraaiillss are never used by people on foot. We ddiissrreeggaarrddeedd tthhee unused
+trails and grouped the high-ttrraaffffiicc trails together. The ccoommpplleettee ddiiaaggrraammss ccaann bbee ffoouunndd iinn
+Appendix B Figure 2.
+M
+Jogger Prioritization
+Assuming the jogger iiss nnoott ttoottaallllyy ddiissoorriieenntteedd,, hhee oorr sshhee wwiillll aaddhheerree ttoo tthhee ffoolllloowwiinngg rruulleess::
+C
+1. The jogger knows he or ssshhheee iiisss lllooosssttt aaannnddd iiisss aaaccctttiiivvveeelllyyy tttrrryyyiiinnnggg tttooo eeessscccaaapppeee ttthhheee pppaaarrrkkk...
+M
+2. TTThhheee jjjoooggggggeeerrr wwwiiillllll ppprrriiiooorrriiitttiiizzzeee mmmooorrreee ppprrrooommmiiinnneeennnttt rrroooaaadddsss (((ttthhhooossseee dddeeellliiinnneeeaaattteeeddd iiinnn aaa sssooollliiiddd bbblllaaaccckkk llliiinnneee)))
+mmmooorrreee ooofffttteeennn ttthhhaaannn hhhiiikkkiiinnnggg tttrrraaaiiilllsss (((dddoootttttteeeddd llliiinnneeesss))),,, bbbeeecccaaauuussseee ppprrrooommmiiinnneeennnttt rrroooaaadddsss llleeeaaaddd tttooo pppaaarrrkkkiiinnnggg llloootttsss...
+i
+H
+Composite Graphs
+Combining tthhee ggrraapphhss pprroodduucceedd,, both by Popular：ity Simplification aanndd JJooggggeerr PPrriioorriittiizzaattiioonn
+ccrreeaatteess tthhee ssiimmpplliiffiieedd mmaapp ooff aallll trails, as follows:
+Non-Eulerized Graph 号 Eulerized Graph
+众
+公
+信
+微
+TThhee ggrraapphh oonn tthhee lleefftt iiss tthhee ssiimmpplliiffiiccaattiioonn wwiitthhoouutt eeuulleerriizzaattiioonn,, aanndd tthheerreeffoorree,, no
+redundancies. The grrraaappphhh ooonnn ttthhheee rrriiiggghhhttt iiisss ttthhheee oooppptttiiimmmiiizzzeeeddd eeeuuullleeerrriiizzzaaatttiiiooonnn wwwiiittthhh mmmiiinnniiimmmaaalll rrreeeddduuunnndddaaannnccciiieeesss
+uussiinngg tthhee SScceennaarriioo 11 OOppttiimmiizzaattiioonn MMethoodd.. SSiinnccee tthhiiss iiss aann EEuulleerr CCyyccllee,, nnoott aann EEuulleerr PPaatthh,, aannyy
+node is a starting point. TTThhheee tttoootttaaalll dddiiissstttaaannnccceee ooofff ttthhheee gggrrraaappphhh ooonnn ttthhheee rrriiiggghhhttt iiisss 333000...000555 mmmiiillleeesss,,, which takes
+Page 13 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+approximately 7.5 hours assuming the searcher traverses the park at a constant 4 mph. The
+Popular Trail Method will remain the same for all seven Parking Lot Methods.
+Parking Lot Method versus Popular Trail Method
+The parking lot scenario, in general, proves to be the more specific and time-efficient
+method of finding the lost jogger. Therefore, the Parking Lot Method should be tried first. Once
+this method is exhausted, the searcher should proceed to the nearest node on the Popular Trail
+Map to begin the second phase of searching – the Popular Trail Method.
+In terms of time allotment, we offer an example which begins by employing the same
+method as the Parking Lot Method at parking lot 1. In this scenario, the search begins at 7:30
+PM. If the searcher proceeds through the course, a total of 11.8 miles, at a constant pace of 4
+M
+mph, the searcher will finish the Parking Lot Method for Parking Lot 1 in 177 minutes, or 2.95
+hours. Then, at 10:27 PM, the searcher will progress to the Popular Trail Method. Then for
+C
+approximately the next 7.5 hours (the total distance of the Popular Trail Method is 30.05 miles;
+30.05/4mph=7.5125 hours), the searcher will follow the Popular Trail Method map. If at any
+M
+point the searcher discovers the lost jogger along the path, the searcher will stop the search and
+take the jogger back to the parking lot where he or she started from.
+i
+Note: for other scenarios with other parking lots, the starting nodes will vary, but the
+H
+Popular Trail Method map will remain the same. In other words, different parking lot methods
+will link into different starting points on the Euler： path of the Popular Trail Method.
+Limitations
+Problem B1 号
+Our model for finding a small object in Hopkinton State Park does not factor in the
+changes in elevation present in the park. As a result, taking into consideration elevation would
+众
+change the total area of the park, because it would no longer be a flat surface, and would change
+the distance and area that we would be able to cover using our search patterns. However, this
+change in elevation is relatively minor; we are not considering a mountainous region. For this
+公
+reason, our model is able to represent the situation on the ground with a reasonable level of
+accuracy.
+Although th信is was discussed in our assumptions, the fact that we assume our model’s
+paths are all accessible to the searcher is a serious limitation. In real life, our spiral path may be
+obstructed by large trees, or by inaccessible barriers, such as gates. Furthermore, we disregarded
+微
+bodies of water in our model because of limited resources for finding and retrieving the object.
+The possibility of losing the object in water is not nonexistent, but considering our available time
+and our allowed use of only the pen flashlight, our model optimizes our resources for a search on
+land.
+Speaking of resources, our model bears the limitation that we are only able to use the pen
+flashlight. In certain instances, using the pen flashlight in combination with other resources
+would be more productive. For instance, if we were searching for a metal object, such as a ring, a
+metal detector in conjunction with the pen flashlight would be ideal and would aid greatly in the
+probability of finding the ring. The chance of a person carrying around a metal detector in case
+they lose a small metallic object while in a park is relatively small, and thus would have little
+real-world applicability.
+One major flaw in the design of the problem itself is the assumption that if light shines
+upon an object, then that object will be found. For practical modeling purposes, this assumption
+Page 14 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+is certainly necessary; however, in real life, it is possible--if not likely--that the searcher may
+overlook the object, given that he is walking at 4 miles per hour and frantically scanning the
+area.
+Moreover, due to the restrictions stipulated in the problem, there is only one person
+searching for the object when in reality, multiple people could be looking for the object,
+increasing area covered, and thus increasing the probability that the object will be found. Also,
+searching for a small object in dim lighting alone, and armed only with a pen flashlight is a
+dangerous pursuit. It may simply be more efficient to return to the park the following morning
+and search at that time. However, for this model, we adhered to the given instructions--that the
+sun was setting soon and thus we had a time limit in place for our search.
+One of the great intangibles of searching for objects is the individual may remember
+M
+certain aspects of where he or she last saw the object as the search progresses, when something
+the searcher sees triggers his or her memory, and leads to the revelation of information that
+C
+would aid the search. Our model is unable to take this into account, because the occurrence of
+this phenomenon is unpredictable and because the timing of this phenomenon, if it occurs, would
+M
+vary greatly. Therefore, in the case that an individual suddenly remembers information about the
+lost object in the middle of the search, we advise for them to relocate themselves to the location
+i
+where they now believe most likely contains the object, and begin their search there, using either
+H
+the Archimedean spiral or the scenario 1 method, depending on whether or not the individual
+stayed on the trail or wandered off from it. ：
+Problem B2
+Our model of finding the jogger in号 Fort Ord public lands did not factor in elevation of the
+land the searcher and the lost jogger would be travelling through. Adding in elevation would
+slightly alter the distances the searcher and the jogger would be able to cover because of the
+众
+uneven surface of the land. Because we assumed that the land was flat when calculating the
+length of the trails, we underestimated the true length of the trail. These are reasonable
+assumptions, however, and because our methodology remains consistent throughout the model,
+公
+we can still guarantee a reasonable level of accuracy.
+We assumed that the lost jogger would stay on the path. While this is not a heavy
+assumption by any信 means, it is possible that the jogger may have wandered off the trails,
+considering he or she may be exhausted and delirious. In such a case, our model would be unable
+to locate the lost jogger. Moreover, we ignored the trails that received no traffic in our analysis.
+微
+However, in reality, if the jogger is attempting to determine which path to pursue in the pitch
+black darkness, he or she will be unable to notice the distinguishing patterns of each trail and
+therefore the assumption that he or she will choose the path more travelled may be inaccurate. In
+such a case, it would be more likely for the jogger to stop wandering and simply stay put,
+allowing for us to use the unconscious model.
+Our model, while comprehensive in the area it is able to search, requires an extensive
+amount of time to find the jogger. In our assumptions however, we have set aside 36 hours,
+believing that the jogger is able to survive for at least that duration of time without food or water.
+We focused more so on covering the greatest amount of area to increase the likelihood of finding
+the lost jogger, since time was a parameter that allowed us a reasonable level of flexibility.
+One of the major limitations of our model is that if we know for a fact that the jogger is
+conscious and moving, there is no direct way for us to search for the jogger; we must first pursue
+the search path for the contingency that the jogger is unconscious. While this appears to be a
+Page 15 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+major limitation, in reality, it is highly dubious that the searcher will know whether the jogger is
+conscious or unconscious from the start. Therefore, searching for the jogger as if the jogger were
+unconscious would be the logical first step, which the course of action our model prescribes.
+Perhaps the greatest limitation to our model is that it does not take into account heuristics,
+and would not be conducive to the insertion of new information to change the search pattern.
+This is a limitation imposed by the problem itself, considering we had limited knowledge of the
+individual, and that there was no real-time mechanism to update the model on the search’s
+progression and success. Adding heuristics to the model would increase efficiency and
+probability of finding the jogger, as the model would be able to adapt to a variety of changing
+conditions. However, given the information available, our model manages to determine an
+efficient pathway to search for the lost jogger, whether he or she is conscious or unconscious.
+M
+Conclusion
+C
+For both Problems B1 and B2, our model develops a case-by-case strategy which takes
+into account the various scenarios one may be confronted with when attempting to find a lost
+M
+object or a missing person. In the case of a lost object, there are four possible scenarios, and each
+of our strategies seeks to maximize the probability of finding the lost object within the two hour
+i
+time constraint through search patterns derived from the Archimedean spiral, optimal traversals
+H
+of an Euler Path or Cycle resulting from the eulerization of the parks’ areas, and the
+Hierholzer’s Algorithm. For the lost jogger proble：m, two possible situations were identified:
+either the jogger is in motion, or the jogger is stationary. By taking this into account, our model
+becomes flexible enough to adjust upon receiving new information about the jogger’s condition.
+It is our belief that by creating specific me号thodologies, our model can successfully handle all
+possible scenarios. The prospect of finding a person or lost object in the midst of miles of trails,
+seems daunting--not even taking into account the limitation of a lone searcher and only a
+众
+penlight. Our model manages to yield strong probabilities of finding the lost object, or the
+missing person, despite the difficulties that confront it.
+公
+信
+微
+Page 16 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+AAppppeennddiixx AA:: EEuulleerriizzaattiioonn ooff PPrroobblleemm BB11 - Regions A, B, and C
+SCENARIO 1
+FFiigguurree 11:: OOrriiggiinnaall GGrraapphh ooff RReeggiioonn AA::
+M
+C
+M
+TTThhheee aaarrrrrrooowwwsss rrreeeppprrreeessseeennnttt ttthhheee ssstttaaarrrtttiiinnnggg pppoooiiinnnttt aaannnddd ttthhheee eeennndddiiinnnggg pppoooiiinnnttt aaattt wwwhhhiiiccchhh ttthhheee iiinnndddiiivvviiiddduuuaaalll cccooonnnddduuuccctttsss ttthhheee ssseeeaaarch.
+i
+H
+FFiigguurree 22:: EEuulleerriizzaattiioonn ooff RReeggiioonn AA:: ：
+号
+众
+公
+信
+微
+TTThhheee ggglllooowwwiiinnnggg gggrrreeeeeennn aaarrrcccsss rrreeeppprrreeessseeennnttt ttthhheee rrreeeddduuunnndddaaannnttt pppaaattthhhsss... IIIttt’’’sss iiimmmpppooorrrtttaaannnttt tttooo nnnooottteee ttthhhaaattt ttthhheee cccuuurrrvvveeeddd llliiinnneeesss dddooo nnnooottt
+aaccttuuaallllyy rreepprreesseenntt aa nneeww ttrraaiill bbeeiinngg bbllaazzeedd into Hopkinton, but to visually represents tthhee rreedduunnddaannccyy.. IInn
+rreeaalliittyy,, tthhee iinnddiivviidduuaall wwiillll ssiimmppllyy wwaallkk oonn tthhee ssaammee ppaatthh bbeettwweeeenn tthhee ssaammee ttwwoo vveerrttiicceess - just in a
+different direction.
+Page 17 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+FFiigguurree 33:: OOrriiggiinnaall GGrraapphh ooff RReeggiioonn BB:: FFiigguurree 44:: EEuulleerriizzaattiioonn ooff RReeggiioonn BB::
+M
+C
+M
+FFiigguurree 55:: OOrriiggiinnaall GGrraapphh ooff RReeggiioonn CC:: FFiigguurree 66:: EEuulleerriizzaattiioonn ooff RReeggiioonn CC::
+i
+H
+：
+号
+众
+公
+信
+微
+Page 18 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+SCENARIO 2:
+Fiigguurree 77:: GGrraapphh ooff AArrcchhiimmeeddeeaann SSppiirraall::
+300
+200
+100
+M
+-300 -200 -100 110000 200 300
+C
+-100
+M
+-200
+i
+H
+-300
+：
+SCENARIO 3:
+号
+Figure 8:: OOrriiggiinnaall MMaapp ooff EEnnttiirree PPaarrkk::
+众
+公
+信
+微
+Page 19 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Figure 9:: EEuulleerriizzaattiioonn ooff EEnnttiirree PPaarrkk::
+M
+C
+M
+i
+H
+：
+号
+Figure 10:: FFuullll PPaarrkk MMaapp SShhoowwiinngg DDiissttaannccee ffoorr EEaacchh SSeeggmmeenntt::
+众
+公
+信
+微
+Page 20 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Appendix B
+Figure 1: Graph Simplification of Parking Lot 1 Trail Method:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Notes:
+• The Star represents the 1st Parking Lot, where the searcher initiates the search.
+• The red lines indicate the extent of going 5.5 miles on each branch of trails stemming off
+from the 1st Parking Lot.
+• The blue lines represent the graph simplification of the red lines. For ease of eulerization,
+the blue graph was used in the model.
+Page 21 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Figure 2: Graph Simplification of Popular Trail Method:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Notes:
+• All nodes are potential starting places depending on the proximity to the individual
+parking lot methods.
+Page 22 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+• The purple lines indicate the most popular trails.
+• The green lines indicate the final simplification of both the popular trails and the jogger
+prioritization framework.
+Figure 3: Numbering of Parking Lots:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Page 23 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+
+Appendix C: Data Tables for Problem B1 Scenario 1
+Table 1:
+Pixels and Distance (miles) of Each Edge Created by Trail Paths
+| Pixels  | Miles             | Rounded to 2 SigFigs  |     |        |
+| ------- | ----------------- | --------------------- | --- | ------ |
+|         | 88  0.016566265   |                       |     | 0.017  |
+|         | 168  0.031626506  |                       |     | 0.032  |
+|         | 191  0.035956325  |                       |     | 0.036  |
+|         | 237  0.044615964  |                       |     | 0.045  |
+|         | 246  0.046310241  |                       |     | 0.046  |
+M
+|     | 269  0.05064006   |     |     | 0.051  |
+| --- | ----------------- | --- | --- | ------ |
+|     | 270  0.050828313  |     |     | 0.051  |
+C
+|     | 279  0.05252259   |     |     | 0.053   |
+| --- | ----------------- | --- | --- | ------- |
+|     | 297  0.055911145  |     |     | 0.05M6  |
+|     | 335  0.063064759  |     |     | 0.063   |
+|     | 351  0.066076807  |     |     | 0.0i66  |
+H
+|     | 378  0.071159639  |     |         | 0.071  |
+| --- | ----------------- | --- | ------- | ------ |
+|     | 379  0.071347892  |     | ：0.071  |        |
+|     | 398  0.074924699  |     |         | 0.075  |
+|     | 409  0.076995482  |     |         | 0.077  |
+号
+|     | 427  0.080384036  |     |     | 0.080  |
+| --- | ----------------- | --- | --- | ------ |
+|     | 462  0.086972892  |     |     | 0.087  |
+众
+|     | 463  0.087161145  |     |     | 0.087  |
+| --- | ----------------- | --- | --- | ------ |
+|     | 473  0.089043675  |     |     | 0.089  |
+公
+|     | 478  0.08998494    |     |     | 0.090  |
+| --- | ------------------ | --- | --- | ------ |
+|     | 493  0.092808735   |     |     | 0.093  |
+|     | 497  信0.093561747  |     |     | 0.094  |
+|     | 502  0.094503012   |     |     | 0.095  |
+|     | 511  0.096197289   |     |     | 0.096  |
+微
+|     | 522  0.098268072  |     |     | 0.098  |
+| --- | ----------------- | --- | --- | ------ |
+|     | 545  0.102597892  |     |     | 0.10   |
+|     | 561  0.10560994   |     |     | 0.11   |
+|     | 589  0.110881024  |     |     | 0.11   |
+|     | 595  0.112010542  |     |     | 0.11   |
+|     | 603  0.113516566  |     |     | 0.11   |
+|     | 677  0.127447289  |     |     | 0.13   |
+|     | 733  0.137989458  |     |     | 0.14   |
+|     | 745  0.140248494  |     |     | 0.14   |
+|     | 748  0.140813253  |     |     | 0.14   |
+Page 24 of 33
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+
+| 776  | 0.146084337  |     | 0.15  |
+| ---- | ------------ | --- | ----- |
+| 827  | 0.155685241  |     | 0.16  |
+| 829  | 0.156061747  |     | 0.16  |
+| 832  | 0.156626506  |     | 0.16  |
+| 841  | 0.158320783  |     | 0.16  |
+| 852  | 0.160391566  |     | 0.16  |
+| 865  | 0.162838855  |     | 0.16  |
+| 869  | 0.163591867  |     | 0.16  |
+| 897  | 0.168862952  |     | 0.17  |
+M
+| 914  | 0.172063253  |     | 0.17    |
+| ---- | ------------ | --- | ------- |
+| 928  | 0.174698795  |     | 0.17  C |
+| 975  | 0.183546687  |     | 0.18    |
+M
+| 994  | 0.187123494  |     | 0.19  |
+| ---- | ------------ | --- | ----- |
+| 995  | 0.187311747  |     | 0.19  |
+i
+| 1031  | 0.194088855  |     | 0.19  |
+| ----- | ------------ | --- | ----- |
+H
+| 1064  | 0.200301205  |     | 0.20  |
+| ----- | ------------ | --- | ----- |
+：
+| 1109  | 0.20877259   |     | 0.21  |
+| ----- | ------------ | --- | ----- |
+| 1134  | 0.213478916  |     | 0.21  |
+| 1168  | 0.219879518  | 号   | 0.22  |
+| 1225  | 0.23060994   |     | 0.23  |
+| 1239  | 0.233245482  | 众   | 0.23  |
+| 1357  | 0.255459337  |     | 0.26  |
+| 1370  | 0.257906627  |     | 0.26  |
+公
+| 1392  | 0.262048193  |     | 0.26  |
+| ----- | ------------ | --- | ----- |
+| 1428  | 0.268825301  |     | 0.27  |
+信
+| 1447  | 0.272402108  |     | 0.27  |
+| ----- | ------------ | --- | ----- |
+| 1580  | 0.297439759  |     | 0.30  |
+微
+| 1712   | 0.322289157  |     | 0.32          |
+| ------ | ------------ | --- | ------------- |
+| 1950   | 0.367093373  |     | 0.37          |
+| 3232   | 0.608433735  |     | 0.61          |
+| 3635   | 0.685299699  |     | 0.68          |
+| 54386  | 10.23832831  |     | 10.238 Total  |
+
+•
+These values were obtained by using the Pixel Proportion Method, as mentioned in the
+paper. Individual segments were traced and the number of pixels contained in each
+segment was counted. By using proportions, the appropriate distances in miles and their
+respective rounded distances were obtained.
+Page 25 of 33
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+
+•
+To illustrate the calculation, a path made up of 3635 pixels is .68 miles long, because
+3635 divided by 8 (the thickness of the pixel) yields a length of 454.375 pixels. This is
+set equal to the predetermined proportion (found from the adjusted image’s pixels and
+scale in miles).
+5
+|     |     |     |     | (cid:16) (cid:5)(cid:6)(cid:7)(cid:8)(cid:9) | (cid:21)  (cid:5)(cid:6)(cid:7)(cid:8)(cid:9) |
+| --- | --- | --- | --- | -------------------------------------------- | --------------------------------------------- |
+4
+=
+|     | Solving the proportion yields:   |     |     | 4.54.375 (cid:15)(cid:6)(cid:16)(cid:8)(cid:7)(cid:9) | 830 (cid:15)(cid:6)(cid:16)(cid:8)(cid:7)(cid:9) |
+| --- | -------------------------------- | --- | --- | ----------------------------------------------------- | ------------------------------------------------ |
+
+|     | •   |     |     | (cid:16) = 0 . 6 | 8  (cid:5) (cid:6)(cid:7) (cid:8) (cid:9) |
+| --- | --- | --- | --- | ---------------- | ----------------------------------------- |
+The total number of pixels and the to tal  di s t an c e o f  t he paths is found by adding all of the
+M
+individual paths.
+
+C
+Table 2:
+Distance (miles) of Each Edge Created from Trail Paths by RegioMn
+| Green (A)    |     | Blue (B)     | Red (C)      |     |     |
+| ------------ | --- | ------------ | ------------ | --- | --- |
+| 0.016566265  |     | 0.031626506  | 0.055911145  |     |     |
+i
+H
+|              | 0.05252259  | 0.035956325  | 0.080384036   |     |     |
+| ------------ | ----------- | ------------ | ------------- | --- | --- |
+| 0.076995482  |             | 0.044615964  | 0.087161145 ： |     |     |
+|              | 0.08998494  | 0.046310241  | 0.094503012   |     |     |
+| 0.096197289  |             | 0.05064006   | 0.110881024   |     |     |
+号
+| 0.098268072  |     | 0.050828313  | 0.113516566  |     |     |
+| ------------ | --- | ------------ | ------------ | --- | --- |
+| 0.112010542  |     | 0.063064759  | 0.140248494  |     |     |
+众
+| 0.113516566  |     | 0.066076807  | 0.140813253  |     |     |
+| ------------ | --- | ------------ | ------------ | --- | --- |
+| 0.127447289  |     | 0.071159639  | 0.156626506  |     |     |
+0.0713公47892
+| 0.137989458  |     |               | 0.158320783  |     |     |
+| ------------ | --- | ------------- | ------------ | --- | --- |
+| 0.158320783  |     | 0.089043675   | 0.160391566  |     |     |
+| 0.160391566  |     | 信0.094503012  | 0.162838855  |     |     |
+| 0.162838855  |     | 0.112010542   | 0.163591867  |     |     |
+| 0.163591867  |     | 0.146084337   | 0.187311747  |     |     |
+微
+| 0.168862952  |             | 0.168862952    | 0.194088855  |             |     |
+| ------------ | ----------- | -------------- | ------------ | ----------- | --- |
+| 0.219879518  |             | 0.183546687    |              | 0.23060994  |     |
+|              | 0.23060994  | 0.213478916    | 0.268825301  |             |     |
+| 0.262048193  |             | 0.272402108    | 0.608433735  |             |     |
+| 0.268825301  |             | 0.297439759    | 0.685299699  |             |     |
+| 0.322289157  |             | 0.367093373    |              |             |     |
+|              |             | 0.608433735    |              |             |     |
+| 0.219879518  |             | 0.031626506    | 0.140248494  |             |     |
+| 0.076995482  |             | 0.035956325    | 0.187311747  |             |     |
+| 0.096197289  |             | 0.050828313    | 0.110881024  |             |     |
+|              | 0.08998494  | 0.071159639    | 0.055911145  |             |     |
+Page 26 of 33
+关注 HiMCM
+
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+0.160391566 0.094503012 0.087161145
+total (all
+total Total total paths+retraces)
+3.682605422 3.368599398 4.380271084 11.4 314759
+TIME TAKEN TIME TAKEN TIME TAKEN
+0.920651355 0.842149849 1.095067771 % of One Hour
+55.23908133 50.52899096 65.70406627 Minutes
+The values in this table are simply the distances taken from Table 1, separated by region.
+M
+The cells highlighted in yellow indicate paths that needed to be retraced in order for the graph to
+be eulerized. The total length of each region in miles was found by adding each individual path
+C
+that made up the region, in addition to the retraced paths, as indicated by the yellow cells. Since
+the individual travels at a speed of 4 miles per hour, we divide theM total length in miles by 4 to
+determine the time it takes to completely travel a region. This leaves us with the number of hours
+in the form of a percentage, which can easily be multiplied by 6i0 to determine the number of
+H
+minutes that must be allotted.
+：
+号
+众
+公
+信
+微
+Page 27 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Appendix D: Determining Area of Park in Problem B1
+First, we take the original map of Hopkinton.
+M
+C
+M
+i
+H
+：
+号
+The edge of the yellow park region is traced by the magnetic lasso tool. A selection is made, and
+众
+the park area is filled in with pink.
+公
+信
+微
+The selection is inversed, and the surrounding area is filled in with green. A scale from the
+original image is translated onto the new image so that a proportion between pixels and images
+Page 28 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+can be set up to determine area of the entire park. The adjusted park image is 1 mile by 1.5 mile
+(each black and white block=1/4 mile).
+M
+C
+M
+i
+H
+：
+号
+Using the histogram tools, we foun众d the total number of pixels for the image, 656,042, and the
+number of pixels in the selected area, 299,679. Because the length and width of the entire map
+was one mile by one and a half miles, the area of the map was 1.5 square miles. Multiplying
+公
+entire area of the map by the pixel proportion, 299,679/656,042 yielded an area of 0.6852 square
+miles of the portion of the park we are studying.
+信
+微
+Page 29 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Appendix E: Determining Length of All Trails and Individual Trails in Problem B1
+Using the magnetic lasso tool, each of the paths was stroked with a red pen. A selection was
+made, and similar to the method stated in Appendix D, the pixels were used to determine the
+total length (not area, this time) of the trails.
+We set up a proportion, with the pixel width of the adjusted park image, 830 pixels, over the
+length of the park image in miles, 1.25 miles set equal to 6798.2511, the number of pixels the
+trails spanned, over X, the total length of the trails we sought to find. Solving that proportion
+yields a total trail length of 10.2383 miles.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+To find the distance of individual trails, each specific path was traced out on Photoshop, and the
+Pixel Proportion Method and the Histogram tool (which provides the number of pixels) was
+employed.
+Page 30 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+M
+C
+M
+i
+H
+：
+The individual path distances were taken and put into a data table, as found in Appendix C, and
+then translated onto an undirected, connec号ted graph for easy viewing, visualization, and
+eulerization.
+众
+公
+信
+微
+Page 31 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Appendix F: Greedy Algorithm Explanation
+A greedy algorithm is one which always selects the locally optimal choice. In terms of
+graph traversal, this means that the algorithm will always select from the edges available at its
+current vertex the edge with the best value for the quantity being optimized. In this case, the
+algorithm selects the longest edge, as we wish to maximize distance. However, greedy
+algorithms are not guaranteed to produce an optimal solution in all cases. As such, and keeping
+in mind that we also wish to minimize redundancy, we modify the algorithm being used in this
+case to be greedy in all instances except for when the longest edge leads to a dead end within two
+iterations of the standard greedy algorithm, meaning that we would be forced to traverse a
+redundant edge.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Page 32 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 3192
+Sources
+Archimedes Spiral:
+www.siam.org/proceedings/soda/2010/SODA10_001_langetepee.pdf
+ideas.repec.org/a/spr/jogath/v29y2001i4p533-542.html
+Flashlight:
+http://www.amazon.com/Streamlight-66118-Stylus-Flashlight-Holster/dp/B0015UC17E
+http://www.maglite.com/flashlight_performance.asp
+Search definition:
+http://www.merriam-webster.com/dictionary/search
+Hopkinton State Park:
+http://www.mass.gov/dcr/parks/northeast/hpsp.htm
+M
+Fort Ord Public Lands:
+http://www.mtycounty.com/pgs-parks/fortord1.html
+C
+Random Number Generator:
+http://www.random.org/
+M
+Hiker Behavior
+http://www.banffcenter.ca/departments/leadership/library/pdf/resiliance/Hsiung.pdf
+i
+Lost Person Wayfinding:
+H
+http://helios.geog.ucsb.edu/graduates/masters-theses/pdf/McDanielM_MastersThesis.pdf
+Searching Tips: ：
+http://www.backpacker.com/august-2010-the-manual-finding-lost-hikers/skills/14346?page=4
+Fort Ord Observation Report:
+http://ftordbeta.org/statComb2010.php 号
+Fort Ord Brochure:
+http://www.blm.gov/pgdata/etc/medialib/blm/ca/pdf/hollister.Par.85723.File.dat/BLM_FortOrd_
+众
+brochure2011_508.pdf
+Monthly Weather Forecast for Salinas, CA:
+http://www.weather.com/weather/monthly/USCA0971
+公
+How Long Can You Go without Food or Water?
+http://health.howstuffworks.com/diseases-conditions/death-dying/live-without-food-and-
+water2.htm 信
+Elevation Change:
+http://www.singletracks.com/bike-trails/fort-ord-public-lands.html
+微
+Page 33 of 33
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

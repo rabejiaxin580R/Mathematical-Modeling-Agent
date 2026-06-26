@@ -1,0 +1,86 @@
+{
+  "paper_id": "6083",
+  "meta": {
+    "paper_id": "6083",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2015,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2015\\A\\6083.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了9条假设，包括车速、跟车规则、车辆尺寸、驾驶员行为等，每条都附有理由。",
+      "formulas": [],
+      "source_excerpt": "Assumption 1: Cars enter the model at the speed limit. ... Assumption 2: Cars adhere to the two-second rule. ..."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "车辆跟驰模型（基本）",
+      "stage": "build",
+      "how_used": "基于一维运动学公式，计算车辆加速/减速距离，并利用两秒规则建立车辆间距约束。",
+      "formulas": [
+        {
+          "latex_code": "d_{\\text{top}} = \\frac{V_F^2 - V_S^2}{2a_1}, \\quad d_{\\text{bottom}} = \\frac{V_S^2 - V_I^2}{2a_2}",
+          "variables": {
+            "V_F": "最终速度（ft/s）",
+            "V_S": "初始速度（ft/s）",
+            "V_I": "进入合并区前的速度（ft/s）",
+            "a_1": "加速度（ft/s²）",
+            "a_2": "减速度（ft/s²）",
+            "d_top": "蓝车加速距离",
+            "d_bottom": "橙车减速距离"
+          }
+        },
+        {
+          "latex_code": "\\frac{V_F^2 - V_S^2}{2a_1} + \\frac{V_S^2 - V_I^2}{2a_2} = \\frac{V_S + V_F}{2}(4x)",
+          "variables": {
+            "V_F": "最终速度",
+            "V_S": "初始速度",
+            "V_I": "进入速度",
+            "a_1": "加速度",
+            "a_2": "减速度",
+            "x": "当前跟车时间（秒）"
+          }
+        }
+      ],
+      "source_excerpt": "Using one-dimensional physics laws, and letting the final speed be V_F ft/s for the Blue car, and the final speed be V_S ft/s for the Orange car we found: ... d = (V_S+V_F)(4x)/2 ... (Equation 1)"
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "拉链式合流（Zipper Merge）",
+      "stage": "build",
+      "how_used": "采用拉链式合流作为理想合并策略，假设左车道车辆保持恒定速度并留出足够空间，右车道车辆在车道结束前合并。",
+      "formulas": [],
+      "source_excerpt": "the zipper method appears to be one of the best ways for cars to efficiently enter a new lane without causing a traffic flow disturbance (Johnson). Hypothetically, cars should be able to merge into the new lane without causing a traffic jam if drivers in the left lane travel at a constant speed, maintain a large space ahead of them, and allow drivers in the right lane to speed up and merge as their lane closes."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "通过调整加速度、减速度和初始速度等参数，分析模型对参数变化的敏感程度。",
+      "formulas": [],
+      "source_excerpt": "although in our simulation model, the acceleration rates are adjustable."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用流程图（Figure 1）展示拉链式合流的四个步骤，辅助说明模型过程。",
+      "formulas": [],
+      "source_excerpt": "Figure 1: Step 1 Step 2 Step 3 Step 4"
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "",
+      "stage": "notation",
+      "how_used": "在定义部分明确给出了效率和公平性的量化指标：效率用平均速度衡量，公平性用速度偏差衡量。",
+      "formulas": [],
+      "source_excerpt": "The “efficiency” of the model is measured by the average speed of cars in the zone, which is proportional to the average time in the zone. Higher average speed means greater efficiency. “Fairness” is measured by the deviation of the speeds of the cars. Lower deviation from the average speed means greater fairness."
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "paper_id": "6770",
+  "meta": {
+    "paper_id": "6770",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2016,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2016\\A\\6770.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了4条假设，包括参赛者年龄、时间单位转换、每波人数限制、比赛开始时间，为模型简化提供基础。",
+      "formulas": [],
+      "source_excerpt": "● Only people 18 years old and above can register for this race\n● To standardize our calculations, we changed the expression of time from HH:MM:SS into seconds by 3600 * HH + 60 * MM + SS\n● Each wave roughly consists 50 people, and no more than 75 peoples\n● The race is starting at 10 AM."
+    },
+    {
+      "concept_id": "prep.outlier",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在计算各分组的平均完成时间时，论文通过编程剔除了异常值，以提高估计的准确性。",
+      "formulas": [],
+      "source_excerpt": "Using programming (see code 1 attached), we were able to calculate the average total race time for each division. Our estimations were made more accurate by eliminating outliers from the average in each di"
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "在精炼模型中，用线性函数表示自行车赛段的速度，假设选手保持恒定速度。",
+      "formulas": [
+        {
+          "latex_code": "v_{bike}(t) = v_{bike, constant}",
+          "variables": {
+            "v_{bike}(t)": "自行车赛段速度随时间变化函数",
+            "v_{bike, constant}": "恒定速度值"
+          }
+        }
+      ],
+      "source_excerpt": "a linear function to represent the constant speed of the contestant during the bike"
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "用对数函数表示游泳赛段速度下降，用指数函数表示跑步赛段速度增加，以更真实地模拟选手表现。",
+      "formulas": [
+        {
+          "latex_code": "v_{swim}(t) = a \\ln(t) + b",
+          "variables": {
+            "v_{swim}(t)": "游泳赛段速度随时间变化函数",
+            "a": "对数系数",
+            "b": "常数项"
+          }
+        },
+        {
+          "latex_code": "v_{run}(t) = c e^{dt}",
+          "variables": {
+            "v_{run}(t)": "跑步赛段速度随时间变化函数",
+            "c": "指数前系数",
+            "d": "指数增长率"
+          }
+        }
+      ],
+      "source_excerpt": "a logarithmic function to represent the “slowing down” of the participant during the swimming segment, ... and an exponential function to show the increase in speed of runners in the last segment"
+    },
+    {
+      "concept_id": "valid.metrics",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "提出成本函数，包含拥堵成本和时间成本，通过积分和编程计算总成本，以评估模型效果。",
+      "formulas": [
+        {
+          "latex_code": "C = C_{congestion} + C_{time}",
+          "variables": {
+            "C": "总成本",
+            "C_{congestion}": "拥堵成本",
+            "C_{time}": "时间成本"
+          }
+        }
+      ],
+      "source_excerpt": "To evaluate the effectiveness of our refined model, we proposed a cost function to calculate the cost of congestion and cost of time."
+    },
+    {
+      "concept_id": "viz.sensitivityplot",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "论文未明确提及灵敏度分析的可视化，但通过调整波次间隔等参数，分析了不同方案下的拥堵和时间成本。",
+      "formulas": [],
+      "source_excerpt": "To calculate the total cost, we used a combination of programming and integrals as demonstrated in 3.2."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：引言（背景与问题重述）、方法（模型构建）、结果（成本计算）、讨论（结论），结构清晰。",
+      "formulas": [],
+      "source_excerpt": "1. The Model\n1.1. Background\n1.2. Restatement of the Problem\n2. Definitions\n3. The Model\n4. Conclusion"
+    },
+    {
+      "concept_id": "writing.figcaption",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文中表格有编号和标题，如“Table 1: List of Divisions”，符合图表规范。",
+      "formulas": [],
+      "source_excerpt": "Table 1: List of Divisions"
+    }
+  ]
+}

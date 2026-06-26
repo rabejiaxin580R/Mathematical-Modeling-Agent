@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "concept_id": "eval.dea",
+  "title": "数据包络分析（DEA）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "综合评价方法",
+    "数据包络分析（DEA）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.5",
+  "aliases": [
+    "DEA",
+    "数据包络",
+    "效率评价"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "数据包络分析（DEA）是一种通过比较多个同类实体（如公司、医院）的投入和产出，来评估谁更“高效”的方法，就像用最少原料做出最多好菜的那家餐厅就是效率标杆。",
+    "intuition": "想象你要比较几家餐厅的效率。每家餐厅都有投入（食材成本、员工人数、租金）和产出（顾客数量、好评率、营业额）。DEA会找出那些用最少投入获得最多产出的“最佳餐厅”，画出一条效率边界（生产前沿面），然后其他餐厅与这条边界比较，距离越远效率越低。就像考试中，满分100分是边界，你考80分就是效率0.8。",
+    "when_to_use": "当你需要评价多个同类对象（决策单元，DMU）的相对效率，且每个对象都有多个投入和多个产出指标时，就应该想到DEA。典型场景：比较不同银行的经营效率、医院的服务效率、学校的办学效率、项目的投资效率等。数据要求：投入指标越小越好（成本类），产出指标越大越好（收益类）。",
+    "definition": "数据包络分析（Data Envelopment Analysis, DEA）是一种基于线性规划的非参数效率评价方法，用于评估具有多投入多产出的决策单元（DMU）的相对效率。它通过构建生产前沿面，计算每个DMU与前沿面的距离来度量效率。",
+    "math_principle": "DEA的基本模型是CCR模型（假设规模报酬不变）。设有n个DMU，每个DMU有m种投入和s种产出，第j个DMU的投入向量为$x_j=(x_{1j},...,x_{mj})^T$，产出向量为$y_j=(y_{1j},...,y_{sj})^T$。对于被评价的DMU_k，其效率值θ_k通过求解以下线性规划得到：\n\n$$\n\\begin{aligned}\n\\min \\theta \\\\\ns.t. \\quad &\\sum_{j=1}^n \\lambda_j x_{ij} \\le \\theta x_{ik}, \\quad i=1,...,m \\\\\n&\\sum_{j=1}^n \\lambda_j y_{rj} \\ge y_{rk}, \\quad r=1,...,s \\\\\n&\\lambda_j \\ge 0, \\quad j=1,...,n\n\\end{aligned}\n$$\n\n其中θ是DMU_k的效率值（0<θ≤1），λ_j是权重变量。该规划的含义是：寻找一个由其他DMU凸组合成的虚拟DMU，使其产出不低于DMU_k，而投入尽可能小（压缩到θ倍）。最优解θ*就是效率值，θ*=1表示DMU_k位于前沿面上，是有效的；θ*<1表示无效。",
+    "step_by_step": [
+      "1. 确定决策单元（DMU）：选择同类型的评价对象，如10家银行。",
+      "2. 选择投入和产出指标：投入指标（越小越好）如员工数、成本；产出指标（越大越好）如利润、客户满意度。确保指标数量合理，一般DMU数量至少是指标数量的2倍。",
+      "3. 收集数据：整理每个DMU的投入和产出数据，形成矩阵。",
+      "4. 选择DEA模型：常用CCR（规模报酬不变）或BCC（规模报酬可变）。初学者先用CCR。",
+      "5. 求解线性规划：对每个DMU求解上述线性规划，得到效率值θ。可用软件如DEAP、R、Python的PuLP或scipy.optimize.linprog。",
+      "6. 分析结果：效率值=1的DMU为有效，构成前沿面；效率值<1的为无效，可进一步分析改进方向（投入冗余或产出不足）。"
+    ],
+    "worked_example": "假设有3家餐厅（DMU1, DMU2, DMU3），每家有两个投入（食材成本、员工人数）和一个产出（顾客数）。数据如下：\n- DMU1: 投入(2,3)，产出5\n- DMU2: 投入(3,4)，产出6\n- DMU3: 投入(4,5)，产出7\n\n对DMU1求解CCR模型：\nmin θ\ns.t. 2λ1+3λ2+4λ3 ≤ 2θ\n3λ1+4λ2+5λ3 ≤ 3θ\n5λ1+6λ2+7λ3 ≥ 5\nλ1,λ2,λ3 ≥ 0\n\n解得θ=1，λ1=1，λ2=λ3=0，DMU1有效。\n对DMU2：解得θ=0.909，λ1=0.6，λ3=0.4，即DMU2的效率为0.909，无效。\n对DMU3：解得θ=0.875，λ1=0.5，λ2=0.5，效率0.875。\n因此，只有DMU1是有效的，DMU2和DMU3需要改进。",
+    "pitfalls": [
+      "1. 指标选择不当：投入和产出指标必须合理，且数量不宜过多，否则几乎所有DMU都会有效（维度灾难）。一般DMU数量应至少为投入和产出指标数之和的2倍。",
+      "2. 数据质量问题：DEA对异常值敏感，一个极端有效的DMU会拉高前沿面，导致其他DMU效率偏低。需检查数据是否有误。",
+      "3. 模型选择错误：CCR假设规模报酬不变，若实际为可变规模报酬，应使用BCC模型，否则效率估计有偏。",
+      "4. 忽略环境因素：DEA未考虑外部环境差异，可能导致效率评价不公平。可结合三阶段DEA或Malmquist指数。",
+      "5. 结果解释局限：DEA给出的是相对效率，不是绝对效率。即使所有DMU都有效，也不代表它们都绝对高效。"
+    ],
+    "tools": "Python中可使用`scipy.optimize.linprog`或`PuLP`库求解。以下是用`scipy`求解CCR模型的代码骨架：\n\n```python\nimport numpy as np\nfrom scipy.optimize import linprog\n\n# 数据：投入矩阵X (m x n)，产出矩阵Y (s x n)\nX = np.array([[2,3,4], [3,4,5]])  # 2种投入，3个DMU\nY = np.array([[5,6,7]])  # 1种产出\nn = X.shape[1]\nm, s = X.shape[0], Y.shape[0]\n\n# 对每个DMU求解\nefficiencies = []\nfor k in range(n):\n    # 变量：theta, lambda1,...,lambda_n\n    c = [1] + [0]*n  # 目标函数 min theta\n    # 不等式约束 A_ub x <= b_ub\n    # 投入约束：sum(lambda_j * x_ij) - theta * x_ik <= 0\n    A_ub = []\n    b_ub = []\n    for i in range(m):\n        row = [-X[i,k]] + list(X[i,:])  # -theta系数，lambda系数\n        A_ub.append(row)\n        b_ub.append(0)\n    # 产出约束：-sum(lambda_j * y_rj) <= -y_rk\n    for r in range(s):\n        row = [0] + list(-Y[r,:])\n        A_ub.append(row)\n        b_ub.append(-Y[r,k])\n    # 变量边界：theta无下界？实际theta>=0，lambda>=0\n    bounds = [(0, None)] * (1+n)\n    # 求解\n    res = linprog(c, A_ub=A_ub, b_ub=b_ub, bounds=bounds, method='highs')\n    efficiencies.append(res.fun)\nprint(efficiencies)\n```\n注意：实际使用中建议用专业DEA包如`pyDEA`或`DEAP`。"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min \\theta \\\\ s.t. \\sum_{j=1}^n \\lambda_j x_{ij} \\le \\theta x_{ik}, \\quad i=1,...,m \\\\ \\sum_{j=1}^n \\lambda_j y_{rj} \\ge y_{rk}, \\quad r=1,...,s \\\\ \\lambda_j \\ge 0, \\quad j=1,...,n",
+      "variables": {
+        "θ": "被评价DMU_k的效率值，0<θ≤1",
+        "λ_j": "权重变量，表示构造虚拟DMU时各DMU的权重",
+        "x_{ij}": "第j个DMU的第i种投入",
+        "y_{rj}": "第j个DMU的第r种产出",
+        "n": "DMU个数",
+        "m": "投入指标个数",
+        "s": "产出指标个数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C23"
+    ],
+    "from_papers": []
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.cv",
+  "title": "交叉验证（K-Fold）",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "模型验证方法",
+    "交叉验证（K-Fold）"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.1",
+  "aliases": [
+    "交叉验证",
+    "K-Fold",
+    "k折"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "交叉验证是一种通过反复切分数据来更可靠地评估模型表现的方法，避免一次运气好坏决定结果。",
+    "intuition": "想象你要测试一个学生的真实水平，只考一次试可能因为题目难易或状态波动而不准。更好的办法是考多次，每次用不同的题目组合，最后取平均分。K折交叉验证就像把题库分成K份，每次用K-1份当练习、1份当考试，轮流K次，最后平均成绩就是更可靠的评估。",
+    "when_to_use": "当你需要评估一个模型的泛化能力，尤其是数据量不大（比如几百到几千条）时；或者你想比较不同模型、调参时，避免过拟合或欠拟合的误判。",
+    "definition": "K折交叉验证（K-Fold Cross-Validation）是一种将数据集划分为K个大小相似的互斥子集，轮流使用其中K-1个子集训练模型，剩余1个子集验证模型性能的模型评估方法。最终取K次验证结果的平均值作为模型性能的估计。",
+    "math_principle": "设数据集 $D$ 包含 $N$ 个样本。将 $D$ 随机划分为 $K$ 个互斥子集 $D_1, D_2, \\dots, D_K$，每个子集大小大致相等（约 $N/K$）。对于第 $i$ 次迭代（$i=1,\\dots,K$），以 $D \\setminus D_i$ 作为训练集，$D_i$ 作为验证集，训练得到模型 $M_i$，并计算验证集上的评估指标 $e_i$（如均方误差MSE：$e_i = \\frac{1}{|D_i|} \\sum_{(x,y) \\in D_i} (y - \\hat{y}_i(x))^2$）。最终模型性能的估计为 $\\bar{e} = \\frac{1}{K} \\sum_{i=1}^K e_i$。",
+    "step_by_step": [
+      "1. 将整个数据集随机打乱，确保样本顺序随机。",
+      "2. 将数据集分成K个大小相近的互斥子集（fold），通常K取5或10。",
+      "3. 对于每个fold i（i=1到K）：将第i个fold作为验证集，其余K-1个fold合并作为训练集。",
+      "4. 在训练集上训练模型，在验证集上评估性能（如准确率、MSE等），记录指标e_i。",
+      "5. 重复步骤3-4，直到每个fold都做过一次验证集。",
+      "6. 计算K次评估指标的平均值作为模型性能的最终估计。"
+    ],
+    "worked_example": "假设有100个样本，K=5。将数据随机分成5份，每份20个样本。第一次用第2-5份（80个样本）训练，第1份（20个样本）验证，得到MSE=0.25；第二次用第1、3、4、5份训练，第2份验证，得到MSE=0.30；第三次MSE=0.28；第四次MSE=0.22；第五次MSE=0.35。平均MSE = (0.25+0.30+0.28+0.22+0.35)/5 = 0.28。这个0.28就是模型性能的估计。",
+    "pitfalls": [
+      "1. 数据划分必须随机，否则可能引入偏差（如类别不平衡时需分层抽样）。",
+      "2. K值选择：K太小（如2）则训练集小，评估方差大；K太大（如N）则计算成本高，且训练集相似度高，评估方差小但偏差大。常用K=5或10。",
+      "3. 交叉验证只能评估模型性能，不能直接用于模型训练（即不能把交叉验证的多个模型合并）。",
+      "4. 对于时间序列数据，不能随机划分，需使用时间序列交叉验证（如滚动窗口）。"
+    ],
+    "tools": "Python中常用scikit-learn库的`cross_val_score`或`KFold`类。最小可运行代码：\n```python\nfrom sklearn.model_selection import cross_val_score\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.datasets import make_regression\n\nX, y = make_regression(n_samples=100, n_features=1, noise=0.1)\nmodel = LinearRegression()\nscores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_squared_error')\nprint(\"MSE scores:\", -scores)\nprint(\"Average MSE:\", -scores.mean())\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\bar{e} = \\frac{1}{K} \\sum_{i=1}^K e_i",
+      "variables": {
+        "K": "折数",
+        "e_i": "第i次验证的评估指标"
+      }
+    },
+    {
+      "latex_code": "e_i = \\frac{1}{|D_i|} \\sum_{(x,y) \\in D_i} (y - \\hat{y}_i(x))^2",
+      "variables": {
+        "D_i": "第i个验证集",
+        "|D_i|": "验证集样本数",
+        "y": "真实值",
+        "\\hat{y}_i(x)": "第i次模型对x的预测值"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_I02"
+    ],
+    "from_papers": []
+  }
+}

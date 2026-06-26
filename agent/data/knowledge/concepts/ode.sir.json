@@ -1,0 +1,104 @@
+{
+  "schema_version": 3,
+  "concept_id": "ode.sir",
+  "title": "传染病模型 SIR",
+  "taxonomy_path": [
+    "常用建模方法",
+    "微分方程建模",
+    "传染病模型 SIR"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.1",
+  "aliases": [
+    "SIR",
+    "传染病模型",
+    "基本再生数"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "SIR模型用三个仓室（易感、感染、康复）和微分方程，预测传染病在人群中的传播趋势。",
+    "intuition": "想象一个封闭的村庄，一开始所有人都没得过病（易感）。一个外来感染者进入后，每次和易感者接触，有一定概率把病传给他。感染者过一段时间会自己康复，并且不再得病。SIR模型就像一台模拟器，告诉你每天有多少人新得病、多少人康复，最终疫情会如何发展。",
+    "when_to_use": "当题目涉及传染病传播、且人群可以分成“未得病但可能得病”、“正在得病且会传染”、“得病后永久免疫”三类时，就该想到SIR模型。常见于疫情预测、公共卫生政策评估、谣言传播等场景。",
+    "definition": "SIR模型是一种经典的传染病动力学模型，将总人口N分为易感者（S）、感染者（I）和康复者（R）三个仓室，通过常微分方程组描述疾病传播过程。模型假设总人口恒定，感染后获得永久免疫，且人群均匀混合。",
+    "math_principle": "模型的核心是三个微分方程：\n- 易感者减少速率 = 感染率β × 易感人数 × 感染人数占比（S I / N）\n- 感染者变化速率 = 新感染人数 - 康复人数\n- 康复者增加速率 = 康复率γ × 感染人数\n\n基本再生数 R0 = β/γ，表示一个感染者在完全易感人群中平均传染的人数。R0 > 1 时疫情爆发，R0 < 1 时疫情消亡。",
+    "step_by_step": [
+      "1. 确定总人口N，并初始化S(0)、I(0)、R(0)。通常S(0)=N-1，I(0)=1，R(0)=0。",
+      "2. 设定参数β（有效接触率）和γ（恢复率）。β可通过接触次数×传播概率估算，γ=1/平均传染期。",
+      "3. 建立微分方程组：dS/dt = -β S I / N, dI/dt = β S I / N - γ I, dR/dt = γ I。",
+      "4. 选择时间范围（如0到100天），用数值方法（如欧拉法或龙格-库塔法）求解方程组。",
+      "5. 绘制S(t)、I(t)、R(t)曲线，观察峰值和最终规模。计算R0 = β/γ判断疫情是否爆发。"
+    ],
+    "worked_example": "假设一个村庄有1000人，初始1个感染者，其余易感。平均每个感染者每天接触5人，传播概率0.1，则β=0.5。平均传染期10天，则γ=0.1。R0=0.5/0.1=5>1，疫情会爆发。用Python求解微分方程，得到第20天左右感染人数达到峰值约400人，最终约990人康复。",
+    "pitfalls": [
+      "1. 模型假设总人口恒定，不适用于有出生、死亡或迁移的场景。",
+      "2. 假设感染后永久免疫，不适用于流感等会再次感染的疾病。",
+      "3. 假设人群均匀混合，忽略了年龄、空间等异质性。",
+      "4. 参数β和γ难以精确估计，通常需要拟合数据。",
+      "5. 模型未考虑潜伏期，对于有潜伏期的疾病需扩展为SEIR模型。"
+    ],
+    "tools": "Python的SciPy库中的`odeint`或`solve_ivp`函数可求解微分方程组。示例代码：\n```python\nimport numpy as np\nfrom scipy.integrate import odeint\nimport matplotlib.pyplot as plt\n\ndef sir_model(y, t, N, beta, gamma):\n    S, I, R = y\n    dSdt = -beta * S * I / N\n    dIdt = beta * S * I / N - gamma * I\n    dRdt = gamma * I\n    return dSdt, dIdt, dRdt\n\nN = 1000\nI0, R0 = 1, 0\nS0 = N - I0 - R0\ny0 = S0, I0, R0\nt = np.linspace(0, 100, 100)\nbeta, gamma = 0.5, 0.1\nret = odeint(sir_model, y0, t, args=(N, beta, gamma))\nS, I, R = ret.T\nplt.plot(t, S, label='Susceptible')\nplt.plot(t, I, label='Infected')\nplt.plot(t, R, label='Recovered')\nplt.legend()\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\frac{dS}{dt} = -\\beta \\frac{S I}{N}",
+      "variables": {
+        "S": "易感者人数",
+        "I": "感染者人数",
+        "N": "总人口",
+        "β": "有效接触率（感染率）",
+        "t": "时间"
+      }
+    },
+    {
+      "latex_code": "\\frac{dI}{dt} = \\beta \\frac{S I}{N} - \\gamma I",
+      "variables": {
+        "I": "感染者人数",
+        "S": "易感者人数",
+        "N": "总人口",
+        "β": "有效接触率",
+        "γ": "恢复率",
+        "t": "时间"
+      }
+    },
+    {
+      "latex_code": "\\frac{dR}{dt} = \\gamma I",
+      "variables": {
+        "R": "康复者人数",
+        "I": "感染者人数",
+        "γ": "恢复率",
+        "t": "时间"
+      }
+    },
+    {
+      "latex_code": "R_0 = \\frac{\\beta}{\\gamma}",
+      "variables": {
+        "R0": "基本再生数",
+        "β": "有效接触率",
+        "γ": "恢复率"
+      }
+    }
+  ],
+  "cases": [
+    "4155",
+    "4637",
+    "4880",
+    "5295",
+    "5325"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_C02"
+    ],
+    "from_papers": [
+      "4155",
+      "4637",
+      "4880",
+      "5295",
+      "5325"
+    ]
+  }
+}

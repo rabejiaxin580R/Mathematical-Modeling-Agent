@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.biasvar",
+  "title": "偏差-方差权衡",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "模型选择准则",
+    "偏差-方差权衡"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.2",
+  "aliases": [
+    "偏差方差",
+    "bias-variance"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "偏差-方差权衡告诉你：模型太简单会欠拟合（高偏差），太复杂会过拟合（高方差），找到中间点才能让预测最准。",
+    "intuition": "想象你在射箭：偏差就像你的瞄准点偏离靶心的距离，方差就像你每次射箭的抖动幅度。如果瞄准点偏了（高偏差），箭都落在同一个错误位置；如果手抖得厉害（高方差），箭会散落一大片。好的射手既要瞄准准（低偏差），又要手稳（低方差），但往往两者不可兼得——你越努力瞄准（复杂模型），手越容易抖（高方差）；你越放松（简单模型），手稳了但可能瞄不准（高偏差）。",
+    "when_to_use": "当你训练一个监督学习模型（回归或分类）并发现模型在训练集上表现很好但在测试集上很差（过拟合），或者训练集和测试集表现都很差（欠拟合）时，就应该想到偏差-方差权衡。它帮助你诊断模型是太简单还是太复杂，从而指导你调整模型复杂度（如正则化强度、树深度、特征数量等）。",
+    "definition": "偏差-方差权衡是监督学习中描述模型泛化误差分解的核心概念。偏差衡量模型预测的期望与真实值的偏离程度，反映模型假设的准确性；方差衡量模型对训练数据扰动的敏感度，即不同训练集下预测的波动性。两者之和（加上不可约误差）构成期望泛化误差，且通常存在权衡：复杂模型低偏差高方差，简单模型高偏差低方差。",
+    "math_principle": "设真实模型为 $y = f(x) + \\varepsilon$，其中 $\\varepsilon$ 为噪声，均值为0，方差为 $\\sigma^2$。对于训练集 $D$，模型 $\\hat{f}(x; D)$ 的期望泛化误差（均方误差）可分解为：\n$$\\mathbb{E}_D[(y - \\hat{f}(x; D))^2] = (\\text{Bias}[\\hat{f}(x)])^2 + \\text{Var}[\\hat{f}(x)] + \\sigma^2$$\n其中：\n- $\\text{Bias}[\\hat{f}(x)] = \\mathbb{E}_D[\\hat{f}(x; D)] - f(x)$ 为偏差，表示模型预测期望与真实值的差异。\n- $\\text{Var}[\\hat{f}(x)] = \\mathbb{E}_D[(\\hat{f}(x; D) - \\mathbb{E}_D[\\hat{f}(x; D)])^2]$ 为方差，表示模型预测的波动性。\n- $\\sigma^2$ 是不可约误差，由数据本身的噪声决定，无法通过模型减少。\n\n推导思路：将 $y - \\hat{f}$ 写成 $(f + \\varepsilon - \\hat{f})$，展开平方后取期望，利用 $\\varepsilon$ 独立且均值为0的性质，交叉项消失，得到三项之和。",
+    "step_by_step": [
+      "1. 收集数据并划分训练集和测试集（或使用交叉验证）。",
+      "2. 选择一个模型族（如线性回归、决策树、神经网络），并设定一个复杂度参数（如多项式次数、树深度、正则化系数）。",
+      "3. 在训练集上训练模型，并在测试集上评估误差（如均方误差）。",
+      "4. 改变复杂度参数，重复步骤3，记录不同复杂度下的训练误差和测试误差。",
+      "5. 绘制学习曲线：横轴为模型复杂度，纵轴为误差。观察训练误差和测试误差的变化趋势。",
+      "6. 分析曲线：当模型复杂度低时，训练误差和测试误差都高（高偏差）；当复杂度高时，训练误差低但测试误差高（高方差）。",
+      "7. 选择测试误差最低的点对应的复杂度，作为最优模型复杂度。",
+      "8. 若需要进一步降低误差，可考虑增加数据量、特征工程或集成方法。"
+    ],
+    "worked_example": "假设我们有一个一维回归问题，真实函数为 $f(x) = \\sin(1.5\\pi x)$，加上均值为0、方差为0.1的高斯噪声。我们使用多项式回归，从次数1到15，每个次数训练100个不同的训练集（每个训练集包含30个随机采样点），然后计算每个次数下模型在固定测试集（无噪声）上的平均偏差平方、方差和总误差。\n\n结果：\n- 次数1（线性模型）：偏差平方约0.5，方差约0.01，总误差约0.61（含噪声0.1）。\n- 次数3：偏差平方约0.1，方差约0.05，总误差约0.25。\n- 次数9：偏差平方约0.02，方差约0.3，总误差约0.42。\n- 次数15：偏差平方约0.01，方差约0.8，总误差约0.91。\n\n可见，次数3时总误差最小，偏差和方差达到平衡。次数1偏差大，次数15方差大。",
+    "pitfalls": [
+      "1. 偏差和方差无法直接观测，只能通过训练/测试误差间接估计，且估计受数据量影响。",
+      "2. 权衡并非总是存在：某些模型（如随机森林）通过集成可以同时降低偏差和方差。",
+      "3. 不可约误差是下界，不要试图通过增加模型复杂度来降低它。",
+      "4. 在分类问题中，误差分解形式不同（如0-1损失无法分解），但直觉仍然适用。"
+    ],
+    "tools": "Python 中可使用 scikit-learn 的 `validation_curve` 函数来观察偏差-方差权衡。例如，对多项式回归：\n```python\nfrom sklearn.model_selection import validation_curve\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.pipeline import make_pipeline\nimport numpy as np\n\n# 生成数据\nnp.random.seed(0)\nX = np.sort(np.random.rand(30, 1), axis=0)\ny = np.sin(1.5 * np.pi * X).ravel() + 0.1 * np.random.randn(30)\n\n# 定义模型\ndef polynomial_model(degree):\n    return make_pipeline(PolynomialFeatures(degree), LinearRegression())\n\n# 验证曲线\ndegrees = np.arange(1, 16)\ntrain_scores, test_scores = validation_curve(\n    polynomial_model(1), X, y, param_name=\"pipeline__polynomialfeatures__degree\",\n    param_range=degrees, cv=5, scoring=\"neg_mean_squared_error\"\n)\n\n# 计算平均误差\ntrain_errors = -np.mean(train_scores, axis=1)\ntest_errors = -np.mean(test_scores, axis=1)\n\n# 打印结果\nfor deg, train_err, test_err in zip(degrees, train_errors, test_errors):\n    print(f\"Degree {deg}: Train Error = {train_err:.4f}, Test Error = {test_err:.4f}\")\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\mathbb{E}_D[(y - \\hat{f}(x; D))^2] = (\\text{Bias}[\\hat{f}(x)])^2 + \\text{Var}[\\hat{f}(x)] + \\sigma^2",
+      "variables": {
+        "y": "真实观测值",
+        "\\hat{f}(x; D)": "在训练集D上训练得到的模型在x处的预测",
+        "\\mathbb{E}_D": "关于训练集D的期望",
+        "\\text{Bias}[\\hat{f}(x)]": "偏差，即模型预测期望与真实值之差",
+        "\\text{Var}[\\hat{f}(x)]": "方差，即模型预测的波动性",
+        "\\sigma^2": "不可约误差，数据噪声的方差"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_I06"
+    ],
+    "from_papers": []
+  }
+}

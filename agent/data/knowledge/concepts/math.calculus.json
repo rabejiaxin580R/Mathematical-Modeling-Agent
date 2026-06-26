@@ -1,0 +1,79 @@
+{
+  "schema_version": 3,
+  "concept_id": "math.calculus",
+  "title": "求导与微积分基础",
+  "taxonomy_path": [
+    "数学基础",
+    "数学工具与基础",
+    "求导与微积分基础"
+  ],
+  "module_id": "J",
+  "subcat_id": "J.1",
+  "aliases": [
+    "求导",
+    "导数",
+    "微积分"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P3",
+  "explain": {
+    "one_liner": "求导和微积分是研究变化率和累积量的数学工具，帮你从“瞬间变化”和“总量累积”两个角度理解世界。",
+    "intuition": "想象你开车：速度表显示的是瞬时速度（导数），里程表记录的是总路程（积分）。导数告诉你每时每刻变化多快，积分把无数个瞬间的变化加起来得到总量。",
+    "when_to_use": "当问题涉及变化率（如速度、增长率）、最优化（找最大/最小值）、或累积总量（如面积、总成本）时，就该想到微积分。在数学建模中，常用来描述动态过程、求解极值或计算累积效应。",
+    "definition": "导数是函数在某一点的变化率，微积分包括微分（求导）和积分（求累积），两者互为逆运算。",
+    "math_principle": "导数定义为函数增量与自变量增量之比的极限：\n$$f'(x) = \\lim_{h \\to 0} \\frac{f(x+h)-f(x)}{h}$$\n积分是导数的逆运算，定积分表示曲线下面积：\n$$\\int_a^b f(x) \\, dx = \\lim_{n \\to \\infty} \\sum_{i=1}^n f(x_i^*) \\Delta x$$\n微积分基本定理连接两者：\n$$\\int_a^b f(x) \\, dx = F(b) - F(a)$$ 其中 $F'(x)=f(x)$。",
+    "step_by_step": [
+      "1. 识别问题：是求变化率（导数）还是累积量（积分）？",
+      "2. 建立函数模型：用变量表示问题中的关系。",
+      "3. 求导或积分：应用导数法则（如幂法则、链式法则）或积分技巧（如换元、分部积分）。",
+      "4. 代入具体值：将已知条件代入求解。",
+      "5. 解释结果：将数学结果还原为实际问题含义。"
+    ],
+    "worked_example": "论文10057中，考虑EV设备使用寿命，每年正在使用的数量可通过移动积分计算。假设设备寿命为L年，每年新投入数量为N(t)，则第t年在用数量为从t-L到t的积分：\n$$U(t) = \\int_{t-L}^{t} N(\\tau) \\, d\\tau$$\n例如，若每年新投入100台，寿命5年，则第10年在用数量为 $\\int_{5}^{10} 100 \\, d\\tau = 500$ 台。",
+    "pitfalls": [
+      "1. 忽略函数可导性：尖点或间断点处导数不存在。",
+      "2. 混淆定积分与不定积分：定积分有上下限，结果是一个数；不定积分是一族函数。",
+      "3. 忘记积分常数：不定积分结果需加常数C。",
+      "4. 误用链式法则：复合函数求导时容易漏乘内层导数。"
+    ],
+    "tools": "Python中可用SymPy进行符号微积分：\n```python\nimport sympy as sp\nx = sp.symbols('x')\nf = x**3 + 2*x\n# 求导\nderivative = sp.diff(f, x)\n# 不定积分\nintegral = sp.integrate(f, x)\n# 定积分\ndefinite_integral = sp.integrate(f, (x, 0, 1))\nprint(derivative, integral, definite_integral)\n```\n数值计算可用SciPy的quad函数：\n```python\nfrom scipy.integrate import quad\nresult, error = quad(lambda x: x**2, 0, 1)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "f'(x) = \\lim_{h \\to 0} \\frac{f(x+h)-f(x)}{h}",
+      "variables": {
+        "f'(x)": "函数f在x处的导数",
+        "h": "自变量的微小增量",
+        "f(x+h)-f(x)": "函数值的增量"
+      }
+    },
+    {
+      "latex_code": "\\int_a^b f(x) \\, dx = \\lim_{n \\to \\infty} \\sum_{i=1}^n f(x_i^*) \\Delta x",
+      "variables": {
+        "a,b": "积分上下限",
+        "f(x)": "被积函数",
+        "\\Delta x": "小区间宽度",
+        "x_i^*": "小区间内任一点"
+      }
+    },
+    {
+      "latex_code": "\\int_a^b f(x) \\, dx = F(b) - F(a)",
+      "variables": {
+        "F(x)": "f(x)的一个原函数",
+        "F(b)-F(a)": "原函数在端点处的差值"
+      }
+    }
+  ],
+  "cases": [
+    "10057"
+  ],
+  "provenance": {
+    "from_lectures": [],
+    "from_papers": [
+      "10057"
+    ]
+  }
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数学建模助教 · 工作台</title>
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX 公式渲染 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Markdown + 代码高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <!-- CodeMirror 5（轻量代码编辑器） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css?v=anim1" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+</head>
+<body>
+  <div class="ws" id="ws" style="--col-left:240px; --col-right:440px;">
+    <!-- 顶栏：品牌 + 工作目录 + 文件名 + 运行/保存 + 设置 -->
+    <header class="ws-topbar">
+      <div class="ws-brand"><span class="mark">绣</span>独立练习</div>
+      <input type="text" class="ws-path" id="workdir" placeholder="工作目录（项目文件夹绝对路径，回车加载文件树；留空用临时目录）" />
+      <input type="text" class="ws-path ws-fname" id="filename" placeholder="文件名 main.py" value="main.py" />
+      <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
+      <button class="ide-btn run" id="btn-run" title="运行（Ctrl+Enter）">▶ 运行</button>
+      <button class="ide-btn" id="btn-stop" title="停止当前进程" disabled>⛔ 停止</button>
+      <a class="ws-link" href="/build" title="返回做建模">⌂ 做建模</a>
+      <a class="ws-link" href="/ide" title="旧版极简 IDE">IDE</a>
+      <a class="ws-link" href="/chat" title="旧版纯聊天页">聊天</a>
+      <button class="btn-icon" id="btn-settings" title="模型与 API 设置">⚙</button>
+      <div class="model-selector" id="model-selector">
+        <button class="model-pill" id="model-pill" title="点击切换模型">
+          <span class="model-pill-dot"></span>
+          <span class="model-pill-label">模型</span>
+          <span class="model-pill-name" id="model-badge">…</span>
+          <span class="model-pill-caret">▾</span>
+        </button>
+        <div class="model-menu" id="model-menu" hidden>
+          <div class="model-menu-title">快速切换模型</div>
+          <button class="model-opt" data-provider="deepseek"><b>DeepSeek</b><span>deepseek-chat</span></button>
+          <button class="model-opt" data-provider="qwen"><b>通义千问</b><span>qwen-plus</span></button>
+          <button class="model-opt" data-provider="openai"><b>OpenAI</b><span>gpt-4o-mini</span></button>
+          <button class="model-opt" data-provider="moonshot"><b>Moonshot</b><span>moonshot-v1-8k</span></button>
+          <button class="model-opt model-opt-more" id="model-menu-more">⚙ API 密钥 / 自定义模型…</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="ws-grid">
+      <!-- ===== 左栏：文件浏览器 ===== -->
+      <section class="ws-left">
+        <div class="explorer-head">
+          <input type="text" id="explorer-filter" placeholder="过滤当前已展开的文件…" />
+          <button class="ide-btn mini" id="explorer-refresh" title="按工作目录重新加载">↻</button>
+        </div>
+        <div class="explorer-tree" id="explorer-tree">
+          <div class="explorer-empty">在上方「工作目录」填入项目文件夹路径并回车，即可浏览文件。</div>
+        </div>
+      </section>
+
+      <div class="ws-gutter" data-target="left" title="拖动调整宽度"></div>
+
+      <!-- ===== 中栏：编辑器 + 控制台 ===== -->
+      <section class="ws-mid">
+        <div class="ws-editor"><textarea id="editor"></textarea></div>
+
+        <div class="ws-console" id="ws-console">
+          <div class="console-head">
+            <span class="console-title">终端 / 控制台</span>
+            <span class="status" id="con-status">就绪</span>
+            <span class="console-spacer"></span>
+            <button class="ide-btn mini" id="btn-insert-sel" title="把编辑器中选中的代码插入右侧对话输入框">↪ 选中插入对话</button>
+            <button class="btn-clear" id="btn-clear" title="清空控制台">清空</button>
+            <button class="btn-clear" id="console-toggle" title="折叠/展开控制台">▾</button>
+          </div>
+          <div class="console-log" id="con-log"></div>
+          <div class="console-imgs" id="con-imgs"></div>
+          <div class="console-input-row">
+            <span class="console-prompt" id="con-prompt">$</span>
+            <input type="text" class="console-input" id="con-input"
+                   placeholder="运行中：在此回答程序输入（input/y-n）；空闲时：输入命令回车执行（dir、pip install …）" />
+          </div>
+          <div class="console-hint">命令在你本机以子进程运行，仅限信任环境使用。</div>
+        </div>
+      </section>
+
+      <div class="ws-gutter" data-target="right" title="拖动调整宽度"></div>
+
+      <!-- ===== 右栏：AI 对话 ===== -->
+      <section class="ws-right">
+        <header class="ws-right-head">
+          <button class="btn-icon" id="btn-toggle" title="会话历史">☰</button>
+          <div class="topbar-title" id="topbar-title">新对话</div>
+          <button class="btn-icon" id="btn-new" title="新建对话">＋</button>
+          <button class="btn-icon" id="btn-export" title="导出对话为 Markdown">⬇</button>
+        </header>
+
+        <!-- 会话历史（默认收起，点击 ☰ 展开） -->
+        <aside class="ws-convs collapsed" id="sidebar">
+          <div class="conv-list" id="conv-list"></div>
+          <div class="kb-status" id="kb-status">知识库加载中…</div>
+        </aside>
+
+        <div class="messages" id="messages">
+          <div class="welcome" id="welcome">
+            <h1>数学建模助教</h1>
+            <p>左侧浏览项目文件、中间写并运行代码、右侧随时提问——选中代码可一键带入对话，AI 也能把代码送回编辑器。</p>
+            <div class="suggestions">
+              <button class="chip">层次分析法怎么构造判断矩阵？一致性检验怎么做？</button>
+              <button class="chip">帮我用 Python 解一个线性规划并画出可行域</button>
+              <button class="chip">我是零基础，怎么在 Windows 上安装 Python？</button>
+              <button class="chip">数学建模论文的摘要该怎么写？</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <div class="attachments" id="attachments"></div>
+          <div class="composer-inner">
+            <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json,.txt,.md,.py,.pdf,.docx,.doc,.pptx,.ppt,.html,.htm,.png,.jpg,.jpeg,.gif" hidden />
+            <button class="btn-attach" id="btn-attach" title="上传文件">📎</button>
+            <textarea id="input" rows="1" placeholder="问我数学建模的任何问题…（Enter 发送，Shift+Enter 换行）"></textarea>
+            <button class="btn-send" id="btn-send" title="发送">➤</button>
+          </div>
+          <div class="composer-hint">代码会在你本机以子进程运行，请在信任环境下使用。</div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="settings-overlay" id="settings-overlay">
+    <div class="settings-modal">
+      <div class="settings-head">
+        <h2>模型与 API 设置</h2>
+        <button class="btn-close" id="btn-close-settings">×</button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-section">
+          <label>快速选择</label>
+          <div class="provider-presets" id="provider-presets">
+            <button class="preset" data-provider="deepseek">DeepSeek</button>
+            <button class="preset" data-provider="qwen">通义千问</button>
+            <button class="preset" data-provider="openai">OpenAI</button>
+            <button class="preset" data-provider="moonshot">Moonshot</button>
+            <button class="preset" data-provider="custom">自定义</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <label for="setting-api-key">API 密钥</label>
+          <input type="password" id="setting-api-key" placeholder="sk-xxxxxxxxxxxxxxxx" autocomplete="off" />
+        </div>
+        <div class="settings-section">
+          <label for="setting-base-url">接口地址 (Base URL)</label>
+          <input type="text" id="setting-base-url" placeholder="https://api.deepseek.com/v1" />
+        </div>
+        <div class="settings-section">
+          <label for="setting-model">模型名称</label>
+          <input type="text" id="setting-model" placeholder="deepseek-chat" />
+        </div>
+      </div>
+      <div class="settings-foot">
+        <span class="settings-status" id="settings-status"></span>
+        <button class="btn-save" id="btn-save-settings">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 顺序：聊天逻辑 → IDE 编辑器/终端逻辑 → 共享渲染/档案/分步引擎 → 编辑器预览 → 工作台胶水层 -->
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/app.js?v=anim1"></script>
+  <script src="/static/ide.js?v=anim1"></script>
+  <script src="/static/profile.js?v=anim1"></script>
+  <script src="/static/render.js?v=anim1"></script>
+  <script src="/static/stepflow.js?v=anim1"></script>
+  <script src="/static/editor-preview.js?v=anim1"></script>
+  <script src="/static/layout.js?v=anim1"></script>
+  <script src="/static/workspace.js?v=anim1"></script>
+</body>
+</html>

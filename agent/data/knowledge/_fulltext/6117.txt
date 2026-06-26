@@ -1,0 +1,5182 @@
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2015
+M
+18th Annual High School Mathematical Contest in Modeling (HiMCM)
+Summary Sheet
+C
+(Please attach a copy of this page to your Solution Paper.)
+M
+Team Control Number: 6117
+i
+Problem Chosen: A
+H
+Lane closures are one of the most common sources of traffic congestion, which can lead
+to dramatically increased driver anger and slower ：commute times for everyone. In order to
+improve this situation, our team analyzed the possible outcomes of a lane closure scenario and
+determined optimal strategies, both on the individual and systemic level, to improve traffic flow
+号
+and prevent road rage. We applied Monte Carlo and fluid dynamic methodologies to create a
+robust simulation and experimented with countless different scenarios. Through our model, we
+have determined a series of guidelines that one individual can follow to improve his commute
+众
+time and overall traffic flow, as well as guidelines, that if implemented on a larger scale, could
+result in much less traffic congestion for everyone.
+When creating our 公model, we sought to make it realistic and able to test the multitude of
+scenarios that one may encounter, and determine best practices for each. Our model was
+primarily a Java simulation, comprising the given road with a lane closure, and populated with
+car objects. As in r信eal life, different cars may have different driving styles, but our test driver was
+programmed to follow specific strategies and determine whether they were effective. Since the
+problem gave a very generalized situation, we found it more tractable to work with additional
+微
+specificity, testing all possible scenarios that composed the general case. In this manner, our
+model became very robust and could test situations or strategies that were unexpected or
+unintuitive. We applied Monte Carlo principles of testing all possible scenarios to determine the
+optimal strategy.
+We also looked toward fluid dynamic principles for insight. The Darcy-Weisbach
+equation, which models the outflow of laminar fluid towards an opening, was modified for our
+purposes to accurately model the analogous outflow of non-laminar cars towards an opening --
+the unblocked lane. Instead of finding the pressure of the fluid at various points in the tube, we
+could calculate congestion, the parallel to pressure for our modified equation, at those points, and
+our test driver would act accordingly to reduce congestion in the system. In this way, we
+determined not only generalizable guidelines for optimal actions in any scenario, but also
+scenarios or strategies that would reduce congestion as a whole. As anger is based on congestion
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+and long commute times, reducing congestion also helped us minimize anger and prevent road
+rage.
+We found that a congestion-balancing strategy, where an individual driver is conscious of
+changes in congestion that result from his possible actions and acts accordingly to balance , was
+most effective in reducing both an individual's transit time as well as the anger of all drivers.
+Were a given driver to employ this strategy, we found that his transit time decreased by 8% and
+overall driver anger decreased by 10%. By moving to less congested areas, a given driver not
+only was able to speed up and take advantage of that space, but also freed up space for drivers
+behind him. This strategy proved most effective both on two-lane and three-lane scenarios, with
+both 35 and 65 mph speed limits.
+Based on our findings, we developed guidelines to include in the DMV driver education
+M
+materials, so that our conclusions, through education and outreach, can be implemented on a
+larger scale to improve traffic flow. We have faith that, through following our recommendations,
+C
+traffic jams due to lane closures may be greatly alleviated.
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Go With The Flow
+Team 6117
+November 2015
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 2 of 32
+Contents
+1 Introduction 4
+2 Assumptions 6
+3 Model 9
+3.1 Goals of Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.2 Summary of Program . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.3 Influences . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+M
+3.3.1 Monte Carlo Methods . . . . . . . . . . . . . . . . . . . . . . 9
+3.3.2 Water Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+C
+3.4 Analysis of Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.5 Model Building 1.0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+M
+3.5.1 Considerations . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.5.2 Congestion and Anger . . . . . . . . . . . . . . . . . . . . . . 17
+i
+3.5.3 Congestion Balancing Strategy . H. . . . . . . . . . . . . . . . 18
+3.5.4 3 Lanes to 2 Lanes . . . . . . . . . . . . . . . . . . . . . . . . 20
+：
+3.5.5 3 Lanes to 1 Lane . . . . . . . . . . . . . . . . . . . . . . . . . 20
+4 Model Results 21
+号
+4.1 Test Driver (Sedan) . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+4.2 Speed Limits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+4.3 Sign Distance . . .众. . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+4.4 Test Truck . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+4.5 Multiple Test Drivers . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+公
+4.6 3 Lanes to 2 Lanes . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+4.7 3 Lanes to 1 Lane . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+信
+5 Implications of Model 26
+5.1 Congestion Balancing Strategy . . . . . . . . . . . . . . . . . . . . . . 26
+5.2微Efficiency vs. Fairness . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+5.3 Trucks on Highways . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+5.4 Sign Distance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+5.5 Game Theory Implications . . . . . . . . . . . . . . . . . . . . . . . . 29
+5.6 Guidelines and Signage . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+6 Strengths and Weaknesses 30
+6.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+6.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 3 of 32
+7 Conclusion 32
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 4 of 32
+1 Introduction
+In a famous incident in August 2010, a Chinese traffic jam stretched for over 100
+kilometers and stranded drivers took over two weeks to get from one side to the
+other. Stemming from a routine lane closure for road maintenance, the traffic jam
+soon spiraled out of control, as cars piling up at the jam greatly outnumbered those
+leaving the other end. Sadly, in todays overpopulated world, these sorts of nightmare
+scenarios are only becoming more and more common, from chronic traffic jams in
+congested Chinese cities to Carmageddon in Los Angeles. For drivers, these extensive
+traffic jams can be frustrating at best and downright infuriating at wMorst, leading to
+potentially unsafe driving and the chance of road rage (1).
+Traffic jams are practically an epidemic in the modern worldC. As with any sub-
+optimal system, they produce countless undesirable consequences. By driving at a
+slower pace, with repeated accelerations and decelerations,Meach car must spend much
+more fuel to travel the same distance — a drawback to both the environmentally and
+economically conscious. Socially, extended commute timies and countless hours stuck
+H
+in traffic lead to not only decreases in an individuals well-being and quality of life,
+but also greatly reduced productivity. These consequences make it imperative that
+：
+measures be taken to optimize the system and alleviate these negative effects.
+In this paper, we will analyze the behavior of one of the biggest causes of traffic
+blockages — lane closures. Whethe号r construction causes the blockage of a highway
+lane or two lanes merge into one on a rural road, the loss of a lane results in con-
+gestion and reduced travel efficiency. Upon seeing the traffic sign warning them of
+众
+an upcoming closure, drivers must immediately adapt their behavior, either changing
+into the unblocked lane or being mindful of other cars wanting to switch into their
+lane. If they are not c公areful, a lane change could easily result in an accident. Drivers
+may approach the lane merge in several different manners. For example, conscien-
+tious drivers may try to merge to the open lane as soon as possible, making sure to
+leave plenty o信f space and allow other cars in. Aggressive drivers, on the other hand,
+may switch lanes whenever they see open space, driving faster but potentially cutting
+others off in the process.
+微
+We will determine the implications of the interactions between various driving
+styles and how they affect traffic flow as a whole. We wish to find an optimal strat-
+egy or driving style that makes driving in this scenario both fair and efficient. On
+the individual level, we can determine what strategies we can personally employ to
+improve our own efficiency and traffic flow overall. In the real world, we cannot con-
+trol the behavior of other cars on the road, but rather only our own actions. Since we
+want to tackle the general case of a lane closure, our model must be robust and able to
+simulate the situation based on varying parameters of initial conditions. Based on our
+findings, we can then decide on an official guideline for driving in this situation that
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 5 of 32
+can be incorporated in the Department of Motor Vehicles driver education materials.
+In this way, our work will be the first step towards ensuring not only our personal
+improvement of traffic flow and speeds, but also ensuring optimal travel times for
+everyone. If our guidelines become widely implemented, hopefully, traffic jams will
+soon become a thing of the past.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 6 of 32
+2 Assumptions
+Assumption 1: All drivers see the first sign and acknowledge its presence.
+Justification: The Federal Highway Administrations (FHWA) Manual on Uniform
+Traffic Control Devices follows the Sign Legibility guidelines, and all traffic signs are
+constructed based on these guidelines. Rigorous research and experimentation has
+been done to determine the optimal placement of signs so that they are legible and
+guaranteed visible by drivers. The guidelines ensure that the sign will be in the line
+of sight, contrasting, and noticeable. However, we cannot assume thMat drivers will
+choose to act on the sign after it is seen.
+C
+Assumption 2: AlldriversunderstandtherulesoftheroadMandthemeaningofsigns.
+Justification: In order to drive legally, one must eitheir be a licensed driver or a
+H
+learners permit holder. In both cases, one must have first passed the rules of the road
+test. Therefore, they acceptably understand both the rules of the road and meaning
+：
+of signs.
+号
+Assumption 3: Drivers will not necessarily follow given speed limits.
+众
+Justification: From a typical highway driving experience, it is clear that many people
+do not follow posted speed limits. A 2001 survey by the National Highway Traffic
+Safety Administratio公n found that only 30% of drivers identify themselves as non-
+speeders and 70% of drivers identify themselves as sometimes-speeders or always-
+speeders. Clearly, not everyone follows the speed limits at any given time.
+信
+Assumption 4: Drivers have different, categorizable driving styles.
+微
+Justification: As the speed limit statistics clearly show, not all drivers drive in the
+same way. Aside from solely speed relative to the speed limit, the driver population
+will have variations with regard to other attributes as well. The typical driver de-
+mographic can be categorized into specific, dichotomous styles (e.g. fast versus slow,
+selfish versus fair). We will assume that these categories are dichotomous for drivers
+on the road, so a driver is either slow, leaving ample space between him and the next
+driver, or fast, speeding up as much as possible. Research has determined that fixed
+driving styles, based on specific strategies and behaviors, do exist,and in fact, they
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 7 of 32
+can be inherited from parent to child.
+Assumption 5: Drivers are able to determine the driving styles of nearby cars.
+Justification: Since the drivers have passed their driving test, are licensed, and have
+not yet crashed, they should be reasonably aware and observant of what is going on
+around them. For a continuous road about to merge, we know that the drivers on
+this road have been driving with those around them for a sufficient enough time to
+M
+be able to observe and understand the driving styles of those around them.
+C
+Assumption 6: The blockage is on the right hand side of the road.
+M
+Justification: The Problem Statement depicts a situation where the right lane is
+closed. Since drivers drive on the right side of the road iniAmerica, construction will
+H
+typically close the right side of the road, so construction workers can use the greater
+space to the right of the road as opposed ：to the space to the left of the road that
+is typically occupied by another road flowing in the opposite direction. If a scenario
+calls for the left lane to be closed (e.g. left lane construction, road block, countries
+号
+where one drives on the left-hand side of the road), our assumption is not limiting and
+can be applied to this situation as it is symmetrical. We only work with a optimal
+road and a suboptimal, blocked road. The orientation doesnt matter.
+众
+Assumption 7: All公vehicles on the road fall into one of four categories. Vehicles
+in the same category have similar specifications and can be accurately modeled with
+generalized specifications for that category.
+信
+Justification: In order to make the problem more tractable, we do not need the
+irrelevant complexity of different makes and models on the road. Although there is
+微
+variation in specifications between different cars in the same category, the system
+of classification ensures that cars in the same category have small variation in size,
+acceleration, and handling, compared to the other categories. The Federal Highway
+Administration (FHWA) vehicle classifications will adapted into the four major types
+of vehicles on the road: motorcycles, passenger cars, vans, and trucks. Based on this
+classification, cars in the similar category will drive similarly. Generalized data is
+calculated from taking the average of the five most popular cars in each category.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 6117  |            |             |           | Page 8 | of 32 |
+| ---------- | ---------- | ----------- | --------- | ------ | ----- |
+| Assumption | 8: Drivers | do not want | to crash. |        |       |
+Justification: People inherently value their lives and well-being. They also value their
+property (i.e. their cars), and even under extreme road rage, are rational enough to
+| try to avoid | risking their | lives and | their property. |     |     |
+| ------------ | ------------- | --------- | --------------- | --- | --- |
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+|     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | ----- | ------ |
+
+| Team 6117 |     |     |     |     |     | Page 9 | of 32 |
+| --------- | --- | --- | --- | --- | --- | ------ | ----- |
+3 Model
+| 3.1 Goals | of Model |     |     |     |     |     |     |
+| --------- | -------- | --- | --- | --- | --- | --- | --- |
+We want our model to help us in addressing the following concerns:
+• Decide the optimal strategy of a particular driver and how to optimally interact
+| with a variety | of circumstances |     | and nearby | driving styles. |     |     |     |
+| -------------- | ---------------- | --- | ---------- | --------------- | --- | --- | --- |
+• Simulate repeatedly the lane closure scenario under all likely possibilities to find
+M
+| the best | approach | on both the | individual | and systemic | level. |     |     |
+| -------- | -------- | ----------- | ---------- | ------------ | ------ | --- | --- |
+• Determine the overall guidelines that drivers should follow C when approaching a
+| lane closure | to ensure | fair, efficient | driving. |     |     |     |     |
+| ------------ | --------- | --------------- | -------- | --- | --- | --- | --- |
+M
+• Establish a distinction between fair and efficient driving scenarios.
+i
+| 3.2 Summary | of  | Program |     | H   |     |     |     |
+| ----------- | --- | ------- | --- | --- | --- | --- | --- |
+modeled：the
+We wrote a program in Java that travel of cars along a road with a
+lane closure. The program was a detailed simulation that took into account many
+factors, including distribution of types of cars and drivers, length of road, etc. The
+号
+simulation could be changed based on all of these factors, as well as the number of
+cars on the road, number of lanes, and speed limit, all of which allowed complete
+generalization of our lane clo众sure scenario. Interactions between cars, including our
+test driver, determined the speed at which cars travelled and the time necessary to
+bypass the closure. The simulation would continue until the set number of cars we
+公
+had created had all gone through. Based on this simulation of a lane closure, we can
+test various factors and personal strategies and determine the time it takes to get
+through the stretch of road. The full code of our simulation, written in Java, can be
+信
+| found in the Appendix. |     |     |     |     |     |     |     |
+| ---------------------- | --- | --- | --- | --- | --- | --- | --- |
+微
+3.3 Influences
+| 3.3.1 Monte | Carlo Methods |     |     |     |     |     |     |
+| ----------- | ------------- | --- | --- | --- | --- | --- | --- |
+In statistics and many other fields, Monte Carlo methods are commonly used, taking
+in inputs of random variables in order to receive a better understanding of the overall
+system. They are a useful tool for optimization, as computing power allows for the
+testing of large quantities of different situations based on a random distribution.
+In our case, we sought to deal with the lack of specificity and lack of information
+that we encountered with regard to many important variables, including number of
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 6117 Page 10 of 32
+cars, distance from sign, etc. We tackled this by employing Monte Carlo principles
+– instead of assuming specific information, we could try all possible information and
+try to generalize overall principles. We could run our simulation countless times,
+each time inputting different values for the parameters of our simulation, and observe
+the overall result both for each scenario and the generalizable whole. Based on our
+variables, we could create a function of the simulation, f(x1, x2 xi) and vary each
+xi between a sensible range. This would allow us the specificity we need to run
+individual scenarios while making sure every possible scenario is covered and it is
+generalizable. Because we want to optimize the lane merger process, we must analyze
+M
+it with respect to all the different possible scenarios that could potentially occur.
+Note that sensitivity analysis is inherently incorporated as a result of the Monte
+Carlo method, as we make small variations in our initial paramCeters and study the
+results.
+M
+3.3.2 Water Flow
+i
+In fluid dynamics, the Darcy-Weisbach equation moHdels water flowing out of a pipe.
+The model utilizes the assumption that water flow is laminar, and finds an equation
+：
+based on the pressure differential. We can apply this model to our lane closure
+scenario: cars in two lanes merging and exiting as one should behave similarly to
+water exiting through a pipe. Howev号er, we cannot use the existing equation because
+of its assumption that fluid flow is laminar. The flow of cars is clearly not laminar,
+and thus, our equation must be adjusted accordingly.
+众
+公
+信
+微
+Figure 1: Illustration depicting the analogous situations of water flow and traffic flow.
+For water in a pipe, the Darcy-Weisbach equation states that P =
+fv2ρL,
+where P
+2D
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 11 of 32
+is the pressure differential at the two ends of the pipe, f is a friction factor, v is the
+velocity at which the water leaves the pipe, ρ is the density of water, L is the length
+of the pipe, and D is the diameter of the pipe. To adapt this model to our analogous
+situation of traffic, we must redefine our variables to be relevant to our scenario and
+modify the equation accordingly.
+Instead of pressure in a pipe, P can be modified to C, the average congestion on
+given section of road. We must make this adjustment, because the flow of cars is not
+laminar. Thus, using a pressure differential at the two endpoints does not account
+for the behavior of the flow in between these two points. C will still yield significant
+M
+values, as the average congestion throughout a section is a good gauge of how quickly
+traffic can move. We can disregard f, since it is unique to fluid flow. V will become
+the average velocity of cars in a given section rather than waterCflow. ρ will become
+the average density (cars / area) of cars in the section of interest. L is the length of
+M
+the section of interest, and D is the width of the section of interest.
+Next, we must verify that using these new meanings for variables result in the
+desired relationships between variables. That is, increasiing or decreasing a variable
+H
+on the right side of the equation, the independent variables, should have the correct
+effectonthevariableontheleftsideoftheeq：uation,thedependentvariable. Ifnot,we
+must make adjustments according to ensure the correct direct or inverse relationships
+betweenvariables. Thefollowingtableindicatesthedesiredrelationships,relationship
+号
+given the current equation, and the modifications necessary.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 12 of 32
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 13 of 32
+These modifications are necessary as a result of a redefinition of variables. For
+example, the P involved taking a difference. C involves taking an average, which
+involves taking a sum. Thus, it is no surprise that certain variables have the opposite
+effect on C. The underlying behavior should remain the same, however, just adjusted
+based on our new definitions. Our modified Darcy-Weisbach equation is as follows:
+ρv2
+C =
+2ld
+We can implement this formula into the logic of the test driver to influence the
+test driver to make decisions that will decrease C. Specifically, the Mtest driver will
+look at 5 congestion measurements: the section in front of him in the same lane, the
+section behind him in the same lane, the section in front of himCin the other lane,
+the section behind him in the other lane, and the section from the car furthest from
+the merge to the merge itself. The driver will then compaMre the congestion at these
+different sections to the overall congestion of the road. The driver will make decisions
+and act in order to decrease the overall congestion throiughout the road. This will
+ultimately better the flow of traffic, which then willHdecrease road rage.
+Roadrageisheavilyinfluencedbyenvironmentalconditions, whichinthiscaseare
+：
+the traffic conditions. People become frustrated when their lane is not moving even
+though the other lane is. That is, people get angry when they are in a situation that
+is worse off than those around them.号With this in mind, we can develop a formula to
+gauge a drivers anger level. We already have the formula
+ρv2
+众C =
+2ld
+that describes traffic conditions, specifically the congestion on a given section of the
+road. Thus, we can r公elate congestion to anger. We can calculate the congestion of
+the section a given driver is in, say C , and compare it to the congestion of the rest
+s
+of the road, say C . A difference of these two values, specifically C −C , will tell us
+信t s t
+whether a given driver is in a better or worse relative situation. If the driver is in a
+better situation, he will naturally feel less angry. If the driver is in a worse situation
+than a微verage, he will feel frustrated at his situation and naturally feel more angry.
+By taking the integral of C −C from 0 to τ, when the lane merge process ends, we
+s t
+can calculate the total change in anger level after the entire lane merge process. This
+integral by t then results in the average change of anger level throughout the entire
+process. Thus, the formula
+(cid:52)A 1 (cid:90) τ
+= C −C dt
+s t
+(cid:52)t τ
+0
+can be used in our model to evaluate how going through the lane closure situation
+will affect a drivers anger level, and thus, whether a driver will experience road rage.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team 6117 |     |     |     |     | Page 14 | of 32 |
+| --------- | --- | --- | --- | --- | ------- | ----- |
+In addition, the overall anger by all the drivers that pass through this stretch of road
+can serve as a good measure of how frustrating and congested the road is.
+| 3.4 | Analysis | of Variables |     |     |     |     |
+| --- | -------- | ------------ | --- | --- | --- | --- |
+Type of Car: This refers to the classification of a given car based on our assumption
+that all cars on the road can be classified into four types: motorcycles, passenger
+cars, vans, and trucks. The type of car determines its max speed, as well as rates of
+acceleration and deceleration. For example, a truck will take much longer to brake to
+chMaracteristics
+a stop than a passenger car. The type of car will affect secondary of
+the vehicles, of which most important is length of vehicle. Based on our assumptions,
+the length of the four types of vehicles are listed as followed, calcCulated by taking the
+average of the 5 most popular vehicles of each category on the road and rounding to
+M
+| the nearest  | meter.         |          |     |     |     |     |
+| ------------ | -------------- | -------- | --- | --- | --- | --- |
+| Motorcycles: | 2 meters       |          |     |     |     |     |
+| Passenger    | Cars (Sedans): | 4 meters |     | i   |     |     |
+H
+| Vans: 6 | meters     |     |     |     |     |     |
+| ------- | ---------- | --- | --- | --- | --- | --- |
+| Trucks: | 20 meters  |     | ：   |     |     |     |
+| Type    | of Driver: |     |     |     |     |     |
+Through research, we have determin号ed six major types of drivers, who have natural
+tendencies to drive in particular styles. These styles are dichotomous but not exclu-
+sive. For example, a fast driver may also become aggressive if anger reaches a certain
+众
+threshold. Rather, these types are simply guidelines, strategies that given drivers will
+employ by default, when created. However, they may change based on the surround-
+ings. The types of dr公ivers are listed as follows, with their unique characteristics:
+• Fast: A fast driver will accelerate whenever there is any open space in front of
+him. If he 信 starts in the left lane, he will stay in this lane. If he start in the right
+lane, he will merge as late as possible. He is more concerned with speed over
+| lane | switching. |     |     |     |     |     |
+| ---- | ---------- | --- | --- | --- | --- | --- |
+微
+• Slow: Aslowdriverwilldeceleratetoleaveaminimumspaceof7metersbetween
+himself and the car in front of him. He will merge as late as possible and is also
+| more | concerned | with speed | over lane switching. |     |     |     |
+| ---- | --------- | ---------- | -------------------- | --- | --- | --- |
+• Aggressive: An aggressive drivers focus is to keep advancing forward. If there
+is space in front of him, he will accelerate. If there is space in the lane next to
+him, he will switch lanes. However, because he is aggressive, his estimate of the
+space necessary to switch lanes is less than the actual space necessary to switch.
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 6117 Page 15 of 32
+Thus, he is more prone to cutting other drivers off and crashing. Aggressive
+drivers are more concerned with lane switching over speed.
+• Safe: A safe drivers focus is minimizing risk. Thus, he will stay in his lane
+whenever possible. If he does need to make a switch, he will only do so when
+there is a lot more space than is actually necessary to make the switch in order
+to prevent causing accidents. As a safe driver, he likes to go with the flow and
+will try to match the speed of traffic.
+• Fair: Fair drivers act like safe drivers. However, they are more interested in the
+M
+cars around them when he first sees the sign. If drivers that started behind him
+end up in front of him, he will not let them merge. If a car that was initially
+C
+in front of him wants to merge, he will will let him merge. In order to preserve
+order, he will travel at the same speed as the other traffic in the other lane if he
+M
+is in the right lane. Selfish: Selfish drivers want to minimize their own personal
+travel time and be the first one out, even if it increases traffic congestion as a
+i
+whole. Thus, selfish drivers will try to beat ouHt other cars.
+Number of Cars on Road: The numbe：r of cars on the road is a variable in the
+scope of our simulation, representing the total number of cars in the stretch from the
+beginning of the sign to the lane closure. This variable can be changed to represent
+号
+different scenarios from a sparsely-trafficked road up to a complete traffic jam. The
+more cars there are on the road, the slower the speed of each car must be to ensure
+a safe following distance and众prevent collisions.
+Distance of Sign from Closure (meters): While the Problem Statement gives
+公
+examples of the distance between the sign and the lane closure, it does not specifically
+mention when the first sign appears. This data is crucial, as the further away from
+the closure that drivers are notified, the more likely that they are able to safely and
+信
+efficiently switch into the proper lane before the closure. If they are not given enough
+time and distance to switch, there may end up being a pileup in front of the blocked
+lane as微drivers stuck in that lane try to switch, an unsafe and inefficient situation.
+Anger Index: During the lane closure scenario, a given driver may become angrier
+as a result of his surroundings and events that he encounters. For example, if a lane is
+heavily congested and not moving, a busy stockbroker may become extremely angry
+that he will miss his meeting. The anger index is a dimensionless unit that serves as
+a relative indicator of how angry a person is, where 0 is perfectly neutral. The higher
+the anger index is, the more angry a person is.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 16 of 32
+3.5 Model Building 1.0
+3.5.1 Considerations
+We decided to create a mathematical model that could represent the scenario in order
+to be able to perform quantitative analysis and more definitively analyze the effects
+of different driving strategies on the overall anger index and the average time taken
+by each vehicle throughout the merge process. Our model was designed to take into
+account the many complex factors that make up any lane merging situation and then
+simulate the actions of every driver on the road in responses to those environmental
+M
+stimulus.
+Rather than base the model in simply mathematical probability or an analysis of
+the variables, we decided to replicate the logic of each driver oCn the road in order
+to account for differences in driving styles. Simple artificial intelligence algorithms
+M
+were developed to represent the different types of drivers, each of which represent a
+substantial portion of the population and altogether make up most of the kinds of
+drivers on the road at any time, based on our research. Tihen, we created a road upon
+H
+which the cars, including our test car, would drive upon. This road was composed
+of multiple arrays, one for each lane of the：road, of length 3000. Every space in an
+array corresponded to one meter of space, and cars of different types, Sedans, Vans,
+or Trucks, were made to take up different amounts of space in each array.
+号
+For each of these types of vehicles, there was a driving style associated with
+it as well which would contain the logic used to make each decision made while
+navigating the merging situation. The road would be updated every second and each
+众
+of the vehicles would be adjusted and allowed to perform any of the following driving
+maneuvers: hold, speed up, slow down, merge. Over the course of the simulation,
+each vehicle on the r公oad was updated and shifts down the road closer to the merge
+itself.
+After all cars have exited the merge and have traversed the full three kilome-
+信
+ter stretch of road, the simulation calculates a series of summary statistics for that
+particular run. These include an average anger index of all the cars, which implies
+genera微lly how much angrier any particular driver became while going through the
+merge in that specific case, a total time for the simulation, which helps us gauge the
+overall efficiency of merge in that specific case, and the average time taken by all of
+the drivers on the road, which helps us gauge how any individual was affected by the
+merge.
+Using this kind of model, we are allowed a great degree of flexibility when it
+comes to analyzing different situations, since we could easily modify the number of
+vehicles on the road, style of drivers present, placement of the roadblock, along with
+a number of other factors. The model ran any given situation numerous times in
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 17 of 32
+order to determine a general set of output values that could be associated with those
+specific input factors. The model could then be used to determine what combination
+of factors resulted in the optimal flow of traffic through the merge, which allowed
+us to develop a strategy to cause those factors to appear given any starting set of
+conditions in the model. In a sense, this model was designed to show us what effect
+any particular factor had on the overall result, which we used to create a strategy
+which we eventually implemented into the model itself in order to determine if it
+worked as expected.
+M
+3.5.2 Congestion and Anger
+A very important aspect of our model was the presence of congestion in the scenario
+C
+andtheeffectthatithadontheoverallangerofthedriversinit. Tobeabletoanalyze
+this, we needed to have a quantitative measure of the coMngestion in any particular
+segment of the road. Based off of a model previously developed for determining the
+pressure of water being forced through a pipe, we developed the following formula for
+i
+congestion, discussed earlier: H
+v
+：2ρ
+C =
+2Ld
+This formula gives a value for t号he congestion in a part of the road based off of
+the number of vehicles present (p), the average velocity of all vehicles in the section
+(v), the length of the section (l), and the number of lanes over which the section
+众
+is placed (d). The model calculated a congestion value at every second during the
+simulation, and uses this to determine a number of other statistics, and is used by
+our Congestion Balancing Strategy to find the optimal maneuver to make in order to
+公
+relieve the overall congestion in the road.
+We also found that congestion had a direct link to anger felt by drivers, which
+led us to defin信e an anger index, the degree to which a driver is becoming more angry
+after each consecutive second spent in the merge scenario. Drivers become angry not
+necessarily when they need to pass through a congested section of road, but rather
+微
+when they expect to pass through a less congested section and are forced to wait in
+one that is more congested. This is defined as the difference between expectations
+and reality of the driver. Analyzing this anger for a driver over the total time spent
+in the simulation yields:
+(cid:52)A 1 (cid:90) τ
+= C −C dt
+s t
+(cid:52)t τ
+0
+Where Ct refers to the overall congestion, or the expectation that the driver has,
+and Cs refers to the congestion in the 100 meter section that the driver is currently
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 18 of 32
+in. The model computes an anger index for each driver across the total length of
+the simulation and then calculates an overall average anger index, which refers to
+how much angrier drivers became when traversing the merge under those specific
+conditions.
+3.5.3 Congestion Balancing Strategy
+Using the congestion values and the anger index yielded by the simulation, we were
+able to determine the effects of various factors on the drivers present, which we then
+used to come up with a general strategy for reducing anger throughoutMthe entire road
+which could be employed by a single person. Basically, we determined that drivers
+become more angry when the congestion that they experience is significantly different
+C
+from what is being experienced throughout the road. This contributes to the anger
+index, which is an indicator of road rage. Thus, in orderMto reduce anger, a driver
+need only do whatever is possible to balance the levels of congestion throughout the
+road.
+i
+This method of balancing the congestion accompHlishes multiple goals. The first is
+an anger reduction, which is a direct result of large differences between congestion in
+：
+differentpartsoftheroad. However, balancingthecongestionintheroadalsoallowed
+drivers to escape the merge quicker, because they were usually moving to areas of
+lower congestion from areas of highe号r congestion, which would mean that they were
+able to speed up and more more quickly out of the scenario.
+This concept opens up considerations of a number of maneuvers that could be
+众
+taken by the test driver in order to both increase his personal efficiency and reduce
+anger levels throughout the road. In a case where there is a high level of congestion
+in the right lane, this strategy would yield that one should merge left at the earliest
+公
+opportunity, which makes logical sense. However, this strategy also implies that
+merging right if the congestion in the left lane is high, even though the right lane
+contains a roa信dblock, is the best option, which goes against what many people might
+expect. We postulate that while the test driver is a sufficient distance away from
+the roadblock, merging right is actually the optimal maneuver since it allows one to
+微
+speed up and reduces the imbalance of congestion throughout the road.
+The test car, otherwise the car that is trying to reduce road rage and speed up the
+merging process for everyone, employs our Congestion Balancing Strategy in order
+to achieve these goals. In order to make this model applicable to real life, we needed
+to come up with a mathematical function that could conceivably be put to use in
+real life. Therefore, it needed to be based upon values that could be determined by a
+human in a split second by simply observing the environment around their car. Then,
+the logic used to decide which maneuver to complete also had to be simple enough to
+be used by a human in a split second in order to make quick decisions while driving.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 19 of 32
+M
+C
+Figure 2: Illustration of zone diagram of possible areas to move to.
+M
+Our solution was to generalize the road as a series of congestion differentials across
+different parts of the road. At the beginning of the logic, a test driver splits the road
+i
+into four distinct zones, one directly in front of itHself, the second in front of itself
+but in the other lane, a third behind itself and in the opposing lane, and a fourth
+：
+directlybehinditself. Diagramsofthesezonesfortwodifferenttestdriversindifferent
+positions on the road are provided below:
+The test driver computes conges号tion values in each of the zones, without consid-
+ering itself, and then computes an overall congesting index for the entire road. Now,
+in order to balance the congestion values, the test driver needs to find which zone it
+众
+should move to in order to get all of the congestion values as close as possible. This
+is represented mathematically by our logic by summing up the differences between
+the overall congestion and the congestion in each of the individual zones:
+公
+4
+(cid:88)
+|C −C |
+信 n T
+n=1
+The test driver adds itself to each of the zones and then determines which move
+minim微izes the sum previously mentioned. Then, the test driver will adjust its course
+accordingly to move into the optimal zone, thus equalizing the congestion throughout
+the road and then moving to a space where it will be able to move faster. In the case
+where the overall congestion differential between the area around the test driver and
+the total road is the smallest differential, the test driver will not adjust its course.
+Otherwise, it may decide to shift forward by speeding up, shift to the other lane by
+attempting to merge, shift back by slowing down, or shift backwards and try to merge
+at the same time.
+In a real life scenario, a driver would be able to implement our Congestion Balanc-
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 20 of 32
+ing Strategy, since it is possible for one to holistically determine a congestion value
+for each of the four general zones around ones car based upon visual cues such as
+the number of cars, length of the road that is accessible, and space available. Then,
+one would also be able to determine the area of least congestion and shift to that
+position, thus relieving the congestion in the portion that they used to take up and
+also balancing the overall congestion in the road. By developing such a strategy and
+defining it mathematically and logically, we were able to make a logical strategy by
+which one driver would be able to positively impact the overall state of a merging
+road that is applicable both to our model and to a real world scenario.
+M
+3.5.4 3 Lanes to 2 Lanes
+C
+Alterations Made to Model This model contains three lanes merging to form
+two lanes. The organization of this model is similar toMModel 1, except that the
+implementation of the road contains an extra lane. The left-most lane contains a
+roadblock, which is analogous to construction being conducted in that lane, the lane
+i
+completely disappearing because of a merge, or anyHother event causing a lane to be
+unavailable. In this model, vehicles are not able to begin in all three of the lanes, and
+：
+our test driver is placed in the right-most lane.
+With three lanes, the options for merging increase, because, at any lane, you have
+the option to switch to two other l号anes. This is especially prevalent in the middle
+lane, which is neighbored by two possibly empty lanes to which you can drive. The
+drivers need to make a decision in this scenario to switch to the right or left, which
+众
+is implemented in our model by checking the lane which does not have a roadblock
+first.
+The test driver now needs to be aware of six different zones, as opposed to four
+公
+in the previous version of this model. The relative congestion of each of these zones
+is calculated, and the minimum is chosen to be the optimal position to move. The
+complexity of信this model increases greatly when the number of lanes is increased,
+because of the number of zones that need to be taken into account, and the number
+of possibilities for merging.
+微
+3.5.5 3 Lanes to 1 Lane
+Alterations Made to Model This model contains three lanes merging to form one
+lane. This model builds off of Model 2.1, except that it adds an extra roadblock,
+signifying that two lanes are blocked. This restricts traffic flow significantly, making
+its design somewhat similar to the first model. The merging decision for the middle
+lane is made differently in this model than the previous one. The driver chooses to
+merge to the lane without a roadblock, and if that is not possible, attempts to merge
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team | 6117 |        |             |      |         |     |                  |     |           | Page 21 | of 32 |
+| ---- | ---- | ------ | ----------- | ---- | ------- | --- | ---------------- | --- | --------- | ------- | ----- |
+|      |      | Figure | 3: Modified | zone | diagram |     | for a three-lane |     | scenario. |         |       |
+M
+into the other lane. The calculation for the test drivers optimal zone is implemented
+C
+similarly, except it needs to take into account the bound of the second roadblock.
+| The | following | diagram | demonstrates |     | this | model: |     | M   |     |     |     |
+| --- | --------- | ------- | ------------ | --- | ---- | ------ | --- | --- | --- | --- | --- |
+| 4   | Model     | Results |              |     |      |        |     | i   |     |     |     |
+H
+| 4.1 | Test | Driver | (Sedan) |     |     | ：   |     |     |     |     |     |
+| --- | ---- | ------ | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
+For a simple merge scenario where 10 sedans are present across two lanes and are
+all trying to merge into a single la号ne over the course of 2500 meters, there was a
+clear advantage for the entire road if even one driver used our Congestion Balancing
+Strategy. Two sets of five simulation runs were completed and the average summary
+众
+| statistics | are  | included | below:  |       |     |         |      |     |         |       |     |
+| ---------- | ---- | -------- | ------- | ----- | --- | ------- | ---- | --- | ------- | ----- | --- |
+|            | Case |          | Average | Drive |     | Average | Time |     | Average | Anger |     |
+公
+|     |     |     | Time | (seconds)? |     | per | Vehicle |     | Index |     |     |
+| --- | --- | --- | ---- | ---------- | --- | --- | ------- | --- | ----- | --- | --- |
+(seconds)
+|     | Without |     | 2350.8 |     |     | 574.2 |     |     | 0.841 |     |     |
+| --- | ------- | --- | ------ | --- | --- | ----- | --- | --- | ----- | --- | --- |
+信
+Test
+Driver
+微WithTest
+|     |     |     | 2990.0 |     |     | 714.4 |     |     | 0.531 |     |     |
+| --- | --- | --- | ------ | --- | --- | ----- | --- | --- | ----- | --- | --- |
+Driver
+Based on this data, the test driver can be seen having a distinct impact on the
+average anger index, meaning that a single driver choosing to use our Congestion
+Balancing Strategy made a significant impact (almost -40%) on reducing road rage
+in this instance. While the average time per vehicle and the average drive time were
+increased, the values are still within 20% of each other, meaning that any increase in
+time caused by the presence of the test driver is much less meaningful when compared
+| to the | reduction | in  | the anger | index. |     |     |     |     |     |     |     |
+| ------ | --------- | --- | --------- | ------ | --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team | 6117  |        |     |     |     |     | Page 22 | of 32 |
+| ---- | ----- | ------ | --- | --- | --- | --- | ------- | ----- |
+| 4.2  | Speed | Limits |     |     |     |     |         |       |
+The speed limit of the road where the merge is taking place also impacts what the
+effect of our strategy is. In a simple merge scenario where 10 sedans are present
+across two lanes and are all trying to merge into a single lane over the course of 2500
+meters, but where there was a speed limit of 65 miles per hour rather than 35 miles
+per hour, the test driver was even more efficient and helped the other cars get through
+the merge quickly. Two sets of five simulation runs were completed and the average
+| summary | statistics | are included | below: |     |     |     |     |     |
+| ------- | ---------- | ------------ | ------ | --- | --- | --- | --- | --- |
+M
+|     | Case | Average         | Drive | Average | Time    | Average | Anger |     |
+| --- | ---- | --------------- | ----- | ------- | ------- | ------- | ----- | --- |
+|     |      | Time (seconds)? |       | per     | Vehicle | Index   |       |     |
+C
+(seconds)
+|     | Without | 452.2 |     | 190.9 |     | M 9.79 |     |     |
+| --- | ------- | ----- | --- | ----- | --- | ------ | --- | --- |
+Test
+Driver
+i
+|     | WithTest | 828.2 |     | 175.7 | H9.02 |     |     |     |
+| --- | -------- | ----- | --- | ----- | ----- | --- | --- | --- |
+Driver
+：
+It can be seen from this data that the test driver had a significantly larger impact
+on the traffic flow when the speed limits were increased. Here, when the test driver
+号
+was present, all of the cars were able to individually get through quickly, however
+the space created by the test driver likely also caused the average drive time to be
+significantly increased as wel众l. The anger indices of both cases were roughly the same
+which implies that as speed increases the act of creating space does not do much to
+reduce congestion but rather allows vehicles to pass through the merge more readily.
+公
+| 4.3 | Sign Distance |     |     |     |     |     |     |     |
+| --- | ------------- | --- | --- | --- | --- | --- | --- | --- |
+信
+In a simple merge scenario with a sign placed at 1500 meters away rather than 2500
+meters, 10 sedans across two lanes all trying to merge into a single lane at a speed
+of 35 m微iles per hour had significantly less time to react to the upcoming merge and
+change lanes. The presence of the test driver once again helped alleviate the overall
+anger amongst the drivers in this situation yet still increased the time spent by each
+vehicle by a small degree. Two sets of five simulation runs were completed and the
+| average | summary | statistics | are included | below: |     |     |     |     |
+| ------- | ------- | ---------- | ------------ | ------ | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team 6117 |      |                 |               |               | Page 23 | of 32 |
+| --------- | ---- | --------------- | ------------- | ------------- | ------- | ----- |
+|           | Case | Average         | Drive Average | Time Average  | Anger   |       |
+|           |      | Time (seconds)? | per           | Vehicle Index |         |       |
+(seconds)
+|     | Without | 689.4 | 421.9 | 5.21 |     |     |
+| --- | ------- | ----- | ----- | ---- | --- | --- |
+Test
+Driver
+|     | WithTest | 1832.2 | 542.5 | 3.18 |     |     |
+| --- | -------- | ------ | ----- | ---- | --- | --- |
+Driver
+The significant increase in average drive time yet similar value oMf average time
+seen with the presence of the test driver implies that the spacing created by the test
+driver was used efficiently by each of the drivers on the road; whCile they collectively
+took longer to get through, each individually was able to get through in roughly the
+indeMx
+same time and experienced a significantly lower anger while doing so.
+| 4.4 | Test Truck |     |     | i   |     |     |
+| --- | ---------- | --- | --- | --- | --- | --- |
+H
+The model also allows for a driver type to be operating a different kind of vehicle,
+：
+so for the following tests we ran five simulations assuming a test driver in a sedan
+and then five more assuming a test driver in a truck instead. The summary statistics
+| data from | each set | of runs is       | include号d below: |               |       |     |
+| --------- | -------- | ---------------- | ---------------- | ------------- | ----- | --- |
+|           | Case     | Average          | Drive Average    | Time Average  | Anger |     |
+|           |          | Time (众seconds)? | per              | Vehicle Index |       |     |
+(seconds)
+|     | Test Sedan | 2990.0 | 714.4 | 0.53 |     |     |
+| --- | ---------- | ------ | ----- | ---- | --- | --- |
+公
+|     | Test Truck | 2399.0 | 595.4 | 2.09 |     |     |
+| --- | ---------- | ------ | ----- | ---- | --- | --- |
+A truck running the test driver logic is able to reduce the average drive time and
+信
+the average time per vehicle, but significantly increased the average anger index. We
+believe that trucks, since they take up four times as much space as sedans, are able to
+coerce微the other drivers on the road to positions where they are able to merge more
+easily, which makes the average times lower. However, the truck merging lanes and
+going near other cars skews the average anger of the other drivers also because of the
+| size of | the truck. |              |     |     |     |     |
+| ------- | ---------- | ------------ | --- | --- | --- | --- |
+| 4.5     | Multiple   | Test Drivers |     |     |     |     |
+Our model allowed for additional test drivers, which conduct our optimal strategy
+to increase efficiency and fairness on the street. More than one test driver would
+increase the number of vehicles following our strategy, meaning that every driver
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team | 6117 |     |     |     |     |     |     | Page 24 | of 32 |
+| ---- | ---- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+wants to move into the zone with least congestion. By adding more than one test
+driver, one would assume that both efficiency and fairness would increase.
+| Case |     |     | Average        | Drive | Average | Time    | Average | Anger |     |
+| ---- | --- | --- | -------------- | ----- | ------- | ------- | ------- | ----- | --- |
+|      |     |     | Time (seconds) |       | per     | Vehicle | Index   |       |     |
+(seconds)
+| One | Sedan  |     | 230.4  |     | 104.5 |     | 8.0  |     |     |
+| --- | ------ | --- | ------ | --- | ----- | --- | ---- | --- | --- |
+| Two | Sedans |     | 1152.2 |     | 429.7 |     | 3.39 |     |     |
+This doesnt seem to be the case. The average anger index of all tMhe vehicles did
+decrease significantly, implying that the more sedans on the road, the more fair each
+driver is treated. Contrary to our assumption, the efficiency decreased greatly. This
+C
+is because of the two sedans decisions conflicting, because they both use the same
+thought process. Our decision making process for the sedMans emphasizes manners,
+allowing others to go before them if it results in an overall increase in efficiency.
+The more sedans on the road, the more courteous vehicles there are, decreasing the
+i
+overall speed of the vehicles, even though not manHy specific people are angry. Our
+test drivers dont have too much of a motivation to get through the road faster than
+：
+| everyone | else,   | so they | choose to | be more | fair instead. |     |     |     |     |
+| -------- | ------- | ------- | --------- | ------- | ------------- | --- | --- | --- | --- |
+| 4.6      | 3 Lanes | to      | 2 Lanes   | 号       |               |     |     |     |     |
+Model 2.1 represents three lanes merging to two lanes. The model demonstrates the
+dist众ributed
+same number of vehicles over the three lanes. We ran five simulations for
+each of the following scenarios, one without a test driver and one with a test driver.
+Having an extra lane allows for more space for the vehicles to maneuver and switch
+公
+lanes. In this model, the test driver was improved to switch more efficiently between
+three lanes, increasing the optimization provided by its personalized logic. Its logic
+maneuvers the信vehicle more often than previous models, due to the increased number
+of choices.
+| C微ase |     |     | Average        | Drive | Average | Time    | Average | Anger |     |
+| ----- | --- | --- | -------------- | ----- | ------- | ------- | ------- | ----- | --- |
+|       |     |     | Time (seconds) |       | per     | Vehicle | Index   |       |     |
+(seconds)
+| Without |     | Test | 876.4 |     | 233.5 |     | 7.24 |     |     |
+| ------- | --- | ---- | ----- | --- | ----- | --- | ---- | --- | --- |
+Driver
+| With |     | Test | 425.2 |     | 118.1 |     | 5.92 |     |     |
+| ---- | --- | ---- | ----- | --- | ----- | --- | ---- | --- | --- |
+Driver
+Having a test driver clearly improves the efficiency and fairness of the system.
+Using this model versus the initial model improves the overall efficiency ten-fold (in
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+| Team | 6117 |     |     |     |     |     |     |     | Page 25 | of 32 |
+| ---- | ---- | --- | --- | --- | --- | --- | --- | --- | ------- | ----- |
+comparison to the data for one test driver driving a sedan). This is because there
+are now two lanes which are not blocked., resulting in a more even distribution of
+vehicles. Theangerindicesincreasedthough, becauseofthecommotioninvolvedwith
+| switching |     | multiple | lanes, which |     | occurs | often in this | model. |     |     |     |
+| --------- | --- | -------- | ------------ | --- | ------ | ------------- | ------ | --- | --- | --- |
+| 4.7       | 3   | Lanes    | to 1 Lane    |     |        |               |        |     |     |     |
+Model 2.2 represents an extension of model 2.1, except that the three lanes merge
+into one. This allows the vehicles to have the functionality of switching lanes often to
+caMuse
+improve efficiency, while still converging to one lane, which should congestion.
+| These | effects | seem | to balance | each | other | out. |     |     |     |     |
+| ----- | ------- | ---- | ---------- | ---- | ----- | ---- | --- | --- | --- | --- |
+C
+|     | Case |     | Average |           | Drive | Average | Time     | Average | Anger |     |
+| --- | ---- | --- | ------- | --------- | ----- | ------- | -------- | ------- | ----- | --- |
+|     |      |     | Time    | (seconds) |       | per     | VehicMle | Index   |       |     |
+(seconds)
+|     | Without | Test | 420.0 |     |     | 201.13 |     | 8.0 |     |     |
+| --- | ------- | ---- | ----- | --- | --- | ------ | --- | --- | --- | --- |
+i
+|     | Driver |      |       |     |     |       | H   |      |     |     |
+| --- | ------ | ---- | ----- | --- | --- | ----- | --- | ---- | --- | --- |
+|     | With   | Test | 238.4 |     |     | 104.9 |     | 3.91 |     |     |
+：
+Driver
+Having three lanes as opposed to two lanes merging to one lane increases the
+号
+efficiency of the model significantly. The average drive times and time per vehicle
+have decreased substantially, due to the increased switching between lanes. The
+without众a
+average anger index test driver, on the other hand, increased, possibly
+because of the bottleneck effect in this scenario, in comparison to model 2.1, which
+merged into two lanes. The average anger index with a test driver though, decreased,
+公
+because of the increased space for the test driver to move, and sway the traffic flow
+| in  | a beneficial | fashion. |     |     |     |     |     |     |     |     |
+| --- | ------------ | -------- | --- | --- | --- | --- | --- | --- | --- | --- |
+信
+| 5   | Implications |     |     | of Model |     |     |     |     |     |     |
+| --- | ------------ | --- | --- | -------- | --- | --- | --- | --- | --- | --- |
+微
+| 5.1 | Congestion |     | Balancing |     |     | Strategy |     |     |     |     |
+| --- | ---------- | --- | --------- | --- | --- | -------- | --- | --- | --- | --- |
+The strategy that we developed to be able to balance congestion within the road was
+made to be applicable to a person actually driving on the road. The logic involved
+and the decisions that need to be made are all those that could be made by a human
+in a split second while driving on a highway and attempting to determine the best
+way to maneuver around other vehicles to get through a merge in the most efficient
+| way | possible | without | angering | other | drivers. |     |     |     |     |     |
+| --- | -------- | ------- | -------- | ----- | -------- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team 6117 Page 26 of 32
+In the context of two lanes merging into one, our Congestion Balancing Strategy
+showed significant decreases in the overall anger index, but also slightly increased the
+timespentbyeachvehiclewhileinthesimulation. Thisimpliesthatthestrategyhelps
+balance the congestion in the road, however the time spent balancing the congestion
+does not go towards getting out of the merge in the first place. For this reason, if the
+vehicle employing the Congestion Balancing Strategy had been present for some time,
+it would likely have already been able to create an environment amongst the vehicles
+around itself that would be very conducive to going through the merge without any
+issues or a high likelihood of a crash taking place.
+M
+The Congestion Balancing Strategy works significantly better when applied in a
+situation where there are more than two lanes involved. In cases where there were
+cars merging from three lanes into either two or one lane, we noticCed that the presence
+of the test driver would cause the time spent in the merge, average time per vehicle,
+M
+and the anger index would all decrease. This implies that the strategy had a great
+impact on the spacing of the other cars on the road and was able to coerce them into
+arranging them in a way that allowed them to zipper togiether and merge very easily.
+H
+Based off of these results, we can determine that our Congestion Balancing Method
+works best in scenarios where there is a lot o：f space to work with, since that allows the
+test vehicle to move to a location with a significantly lower congestion value than the
+overall congestion value. As such, it is clear that the Congestion Balancing Strategy
+号
+would be extremely effective in highway scenarios, where three lanes and more are
+commonplace.
+In addition to scenarios with more lanes, it was also observed that when multiple
+众
+drivers implemented our Congestion Balancing Strategy the effect caused would be
+significantly increased. This means that if new drivers are taught our strategy of
+lane management the公n we would see lower occurrence rates of road rage, and people
+would generally be able to make their way through merges more efficiently. In sum,
+the Congestion Balancing Strategy would be an optimal way to reduce anger on the
+信
+roads and allow everyone to have a more pleasant and
+5.2 微Efficiency vs. Fairness
+Every simulation of the lane merger process outputs two very important numbers,
+among other indicators. These two numbers are the average amount of time it took
+a car to travel the 3 km of road and the average change in anger per second. These
+two numbers correspond to our measures of efficiency and fairness respectively. An
+efficient way for drivers to behave is when drivers are able to get through the 3 km of
+road as quickly as possible. The fairest way is when all drivers go through a similar
+experience. Because anger is a calculation based on a drivers relative congestion to
+other drivers, a lower average change in anger per second indicates that drivers during
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 27 of 32
+that simulation were experiencing very similar situations. Thus, there is a difference
+between the most efficient and most fair way in the way that they are geared to
+achieve two different goals. One aims to get cars to go quickly through the 3 km.
+The other aims to get cars to experience similar situations, whether good or bad,
+through the 3 km. However these two ways may be the same. The fairest way might
+be the most efficient way. This is something we considered and analyzed.
+The fairest way to behave during a lane merger process was determined to be
+our Congestion Balancing Strategy, since it consistently reduced the average anger
+index of each simulation run that a test driver was present in. By creating space and
+M
+allowingotherdriverstoadvancetopositionswheretheywerenotaffectedbyasmuch
+congestion, the test driver was able to decrease the difference between the congestion
+at any particular drivers location and the overall congestion. CThis in turn means
+that the anger index felt by any individual driver would be lower than otherwise,
+M
+which implies that they believe that they received fair treatment as they progressed
+through the merge. In addition, the fact that the overall times for going through the
+3km when a test driver is present is larger yet the averaige value is similar or lower
+H
+implies that the actions of the test driver are spacing out the remaining cars and
+helping keep them far away from each othe：r. This means that the cars that were in
+the front to begin with will go through the merge first and will have spent less time on
+the road compared to those in the back. This inherent fairness is another reason that
+号
+the Congestion Balancing Strategy that we developed, even when employed by only
+one driver on the road, gets drivers through a merging situation in the most optimal
+way. Thus, since the Congestion Balancing Strategy served to get everyone through
+众
+the merge process without experiencing high anger index values and preserves the
+initial order of vehicles, it is the most fair method of traversing a lane closure.
+While fairness is a公n apt measure of the merits of a strategy to traverse merges, it
+is also important to consider the efficiency of the strategy as well, that is how long
+it takes for a certain number of vehicles to pass through a set distance on either side
+信
+of the merge. Based on our analysis of the models results, any one drivers actions
+do not have a great impact on the total time spent in the merge scenario. However,
+if all of the drivers act in a certain way, then it is possible to increase or decrease
+微
+the time required to go through the lane change. Because of this, our Congestion
+Balancing Strategy is not very effective on its own as it is employed by one person.
+In addition, this yields any single person strategy of crossing the merge pointless as
+well, since a larger portion of drivers acting in a certain way is necessary to heavily
+impact the overall times. Because of this, we can adjust the meaning of efficiency to
+consider only the time spent by a single individual going through the merge. In that
+case, our Congestion Balancing Strategy is extremely efficient, since it directly tells a
+driver to move to areas of lower congestion where it will be able to speed up and pass
+other cars. This will directly decrease the time spent by that individual in the merge
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 28 of 32
+scenario. As such, the efficiency of that particular individual would be significantly
+increased through the use of our Congestion Balancing Strategy.
+5.3 Trucks on Highways
+Trucks have a clear effect on efficiency and fairness of lane merges on the highway.
+Implementing the Darcy-Weisbach fluid logic into a truck driver allowed drivers to
+get through the lane merge 10 minutes faster than a sedan driver that follows the
+Darcy-Weisbach fluid logic. Truck drivers also seemed to increase the average anger
+index of drivers. But, if we take a look at the anger index for a 65 mMph highway, it
+is already so high at around 9. The extreme efficiency benefits of introducing trucks
+certainly outweigh the minor drawbacks in regards to the angerCindex.
+The effects of implementing truck drivers on the highway is logical based on the
+M
+sheer size of the truck. The large size of the truck contributes to boosting efficiency
+since its movement to the area of lowest congestion dramatically changes congestion
+throughout the road. The area that the truck left now hais a low density and the area
+H
+that the truck is at now will have a high density, because the truck alone already
+takes up so much space. This also explains the increase in anger index. Having a
+：
+truck in your area congests your area while completely freeing up the areas around
+you. This would then frustrate drivers.
+号
+5.4 Sign Distance
+众
+Sign distance is a key contributing factor, since one must be aware of an upcoming
+lane closure in order to consciously act to ensure a smoother lane merger. Based on
+our simulations, it is公clear that the sign distance must be great enough for drivers to
+have time to react. At the same time, there is a clear upper bound to which the sign
+can be placed. If you place it too early, there is a greater likelihood for other signs to
+信
+be placed in between your sign and the actual location of the closure. Not only that,
+but it is also more likely that drivers forget about the lane closure sign, especially if
+there are other signs present between the lane closure sign and the lane closure. Using
+微
+our simulation, we determined that placing a lane closure sign 1.5 miles before the
+actual lane closure in a 35 mph road results in an optimal balance between time given
+to react and distance to actual closure. Extrapolating this statistic to fit other speed
+limits, we calculated that the best location to place a sign is 150 seconds away from
+the actual lane closure. That is, given a car driving the speed limit, a sign should be
+placed a certain distance away such that if this car continues driving the speed limit,
+the driver will reach the lane closure in 150 seconds.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 29 of 32
+5.5 Game Theory Implications
+The congestion balancing strategy mentioned above is one of many possible strategies
+a driver can employ in this situation. Since there are many possible strategies and
+clear desired outcomes, we can utilize game theoretical principles to analyze our
+model. Each driver knows the past behavior of nearby cars, but it does not know how
+the other cars will act next. If the driver utilizes the congestion balancing strategy,
+which we have shown to be very effective, and nearby drivers also utilize the same
+strategy, then the system enters what in game theory is known as Nash equilibrium.
+In Nash equilibrium, each driver would gain the most advantage fromMcontinuing to
+pursue the given strategy, and the implications of Nash equilibrium ensure that this
+providesthegreatestoverallbenefitforthesystem. Thus, thisreinforcesourassertion
+C
+that the more drivers that adopt our strategy, the more effective it is not only for a
+given driver but for the system as a whole. M
+5.6 Guidelines and Signage i
+H
+Based on our results and analysis, we would make the following guidelines to be
+：
+included in the Department of Motor Vehicles (DMV) drivers education material.
+Specifically, thefollowinginformationwouldmostlikelybeplacedinadriversmanual.
+Lane merges are one of the most difficult situations to handle as a driver. Everyone
+号
+just wants to exit as soon as they can, which causes competition between drivers and
+actually slows down the process. With this thinking, drivers also get frustrated when
+they do not exit as soon as th众ey wanted to. Understanding what to do in this situation
+requires understanding congestion. Congestion is a measure of how inefficient traffic
+flow is in a certain stretch of road. Although congestion is a measure, it is something
+公
+that you can gauge without physically measuring anything! So, when you see a sign
+indicating a lane closure ahead, become more aware of your surroundings and look
+for two specifi信c things, which will help you gauge congestion. These two things are
+how fast are the cars moving in the areas around you and how much space is there in
+the areas around you. The best course of action to take once you acknowledge a lane
+微
+closure is coming ahead is to go to the areas where there is space and where the cars
+are moving slowly. This not only benefits you, but it also benefits the drivers around
+you as well. By following this course of action, you are able to advance more and
+more, as you are filling in the space around you. You also allow the drivers around
+you to advance more and more, because by you moving, you create space for them to
+advance too. With you and and the cars around you able to advance, you will exit
+the lane closure in a much shorter time. Because you and the cars around you will be
+able to exit the lane closure in a much shorter time, all of you will also be less prone
+to road rage. Following this course of action also helps you be a safer driver. Because
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 30 of 32
+you are moving to an area with a lot of space and slow drivers, it is very unlikely
+that you crash. There is plenty of space and time to make the necessary merge or
+acceleration that you need to.
+Besides updating drivers education in this manner, we would also update the
+DepartmentofHighwaySafetywiththefollowingguidelinesregardingsignplacement.
+Signs should be placed such that a driver driving constantly at the speed limit has
+150 seconds from the instance of seeing the sign to the instance he passes what the
+sign is referring to. For example, a sign indicating a lane closure ahead should be
+placed 1.5 miles before the actual closure to give a driver going the speed limit of 35
+M
+mph 150 seconds to continue driving at 35 mph before reaching the lane closure. The
+corresponding distances for this 150 second time threshold are the shortest distances
+that allow everyone to merge into the other lane as efficiently anCd fairly as possible.
+Decreasing this distance limits the time drivers can react to the sign intelligently.
+M
+If you increase this distance, you run into the risk of other obstructions occurring
+between the sign and the closure, which will certainly cause confusion.
+i
+H
+6 Strengths and Weaknesses
+：
+6.1 Strengths
+号
+1. From a generalized situation, our model makes few assumptions that werent
+directly stated in the problem. The distance of the sign, the types of drivers
+and their behavior, and众our given drivers strategy were all left as variables that
+were modified to test different situations. Our lack of assumptions meant we
+could analyze the general case, which works well as we dont know information
+公
+about the specific case.
+2. Our model is versatile and robust, able to simulate a variety of driving scenar-
+信
+ios. If, for example, we were given specific information about sign distance,
+placement of cars, or nature of traffic flow obstruction, we could easily imple-
+m微ent that information to model the specific scenario and determine the optimal
+strategy and overall runtime of that scenario. In addition, the simulation we
+created can be more widely applied, as the way we construct our road, drivers,
+and signs do not limit our model from simulating only a two-lane, one-exit sce-
+nario. In fact, we easily converted our model to test the different situations of
+three lanes and different speed limits.
+3. The logical strategy our model created can actually be employed by drivers in
+real-life scenarios. While driving in real life, drivers can actually qualitatively
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 31 of 32
+gauge congestion, based on free space, and take the necessary measures to bal-
+ance it — which is the underlying behavior of our congestion balance equation
+that guides our strategy. While our equation is based on math, any driver can
+intuitivelyfollowourprincipleswithoutneedingtoimplementcomplexformulas
+or algorithms to decide what to do next.
+4. Since our model is a simulation, we can easily test many scenarios that are
+unfeasible to test in real life. Obviously, it is impractical to hire a test driver
+to drive through a lane closure area hundreds of times in order to empirically
+determine the results of different strategies. However, our modMel can perform
+theseexperiments,potentiallyundercircumstancesthatareimpossibletotestin
+real life. We can retain the accuracy of experimentation through our simulation
+C
+and not resort to purely mathematical constructs which may not be realistic.
+Our simulation will be, however, as it is based off ofMeveryday driving logic and
+behavior. Furthermore, we can test changes in initial variables and employ a
+Monte Carlo approach.
+i
+H
+6.2 Weaknesses
+：
+1. We assume that all drivers can be permanently classified into one of our six
+categories. This compartment号alizes driving styles to make our problem feasi-
+ble; however, it may not be completely accurate. For example, a person may
+be a safe driver, but when he sees an opportunity to pass other cars, he will
+众
+immediately take it, making him a selfish driver under certain circumstances.
+Overall, our simulation gives a good distribution of generalized drivers one may
+encounter, without worrying about the specific, unique people in real life.
+公
+2. We assume that car types can also be classified into one of four categories, with
+generalized attributes for each, with special focus on length. However, cars on
+信
+the road may have a myriad of different sizes and characteristics.
+3. Our model does not produce a definite action to take at any time, but rather
+微
+analyzes the results of performing the possible actions at that time. It is up to
+thedrivertodecidewhichactiontoperform. Forexample, themodelmayreveal
+thatmerginglaneswouldslightlyreducecongestion, butadrivermayknowthat
+merging may potentially result in a crash for a crowded lane. Therefore, the
+driver may choose not to follow the optimal action sequence, but rather the one
+that would prevent him from crashing.
+4. Since each situation is different in terms of drivers and road conditions, the
+model must be run a large number of times to receive good results of overall
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 6117 Page 32 of 32
+behavior and generalizable patterns. This requires a longer runtime to produce
+accurate results, because each simulation takes a while to run to completion.
+7 Conclusion
+The results from our model indicate that balancing congestion is the most important
+factor in ensuring optimal traffic flow through a lane closure area. If a given driver
+analyzes the options open to him and takes the one most likely to balance congestion
+in the entire system, not only does he get through the section of road mMore efficiently,
+but every driver also experiences less overall anger and everyone gets through more
+effectively and safely. If every driver employs the strategy to balance congestion,
+C
+the system as a whole can be near optimally balanced and will reach max efficiency,
+getting everyone through in the shortest amount of timeMpossible. We determined
+that the balancing congestion strategy is best regardless of two lanes or three lanes,
+a 35 mph or 65 mph speed limit.
+i
+Although overall driver anger can be greatly reHduced with just one congestion-
+conscious driver, making the system more fair, the efficiency of the system cannot be
+：
+greatly increased unless every driver follows similar principles. The zipper method,
+where drivers stay in their lanes until the very end of the merging stretch, is an
+example of a near optimal method o号f balancing congestion that does not work unless
+everyone follows it. Although certain governments are proponents of this method, it
+cannot be effective, increasing fairness and efficiency, unless all drivers follow it. In
+contrast, we have developed众a strategy for balancing congestion that one individual
+can employ himself, that will increase not only his own efficiency but decrease the
+anger of the entire system. Through mass education and outreach, we believe that
+公
+governments can make the first step in ensuring optimal efficiency for all – if everyone
+follows our strategy. We believe that the large incentive to adopt our method both for
+personal gain信and societal well-being will ensure that our method receives widespread
+adoption.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+8. References
+Bertucci, A. (2006). Sign Legibility Rules of Thumb. Retrieved November 7, 2015, from
+http://www.ussc.org/SignLegibilityLettersize.pdf
+Bianchi, A., & Summala, H. (2004). The “genetics” of driving behavior: Parents’ driving style
+predicts their children’s driving style. Accident Analysis & Prevention, 36(4), 655­659.
+​ ​​​
+doi:10.1016/S0001­4575(03)00087­3
+Hearfield, J. (2012). Water Flowing in Pipes. Retrieved November 7, 2015, from
+http://www.johnhearfield.com/Water/Water_in_pipes.htm M
+Laing, C. (2010). Aggressive Driving. Retrieved November 7, 2015, from
+http://www.popcenter.org/problems/aggressive_driving/ C
+MAG Internal Truck Travel Survey and Truck Model Development Study. (2007, December 1).
+M
+Retrieved November 7, 2015, from
+http://www.camsys.com/pubs/TRANS_2011­02­25_mag­internal­truck­travel­survey­and
+i
+­truck­model­development­study.pdf H
+Manual on Uniform Traffic Control Devices for Streets and Highways. (2012, May 1). Retrieved
+：
+November 7, 2015, from
+http://mutcd.fhwa.dot.gov/pdfs/2009r1r2/mutcd2009r1r2edition.pdf
+号
+Nash, John (1951) "Non­Cooperative Games" The Annals of Mathematics 54(2):286­295.
+P., T. (2010, August 26). Jam yesterday, jam tomorrow. Retrieved November 7, 2015, from
+http://www.economist.com众/blogs/banyan/2010/08/great_chinese_traffic_jam
+Sansone, R. A., & Sansone, L. A. (2010). Road Rage: What’s Driving It? Psychiatry (Edgmont),
+​ ​
+7(7), 14–18.
+​ 公
+Schroeder, P., Kostyniuk, L., & Mack, M. (2013, December). 2011 National Survey of Speeding
+​
+Attitudes and Behaviors. (Report No. DOT HS 811 865). Washington, DC: National
+信​
+Highway Traffic Safety Administration
+Wittwer, J.W., "Monte Carlo Simulation Basics" From Vertex42.com, June 1, 2004,
+http微://www.vertex42.com/ExcelArticles/mc/MonteCarloSimulation.html
+Zipper Merge. (n.d.). Retrieved November 7, 2015, from
+http://www.dot.state.mn.us/zippermerge/
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+November 8, 2015
+The Honorable Anthony Foxx
+Secretary
+U.S. Department of Transportation
+1200 New Jersey Ave, SE
+Washington, DC 20590
+Dear Secretary Foxx, M
+As you well know, traffic jams are a growing problem on our nation’s roCads and highway
+systems. One of the major causes of traffic blockages are short-term construction or maintenance
+projects that result in the temporary closure of a lane. When a formMerly two-lane roadway must
+merge into one lane, the cars on it must slow down greatly, increasing traffic congestion,
+decreasing safety, and contributing to potential road rage. i
+H
+As members of the team chosen to analyze these l：ane closure scenarios, we have dedicated
+ourselves to testing different strategies to bypass a lane closure and determine the optimal
+strategy, both on the individual and systemic level. In other words, we analyzed both the
+号
+strategies that any given driver can employ in order to increase traffic flow and his own speed, as
+well as overall optimal strategies that can be implemented on a larger scale. If an individual
+driver follows a strategy of balancing congestion in the system – that is, moving or switching to
+众
+less congested areas – we found that his average time to pass the closure can be decreased by
+8%, and the overall anger of all the drivers on the road can be decreased by 10%. The guidelines
+公
+we have created are as follows, and additional detail and rationale are included in our complete
+paper.
+信
+Guidelines
+1. Notice congestion, a measure of inefficient traffic flow, and seek to switch to the less
+con微gested road.
+2. Fill in open space if present in other lane to balance congestion and open up space for
+cars behind you.
+3. Merging is not necessary until 3 seconds before the beginning of the lane closure.
+4. Signs indicating lane closure should be optimally placed, based on speed limit, 150
+seconds before lane closure.
+Through widespread educational measures, such as inclusion of our guidelines in the Department
+of Motor Vehicles driver education materials, the strategy we found can be implemented on a
+larger scale, resulting in lower driver anger, improved traffic flow, and hopefully fewer traffic
+jams. If lane closure signs are placed at our optimally determined distance, drivers will have
+enough time to switch lanes safely and efficiently, again resulting in smoother traffic flow. We
+implore you to implement our guidelines to improve traffic efficiency and continue advancing
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+the core mission of the U.S. Transportation system – to get people from one place to another as
+fast and safely as possible.
+Respectfully,
+Team 6117
+Team 6117
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+9. Appendix
+Implementation of Model (Code)
+CODE
+Model 1:
+M
+Driver
+C
+import java.io.BufferedReader;
+M
+import java.io.File;
+import java.io.FileOutputStream;
+i
+import java.io.FileReader;
+H
+import java.io.FileWriter;
+import java.io.IOException; ：
+import java.io.PrintWriter;
+import java.util.ArrayList;
+号
+public class Driver {
+private static Prin众tWriter file; // for sets of tests
+private static FileWriter masterFile; // for overall analysis
+of data
+公
+private static BufferedReader reader;
+private 信static int num_tests = 2;
+public static int num_cars = 0;
+微
+private static int num_sedans = 10;
+private static int num_vans = 0;
+private static int num_trucks = 0;
+// dont change these values
+private static int num_random_drivers = 0;
+private static int num_aggressive_drivers = 0;
+private static int num_conservative_drivers = 0;
+private static int num_slow_drivers = 0;
+private static int num_fast_drivers = 0;
+private static int num_safe_drivers = 0;
+private static int num_selfish_drivers = 0;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+private static int num_fair_drivers = 0;
+private static int num_test_drivers = 0;
+private static String crash_result = "";
+public static void main(String[] args) throws IOException {
+// each set of tests gets printed out in file
+String text = "";
+try {
+M
+reader = new BufferedReader(new
+FileReader("master_file.csv"));
+C
+try {
+StringBuilder builder = new MStringBuilder();
+String line = reader.readLine();
+i
+while (line != null) { H
+builder.append(line);
+：
+builder.append(System.lineSeparator());
+line = reader.readLine();
+} 号
+text = builder.toString();
+} finally {
+众
+reader.close();
+}
+} catch(公Exception e) {System.out.println("master file read
+error");}
+信
+String temp = "";
+file = null;
+微for (int i=1111; i<9999; i++) {
+if (!text.contains(""+i)) {
+temp = ""+i+".csv";
+break;
+}
+}
+try {
+file = new PrintWriter(temp);
+} catch (Exception e) {System.out.println("file writing
+error");}
+try {
+masterFile = new FileWriter("master_file.csv", true);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+} catch (Exception e) {System.out.println("master file
+write error");}
+// masterFile.append("TEST FILE,# CARS,# SEDANS,# VANS,#
+TRUCKS,# RANDOM DRIVERS,# AGGRESSIVE DRIVERS,# CONSERVATIVE DRIVERS,#
+SLOW DRIVERS,# FAST DRIVERS,# SAFE DRIVERS,# SELFISH DRIVERS,# FAIR
+DRIVERS,# TEST DRIVERS,AVG. TOTAL RUNTIME,AVG. AVG. TIME/CAR,#
+CRASHES\n");
+/* SET UP TESTS */
+M
+num_cars = num_sedans + num_vans + num_trucks;
+C
+int total_runtime = 0;
+double avg_time_per_car = 0; M
+// beginning of test
+i
+file.println("TOTAL RUNTIME,AVGH TIME PER CAR,CRASHED,AVG
+ANGER");
+：
+num_cars = num_sedans + num_vans + num_trucks;
+号
+double avg_runtime = 0.0;
+double avg_avg_time_per_car = 0.0;
+众
+int num_crashes = 0;
+for (int公 i=0; i<num_tests; i++) {
+Road r = new Road();
+信
+//r.createVehicle("sedan", "test", 5, 2);
+微
+int pos;
+int lane;
+for(int j=0;j<num_sedans;j++){
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*2)+1;
+System.out.println(pos + " " + lane);
+int driverType = (int)(Math.random()*7)+1;
+switch(driverType) {
+case 1:
+if (!r.createVehicle("sedan",
+"aggressive", pos, lane)) {
+j­­;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+num_aggressive_drivers++;
+System.out.println("created aggressive");
+break;
+case 2:
+if (!r.createVehicle("sedan",
+"conservative", pos, lane)) {
+j­­;
+}
+num_conservative_drivers++;
+M
+System.out.println("created
+conservative");
+C
+break;
+case 3: M
+if (!r.createVehicle("sedan", "fair", pos,
+lane)) {
+i
+j­­; H
+}
+：
+num_fair_drivers++;
+System.out.println("created fair");
+brea号k;
+case 4:
+if (!r.createVehicle("sedan", "fast", pos,
+众
+lane)) {
+j­­;
+公}
+num_fast_drivers++;
+System.out.println("created fast");
+信
+break;
+case 5:
+微 if (!r.createVehicle("sedan", "safe", pos,
+lane)) {
+j­­;
+}
+num_safe_drivers++;
+System.out.println("created safe");
+break;
+case 6:
+if (!r.createVehicle("sedan", "selfish",
+pos, lane)) {
+j­­;
+}
+num_selfish_drivers++;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+System.out.println("created selfish");
+break;
+case 7:
+if (!r.createVehicle("sedan", "slow", pos,
+lane)) {
+j­­;
+}
+num_slow_drivers++;
+System.out.println("created slow");
+break;
+M
+default:
+if (!r.createVehicle("sedan", "random",
+C
+pos, lane)) {
+j­­; M
+}
+num_random_drivers++;
+i
+break; H
+}
+：
+}
+for(int j=0;j<号num_vans;j++){
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*2)+1;
+众
+System.out.println(pos + " " + lane);
+int driverType = (int)(Math.random()*7)+1;
+公switch(driverType) {
+case 1:
+if (!r.createVehicle("van", "aggressive",
+信
+pos, lane)) {
+j­­;
+微 }
+num_aggressive_drivers++;
+break;
+case 2:
+if (!r.createVehicle("van",
+"conservative", pos, lane)) {
+j­­;
+}
+num_conservative_drivers++;
+System.out.println("created
+conservative");
+break;
+case 3:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if (!r.createVehicle("van", "fair", pos,
+lane)) {
+j­­;
+}
+num_fair_drivers++;
+System.out.println("created fair");
+break;
+case 4:
+if (!r.createVehicle("van", "fast", pos,
+lane)) {
+M
+j­­;
+}
+C
+num_fast_drivers++;
+System.out.println("Mcreated fast");
+break;
+case 5:
+i
+if (!r.createVeHhicle("van", "safe", pos,
+lane)) {
+：
+j­­;
+}
+num_号safe_drivers++;
+System.out.println("created safe");
+break;
+众
+case 6:
+if (!r.createVehicle("van", "selfish",
+pos, lane)) { 公
+j­­;
+}
+信
+num_selfish_drivers++;
+System.out.println("created selfish");
+微 break;
+case 7:
+if (!r.createVehicle("van", "slow", pos,
+lane)) {
+j­­;
+}
+num_slow_drivers++;
+System.out.println("created slow");
+break;
+default:
+if (!r.createVehicle("vans", "random",
+pos, lane)) {
+j­­;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+num_random_drivers++;
+break;
+}
+}
+for(int j=0;j<num_trucks;j++){
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*2)+1;
+System.out.println(pos + " " + lane);
+M
+int driverType = (int)(Math.random()*7)+1;
+switch(driverType) {
+C
+case 1:
+if (!r.createVehicleM("truck",
+"aggressive", pos, lane)) {
+j­­;
+i
+} H
+num_aggressive_drivers++;
+：
+break;
+case 2:
+if (号!r.createVehicle("truck",
+"conservative", pos, lane)) {
+j­­;
+众
+}
+num_conservative_drivers++;
+公System.out.println("created
+conservative");
+break;
+信
+case 3:
+if (!r.createVehicle("truck", "fair", pos,
+lane)) {微
+j­­;
+}
+num_fair_drivers++;
+System.out.println("created fair");
+break;
+case 4:
+if (!r.createVehicle("truck", "fast", pos,
+lane)) {
+j­­;
+}
+num_fast_drivers++;
+System.out.println("created fast");
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+break;
+case 5:
+if (!r.createVehicle("truck", "safe", pos,
+lane)) {
+j­­;
+}
+num_safe_drivers++;
+System.out.println("created safe");
+break;
+case 6:
+M
+if (!r.createVehicle("truck", "selfish",
+pos, lane)) {
+C
+j­­;
+} M
+num_selfish_drivers++;
+System.out.println("created selfish");
+i
+break; H
+case 7:
+：
+if (!r.createVehicle("truck", "slow", pos,
+lane)) {
+号j­­;
+}
+num_slow_drivers++;
+众
+System.out.println("created slow");
+break;
+公default:
+if (!r.createVehicle("trucks", "random",
+pos, lane)) {
+信
+j­­;
+}
+微 num_random_drivers++;
+break;
+}
+}
+r.createVehicle("roadblock", "",
+r.roadblock_position, 2);
+// create test vehicle
+r.createVehicle("sedan", "test", 0, 2);
+r.orderVehicles();
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+r.run();
+double avg_anger = 0;
+for(Vehicle v: r.vehicles){
+avg_anger += v.anger;
+}
+avg_anger = avg_anger/r.vehicles.size();
+total_runtime = r.total_runtime;
+avg_runtime += total_runtime;
+M
+String crash_result = (r.crashed) ?
+C
+r.crash_vehicle.logic.toString() : ""; // TYPE OF DRIVER THAT CRASHES
+if(!r.crashed){ M
+avg_time_per_car = r.avg_time_per_car;
+avg_avg_time_per_car += avg_time_per_car;
+i
+}else{ H
+num_crashes++;
+：
+}
+file.println(t号otal_runtime + "," + avg_time_per_car +
+"," + crash_result + "," + avg_anger);
+}
+众
+avg_runtime = ((double) avg_runtime)/num_tests;
+avg_avg_公time_per_car = ((double)
+avg_avg_time_per_car)/num_tests;
+System.out.println("­­Overall Statistics­­");
+信
+System.out.println("Average Runtime:" + avg_runtime);
+System.out.println("Average Average Time/Car: " +
+avg_avg_微time_per_car);
+System.out.println("Total Crashes: " + num_crashes);
+masterFile.append(temp + "," + num_cars + "," + num_sedans
++ "," + num_vans + "," + num_trucks + "," + num_random_drivers + ","
++ num_aggressive_drivers + "," + num_conservative_drivers + "," +
+num_slow_drivers + "," + num_fast_drivers + "," + num_safe_drivers +
+"," + num_selfish_drivers + "," + num_fair_drivers + "," +
+num_test_drivers + "," + avg_runtime + "," + avg_avg_time_per_car +
+"," + num_crashes + "\n");
+// end of test
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+masterFile.close();
+file.close();
+}
+}
+Road
+import java.util.ArrayList;
+M
+import java.util.Collections;
+import java.util.Comparator;
+C
+import java.util.List;
+M
+// 2 constructors
+// arguments: num of each type of car, list of vehicles
+i
+H
+public class Road {
+：
+public int num_cars; // number of cars
+public int speed_limit = 65; // speed limit of road
+public int road_length = 号3000; // road length ­ in meters
+public int num_lanes = 2; // number of lanes
+public int roadblock_position = 2500; // position of road­block
+众
+from beginning of road
+public Vehicle公 crash_vehicle; // vehicle that caused crash
+// add up to num_cars
+信
+public int num_sedans = 0;
+public int num_vans = 0;
+pub微lic int num_trucks = 0;
+// lanes
+public List<Vehicle> lane1 = new ArrayList<Vehicle>();
+public List<Vehicle> lane2 = new ArrayList<Vehicle>(); // has
+roadblock
+// vehicle array
+public List<Vehicle> vehicles = new ArrayList<Vehicle>(); //
+adds all vehicles created
+// universal time for simulation
+public int time = 0;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public List<Double> total_congestions = new
+ArrayList<Double>();
+// return information
+public int total_runtime;
+public double avg_time_per_car;
+public boolean crashed = false;
+public Road(int vehicles){
+M
+initLanes();
+for (int i=0; i<vehicles; i++) {
+C
+int vType = (int)Math.random()*3+1;
+String type = ""; M
+switch(vType){
+case 1:
+i
+type = "sedan"; H
+break;
+：
+case 2:
+type = "van";
+break; 号
+case 3:
+type = "truck";
+众
+break;
+}
+int公 vDriver = (int)Math.random()*9+1;
+String driverType = "";
+switch(vDriver){
+信
+case 1:
+driverType = "random";
+微 break;
+case 2:
+driverType = "aggressive";
+break;
+case 3:
+driverType = "conservative";
+break;
+case 4:
+driverType = "slow";
+break;
+case 5:
+driverType = "fast";
+break;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+case 6:
+driverType = "safe";
+break;
+case 7:
+driverType = "selfish";
+break;
+case 8:
+driverType = "fair";
+break;
+case 9:
+M
+driverType = "test";
+break;
+C
+}
+int pos = (int)Math.random()*15M00+15;
+int lane = (int)Math.random()*2+1;
+createVehicle(type,driverType,pos,lane);
+i
+} H
+}
+：
+// road constructor for given vehicle arraylist
+public Road(){ 号
+initLanes();
+}
+众
+public boolean createVehicle(String type, String driver, int
+pos, int lane) { 公
+Vehicle newV = null;
+if (type.equals("sedan")) {
+信
+newV = new Sedan();
+}
+微else if (type.equals("van")) {
+newV = new Van();
+}
+else if (type.equals("truck")) {
+newV = new Truck();
+}else if(type.equals("roadblock")){
+newV = new RoadBlock();
+}
+if (!placeVehicle(newV, pos, lane)) {
+return false;
+}
+vehicles.add(newV);
+if (driver.equals("random")) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+newV.logic = new RandomDriver(newV);
+}
+else if (driver.equals("aggressive")) {
+newV.logic = new AggressiveDriver(newV);
+}
+else if (driver.equals("conservative")) {
+newV.logic = new ConservativeDriver(newV);
+}
+else if (driver.equals("slow")) {
+newV.logic = new SlowDriver(newV);
+M
+}
+else if (driver.equals("fast")) {
+C
+newV.logic = new FastDriver(newV);
+} M
+else if (driver.equals("safe")) {
+newV.logic = new SafeDriver(newV);
+i
+} H
+else if (driver.equals("selfish")) {
+：
+newV.logic = new SelfishDriver(newV);
+}
+else if (driver.equa号ls("fair")) {
+newV.logic = new FairDriver(newV);
+}
+众
+else if (driver.equals("test")) {
+newV.logic = new TestDriver(newV);
+} 公
+return true;
+信
+}
+pub微lic boolean placeVehicle(Vehicle v, int pos, int lane) {
+// places a vehicle at a specific position (based off of front
+index) if the vehicle goes off the array, those elements are left out
+if (lane==1 && lane1.get(pos) == null) {
+for (int i=0; i<v.length; i++) {
+if (pos­i >= 0) {
+lane1.set(pos­i, v);
+}
+}
+return true;
+}
+else if (lane==2 && lane2.get(pos) == null) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+for (int i=0; i<v.length; i++) {
+if (pos­i >= 0) {
+lane2.set(pos­i, v);
+}
+}
+return true;
+}
+else if (lane==3 && lane1.get(pos) == null &&
+lane2.get(pos) == null) {
+for (int i=0; i<v.length; i++) {
+M
+if (pos­i >= 0) {
+lane1.set(pos­i, v);
+C
+lane2.set(pos­i, v);
+} M
+}
+i
+return true; H
+}
+：
+return false;
+} 号
+public void removeVehicle(Vehicle v) {
+众
+while (lane1.indexOf(v) != ­1) {
+lane1.set(lane1.indexOf(v), null);
+} 公
+while (lane2.indexOf(v) != ­1) {
+lane2.set(lane2.indexOf(v), null);
+信
+}
+}
+微
+public boolean moveVehicle(Vehicle v, int pos, int lane) {
+removeVehicle(v);
+if (!placeVehicle(v,pos,lane)) {
+crash_vehicle = v;
+v.crashed = true;
+return false; // crash occurred
+}
+return true;
+}
+public boolean orderVehicles() {
+// sorts vehicles in descending order
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Collections.sort(vehicles, new CustomComparator());
+return true;
+}
+public void run() {
+while (nextSecond().equals("running")) {
+time++;
+}
+M
+total_runtime = time;
+System.out.println("Total Runtime: "+time);
+C
+avg_time_per_car = 0; M
+for (Vehicle v: vehicles) {
+System.out.println(v.timeOnRoad);
+i
+avg_time_per_car += v.timeHOnRoad;
+}
+：
+avg_time_per_car = avg_time_per_car/(vehicles.size());
+System.out.println("Avg. Time/Car: "+ avg_time_per_car);
+号
+System.out.println("ct size: " +
+total_congestions.size());
+众
+// calculate everyone's change in anger
+for(Vehi公cle v: vehicles){
+if(!(v instanceof RoadBlock)){
+信
+System.out.println(v.subset_congestions.size());
+double delta_a = 0;
+微 for(int i=0;i<total_congestions.size();i++){
+delta_a +=
+(v.subset_congestions.get(i)­total_congestions.get(i));
+}
+v.anger = delta_a; // more congestion, higher
+anger
+// System.out.println(v.anger);
+}
+}
+}
+// increments through each second
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public String nextSecond(){
+orderVehicles(); // sorts vehicles in descending order
+// congestion calculations
+double avg_velocity = 0;
+for(Vehicle w: vehicles){
+avg_velocity += w.speed;
+}
+avg_velocity = ((double) avg_velocity)/(vehicles.size());
+double ct = congestion(avg_velocity, vehicles.size(),
+M
+3000, 2);
+C
+total_congestions.add(ct);
+M
+for (Vehicle v: vehicles) {
+// calculate Cs
+i
+int num_cars_range = 0; H
+double avg_velocity_range = 0;
+：
+// loop range of 100 around car
+for(int 号
+i=v.findIndex(this)­50;i<v.findIndex(this)+50;i++){
+if(i >= 0 && i < 3000){
+众
+if(lane1.get(i) != null){
+num_cars_range++;
+公 avg_velocity_range +=
+lane1.get(i).speed;
+}
+信
+if(lane2.get(i) != null){
+微 num_cars_range++;
+avg_velocity_range +=
+lane2.get(i).speed;
+}
+}
+}
+if(num_cars_range != 0){
+avg_velocity_range = ((double)
+avg_velocity_range)/num_cars_range;
+}else{
+avg_velocity_range = 0;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+double cs = congestion(avg_velocity_range,
+num_cars_range, 100, 2);
+v.subset_congestions.add(cs);
+if (v.drive(this)) { // if a crash took place, then
+break out of the simulation
+crashed = true;
+return "crash";
+}
+M
+}
+if (allCarsExited()) {
+C
+// set anger values
+return "done"; M
+}
+return "running"; // implies simulation is still
+i
+running in this second H
+}
+：
+public boolean allCarsExited() {
+for (Vehicle v: vehi号cles) {
+if (!v.exited && !v.crashed)
+return false;
+众
+}
+return true;
+} 公
+public void initLanes() {
+信
+for (int i=0; i<3000; i++) {
+lane1.add(null);
+微lane2.add(null);
+}
+}
+public double congestion(double vel, int cars, int len, int
+lanes) {
+return vel*vel*cars/len/lanes/2;
+}
+private class CustomComparator implements Comparator<Vehicle> {
+@Override
+public int compare(Vehicle v1, Vehicle v2) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+return
+Integer.valueOf(v2.findIndex(Road.this)).compareTo(Integer.valueOf(v1
+.findIndex(Road.this))); // descending order
+}
+}
+}
+Vehicle
+import java.util.ArrayList;
+M
+import java.util.List;
+C
+public class Vehicle { M
+public double anger = 0;
+public int max_speed; // the maximum speed attainable
+i
+by this kind of car (kph) H
+public int speed; // the current speed of
+：
+this car (kph)
+public int length; // the length of this car
+public boolean crashed = 号false;
+public double brakeAccel; // the braking acceleration of
+this car
+众
+public double accel; // the acceleration of this car
+public int mergeTime; // the time (in seconds) in
+which this vehicle 公can merge
+public boolean exited = false; // whether or not the vehicle
+is still in the 3km stretch of road
+信
+public DriverLogic logic;
+public int timeOnRoad = 0;
+微
+public List<Double> subset_congestions = new
+ArrayList<Double>();
+public Vehicle() {
+}
+public boolean drive(Road road) { // returns whether or not
+a crash took place
+if (exited) {
+return false;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+if(crashed){
+System.out.println("crashed");
+return true;
+}
+logic.drive(road, this);
+return false;
+}
+M
+public int findIndex(Road road) {
+C
+if (road.lane1.indexOf(this) != ­1) M{
+return road.lane1.lastIndexOf(this);
+}
+i
+else { H
+return road.lane2.lastIndexOf(this);
+：
+}
+} 号
+public int findLane(Road road) {
+众
+int lane = 0;
+if (road.lane1.indexOf(this) != ­1) {
+lan公e+=1;
+} if (road.lane2.indexOf(this) != ­1) {
+lane+=2;
+信
+}
+return lane; // returns 1 if car is in lane 1, 2 if
+lane 2, 微or 3 if in both lanes (0 if vehicle doesn't exist)
+}
+}
+DriverLogic
+import java.util.ArrayList;
+import java.util.List;
+public class DriverLogic {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public String type;
+public int mergeStatus = 0;
+int maxTimeToImpact;
+int slowTime;
+int speedTime;
+public List<String> actions = new ArrayList<String>();
+M
+public DriverLogic() {
+C
+} M
+public void drive(Road road, Vehicle v) {
+i
+H
+}
+：
+public String toString(){
+return "driver logic号";
+}
+众
+public int findIndex(Road road, Vehicle v) {
+if (road公.lane1.indexOf(v) != ­1) {
+return road.lane1.indexOf(v)+v.length­1;
+}
+信
+else {
+return road.lane2.indexOf(v)+v.length­1;
+微}
+}
+public int findLane(Road road, Vehicle v) {
+int lane = 0;
+if (road.lane1.indexOf(v) != ­1) {
+lane+=1;
+} if (road.lane2.indexOf(v) != ­1) {
+lane+=2;
+}
+return lane; // returns 1 if car is in lane 1, 2 if
+lane 2, or 3 if in both lanes (0 if vehicle doesn't exist)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+public boolean move(int delta, Road road, Vehicle v) {
+int newPos = v.findIndex(road)+delta;
+if (newPos < 3000) {
+return road.moveVehicle(v, findIndex(road, v)+delta,
+findLane(road, v));
+}
+else {
+v.exited=true;
+M
+v.timeOnRoad = road.time;
+road.removeVehicle(v);
+C
+}
+return false; M
+}
+i
+public double mps(int speed) { // coHnverts speed (kph) to m/s
+return speed*0.277778;
+：
+}
+public void accel(Road ro号ad, Vehicle v) {
+int spacesInFront = 0;
+for (int i=findIndex(road, v)+1; i<3000; i++) {
+众
+if (findLane(road, v) == 1) {
+if (road.lane1.get(i) == null) {
+公spacesInFront++;
+} else {
+break;
+信
+}
+}
+微else if (findLane(road, v) == 2) {
+if (road.lane2.get(i) == null) {
+spacesInFront++;
+} else {
+break;
+}
+}
+}
+int timeToImpact = (int)(spacesInFront/(v.speed+.01));
+if (maxTimeToImpact ­ timeToImpact < slowTime) {
+v.speed = v.speed+(int)v.brakeAccel;
+if (v.speed<1) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+v.speed = 0;
+}
+actions.add("brake");
+// System.out.println("brake");
+} else if (maxTimeToImpact ­ timeToImpact > speedTime) {
+v.speed = v.speed+(int)v.accel;
+actions.add("accel");
+if (v.speed>v.max_speed) {
+v.speed = v.max_speed;
+}
+M
+if(v.speed>road.speed_limit){
+C
+v.speed = road.speed_limit;
+} M
+// System.out.println("accel");
+}
+i
+} H
+：
+// default merge­left
+// no merge buffer
+public void mergeLeft(Roa号d road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+众
+}
+int pos 公= v.findIndex(road);
+if(mergeStatus == 0){
+信
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lan微e1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public void mergeRight(Road road, Vehicle v){
+if(v.findLane(road) == 2){
+return;
+}
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.length;i­­){
+M
+if(i >= 0 && i < road.roadblock_position ­ 100
+&& road.lane2.get(i) == null){
+C
+return;
+} M
+}
+i
+mergeStatus++; H
+}else{
+：
+mergeStatus++;
+if(mergeStatus == 4){
+road.move号Vehicle(v, pos, 2);
+}
+}
+众
+}
+public double 公congestion(double vel, int cars, int len, int
+lanes) {
+return vel*vel*cars/len/lanes/2;
+信
+}
+}
+微
+AggressiveDriver
+public class AggressiveDriver extends DriverLogic{
+public AggressiveDriver(Vehicle v) {
+type="aggressive";
+v.speed = (int)(.6*v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+1;
+slowTime = 3;
+speedTime = 8;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+public void drive(Road road, Vehicle v) {
+accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+M
+mergeLeft(road, v);
+}
+C
+// custom merge­left M
+// merge buffer of 0
+public void mergeLeft(Road road, Vehicle v){
+i
+if(v.findLane(road) == 1){ H
+return;
+：
+}
+int pos = v.findInde号x(road);
+if(mergeStatus == 0){
+众
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) =公= null){
+return;
+}
+信
+}
+微mergeStatus++;
+}else{
+System.out.println(mergeStatus);
+mergeStatus++;
+if(mergeStatus == 3){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+}
+ConservativeDriver
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class ConservativeDriver extends DriverLogic{
+public ConservativeDriver(Vehicle v) {
+type="conservative";
+v.speed = (int)(.4*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+4;
+slowTime = 6;
+speedTime = 14;
+}
+M
+public void drive(Road road, Vehicle v) {
+C
+accel(road,v);
+M
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+i
+H
+mergeLeft(road, v);
+：
+}
+// custom merge­left 号
+// merge buffer of 5
+public void mergeLeft(Road road, Vehicle v){
+众
+if(v.findLane(road) == 1){
+return;
+} 公
+int pos = v.findIndex(road);
+信
+if(mergeStatus == 0){
+微for(int i=pos+5;i>pos­v.length­5;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+System.out.println(mergeStatus);
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+}
+}
+}
+FairDriver
+public class FairDriver extends DriverLogic {
+M
+public FairDriver(Vehicle v) {
+type="fair";
+C
+v.speed = (int)(.4*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.mMax_speed/v.accel)+2;
+slowTime = 4;
+speedTime = 10;
+i
+} H
+：
+public void drive(Road road, Vehicle v) {
+accel(road,v); 号
+int delta = (int)Math.ceil(mps(v.speed))+1;
+众
+move(delta, road, v);
+mergeLef公t(road, v);
+}
+信
+// custom merge­left
+// merge buffer of 5 (reasonable)
+pub微lic void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+5;i>pos­v.length­5;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+return;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+mergeStatus++;
+}else{
+System.out.println(mergeStatus);
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+}
+}
+M
+}
+}
+C
+FastDriver M
+i
+public class FastDriver extends DriverLogiHc {
+：
+public FastDriver(Vehicle v) {
+type="fast";
+v.speed = (int)(.6*v号.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+1;
+slowTime = 3;
+众
+speedTime = 8;
+}
+公
+public void drive(Road road, Vehicle v) {
+信
+accel(road,v);
+微int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 4 (fast)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+4;i>pos­v.length­4;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+return;
+}
+}
+M
+mergeStatus++;
+}else{
+C
+System.out.println(mergeStatus);
+mergeStatus++; M
+if(mergeStatus == 3){
+road.moveVehicle(v, pos, 1);
+i
+} H
+}
+：
+}
+}
+号
+RandomDriver
+众
+public class RandomDriver extends DriverLogic {
+公
+public RandomDriver(Vehicle v) {
+type="random";
+信
+v.speed = (int)(v.max_speed*.5);
+} 微
+public void drive(Road road, Vehicle v) {
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 2 (crashes often)
+public void mergeLeft(Road road, Vehicle v){
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if(v.findLane(road) == 1){
+return;
+}
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+2;i>pos­v.length­2;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+M
+return;
+}
+C
+}
+M
+mergeStatus++;
+}else{
+i
+System.out.println(mergeStHatus);
+mergeStatus++;
+：
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+} 号
+}
+}
+众
+}
+RoadBlock 公
+信
+public class RoadBlock extends Vehicle {
+pub微lic RoadBlock() {
+logic = new DriverLogic();
+exited = true;
+speed = 0;
+}
+public void drive(){
+}
+}
+SafeDriver
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class SafeDriver extends DriverLogic {
+public SafeDriver(Vehicle v) {
+type="Safe";
+v.speed = (int)(.4*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+4;
+slowTime = 4;
+speedTime = 10;
+M
+}
+C
+public void drive(Road road, Vehicle v) { M
+accel(road,v);
+i
+int delta = (int)Math.ceil(mps(Hv.speed))+1;
+move(delta, road, v);
+：
+mergeLeft(road, v);
+} 号
+// custom merge­left
+众
+// merge buffer of 10 (most safe)
+public void mergeLeft(Road road, Vehicle v){
+if(v.fin公dLane(road) == 1){
+return;
+}
+信
+int pos = v.findIndex(road);
+微
+if(mergeStatus == 0){
+for(int i=pos+10;i>pos­v.length­10;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+System.out.println(mergeStatus);
+mergeStatus++;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+}
+Sedan
+M
+public class Sedan extends Vehicle{
+C
+M
+public Sedan() {
+length = 3;
+i
+max_speed = 100; H
+brakeAccel = ­9.5;
+：
+}
+号
+}
+众
+SelfishDriver
+公
+public class SelfishDriver extends DriverLogic{
+信
+public SelfishDriver(Vehicle v) {
+type="selfish";
+微v.speed = (int)(.6*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+3;
+slowTime = 4;
+speedTime = 9;
+}
+public void drive(Road road, Vehicle v) {
+accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 3 (only cares about himself)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+M
+int pos = v.findIndex(road);
+C
+if(mergeStatus == 0){
+for(int i=pos+3;i>pos­v.length­M3;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+road.lane1.get(i) == null){
+i
+return; H
+}
+：
+}
+mergeStatus++;号
+}else{
+System.out.println(mergeStatus);
+众
+mergeStatus++;
+if(mergeStatus == 4){
+公road.moveVehicle(v, pos, 1);
+}
+}
+信
+}
+}
+微
+SlowDriver
+public class SlowDriver extends DriverLogic {
+public SlowDriver(Vehicle v) {
+type="slow";
+v.speed = (int)(.2*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+6;
+slowTime = 8;
+speedTime = 16;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public void drive(Road road, Vehicle v) {
+accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+M
+// custom merge­left
+C
+// merge buffer of 8 (takes time to merge)
+public void mergeLeft(Road road, Vehicle vM){
+if(v.findLane(road) == 1){
+return;
+i
+} H
+：
+int pos = v.findIndex(road);
+if(mergeStatus == 0)号{
+for(int i=pos+8;i>pos­v.length­8;i­­){
+if(i >= 0 && i < road.roadblock_position &&
+众
+road.lane1.get(i) == null){
+return;
+公}
+}
+信
+mergeStatus++;
+}else{
+微System.out.println(mergeStatus);
+mergeStatus++;
+if(mergeStatus == 7){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+}
+TestDriver
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class TestDriver extends DriverLogic {
+public TestDriver(Vehicle v) {
+type="test";
+v.speed = (int)(.7*v.max_speed);
+}
+public void drive(Road road, Vehicle v) {
+M
+double congT = 0; // get congestion value from road
+double cong1 = 0; // congestion in front
+C
+double cong2 = 0; // congestion in front in other lane
+double cong3 = 0; // congestion iMn back in other lane
+double cong4 = 0; // congestion in back
+i
+double vel1 = 0; // congestHion in front
+double vel2 = 0; // congestion in front in other lane
+：
+double vel3 = 0; // congestion in back in other lane
+double vel4 = 0; // congestion in back
+号
+int cars = road.vehicles.size();
+众
+for (Vehicle c: road.vehicles) {
+if (road.vehicles.indexOf(v) >
+road.vehicles.index公Of(c)) { // current vehicle is behind the test
+vehicle
+if (v.findLane(road) == c.findLane(road)) {
+信
+vel4+=c.speed;
+} else {
+微 vel3+=c.speed;
+}
+} else if (road.vehicles.indexOf(v) <
+road.vehicles.indexOf(c)) { // current vehicle is in front of the
+test vehicle
+if (v.findLane(road) == c.findLane(road)) {
+vel1+=c.speed;
+} else {
+vel2+=c.speed;
+}
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+vel1 /= cars;
+vel2 /= cars;
+vel3 /= cars;
+vel4 /= cars;
+int frontLen = 3000 ­ v.findIndex(road);
+int backLen = v.findIndex(road);
+cong1 = congestion(vel1,cars,frontLen,1);
+cong2 = congestion(vel2,cars,frontLen,1);
+M
+cong3 = congestion(vel3,cars,backLen,1);
+cong4 = congestion(vel4,cars,backLen,1);
+C
+// all congestion values have been cMomputed and stored at
+this point
+i
+double currCongDiff = congDiff(HcongT, cong1, cong2, cong3,
+cong4);
+：
+double congDiff1 = congDiff(congT,
+congestion((vel1*cars+v.speed)/cars,cars,frontLen­v.speed,1), cong2,
+cong3, cong4); 号
+double congDiff2 = congDiff(congT, cong1,
+congestion((vel2*cars+v.speed)/cars,cars,frontLen­v.speed,1), cong3,
+众
+cong4);
+double congDiff3 = congDiff(congT, cong1, cong2,
+congestion((vel3*ca公rs+v.speed)/cars,cars,backLen+v.speed,1), cong4);
+double congDiff4 = congDiff(congT, cong1, cong2, cong3,
+congestion((vel4*cars+v.speed)/cars,cars,backLen+v.speed, 1));
+信
+double minValue =
+Math.min微(Math.min(congDiff1,congDiff2),Math.min(Math.min(congDiff3,co
+ngDiff4),currCongDiff));
+if (minValue == currCongDiff) {
+actions.add("stay");
+} else if (minValue == congDiff1) {
+actions.add("accel");
+v.speed+=v.accel;
+} else if (minValue == congDiff2) {
+if (v.findLane(road) == 1) {
+actions.add("attempt move right");
+mergeRight(road, v);
+} else {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+mergeLeft(road, v);
+}
+} else if (minValue == congDiff3) {
+actions.add("move back and merge");
+v.speed+=v.brakeAccel;
+if (v.findLane(road) == 1) {
+mergeRight(road, v);
+} else {
+mergeLeft(road, v);
+}
+M
+} else if (minValue == congDiff4) {
+actions.add("brake");
+C
+v.speed+=v.brakeAccel;
+} M
+int delta = (int)Math.ceil(mps(v.speed))+1;
+i
+move(delta, road, v); H
+}
+：
+public double congestion(double vel, int cars, int len, int
+lanes) { 号
+return vel*vel*cars/len/lanes/2;
+}
+众
+public double congDiff(double ct, double c1, double c2, double
+c3, double c4) { 公
+return Math.abs(ct­c1) + Math.abs(ct­c2) + Math.abs(ct­c3)
++ Math.abs(ct­c4);
+信
+}
+}
+微
+Truck
+public class Truck extends Vehicle{
+public Truck() {
+length = 10;
+max_speed = 65;
+brakeAccel = ­6.5;
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Van
+public class Van extends Vehicle{
+public Van() {
+length = 4;
+max_speed = 80;
+brakeAccel = ­7.2;
+M
+}
+C
+}
+M
+Model 2:
+i
+H
+Driver
+：
+import java.io.BufferedReader;
+import java.io.File; 号
+import java.io.FileOutputStream;
+import java.io.FileReader;
+众
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Prin公tWriter;
+import java.util.ArrayList;
+信
+public class Driver {
+private static PrintWriter file; // for sets of tests
+pri微vate static FileWriter masterFile; // for overall analysis
+of data
+private static BufferedReader reader;
+private static int num_tests = 5;
+public static int num_cars = 0;
+private static int num_sedans = 10;
+private static int num_vans = 0;
+private static int num_trucks = 0;
+// dont change these values
+private static int num_random_drivers = 0;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+private static int num_aggressive_drivers = 0;
+private static int num_conservative_drivers = 0;
+private static int num_slow_drivers = 0;
+private static int num_fast_drivers = 0;
+private static int num_safe_drivers = 0;
+private static int num_selfish_drivers = 0;
+private static int num_fair_drivers = 0;
+private static int num_test_drivers = 0;
+private static String crash_result = "";
+M
+public static void main(String[] args) throws IOException {
+C
+// each set of tests gets printed out in file
+M
+String text = "";
+try {
+i
+reader = new BufferedReadeHr(new
+FileReader("master_file.csv"));
+：
+try {
+StringBuilder builder = new StringBuilder();
+String line 号= reader.readLine();
+while (line != null) {
+众
+builder.append(line);
+builder.append(System.lineSeparator());
+公 line = reader.readLine();
+}
+text = builder.toString();
+信
+} finally {
+reader.close();
+微 }
+} catch(Exception e) {System.out.println("master file read
+error");}
+String temp = "";
+file = null;
+for (int i=1111; i<9999; i++) {
+if (!text.contains(""+i)) {
+temp = ""+i+".csv";
+break;
+}
+}
+try {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+file = new PrintWriter(temp);
+} catch (Exception e) {System.out.println("file writing
+error");}
+try {
+masterFile = new FileWriter("master_file.csv", true);
+} catch (Exception e) {System.out.println("master file
+write error");}
+// masterFile.append("TEST FILE,# CARS,# SEDANS,# VANS,#
+TRUCKS,# RANDOM DRIVERS,# AGGRESSIVE DRIVERS,# CONSERVATIVE DRIVERS,#
+M
+SLOW DRIVERS,# FAST DRIVERS,# SAFE DRIVERS,# SELFISH DRIVERS,# FAIR
+DRIVERS,# TEST DRIVERS,AVG. TOTAL RUNTIME,AVG. AVG. TIME/CAR,#
+C
+CRASHES,AVG AVG ANGER\n");
+M
+/* SET UP TESTS */
+i
+num_cars = num_sedans + num_vanHs + num_trucks;
+int total_runtime = 0;
+：
+double avg_time_per_car = 0;
+// beginning of test号
+file.println("TOTAL RUNTIME,AVG TIME PER CAR,CRASHED,AVG
+ANGER");
+众
+num_cars = num_sedans + num_vans + num_trucks;
+公
+double avg_runtime = 0.0;
+double avg_avg_time_per_car = 0.0;
+信
+int num_crashes = 0;
+double avg_avg_anger = 0;
+微
+for (int i=0; i<num_tests; i++) {
+num_random_drivers = 0;
+num_aggressive_drivers = 0;
+num_conservative_drivers = 0;
+num_slow_drivers = 0;
+num_fast_drivers = 0;
+num_safe_drivers = 0;
+num_selfish_drivers = 0;
+num_fair_drivers = 0;
+num_test_drivers = 0;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Road r = new Road();
+//r.createVehicle("sedan", "test", 5, 2);
+int pos;
+int lane;
+for(int j=0;j<num_sedans;j++){
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*3)+1;
+System.out.println(pos + " " + lane);
+M
+int driverType = (int)(Math.random()*7)+1;
+switch(driverType) {
+C
+case 1:
+if (!r.createVehicleM("sedan",
+"aggressive", pos, lane)) {
+j­­;
+i
+} H
+num_aggressive_drivers++;
+：
+System.out.println("created aggressive");
+break;
+case 2: 号
+if (!r.createVehicle("sedan",
+"conservative", pos, lane)) {
+众
+j­­;
+}
+公num_conservative_drivers++;
+System.out.println("created
+conservative");
+信
+break;
+case 3:
+微 if (!r.createVehicle("sedan", "fair", pos,
+lane)) {
+j­­;
+}
+num_fair_drivers++;
+System.out.println("created fair");
+break;
+case 4:
+if (!r.createVehicle("sedan", "fast", pos,
+lane)) {
+j­­;
+}
+num_fast_drivers++;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+System.out.println("created fast");
+break;
+case 5:
+if (!r.createVehicle("sedan", "safe", pos,
+lane)) {
+j­­;
+}
+num_safe_drivers++;
+System.out.println("created safe");
+break;
+M
+case 6:
+if (!r.createVehicle("sedan", "selfish",
+C
+pos, lane)) {
+j­­; M
+}
+num_selfish_drivers++;
+i
+System.out.prinHtln("created selfish");
+break;
+：
+case 7:
+if (!r.createVehicle("sedan", "slow", pos,
+lane)) { 号
+j­­;
+}
+众
+num_slow_drivers++;
+System.out.println("created slow");
+公break;
+default:
+if (!r.createVehicle("sedan", "random",
+信
+pos, lane)) {
+j­­;
+微 }
+num_random_drivers++;
+break;
+}
+}
+for(int j=0;j<num_vans;j++){
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*3)+1;
+System.out.println(pos + " " + lane);
+int driverType = (int)(Math.random()*7)+1;
+switch(driverType) {
+case 1:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if (!r.createVehicle("van", "aggressive",
+pos, lane)) {
+j­­;
+}
+num_aggressive_drivers++;
+break;
+case 2:
+if (!r.createVehicle("van",
+"conservative", pos, lane)) {
+j­­;
+M
+}
+num_conservative_drivers++;
+C
+System.out.println("created
+conservative"); M
+break;
+case 3:
+i
+if (!r.createVeHhicle("van", "fair", pos,
+lane)) {
+：
+j­­;
+}
+num_号fair_drivers++;
+System.out.println("created fair");
+break;
+众
+case 4:
+if (!r.createVehicle("van", "fast", pos,
+lane)) { 公
+j­­;
+}
+信
+num_fast_drivers++;
+System.out.println("created fast");
+微 break;
+case 5:
+if (!r.createVehicle("van", "safe", pos,
+lane)) {
+j­­;
+}
+num_safe_drivers++;
+System.out.println("created safe");
+break;
+case 6:
+if (!r.createVehicle("van", "selfish",
+pos, lane)) {
+j­­;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+num_selfish_drivers++;
+System.out.println("created selfish");
+break;
+case 7:
+if (!r.createVehicle("van", "slow", pos,
+lane)) {
+j­­;
+}
+num_slow_drivers++;
+M
+System.out.println("created slow");
+break;
+C
+default:
+if (!r.createVehicleM("vans", "random",
+pos, lane)) {
+j­­;
+i
+} H
+num_random_drivers++;
+：
+break;
+}
+} 号
+for(int j=0;j<num_trucks;j++){
+众
+pos = (int)(Math.random()*1500)+15;
+lane = (int)(Math.random()*3)+1;
+公System.out.println(pos + " " + lane);
+int driverType = (int)(Math.random()*7)+1;
+switch(driverType) {
+信
+case 1:
+if (!r.createVehicle("truck",
+"aggress微ive", pos, lane)) {
+j­­;
+}
+num_aggressive_drivers++;
+break;
+case 2:
+if (!r.createVehicle("truck",
+"conservative", pos, lane)) {
+j­­;
+}
+num_conservative_drivers++;
+System.out.println("created
+conservative");
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+break;
+case 3:
+if (!r.createVehicle("truck", "fair", pos,
+lane)) {
+j­­;
+}
+num_fair_drivers++;
+System.out.println("created fair");
+break;
+case 4:
+M
+if (!r.createVehicle("truck", "fast", pos,
+lane)) {
+C
+j­­;
+} M
+num_fast_drivers++;
+System.out.println("created fast");
+i
+break; H
+case 5:
+：
+if (!r.createVehicle("truck", "safe", pos,
+lane)) {
+号j­­;
+}
+num_safe_drivers++;
+众
+System.out.println("created safe");
+break;
+公case 6:
+if (!r.createVehicle("truck", "selfish",
+pos, lane)) {
+信
+j­­;
+}
+微 num_selfish_drivers++;
+System.out.println("created selfish");
+break;
+case 7:
+if (!r.createVehicle("truck", "slow", pos,
+lane)) {
+j­­;
+}
+num_slow_drivers++;
+System.out.println("created slow");
+break;
+default:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if (!r.createVehicle("trucks", "random",
+pos, lane)) {
+j­­;
+}
+num_random_drivers++;
+break;
+}
+}
+// place roadblocks
+M
+r.createVehicle("roadblock", "",
+r.roadblock_position, 1);
+C
+r.createVehicle("roadblock", "",
+r.roadblock_position, 2); // add this for 3 ­> M1
+// create test vehicle
+i
+r.createVehicle("truck", "Htest", 0, 3);
+// r.createVehicle("sedan", "test", 1000, 3);
+：
+r.orderVehicles();
+号
+r.run();
+众
+double avg_anger = 0;
+for(Vehicle v: r.vehicles){
+公avg_anger += v.anger;
+}
+avg_anger = avg_anger/r.vehicles.size();
+信
+avg_avg_anger += avg_anger;
+微total_runtime = r.total_runtime;
+avg_runtime += total_runtime;
+String crash_result = (r.crashed) ?
+r.crash_vehicle.logic.toString() : ""; // TYPE OF DRIVER THAT CRASHES
+if(!r.crashed){
+avg_time_per_car = r.avg_time_per_car;
+avg_avg_time_per_car += avg_time_per_car;
+}else{
+num_crashes++;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+file.println(total_runtime + "," + avg_time_per_car +
+"," + crash_result + "," + avg_anger);
+}
+avg_runtime = ((double) avg_runtime)/num_tests;
+avg_avg_time_per_car = ((double)
+avg_avg_time_per_car)/num_tests;
+avg_avg_anger = ((double) avg_avg_anger)/num_tests;
+System.out.println("­­Overall Statistics­­");
+System.out.println("Average Runtime:" + avg_runtime);
+M
+System.out.println("Average Average Time/Car: " +
+avg_avg_time_per_car);
+C
+M
+System.out.println("Total Crashes: " + num_crashes);
+masterFile.append(temp + "," + num_cars + "," + num_sedans
+i
++ "," + num_vans + "," + num_trucks + "," H+ num_random_drivers + ","
++ num_aggressive_drivers + "," + num_conservative_drivers + "," +
+：
+num_slow_drivers + "," + num_fast_drivers + "," + num_safe_drivers +
+"," + num_selfish_drivers + "," + num_fair_drivers + "," +
+num_test_drivers + "," + avg_r号untime + "," + avg_avg_time_per_car +
+"," + num_crashes + "," + avg_avg_anger + "\n");
+众
+// end of test
+masterFi公le.close();
+file.close();
+}
+信
+}
+微
+Road
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+// 2 constructors
+// arguments: num of each type of car, list of vehicles
+public class Road {
+public int num_cars; // number of cars
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public int speed_limit = 65; // speed limit of road
+public int road_length = 3000; // road length ­ in meters
+public int num_lanes = 3; // number of lanes
+public int roadblock_position = 2500; // position of road­block
+from beginning of road
+public Vehicle crash_vehicle; // vehicle that caused crash
+// add up to num_cars
+public int num_sedans = 0;
+M
+public int num_vans = 0;
+public int num_trucks = 0;
+C
+// lanes M
+public List<Vehicle> lane1 = new ArrayList<Vehicle>();
+public List<Vehicle> lane2 = new ArrayList<Vehicle>();
+i
+public List<Vehicle> lane3 = new ArraHyList<Vehicle>(); // has
+roadblock
+：
+// vehicle array
+public List<Vehicle> vehi号cles = new ArrayList<Vehicle>(); //
+adds all vehicles created
+众
+// universal time for simulation
+public int time = 0;
+public List<Do公uble> total_congestions = new
+ArrayList<Double>();
+信
+// return information
+public int total_runtime;
+pub微lic double avg_time_per_car;
+public boolean crashed = false;
+public Road(int vehicles){
+initLanes();
+for (int i=0; i<vehicles; i++) {
+int vType = (int)Math.random()*3+1;
+String type = "";
+switch(vType){
+case 1:
+type = "sedan";
+break;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+case 2:
+type = "van";
+break;
+case 3:
+type = "truck";
+break;
+}
+int vDriver = (int)Math.random()*9+1;
+String driverType = "";
+switch(vDriver){
+M
+case 1:
+driverType = "random";
+C
+break;
+case 2: M
+driverType = "aggressive";
+break;
+i
+case 3: H
+driverType = "conservative";
+：
+break;
+case 4:
+driverTyp号e = "slow";
+break;
+case 5:
+众
+driverType = "fast";
+break;
+cas公e 6:
+driverType = "safe";
+break;
+信
+case 7:
+driverType = "selfish";
+微 break;
+case 8:
+driverType = "fair";
+break;
+case 9:
+driverType = "test";
+break;
+}
+int pos = (int)Math.random()*1500+15;
+int lane = (int)Math.random()*3+1;
+createVehicle(type,driverType,pos,lane);
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+// road constructor for given vehicle arraylist
+public Road(){
+initLanes();
+}
+public boolean createVehicle(String type, String driver, int
+pos, int lane) {
+Vehicle newV = null;
+if (type.equals("sedan")) {
+M
+newV = new Sedan();
+}
+C
+else if (type.equals("van")) {
+newV = new Van(); M
+}
+else if (type.equals("truck")) {
+i
+newV = new Truck(); H
+}else if(type.equals("roadblock")){
+：
+newV = new RoadBlock();
+}
+if (!placeVehicle(ne号wV, pos, lane)) {
+return false;
+}
+众
+vehicles.add(newV);
+if (driver.equals("random")) {
+new公V.logic = new RandomDriver(newV);
+}
+else if (driver.equals("aggressive")) {
+信
+newV.logic = new AggressiveDriver(newV);
+}
+微else if (driver.equals("conservative")) {
+newV.logic = new ConservativeDriver(newV);
+}
+else if (driver.equals("slow")) {
+newV.logic = new SlowDriver(newV);
+}
+else if (driver.equals("fast")) {
+newV.logic = new FastDriver(newV);
+}
+else if (driver.equals("safe")) {
+newV.logic = new SafeDriver(newV);
+}
+else if (driver.equals("selfish")) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+newV.logic = new SelfishDriver(newV);
+}
+else if (driver.equals("fair")) {
+newV.logic = new FairDriver(newV);
+}
+else if (driver.equals("test")) {
+newV.logic = new TestDriver(newV);
+}
+return true;
+M
+}
+C
+public boolean placeVehicle(Vehicle v, int pos, int lane) {
+// places a vehicle at a specific positionM (based off of front
+index) if the vehicle goes off the array, those elements are left out
+if (lane==1 && lane1.get(pos) == null) {
+i
+for (int i=0; i<v.length; Hi++) {
+if (pos­i >= 0) {
+：
+lane1.set(pos­i, v);
+}
+} 号
+return true;
+}
+众
+else if (lane==2 && lane2.get(pos) == null) {
+for (int i=0; i<v.length; i++) {
+公if (pos­i >= 0) {
+lane2.set(pos­i, v);
+}
+信
+}
+return true;
+微}
+else if (lane==3 && lane3.get(pos) == null) {
+for (int i=0; i<v.length; i++) {
+if (pos­i >= 0) {
+lane3.set(pos­i, v);
+}
+}
+return true;
+}
+return false;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public void removeVehicle(Vehicle v) {
+while (lane1.indexOf(v) != ­1) {
+lane1.set(lane1.indexOf(v), null);
+}
+while (lane2.indexOf(v) != ­1) {
+lane2.set(lane2.indexOf(v), null);
+}
+while (lane3.indexOf(v) != ­1) {
+lane3.set(lane3.indexOf(v), null);
+}
+M
+}
+C
+public boolean moveVehicle(Vehicle v, int pos, int lane) {
+removeVehicle(v); M
+if (!placeVehicle(v,pos,lane)) {
+crash_vehicle = v;
+i
+v.crashed = true; H
+return false; // crash occurred
+：
+}
+return true;
+} 号
+public boolean orderVehicles() {
+众
+// sorts vehicles in descending order
+Collections.sort(vehicles, new CustomComparator());
+return t公rue;
+}
+信
+public void run() {
+微while (nextSecond().equals("running")) {
+time++;
+}
+total_runtime = time;
+System.out.println("Total Runtime: "+time);
+avg_time_per_car = 0;
+for (Vehicle v: vehicles) {
+System.out.println(v.timeOnRoad);
+avg_time_per_car += v.timeOnRoad;
+}
+avg_time_per_car = avg_time_per_car/(vehicles.size());
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+System.out.println("Avg. Time/Car: "+ avg_time_per_car);
+System.out.println("ct size: " +
+total_congestions.size());
+// calculate everyone's change in anger
+for(Vehicle v: vehicles){
+System.out.println("here");
+if(!(v instanceof RoadBlock)){
+double delta_a = 0;
+M
+for(int i=0;i<total_congestions.size()­1;i++){
+delta_a +=
+C
+(v.subset_congestions.get(i)­total_congestions.get(i));
+} M
+v.anger = (1.0/time)*delta_a; // more
+congestion, higher anger
+i
+H
+// System.out.println(v.anger);
+：
+}
+}
+} 号
+// increments through each second
+众
+public String nextSecond(){
+orderVehicles(); // sorts vehicles in descending order
+公
+// System.out.println("time: " + time);
+信
+// congestion calculations
+double avg_velocity = 0;
+微for(Vehicle w: vehicles){
+avg_velocity += w.speed;
+}
+avg_velocity = ((double) avg_velocity)/(vehicles.size());
+double ct = congestion(avg_velocity, vehicles.size(),
+3000, 3);
+total_congestions.add(ct);
+for (Vehicle v: vehicles) {
+// calculate Cs
+int num_cars_range = 0;
+double avg_velocity_range = 0;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+// loop range of 100 around car
+for(int
+i=v.findIndex(this)­50;i<v.findIndex(this)+50;i++){
+if(i >= 0 && i < 3000){
+if(lane1.get(i) != null){
+num_cars_range++;
+avg_velocity_range +=
+lane1.get(i).speed;
+}
+M
+if(lane2.get(i) != null){
+C
+num_cars_range++;
+avg_velocity_raMnge +=
+lane2.get(i).speed;
+}
+i
+H
+if(lane3.get(i) != null){
+：
+num_cars_range++;
+avg_velocity_range +=
+lane3.get(i).speed; 号
+}
+}
+众
+}
+if(公num_cars_range != 0){
+avg_velocity_range = ((double)
+avg_velocity_range)/num_cars_range;
+信
+}else{
+avg_velocity_range = 0;
+微}
+double cs = congestion(avg_velocity_range,
+num_cars_range, 100, 3);
+v.subset_congestions.add(cs);
+if (v.drive(this)) { // if a crash took place, then
+break out of the simulation
+crashed = true;
+return "crash";
+}
+}
+if (allCarsExited()) {
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+// set anger values
+return "done";
+}
+return "running"; // implies simulation is still
+running in this second
+}
+public boolean allCarsExited() {
+for (Vehicle v: vehicles) {
+if (!v.exited && !v.crashed)
+M
+return false;
+}
+C
+return true;
+} M
+public void initLanes() {
+i
+for (int i=0; i<3000; i++) { H
+lane1.add(null);
+：
+lane2.add(null);
+lane3.add(null);
+} 号
+}
+众
+public double congestion(double vel, int cars, int len, int
+lanes) {
+return v公el*vel*cars/len/lanes/2;
+}
+信
+private class CustomComparator implements Comparator<Vehicle> {
+@Override
+微 public int compare(Vehicle v1, Vehicle v2) {
+return
+Integer.valueOf(v2.findIndex(Road.this)).compareTo(Integer.valueOf(v1
+.findIndex(Road.this))); // descending order
+}
+}
+}
+Vehicle
+import java.util.ArrayList;
+import java.util.List;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class Vehicle {
+public double anger = 0;
+public int max_speed; // the maximum speed attainable
+by this kind of car (kph)
+public int speed; // the current speed of
+this car (kph)
+public int length; // the length of this car
+public boolean crashed = false;
+M
+public double brakeAccel; // the braking acceleration of
+this car
+C
+public double accel; // the acceleration of this car
+public int mergeTime; // the timMe (in seconds) in
+which this vehicle can merge
+public boolean exited = false; // whether or not the vehicle
+i
+is still in the 3km stretch of road H
+public DriverLogic logic;
+：
+public int timeOnRoad = 0;
+public List<Double> subse号t_congestions = new
+ArrayList<Double>();
+众
+public Vehicle() {
+} 公
+信
+public boolean drive(Road road) { // returns whether or not
+a crash took place
+微if (exited) {
+return false;
+}
+if(crashed){
+System.out.println("crashed");
+return true;
+}
+logic.drive(road, this);
+return false;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public int findIndex(Road road) {
+if (road.lane1.indexOf(this) != ­1) {
+return road.lane1.lastIndexOf(this);
+}
+else if(road.lane2.indexOf(this) != ­1){
+return road.lane2.lastIndexOf(this);
+}else{
+return road.lane3.lastIndexOf(this);
+}
+M
+}
+C
+public int findLane(Road road) { M
+int lane = 0;
+if (road.lane1.indexOf(this) != ­1) {
+i
+lane+=1; H
+} if (road.lane2.indexOf(this) != ­1) {
+：
+lane+=2;
+}
+if (road.lane3.index号Of(this) != ­1) {
+lane+=3;
+}
+众
+return lane; // returns 1 if car is in lane 1, 2 if
+lane 2, or 3 if in both lanes (0 if vehicle doesn't exist)
+} 公
+}
+信
+DriverLogic
+微
+import java.util.ArrayList;
+import java.util.List;
+public class DriverLogic {
+public String type;
+public int mergeStatus = 0;
+int maxTimeToImpact;
+int slowTime;
+int speedTime;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public List<String> actions = new ArrayList<String>();
+public DriverLogic() {
+}
+public void drive(Road road, Vehicle v) {
+M
+}
+C
+public String toString(){ M
+return "driver logic";
+}
+i
+H
+public int findIndex(Road road, Vehicle v) {
+：
+if (road.lane1.indexOf(v) != ­1) {
+return road.la号ne1.lastIndexOf(v);
+}
+else if(road.lane2.indexOf(v) != ­1){
+众
+return road.lane2.lastIndexOf(v);
+}else{
+ret公urn road.lane3.lastIndexOf(v);
+}
+信
+}
+pub微lic int findLane(Road road, Vehicle v) {
+int lane = 0;
+if (road.lane1.indexOf(v) != ­1) {
+lane=1;
+} if (road.lane2.indexOf(v) != ­1) {
+lane=2;
+}
+if (road.lane3.indexOf(v) != ­1) {
+lane=3;
+}
+return lane; // returns 1 if car is in lane 1, 2 if
+lane 2, or 3 if in both lanes (0 if vehicle doesn't exist)
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public boolean move(int delta, Road road, Vehicle v) {
+int newPos = v.findIndex(road);
+if (newPos+delta < 3000) {
+return road.moveVehicle(v, findIndex(road, v)+delta,
+findLane(road, v));
+}
+else {
+v.exited=true;
+System.out.println("exited");
+M
+v.timeOnRoad = road.time;
+road.removeVehicle(v);
+C
+}
+return false; M
+}
+i
+public double mps(int speed) { // coHnverts speed (kph) to m/s
+return speed*0.277778;
+：
+}
+public void accel(Road ro号ad, Vehicle v) {
+int spacesInFront = 0;
+for (int i=findIndex(road, v)+1; i<3000; i++) {
+众
+if (findLane(road, v) == 1) {
+if (road.lane1.get(i) == null) {
+公spacesInFront++;
+} else {
+break;
+信
+}
+}
+微else if (findLane(road, v) == 2) {
+if (road.lane2.get(i) == null) {
+spacesInFront++;
+} else {
+break;
+}
+}else if (findLane(road, v) == 3) {
+if (road.lane3.get(i) == null) {
+spacesInFront++;
+} else {
+break;
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+int timeToImpact = (int)(spacesInFront/(v.speed+.01));
+if (maxTimeToImpact ­ timeToImpact < slowTime) {
+v.speed = v.speed+(int)v.brakeAccel;
+if (v.speed<1) {
+v.speed = 0;
+}
+actions.add("brake");
+// System.out.println("brake");
+M
+} else if (maxTimeToImpact ­ timeToImpact > speedTime) {
+v.speed = v.speed+(int)v.accel;
+C
+actions.add("accel");
+if (v.speed>v.max_speed) { M
+v.speed = v.max_speed;
+}
+i
+H
+if(v.speed>road.speed_limit){
+：
+v.speed = road.speed_limit;
+}
+// System.out.号println("accel");
+}
+}
+众
+// default merge­left
+// no merge bu公ffer
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+信
+return;
+}
+微if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+M
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position
+C
+&& road.lane2.get(i) == null){
+return; M
+}
+}
+i
+H
+mergeStatus++;
+：
+}else{
+mergeStatus++;
+if(mergeS号tatus == 4){
+road.moveVehicle(v, pos, 2);
+}
+众
+}
+}
+} 公
+public void mergeRight(Road road, Vehicle v){
+信
+if(v.findLane(road) == 3){
+return;
+微}
+if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position ­
+100 && road.lane3.get(i) == null){
+return;
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 3);
+}
+}
+}
+if(v.findLane(road) == 1){
+M
+int pos = v.findIndex(road);
+C
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.lengMth;i­­){
+if(i >= 0 && i < road.roadblock_position ­
+100 && road.lane2.get(i) == null){
+i
+return; H
+}
+：
+}
+mergeStat号us++;
+}else{
+mergeStatus++;
+众
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 2);
+公}
+}
+}
+信
+}
+pub微lic double congestion(double vel, int cars, int len, int
+lanes) {
+return vel*vel*cars/len/lanes/2;
+}
+}
+AggressiveDriver
+public class AggressiveDriver extends DriverLogic{
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public AggressiveDriver(Vehicle v) {
+type="aggressive";
+v.speed = (int)(.6*v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+1;
+slowTime = 3;
+speedTime = 8;
+}
+public void drive(Road road, Vehicle v) {
+M
+accel(road,v);
+C
+int delta = (int)Math.ceil(mps(v.speMed))+1;
+move(delta, road, v);
+i
+mergeLeft(road, v); H
+}
+：
+// custom merge­left
+// merge buffer of 0 号
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+众
+return;
+}
+if(v.fin公dLane(road) == 2){
+int pos = v.findIndex(road);
+信
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.length;i­­){
+微 if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 3){
+road.moveVehicle(v, pos, 1);
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos;i>pos­v.length;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i) == null){
+return;
+}
+M
+}
+C
+mergeStatus++;
+}else{ M
+mergeStatus++;
+if(mergeStatus == 3){
+i
+road.moveVehiclHe(v, pos, 2);
+}
+：
+}
+}
+} 号
+}
+众
+ConservativeDriver
+公
+public class ConservativeDriver extends DriverLogic{
+信
+public ConservativeDriver(Vehicle v) {
+type="conservative";
+微v.speed = (int)(.4*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+4;
+slowTime = 6;
+speedTime = 14;
+}
+public void drive(Road road, Vehicle v) {
+accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 5
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+if(v.findLane(road) == 2){
+M
+int pos = v.findIndex(road);
+C
+if(mergeStatus == 0){
+for(int i=pos+5;i>pos­v.leMngth­5;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+i
+return; H
+}
+：
+}
+mergeStat号us++;
+}else{
+mergeStatus++;
+众
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+公}
+}
+}
+信
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road);
+微
+if(mergeStatus == 0){
+for(int i=pos+5;i>pos­v.length­5;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+road.moveVehicle(v, pos, 2);
+}
+}
+}
+}
+}
+FairDriver
+M
+public class FairDriver extends DriverLogic {
+C
+public FairDriver(Vehicle v) {
+type="fair"; M
+v.speed = (int)(.4*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+2;
+i
+slowTime = 4; H
+speedTime = 10;
+：
+}
+public void drive(Road ro号ad, Vehicle v) {
+accel(road,v);
+众
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(del公ta, road, v);
+mergeLeft(road, v);
+信
+}
+// 微custom merge­left
+// merge buffer of 5 (reasonable)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+5;i>pos­v.length­5;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+}
+M
+}
+}
+C
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road); M
+if(mergeStatus == 0){
+i
+for(int i=pos+5;i>posH­v.length­5;i­­){
+if(i >= 0 && i < road.roadblock_position
+：
+&& road.lane2.get(i) == null){
+return;
+} 号
+}
+众
+mergeStatus++;
+}else{
+公mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 2);
+信
+}
+}
+微}
+}
+}
+FastDriver
+public class FastDriver extends DriverLogic {
+public FastDriver(Vehicle v) {
+type="fast";
+v.speed = (int)(.6*v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+1;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+slowTime = 3;
+speedTime = 8;
+}
+public void drive(Road road, Vehicle v) {
+accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+M
+mergeLeft(road, v);
+C
+}
+M
+// custom merge­left
+// merge buffer of 4 (fast)
+i
+public void mergeLeft(Road road, VehiHcle v){
+if(v.findLane(road) == 1){
+：
+return;
+}
+if(v.findLane(road) 号== 2){
+int pos = v.findIndex(road);
+众
+if(mergeStatus == 0){
+for(int i=pos+4;i>pos­v.length­4;i­­){
+公if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+信
+}
+}
+微
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 3){
+road.moveVehicle(v, pos, 1);
+}
+}
+}
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+for(int i=pos+4;i>pos­v.length­4;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+M
+if(mergeStatus == 3){
+road.moveVehicle(v, pos, 2);
+C
+}
+} M
+}
+}
+i
+} H
+：
+RandomDriver
+号
+public class RandomDriver extends DriverLogic {
+众
+public RandomDriver(Vehicle v) {
+type="random";
+v.speed 公= (int)(v.max_speed*.5);
+}
+信
+public void drive(Road road, Vehicle v) {
+微
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 2 (crashes often)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+2;i>pos­v.length­2;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+}
+M
+mergeStatus++;
+C
+}else{
+mergeStatus++; M
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+i
+} H
+}
+：
+}
+if(v.findLane(road) == 3){
+int pos = v.fi号ndIndex(road);
+if(mergeStatus == 0){
+众
+for(int i=pos+2;i>pos­v.length­2;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i公) == null){
+return;
+}
+信
+}
+微 mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 2);
+}
+}
+}
+}
+}
+RoadBlock
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class RoadBlock extends Vehicle {
+public RoadBlock() {
+logic = new DriverLogic();
+exited = true;
+speed = 0;
+}
+public void drive(){
+M
+}
+C
+} M
+SafeDriver
+i
+H
+：
+public class SafeDriver extends DriverLogic {
+public SafeDriver(Vehicle号 v) {
+type="Safe";
+v.speed = (int)(.4*v.max_speed); //v.max_speed);
+众
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+4;
+slowTime = 4;
+speedTim公e = 10;
+}
+信
+public void drive(Road road, Vehicle v) {
+微accel(road,v);
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 10 (most safe)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+10;i>pos­v.length­10;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+M
+}
+C
+mergeStatus++;
+}else{ M
+mergeStatus++;
+if(mergeStatus == 4){
+i
+road.moveVehiclHe(v, pos, 1);
+}
+：
+}
+}
+if(v.findLane(road) 号== 3){
+int pos = v.findIndex(road);
+众
+if(mergeStatus == 0){
+for(int i=pos+10;i>pos­v.length­10;i­­){
+公if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i) == null){
+return;
+信
+}
+}
+微
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 2);
+}
+}
+}
+}
+}
+Sedan
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class Sedan extends Vehicle{
+public Sedan() {
+length = 3;
+max_speed = 100;
+brakeAccel = ­9.5;
+}
+M
+C
+}
+M
+SelfishDriver
+i
+H
+public class SelfishDriver extends DriverLogic{
+：
+public SelfishDriver(Vehicle v) {
+type="selfish"; 号
+v.speed = (int)(.6*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+3;
+众
+slowTime = 4;
+speedTime = 9;
+} 公
+public void drive(Road road, Vehicle v) {
+信
+accel(road,v);
+微
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+mergeLeft(road, v);
+}
+// custom merge­left
+// merge buffer of 3 (only cares about himself)
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+return;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+if(v.findLane(road) == 2){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+3;i>pos­v.length­3;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+}
+M
+mergeStatus++;
+C
+}else{
+mergeStatus++; M
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 1);
+i
+} H
+}
+：
+}
+if(v.findLane(road) == 3){
+int pos = v.fi号ndIndex(road);
+if(mergeStatus == 0){
+众
+for(int i=pos+3;i>pos­v.length­3;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i公) == null){
+return;
+}
+信
+}
+微 mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 4){
+road.moveVehicle(v, pos, 2);
+}
+}
+}
+}
+}
+SlowDriver
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+public class SlowDriver extends DriverLogic {
+public SlowDriver(Vehicle v) {
+type="slow";
+v.speed = (int)(.2*v.max_speed); //v.max_speed);
+maxTimeToImpact = (int)Math.ceil(v.max_speed/v.accel)+6;
+slowTime = 8;
+speedTime = 16;
+}
+M
+public void drive(Road road, Vehicle v) {
+C
+accel(road,v); M
+int delta = (int)Math.ceil(mps(v.speed))+1;
+i
+move(delta, road, v); H
+：
+mergeLeft(road, v);
+}
+号
+// custom merge­left
+// merge buffer of 8 (takes time to merge)
+众
+public void mergeLeft(Road road, Vehicle v){
+if(v.findLane(road) == 1){
+ret公urn;
+}
+if(v.findLane(road) == 2){
+信
+int pos = v.findIndex(road);
+微if(mergeStatus == 0){
+for(int i=pos+8;i>pos­v.length­8;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane1.get(i) == null){
+return;
+}
+}
+mergeStatus++;
+}else{
+mergeStatus++;
+if(mergeStatus == 7){
+road.moveVehicle(v, pos, 1);
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+}
+}
+}
+if(v.findLane(road) == 3){
+int pos = v.findIndex(road);
+if(mergeStatus == 0){
+for(int i=pos+8;i>pos­v.length­8;i­­){
+if(i >= 0 && i < road.roadblock_position
+&& road.lane2.get(i) == null){
+M
+return;
+}
+C
+}
+M
+mergeStatus++;
+}else{
+i
+mergeStatus++; H
+if(mergeStatus == 7){
+：
+road.moveVehicle(v, pos, 2);
+}
+} 号
+}
+}
+众
+}
+TestDriver 公
+信
+public class TestDriver extends DriverLogic {
+pub微lic TestDriver(Vehicle v) {
+type="test";
+v.speed = (int)(.7*v.max_speed);
+}
+public void drive(Road road, Vehicle v) {
+double congT = 0; // get congestion value from road
+double cong1 = 0; // congestion in front
+double cong2 = 0; // congestion in front in other lane
+double cong3 = 0; // congestion in back in other lane
+double cong4 = 0; // congestion in back
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+double vel1 = 0; // congestion in front
+double vel2 = 0; // congestion in front in other lane
+double vel3 = 0; // congestion in back in other lane
+double vel4 = 0; // congestion in back
+int cars = road.vehicles.size();
+for (Vehicle c: road.vehicles) {
+if (road.vehicles.indexOf(v) >
+M
+road.vehicles.indexOf(c)) { // current vehicle is behind the test
+vehicle
+C
+if (v.findLane(road) == c.findLane(road)) {
+vel4+=c.speed; M
+} else {
+vel3+=c.speed;
+i
+} H
+} else if (road.vehicles.indexOf(v) <
+：
+road.vehicles.indexOf(c)) { // current vehicle is in front of the
+test vehicle
+if (v.fin号dLane(road) == c.findLane(road)) {
+vel1+=c.speed;
+} else {
+众
+vel2+=c.speed;
+}
+} 公
+}
+信
+vel1 /= cars;
+vel2 /= cars;
+微vel3 /= cars;
+vel4 /= cars;
+int frontLen = 3000 ­ v.findIndex(road);
+int backLen = v.findIndex(road);
+cong1 = congestion(vel1,cars,frontLen,3);
+cong2 = congestion(vel2,cars,frontLen,3);
+cong3 = congestion(vel3,cars,backLen,3);
+cong4 = congestion(vel4,cars,backLen,3);
+// all congestion values have been computed and stored at
+this point
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+double currCongDiff = congDiff(congT, cong1, cong2, cong3,
+cong4);
+double congDiff1 = congDiff(congT,
+congestion((vel1*cars+v.speed)/cars,cars,frontLen­v.speed,1), cong2,
+cong3, cong4);
+double congDiff2 = congDiff(congT, cong1,
+congestion((vel2*cars+v.speed)/cars,cars,frontLen­v.speed,1), cong3,
+cong4);
+double congDiff3 = congDiff(congT, cong1, cong2,
+M
+congestion((vel3*cars+v.speed)/cars,cars,backLen+v.speed,1), cong4);
+double congDiff4 = congDiff(congT, cong1, cong2, cong3,
+C
+congestion((vel4*cars+v.speed)/cars,cars,backLen+v.speed, 1));
+M
+double minValue =
+Math.min(Math.min(congDiff1,congDiff2),Math.min(Math.min(congDiff3,co
+i
+ngDiff4),currCongDiff)); H
+：
+if (minValue == currCongDiff) {
+actions.add("stay");
+} else if (minValue 号== congDiff1) {
+actions.add("accel");
+v.speed+=v.accel;
+众
+} else if (minValue == congDiff2) {
+if (v.findLane(road) == 1) {
+公actions.add("attempt move right");
+mergeRight(road, v);
+} else {
+信
+mergeLeft(road, v);
+}
+微} else if (minValue == congDiff3) {
+actions.add("move back and merge");
+v.speed+=v.brakeAccel;
+if (v.findLane(road) == 1) {
+mergeRight(road, v);
+} else {
+mergeLeft(road, v);
+}
+} else if (minValue == congDiff4) {
+actions.add("brake");
+v.speed+=v.brakeAccel;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+int delta = (int)Math.ceil(mps(v.speed))+1;
+move(delta, road, v);
+}
+public double congestion(double vel, int cars, int len, int
+lanes) {
+return vel*vel*cars/len/lanes/2;
+}
+public double congDiff(double ct, double c1, double c2, double
+M
+c3, double c4) {
+return Math.abs(ct­c1) + Math.abs(ct­c2) + Math.abs(ct­c3)
+C
++ Math.abs(ct­c4);
+} M
+}
+i
+Truck H
+：
+public class Truck extends Vehicle{
+号
+public Truck() {
+众
+length = 10;
+max_speed = 65;
+brakeAcc公el = ­6.5;
+}
+}
+信
+Van
+微
+public class Van extends Vehicle{
+public Van() {
+length = 4;
+max_speed = 80;
+brakeAccel = ­7.2;
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数学建模助教 · 做建模</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css?v=anim1" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+</head>
+<body>
+  <div class="home">
+    <canvas id="bg-canvas" class="mm-ambient"></canvas>
+    <header class="home-top">
+      <div class="home-brand"><span class="home-mark">绣</span>数学建模助教</div>
+      <div class="home-user" id="home-user"></div>
+    </header>
+
+    <main class="home-main">
+      <a class="home-back" href="/home">‹ 返回主页</a>
+      <h1 class="home-greet">做建模 · 选择方式</h1>
+      <p class="home-greet-sub">想自由折腾，还是带着一道题让助教陪你一步步做？</p>
+
+      <div class="home-cards home-cards-2">
+        <a class="home-card" href="/build/free">
+          <div class="home-card-icon">🧪</div>
+          <h2>独立练习</h2>
+          <p>一个完整的工作台：左侧浏览项目文件、中间写并运行代码、右侧随时向助教提问，自由发挥。</p>
+          <div class="home-card-meta">编辑器 · 终端 · 自由对话</div>
+        </a>
+
+        <a class="home-card" href="/solve">
+          <div class="home-card-icon">🧭</div>
+          <h2>做题</h2>
+          <p>上传你手上的赛题，助教按建模框架拆成一张路线图，点开每一步，和它一起把这一步做出来。</p>
+          <div class="home-card-meta">上传题目 · 路线图 · 一步步共创</div>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/profile.js?v=anim1"></script>
+  <script>
+    (function () {
+      if (window.MMAnim) {
+        MMAnim.ambientNetwork("#bg-canvas", { density: 26000, inkAlpha: 0.08, dotAlpha: 0.3, interactive: false });
+        MMAnim.reveal(document.querySelector(".home-cards"), { observe: false });
+      }
+      Profile.require().then((p) => {
+        if (!p) return;
+        const user = document.getElementById("home-user");
+        user.innerHTML = "";
+        const badge = document.createElement("span");
+        badge.className = "home-avatar";
+        badge.textContent = Profile.avatarEmoji(p.avatar);
+        const name = document.createElement("span");
+        name.className = "home-name";
+        name.textContent = p.nickname;
+        const back = document.createElement("button");
+        back.className = "home-logout";
+        back.textContent = "主页";
+        back.onclick = () => { location.href = "/home"; };
+        user.append(badge, name, back);
+      });
+    })();
+  </script>
+</body>
+</html>

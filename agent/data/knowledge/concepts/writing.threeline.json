@@ -1,0 +1,62 @@
+{
+  "schema_version": 3,
+  "concept_id": "writing.threeline",
+  "title": "表格三线表规范",
+  "taxonomy_path": [
+    "论文写作与学术规范",
+    "图表与公式规范",
+    "表格三线表规范"
+  ],
+  "module_id": "A",
+  "subcat_id": "A.2",
+  "aliases": [
+    "三线表",
+    "学术表格"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "writer"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "三线表是学术论文中只用三条横线（顶线、栏目线、底线）来分隔表格内容的简洁排版规范，让数据一目了然。",
+    "intuition": "想象一个整洁的文件夹：顶线像文件夹的封面，栏目线像分隔不同章节的标签，底线像文件夹的封底。没有多余的竖线和横线，就像文件夹里只有必要的分隔，信息清晰不杂乱。",
+    "when_to_use": "在撰写学术论文、报告或任何需要呈现结构化数据时，只要表格不是特别复杂（如需要多层嵌套表头），都应优先使用三线表格式。",
+    "definition": "三线表是一种学术论文中常用的表格格式，由顶线、栏目线和底线三条横线构成，去除所有竖线和多余的横线，使表格简洁清晰。顶线最粗，栏目线和底线较细，栏目线位于表头与数据之间，底线位于表格底部。",
+    "math_principle": "三线表本身不涉及数学公式，其核心是排版规范。表格中的数据应清晰排列，表头与数据对齐，数字通常右对齐，文本左对齐。若表格中有统计量（如均值、标准差），应标注清楚。",
+    "step_by_step": [
+      "1. 确定表格内容：列出所有列名（表头）和行数据。",
+      "2. 绘制顶线：在表格最上方画一条粗横线。",
+      "3. 绘制栏目线：在表头行下方画一条细横线，分隔表头和数据。",
+      "4. 绘制底线：在表格最后一行数据下方画一条细横线。",
+      "5. 去除所有竖线和多余的横线：确保表格只有这三条横线。",
+      "6. 对齐数据：数字右对齐，文本左对齐，表头与数据对齐。",
+      "7. 标注统计量：如有均值、标准差等，在表头或表格下方注明。"
+    ],
+    "worked_example": "以论文2332中的城市数据为例，制作三线表：\n\n表1：各城市应急计划评分\n| 城市 | 应急计划评分 | 疏散计划评分 | 人口（万人） | 距离（km） |\n|------|--------------|--------------|--------------|------------|\n| A    | 85           | 90           | 120          | 15         |\n| B    | 78           | 82           | 95           | 22         |\n| C    | 92           | 88           | 150          | 10         |\n\n按照三线表规范，只保留顶线、栏目线和底线，去除所有竖线。最终呈现为：\n\n表1：各城市应急计划评分\n\n城市  应急计划评分  疏散计划评分  人口（万人）  距离（km）\nA     85           90           120          15\nB     78           82           95           22\nC     92           88           150          10\n\n（实际排版中，顶线粗，栏目线和底线细，数据对齐。）",
+    "pitfalls": [
+      "1. 误加竖线：三线表严禁竖线，初学者常习惯性地添加竖线分隔列。",
+      "2. 线粗细不分：顶线应最粗，栏目线和底线较细，但常被画成一样粗。",
+      "3. 表头与数据混淆：栏目线必须位于表头下方，不能放在表头上方或数据中间。",
+      "4. 数据对齐混乱：数字未右对齐或文本未左对齐，导致表格不美观。",
+      "5. 忽略统计量标注：当表格包含均值、标准差等统计量时，未在表头或表格下方说明。"
+    ],
+    "tools": "常用工具：Microsoft Word、LaTeX、Markdown。\n\nPython代码示例（使用pandas和matplotlib生成三线表图片）：\n```python\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\n# 创建数据\ndata = {\n    '城市': ['A', 'B', 'C'],\n    '应急计划评分': [85, 78, 92],\n    '疏散计划评分': [90, 82, 88],\n    '人口（万人）': [120, 95, 150],\n    '距离（km）': [15, 22, 10]\n}\ndf = pd.DataFrame(data)\n\n# 创建表格图\nfig, ax = plt.subplots(figsize=(8, 3))\nax.axis('off')\ntable = ax.table(cellText=df.values, colLabels=df.columns, loc='center', cellLoc='left')\ntable.auto_set_font_size(False)\ntable.set_fontsize(10)\ntable.scale(1, 1.5)\n\n# 设置三线样式：顶线粗，栏目线和底线细\nfor key, cell in table.get_celld().items():\n    if key[0] == 0:  # 表头行\n        cell.set_edgecolor('black')\n        cell.set_linewidth(2)  # 顶线粗\n    elif key[0] == len(df):  # 最后一行底线\n        cell.set_edgecolor('black')\n        cell.set_linewidth(1)  # 底线细\n    else:\n        cell.set_edgecolor('white')  # 隐藏其他边框\n\n# 手动添加栏目线（在表头下方）\nax.plot([0.1, 0.9], [0.75, 0.75], color='black', linewidth=1)\n\nplt.show()\n```\n（注意：此代码仅为示例，实际三线表在Word或LaTeX中更易实现。）"
+  },
+  "formulas": [],
+  "cases": [
+    "2332",
+    "4880",
+    "5473"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_A10"
+    ],
+    "from_papers": [
+      "2332",
+      "4880",
+      "5473"
+    ]
+  }
+}

@@ -1,0 +1,2176 @@
+Team #3652 Page 1 of 47
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2012
+M
+15th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+C
+Team Control Number: 3652
+Problem Chosen: A M
+Summary
+i
+The final goal of our model is to simulate the number Hof Manitoban elks at the end of a
+period of time and evaluate if the Manitoban elks can adapt to the environmental conditions in
+eastern America, more specifically the GSMNP (G：reat Smokey Mountain National Park). In
+going about this problem, we constructed a model that predicts the change in the elk population
+over time.
+号
+Our model calculated the change in population by first calculating the birth rate and death
+rate, then calculating the limit to the elk population in GSMNP: The carrying capacity.
+We calculated the birth rate of elks by averaging the elk births in the given data to obtain the
+众
+arithmetic mean, and calculated the death rate in a slightly more complicated manner of splitting
+it into two sub-models: An accidental death rate model and a natural death rate model. The
+former accidental death ra公te model takes the arithmetic mean of the poaching rate, accident rate,
+predator attack rate, sickness rate, and an unknown factor rate based on the data given to obtain
+the probability of an elk dying from environmental factors in any given year. The natural death
+信
+rate model, on the other hand, simply models the deaths of elks that reach their natural age limit.
+We then estimated the carrying capacity of the elk population by rearranging the main
+function and calculating the arithmetic mean of all data inputted into it, and combined the above
+微
+models to form our final elk population iterated model.
+Next, we constructed a Monte Carlo Simulation Program to test our function for us. The
+program simulates the elk population’s interaction with Nature based on the functions derived in
+the iterated model for a large number of trials and outputs a statistical average of final population
+for comparison to our given data. We optimize the program by tweaking input rates and the
+sickness rate function in order to accurately portray the population growth function.
+The original figures were derived by using data from 2001- 2007. By applying the calculated
+rates to the Monte Carlo simulations, a stunning accuracy of elks was achieved. After
+optimization and modification of the constant rates into functions, the absolute uncertainty of
+elks was reduced to for any set of given statistics (including total poached, total killed by
+predators, total killed by accidents, total killed by sickness etc.)
+The model predicts that the number of elks will increase steadily in the future until it peaks
+at a limit of 1101, then fluctuate and oscillate slightly around this limit.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 2 of 47
+M
+C
+Elks into the East
+M
+i
+H
+Mathematical Models for the Reintroductio
+：
+n of Elks into Eastern America
+2012 HiMCM Problem A
+号
+Team #3652
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 3 of 47
+
+Contents
+| 1. Introduction          |     |     | 4   |
+| ------------------------ | --- | --- | --- |
+| 2. The Population Model  |     |     | 5   |
+|        2.1 The Approach  |     |     | 5   |
+|        2.2 Assumptions   |     |     | 5   |
+|        2.3 Variables     |     |     | 6   |
+|        2.4 The Model     |     |     | 7   |
+             2.4.1Birth Rate Model
+M8
+|                  2.4.2 Death Rate Model  |     |     | 9   |
+| ---------------------------------------- | --- | --- | --- |
+                         2.4.2.1 Accidental Death Rate Model  9
+C
+                         2.4.2.2 Natural Death Rate Model  14
+|                  2.4.3 Environmental Factor Model  |     |      | 14  |
+| -------------------------------------------------- | --- | ---- | --- |
+|                                                    |     | M16  |     |
+2.5 Model Testing: The Monte Carlo Simulation
+|                  2.5.1 Introduction and Rationale  |     |     | 16  |
+| -------------------------------------------------- | --- | --- | --- |
+|                  2.5.3 Additional Justifications   |     |     | 16  |
+i
+|                  2.5.3 Objects and Properties  |     | H   | 16  |
+| ---------------------------------------------- | --- | --- | --- |
+|                  2.5.4 Variables               |     |     | 17  |
+： 17
+                 2.5.5 The Method
+|        2.6 Sensitivity of the Model                     |     |     | 19  |
+| ------------------------------------------------------- | --- | --- | --- |
+|                  2.6.1 Sensitivity of the Poached Rate  |     |     | 20  |
+                 2.6.2 Sensitivity of the Predator Rate  号 20
+|                  2.6.3 Sensitivity of the Accident Rate  |     |     | 21  |
+| -------------------------------------------------------- | --- | --- | --- |
+|                  2.6.4 Sensitivity of the Sickness Rate  |     |     | 21  |
+                 2.6.5 Sensitivity of the Unknown 众Rate
+22
+                 2.6.6 Sensitivity of the Pregnancy Rate  23
+|          2.7 Strength and Weakness  |     |     | 23  |
+| ----------------------------------- | --- | --- | --- |
+公
+| 3. Model Improvement                                    |     |     | 25  |
+| ------------------------------------------------------- | --- | --- | --- |
+| 3.1 The New Environmental Factor Model                  |     |     | 25  |
+| 3.2 Improveme信nt for Deaths Caused by Sickness          |     |     | 25  |
+| 3.3 Improvement for Deaths Caused by Predator Activity  |     |     | 26  |
+| 4. Plan 微for growth                                     |     |     | 28  |
+
+| 4.1 Decreasing r |     |     | 28  |
+| ---------------- | --- | --- | --- |
+s
+|      4.2 Decreasing r |     |     | 28  |
+| --------------------- | --- | --- | --- |
+pr
+| 5. Letter for Commissioner  |     |     | 30  |
+| --------------------------- | --- | --- | --- |
+| 6. Appendix                 |     |     | 31  |
+| 6.1 Reference               |     |     | 31  |
+| 6.2 Java Program Code       |     |     | 31  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 4 of 47
+1. Introduction
+Before the arrival of the Europeans in America, North America produced a broad variety of
+fauna, notably the elks. However, after the colonization movement, the number of traditional
+animals in North America decreased dramatically. The Eastern Elk became extinct in the
+early 19th century due to human activity.
+Now, scientists are trying to reintroduce elks into eastern North America. There are a
+M
+number of concerns about the program, but the main concern is if the elk specie itself can
+adapt to the eastern North American environment. The reintroduced species is the Manitoba
+C
+Elk. Although the Manitoba Elk is similar to the Eastern Elk, it is smaller in size and suited
+to the western North America and Canadian environment. Can the Manitoba Elk tolerate
+M
+typical eastern North American diseases? Can the Manitoba Elk digest eastern North
+American foods efficiently enough to sustain their growth? Can the Manitoba Elk adapt itself
+i
+to the eastern North American overall environment? H
+：
+These questions can be solved through tracking the population change in the Manitoba
+Elks in the eastern North America region, typically, the GSMNP (Great Smokey Mountain
+National Park). Through measuring the号 ability for the Manitoba Elk to survive and reproduce
+in the GSMNP, it is possible to extrapolate the ability for the Manitoba Elk to survive and
+reproduce in the eastern North American environment. In addition to the natural change in
+众
+population, there are also human factors to consider: will the Manitoba Elk in eastern North
+America be annihilated by human poachers? Will the human-made GSMNP provide
+公
+significant obstacles for the survival of Manitoba Elks?
+Therefore, ou信r model should consider the following factors:
+1. The birth rate of the Manitoba Elk
+微
+2. The death rate, both natural and accidental, of the Manitoba Elk
+3. The limit for the population of Manitoba Elks in GSMNP, or the carrying capacity
+Our model will also incorporate a modified virtual environment for elks where we can
+input the above birth and death rates and the carrying capacity and monitor the progression of the
+elk population over decades. It must also consider these additional factors:
+1. The conversion of the above rates into functioning Java code
+2. The accuracy of an object-oriented model
+3. The variation in the above rates over time
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 5 of 47
+2. The Population Model
+2.1 The Approach
+The ultimate goal of this project is to create the model of the elk population within the Great
+Smokey National Mountain Park for the future using existing data, and we decided to first
+analyze the factors that determine the births and deaths within the system. However, there are
+many random factors in this process, such as the rate of sickness, the population of predators,
+M
+and the rate of poaching etc. presenting gave difficulty to directly model the future of the elk
+population over time.
+C
+It is a well-known fact that a Monte Carlo method, a set of computational algorithms that use
+M
+repeated random sampling over multiple inputs in a system, is an accurate method of estimation
+and modeling of problems. We aim to first construct a growth rate model, which is an iterated
+function, composed of a set of polynomial functions that integraite the various factors
+H
+determining the birth and death of elks. We then integrate the function into a Java model that
+plays out the growth and decline of the elk population. Through looping this simulation for tens
+：
+of thousands of times, the program will return a close estimate of the elk population over a given
+time period. We can compare our results with the data given in the question: If the output over
+2001-2011 is accurate, then we can reason号ably infer that the program also calculates the future
+population accurately.
+众
+The end result is a pseudo-Monte Carlo model that is able to simulate the progression of the elk
+population over, say, two decades. While it isn’t completely random in the sense that our iterated
+function is based on absolute sampling data given in the question, it definitely returns an accurate
+公
+representation of the elk population given those factors.
+信
+2.2 Assumptions
+1. Our model is based on the annual increments of time, with new elks introduced on the
+微
+first day of the year. We are given the data of the elk population on an annual basis, and
+it would be inappropriate to engage in monthly calculations of the growth rate of the
+population.
+2. All elks have a maximum lifespan of 25 years. While an elk can die from a series of
+factors before reaching the maximum lifespan, our model needs to assume a maximum
+limit on an elk’s lifespan to simulate the natural death toll of a population.
+3. A female elk, if pregnant, will always successfully give birth to one baby elk.
+The calculation of miscarriage is a minor confounding variable, which would inevitably
+complicate our model.
+4. Female elks can only become impregnated if they are above or equal to 24 months old.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 6 of 47
+This sets a minimum reproduction age according to the nature of the elk. Elks are unable
+to reproduce before age of sexual maturity.
+5. The natural environment in the Great Smoky National Mountain Park is consistent and
+stable: there are no natural disasters, including epidemics. These events are anomalies
+that could potentially devastate the whole elk population and would cause great
+fluctuations in this model.
+6. Elk that die during a given year are not factored into the calculation of the birth of new
+elks that year. While this may seem obvious, it is important otherwise our calculations
+will be incorrect. Since our information has a precision of 1 year, it is Mimpossible to
+know which month did the elk die. This would put an unnecessary complication to our
+calculation, especially in the calculation of the death rate.
+C
+7. A “mature” elk is an elk that is of or older than 24 monthsM of age
+8. All elks reintroduced are already mature elks. This ensures the efficiency of reproduction
+i
+in the system, and also makes more sense than intrHoducing baby elks into the Great
+Smokey Mountain National Park, which would be both dangerous and time-consuming.
+：
+9. The male-to-female ratio is very close to 1:1. This allows us to model the birth rate more
+easily.
+号
+10. All baby elks are born in autumn.
+众
+11. The GSMNP does not experience changes in land, resources, climate, and governance.
+This makes the carrying capacity stable, and therefore makes the model independent to
+公
+external factors.
+信
+2.3 Variables
+Symbols Explanation
+微
+A the reciprocal of the carrying capacity
+N(t) the population of elks over time (T ) in the year (t+2000)
+g(t) the growth rate in year (t+2000)
+R(t) the number of reintroduced elk in year (t+2000)
+B(t) the birth rate in year (t+2000)
+D(t) death toll in year (t+2000)
+r possibility of mating per year per elk
+m
+n number of offspring produced each mate
+N’(t) number of matured elks able to mate in year (t+2000)
+AD(t) death toll due to accident in year (t+2000)
+ND(t) natural death toll in year (t+2000)
+r accidental death percentage
+ad
+N (t) the base number for computing the accidental death rate in year (t+2000)
+base
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 7 of 47
+n (t) number of elks dead due to poaching activity in year (t+2000)
+p
+n (t) number of elks dead due to unknown circumstances in year (t+2000)
+u
+n (t) number of elks dead due to accidents in year (t+2000)
+ac
+n (t) number of elks dead due to predators in year (t+2000)
+pr
+n(t) number of elks dead due to sickness in year (t+2000)
+s
+r possibility for an elk to die due to sickness
+nd
+r possibility for an elk to die due to poaching activity
+p
+r possibility for an elk to die due to unknown circumstances
+u
+r possibility for an elk to die due to accidents
+ac
+r possibility for an elk to die due to predators
+pr
+r possibility for an elk to die due to sickness
+s M
+R Possibility of an elk surviving a time cycle
+al
+C
+2.4 The Model
+A population grows simply if the number of births each year eMxceeds the number of deaths in
+that year. Based on this reasoning, our model defines the growth of the population simply as the
+arithmetic difference between the birth rate and the death rate within the elk group.
+i
+H
+The calculation of the birth and death rate in an elk population necessitates the creation of
+：
+further sub-models, in which we pinpoint and determine the effect of factors that respectively
+affect the birth and death rate.
+号
+Equation 1.1
+众
+In order to truly simulate natural growth of the population of elks, we must consider the
+factors that are specific to the elks’ adaptations and environment. One important factor is the
+“carrying capacity” of GSMNP, which is the relative maximum population of elks the land area
+公
+of GSMNP can support with its limited resources. As the population approaches the carrying
+capacity, the scarcity of resources imposes a natural limit on the elks and the weaker individuals
+will die out. 信
+This first function, thus, will be composed of a set of polynomial functions:
+微
+Equation 1.2
+Where the population in year t (N(t)) is equal to the sum of the population in year (t-1) (N(t-1))
+the isolated net growth in year t (g(t)), and the amount of Manitoban elk reintroduced in year t
+(R(t)). The last factor ( ) is the adjustment to the population based on the logistics
+model of carrying capacity.
+While it may seem more efficient to express this function in terms of the derivative of population
+over time, denoted as
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 8 of 47
+Equation 1.3
+where P represents the total elk population, we must keep in mind that the iterated function is a
+polynomial whole number function, where we measure growth in terms of the unit year.
+2.4.1 Birth Rate Model
+This sub-model establishes the birth rate function of a population of elk, which we can define
+as a function that estimates the percentage of baby elks, B(t), born in a year as compared to the
+total population of mature elks from the previous year. Thus we need to first dMerive the function
+for the number of mature elks through exclusion.
+C
+We have already defined, in the assumptions, that mature elks are elks that are older than 24
+M
+months old, and therefore must exclude the number of elks born in the last two years who are
+still alive by multiplying the factor , which represents the factor of those elk born still alive, to
+i
+it. H
+：
+Equation 2.1
+号
+Equation 2.2
+In common terms, the mature po众pulation on any given year is the sum of the total population
+from the previous year, the number of elk introduced this year, and the negative of the surviving
+elk born within the last two years.
+公
+Based on our assumption that the male and female elk population is always close to a constant
+信
+ratio of 1:1, we simply divide the number of mature elks by two to obtain the number of pairs of
+elks who attempt to reproduce over the year.
+微
+Equation 2.3
+The population born in year t is thus equal the product of the pairs of mature elks, the rate of
+pregnancy, and the number of offspring produced per pair.
+According to assumption 3, the n is 1. To compute r , plug in all the other numbers to get a
+m
+function of r .
+m
+According to given statistics, calculations can derive the r in each year according to the
+m
+equation. By applying the calculated r , our model produces an average r :
+m m
+Table 1: Calculation of r
+m
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 9 of 47
+
+| t   | N(t)  | B(t-1)  | B(t)  | N’(t)  | n   | r (t)  |
+| --- | ----- | ------- | ----- | ------ | --- | ------ |
+m
+| 1   | 27  | 0   | 4   | 23  | 1   | 34.78%  |
+| --- | --- | --- | --- | --- | --- | ------- |
+| 2   | 51  | 4   | 2   | 45  | 1   | 8.89%   |
+| 3   | 57  | 2   | 10  | 46  | 1   | 43.48%  |
+| 4   | 53  | 10  | 8   | 36  | 1   | 44.44%  |
+| 5   | 56  | 8   | 10  | 39  | 1   | 51.28%  |
+M
+| 6   | 67   | 10  | 13  | 46  | 1    | 56.52%   |
+| --- | ---- | --- | --- | --- | ---- | -------- |
+| 7   | 86   | 13  | 19  | 56  | 1    | C67.86%  |
+| 8   | 96   | 19  | 19  | 61  | 1  M | 62.30%   |
+| 9   | 107  | 19  | 19  | 72  | 1    | 52.78%   |
+i
+| 10  | 124  | 19  | 25  | 84  H | 1   | 59.52%  |
+| --- | ---- | --- | --- | ----- | --- | ------- |
+：
+|     |     |     |     |     | r   | 48.19%  |
+| --- | --- | --- | --- | --- | --- | ------- |
+m
+
+号
+    r  in this case is 48.19%.
+m
+
+众
+    2.4.2 Death Rate Model
+    This model establishes the death rate function of a population of elk over time. We observed
+that elk deaths can be split公 into two main areas: Accidental deaths as a result of natural elements
+such as predators, sicknesses and poaching, as well as natural deaths resulting from age (25 years
+old).
+信
+
+Equation 3.1
+微
+    The death toll in year t is defined as the accidental death toll in year t plus the number of elks
+that experienced natural death (age reaches limit).
+
+        2.4.2.1Accidental Death Rate Model
+    The model first established the total accidental death rate r  as the sum of the individual death
+ad
+rates r , r , r , r , and r . These individual rates denote the percentage of the elk population killed
+| p   | s pr a | u   |     |     |     |     |
+| --- | ------ | --- | --- | --- | --- | --- |
+through poaching, through sicknesses, through predator attacks, through accidental events, and
+through unknown causes respectively. The last two, however, deserve special attention: Some
+elks die from random accidents (e.g. falls, starvation), and a very small number of elks die for
+completely unknown reasons, which could be explained as a sampling error from the Department
+of Wildlife. The model must still factor this unknown death rate into the function in order to
+create a reliable output.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 10 of 47
+
+We calculated the respective rates of death by computing the statistical mean over the eleven
+years of data presented to us in the question.
+
+The base number of each rate in year t is the sum of the number of elks alive in year (t-1) plus
+the number of elks reintroduced in year t plus the number of elks born in year t.
+
+Equation 4.1
+ Then the model divides the number of elks dead due to each circumstance by the base number.
+The average is then calculated:
+M
+Rate of poaching:
+C
+
+M
+Equation 4.1.1
+The calculation is presented as followed:
+| Table 2: Calculation of r |     |     |     | i   |
+| ------------------------- | --- | --- | --- | --- |
+p
+H
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |
+| ---------- | ----------- | ------ | ------ | ------ |
+|            |             | base   | p      | p      |
+：
+| 1  0   | 25  4  | 29  | 0   | 0.00%  |
+| ------ | ------ | --- | --- | ------ |
+| 2  27  | 27  2  | 56  | 0   | 0.00%  |
+号
+| 3  51  | 0  10  | 61  | 0   | 0.00%  |
+| ------ | ------ | --- | --- | ------ |
+众
+| 4  57  | 0  8   | 65  | 1   | 1.54%  |
+| ------ | ------ | --- | --- | ------ |
+| 5  53  | 0  10  | 63  | 0   | 0.00%  |
+公
+| 6  56  | 0  13    | 69   | 0   | 0.00%  |
+| ------ | -------- | ---- | --- | ------ |
+| 7  67  | 5  信 19  | 91   | 0   | 0.00%  |
+| 8  86  | 0  19    | 105  | 0   | 0.00%  |
+微
+| 9  96    | 0  19  | 115  | 1   | 0.87%  |
+| -------- | ------ | ---- | --- | ------ |
+| 10  107  | 0  25  | 132  | 1   | 0.76%  |
+|          |        |      | r   | 0.32%  |
+p
+
+The r  according to the calculations shown above is 0.32%.
+p
+The average is used in the calculation of the poaching rate because the act of poaching is random
+and should remain a constant rate throughout the years if the government doesn’t act  to decrease
+the rate of poaching, assuming that the environment is consistent1.
+
+1 See assumption 5 for details
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 11 of 47
+
+Rate of sickness:
+
+Equation 4.1.2
+The calculation is presented as followed:
+Table 3: Calculation of r
+s
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |
+| ---------- | ----------- | ------ | ------ | ------ |
+|            |             | base   | s      | s      |
+| 1  0       | 25  4       | 29     | 1      | 3.45%  |
+M
+| 2  27  | 27  2  | 56  | 5   | 8.93%  |
+| ------ | ------ | --- | --- | ------ |
+C
+| 3  51  | 0  10  | 61  | 2   | 3.28%  |
+| ------ | ------ | --- | --- | ------ |
+M
+| 4  57  | 0  8   | 65  | 6   | 9.23%  |
+| ------ | ------ | --- | --- | ------ |
+| 5  53  | 0  10  | 63  | 2   | 3.17%  |
+i
+H
+| 6  56  | 0  13  | 69  | 0   | 0.00%  |
+| ------ | ------ | --- | --- | ------ |
+：
+| 7  67  | 5  19  | 91   | 0   | 0.00%  |
+| ------ | ------ | ---- | --- | ------ |
+| 8  86  | 0  19  | 105  | 3   | 2.86%  |
+号
+| 9  96  | 0  19  | 115  | 2   | 1.74%  |
+| ------ | ------ | ---- | --- | ------ |
+众
+| 10  107  | 0  25  | 132  | 3   | 2.27%  |
+| -------- | ------ | ---- | --- | ------ |
+|          |        |      | r   | 3.49%  |
+|          | 公      |      | s   |        |
+
+The r  according to the calculations shown above is 3.49%.
+| s   | 信   |     |     |     |
+| --- | --- | --- | --- | --- |
+
+The constant rate of sickness is appropriate if we assume that adaptation to the environment does
+微
+not occur and the environment itself is does not change.  Although living in a constant
+environment, the elks would not be immune to diseases even if groups of elks are repeatedly
+infected by the diseases. Under this assumption, it is safe to conclude that the rate of sickness
+should be modeled by the average because every year’s sickness rate is too random for linear
+regression.
+Rate of accidents:
+
+Equation 4.1.3
+The calculation is presented as followed:
+Table 4: Calculation of r
+ac
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 12 of 47
+
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |     |
+| ---------- | ----------- | ------ | ------ | ------ | --- |
+|            |             | base   | ac     | ac     |     |
+| 1  0       | 25  4       | 29     | 0      | 0.00%  |     |
+| 2  27      | 27  2       | 56     | 0      | 0.00%  |     |
+| 3  51      | 0  10       | 61     | 1      | 1.89%  |     |
+| 4  57      | 0  8        | 65     | 0      | 0.00%  |     |
+| 5  53      | 0  10       | 63     | 0      | 0.00%  |     |
+M
+| 6  56  | 0  13  | 69   | 1   | 1.69%    |     |
+| ------ | ------ | ---- | --- | -------- | --- |
+| 7  67  | 5  19  | 91   | 1   | 1.32%    | C   |
+| 8  86  | 0  19  | 105  | 1   | 1.11%  M |     |
+| 9  96  | 0  19  | 115  | 0   | 0.00%    |     |
+i
+| 10  107  | 0  25  | 132  | 2   | 1.77%  H |     |
+| -------- | ------ | ---- | --- | -------- | --- |
+：
+|     |     |     | r   | 0.78%  |     |
+| --- | --- | --- | --- | ------ | --- |
+ac
+
+号
+The r  according to the calculations shown above is 0.78%.
+ac
+The rate of accidents is also modeled by the average because accidents are too random in nature
+for presentation in a linear regress众ion -- Accidents cannot  be avoided and controlled.
+Rate of predator attacks:
+公
+
+Equation 4.1.4
+信
+The calculation is presented as followed:
+Table 5: Calculation of r
+pr
+微
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |     |
+| ---------- | ----------- | ------ | ------ | ------ | --- |
+|            |             | base   | pr     | pr     |     |
+| 1  0       | 25  4       | 29     | 1      | 3.45%  |     |
+| 2  27      | 27  2       | 56     | 0      | 0.00%  |     |
+| 3  51      | 0  10       | 61     | 1      | 1.64%  |     |
+| 4  57      | 0  8        | 65     | 2      | 3.08%  |     |
+| 5  53      | 0  10       | 63     | 5      | 7.94%  |     |
+| 6  56      | 0  13       | 69     | 1      | 1.45%  |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 13 of 47
+
+| 7  67    | 5  19  | 91   | 4   | 4.40%  |
+| -------- | ------ | ---- | --- | ------ |
+| 8  86    | 0  19  | 105  | 0   | 0.00%  |
+| 9  96    | 0  19  | 115  | 2   | 1.74%  |
+| 10  107  | 0  25  | 132  | 0   | 0.00%  |
+|          |        |      | r   | 2.37%  |
+pr
+
+The r  according to the calculations shown above is 2.37%.
+pr M
+The rate of predator activity is modeled by the average as well because predator activities are too
+random in nature to be presented in a linear regression.  C
+Rate of unknown deaths:
+M
+
+i
+|     |     |     | Equation 4.1.5  | H   |
+| --- | --- | --- | --------------- | --- |
+The calculation is presented as followed:
+：
+Table 6: Calculation of r
+u
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |
+| ---------- | ----------- | ------ | ------ | ------ |
+|            |             | base   | u      | u      |
+号
+| 1  0   | 25  4  | 29   | 0   | 0.00%  |
+| ------ | ------ | ---- | --- | ------ |
+| 2  27  | 27  2  | 56众  | 0   | 0.00%  |
+| 3  51  | 0  10  | 61   | 0   | 0.00%  |
+公
+| 4  57  | 0  8   | 65  | 3   | 4.62%  |
+| ------ | ------ | --- | --- | ------ |
+| 5  53  | 0  10  | 63  | 0   | 0.00%  |
+信
+| 6  56  | 0  13  | 69  | 0   | 0.00%  |
+| ------ | ------ | --- | --- | ------ |
+微
+| 7  67    | 5  19  | 91   | 0   | 0.00%  |
+| -------- | ------ | ---- | --- | ------ |
+| 8  86    | 0  19  | 105  | 5   | 4.76%  |
+| 9  96    | 0  19  | 115  | 3   | 2.61%  |
+| 10  107  | 0  25  | 132  | 2   | 1.52%  |
+|          |        |      | r   | 1.35%  |
+u
+
+The r  according to the calculations shown above is 1.35%.
+u
+The rate of unknown deaths is modeled by the average too because these type of deaths occur in
+an arbitrary and uncontrollable rate and are not appropriate to be presented in a linear regression.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 14 of 47
+Total rate of accidental death:
+The total rate of death from any accidental factor in nature is the sum of the death rates
+mentioned above:
+Equation 4.1.6
+Applying the equation presented above, we can derive the accidental death rate as followed:
+M
+In any given year, this factor is applied to all elks surviving from the previous year, all elks
+C
+introduced this year, and one-quarter of the elks born in that year (since they are born in
+September and are exposed to the environment for only three monMths, which is a quarter of a
+year). Therefore the final equation for accidental death toll, based on above data,
+is: i
+H
+：
+2.4.2.2 Natural Death Rate Model
+The natural death toll is much simpler: Any surviving elk that reaches 25 years old will pass
+号
+away, calculated as the rate of an elk surviving to 25 years old multiplied by the number of elks
+born 25 years ago.
+众
+公
+Equation 4.2.1
+Therefore the fin信al equation for the death toll function is:
++
+Equation 4.1.2
+微
+2.4.3 Estimation of Carrying Capacity
+The carrying capacity is essential in any calculation or modeling of the nature. It measures the
+maximum capacity of the land for a specific species in the most favorable conditions in the given
+environment. The A factor is isolated from the equation above
+( ), and substituted with the birth rate and death
+rate equations, resulting in:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 15 of 47
+
+Input the values of the numbers for the given years, we have:
+Table 7: Calculation of A
+
+| t  N(t-1)  | N(t)  | B(t-1)  | B(t)  | R(t)  A(t)  |
+| ---------- | ----- | ------- | ----- | ----------- |
+M
+| 1  0  | 27  | 0   | 4   | 25  n/a  |
+| ----- | --- | --- | --- | -------- |
+C
+| 2  27  | 51  | 4   | 2   | 27  n/a  |
+| ------ | --- | --- | --- | -------- |
+M
+| 3  51  | 57  | 2   | 10     | 0  0.000964  |
+| ------ | --- | --- | ------ | ------------ |
+| 4  57  | 53  | 10  | 8  i0  | 0.003355     |
+H
+| 5  53  | 56  | 8   | 10  | 0  0.001761  |
+| ------ | --- | --- | --- | ------------ |
+：
+| 6  56  | 67  | 10  | 13  | 0  -0.00028  |
+| ------ | --- | --- | --- | ------------ |
+号
+| 7  67  | 86  | 13  | 19  | 5  n/a       |
+| ------ | --- | --- | --- | ------------ |
+| 8  86  | 96  | 19  | 19  | 0  0.000523  |
+众
+| 9  96    | 107   | 19  | 19  | 0  0.000498  |
+| -------- | ----- | --- | --- | ------------ |
+| 10  107  | 124公  | 19  | 25  | 0  0.000122  |
+| 11  124  | 140   | 25  | 19  | 0  0.000313  |
+信
+|     |     |     |     |   0.000908  |
+| --- | --- | --- | --- | ----------- |
+
+微
+|     |     |     |     |   1101.811  |
+| --- | --- | --- | --- | ----------- |
+
+Some values are presented as N/A because they give results that are bigger than 1 so these values
+are omitted in the calculation (because A should be bigger than 1 and smaller than 0 to make
+bigger than 1). The formula for calculating the carrying capacity is:
+
+Equation 5.1
+  An average is used for estimation for the carrying capacity. This average gives out a
+value of 1101.8, which is rounded by decimal omission giving 1101. This carrying capacity
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 16 of 47
+serves as a limit for the elk population in our model. However, since this is only estimation, there
+could be years where the number of elks exceeds the carrying capacity. As the population of elks
+approach the carrying capacity, the death rate will rise exponentially due to overconsumption of
+resources causing a dramatic drop in the population, usually decreasing the number of elks to
+below carrying capacity, in the near future. The decreased population will then once again have a
+higher growth rate and exceed the carrying capacity once more. This cyclic process occurs rather
+rapidly with small amplitude.
+2.5 Model Testing: The Monte Carlo Simulation M
+2.5.1 Introduction and Rationale C
+Once we have constructed the mathematical description for population growth, we apply it by
+M
+constructing an object-oriented program that creates the object “elk” then instantiate it in a
+programmed virtual environment. Computer programming is a direct extension of mathematics
+i
+and is equally confusing: We first create the object class EHLK, which simulates the basic
+properties that apply to a real elk. The program will handle this object internally and create a data
+：
+container to store instances of this object. Each object will represent one elk2. Then we create the
+class NATURE, which contains the factors of environment such as sicknesses and predators that
+can act upon the ELK object. Finally, we c号reate the main function HIMCM that runs the course
+of the Elk society five hundred thousand times, compiles the results, and outputs it onto a
+spreadsheet file. For the purpose of this model and limitations due to computational power, time
+众
+passes in increments of months to ensure a more realistic and economic depiction of natural
+events. Post-analysis on the model includes optimization of code by modifying the sickness rate
+公
+into a logarithmic function, and making further adjustments to specific rates by comparing the
+output data with the original data given in the question.
+信
+2.5.2 Additional justifications
+1. All original formulas from the iterated function are used.
+微
+2. The sample data given in the question contains no errors.
+3. The birth rate and death rates are constant factors.
+4. Environmental factors only apply when the elk population peaks carrying capacity.
+5. A Gaussian distribution was added to the “Strength” property of the elks to model the
+overall strength of an elk through the course of its life.
+2.5.3 Objects and Properties
+Our model is based on the construction of objects and the modification of its properties. Here
+we construct the object ELK, with the properties as follows:
+1. Health(Double): A randomized number between 0-50 which can be decreased by
+various Java methods. Once an elk’s health falls beneath 10 HP, it dies.
+2 The instances of elk here can be both dead and alive. The data container essentially stores all the elks that are involved
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 17 of 47
+2. Strength (Double): A randomized number with a base value between 0-50 that varies
+over time3 and determines the susceptibility of an elk to natural factors.
+3. Alive (Boolean): The dead/alive state of the elk. When it dies, the program stops
+applying methods to it anymore.
+4. Pregnant (Boolean): Female elks have the ability to become pregnant, which will be
+explained in the pregnancy method.
+5. Gender (Boolean): Elks are initialized with an equal chance of being male or female
+using a random number generator, and this determines whether it is able to become
+pregnant or not.
+6. Age: Represented in months. Newborn elks start at age 0.
+M
+2.5.4 Variables
+In addition to the properties of the Elk object, our program also contains many variable inputs
+C
+that determine the results of the algorithm.
+M
+Input Variables
+cCap The carrying capacity of the population
+i
+OCDr The death probability created by overpopulaHtion, calculated as
+：
+pRate Pregnancy rate
+号
+sRate Sickness rate
+poaRate Poaching rate 众
+accRate Accident rate
+公
+unkRate Unknown death rate
+predRate Pred信ator attack rate
+trials The number of trials the user wishes to run
+微
+The variable OCDr is the application of the environmental factor.
+2.5.5 Methods
+The following methods are the functions that act upon the Elk object and modify its properties.
+For simplicity we have omitted some of the internal methods that serve programming purposes.
+Class Elk:
+1. Damage_Health
+Reduces the health of an Elk.
+2. Damage_Strength
+3 The Gaussian distribution of strength
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 18 of 47
+Reduces the strength of an Elk.
+3. Age_Strength
+Returns the increase/decrease in strength of an elk where
+*ag represents the age of the elk in months.
+4. Older
+Ages the elk. If the elk reaches 300 months of age, it dies a natural death.
+5. Pregnancy
+If the elk is female and of age, it has a possibility (determined by an RNG) to become
+pregnant. When pregnant, a counter keeps count of time and triggers the method Birth at
+M
+eight months.
+6. Birth
+Gives birth to a new baby elk. C
+M
+Class Nature:
+1. Sickness
+i
+Compares the strength of a randomly generated sickness to the strength of an elk, and if
+H
+stronger, damages the elk through methods damage_Health() and damage_Strength().
+2. Oops (The name “oops” is for comedic p：urposes only)
+Kills an elk. Combined with the method rndet to simulate the effect of poaching,
+accidental and unknown deaths.
+3. Predator 号
+Compares the strength of a randomly generated predator to the strength of an elk, and if
+stronger, kills the elk.
+众
+4. Capdmg
+Simulates the effect of overpopulation through damaging elks randomly.
+Class HIMCM: 公
+1. Rndet(no input needed) – returns a random boolean
+Runs a random-number generator against a preset rate to determine whether or not an
+信
+event is triggered. For example, I could run Rndet(0.3) to simulate an event with a
+30% chance of occurring.
+2. Lifecheck(the array of elks) – returns to nAlive
+微
+Checks the “alive” status of each elk in the array and returns the number of elks alive,
+a.k.a. the size of the population
+3. Introduce(number of elks) – no return
+Introduces new elks of a randomly generated age between 5 and 20 months old.
+Main Function
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 19 of 47
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+The main function executes the actual program using the series of methods listed above. Over
+the course of 20 years, with 12 months to the year, the program runs the function rndet over each
+method over each elk in the array. The methods called are linked to the birth and death factor of
+the iterated function, namely the pregnancy, sickness, predator attack, poaching, accident and
+unknown rates. It then outputs the individual deaths and the final population of this “trial” to a
+spreadsheet, and then resets the virtual society for the next “trial”. After a very large number of
+“trials” (as inputted by the user), the statistical mean for each population value is also computed
+onto the spreadsheet and expressed as a graph.
+2.6 Sensitivity of the Model
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 20 of 47
+To test the sensitivity of the Model, we used a basic method-OFAT, as our model is
+governed by both polynomial functions and random variables. In a sample run of 20 years, the
+base numbers are given as followed:
+Base Reference
+Year: 2021
+Statistical Averages:
+Trials ran: 1000
+Population Alive: 484
+Sickness: 180
+Accidents: 31 M
+Unknown: 97
+Poached: 13 C
+Predator Kill: 107
+M
+Aged Death: 0
+Poach Rate: 0.030833333333333338%
+i
+Sickness Rate: 0.4091666666H666666%
+Accident Rate: 0.06916666666666667%
+：
+Pregnant Rate: 7.5%
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Ra号te: 0.23916666666666664%
+Carrying Capacity: 1101
+2.6.1 Sensitivity of the Poached Rate
+众
+We increased the poached rate by 1%, and ran the program again. It gave the results as followed:
+Increase Poach rate by 1% / year
+公
+Year: 2021
+Statistical Averages:
+信 Trials ran: 1000
+Population Alive: 479
+Sickness: 180
+微
+Accidents: 30
+Unknown: 97
+Poached: 52
+Predator Kill: 107
+Aged Death: 0
+Poach Rate: 0.11416666666666667%
+Sickness Rate: 0.4091666666666666%
+Accident Rate: 0.06916666666666667%
+Pregnant Rate: 7.5%
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Rate: 0.23916666666666664%
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 21 of 47
+Carrying Capacity: 1101
+The number of poached elks increased by 300% in the test run , which was close to the
+percentage increase in the rate(270%), while the final population only had a minimal decrease of
+0.4%. This show that the elk population is not very sensitive to the number of poached elks,
+which is accurate in our model as a change in one of the death rate functions should not cause a
+very big fluctuation of population as the herd would counteract this increased deaths by having
+more births.
+2.6.2 Sensitivity of the Predator Rate
+We increased the predator rate by 1%, and ran the program again. It gave the results as followed:
+Increase predator kill rate by 1%/year M
+Year: 2021
+Statistical Averages: C
+Trials ran: 1000
+M
+Population Alive: 483
+Sickness: 181
+i
+Accidents: 31 H
+Unknown: 98
+：
+Poached: 14
+Predator Kill: 144
+A号ged Death: 0
+Poach Rate: 0.030833333333333338%
+Sickness Rate: 0.4091666666666666%
+众
+Accident Rate: 0.06916666666666667%
+Pregnant Rate: 7.5%
+公
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Rate: 0.3225%
+信 Carrying Capacity: 1101
+The number of predator killed elks increased by 34.6%, almost equivalent to percentage
+increase in the rate(34.8%). The final population didn’t decrease but actually increased by 0.6%.
+微
+This shows that the elks are counteracting the predators in giving more births, and is consistent
+with nature. This also shows that the population alive is not sensitive towards the increase of the
+death rate, which is true because of the counteraction.
+2.6.3 Sensitivity of the Accident Rate
+Increase Accident rate by 1%/year
+Year: 2021
+Statistical Averages:
+Trials ran: 1000
+Population Alive: 477
+Sickness: 178
+Accidents: 68
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 22 of 47
+Unknown: 96
+Poached: 13
+Predator Kill: 106
+Aged Death: 0
+Poach Rate: 0.030833333333333338%
+Sickness Rate: 0.4091666666666666%
+Accident Rate: 0.1525%
+Pregnant Rate: 7.5%
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Rate: 0.23916666666666664% M
+Carrying Capacity: 1101
+The number of elks killed by accidents increased about 127%, cloCse to the percentage
+increase in the rate(120%). The final population decreased about 0.6% but counteraction was
+M
+definitely seen through the process, which is consistent with both our model and nature. This
+also shows that the population alive is not sensitive towards the increase of the accident rate,
+i
+which is true because of the counteraction. H
+2.6.4 Sensitivity of the Sickness Rate
+：
+Increase Sickness Rate by 1%/year
+Year: 2021
+Stat号istical Averages:
+Trials ran: 1000
+Population Alive: 481
+众
+Sickness: 217
+Accidents: 31
+公
+Unknown: 97
+Poached: 13
+信 Predator Kill: 106
+Aged Death: 0
+Poach Rate: 0.030833333333333338%
+微
+Sickness Rate: 0.4925%
+Accident Rate: 0.06916666666666667%
+Pregnant Rate: 7.5%
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Rate: 0.23916666666666664%
+Carrying Capacity: 1101
+The number of elks killed by sickness increased about 20.6%, very close to the
+percentage increase in the rate (20.4%). The final population increased about 0.2%, which shows
+that counteraction does appear in the model, and it is consistent with our model and nature. This
+also shows that the population alive is not sensitive towards the increase of the sickness rate,
+which is true because of the counteraction.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 23 of 47
+2.6.5 Sensitivity of the Unknown Rate:
+Increase unknown deaths rate by 1%/ year
+Year: 2021
+Statistical Averages:
+Trials ran: 1000
+Population Alive: 476
+Sickness: 179
+Accidents: 30
+Unknown: 134
+Poached: 13 M
+Predator Kill: 106
+Aged Death: 0 C
+Poach Rate: 0.030833333333333338%
+M
+Sickness Rate: 0.4091666666666666%
+Accident Rate: 0.06916666666666667%
+i
+Pregnant Rate: 7.5%H
+Unknown Death Rate: 0.30083333333333334%
+：
+Predator Kill Rate: 0.23916666666666664%
+Carrying Capacity: 1101
+The number of elks killed by sickness号 increased about 38.1%, very close to the percentage
+increase in the rate (38.3%). The final population decreased about 0.8%, which shows that
+counteraction does appear in the model, and it is consistent with our model and nature. This also
+众
+shows that the population alive is not sensitive towards the increase of the unknown death rate,
+which is true because of the counteraction.
+公
+2.6.6 Sensitivity of the Pregnancy Rate:
+Increase Pregnant Rate by 1% / 6 months
+信 Year: 2021
+Statistical Averages:
+Trials ran: 1000
+微
+Population Alive: 498
+Sickness: 184
+Accidents: 31
+Unknown: 99
+Poached: 14
+Predator Kill: 109
+Aged Death: 0
+Poach Rate: 0.030833333333333338%
+Sickness Rate: 0.4091666666666666%
+Accident Rate: 0.06916666666666667%
+Pregnant Rate: 7.666666666666668%
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 24 of 47
+Unknown Death Rate: 0.21750000000000003%
+Predator Kill Rate: 0.23916666666666664%
+Carrying Capacity: 1101
+Although the pregnant rate per month only increased by 2.1%, the final population growth
+increased by 3.8%, which was greater than the growth in the pregnancy rate. This shows that our
+model is sensitive towards the pregnancy rate, which is consistent with our model as the
+pregnancy rate is very important in determining the growth rate of the elks and therefore
+deciding the number of the elks.
+2.7 Strengths and Weaknesses M
+According to our results, the population model gives a thorough and precise estimation of the
+population. Through the comprehensive analysis of the growth rate, the mCodel splits the model
+into several sub-models that form up the total model. Therefore, the model is accurate, precise,
+M
+and extensive.
+The computer model has considered every aspect included in the growth rate model mentioned
+i
+earlier, and also included the concept of growing limit, which states that the elks cannot increase
+H
+in numbers infinitely, to make the model more realistic and practical. Computational results
+：
+mostly coincide with the given statistical data.
+However, the model has not considered the process of adaption to the environment. As time
+passes and the number of elks increases, s号ickness rate and predator kills will both drop because
+the elks will adapt to the environment as time passes, thus causing the elks to become more
+immune to diseases and capable of escaping from predators. The employment of the Monte Carlo
+众
+simulation inevitably generates copious amounts of data that may become inefficient due to the
+required processing power and data analysis required. Last but not least, the model did not fully
+apply the concept of carryi公ng capacity into action, which makes the graph of the population of
+elks reach a plateau with sharp inflection near the top look like:
+信
+微
+This type of function is not very realistic as the population of a species usually follows a general
+curve that is similar to the Logistic model, with a clear inflection point when the population is
+approximately half of the carrying capacity. Our model, however, shows that the inflection point
+is very near the carrying capacity.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 25 of 47
+M
+C
+M
+i
+H
+：
+3. Model Improvements
+号
+3.1 The New Environmen众tal Factor Model
+This model is designed to calculate environmental impact on the elk population, more
+specifically the reduction in population growth as the population approaches maximum carrying
+公
+capacity of the Great Smokey Mountain National Park.
+As previously stated in the beginning of this model, we attempt to model population growth by
+信
+using the function
+As the e微lk population grows, fewer resources are available per elk within the Great Smokey
+Mountain National Park. Consequently, the elks will face more and more competition, and the
+growth rate will decrease. We predict that the elk population will peak at and oscillate below a
+maximum value in this state, namely 1/A (the reciprocal of carrying capacity).
+During the test run of the Monte Carlo Model, we found it necessary to introduce another
+factor, , into our environmental factor model, as A was affecting the population too much at the
+start of the curve. Therefore, our Model turns into:
+’
+The θ is installed because the environmental factor does not immediately affect the population.
+A coefficient of delay is added to correct for the lag.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 26 of 47
+
+Through repeated test runs, the value of was settled as 0.16, which in our Java program, is
+reflected as:
+natDead = nAlive * nAlive*0.16*(1/1101);            //natDead is the number of deaths due to the
+environmental factor
+| where nAlive= |     | ,   | and |     |     |
+| ------------- | --- | --- | --- | --- | --- |
+
+    3.2 Improvement for Deaths Caused by Sickness
+It is stated in the earlier parts of this report that as time passes, the elks become more adapted
+to the environment and develop immunity for local diseases. However, not allM the elks can be
+immune to a disease completely, which means that there will always be elks that will become
+sick, which is true according to natural selection. Correcting for the influence of adaptation, the  C
+sickness model can be improved by replacing the mean of sickness r as a function.
+s
+M
+According to the Table 3, there are some outliers in the rate of sickness, which are discarded to
+improve the overall accuracy of the model. Therefore, the final group of data the model uses is
+| shown as followed:  |     |     |     |     | i   |
+| ------------------- | --- | --- | --- | --- | --- |
+H
+| Table 8: List of acceptable r |     |  values  |     |     |     |
+| ----------------------------- | --- | -------- | --- | --- | --- |
+s
+(t) ：r
+| t  N(t-1)  | R(t)  B(t)  | N    | (t)  | n   | (t)    |
+| ---------- | ----------- | ---- | ---- | --- | ------ |
+|            |             | base |      | s   | s      |
+| 1  0       | 25  4       | 29   |      | 1   | 3.45%  |
+号
+| 3  51  | 0  10  | 61   |     | 2   | 3.28%  |
+| ------ | ------ | ---- | --- | --- | ------ |
+| 5  53  | 0  10  | 63众  |     | 2   | 3.17%  |
+| 8  86  | 0  19  | 105  |     | 3   | 2.86%  |
+公
+| 9  96    | 0  19   | 115  |     | 2   | 1.74%  |
+| -------- | ------- | ---- | --- | --- | ------ |
+| 10  107  | 0  信25  | 132  |     | 3   | 2.27%  |
+After regression, a logarithmic function is introduced to represent the function between r  and
+m
+| t:  微 |     |     |     |     |     |
+| ----- | --- | --- | --- | --- | --- |
+Graph 1: Regression of r
+s
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 27 of 47
+
+M
+C
+M
+
+| The model of r | (t) would be, according to the graph:  |     |     |     |
+| -------------- | -------------------------------------- | --- | --- | --- |
+m
+i
+H
+Equation 6.1
+：
+This is the improved model for deaths caused by sickness.
+
+    3.3 Improvement for Deaths Caused b号y Predator Activity
+Adaptation to elude predators should also be considered. As time passes, the elks will be less
+susceptible to the threat of predators. However, not all the elks can be strong enough to escape,
+众
+and there will always be elks that are killed by predators, which is true according to natural
+selection. Therefore, the predator model can be improved by replacing the constant of predator
+公
+| activity r as a function.  |     |     |     |     |
+| -------------------------- | --- | --- | --- | --- |
+pr
+According to the Table 5, there are some outliers in the rate of predator activity That must be
+dropped to improv信e the accuracy of the model. Therefore, the final group of data the model uses
+is shown as followed:
+| Table 9: List of acceptable r |     |  values  |     |     |
+| ----------------------------- | --- | -------- | --- | --- |
+pr
+微
+| t  N(t-1)  | R(t)  B(t)  | N (t)  | n (t)  | r (t)  |
+| ---------- | ----------- | ------ | ------ | ------ |
+|            |             | base   | pr     | pr     |
+| 1  0       | 25  4       | 29     | 1      | 3.45%  |
+| 3  51      | 0  10       | 61     | 1      | 1.64%  |
+| 4  57      | 0  8        | 65     | 2      | 3.08%  |
+| 6  56      | 0  13       | 69     | 1      | 1.45%  |
+| 9  96      | 0  19       | 115    | 2      | 1.74%  |
+| 10  107    | 0  25       | 132    | 0      | 0.00%  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 28 of 47
+After regression, a logarithmic function is introduced to represent the function between r and
+m
+t:
+Graph 2: Regression of r
+pr
+M
+C
+M
+i
+H
+The model of r (t) would be, according to the g：raph:
+m
+号Equation 6.2
+This is the improved model for deaths caused by predator activities.
+众
+公
+信
+微
+4. Growing Plans
+To increase the number of elks, there is a need to review the growth function:
+Therefore, to increase the number, there should either be an increase in the growth rate or a
+decrease in the death rate. The growth rate, as mentioned, is defined as follow:
+However, the problem is, to increase the growth rate there should be either an increase in the
+rate of mate or the number of offspring produced each mate. These factors cannot be decided
+upon human interference, because they are depended on the nature of the elk, which is
+unchangeable.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 29 of 47
+Thus we can only try to change the death rate. According to the death rate function:
+There can only be a change in the accidental death rate because the natural death rate is the
+number of the elks still alive that were born in year (t-25). In other words, the natural death rate
+is dependent on accidental death rate.
+To lower the accidental death rate, we need to decrease at least one of the following
+components of the accidental death rate: r , r , r , r , or r . According to previous descriptions,
+p ac pr u s
+the rate of poaching, accidents, and unknown is arbitrary and cannot be avoided, thus there is no
+possibility to change these death rates. Therefore, we can only influence the death rate due to
+M
+sickness and the death rate due to predator activity.
+C
+4.1 Decreasing r
+s
+M
+To decrease the sickness rate, the park can inject antibodies to the elks regularly to decrease
+the possibility of elks being sick. The main threatening disease for elks is the CWD (Chronic
+i
+wasting disease). Unfortunately, the cause and cure of this disease is still unknown. So there is
+H
+apparently no way to decrease the death rate by decreasing the sickness rate, and therefore
+：
+increasing the number of elks. The only way to prevent this disease is to invent a type of
+medicine in the future days, and then apply it on to the elks.
+号
+4.2 Decreasing r
+pr
+To decrease the predator rate, th众ere can be two plans:
+1. To lower the number of predators
+2. To increase the suitability of the elks towards their predators
+公
+However, according to plan 1, once the number of predators decreases, the elk population
+increases faster, and according to natural selection, the elks die faster too because of more
+intensive competit信ion. Moreover, the less number of predators in GSMNP would cause a
+catastrophic influence to the food chain and the environment, so plan 1 is infeasible.
+According to plan 2, the main way for increasing the suitability of elks is to increase their
+微
+strength since the main way of elks surviving from predator attacks is to be fast enough to escape
+from predator attacks, and the main factor for speed is the strength. To increase the strength of
+elks, there can be two plans too:
+1. To wait for the process of natural selection
+2. To inject the elks typical drugs that will increase their strength regularly
+For plan 1, the process is not human-controlled, so this plan should be neglected. For plan 2,
+this is an applicable plan, and can be considered further discussion.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 30 of 47
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+5．Letter to Commissioner
+Dear Commissioner,
+We are high-school students who are sincerely concerned with the preservation of elks and are
+actively taking note of the progress made in the Great Smokey Mountain National Park. In turn,
+we have constructed an iterated function and Java program that simulates the future of the elk
+population, and are glad to announce that we believe that the elk population will continue to
+grow in the future.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 31 of 47
+The first component of our model is the iterated function, in which we have taken the factors
+determining the birth and death rates of elks inside GSMNP and compiled them into one large
+function. Using the data given, we calculate that the birth rate is consistently higher than the
+death rate in the population, and thus the elk population will continue expanding over the next
+decade or so.
+The second component is a Java program that constructs a virtual elk society, and based on
+inputted environmental factors, simulates multiple futures of the population to return an accurate
+estimate. The beauty of this program is that you can adjust the program annually to include new
+data, so the model will become more and more accurate over time.
+As with any ecological system, there is a natural limit to the population of aM species: The
+carrying capacity. There will be too little resources per elk to survive, and the large population
+will also make easy prey for the coyotes and wolves of GSMNP. We havCe calculated this
+capacity to be 1101, which means that as the elk population approaches this limit, the growth rate
+M
+will slowly diminish until it peaks at the carrying capacity. Beyond that point the population will
+oscillate below the capacity, as nature plays out the natural uncertainties of births and deaths in
+i
+the population. H
+Of course, it would be best if we could push the carrying capacity higher so that more elks can
+：
+populate GSMNP. This can be accomplished through drug injections that make elks stronger and
+less susceptible to predator attacks, or through developing vaccines to cure the fatal CWD
+disease. 号
+Commissioner, we greatly appreciate your effort in introducing the Manitoban Elk to the
+Eastern United States. Despite the differences in disease and environmental tolerance from its
+众
+larger counterparts, the Eastern elk, the Manitoban Elk seems to be thriving well in the Great
+Smokey Mountain National Park. We hope that you can take into consideration the implications
+公
+and ideas presented into our model to continue preserving the wildlife that is essential to nature,
+the unique world he inhabits.
+信
+Yours faithfully,
+Team No. 3652
+微
+6. Appendix
+6.1 Reference
+1. Interesting Facts about Population Growth Mathematical Models. N.p., 13 Nov.
+2000. Web. <http://ejad.best.vwh.net/java/population/facts_math.html>.
+2. Br¨, Ake. "Modelling Animal Populations." Modelling Animal Populations - DiVA -
+Simple Search. N.p., 2004. Web. Path: Google; animal population model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 32 of 47
+3. Shi, Junping. "Math 410(510) Notes (1) Modeling Population Growth Part 1: single
+species." Math 410(510) Notes (1) Modeling Population Growth . - CiteSeer. N.p.,
+n.d. Web. Path: Google; Math 410(510) Notes (1).
+4. Elk - Wikipedia, the free encyclopedia. N.p., n.d. Web.
+<http://en.wikipedia.org/wiki/Elk>.
+5. elk. N.p., n.d. Web. 18 Nov. 2012.
+<http://www.handsontheland.org/classroom/04/deer.html>.
+6. Chronic wasting disease - Wikipedia, the free encyclopedia. N.p., n.d. Web.
+<http://en.wikipedia.org/wiki/Chronic_wasting_disease>.
+M
+6.2 Java Program Code
+a. Model 1: Model with constant sickness and predator rates
+C
+package himcm;
+/* Class:Elk M
+* Objects: Elk
+* Notes: This class contains the object elk. the elk has propertieis that can be changed and
+H
+manipulated by Nature that will eventually determine whether it survives or not
+*/ ：
+public class Elk{
+//Initialize variables:
+号
+public double bstrength; //Initialized strength of elk
+double health; //Health of the elk
+double strength; 众 //Current strength of elk
+int age; //Age of elk
+int PC = 0; //Pregnancy counter (8 months = give birth)
+公
+boolean alive; //State of elk: alive or dead
+boolean gender; //True = male, False = female
+信
+boolean pregnant; //State of pregnancy
+//-------------------------------------------------------------------------------------------------------
+public E微lk(double Hp, double Str, double Sex) { //Initialize and define the properties of an
+elk object
+health = 50.00*Hp;
+bstrength = 50.00*Str;
+strength = bstrength;
+age = 0;
+alive = true;
+pregnant = false;
+if (Sex<=0.5){
+gender = true;
+}
+else{
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 33 of 47
+gender = false;
+}
+}
+public Elk() { //Define the default state of and elk
+this(Math.random(),Math.random(),Math.random());
+}
+public void damage_Health(double val){ //Reduce health of the Elk
+if(val >= 0){ M
+this.health = this.health - val;
+if(health < 10.00){ C
+alive = false;
+M
+}
+}
+i
+} H
+：
+public void damage_Strength(double val){ //Reduce strength of the elk
+if(val >= 0){
+this.strength = this.strength - val; 号
+}
+}
+众
+public boolean state(){ //Return state of the elk object
+公
+return alive;
+}
+信
+public int dispAge(){ //Return age of the elk object
+return age/12;
+微
+}
+void age_Strength(int ag){ //Bell curve function of strength in relation to age
+double addent = 50 *(Math.pow(2.718,(-0.5*(ag/12-25/2)*(ag/12-25/2))/32)); //change the
+32 to increase the strength of the population
+this.strength = addent +this.bstrength;
+}
+public void older(){ //Aging process of the elk object
+age++;
+if(age == 300){
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 34 of 47
+this.alive = false;
+HIMCM.agedeath++;
+}
+this.age_Strength(this.age);
+}
+@Override
+public String toString(){ //Convert object to string output
+return "health: " + health + ", Strength: " + strength + ", gender: " + gender + ", age: " +
+age + ", Alive? " + alive + " Pregnancy: "+ pregnant; M
+}
+C
+public void pregnancy(Elk[] c, double rand){ //Pregnancy trigger and timer to delay for 8
+M
+months
+if(this.alive){
+i
+if((!this.gender)&&(this.age >= 24)&&(!pregnant)H&&(HIMCM.month >=1 )){
+if(rand < HIMCM.pRate){ // make sure to change the first (random number) and the
+：
+second (pregnancy rate
+this.pregnant = true;
+} 号
+}
+if(pregnant){
+众
+PC++;
+}
+公
+if(PC == 12){
+this.birth(c,HIMCM.index);
+PC = 0; 信
+}
+}
+微
+}
+public void birth(Elk[] e, int SIZE){ //Function to directly generate one new elk
+and initialize it
+pregnant = false;
+e[SIZE] = new Elk();
+HIMCM.index++;
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 35 of 47
+package himcm;
+/* Class: Nature
+* Methods: sickness(),oops(),predator(),capdamage()
+* Written by Frank Gu and Andrew Tan
+* Notes: this class includes functions to simulate the natural environmental impacts on the
+* investigated elk population
+*/
+public class nature {
+public static void sickness(double dmg, Elk e) { //Simulates the effect of sickenss
+if (dmg>e.strength){ M
+e.damage_Health(dmg);
+e.damage_Strength(dmg); C
+}
+M
+if (dmg==e.strength){
+e.damage_Health(dmg/2.0);
+i
+e.damage_Strength(dmg/2.0); H
+}
+：
+}
+public static void oops(Elk e){ 号 //Direct public call to kill the elk object
+e.alive = false;
+}
+众
+public static void predator(double stg, Elk e) { //Simulate predator influence on elk
+公
+population by competition
+if (stg > e.strength){
+e.alive = fa信lse;
+}
+if (stg == e.strength){
+微
+e.damage_Health(stg);
+}
+}
+public static void capdmg(int pop, int cap, Elk e) {
+if (pop > cap){
+int dmg = (pop - cap)*(pop-cap);
+e.damage_Health(dmg);
+e.damage_Strength(dmg);
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 36 of 47
+}
+/*
+* Standard Model 1A
+* Simulation trials: 1 Million
+* Simulation years: 2001-2026
+*/
+package himcm;
+/**
+* @author Frank Gu and Andrew Tan
+*/ M
+import java.io.*;
+C
+public class HIMCM {
+M
+static int nAlive = 0; //The amount of elks currently alive in the population
+static Elk[] potato = new Elk[65535]; //Create the set of Elk objects
+i
+static int index = 0; //The index of the elks H
+static int cCap = 1101; //Carrying Capacity
+：
+static double OCDr = 1-1/1101; //Death probability due to over population
+static double pRate = 0.0396; //Pregnancy rate
+static double sRate = 0.0491/12; //S号ick rate (Constant for Model 1A)
+static double poaRate =0.0037/12; //Poaching rate
+static double accRate = 0.0083/12; //Accident rate
+众
+static double unkRate = 0.0161/12; //Unknown death rate
+static double predRate = 0.0287/12; //Predator attack rate
+公
+static int month = 0; //Month counter
+static int agedeath = 0; //Amount of deaths due to old age
+static int k = 1; 信 //Number of times to run the simulation
+static int year = 0; //Year counter
+static int trials = 100;
+微
+public static boolean rndet(double limit) { //A random function that throws back a boolean
+boolean rn = true;
+double rng = Math.random();
+if (rng>limit){
+rn = false;
+}
+return rn;
+}
+public static void logData(String path,double pop){ //Prints data onto file(path, population)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 37 of 47
+try{
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+out.println(year + "," + pop);
+out.close();
+}
+catch(IOException e){
+e.printStackTrace();
+}
+}
+M
+public static void logtData(String path,double pop,int s,int a, int u, int p, int pk){ //Prints data
+onto file(path, population, sickness,accident,unkonwn,poached,predator Ckills) by each trial
+try{
+M
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+out.println(k + "," + pop + ","+ s + ","+ a + ","+ u + ","+ p + ","+ pk);
+i
+out.close(); H
+}
+：
+catch(IOException e){
+e.printStackTrace();
+} 号
+}
+众
+public static void logln(String path){ //Prints data onto file(path, population,
+sickness,accident,unkonwn,poached,predator,da) by each trial
+公
+try{
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+out.println(""信);
+out.close();
+}
+微
+catch(IOException e){
+e.printStackTrace();
+}
+}
+public static void lifecheck(Elk[] ek) { //Check the amount of Elks alive
+nAlive = 0;
+for (int i=0;i<index;i++){
+if (ek[i].alive = true){
+nAlive++;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 38 of 47
+}
+}
+public static void introduce(Elk[] e,int amount){
+for(int amt = 0; amt < amount; amt++){
+e[index] = new Elk();
+index++;
+}
+}
+M
+public static void oData(double pop, int s, int a,int u, int p, int pk,int da){ //Programming
+debugging output C
+System.out.println("Statistical Averages: ");
+M
+System.out.println("Trials ran: " + (k-1));
+System.out.println("Population Alive: " + (int)(pop/k-3)); //Minus 3 to
+i
+calibrate for population alive error H
+System.out.println("Sickness: " + (int)(s/k-4)); //Minus 4 to calibrate
+：
+for sickness error
+System.out.println("Accidents: " + (int)a/k);
+System.out.println("Unknown: " + (int)号u/k);
+System.out.println("Poached: " + (int)p/k);
+System.out.println("Predator Kill: " + (int)pk/k);
+众
+System.out.println("Aged Death: " + (int)da/k);
+}
+公
+public static void main(String[] args) {
+int sick = 0; 信
+int accident = 0;
+int unknown = 0;
+微
+int poached = 0;
+int predatorkilled = 0;
+double sum = 0.0;
+//-----------------------------------------------------------------------------------------------------
+Elk[] potato = new Elk[65535]; //Create a new container for Elks
+introduce(potato,25); //Introduce 25 elks to the container
+//-------------------------------------------------------------------------------------------------------
+for(;k <= trials; k++){ //Determine the number of times the cycle is run
+int cnta= 0; //Sickness Death counter
+int cntb = 0; //Poach Death counter
+int cntc = 0; //Accidental Death counter
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 39 of 47
+int cntd = 0; //Unknown cause death counter
+int cnte = 0; //Predator kill counter
+for(year = 2001; year <= 2026; year++){ //The number of years the sample endures
+if(year == 2002){ //Introduce 27 elks in the second year
+introduce(potato,27);
+}
+if(year == 2007){ //Introduce 5 elks in the 7th year
+introduce(potato,5);
+} M
+for(month = 1; month <= 12; month++){ C
+M
+boolean overCap = false; //Initialize overcapacity indicator
+lifecheck(potato); //Determine nAlive for set potato
+i
+if(nAlive > cCap){ //DetermHine whether nAlive is over the capcity
+of the land
+：
+overCap = true;
+}
+号
+for(int iElk = 0; iElk < index; iElk++){ //The monthly cycle of one individual
+elk begins here
+众
+if((potato[iElk].alive)){ //First determine if the elk is alive or not
+if((overCap) && (rndet(OCDr))){ //Death with probability due to over
+公
+capcity
+potato[iElk].alive = false;
+} 信
+if((rndet(sRate))&&(potato[iElk].alive)){ //Death due to
+微
+sickness
+potato[iElk].alive = false;
+if(!potato[iElk].alive){
+cnta++; //Increment death due to sickness counter
+}
+}
+if((rndet(poaRate))&&(potato[iElk].alive)){ //Death due to
+poaching
+nature.oops(potato[iElk]);
+cntb++; //Increment poached death counter
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 40 of 47
+}
+if((rndet(accRate))&&(potato[iElk].alive)){ //Death due to
+accidents
+nature.oops(potato[iElk]);
+cntc++;
+}
+if((rndet(unkRate))&&(potato[iElk].alive)){ //Death due to
+unknown reasons M
+nature.oops(potato[iElk]);
+cntd++; C
+}
+M
+if((rndet(predRate))&&(potato[iElk].alive)){
+i
+nature.predator(50.00+50.00*Math.randoHm(),potato[iElk]);
+cnte++;
+：
+}
+if(potato[iElk].alive){ 号
+potato[iElk].older(); //Age the elk
+potato[iElk].pregnancy(potato,Math.random()); //The random function to
+众
+determine pregnancy
+}
+公
+}
+}
+} 信
+logData("Year.txt",nAlive);
+}
+微
+//Reset the values for next run
+index = 0;
+month = 0;
+for(int c = 0; c< 65535; c++){ //Reset the container
+potato[c]=null;
+}
+potato[0] = new Elk();
+for(int j = 0; j < 25; j++){
+potato[0].birth(potato,index);
+potato[j] = new Elk();
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 41 of 47
+sum = sum + nAlive; //Statistical average of the number of elks alive
+sick = sick + cnta;
+accident = accident + cntc;
+unknown = unknown + cntd;
+poached = poached + cntb;
+predatorkilled = predatorkilled + cnte;
+logtData("Trial.txt",nAlive,cnta,cntc,cntd,cntb,cnte);
+logln("Year.txt");
+nAlive = 0; //Reset the alive elk counter at the end
+System.out.println(k); M
+}
+System.out.println("Year: " + (year-1)); C
+oData(sum,sick,accident,unknown,poached,predatorkilled,agedeath); //Output data
+M
+}
+}
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 42 of 47
+b. Model 2: Model with sickness and predator rates as a function to time
+/*
+* Calibrated Model B
+* Simulation trials: 0.5 Million
+* Simulation years: 2001-2026
+*/
+package himcm;
+/**
+* @author Frank Gu and Andrew Tan M
+*/
+import java.io.*; C
+M
+public class HIMCM {
+static int nAlive = 0; //The amount of elks currently alive in the population
+i
+static Elk[] potato = new Elk[65535]; //Create the set oHf Elk objects
+static int index = 0; //The index of the elks
+：
+static int cCap = 1101; //Carrying Capacity
+static double OCDr = 1-1/cCap; //Death probability due to over population
+static double pRate = 0.0396; //Pr号egnancy rate
+static double sRate = 0.0; //Sick rate (Modified in the sickness rate function)
+static double poaRate =0.0037/12; //Poaching rate
+众
+static double accRate = 0.0083/12; //Accident rate
+static double unkRate = 0.0161/12; //Unknown death rate
+公
+static double predRate = 0.0287/12; //Predator attack rate
+static int month = 0; //Month counter
+static int agedea信th = 0; //Amount of deaths due to old age
+static int k = 1; //Trials number counter
+static int year = 0; //Year counter
+微
+static int trials = 500000; //Number of times to run the simulation
+public static boolean rndet(double limit) { //A random function that throws back a boolean
+boolean rn = true;
+double rng = Math.random();
+if (rng>limit){
+rn = false;
+}
+return rn;
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 43 of 47
+public static void logyData(String path,double pop){ //Prints data onto file(path, population)
+try{
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+out.println(year + "," + pop);
+out.close();
+}
+catch(IOException e){
+e.printStackTrace();
+}
+} M
+public static void logtData(String path,double pop,int s,int a, int u, int p, Cint pk){ //Prints data
+onto file(path, population, sickness,accident,unkonwn,poached,predator kills) by each trial
+M
+try{
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+i
+out.println(k + "," + pop + ","+ s + ","+ a + ","+ u + "H,"+ p + ","+ pk);
+out.close();
+：
+}
+catch(IOException e){
+e.printStackTrace(); 号
+}
+}
+众
+public static void logln(String path){ //Prints data onto file(path, population,
+公
+sickness,accident,unkonwn,poached,predator,da) by each trial
+try{
+PrintWriter ou信t = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+out.println("");
+out.close();
+微
+}
+catch(IOException e){
+e.printStackTrace();
+}
+}
+public static void lifecheck(Elk[] ek) { //Check the amount of Elks alive
+nAlive = 0;
+for (int i=0;i<index;i++){
+if (ek[i].alive = true){
+nAlive++;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 44 of 47
+}
+}
+}
+public static void introduce(Elk[] e,int amount){
+for(int amt = 0; amt < amount; amt++){
+e[index] = new Elk();
+for(int i = 0; i < Math.random() * 15+5; i++){ //Give the generated elks a random age
+between 5 and 20
+e[index].older(); M
+}
+index++; C
+}
+M
+}
+i
+public static void oData(double pop, int s, int a,int u, int p,H int pk,int da){ //Programming
+debugging output
+：
+System.out.println("Statistical Averages: ");
+System.out.println("Trials ran: " + (k-1));
+System.out.println("Population Alive: "号 + (int)(pop/k-3)); //Minus 3 to
+calibrate for population alive error
+System.out.println("Sickness: " + (int)(s/k-4)); //Minus 4 to calibrate
+众
+for sickness error
+System.out.println("Accidents: " + (int)a/k);
+公
+System.out.println("Unknown: " + (int)u/k);
+System.out.println("Poached: " + (int)p/k);
+System.out.prin信tln("Predator Kill: " + (int)pk/k);
+System.out.println("Aged Death: " + (int)da/k);
+}
+微
+public static void main(String[] args) {
+int sick = 0;
+int accident = 0;
+int unknown = 0;
+int poached = 0;
+int predatorkilled = 0;
+double sum = 0.0;
+//-----------------------------------------------------------------------------------------------------
+Elk[] potato = new Elk[65535]; //Create a new container for Elks
+introduce(potato,25); //Introduce 25 elks to the container
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 45 of 47
+//-------------------------------------------------------------------------------------------------------
+for(;k <= trials; k++){ //Determine the number of times the cycle is run
+int cnta= 0; //Sickness Death counter
+int cntb = 0; //Poach Death counter
+int cntc = 0; //Accidental Death counter
+int cntd = 0; //Unknown cause death counter
+int cnte = 0; //Predator kill counter
+for(year = 2001; year <= 2056; year++){ //The number of years the sample endures
+if(year == 2002){ //Introduce 27 elks in the seconMd year
+introduce(potato,27);
+} C
+if(year == 2007){ //Introduce 5 elks in the 7th year
+M
+introduce(potato,5);
+}
+i
+H
+sRate = 0.037*Math.log(year-2000)+0.1056; //Logarithm to caliberate sicknessrate
+：
+with increasing population fitted with the data
+for(month = 1; month <= 12; mont号h++){
+double natDead = nAlive * nAlive*0.16*(0.0009082652134); //Calibrated populatino
+众
+suppressor, decimal is 1/1101
+boolean overCap = false; //Initialize overcapacity indicator
+公
+lifecheck(potato); //Determine nAlive for set potato
+if(nAlive > cCap){ //Determine whether nAlive is over the capcity
+of the land 信
+overCap = true;
+}
+微
+for(int iElk = 0; iElk < index; iElk++){ //The monthly cycle of one individual
+elk begins here
+if((potato[iElk].alive)){ //First determine if the elk is alive or not
+if((overCap) && (rndet(OCDr))){ //Death with probability due to over
+capcity
+potato[iElk].alive = false;
+}
+if((rndet(natDead/nAlive)) && (potato[iElk].alive)){
+potato[iElk].alive = false;
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 46 of 47
+}
+if((rndet(sRate))&&(potato[iElk].alive)){ //Death due to
+sickness
+potato[iElk].alive = false;
+if(!potato[iElk].alive){
+cnta++; //Increment death due to sickness counter
+}
+}
+M
+if((rndet(poaRate))&&(potato[iElk].alive)){ //Death due to
+poaching C
+nature.oops(potato[iElk]);
+M
+cntb++; //Increment poached death counter
+}
+i
+H
+if((rndet(accRate))&&(potato[iElk].alive)){ //Death due to
+：
+accidents
+nature.oops(potato[iElk]);
+cntc++; 号
+}
+众
+if((rndet(unkRate))&&(potato[iElk].alive)){ //Death due to
+unknown reasons
+公
+nature.oops(potato[iElk]);
+cntd++;
+} 信
+if((rndet(predRate))&&(potato[iElk].alive)){
+微
+nature.predator(50.00+50.00*Math.random(),potato[iElk]);
+cnte++;
+}
+if(potato[iElk].alive){
+potato[iElk].older(); //Age the elk
+potato[iElk].pregnancy(potato,Math.random()); //The random function to
+determine pregnancy
+}
+}
+}
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3652 Page 47 of 47
+}
+logyData("Year.txt",nAlive); //Log yearly data
+}
+//Reset the values for next run
+index = 0;
+month = 0;
+for(int c = 0; c< 65535; c++){ //Reset the container
+potato[c]=null;
+}
+potato[0] = new Elk(); M
+for(int j = 0; j < 25; j++){
+potato[0].birth(potato,index); C
+potato[j] = new Elk();
+M
+}
+sum = sum + nAlive; //Statistical average of the number of elks alive
+i
+sick = sick + cnta; H
+accident = accident + cntc;
+：
+unknown = unknown + cntd;
+poached = poached + cntb;
+predatorkilled = predatorkilled + cnte号;
+logtData("Trial.txt",nAlive,cnta,cntc,cntd,cntb,cnte);
+nAlive = 0; //Reset the alive elk counter at the end
+众
+}
+System.out.println("Year: " + (year-1));
+公
+oData(sum,sick,accident,unknown,poached,predatorkilled,agedeath); //Output data
+}
+} 信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

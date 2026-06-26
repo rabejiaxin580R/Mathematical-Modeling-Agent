@@ -1,0 +1,89 @@
+{
+  "schema_version": 3,
+  "concept_id": "prep.pca",
+  "title": "主成分分析（PCA）",
+  "taxonomy_path": [
+    "数据预处理与统计分析",
+    "数据预处理",
+    "主成分分析（PCA）"
+  ],
+  "module_id": "E",
+  "subcat_id": "E.3",
+  "aliases": [
+    "PCA",
+    "主成分分析",
+    "降维"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "主成分分析（PCA）是一种无监督降维方法，通过线性变换将高维数据投影到方差最大的新坐标轴上，用少数几个主成分保留数据的主要信息。",
+    "intuition": "想象你有一堆散落在三维空间中的点，你想用一张照片（二维）来捕捉它们的大致分布。你会选择从哪个角度拍？PCA就是自动找到那个最能展示数据分散程度（方差最大）的角度，然后投影到那个平面上。新坐标轴（主成分）是原始坐标的线性组合，没有实际含义，但能最大程度保留数据的差异。",
+    "when_to_use": "当数据维度很高（例如上百个特征），导致计算慢、过拟合或可视化困难时；或者特征之间存在相关性，想去除冗余时；或者需要将数据压缩到低维以便后续分析（如聚类、回归）时。",
+    "definition": "主成分分析（PCA）是一种统计方法，通过正交变换将可能相关的变量转换为线性不相关的变量（主成分），使得第一个主成分具有最大方差，第二个主成分在正交于第一个的方向上具有次大方差，以此类推。",
+    "math_principle": "设有 $n$ 个样本，每个样本有 $m$ 个特征，数据矩阵 $X \\in \\mathbb{R}^{n \\times m}$。首先对数据进行中心化：$X_{\\text{centered}} = X - \\bar{X}$，其中 $\\bar{X}$ 是每个特征的均值。然后计算协方差矩阵 $C = \\frac{1}{n-1} X_{\\text{centered}}^T X_{\\text{centered}}$。求解 $C$ 的特征值和特征向量：$C v_i = \\lambda_i v_i$。将特征值从大到小排序，选取前 $k$ 个特征向量组成投影矩阵 $W \\in \\mathbb{R}^{m \\times k}$。降维后的数据为 $Y = X_{\\text{centered}} W$。",
+    "step_by_step": [
+      "1. 标准化数据：对每个特征减去均值（中心化），可选除以标准差（标准化），使每个特征均值为0，方差为1。",
+      "2. 计算协方差矩阵：对于中心化后的数据矩阵 $X$，计算 $C = \\frac{1}{n-1} X^T X$。",
+      "3. 计算特征值和特征向量：对协方差矩阵进行特征分解，得到特征值 $\\lambda_i$ 和对应的特征向量 $v_i$。",
+      "4. 排序并选择主成分：将特征值从大到小排序，选择前 $k$ 个最大的特征值对应的特征向量，组成投影矩阵 $W$。",
+      "5. 投影数据：将中心化后的数据乘以投影矩阵，得到降维后的数据 $Y = X W$。"
+    ],
+    "worked_example": "假设有4个样本，每个样本有2个特征：$X = \\begin{bmatrix} 2.5 & 2.4 \\\\ 0.5 & 0.7 \\\\ 2.2 & 2.9 \\\\ 1.9 & 2.2 \\end{bmatrix}$。中心化后：$X_{\\text{centered}} = \\begin{bmatrix} 0.5 & 0.2 \\\\ -1.5 & -1.5 \\\\ 0.2 & 0.7 \\\\ -0.1 & 0.0 \\end{bmatrix}$。协方差矩阵 $C = \\frac{1}{3} X_{\\text{centered}}^T X_{\\text{centered}} = \\begin{bmatrix} 0.6167 & 0.615 \\\\ 0.615 & 0.7167 \\end{bmatrix}$。特征值：$\\lambda_1 = 1.284, \\lambda_2 = 0.049$，对应特征向量：$v_1 = \\begin{bmatrix} 0.6779 \\\\ 0.7352 \\end{bmatrix}, v_2 = \\begin{bmatrix} -0.7352 \\\\ 0.6779 \\end{bmatrix}$。选择第一个主成分（$k=1$），投影矩阵 $W = v_1$。降维后数据 $Y = X_{\\text{centered}} W = \\begin{bmatrix} 0.5 & 0.2 \\\\ -1.5 & -1.5 \\\\ 0.2 & 0.7 \\\\ -0.1 & 0.0 \\end{bmatrix} \\begin{bmatrix} 0.6779 \\\\ 0.7352 \\end{bmatrix} = \\begin{bmatrix} 0.486 \\\\ -2.121 \\\\ 0.650 \\\\ -0.068 \\end{bmatrix}$。",
+    "pitfalls": [
+      "PCA对数据缩放敏感：如果特征尺度不同，未标准化会导致方差大的特征主导主成分，因此通常先标准化。",
+      "PCA假设主成分是线性组合，无法捕捉非线性结构。",
+      "PCA是无监督方法，不考虑标签信息，可能丢失对分类有用的信息。",
+      "解释主成分含义困难：主成分是原始特征的线性组合，通常没有直观意义。",
+      "选择主成分数量k需要权衡：保留方差比例与降维程度，常用累积方差贡献率（如>85%）或肘部法则。"
+    ],
+    "tools": "Python中常用scikit-learn库的PCA类。最小可运行代码：\n```python\nfrom sklearn.decomposition import PCA\nfrom sklearn.preprocessing import StandardScaler\nimport numpy as np\n\n# 示例数据\nX = np.array([[2.5, 2.4], [0.5, 0.7], [2.2, 2.9], [1.9, 2.2]])\n\n# 标准化\nscaler = StandardScaler(with_std=False)  # 仅中心化\nX_scaled = scaler.fit_transform(X)\n\n# PCA降维到1维\npca = PCA(n_components=1)\nX_pca = pca.fit_transform(X_scaled)\nprint(X_pca)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "C = \\frac{1}{n-1} X_{\\text{centered}}^T X_{\\text{centered}}",
+      "variables": {
+        "C": "协方差矩阵",
+        "n": "样本数",
+        "X_{\\text{centered}}": "中心化后的数据矩阵"
+      }
+    },
+    {
+      "latex_code": "C v_i = \\lambda_i v_i",
+      "variables": {
+        "v_i": "第i个特征向量",
+        "\\lambda_i": "第i个特征值"
+      }
+    },
+    {
+      "latex_code": "Y = X_{\\text{centered}} W",
+      "variables": {
+        "Y": "降维后的数据矩阵",
+        "W": "由前k个特征向量组成的投影矩阵"
+      }
+    }
+  ],
+  "cases": [
+    "8700",
+    "9564"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "lec019_001_01",
+      "lec019_002_01",
+      "lec019_002_02",
+      "lec019_004_03",
+      "lec019_005_01",
+      "lec019_005_03",
+      "lec019_006_01"
+    ],
+    "from_papers": [
+      "8700",
+      "9564"
+    ]
+  }
+}

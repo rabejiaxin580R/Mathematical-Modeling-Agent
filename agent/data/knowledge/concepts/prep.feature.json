@@ -1,0 +1,78 @@
+{
+  "schema_version": 3,
+  "concept_id": "prep.feature",
+  "title": "特征工程基础",
+  "taxonomy_path": [
+    "数据预处理与统计分析",
+    "数据预处理",
+    "特征工程基础"
+  ],
+  "module_id": "E",
+  "subcat_id": "E.3",
+  "aliases": [
+    "特征工程",
+    "特征构造",
+    "特征选择"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "特征工程就是把原始数据变成更适合机器学习模型使用的特征，就像把杂乱的材料加工成合适的零件。",
+    "intuition": "想象你要做一道菜，原始食材就像原始数据，但直接下锅可能不好吃。你需要切菜、调味、搭配——这就是特征工程。比如，座位号1-195只是一个数字，但通过计算可以变成“排数”和“列数”，这样模型就能理解座位的位置关系。同样，图像数据是像素矩阵，但我们可以提取边缘、纹理等特征，让模型更容易识别物体。",
+    "when_to_use": "任何机器学习任务都需要特征工程，尤其是当原始数据是数值、文本、图像等非结构化数据时。如果你发现模型效果不好，或者数据维度太高、特征冗余，就应该考虑特征工程。",
+    "definition": "特征工程是将原始数据转换为更能代表预测模型潜在问题的特征的过程，包括特征构造（生成新特征）和特征选择（筛选有效特征），以提升模型性能和可解释性。",
+    "math_principle": "特征构造：通过数学变换生成新特征。例如，多项式特征将原始特征 x 扩展为 x^2, x^3, ...；交互特征将两个特征相乘，如 x1 * x2。新特征集合为 {x1, x2, x1^2, x2^2, x1*x2}。\n特征选择：过滤法基于统计量如皮尔逊相关系数 r = (Σ(x_i - x̄)(y_i - ȳ)) / sqrt(Σ(x_i - x̄)^2 Σ(y_i - ȳ)^2)；包裹法如递归特征消除（RFE）通过训练模型迭代移除权重最小的特征；嵌入法如Lasso回归通过L1正则化使部分系数变为0，公式：min_w (1/(2n)) Σ(y_i - w^T x_i)^2 + α||w||_1。",
+    "step_by_step": [
+      "1. 理解数据：查看数据类型、缺失值、分布等。",
+      "2. 特征构造：根据领域知识或数据特点生成新特征，如多项式、交互、聚合特征。",
+      "3. 特征编码：将类别特征转换为数值，如独热编码。",
+      "4. 特征缩放：标准化或归一化，使特征在同一量级。",
+      "5. 特征选择：使用过滤法（如相关系数）、包裹法（如RFE）或嵌入法（如Lasso）筛选重要特征。",
+      "6. 评估效果：用交叉验证检查特征工程后的模型性能。"
+    ],
+    "worked_example": "假设有一个座位号数据集，座位号从1到195，每排6个座位。我们想构造“排数”和“列数”特征。\n- 排数 = floor((座位号 - 1) / 6) + 1\n- 列数 = (座位号 - 1) % 6 + 1\n例如，座位号7：排数 = floor((7-1)/6)+1 = floor(6/6)+1 = 1+1=2，列数 = (7-1)%6+1 = 6%6+1 = 0+1=1。所以座位7在第2排第1列。这样，一维特征变成了二维，模型能更好地理解位置关系。",
+    "pitfalls": [
+      "1. 过拟合：构造太多特征可能导致模型过拟合，尤其是多项式特征。",
+      "2. 数据泄露：特征构造时使用了未来信息或测试集信息，导致评估结果虚假。",
+      "3. 忽略业务含义：盲目构造特征可能引入噪声，需要结合领域知识。",
+      "4. 特征选择不当：过滤法可能忽略特征间的交互，包裹法计算成本高。"
+    ],
+    "tools": "Python中常用sklearn库：\n- 特征构造：`from sklearn.preprocessing import PolynomialFeatures`，`poly = PolynomialFeatures(degree=2, include_bias=False)`，`X_poly = poly.fit_transform(X)`\n- 特征选择：`from sklearn.feature_selection import SelectKBest, f_regression, RFE, SelectFromModel`\n- 最小可运行代码：\n```python\nfrom sklearn.datasets import load_boston\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.feature_selection import SelectKBest, f_regression\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.model_selection import cross_val_score\nimport numpy as np\n\n# 加载数据\nX, y = load_boston(return_X_y=True)\n\n# 特征构造：添加二次项和交互项\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X)\n\n# 特征选择：选择前10个特征\nselector = SelectKBest(f_regression, k=10)\nX_selected = selector.fit_transform(X_poly, y)\n\n# 模型评估\nmodel = LinearRegression()\nscores = cross_val_score(model, X_selected, y, cv=5)\nprint(\"R^2 scores:\", scores)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "r = \\frac{\\sum_{i=1}^{n} (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum_{i=1}^{n} (x_i - \\bar{x})^2 \\sum_{i=1}^{n} (y_i - \\bar{y})^2}}",
+      "variables": {
+        "r": "皮尔逊相关系数",
+        "x_i": "特征的第i个样本值",
+        "y_i": "目标变量的第i个样本值",
+        "\\bar{x}": "特征的均值",
+        "\\bar{y}": "目标变量的均值",
+        "n": "样本数量"
+      }
+    },
+    {
+      "latex_code": "\\min_w \\frac{1}{2n} \\sum_{i=1}^{n} (y_i - w^T x_i)^2 + \\alpha \\|w\\|_1",
+      "variables": {
+        "w": "权重向量",
+        "x_i": "第i个样本的特征向量",
+        "y_i": "第i个样本的目标值",
+        "n": "样本数量",
+        "\\alpha": "正则化强度",
+        "\\|w\\|_1": "L1范数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "lec008_006_02",
+      "lec016_001_07",
+      "supp_E12"
+    ],
+    "from_papers": []
+  }
+}

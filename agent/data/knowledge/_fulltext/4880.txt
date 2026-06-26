@@ -1,0 +1,1760 @@
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2014
+17th Annual High School Mathematical Contest in Modeling (HiMCM) Summary
+Sheet
+(Please attach a copy of this page to your Solution Paper.)
+M
+Team Control Number: 4880
+C
+Problem Chosen: B
+M
+Please type a summary of your results on this page. Please remember not to include the name of
+your school, advisor, or team members on this page.
+i
+H
+SUMMARY:
+：
+In order to determine how severe the spread of the disease is, we began by classifying the
+disease based on its mode of transmission. This was done by researching the respective
+号
+reproductive rates (R ) of representative diseases for each major mode of transmission and
+0
+matching the range of values found with the R of the unknown disease based on the data given
+0
+众
+in the problem. Using this method, we determined the disease to be transmitted primarily through
+air, with a R of 1.79, meaning that on average an infected person will pass it on to 1.79 other
+0
+people. Using this value, we also determined that the disease is not contained since the number
+公
+of infected individuals is still increasing since R is greater than 1. If R is less than 1, then the
+0 0
+number of cases will slowly decrease and the disease will slowly disappear from the system
+because infected in信dividuals are not generating enough new cases.
+To model the spread of the disease through the population, we modified the SIR model to include
+微
+a new factor E, which represents the number of individuals in the ‘latency phase’, which means
+that they are exposed and infected by the disease but are not showing symptoms yet. This model
+is known as the SEIR model. Since most diseases have an incubation period before symptoms
+are manifested, it is necessary to consider E when modeling the spread of the disease.
+To determine the appropriate measures to be taken on the island, we first defined 6 different
+stages of a disease to match appropriate reactions and resource allocations. These stages are
+closely related to the variables in our SEIR model. I represents the number of individuals that
+1
+are not showing symptoms (S and E); I represents the number of individuals that have died as a
+6
+result of the disease (R); I , I , I , and I represent the four stages of visible illness which have
+2 3 4 5
+varying degrees of severity (I). These 6 variables were multiplied with respective constants that
+were determined by the amount of resources necessary for individuals in that stage, then added
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+together in a sum W which roughly represents, based on a scale, the amount of and types of
+resources an individual in certain stage of the disease will require.
+However, these resources are not present in infinite amounts on the island, so we created another
+model to determine which countries could potentially provide such resources to the island. It is
+likely that Indonesia will provide a certain amount of aid to its own island, however it is also
+unlikely that it’ll be able to provide all the resources needed to contain the disease. As a result,
+12 other countries were selected due to their increased likelihood to provide aid for the island
+based on proximity to Indonesia and the general amount of supplies the country has in relation to
+Indonesia. The shorter the distance, the more convenient transportation of resources will be to
+M
+the island, so the distance between the country and the island is defined as d. The general
+abundance of supplies is quantified by the ratio of GDP of the country to the GDP of Indonesia
+C
+and is defined as R .
+GDP
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 1
+HiMCM 2014 Problem B:
+The Next Plague?
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Team #04880
+November 6-7, 2014
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 2
+Problem Summary and Analysis:
+On a small island in Indonesia, a disease has begun to run its course by infecting 150 of the
+island’s 300 inhabitants and killing 15. As a result, we have been asked to develop several
+mathematical models to determine and classify the pathogen, determine whether or not the
+disease is contained, determine at what point certain measures should be taken to prevent the
+spread of the disease and finally determine how to allocate resources to those on the island as a
+M
+result of the change of the situation on the island.
+C
+Through the development of these models, additional situational information is provided to our
+M
+team in order to help modify and improve the pre-existing models.
+i
+H
+In this situation, people’s lives are at stake, so the created mathematical models must accurately
+：
+develop a solution that best prevents the disease from infecting and killing off the whole island.
+However, because this is an island, isolation is imperative in containing the disease and
+号
+preventing its’ spreading to other populations. As a result, the objective of these models is to
+quickly and efficiently allocate provided resources to those in different stages of the disease
+众
+while taking into account where these resources are coming from as well.
+公
+Resources are not infinite supply though, so we identified nations that could provide help based
+信
+on their GDP and number of physicians per 1000 people.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 3
+Model Design Justification:
+In order to determine type and severity of spread, we had to determine method of transmission
+and how easily it could spread through a population, which we defined as the disease’s basic
+reproductive rate . However, there was little information given in the problem, so we researched
+other diseases and used their information as a basis of comparison for the rate of transmission of
+M
+our disease. We used a variation of the SIR model called SEIR, which included a pathogen’s
+incubation period while assuming that recovered individuals could not be infected again, to
+C
+calculate this disease’s rate of of transmission. It was most similar to that of an airborne disease,
+M
+so we assumed that this disease was also airborne.
+i
+H
+Our final model could also be used to determine whether a disease was contained. We defined
+：
+that a disease was contained when its basic reproductive rate fell below 1; this would mean that
+there will be fewer cases and the disease will eventually disappear from the population.
+号
+To create a model to determine the appropriate measures to be taken on the island, we first
+众
+defined 6 stages of the disease, each with a varying degree of severity. The raw number of
+individuals in stage x, repr公esented by I , was multiplied by a constant (k, l, p, q, r, and v for
+x
+stages 1, 2, 3, 4, 5, and 6 respectively) which was determined by how many resources an
+individual in that s信tage would need compared to someone in another stage. This is necessary
+because different stages of the disease require very different amounts of resources. For example,
+微
+the constant p which corresponds to stage 3 is very high since a person in stage 3, which is more
+advanced and severe that stage 1, would require more attention and resources that someone in
+stage 1, so even the presence of a few individuals in stage 3 would greatly increase the amount of
+resources needed on the island. The sum of the variables multiplied by their respective constants
+is then divided by the number of individuals on the island minus the number of individuals who
+are not infected, which yields a value W(t) which is put in a scale to determine the overall
+severity of the disease on the island and what resources are necessary.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 4
+Variables
+t = time
+S(t) = S = Number of susceptible individuals who do not have the pathogen in their system
+E(t) = E = Number of infected individuals who can not pass on the disease and do not show
+symptoms yet. In other words, the pathogen is in its latency period.
+I(t) = I = Number of infected individuals who show symptoms of the disease, and can pass on the
+disease to others.
+M
+R(t) = R = Number of removed individuals who have been infected, but either died or recovered,
+so cannot pass on the pathogen.
+C
+N = Total population = S(t) + E(t) + I(t) + R(t)
+M
+D = Duration of latency (incubation), or the time between exposure to pathogens and show of
+L
+symptoms i
+H
+D = Duration of infection, or the time in days between show of symptoms and development of
+I
+：
+resistance/death.
+R = Basic reproductive rate of the disease. The number of secondary infections from one
+0 号
+primary infection over the duration of the infection.
+β = rate of transmission. The number of contacts made per day that result in transmission, or
+众
+simply the number of new cases of infection from one original infection in one day.
+m = mortality rate of the d公isease.
+I , I , I , I , I , I = Raw number of individuals in stages 1, 2, 3, 4, 5, and 6 of the disease,
+1 2 3 4 5 6
+信
+respectively.
+W(t) = Rating value for quantity and type of resources necessary
+微
+k, l, p, q, r, v = constants multiplied to the size of each population group in determining W(t).
+Can vary depending on the location and disease.
+A = Allocation of Physicians. Value used to compare the suitability of a country to send in
+P
+physicians to that of other potential aid-providing countries and Indonesia.
+A = Allocation of Supplies. Value used to compare the suitability of a country to provide
+S
+desired supplies to that of other potential aid-providing countries and Indonesia.
+R = Ratio of physicians per 1000 people of potential aid-providing country to that of Indonesia
+P
+R = Ratio of GDP of potential aid-providing country to that of Indonesia
+GDP
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 5
+Definitions
+Type of spread: method of transmission
+Severity of spread: how easily a given disease spread throughout a given population. Severity
+increases with the increase in β.
+Containment: The disease is contained when there are no new infections. In other words, the
+number of cases is decreasing and R is below 1.
+0
+Prevalent: Frequency is 0.5 or greater
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 6
+Assumptions
+1. The age structure of the population on the island is similar to that of Indonesia as a
+whole. This is to ensure that the likelihood of death as a result of contracting the
+pathogen can be differentiated between age groups.
+2. Throughout the period, the crude birth rate (CBR) and crude death rate (CDR) are
+M
+constant. This ensures that there are no sudden differences in age structure or population
+size, and that all changes in population are due to the disease.
+C
+3. The diseases chosen are representative of their method of transmission. For example, if
+M
+cholera has the highest reproduction number, then water-born diseases are generally the
+most contagious. It would be impossible to take all diseaises of a particular method into
+H
+consideration because there are thousands of them.
+：
+4. The best way to classify method of transmission of an infectious disease is to compare of
+rate of transmission. The transmission rate of diseases with same methods of transmission
+号
+will spread at similar rates, while diseases of different methods of transmission will
+spread at clearly differentiable rates. In contrast, other factors such as Duration of
+众
+Latency and Duration of Infection, however, can vary greatly within one method of
+transmission.
+公
+5. There is only one pathogen on the island with the symptoms given. This is to make sure
+that this dis信ease will not be confused and therefore misdiagnosed as another disease.
+6. The virus will not mutate into a different strain. If it did so, then it could have multiple
+微
+methods of transmission and introduce too many factors into our model.
+7. The virus has a mortality rate of around 50%. Since the symptoms of the disease are
+similar to those of ebola, it is reasonable to assume that the mortality rate will be similar
+as well. From the data provided, there is a 10% death rate, but it is reasonable to assume
+that there will be more deaths as the pathogen spreads throughout the population.
+8. The virus has an incubation period between 5-17 days. Based on data collected, the
+average minimum incubation period is about 5 days, and the average maximum
+incubation period is about 17 days. Therefore, the time period is between the average
+minimum and average maximum.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 7
+9. The 15 people who died as a result of the virus are the first to do so. This is because it
+was not stated within the problem that there were people who died prior to this week, and
+it would be wrong to assume so.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 8
+Requirement I: Disease Classification, Containment, and Resource Allocation
+Models
+
+Methods of Transmission
+Table 1. Representative Diseases of Methods of Transmission
+| Disease  | Method of  | R   | Duration of  | Duration of  |     |
+| -------- | ---------- | --- | ------------ | ------------ | --- |
+0
+|     | Transmission  |     | Latency (D | )  Infection (D | )   |
+| --- | ------------- | --- | ---------- | --------------- | --- |
+L MI
+| Diphtheria   | Airborne  | 6-7  | 2-5 days   | 4 days - 4 weeks   |     |
+| ------------ | --------- | ---- | ---------- | ------------------ | --- |
+C
+
+M
+| Measles   | Airborne   | 12-18  | 7 - 21 days   | 8 days   |     |
+| --------- | ---------- | ------ | ------------- | -------- | --- |
+i
+H
+| AIDS/HIV  | Bodily fluids  | 2-5  | 2 - 4 weeks   | From point of  |     |
+| --------- | -------------- | ---- | ------------- | -------------- | --- |
+：
+|     | (blood, urine,  |     |     | infection, so could be  |     |
+| --- | --------------- | --- | --- | ----------------------- | --- |
+|     | semen)          |     |     | 10+ years.              |     |
+号
+Ebola   Bodily fluids  1.5-2  2 - 21 days   Patients are infectious
+|     | (blood, urine,  |     |     | as long as they have  |     |
+| --- | --------------- | --- | --- | --------------------- | --- |
+众
+|     | semen)   |     |     | the virus in their  |     |
+| --- | -------- | --- | --- | ------------------- | --- |
+bodily fluids, which
+公
+could be up until 7
+weeks after recovery.
+信
+Cholera   Waterborne   1.0-2.75  2 hours to 5 days  7-14 days
+微
+
+Typhoid Fever   Waterborne   2.8  6-30 days  3-5 days (if treated)
+up to 1 month
+(untreated)
+Dengue   Vector  2.0-2.95  4-10 days  Virus lasts 1 month in
+|     | transmission   |     |     | body  |     |
+| --- | -------------- | --- | --- | ----- | --- |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 9
+SEIR Model:
+
+!" 𝛽𝑆𝐼
+(𝑁−𝑆)−
+|   = 𝜇 |     |     |     |     |
+| ----- | --- | --- | --- | --- |
+𝑁
+!"
+!"
+𝛽
+!"
+−
+|    =  | (𝜇 + 𝜎)𝐸  |     |     |     |
+| ----- | --------- | --- | --- | --- |
+!" !
+M
+!"
+ = 𝜎𝐸−(𝜇+𝛾)𝐼
+| !"  |     |     |     | C   |
+| --- | --- | --- | --- | --- |
+!"
+M
+ = 𝛾𝐼−𝜇𝑅
+!"
+|     |     |     | i   |     |
+| --- | --- | --- | --- | --- |
+H
+𝜇 for the given situation is roughly 1.64 x 10-5. The crude death rate for Indonesia is 6 out of
+：
+1000 people per year, therefore the death rate per day would be:
+|     | 6  𝑑𝑒𝑎𝑡ℎ𝑠 | 1  𝑦𝑒𝑎𝑟 |     |     |
+| --- | --------- | ------- | --- | --- |
+× 号= 1.64×10!!𝑑𝑒𝑎𝑡ℎ𝑠/(𝑝𝑒𝑜𝑝𝑙𝑒×𝑑𝑎𝑦)
+|     | 1000  𝑝𝑒𝑜𝑝𝑙𝑒×𝑦𝑒𝑎𝑟 | 365  𝑑𝑎𝑦𝑠 |     |     |
+| --- | ----------------- | --------- | --- | --- |
+
+众
+R  is defined as the total number of secondary infections that originate from one primary
+0
+infection over the entire time that an individual is infected. R  is calculated by the product of the
+|     | 公   |     | 0   |     |
+| --- | --- | --- | --- | --- |
+total number of contacts made by infected individuals, the probability of transmission per
+contact, and the du信ration that a person remains infected. This means that dividing R  by the
+0
+average duration of infection (D) will give us β, the rate of transmission.
+I
+微
+
+|                            | !      | !                          | 1.64×10!!, and so is negligible.  |     |
+| -------------------------- | ------ | -------------------------- | --------------------------------- | --- |
+| R  can also be defined as  |        | . However, in this case, 𝜇 | =                                 |     |
+| 0                          | !!!!!! |                            |                                   |     |
+|                            | ! !    | !                          |                                   |     |
+Therefore,   can be simplified to . 1/𝛾is the duration of infection (D ), for individuals
+|     | !!!!!! | !   |     | L   |
+| --- | ------ | --- | --- | --- |
+will move from the Infected to the Recovered at a relatively constant rate over the period of
+Infection. So, the equation can be rewritten as 𝑅 = 𝛽𝐷 , and again as 𝛽 = 𝑅 /𝐷 . This is
+|     |     | !   | !   | ! ! |
+| --- | --- | --- | --- | --- |
+consistent with the definition in the paragraph above. Therefore, it is logical and justifiable to
+consider:
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 10
+= 𝑅 /𝐷
+𝛽 0 𝐿
+!
+The duration of latency (D ) and rate of entrance from E to I (𝜎) is related by D = , because the
+L L
+!
+Exposed will be entering the Infected at a relatively constant rate over the incubation period.
+All of the equations of the SEIR model calculates for the instantaneous rate of change of the size
+of each population group. The rate is an infinitesimal change in the size of the group divided by a
+M
+infinitesimal change in time. However, all of the calculations below uses modified equations:
+C
+!
+𝛥 (𝑁−𝑆)− 𝛽𝑆𝐼 M
+= 𝜇
+!" 𝑁
+i
+!"
+H
+𝛽
+!
+𝛥 −
+= (𝜇 + 𝜎)𝐸 ：
+!" !
+! 号
+𝛥
+= 𝜎𝐸−(𝜇+𝛾)𝐼
+!"
+众
+!
+𝛥
+= 𝛾𝐼−𝜇𝑅
+!"
+公
+This is an inevitable modification due to the lack of information given. The modifications will be
+信
+further discussed in the sensitivity analysis.
+微
+𝛥!
+= 𝛾𝐼−𝜇𝑅
+!"
+For this case, the current dR/dt is around 15/7, because 15 people died, and thus are no longer
+able to transmit the pathogen, over one week. The number of deaths due to the, disease can be
+calculated as 𝑚×𝑅. There were 15 deaths and since m was assumed to be 50%, R would be 30
+and 𝜇= 1.64 x 10-5. I = 150, because there are currently around 150 individuals known to be
+showing symptoms of the disease.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 11
+After substitution: !" = 150𝛾−(1.64×10!!)(30)
+!
+With this equation, 𝛾can be calculated.
+𝛾= 0.0143
+𝛥!
+= 𝜎𝐸−(𝜇+𝛾)𝐼
+!"
+𝛾 was calculated above as 0.0143. 𝜇 is unchanging, so 𝜇= 1.64 x 10-5. I =150.M The time elapsed
+since the emergence of the Infected population was assumed to be 7 days, because that is when
+C
+the first deaths occurred, proving the emergence of symptoms.
+M
+After substitution: !"# = 𝜎𝐸 −(1.64×10!! +0.0143)150
+i
+!
+H
+With this equation, 𝜎𝐸 can be calculated.
+：
+𝜎𝐸=23.576
+号
+𝛥! 𝛽!"
+= − (𝜇 + 𝜎)𝐸
+!" !
+众
+The latency period of a disease, according to the research done on numerous different diseases, is
+公
+typically not longer than 50 days (with the exception of AIDS). Therefore, the value of 𝜎, which
+is equal to D-1, would not be less than 0.02. As a result, 𝜇 is relatively negligible to 𝜎. So, the
+I
+信
+equation above can be simplified to:
+𝛥! 𝛽!"
+= −微𝜎𝐸
+!" !
+𝜎𝐸was calculated above to be 23.576. I =150, and N = 300.
+𝛥! !
+After substitution: = 𝛽𝑆 − 23.576
+!" !
+The 𝜎for each of the disease researched can be calculated by D -1 by definition. Also, time
+L
+interval of interest (𝛥t) would be the duration of latency (D ) because the people that are
+L
+currently part of the Exposed would have entered the group is the last D days. Therefore,
+L
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 12
+𝛥𝑡 = 𝜎!!. The 𝜎𝐸for this case was determined to be 23.576. Exposed population (E) can be
+|     | 𝜎! !".!"# | 𝛥!  | !   |     |
+| --- | --------- | --- | --- | --- |
+determined by  , or  .   can then be expressed as  = 𝜎𝐸 = 23.576.
+|     | ! ! | !"  | !!! |     |
+| --- | --- | --- | --- | --- |
+
+Variables were defined so that 𝑆(𝑡)+𝐸(𝑡)+𝐼(𝑡)+𝑅(𝑡) = 𝑁. This equation can be rewritten
+| for this case to 𝑆(𝑡)+𝐸(𝑡)+150+30 |           | = 300, and then to:  |     |     |
+| --------------------------------- | --------- | -------------------- | --- | --- |
+|  𝑆(𝑡) = 120                       | − 𝐸(𝑡).   |                      |     |     |
+|                                   |           |                      |     | M   |
+!"
+|  and S values, the equation  |     | !" !                                                 |     |     |
+| ---------------------------- | --- | ---------------------------------------------------- | --- | --- |
+| With                         |     | = 𝛽𝑆−23.576 can be used to write another expression  |     |     |
+| !"                           |     | !" !                                                 |     | C   |
+and obtain another value for 𝛽.
+M
+
+Table 2. Diseases and their respective rates of transmission (𝛽) ifrom research
+H
+| Disease     | 𝛽 (R          | /D)  | 𝜎(D -1)  | Average 𝜎  |
+| ----------- | ------------- | ---- | -------- | ---------- |
+|             |               | 0 I  | ：L       |            |
+| Diphtheria  | 0.214 - 1.75  |      | 0.2-0.5  | 0.35       |
+号
+| Measles  | 1.5 - 2.25  |     | 0.0476-0.143   | 0.0953  |
+| -------- | ----------- | --- | -------------- | ------- |
+众
+| AIDS   | 5.48 x 10-4-1.37 x 10-3  |     | 0.0357-0.0714  | 0.0536  |
+| ------ | ------------------------ | --- | -------------- | ------- |
+| Ebola  | 0.0306公 - 0.0408         |     | 0.0476-0.5     | 0.274   |
+
+|          | 信               |     |         |      |
+| -------- | --------------- | --- | ------- | ---- |
+| Cholera  | 0.0714 - 0.393  |     | 0.2-12  | 6.1  |
+微
+| Typhoid Fever  | 0.56 - 0.933     |     | 0.0333-0.167  | 0.100  |
+| -------------- | ---------------- | --- | ------------- | ------ |
+| Dengue Fever   | 0.0667 - 0.0983  |     | 0.1-0.25      | 0.175  |
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 13
+Table 3. Diseases and their E, S and 𝛽values obtained from modified SEIR equation
+Disease E ( !".!"# ) S (120−𝐸(𝑡)) 𝛽= (94.304/𝑆)
+!
+Diphtheria 67.36 52.64 1.79
+Measles 247.387 <0 (so nobody is indeterminable
+uninfected)
+M
+AIDS 439.851 <0 (so nobody is indeterminable
+uninfected)
+C
+Ebola 84.044 35.956 M2.62
+Cholera 3.865 116.135 i0.812
+H
+Typhoid Fever 235.76 <0 (so nobody is indeterminable
+：
+uninfected)
+号
+Dengue Fever 134.72 <0 (so nobody is indeterminable
+uninfected)
+众
+Among all of the 𝛽value obtained from the modified SEIR equation (𝛽= 94.304/𝑆), the 𝛽value
+公
+was closest to the 𝛽value calculated from research (𝛽 = 𝑅 /𝐷 ) for Diphtheria. The 𝛽value from
+! !
+the modified SEIR信 equations for Diphtheria was 1.79, which is a 3.075% error from 1.75, the
+maximum 𝛽value for Diphtheria obtained from researched Base Reproduction Rate and Duration
+of Infectio微n. The 𝛽value calculated also fits within the range of research-based 𝛽values for
+measles. Diphtheria and measles are both airborne diseases. Therefore, we can classify the
+disease affecting the island of interested as an airborne disease.
+Containment
+According to definition, a disease is contained if the R values is less than 1, and not contained if
+0
+the R value is greater or equal to 1. Also, as derived previously,
+0
+𝑅 = 𝛽𝐷 .
+! !
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 14
+𝛽value for the disease at hand was calculated to be 1.79. Using the researched D values for
+L
+Diphtheria and Measles, the R value ranged from 7.19 to 50.12. The entire range is greater than
+0
+1, and so the disease at the moment can be classified as uncontained.
+When R is greater less than 1, the average number of secondary conditions from one primary
+0
+infection is less than one. This in turn means that the number of new infections is less than the
+existing infections, and that the number Infected individuals moving into the Removed exceed
+M
+the number of Exposed individuals moving into Infected. Therefore, when R is less than 1, the
+0
+Infected population is decreasing.
+C
+M
+Figure 1. Susceptible, Exposed, Infected, and Removed population over the next 15 days
+i
+H
+：
+号
+众
+公
+信
+微
+The graph above predicts the population of each group over time. The curves were drawn based
+on the S, E, I, R, 𝛽,𝛾,𝜎,𝜇 values determined from the analysis with the SEIR model above. t = 0
+was assigned to be the current date. The curve of interest in the Infected curve, shown in red. As
+can be clearly seen, the Infected population is predicted to continue to increase at a decreasing
+rate, flatten out, then decrease afterwards. The Infected population starts to decrease at around
+7.5 days. Therefore, it can be predicted that the disease will be contained after around 7.5 days
+from now.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 15
+Needs and Aids Assessment Model
+Stages of disease
+There are six stages of disease that require different distribution of resources: incubation,
+prodromal, illness, decline, convalescence and death. Incubation (I ) is the period of disease in
+1
+which a patient shows no visible symptoms, but has already been infiltrated by the pathogen.
+This stage requires distribution of personal hygiene products, distribution of medical masks and
+societal distance. Prodromal (I ) is the onset of early symptoms of the diseaseM. In this stage, it is
+2
+best to immediately quarantine patients to prevent any further spreading of the disease.
+C
+Furthermore, during this stage, it is important that medical personnel are at hand in order to
+M
+correctly diagnose the symptoms as well as treat the patient. After doing so, it is also necessary
+that medicines are brought in in order to lessen the pain of the symptoms of disease. Illness (I ) is
+i 3
+H
+a period of sickness that affects the mind or body and is the stage in which clinical symptoms
+：
+appear. During the onset of illness, patients will need to remain in quarantine and will still
+require daily checkups by medical personnel as well as require the aforementioned medical
+号
+supplies. Decline (I ) is defined as the slow, progressive deterioration in health and vigor as a
+4
+result of a specific disease. During this stage, patients need to continue to remain in quarantine so
+众
+as to prevent the spreading of the disease. However, because they are in decline, they require less
+medical personnel to treat them as they are already unlikely to survive. Conversely,
+公
+convalescence (I ) is the period of disease at which the symptoms begin to fade until the time the
+5
+patient recovers fro信m the disease. Although the pathogen is not completely gone from the
+patient, they will still require medical attention and medical supplies in order to build up their
+health and 微strength. Furthermore, patients in this stage will still require to be kept in isolation,
+but whether or not they need to remain in quarantine will depend on each specific case. Finally,
+death (I ) is the last possible stage. Here, a morgue is a required in order to prevent spreading of
+6
+the disease from the dead body to others.
+Implementation/Resources/Aid required for treatment of airborne disease in various
+stages:
+As mentioned earlier, there are quite a few types of resources required to treat such a disease.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 16
+Firstly, quarantine is defined as a place of isolation in which people that have been exposed to
+infectious disease are placed. This is necessary for all the infected population (especially those in
+prodromal and illness stages) and might be needed for those in recovery as well.
+Increase in societal distance is defined as a restricting movement and contact with the general
+population. This includes shutting down schools, restricting travels and imposing curfews on the
+general populace. By limiting the number of interactions with others, this decreases the
+M
+possibility of a citizen contracting the disease.
+C
+Medical personnel in this situation refers to those involved in medicine or a specialist who has
+M
+had prior experience with such diseases. Examples include doctors, nurses and trained
+specialists. i
+H
+：
+Medical supply can include both general and specific resources. Basic first aid kits should be
+brought in for the general population so that when certain symptoms appear, citizens will be able
+号
+to use the kit to determine whether or not such symptoms are congruent with those of this
+disease. Furthermore, medicines specific to this disease that speed up process of recovery, are
+众
+possible cures or lessen the severity of the symptoms would be required for each stage.
+公
+Personal hygiene products should be distributed to the population in order to further prevent the
+probability of the d信isease spreading to more of the population. Such products would include hand
+and body soap, shampoo and other products to keep the population as clean as possible. Other
+微
+things such as medical masks and gloves should be distributed as a precaution as well.
+Finally, the island as a whole will require the essential resources for survival. In order to contain
+this disease to this island and prevent it from spreading to the mainland, the island needs to
+isolate itself from other civilization. This would therefore require an increase in resources, as
+much of those basic needs were covered by trading with nearby islands. This would include
+food, water, clothing and other basic necessities.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 17
+A mathematical model below gives a rating value that can be converted to assess the quantity
+and type of resources needed at a given time.
+𝑘𝐼 (𝑡) + 𝑙𝐼 (𝑡) + 𝑝𝐼 (𝑡) + 𝑞𝐼 (𝑡) + 𝑟𝐼 (𝑡) + 𝑣𝐼 (𝑡)
+! ! ! ! ! !
+𝑊(𝑡) =
+𝑁 − 𝑆
+I (t), I (t), I (t). I (t), I (t), I (t) represent the raw number of individuals in stages 1, 2, 3, 4, and 5,
+1 2 3 4 5 6
+6 of the disease respectively. k, l, p, q, r, and v are constants, and are set acrosMs a very wide
+range, so that a slight increase or decrease in the population in each stage would not mistakenly
+C
+indicate the quantity and type of aid necessary. The sum of the constant-population products are
+M
+divided by the total population so that the size of the population does not affect the final result.
+These factors all combine into the sum W(t), a rating value that can be converted to find the
+i
+H
+approximate quantity of each resource and type of aid that is necessary to be implemented on the
+island, based on the distribution of the population ：within the various stages at a certain time.
+号
+The specific values of the constants could vary for different diseases and locations, the following
+values were assigned to each constant for this case:
+众
+k = 1
+l = 10
+公
+p = 150
+q = 100
+信
+r = 0.5
+v = 0.1 微
+Different proportions of population were substituted into the equation to observe the results of
+W(t) depending on various scenarios:
+Table 4. Possible W Values
+Scenario I /N I /N I /N I /N I /N I /N W(t)
+1 2 3 4 5 6
+Number
+1 1 0 0 0 0 0 1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 18
+| 2   | 0.9  | 0.1  | 0    | 0    | 0    | 0    | 1.9   |
+| --- | ---- | ---- | ---- | ---- | ---- | ---- | ----- |
+| 3   | 0.9  | 0    | 0.1  | 0    | 0    | 0    | 15.9  |
+| 4   | 0.9  | 0    | 0    | 0.1  | 0    | 0    | 10.9  |
+| 5   | 0.9  | 0    | 0    | 0    | 0.1  | 0    | 0.95  |
+| 6   | 0.9  | 0    | 0    | 0    | 0    | 0.1  | 0.91  |
+M
+| 7   | 0.8  | 0.2  | 0   | 0   | 0   | 0   | 2.8  |
+| --- | ---- | ---- | --- | --- | --- | --- | ---- |
+C
+| 8   | 0.8  | 0   | 0   | 0.2  | 0   | 0   | 20.8  |
+| --- | ---- | --- | --- | ---- | --- | --- | ----- |
+M
+| 9   | 0.8  | 0   | 0   | 0   | 0.2  | 0   | 0.9  |
+| --- | ---- | --- | --- | --- | ---- | --- | ---- |
+i
+H
+| 10  | 0.8  | 0.1  | 0.1  | 0   | 0   | 0   | 16.8  |
+| --- | ---- | ---- | ---- | --- | --- | --- | ----- |
+：
+| 11  | 0.8  | 0.1  | 0   | 0.1  | 0   | 0   | 11.8  |
+| --- | ---- | ---- | --- | ---- | --- | --- | ----- |
+号
+| 12  | 0.8  | 0.1  | 0     | 0    | 0.1  | 0    | 1.85   |
+| --- | ---- | ---- | ----- | ---- | ---- | ---- | ------ |
+| 13  | 0.8  | 0    | 众0.1  | 0    | 0    | 0.1  | 15.81  |
+| 14  | 0.8  | 0    | 0     | 0.1  | 0    | 0.1  | 10.81  |
+公
+| 15  | 0.8  | 0   | 0.2  | 0   | 0   | 0   | 30.8  |
+| --- | ---- | --- | ---- | --- | --- | --- | ----- |
+信
+| 16  | 0.8  | 0   | 0   | 0   | 0.1  | 0.1  | 0.86  |
+| --- | ---- | --- | --- | --- | ---- | ---- | ----- |
+微
+| 17  | 0.7  | 0.1  | 0.1  | 0    | 0.1  | 0    | 16.75  |
+| --- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 18  | 0.7  | 0    | 0    | 0.2  | 0    | 0.1  | 20.71  |
+| 19  | 0.7  | 0.1  | 0    | 0    | 0.1  | 0.1  | 1.76   |
+| 20  | 0.7  | 0.2  | 0    | 0    | 0.1  | 0    | 2.75   |
+| 21  | 0.7  | 0    | 0    | 0    | 0.3  | 0    | 0.85   |
+| 22  | 0.7  | 0    | 0.3  | 0    | 0    | 0    | 45.7   |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 19
+| 23  | 0.7  | 0    | 0.1  | 0.1  | 0.1  | 0            | 25.75  |
+| --- | ---- | ---- | ---- | ---- | ---- | ------------ | ------ |
+| 24  | 0.7  | 0.3  | 0    | 0    | 0    | 0            | 3.7    |
+| 25  | 0.7  | 0.1  | 0    | 0    | 0.2  | 0            | 1.8    |
+| 26  | 0.7  | 0.2  | 0    | 0    | 0    | 0.1          | 2.71   |
+| 27  | 0.6  | 0    | 0.1  | 0.1  | 0    | 0.2  M25.62  |        |
+C
+| 28  | 0.6  | 0   | 0.4  | 0   | 0   | 0   | 60.6  |
+| --- | ---- | --- | ---- | --- | --- | --- | ----- |
+M
+| 29  | 0.6  | 0   | 0.2  | 0.1  | 0.1  | 0   | 40.65  |
+| --- | ---- | --- | ---- | ---- | ---- | --- | ------ |
+i
+H
+| 30  | 0.6  | 0.1  | 0   | 0   | 0.2  | 0.1  | 1.71  |
+| --- | ---- | ---- | --- | --- | ---- | ---- | ----- |
+：
+| 31  | 0.6  | 0.2  | 0.2  | 0   | 0   | 0   | 32.6  |
+| --- | ---- | ---- | ---- | --- | --- | --- | ----- |
+号
+| 32  | 0.6  | 0   | 0.1  | 0.1  | 0.1  | 0.1  | 25.66  |
+| --- | ---- | --- | ---- | ---- | ---- | ---- | ------ |
+众
+| 33  | 0.6  | 0   | 0.3  | 0   | 0.1  | 0   | 45.65  |
+| --- | ---- | --- | ---- | --- | ---- | --- | ------ |
+公
+| 34  | 0.6  | 0.2  | 0.1  | 0.1  | 0   | 0   | 27.6  |
+| --- | ---- | ---- | ---- | ---- | --- | --- | ----- |
+信
+| 35  | 0.6  | 0.2  | 0   | 0   | 0.2  | 0   | 2.7  |
+| --- | ---- | ---- | --- | --- | ---- | --- | ---- |
+微
+| 36  | 0.6  | 0    | 0.1  | 0.1  | 0.2  | 0    | 25.7   |
+| --- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 37  | 0.5  | 0.2  | 0.1  | 0    | 0    | 0.2  | 17.52  |
+| 39  | 0.5  | 0    | 0.5  | 0    | 0    | 0    | 75.5   |
+| 40  | 0.5  | 0    | 0    | 0    | 0.5  | 0    | 0.75   |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 20
+| 41  | 0.5  | 0.2  | 0.1  | 0    | 0   | 0.1  | 17.51  |
+| --- | ---- | ---- | ---- | ---- | --- | ---- | ------ |
+| 42  | 0.5  | 0.2  | 0    | 0    | 0   | 0.3  | 2.53   |
+| 43  | 0.5  | 0.2  | 0.1  | 0.1  | 0   | 0    | 27.5   |
+| 44  | 0.5  | 0.3  | 0.1  | 0.1  | 0   | 0    | 28.5   |
+M
+| 45  | 0.5  | 0.4  | 0   | 0.1  | 0   | 0   | 14.5  |
+| --- | ---- | ---- | --- | ---- | --- | --- | ----- |
+C
+| 46  | 0.5  | 0.3  | 0   | 0.2  | 0   | 0   | 23.5  |
+| --- | ---- | ---- | --- | ---- | --- | --- | ----- |
+M
+| 47  | 0.5  | 0   | 0   | 0   | 0  i0.5  |     | 0.55  |
+| --- | ---- | --- | --- | --- | -------- | --- | ----- |
+H
+0：.3
+| 48  | 0.4  | 0.2  | 0        |     | 0    | 0.1  | 32.41  |
+| --- | ---- | ---- | -------- | --- | ---- | ---- | ------ |
+| 49  | 0.4  | 0    | 0  号0.5  |     | 0.1  | 0    | 50.45  |
+众0.1
+| 50  | 0.4      | 0.1     |      | 0.3  | 0.1  | 0    | 46.45  |
+| --- | -------- | ------- | ---- | ---- | ---- | ---- | ------ |
+| 51  | 0.4      | 0 公0.4  |      | 0.1  | 0    | 0.1  | 70.41  |
+| 52  | 0.4  信0  |         | 0.4  | 0    | 0.2  | 0    | 40.5   |
+| 53  | 微0.4     | 0.3     | 0.3  | 0    | 0    | 0    | 48.4   |
+| 54  | 0.4      | 0.5     | 0    | 0    | 0.1  | 0    | 5.45   |
+| 55  | 0.4      | 0.5     | 0    | 0.1  | 0    | 0    | 15.4   |
+| 56  | 0.4      | 0       | 0.2  | 0.1  | 0.1  | 0.2  | 40.47  |
+| 57  | 0.4      | 0       | 0.2  | 0.1  | 0    | 0.3  | 40.43  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 21
+| 58  | 0.3  | 0    | 0.1  | 0    | 0.2  | 0.4  | 15.44  |
+| --- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 59  | 0.3  | 0.2  | 0    | 0    | 0.4  | 0.1  | 2.51   |
+| 60  | 0.3  | 0.3  | 0.3  | 0    | 0    | 0.1  | 48.13  |
+| 61  | 0.3  | 0.1  | 0.2  | 0.3  | 0.1  | 0    | 61.35  |
+M
+| 62  | 0.3  | 0   | 0   | 0   | 0.3  | 0.4  | 0.49  |
+| --- | ---- | --- | --- | --- | ---- | ---- | ----- |
+C
+| 63  | 0.3  | 0   | 0.3  | 0.4  | 0   | 0   | 85.3  |
+| --- | ---- | --- | ---- | ---- | --- | --- | ----- |
+M
+| 64  | 0.3  | 0.1  | 0.1  | 0   | 0.4i  | 0.1  | 15.51  |
+| --- | ---- | ---- | ---- | --- | ----- | ---- | ------ |
+H
+0：
+| 65  | 0.3  | 0.1  | 0        |     | 0.1  | 0.5  | 1.4    |
+| --- | ---- | ---- | -------- | --- | ---- | ---- | ------ |
+| 66  | 0.3  | 0    | 0  号0.3  |     | 0.2  | 0.2  | 30.42  |
+众0.4
+| 67  | 0.3      | 0     |      | 0.3  | 0    | 0    | 90.3   |
+| --- | -------- | ----- | ---- | ---- | ---- | ---- | ------ |
+| 68  | 0.2      | 0.1公  | 0    | 0.4  | 0.3  | 0    | 41.35  |
+| 69  | 0.2  信0  |       | 0.5  | 0    | 0    | 0.3  | 75.23  |
+| 70  | 微0.2     | 0.4   | 0.4  | 0    | 0    | 0    | 64.2   |
+| 71  | 0.2      | 0     | 0    | 0    | 0.7  | 0.1  | 0.56   |
+| 72  | 0.2      | 0.3   | 0    | 0.5  | 0    | 0    | 53.2   |
+| 73  | 0.2      | 0     | 0.8  | 0    | 0    | 0    | 120.2  |
+| 74  | 0.2      | 0.1   | 0.1  | 0.1  | 0.5  | 0    | 26.45  |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 22
+| 75  | 0.2  | 0.7  | 0.1  | 0    | 0    | 0    | 22.2   |
+| --- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 76  | 0.2  | 0    | 0    | 0.6  | 0    | 0.2  | 60.22  |
+| 77  | 0.2  | 0    | 0    | 0    | 0.4  | 0.4  | 0.44   |
+| 78  | 0.1  | 0.5  | 0.4  | 0    | 0    | 0    | 65.1   |
+M
+| 79  | 0.1  | 0   | 0.9  | 0   | 0   | 0   | 135.1  |
+| --- | ---- | --- | ---- | --- | --- | --- | ------ |
+C
+| 80  | 0.1  | 0   | 0   | 0.3  | 0.2  | 0.4  | 30.24  |
+| --- | ---- | --- | --- | ---- | ---- | ---- | ------ |
+M
+| 81  | 0.1  | 0.2  | 0.2  | 0.1  | 0  i0.4  |     | 42.14  |
+| --- | ---- | ---- | ---- | ---- | -------- | --- | ------ |
+H
+0：.5
+| 82  | 0.1  | 0.1  | 0.1      |     | 0.2  | 0    | 16.25  |
+| --- | ---- | ---- | -------- | --- | ---- | ---- | ------ |
+| 83  | 0.1  | 0.4  | 0.4  号0  |     | 0    | 0.1  | 64.11  |
+众0
+| 84  | 0.1        | 0     |      | 0    | 0.6  | 0.4  | 1.34    |
+| --- | ---------- | ----- | ---- | ---- | ---- | ---- | ------- |
+| 85  | 0.1        | 0.2公  | 0.3  | 0    | 0.4  | 0    | 47.3    |
+| 86  | 0.1  信0.7  |       | 0.2  | 0    | 0    | 0    | 37.1    |
+| 87  | 微0.1       | 0     | 0    | 0.2  | 0    | 0.7  | 20.17   |
+| 88  | 0          | 0     | 0.4  | 0.5  | 0    | 0.1  | 110.01  |
+| 89  | 0          | 0     | 0.1  | 0    | 0.8  | 0.1  | 15.41   |
+| 90  | 0          | 0.6   | 0.2  | 0.1  | 0    | 0.1  | 46.01   |
+| 91  | 0          | 0.3   | 0    | 0.4  | 0.1  | 0.2  | 43.07   |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 23
+| 92  | 0   | 0    | 1    | 0    | 0    | 0    | 150    |
+| --- | --- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 93  | 0   | 0.1  | 0.1  | 0.2  | 0    | 0.6  | 36.06  |
+| 94  | 0   | 0.9  | 0.1  | 0    | 0    | 0    | 24     |
+| 95  | 0   | 0.2  | 0.2  | 0.2  | 0.2  | 0.2  | 52.12  |
+M
+| 96  | 0   | 0.1  | 0.6  | 0.2  | 0.1  | 0   | 111.05  |
+| --- | --- | ---- | ---- | ---- | ---- | --- | ------- |
+C
+| 97  | 0   | 0   | 0   | 0.1  | 0.8  | 0.1  | 10.41  |
+| --- | --- | --- | --- | ---- | ---- | ---- | ------ |
+M
+| 98  | 0   | 0.5  | 0.2  | 0.1  | 0.1i  | 0.1  | 45.06  |
+| --- | --- | ---- | ---- | ---- | ----- | ---- | ------ |
+H
+0：.3
+| 99   | 0   | 0   | 0          |     | 0.6  | 0.1  | 30.31  |
+| ---- | --- | --- | ---------- | --- | ---- | ---- | ------ |
+| 100  | 0   | 0   | 0.5  号0.5  |     | 0    | 0/   | 125    |
+|      |     |     | 众          |     |      |      |        |
+The table above calculates the W(t) values for various random scenarios. One hundred scenarios
+were generated so that the 公W(t) values can be seen, and the approximate range of W for the
+prevalence of different stage in the population could be observed. The range of W values shown
+in Table 5 was det信ermined through observation of the values in the table above. As will be
+discussed later in the Sensitivity Analysis section, the table also serves to check the effectiveness
+微
+of the constants in calculating a useful W(t) value.
+
+Table 5. Conversion Table of W(t) into Resources Most Necessary
+| Range of W values   |     |     |                                | Resources Most Necessary  |     |     |     |
+| ------------------- | --- | --- | ------------------------------ | ------------------------- | --- | --- | --- |
+| 1-25                |     |     | Increase in societal distance  |                           |     |     |     |
+Distribution of personal hygiene products
+Some medical personnel
+Distribution of first aid kits
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 24
+10-50 Quarantine
+Basic Necessities*
+More medical personnel
+75-150 A lot of medical personnel
+Quarantine and isolated treatment wards
+Basic Necessities*
+50-100 Medical personnel M
+Medicine (pain control)
+C
+Basic Necessities*
+Quarantine M
+0.5-5 Basic Necessities* i
+H
+0.1-0.5 Quarantine,
+：
+Morgue
+*In this case, basic necessities refers to fo号od, water, and safe shelter.
+众
+The table above allows for the conversion of the W(t) values into a list of the resources most
+necessary and their relative quantity. As will be discussed in the sensitivity analysis, this
+公
+conversion of W(t) into a set of resources necessary may allow for more effective import of
+resources than just intuitively making decisions.
+信
+For this case of outbreak on the island, the current size of each population was determined by the
+微
+modified SEIR equation to be:
+S = 52.86
+E = 67.36
+I = 150
+R = 30.
+This can be translated to the stages of disease as such:
+I = E = 67.36
+1
+I = 15, because there are 30 Removed, and mortality rate is 50%
+5
+I = 15
+6
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 25
+I , I , and I cannot be determined, but we will assume them to be roughly equal to each other,
+2 3 4
+and so I = I = I = 50
+2 3 4
+So, the W(t) value for this outbreak can be calculated to be:
+67.36 + 10(50) + 150(50 + 100(50) + 0.5(15) + 0.1(15)
+𝑊(𝑡) = = 52.864
+300 − 52.86
+W(t) falls between the range of 50-100. Therefore, it can be determined fromM the conversion
+table that medical personnel, medicine, basic necessities, and quarantine are most necessary.
+C
+M
+Resource Allocation Model
+i
+H
+Because the disease has spread to about half the p：opulation of the island, isolation is required in
+order to prevent the disease from spreading to other populations. It is also unlikely that a small
+号
+island with only 300 inhabitants is self-sufficient in all basic necessities and medical resources.
+As a result, resources will need to be brought in from other sources in order to allow the
+众
+unaffected population of the island to have a relatively normal lifestyle even as the disease runs
+its course, and the affected population to be taken care of. Resources include basic necessities
+公
+such as food, water, general hygiene equipment, as well as medical supplies and medical
+personnel.
+信
+A portion o微f the total resources supplied to the island would most likely be from Indonesia, as
+the island is part of the country itself. However, other countries may be eager to provide aid —
+and it may be simply be more convenient and beneficial to obtain resources from other countries.
+This model is to determine which foreign country the island should receive aid from to maximize
+benefits received, and the proportion of the aid that should be received from the foreign country.
+Although it is possible that other nations will provide aid as well, the potential aid-providers
+were narrowed down to twelve most likely nations. This was based on the proximity of the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 26
+country to Indonesia, the frequency of trade between the country and Indonesia, and the
+frequency of humanitarian aid launched.
+Two separate models were developed for non-human supplies and medical personnel. Because
+these two resources come from different sectors of industry, a country may be suitable for
+providing basic necessities and hygiene supplies, but may not have many well-trained doctors to
+spare.
+M
+Two factors that affect the suitability of providing non-human supplies is the location of the
+C
+country relative to the island, and the abundance of desired supplies in the country relative to
+M
+Indonesia. The relative location was quantified by the shortest linear distance (d) between the
+country and the island. The shorter the distance, the quicker andi more convenient transportation
+H
+of supplies would be. Also, when the distance increases by a certain factor, the convenience and
+：
+efficiency of transportation will most likely decrease by a greater factor. The relative abundance
+of supplies was quantified by the ratio of the GDP of the country to the GDP of Indonesia
+号
+(R ). GDP, not GDP per capita, was used because the nature of the situation only requires
+GDP
+consideration of the quantity of supplies that can be produced and sent in, not the distribution of
+众
+the supply across the country’s population. A greater R value indicates that country is more
+GDP
+economically developed compared to Indonesia. A greater R , therefore means that the
+公 GDP
+country will most likely be able to provide a greater quality and quantity of desired supplies.
+Therefore, Allocat信ion of Supplies value (A ) can be determined by:
+S
+微 𝑅
+!"#
+𝐴 =
+! 𝑑!
+Two factors that affect the suitability of sending in medical personnel is the location of the
+country relative to the island, and the number of physicians in the country relative to Indonesia.
+The relative location was quantified by the shortest linear distance (d) between the country and
+the island. The closer the country to the island, the quicker and more convenient transportation
+would be. Additionally, if the distance increases by a given factor, the convenience and
+efficiency of transportation will most likely decrease by a greater factor. The relative number of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 27
+physicians was quantified by the ratio of the physicians per one thousand people of the country
+to that of Indonesia (R ). A greater R  value indicates the country most likely has more
+|     | P   | P   |     |     |
+| --- | --- | --- | --- | --- |
+physicians that they could potentially send into the island. Therefore, Allocation of Physicians
+value (A ) can be determined by:
+P
+
+𝑅
+!
+𝐴 =
+|     |     | !   |     |     |
+| --- | --- | --- | --- | --- |
+𝑑!
+|     |     |     |     | M   |
+| --- | --- | --- | --- | --- |
+Table 6. GDP, A , Physicians per 1000 people, and A  values for potential aid-providing
+|     | S   | P   |     |     |
+| --- | --- | --- | --- | --- |
+C
+countries
+M
+| Country  | GDP (billions of  | R   | Physicians per  | R   |
+| -------- | ----------------- | --- | --------------- | --- |
+|          |                   | GDP |                 | P   |
+|          | USD)              |     | 1000 ipeople    |     |
+H
+| Indonesia  | 2389.0  | 1   | 0.3  | 1.  |
+| ---------- | ------- | --- | ---- | --- |
+：
+| USA  | 16,768.1  | 7.019  | 2.4  | 8.  |
+| ---- | --------- | ------ | ---- | --- |
+号
+| European Union  | 17,578.4  | 7.358  | N/A  | N/A  |
+| --------------- | --------- | ------ | ---- | ---- |
+众
+| Australia   | 1052.6         | 0.441   | 3.9  | 13.    |
+| ----------- | -------------- | ------- | ---- | ------ |
+| Brunei      | 30.0  公0.0126  |         | 1.4  | 4.667  |
+| Cambodia    | 46.1           | 0.0193  | 0.2  | 0.667  |
+信
+| Laos  | 31.6  | 0.0132  | 0.3  | 1.  |
+| ----- | ----- | ------- | ---- | --- |
+微
+| Malaysia     | 693.6  | 0.290   | 1.2  | 4.     |
+| ------------ | ------ | ------- | ---- | ------ |
+| Myanmar      | 221.5  | 0.0927  | 0.5  | 1.667  |
+| Philippines  | 643.1  | 0.269   | N/A  | N/A    |
+| Singapore    | 425.3  | 0.178   | 1.9  | 6.333  |
+| Thailand     | 964.5  | 0.404   | 0.4  | 1.333  |
+| Vietnam      | 475.0  | 0.199   | 1.2  | 4.     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 28
+The table above lists the R and R values of all of the potential aid-providers. The ratios were
+GDP P
+determined to be representative indicators of ability to provide desired supplies or physicians to
+the island. The location of the island is unknown, so the value of d cannot be calculated.
+However, once the location of the island is known, the R and R values in table to obtains the
+GDP P
+A and A values.
+S P
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 29
+Requirement II: Initial Recommendation for CDC
+The disease on the island is airborne and has a 𝛽 value of 1.79, which means that each infected
+person will transmit the disease to approximately 2 people.
+1. Currently, the disease is not contained so movement in and out of the island should be
+controlled. Boats and planes coming in should be monitored and all passengers should be
+M
+screened for possible symptoms. This is to prevent the disease from contaminating those
+outside the island, which would make it harder to control.
+C
+2. Distribute personal hygiene products and first aid kits to all households to prevent the
+M
+spread of disease as much as possible.
+3. This is an airborne disease, so educate the general publici about how to prevent infection.
+H
+This can be done by distributing masks and encouraging people to wash their hands
+：
+frequently. This will reduce spread because will people know to be more careful.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 30
+Requirement III: Questions for Multinational Research Team
+1. When did symptoms of this disease first start showing?
+1.1. The time of initial exposure to the pathogen was assumed to be the D + 7 days
+L
+ago. By asking this question, we can obtain an accurate initial exposure time. This
+in turn will allow a more accurate calculation of the transmission rate (𝛽).
+M
+2. How far is this island from the closest neighboring island that can provide the resources
+required to contain this disease?
+C
+2.1. By determining distance from the infected island to one from which we can get
+M
+supplies from, we can determine how long it would take and how hard it would be
+to get resources and supplies to the island. i
+H
+3. For those who have contracted the disease, in what stage of the disease are they already
+：
+in?
+3.1. The W(t) value for this outbreak in Requirement I was calculated with E and S
+号
+values estimated through the modified SEIR equations. By finding out the number
+of individuals in the Susceptible, Exposed, Infected, and Removed groups, we can
+众
+accurately determine how quantity and type of resources that are required through
+the Needs A公ssessment Model.
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 31
+Requirement IV: Changes to Model
+1. Appears to spread through bodily fluids
+If this disease appears to spread through bodily fluids, this means that the disease has a different
+method of transmission to the one we’d initially believed. As a result, this change would affect
+M
+the values of both R and 𝛽. Transmission rate of transmission through bodily fluids is most
+0
+likely less than that of transmission through air. Therefore, this information will cause the R and
+C 0
+𝛽values to be lower than initially assumed.
+M
+Furthermore, if the disease spreads through bodily fluids, differeint measures should be taken to
+H
+contain the disease. Such measures could include a larger emphasis on masks, so that any bodily
+：
+fluids that could exit through the mouth or nose are contained within the disposable mask.
+Stricter blood transfusion policies, or even the halting of blood transfusion while the disease are
+号
+still prevalent in the population. Finally, an increase in the education and distribution of
+condoms. Although it is best for all members of the population to practice abstinence during this
+众
+time period, the education of the use and distribution of condoms to the general populace will
+also help prevent the sprea公d of the disease during coitus.
+Finally, if the disea信se is spread through bodily fluids and isn’t airborne, comparatively, there
+isn’t as large a need for quarantine. This is because there is a slightly lower likelihood of
+微
+contracting the disease for the average person on the island. As a result, this will decrease the
+values of p and q, and also narrow down the range of value W(t) that has a large quarantine
+requirement.
+2. Elderly and children are more likely to die
+The model could be adjusted to account for this new factor if the island population was divided
+into different age groups. Mortality rates for each age group would be very different, with those
+of the youngest and oldest age groups being the highest. Each rate could be used in our model to
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 32
+find W, and allocate resources. Indonesia is a developing country, so its age structure looks like a
+pyramid; there is a large young population base, and very few elderly people. As a result, it is
+important to minimize the mortality rate of the children to make sure that Indonesia does not
+experience a population crash.
+Figure 2. Age Structure of Indonesia
+M
+C
+M
+i
+H
+：
+号
+众
+3. Nearby island is showing signs of infection
+公
+Although the response model now applies to this island,the population of the nearby island
+cannot simply be a信dded into the original model. Instead, a separate response model is needed for
+this situation because the other island has different population and health care characteristics. As
+微
+a result, this separate response model, while based on the original equations, will provide
+different values because of the different populations, different number of people the disease has
+spread to, the proximity of said island to its own source for resources.
+4. One of the researchers appears infected
+The researchers would have known that the disease is prevalent and quite infectious, so would
+have been careful. The fact that still one of them got infected means that more careful measures
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 33
+need to be taken. Currently, it is known that the disease is spread through bodily fluids, so
+encourage masks, stricter policies on blood transfusion policies, and safe sex.
+Furthermore, there is a higher transmission rate than expected—potentially larger 𝛽and 𝑅 .
+!
+The response model now applies to the mainland as well. Number infected is 1, number exposed
+is undetermined. However, number exposed is undetermined but is potentially all those who
+M
+were in close contact/proximity with the infected researcher.
+C
+So in order to prevent the situation from spiraling out of control, the researcher should
+M
+immediately be put in quarantine and then the medical situation of the mainland should be
+assessed so that i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 34
+Sensitivity Analysis:
+1. Modification of SEIR Equations
+The original SEIR equation calculates for the instantaneous rates of change in size of population.
+Due to the lack of information given, the SEIR equations were inevitably modified to calculate
+the average rate of change, not the instantaneous rate of change. The shortest time span given
+was one week, the period in which 15 deaths occurred. There was no given data for a narrower
+time span. Therefore, only the average rate, and not the instantaneous rate, of change in size of
+M
+population groups could be determined.
+C
+This modification, without a doubt, resulted in expression giving estimations of values, and
+M
+therefore the decrease in accuracy of many of the values determined using the SEIR equations.
+Still, the accuracy of the values obtained should still be consideried quite high.
+H
+The practicality of application of the SEIR equations is questionable in real life. The number of
+：
+new infections or deaths would most likely be measured in days, not in any smaller time
+intervals. Then, assuming that most data collection occurs daily in real life, the time interval that
+号
+was used in the modified equation is not too large.
+众
+公
+2. Assessment of Effectiveness of the Constants
+信
+Table 4, as well as providing many values of W(t) to be compared and used for determining
+appropriate ranges for conversion into most necessary resources (Table 5), assesses effectiveness
+微
+of the constants in calculating a useful W(t) value.
+The desired effect of the constants k, l, p, q, r, and v was to drastically increase or decrease the
+prevalence of each stage in the population. Ideally the range of W(t) value would be very large,
+but remain within a narrow range when the most prevalent (I /N 0.5) stage does not change. W(t)
+n
+when different stages are prevalent should be differentiable so that ranges of W(t) can be
+attributed to resources most necessary.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 35
+The constants were assigned with consideration of the difference in magnitude, but were not any
+calculated value. The scenarios were, in a way, a test to see the effectiveness of the constants in
+distributing the groups of W(t) values for each prevalent stage across a wide range.
+While the values of W(t) in Table 4 show some overlap and undefined boundaries between
+different most prevalent stage, it distributes the values across a wide range, and allows for the an
+effective range of W(t) to be assigned to each set of necessary resources.
+M
+C
+3. Effectiveness of W(t) in Needs Assessment
+M
+The needs assessment can be done by simply observing how prevalent the infection is in the
+area, without calculating W(t). However, this model sheds light inot only on the prevalence of the
+H
+infection, but other factors, and thereby allows for a fuller and more effective needs assessment.
+：
+The model divides the Infected population into various stages of disease. It recognizes that
+different stages of infection, within the Infected population, requires different quantity and types
+号
+of resources. This allows for determination of resources most necessary for the population, and
+the subsequent import of only the most necessary resources.
+众
+The needs assessment also accounts for the needs of the stages of disease that require a lot
+of resources even if they are less prevalent. The large constants multiplied to the stage 3 and
+公
+stage 4 ensures that even if only a small fraction of the population is in stage 3 or 4, the W(t)
+value will be large信 enough that the conversion will indicate the necessity of quarantine medical
+personnel.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 36
+Strengths and Weaknesses
+Strengths:
+1. The SEIR model was modified to fit our purpose and case. This ensured that the final
+model could be applied to the case, and that the data available could be substituted to find
+M
+the desired values of variables.
+2. E and S were not assumed; instead the they were estimated from other parts of the SEIR
+C
+model and the given data. With less assumptions, we were able to find a model that more
+M
+accurately fit the given situation.
+3. We considered almost all possibilities when determiningi the possible W values. We
+H
+realized that the population would not always have an equal amount of individuals in
+：
+each stage of a disease, so we calculated all scenarios, numbered them, and then used a
+random number generator to select 100 distinct scenarios.
+号
+4. Multiple variables were considered when determining the allocation of physician and
+supplies value, and the variables were quantified using logical measures.
+众
+Weaknesses:
+公
+!" 信 ∆!
+1. in our model was modified into . Because the time frame given in the data was not
+!" ∆!
+specific enough to calculate the instantaneous rate of change of X (Either S, E, I, R), it
+微
+∆!
+was modified into , which represents the change of the variable over time. Thus, the
+∆!
+∆!
+accuracy of the equation is compromised since only gives a rough estimate of how the
+∆!
+!"
+variable is changing, rather than a specific rate of change which is what .
+!"
+2. When solving for β, the equation was simplified by eliminating the variable µ due to its
+negligibly small value. This inevitably creates a margin of error for the calculated value
+of β.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 37
+3. In the needs assessment rating model, the variable I cannot be accurately gauged since
+1
+individuals in the incubation stage have no visible difference with individuals who are
+not infected with the disease.
+4. Mortality rate and time since exposure to infection were assumed. There was not enough
+information given in the problem, so we used the mortality rates and incubation periods
+to determine reasonable ones for us.
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 38
+A Letter to a Local News Outlet
+Dear Editors of South China Morning Post,
+We are a group of researchers working for the Hong Kong Division of the International Health
+Organization. Last week, we were asked to travel to an Indonesian island to investigate an
+M
+outbreak of an unknown disease that could be the start of an epidemic.
+C
+When we arrived, there was very little information on the disease itself, so we started by
+M
+determining a rate of transmission: a measure of how easily a disease spreads throughout a
+population. By using a modified version of the Susceptible, Expiosed, Infected and Removed
+H
+(SEIR) model of epidemiology, which takes a disease’s incubation period into consideration, and
+：
+the basic reproductive rate, which is the average number of infected individuals a single case can
+drive, we were able to find a rate of transmission consistent with that of airborne diseases.
+号
+Because an airborne disease can spread very quickly throughout a population, it is consistent
+with the fact that the disease had already infected about half of the existing total population of
+众
+300. This model also used the basic reproductive rate to determine whether a disease was
+contained; if the rate fell b公elow 1, then the disease would slowly disappear from the population.
+Another model wa信s then created in order to determine which resources such as doctors,
+containment facilities, and medicine, would be needed depending on patient’s condition. We
+微
+determined that patients who were in the third and fourth stages of the diseases would need the
+most resources, simply because these people had the highest risk of death. In order to account for
+this, we came up with an equation that gave us a value representing the amount of resources each
+type of patient would need. The value would fall into one of six categories, which would decide
+the amount and type of resources the island would need in order to contain the disease. However,
+the island does not have an unlimited supply of such resources. As a result, we created another
+model that would allow us to identify countries that could potentially provide aid by using the
+Gross Domestic Product (GDP) of each of the identified countries, as well as their physician to
+1000 citizen ratio. Although Indonesia is most likely able to and willing to provide a certain
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 39
+amount of resources to the island, it is unlikely that Indonesia will be able to cover all costs. As a
+result, it might be more beneficial for the island to receive aid from another country. There are
+12 potential aid providers, and the suitability of each country to provide aid was determined by
+the GDP and the aforementioned ratio.
+After further research was done by our multinational research team, it was discovered that the
+disease spread through exchange of bodily fluids, rather than through the air. In order to use this
+M
+information, we altered our mathematical model so we could account for the different values.
+Our rate of transmission decreased, and as did the basic reproductive rate of the disease.
+C
+M
+Therefore, there is no need for the general public to panic. Diseases spread through bodily fluids
+are much less contagious than those spread through the air, so thiis one poses a much lower risk
+H
+to public safety. Although the disease has not been contained yet, it is important to remember
+：
+that this is a new pathogen. It will take time to bring it under control.
+Thank you for taking the time to read our report.
+号
+Sincerely,
+众
+Team 4880
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 40
+Works Cited
+Arias, Ariel C., Carlos Castillo-Chavez, Luis M. A. Bettencourt, Alun L. Lloyd, and H. T.
+Banks. "The Estimation of the Effective Reproductive Number From Disease Outbreak
+Data." Mathematical Biosciences and Engineering 6.2 (2009): 261-82. Apr. 2009. Web. 6
+Nov. 2014.
+"Barriers to Rapid Containment of the Ebola Outbreak." World Health OrganiMzation. World
+Health Organization, 11 Aug. 2014. Web. 06 Nov. 2014.
+C
+Bjørnstad, Ottar. "The SEIR Model." SEIR Models (2005): n. pag. 16 May 2005. Web. 6 Nov.
+M
+2014.
+i
+H
+Cameron, Darla, Patterson Clark, and Sohail Al-Jamea. "Ebola's Catastrophic Effect on the
+：
+Body." Washington Post. The Washington Post, 3 Oct. 2014. Web. 07 Nov. 2014.
+号
+"Cholera." World Health Organization. World Health Organization, Feb. 2014. Web. 6
+Nov. 2014.
+众
+Chowell, G., P. Diaz-Duñas, J. C. Miller, A. Alacar-Velazaco, J.M. Hyman, P.W Fenimore, and
+公
+C. Castillo-Chavez. "Estimation of the Reproductive Number of Dengue Fever From
+Spatial End信emic Data." Elsevier (n.d.): n. pag. Science Direct. Web.
+Clark, Patterson. "An Ebola Treatment Center." The Washington Post. The Washington Post, 22
+微
+Sept. 2014. Web. 06 Nov. 2014.http://www.who.int/csr/disease/ebola/overview-august-
+2014/en/
+"Diphtheria." New York State Department of Health. New York State Government, Jan. 2012.
+Web. 6 Nov. 2014.
+"Ebola Virus Disease." World Health Organization. World Health Organization, Sept. 2014.
+Web. 06 Nov. 2014.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 41
+"Dengue and Severe Dengue." World Health Organization. World Health Organization, Mar.
+2014. Web. 6 Nov. 2014.
+"FAQ: Methods of Disease Transmission." Department of Microbiology. Mount Sinai Hospital,
+2007. Web. 06 Nov. 2014.
+Fiebelkorn, Amy, and James L. Goodson. "Measles (Rubeola)." Centers for Disease Control and
+Prevention. Centers for Disease Control and Prevention, 13 Dec. 2014M. Web. 06 Nov.
+2014.
+C
+"How Quickly Ebola Spreads Compared to Other Diseases." The Washington Post. The
+M
+Washington Post, 10 Oct. 2014. Web. 6 Nov. 2014.
+i
+H
+"Indonesia." Central Intelligence Agency. Central Intelligence Agency, 2014. Web. 06 Nov.
+：
+2014.
+号
+"Infectious Diseases." Mayo Clinic. Mayo Foundation for Medical Education and Research,
+2014. Web. 06 Nov. 2014.
+众
+Khan, Adnan, Muhammad Hassan, and Mudassar Imran. "Estimating the Basic Reproduction
+公
+Number for Single Strain Dengue Fever Epidemics." Infectious Diseases of Poverty.
+BioMed Ce信ntral, 7 Apr. 2014. Web. 6 Nov. 2014.
+"Measles (Rubeola, Hard Measles, Red Measles)." New York State Department of Health. New
+微
+York State Government, Jan. 2013. Web. 06 Nov. 2014.
+"Model Operational Guidelines for Disease Exposure Control." (2005): 1-97. 2 Nov. 2005. Web.
+6 Nov. 2014.
+Mukandavire, Zindonga, Shu Liao, Jin Wang, Holly Gaff, David L. Smith, and Glenn Morris.
+"Estimating the Reproductive Numbers for the 2008-2009 Cholera Outbreaks in
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 42
+Zimbabwe." Proceedings of the National Academy of Sciences of the United States.
+National Academy of Sciences, n.d. Web. 06 Nov. 2014.
+"National Institute of General Medical Sciences." How Contagious Diseases Spread through
+Communities. U.S. Department of Health and Services, 20 Dec. 2010. Web. 06 Nov.
+2014.
+Nesse, Hans. "SEIR Model." Arizona State University. Arizona State UniversMity, n.d. Web. 06
+Nov. 2014.
+C
+"Physicians (per 1,000 People)." The World Bank. The World Bank Group, n.d. Web. 06 Nov.
+M
+2014.
+i
+H
+Pitzer, Virginia E., Cayley C. Bowles, Stephen Baker, Gagandeep Kang, Veeraraghavan Balaji,
+：
+Jeremy J. Farrar, and Bryan T. Grenfell. "Predicting the Impact of Vaccination on the
+号
+Transmission Dynamics of Typhoid in South Asia: A Mathematical Modeling Study."
+PLOS Neglected Tropical Diseases. N.p., 09 Jan. 2014. Web. 6 Nov. 2014.
+众
+"Rapid Operations to Contain the Initial Emergence of Pandemic Influenza: The WHO Interim
+公
+Protocol." (2014): n. pag. World Health Organization. World Health Organization, 7 Jan.
+2014. Web信. 6 Nov. 2014.
+"Report for Selected Countries and Subjects." International Monetary Fund. International
+微
+Monetary Fund, Oct. 2014. Web. 07 Nov. 2014.
+Smith, David, and Lang Moore. "The SIR Model for Spread of Disease - The Differential
+Equation Model." Mathematical Association of America. National Science Foundation,
+2014. Web. 06 Nov. 2014.
+"Stages of HIV Infection." AIDS.gov. U.S. Department of Health & Human Services, n.d. Web.
+06 Nov. 2014.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 4880
+page 43
+Tomeshek, Kay M., and Harold S. Margolis. "Dengue." Centers for Disease Control and
+Prevention. Centers for Disease Control and Prevention, n.d. Web. 06 Nov. 2014.
+"United States Census Bureau." Demographic Overview - Indonesia. United States Department
+of Commerce, 2014. Web. 06 Nov. 2014.
+"What Is Diphtheria? What Causes Diphtheria?" Medical News Today. MediLexicon
+International, 15 Sept. 2014. Web. 06 Nov. 2014. M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

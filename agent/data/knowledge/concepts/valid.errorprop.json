@@ -1,0 +1,66 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.errorprop",
+  "title": "误差传播分析",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "误差分析",
+    "误差传播分析"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.3",
+  "aliases": [
+    "误差传播",
+    "error propagation"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "误差传播分析告诉你：如果输入数据有测量误差，那么通过公式算出的结果会有多大误差。",
+    "intuition": "想象你在做蛋糕，配方里每种原料的用量都有点小偏差（比如面粉多1克，糖少2克）。误差传播分析就像帮你估算：这些微小的偏差加起来，最终蛋糕的甜度或大小会偏离理想值多少。它用数学方法把每个原料的“不确定性”传递到最终结果上。",
+    "when_to_use": "当你有一个函数或模型，输入数据来自测量或估计（有误差），你想知道输出结果的不确定性时，就应该想到误差传播分析。常见场景：物理实验数据处理、工程计算、传感器融合、金融风险评估等。",
+    "definition": "误差传播分析（Error Propagation Analysis）是一种基于一阶泰勒展开的方法，用于估计输入变量的随机误差通过函数传递后，输出变量的方差或不确定性。",
+    "math_principle": "设函数 $y = f(x_1, x_2, ..., x_n)$，其中 $x_i$ 是独立随机变量，其标准差为 $\\sigma_{x_i}$。对 $f$ 在输入均值处进行一阶泰勒展开：\n\n$$y \\approx f(\\bar{x}_1, ..., \\bar{x}_n) + \\sum_{i=1}^n \\frac{\\partial f}{\\partial x_i} (x_i - \\bar{x}_i)$$\n\n则输出 $y$ 的方差近似为：\n\n$$\\sigma_y^2 \\approx \\sum_{i=1}^n \\left( \\frac{\\partial f}{\\partial x_i} \\right)^2 \\sigma_{x_i}^2$$\n\n若输入变量相关，需加入协方差项：\n\n$$\\sigma_y^2 \\approx \\sum_{i=1}^n \\sum_{j=1}^n \\frac{\\partial f}{\\partial x_i} \\frac{\\partial f}{\\partial x_j} \\text{Cov}(x_i, x_j)$$",
+    "step_by_step": [
+      "1. 确定函数关系：明确输出 $y$ 与输入 $x_1, x_2, ..., x_n$ 的数学表达式 $y = f(x_1, ..., x_n)$。",
+      "2. 获取输入误差：测量或估计每个输入变量的标准差 $\\sigma_{x_i}$（或方差）。",
+      "3. 计算偏导数：对每个输入变量求偏导 $\\frac{\\partial f}{\\partial x_i}$，并在输入均值处求值。",
+      "4. 应用误差传播公式：若输入独立，使用 $\\sigma_y^2 = \\sum (\\partial f/\\partial x_i)^2 \\sigma_{x_i}^2$；若相关，加入协方差项。",
+      "5. 计算输出标准差：取平方根得到 $\\sigma_y$，即为输出结果的标准差（不确定性）。"
+    ],
+    "worked_example": "假设测量一个矩形的长 $L$ 和宽 $W$，计算面积 $A = L \\times W$。已知 $L = 10.0 \\pm 0.1$ cm，$W = 5.0 \\pm 0.05$ cm，且测量独立。求面积的标准差。\n\n解：\n- 函数：$A = L \\cdot W$\n- 偏导数：$\\partial A/\\partial L = W = 5.0$，$\\partial A/\\partial W = L = 10.0$\n- 输入标准差：$\\sigma_L = 0.1$，$\\sigma_W = 0.05$\n- 应用公式：$\\sigma_A^2 = (5.0)^2 \\times (0.1)^2 + (10.0)^2 \\times (0.05)^2 = 25 \\times 0.01 + 100 \\times 0.0025 = 0.25 + 0.25 = 0.5$\n- 所以 $\\sigma_A = \\sqrt{0.5} \\approx 0.707$ cm²\n- 面积表示为 $A = 50.0 \\pm 0.7$ cm²",
+    "pitfalls": [
+      "1. 一阶近似假设：当函数非线性程度高或输入误差较大时，一阶泰勒展开可能不准确，需考虑高阶项。",
+      "2. 独立性假设：若输入变量相关，忽略协方差项会导致方差估计偏大或偏小。",
+      "3. 误差分布假设：公式仅给出方差，不提供分布形状。若需置信区间，通常假设正态分布，但实际可能不同。",
+      "4. 偏导数计算：复杂函数求导可能繁琐，且需在均值点处计算，若均值未知则需近似。"
+    ],
+    "tools": "Python 中可使用 `uncertainties` 库进行自动误差传播。示例代码：\n\n```python\nimport uncertainties as unc\n\n# 定义带误差的变量\nL = unc.ufloat(10.0, 0.1)  # 10.0 ± 0.1\nW = unc.ufloat(5.0, 0.05)  # 5.0 ± 0.05\n\n# 计算面积\nA = L * W\nprint(A)  # 输出: 50.0+/-0.7071067811865476\n```\n\n也可手动计算偏导和方差，使用 `numpy` 和 `scipy` 进行数值微分。"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\sigma_y^2 \\approx \\sum_{i=1}^n \\left( \\frac{\\partial f}{\\partial x_i} \\right)^2 \\sigma_{x_i}^2",
+      "variables": {
+        "\\sigma_y^2": "输出变量 y 的方差",
+        "\\frac{\\partial f}{\\partial x_i}": "函数 f 对输入 x_i 的偏导数",
+        "\\sigma_{x_i}^2": "输入变量 x_i 的方差"
+      }
+    },
+    {
+      "latex_code": "\\sigma_y^2 \\approx \\sum_{i=1}^n \\sum_{j=1}^n \\frac{\\partial f}{\\partial x_i} \\frac{\\partial f}{\\partial x_j} \\text{Cov}(x_i, x_j)",
+      "variables": {
+        "\\text{Cov}(x_i, x_j)": "输入变量 x_i 和 x_j 的协方差"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_I10"
+    ],
+    "from_papers": []
+  }
+}

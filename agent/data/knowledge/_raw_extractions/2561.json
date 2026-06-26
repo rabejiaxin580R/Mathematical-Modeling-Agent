@@ -1,0 +1,114 @@
+{
+  "paper_id": "2561",
+  "meta": {
+    "paper_id": "2561",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2010,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2010\\B\\2561.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "pred.multireg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "将变量分为四组（人口、教育、失业、监禁），从每组中选取与暴力犯罪相关性最高的一个变量，构建多元线性回归模型，并用相关系数加权组合三个单变量线性回归方程。",
+      "formulas": [
+        {
+          "latex_code": "Incidences of violence = \\frac{0.55 \\times (\\text{graduation rate linear regression}) + 0.29 \\times (\\text{county pop linear regression}) + 0.24 \\times (\\% \\text{ parole violations linear regression})}{1.08}",
+          "variables": {
+            "graduation rate linear regression": "毕业率与暴力犯罪的一元线性回归方程",
+            "county pop linear regression": "县人口与暴力犯罪的一元线性回归方程",
+            "% parole violations linear regression": "假释违规百分比与暴力犯罪的一元线性回归方程"
+          }
+        }
+      ],
+      "source_excerpt": "Finally, when we combined the three linear regressions together, we weighted each of the three equations by their correlation coefficient, and compiled it into one single multiple regression model. The correlation coefficient of the selected variables added up to 1.08 due to slight overlap, so we divided the result by 1.08 to get a multiple regression model to predict how county population, graduation rate and % of parole violation combined influence incidences of violent crime."
+    },
+    {
+      "concept_id": "corr.pearson",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "计算每个解释变量与暴力犯罪（或杀人案）的 Pearson 相关系数，用于筛选每组中最重要的变量。",
+      "formulas": [],
+      "source_excerpt": "Then, we just used calculator regressions to compare the correlation coefficients (r-squared) of the given variables and the incidents of violence. The correlation coefficients are on the following table:"
+    },
+    {
+      "concept_id": "pred.nonlinear",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "对每个自变量（县人口、毕业率、假释违规百分比）分别拟合关于时间的高次多项式（八次、四次、三次），以得到变量随时间变化的函数，再代入多元回归模型。",
+      "formulas": [
+        {
+          "latex_code": "\\text{County Population} = 87.733x^3 - 1621.357x^2 + 11591.862x + 390800.802 \\quad (R^2=0.984)",
+          "variables": {
+            "x": "时间（自1999年起的年数）"
+          }
+        },
+        {
+          "latex_code": "\\text{Graduation Rates} = 0.000161x^4 - 0.00337x^3 + 0.0213x^2 - 0.032x + 0.850 \\quad (R^2=0.842)",
+          "variables": {
+            "x": "时间（自1999年起的年数）"
+          }
+        },
+        {
+          "latex_code": "\\% \\text{ Parole} = -0.000423x^4 + 0.0085x^3 - 0.0607x^2 + 0.147x + 0.610 \\quad (R^2=0.753)",
+          "variables": {
+            "x": "时间（自1999年起的年数）"
+          }
+        }
+      ],
+      "source_excerpt": "As a result, for purposes of simplicity, a much simpler and direct cubic or quartic regression function was determined for all three variables."
+    },
+    {
+      "concept_id": "valid.residual",
+      "concept_label": "",
+      "stage": "evaluate",
+      "how_used": "绘制预测值与实际值的残差图，观察残差是否随机分布，以判断模型拟合效果。",
+      "formulas": [],
+      "source_excerpt": "Figure 1.2.3: Residual graph of model. While the residuals comparing the actual graph and the predicted graph and are significant, they are fairly random and are within a reasonable margin considering how unpredictable real life statistics often are."
+    },
+    {
+      "concept_id": "math.matrix",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "使用矩阵求逆方法求解高次多项式插值系数，构造范德蒙德矩阵 [A] 和值向量 [B]，通过 [A]^{-1}[B] 得到多项式系数。",
+      "formulas": [
+        {
+          "latex_code": "[A] = \\begin{bmatrix} 1^0 & 1^1 & 1^2 & \\cdots & 1^8 \\\\ 2^0 & 2^1 & 2^2 & \\cdots & 2^8 \\\\ \\vdots & \\vdots & \\vdots & \\ddots & \\vdots \\\\ 9^0 & 9^1 & 9^2 & \\cdots & 9^8 \\end{bmatrix}, \\quad [B] = \\begin{bmatrix} \\text{Value for 2000} \\\\ \\text{Value for 2001} \\\\ \\vdots \\\\ \\text{Value for 2008} \\end{bmatrix}",
+          "variables": {
+            "[A]": "范德蒙德矩阵，行对应年份（1-9），列对应幂次（0-8）",
+            "[B]": "各年份的变量值向量"
+          }
+        }
+      ],
+      "source_excerpt": "We started off by using matrices to solve for polynomial functions that would pass through every point on the statistics given using the following method [A]: [B]: ... Performing the operation [A]^{-1}[B] gave nine coefficients [a,b,c,d,e,f,g,h,i] which could be entered into the following function: f(x) = ax^0 + bx^1 + cx^2 + dx^3 + ex^4 + fx^5 + gx^6 + hx^7 + ix^8"
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "列出6条模型假设，包括失业的周期性、毕业率等变量的因果性、犯罪报告率、政府干预限制等，为模型简化提供依据。",
+      "formulas": [],
+      "source_excerpt": "Assumptions: • Unemployment is cyclical... • Graduation rate, county population and parole violations are causative factors without any other variables... • This hypothetical county is in the United States of America... • All violent crimes are reported... • The government cannot do much about families in general... • The words 'curbing violence' in the question refers to violent crimes and disregards property crimes..."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "使用散点图展示失业率与暴力犯罪的关系（图1.1），以及预测值与实际值的对比图（图1.2.1、1.2.2等），并绘制残差图（图1.2.3）。",
+      "formulas": [],
+      "source_excerpt": "Figure 1.1: Incidents of violent crime as a function of unemployment rate. Figure 1.2.1: (Predicted model) Elastic multiple regression model for incidence of violence as a function of time. Figure 1.2.2: (Actual model) Incidence of violence as a function of time. Figure 1.2.3: Residual graph of model."
+    },
+    {
+      "concept_id": "NEW",
+      "concept_label": "变量分组与相关性筛选",
+      "stage": "build",
+      "how_used": "将解释变量按主题分为人口、教育、失业、监禁四组，每组内选取与因变量相关性最高的一个变量，以避免多重共线性。",
+      "formulas": [],
+      "source_excerpt": "We started by this process by classifying the given variables into four independent groups of explanatory variables: 1. Population... 2. Education... 3. Unemployment... 4. Incarceration... The reason that we only picked the highest correlation from each of the four independent groups is because ideally, we would want the data that is represented to be as separate and independent as possible."
+    }
+  ]
+}

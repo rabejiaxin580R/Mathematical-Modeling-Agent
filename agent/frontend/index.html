@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数学建模助教</title>
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX 公式渲染 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Markdown + 代码高亮 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css?v=anim1" />
+  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+</head>
+<body>
+  <div class="app">
+    <!-- 侧边栏：会话历史 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <div class="brand">
+          <span class="brand-mark">绣</span>
+          <span class="brand-text">数学建模助教</span>
+        </div>
+        <button class="btn-new" id="btn-new" title="新建对话">＋ 新对话</button>
+      </div>
+      <div class="conv-list" id="conv-list"></div>
+      <div class="sidebar-foot">
+        <div class="kb-status" id="kb-status">知识库加载中…</div>
+      </div>
+    </aside>
+
+    <!-- 主区域 -->
+    <main class="main">
+      <header class="topbar">
+        <button class="btn-icon" id="btn-toggle" title="折叠侧栏">☰</button>
+        <div class="topbar-title" id="topbar-title">新对话</div>
+        <button class="btn-icon" id="btn-export" title="导出对话为 Markdown">⬇</button>
+        <a class="btn-icon" href="/ide" title="打开极简 IDE（编辑器 + 运行 + 终端）" style="text-decoration:none;">🛠</a>
+        <button class="btn-icon" id="btn-settings" title="模型与 API 设置">⚙</button>
+        <button class="btn-icon" id="btn-tour" title="使用引导">🗺</button>
+        <div class="model-selector" id="model-selector">
+        <button class="model-pill" id="model-pill" title="点击切换模型">
+          <span class="model-pill-dot"></span>
+          <span class="model-pill-label">模型</span>
+          <span class="model-pill-name" id="model-badge">…</span>
+          <span class="model-pill-caret">▾</span>
+        </button>
+        <div class="model-menu" id="model-menu" hidden>
+          <div class="model-menu-title">快速切换模型</div>
+          <button class="model-opt" data-provider="deepseek"><b>DeepSeek</b><span>deepseek-chat</span></button>
+          <button class="model-opt" data-provider="qwen"><b>通义千问</b><span>qwen-plus</span></button>
+          <button class="model-opt" data-provider="openai"><b>OpenAI</b><span>gpt-4o-mini</span></button>
+          <button class="model-opt" data-provider="moonshot"><b>Moonshot</b><span>moonshot-v1-8k</span></button>
+          <button class="model-opt model-opt-more" id="model-menu-more">⚙ API 密钥 / 自定义模型…</button>
+        </div>
+      </div>
+      </header>
+
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <div class="vertical-deco">数 学 建 模 助 教</div>
+          <h1>数学建模助教</h1>
+          <p>基于 40 小时课程知识库，帮你拆解问题、有出处地解答、写并自测 Python 代码、手把手带你配环境与排版。</p>
+          <div class="suggestions">
+            <button class="chip">层次分析法怎么构造判断矩阵？一致性检验怎么做？</button>
+            <button class="chip">帮我用 Python 解一个线性规划并画出可行域</button>
+            <button class="chip">我是零基础，怎么在 Windows 上安装 Python？</button>
+            <button class="chip">数学建模论文的摘要该怎么写？</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="attachments" id="attachments"></div>
+        <div class="composer-inner">
+          <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json,.txt,.md,.py,.pdf,.docx,.doc,.pptx,.ppt,.html,.htm,.png,.jpg,.jpeg,.gif" hidden />
+          <button class="btn-attach" id="btn-attach" title="上传文件（PDF/Word/PPT/图片/数据等）">📎</button>
+          <textarea id="input" rows="1" placeholder="问我数学建模的任何问题…（Enter 发送，Shift+Enter 换行）"></textarea>
+          <button class="btn-send" id="btn-send" title="发送">➤</button>
+        </div>
+        <div class="composer-hint">代码会在你本机以子进程运行，请在信任环境下使用。</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 设置弹窗 -->
+  <div class="settings-overlay" id="settings-overlay">
+    <div class="settings-modal">
+      <div class="settings-head">
+        <h2>模型与 API 设置</h2>
+        <button class="btn-close" id="btn-close-settings">×</button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-section">
+          <label>快速选择</label>
+          <div class="provider-presets" id="provider-presets">
+            <button class="preset" data-provider="deepseek">DeepSeek</button>
+            <button class="preset" data-provider="qwen">通义千问</button>
+            <button class="preset" data-provider="openai">OpenAI</button>
+            <button class="preset" data-provider="moonshot">Moonshot</button>
+            <button class="preset" data-provider="custom">自定义</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <label for="setting-api-key">API 密钥</label>
+          <input type="password" id="setting-api-key" placeholder="sk-xxxxxxxxxxxxxxxx" autocomplete="off" />
+        </div>
+        <div class="settings-section">
+          <label for="setting-base-url">接口地址 (Base URL)</label>
+          <input type="text" id="setting-base-url" placeholder="https://api.deepseek.com/v1" />
+        </div>
+        <div class="settings-section">
+          <label for="setting-model">模型名称</label>
+          <input type="text" id="setting-model" placeholder="deepseek-chat" />
+        </div>
+      </div>
+      <div class="settings-foot">
+        <span class="settings-status" id="settings-status"></span>
+        <button class="btn-save" id="btn-save-settings">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/anim.js?v=anim1"></script>
+  <script src="/static/onboarding.js?v=anim1"></script>
+  <script src="/static/app.js?v=anim1"></script>
+</body>
+</html>

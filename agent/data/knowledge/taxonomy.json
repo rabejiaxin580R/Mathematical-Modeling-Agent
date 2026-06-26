@@ -1,0 +1,441 @@
+{
+  "taxonomy_version": 1,
+  "description": "数学建模知识库主索引（去重锚点）。三层结构：模块(module) → 子类(subcategory) → 知识点(concept)。每个 concept_id 全库唯一且永不变更，是百科页与论文案例归并、去重的唯一锚点。新抽取的知识点必须先映射到某个 concept_id，映射不上才允许标记 NEW 走人工新建。",
+  "id_rule": "concept_id = <域前缀>.<短名>，全小写英文，稳定不变。域前缀对应子类，见各 subcategory 的 id_prefix。",
+  "difficulty_levels": ["Beginner", "Intermediate", "Advanced"],
+  "stages": ["restate", "assume", "notation", "build", "solve", "sensitivity", "evaluate", "extend", "write"],
+  "roles": ["modeler", "coder", "writer"],
+  "modules": [
+    {
+      "module_id": "A",
+      "title": "论文写作与学术规范",
+      "priority": "P0",
+      "subcategories": [
+        {
+          "subcat_id": "A.1",
+          "title": "竞赛论文结构规范",
+          "id_prefix": "writing",
+          "concepts": [
+            {"concept_id": "writing.imrad", "title": "论文整体结构（IMRaD 格式）", "aliases": ["论文结构", "IMRaD", "论文框架"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.abstract", "title": "摘要写作规范", "aliases": ["摘要", "abstract", "摘要写法"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.keywords", "title": "关键词选取规则", "aliases": ["关键词", "keywords"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.intro", "title": "引言写作方法", "aliases": ["引言", "introduction", "问题背景"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.references", "title": "参考文献格式（GB/T 7714）", "aliases": ["参考文献", "引用格式", "references"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.appendix", "title": "附录组织", "aliases": ["附录", "appendix", "代码附录"], "difficulty": "Intermediate", "roles": ["writer"]}
+          ]
+        },
+        {
+          "subcat_id": "A.2",
+          "title": "图表与公式规范",
+          "id_prefix": "writing",
+          "concepts": [
+            {"concept_id": "writing.figcaption", "title": "图表标题与编号规范", "aliases": ["图表编号", "图标题", "表标题"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.eqnumber", "title": "公式编号与引用", "aliases": ["公式编号", "式(1)"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.flowchart", "title": "流程图绘制规范", "aliases": ["流程图", "算法流程图"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.threeline", "title": "表格三线表规范", "aliases": ["三线表", "学术表格"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.vizprinciple", "title": "数据可视化原则（选图）", "aliases": ["图表选择", "可视化原则"], "difficulty": "Intermediate", "roles": ["writer", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "A.3",
+          "title": "写作方法论",
+          "id_prefix": "writing",
+          "concepts": [
+            {"concept_id": "writing.assumptions", "title": "模型假设的写法", "aliases": ["模型假设", "假设说明"], "difficulty": "Intermediate", "roles": ["writer", "modeler"]},
+            {"concept_id": "writing.evaluation", "title": "模型评价的写法", "aliases": ["模型评价", "优缺点"], "difficulty": "Intermediate", "roles": ["writer", "modeler"]},
+            {"concept_id": "writing.improve", "title": "模型改进与推广部分", "aliases": ["模型改进", "模型推广"], "difficulty": "Intermediate", "roles": ["writer", "modeler"]},
+            {"concept_id": "writing.style", "title": "学术语言风格", "aliases": ["学术写作", "语言规范"], "difficulty": "Beginner", "roles": ["writer"]},
+            {"concept_id": "writing.deductions", "title": "常见扣分点清单", "aliases": ["扣分点", "评分陷阱"], "difficulty": "Beginner", "roles": ["writer"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "B",
+      "title": "新手入门与学习路径",
+      "priority": "P2",
+      "subcategories": [
+        {
+          "subcat_id": "B.1",
+          "title": "零基础入门指南",
+          "id_prefix": "intro",
+          "concepts": [
+            {"concept_id": "intro.whatis", "title": "数学建模是什么（通俗解释）", "aliases": ["数学建模概述", "什么是数学建模"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.prereq", "title": "参加竞赛需要哪些前置知识", "aliases": ["前置知识", "入门要求"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.myths", "title": "常见的数学建模误区", "aliases": ["建模误区", "常见错误认知"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.resources", "title": "推荐学习资源清单", "aliases": ["学习资源", "推荐教材"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.map", "title": "知识图谱总览", "aliases": ["知识图谱", "全景地图"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.principles", "title": "建模核心原则与认知", "aliases": ["建模认知", "核心原则", "建模方法论"], "difficulty": "Beginner", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "B.2",
+          "title": "学习路径规划",
+          "id_prefix": "intro",
+          "concepts": [
+            {"concept_id": "intro.roadmap", "title": "自学路线图（按时间）", "aliases": ["学习路线", "自学计划"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.roles", "title": "不同角色的学习重点", "aliases": ["角色分工", "建模手编程手写作手"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "intro.selftest", "title": "阶段性自测题目", "aliases": ["自测", "阶段测试"], "difficulty": "Intermediate", "roles": ["modeler", "coder", "writer"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "C",
+      "title": "常用建模方法",
+      "priority": "P0",
+      "subcategories": [
+        {
+          "subcat_id": "C.1",
+          "title": "微分方程建模",
+          "id_prefix": "ode",
+          "concepts": [
+            {"concept_id": "ode.basic", "title": "常微分方程建模基础", "aliases": ["变化率建模", "微分方程建模", "ODE"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "ode.logistic", "title": "Logistic 增长模型", "aliases": ["逻辑斯蒂", "阻滞增长", "Logistic方程"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "ode.sir", "title": "传染病模型 SIR", "aliases": ["SIR", "传染病模型", "基本再生数"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "ode.lotka", "title": "种群竞争模型（Lotka-Volterra）", "aliases": ["捕食者猎物", "Lotka-Volterra", "种群模型"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "ode.pharma", "title": "药物动力学模型（一室/二室）", "aliases": ["药代动力学", "房室模型"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "ode.diffusion", "title": "扩散模型（热传导/污染扩散）", "aliases": ["扩散方程", "热传导方程", "偏微分方程"], "difficulty": "Advanced", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "C.2",
+          "title": "时间序列分析",
+          "id_prefix": "ts",
+          "concepts": [
+            {"concept_id": "ts.ma", "title": "移动平均法", "aliases": ["移动平均", "加权移动平均", "moving average"], "difficulty": "Beginner", "roles": ["modeler", "coder"]},
+            {"concept_id": "ts.expsmooth", "title": "指数平滑法", "aliases": ["指数平滑", "Holt", "Holt-Winters", "二次指数平滑"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "ts.arima", "title": "ARIMA 模型", "aliases": ["ARIMA", "自回归积分滑动平均", "ARIMA(p,d,q)"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "ts.decompose", "title": "季节性分解", "aliases": ["季节分解", "趋势季节残差", "STL"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "ts.stationarity", "title": "平稳性与自相关", "aliases": ["平稳性检验", "ADF", "ACF", "PACF", "自相关"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "ts.var", "title": "VAR 与 Granger 因果检验", "aliases": ["VAR模型", "向量自回归", "Granger因果", "格兰杰因果检验"], "difficulty": "Advanced", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "C.3",
+          "title": "概率与随机模型",
+          "id_prefix": "stoch",
+          "concepts": [
+            {"concept_id": "stoch.montecarlo", "title": "蒙特卡洛模拟", "aliases": ["蒙特卡洛", "Monte Carlo", "随机模拟"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "stoch.markov", "title": "马尔可夫链", "aliases": ["马尔可夫", "Markov", "状态转移", "稳态分布"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "stoch.queue", "title": "排队论基础（M/M/1）", "aliases": ["排队论", "M/M/1", "排队系统"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "stoch.bayes", "title": "贝叶斯方法", "aliases": ["贝叶斯", "朴素贝叶斯", "贝叶斯网络", "后验概率"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "stoch.cellular", "title": "元胞自动机", "aliases": ["元胞自动机", "cellular automata", "CA"], "difficulty": "Advanced", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "C.4",
+          "title": "图论与网络模型",
+          "id_prefix": "graph",
+          "concepts": [
+            {"concept_id": "graph.shortestpath", "title": "最短路径算法（Dijkstra、Floyd）", "aliases": ["最短路径", "Dijkstra", "Floyd"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "graph.mst", "title": "最小生成树（Prim、Kruskal）", "aliases": ["最小生成树", "MST", "Prim", "Kruskal"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "graph.maxflow", "title": "最大流问题", "aliases": ["最大流", "Ford-Fulkerson", "网络流"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "graph.tsp", "title": "旅行商问题（TSP）", "aliases": ["TSP", "旅行商", "MSP-TSP", "多起点TSP"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "graph.cpp", "title": "中国邮递员问题", "aliases": ["中国邮递员", "欧拉回路", "CPP"], "difficulty": "Advanced", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "C.5",
+          "title": "综合评价方法",
+          "id_prefix": "eval",
+          "concepts": [
+            {"concept_id": "eval.weightsum", "title": "加权求和评价", "aliases": ["加权求和", "线性加权", "综合评分"], "difficulty": "Beginner", "roles": ["modeler"]},
+            {"concept_id": "eval.ahp", "title": "层次分析法（AHP）", "aliases": ["AHP", "层次分析", "判断矩阵", "一致性检验"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "eval.topsis", "title": "TOPSIS 法", "aliases": ["TOPSIS", "逼近理想解", "优劣解距离"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "eval.entropy", "title": "熵权法", "aliases": ["熵权法", "客观赋权", "信息熵权重"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "eval.combweight", "title": "组合赋权（AHP-熵权）", "aliases": ["组合赋权", "AHP-EWM", "主客观组合"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "eval.fuzzy", "title": "模糊综合评价", "aliases": ["模糊评价", "隶属度", "模糊综合"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "eval.grey", "title": "灰色关联分析", "aliases": ["灰色关联", "关联度", "GRA"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "eval.dea", "title": "数据包络分析（DEA）", "aliases": ["DEA", "数据包络", "效率评价"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "eval.anp", "title": "网络分析法（ANP）", "aliases": ["ANP", "网络分析法"], "difficulty": "Advanced", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "C.6",
+          "title": "分类与识别方法",
+          "id_prefix": "cls",
+          "concepts": [
+            {"concept_id": "cls.logistic", "title": "逻辑回归", "aliases": ["逻辑回归", "logistic regression", "sigmoid", "二分类"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "cls.tree", "title": "决策树", "aliases": ["决策树", "信息增益", "ID3", "C4.5", "CART"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "cls.svm", "title": "支持向量机（SVM）", "aliases": ["SVM", "支持向量机", "核函数", "最大间隔"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "cls.nn", "title": "神经网络基础", "aliases": ["神经网络", "感知机", "BP算法", "多层感知机", "MLP"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "cls.lda", "title": "判别分析（Fisher/LDA）", "aliases": ["判别分析", "LDA", "Fisher判别"], "difficulty": "Advanced", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "C.7",
+          "title": "预测方法",
+          "id_prefix": "pred",
+          "concepts": [
+            {"concept_id": "pred.linreg", "title": "线性回归与最小二乘", "aliases": ["线性回归", "最小二乘", "OLS", "一元回归"], "difficulty": "Beginner", "roles": ["modeler", "coder"]},
+            {"concept_id": "pred.multireg", "title": "多元回归", "aliases": ["多元回归", "多元线性回归", "multiple regression"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "pred.nonlinear", "title": "非线性与指数模型拟合", "aliases": ["非线性回归", "指数模型", "曲线拟合"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "pred.grey", "title": "灰色预测 GM(1,1)", "aliases": ["灰色预测", "GM(1,1)", "灰色模型"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "pred.interp", "title": "插值与拟合拓展", "aliases": ["插值", "样条插值", "拉格朗日插值", "多项式拟合"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "pred.regularize", "title": "回归正则化（Ridge/Lasso）", "aliases": ["正则化", "Ridge", "Lasso", "岭回归", "Elastic Net"], "difficulty": "Advanced", "roles": ["modeler", "coder"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "D",
+      "title": "模型求解算法",
+      "priority": "P0",
+      "subcategories": [
+        {
+          "subcat_id": "D.1",
+          "title": "数学规划求解方法",
+          "id_prefix": "opt",
+          "concepts": [
+            {"concept_id": "opt.lp", "title": "线性规划建模", "aliases": ["线性规划", "LP", "目标函数约束"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "opt.integer", "title": "整数规划与 0-1 规划", "aliases": ["整数规划", "0-1规划", "二进制规划"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "opt.simplex", "title": "单纯形法", "aliases": ["单纯形法", "simplex"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "opt.branchbound", "title": "分支定界法", "aliases": ["分支定界", "branch and bound"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "opt.lagrange", "title": "拉格朗日乘数法", "aliases": ["拉格朗日乘数", "等式约束优化"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "opt.kkt", "title": "KKT 条件", "aliases": ["KKT", "不等式约束优化"], "difficulty": "Advanced", "roles": ["modeler"]},
+            {"concept_id": "opt.dp", "title": "动态规划", "aliases": ["动态规划", "DP", "贝尔曼方程", "最优子结构", "背包问题"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "opt.greedy", "title": "贪心算法与集合覆盖", "aliases": ["贪心算法", "集合覆盖", "greedy"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "D.2",
+          "title": "启发式/元启发式算法",
+          "id_prefix": "meta",
+          "concepts": [
+            {"concept_id": "meta.ga", "title": "遗传算法", "aliases": ["遗传算法", "GA", "交叉变异", "种群进化"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "meta.sa", "title": "模拟退火算法", "aliases": ["模拟退火", "SA", "Metropolis准则"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "meta.pso", "title": "粒子群优化（PSO）", "aliases": ["粒子群", "PSO", "群体智能"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "meta.aco", "title": "蚁群算法（ACO）", "aliases": ["蚁群算法", "ACO", "信息素"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "meta.tabu", "title": "禁忌搜索", "aliases": ["禁忌搜索", "tabu search", "禁忌表"], "difficulty": "Advanced", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "D.3",
+          "title": "梯度类方法",
+          "id_prefix": "grad",
+          "concepts": [
+            {"concept_id": "grad.descent", "title": "梯度下降法", "aliases": ["梯度下降", "SGD", "学习率", "批量梯度下降"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "grad.newton", "title": "牛顿法与拟牛顿法", "aliases": ["牛顿法", "拟牛顿", "Hessian", "BFGS"], "difficulty": "Advanced", "roles": ["coder"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "E",
+      "title": "数据预处理与统计分析",
+      "priority": "P1",
+      "subcategories": [
+        {
+          "subcat_id": "E.1",
+          "title": "相关性分析",
+          "id_prefix": "corr",
+          "concepts": [
+            {"concept_id": "corr.pearson", "title": "Pearson 相关系数", "aliases": ["Pearson", "皮尔逊相关", "线性相关"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "corr.spearman", "title": "Spearman 秩相关系数", "aliases": ["Spearman", "斯皮尔曼", "秩相关"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "corr.causation", "title": "相关性与因果性的区别", "aliases": ["相关不等于因果", "因果推断"], "difficulty": "Beginner", "roles": ["modeler", "writer"]},
+            {"concept_id": "corr.heatmap", "title": "相关性热力图可视化", "aliases": ["热力图", "相关矩阵"], "difficulty": "Beginner", "roles": ["coder", "writer"]}
+          ]
+        },
+        {
+          "subcat_id": "E.2",
+          "title": "假设检验",
+          "id_prefix": "test",
+          "concepts": [
+            {"concept_id": "test.ttest", "title": "t 检验", "aliases": ["t检验", "T检验", "双样本t检验", "配对t检验"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "test.chisq", "title": "卡方检验", "aliases": ["卡方检验", "独立性检验", "拟合优度"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "test.ftest", "title": "F 检验", "aliases": ["F检验", "方差齐性", "回归显著性"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "test.anova", "title": "方差分析（ANOVA）", "aliases": ["方差分析", "ANOVA", "单因素方差分析"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "test.pvalue", "title": "p 值与显著性水平", "aliases": ["p值", "显著性水平", "假设检验基础", "原假设"], "difficulty": "Beginner", "roles": ["modeler", "writer"]}
+          ]
+        },
+        {
+          "subcat_id": "E.3",
+          "title": "数据预处理",
+          "id_prefix": "prep",
+          "concepts": [
+            {"concept_id": "prep.normalize", "title": "中心化/归一化/标准化", "aliases": ["归一化", "标准化", "中心化", "无量纲化"], "difficulty": "Beginner", "roles": ["coder", "modeler"]},
+            {"concept_id": "prep.missing", "title": "缺失值处理", "aliases": ["缺失值", "插补", "MICE", "多重插补"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "prep.outlier", "title": "异常值检测", "aliases": ["异常值", "箱线图", "IQR", "3sigma", "Z-score"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "prep.feature", "title": "特征工程基础", "aliases": ["特征工程", "特征构造", "特征选择"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "prep.pca", "title": "主成分分析（PCA）", "aliases": ["PCA", "主成分分析", "降维"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "prep.kmeans", "title": "K-Means 聚类", "aliases": ["K-Means", "聚类", "kmeans"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "prep.dimreduce", "title": "降维补充（t-SNE/LDA）", "aliases": ["t-SNE", "降维可视化", "有监督降维"], "difficulty": "Advanced", "roles": ["coder"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "F",
+      "title": "竞赛策略与时间管理",
+      "priority": "P1",
+      "subcategories": [
+        {
+          "subcat_id": "F.1",
+          "title": "竞赛认知",
+          "id_prefix": "comp",
+          "concepts": [
+            {"concept_id": "comp.guosaivsmcm", "title": "国赛 vs 美赛的差异", "aliases": ["国赛美赛", "竞赛差异", "HiMCM"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.problemtype", "title": "赛题类型分类", "aliases": ["赛题类型", "连续型离散型大数据", "AB C题"], "difficulty": "Beginner", "roles": ["modeler"]},
+            {"concept_id": "comp.selecttopic", "title": "选题策略", "aliases": ["选题", "选题策略"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.trend", "title": "历年赛题趋势分析", "aliases": ["赛题趋势", "历年真题"], "difficulty": "Intermediate", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "F.2",
+          "title": "时间管理",
+          "id_prefix": "comp",
+          "concepts": [
+            {"concept_id": "comp.schedule", "title": "三天/四天赛程时间分配", "aliases": ["时间分配", "赛程安排"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.milestones", "title": "各阶段时间节点", "aliases": ["时间节点", "里程碑"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.contingency", "title": "应急预案", "aliases": ["应急预案", "出不来怎么办"], "difficulty": "Intermediate", "roles": ["modeler", "coder", "writer"]}
+          ]
+        },
+        {
+          "subcat_id": "F.3",
+          "title": "团队协作",
+          "id_prefix": "comp",
+          "concepts": [
+            {"concept_id": "comp.teamroles", "title": "三人分工模型", "aliases": ["团队分工", "三人分工", "建模手编程手写作手"], "difficulty": "Beginner", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.decision", "title": "沟通与决策机制", "aliases": ["团队沟通", "决策机制"], "difficulty": "Intermediate", "roles": ["modeler", "coder", "writer"]},
+            {"concept_id": "comp.version", "title": "版本管理", "aliases": ["版本管理", "论文版本"], "difficulty": "Intermediate", "roles": ["coder", "writer"]},
+            {"concept_id": "comp.mocktrain", "title": "赛前模拟训练", "aliases": ["模拟赛", "赛前训练"], "difficulty": "Intermediate", "roles": ["modeler", "coder", "writer"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "G",
+      "title": "结果可视化与解释",
+      "priority": "P3",
+      "subcategories": [
+        {
+          "subcat_id": "G.1",
+          "title": "可视化方法",
+          "id_prefix": "viz",
+          "concepts": [
+            {"concept_id": "viz.charttype", "title": "常用图表类型及选择指南", "aliases": ["图表类型", "选图指南", "散点折线柱状"], "difficulty": "Beginner", "roles": ["coder", "writer"]},
+            {"concept_id": "viz.geo", "title": "地理信息可视化", "aliases": ["地图可视化", "热力地图", "GIS"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "viz.3d", "title": "三维可视化", "aliases": ["三维图", "曲面图", "等高线图"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "viz.animation", "title": "动态/动画展示", "aliases": ["动画", "动态展示"], "difficulty": "Advanced", "roles": ["coder"]},
+            {"concept_id": "viz.layout", "title": "多图组合排版", "aliases": ["子图布局", "组合排版", "配色"], "difficulty": "Beginner", "roles": ["coder", "writer"]}
+          ]
+        },
+        {
+          "subcat_id": "G.2",
+          "title": "结果解释",
+          "id_prefix": "viz",
+          "concepts": [
+            {"concept_id": "viz.conclude", "title": "如何从数据中提取结论", "aliases": ["结论提取", "数据解读"], "difficulty": "Intermediate", "roles": ["modeler", "writer"]},
+            {"concept_id": "viz.sensitivityplot", "title": "灵敏度分析的可视化展示", "aliases": ["灵敏度可视化", "参数敏感图"], "difficulty": "Intermediate", "roles": ["coder", "writer"]},
+            {"concept_id": "viz.modelcompare", "title": "模型对比的可视化", "aliases": ["模型对比图", "预测对比"], "difficulty": "Intermediate", "roles": ["coder", "writer"]},
+            {"concept_id": "viz.decision", "title": "结果的实际意义解释", "aliases": ["决策建议", "实际意义"], "difficulty": "Intermediate", "roles": ["modeler", "writer"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "H",
+      "title": "编程工具与实现",
+      "priority": "P1",
+      "subcategories": [
+        {
+          "subcat_id": "H.1",
+          "title": "Python 数据科学栈",
+          "id_prefix": "tool",
+          "concepts": [
+            {"concept_id": "tool.numpy", "title": "NumPy 数组操作", "aliases": ["NumPy", "数组", "广播"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.pandas", "title": "Pandas 数据处理", "aliases": ["Pandas", "DataFrame", "数据清洗"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.matplotlib", "title": "Matplotlib 可视化", "aliases": ["Matplotlib", "绘图", "中文字体"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.sklearn", "title": "Scikit-learn 建模", "aliases": ["sklearn", "scikit-learn", "fit predict"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "tool.scipy", "title": "SciPy 科学计算", "aliases": ["SciPy", "minimize", "optimize", "interpolate"], "difficulty": "Intermediate", "roles": ["coder"]}
+          ]
+        },
+        {
+          "subcat_id": "H.2",
+          "title": "专用工具",
+          "id_prefix": "tool",
+          "concepts": [
+            {"concept_id": "tool.matlab", "title": "MATLAB 编程基础", "aliases": ["MATLAB", "matlab基础"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.lingo", "title": "LINGO/LINDO 优化求解", "aliases": ["LINGO", "LINDO", "优化求解器"], "difficulty": "Intermediate", "roles": ["coder", "modeler"]},
+            {"concept_id": "tool.spss", "title": "SPSS 统计分析", "aliases": ["SPSS", "统计软件"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.excel", "title": "Excel 数据透视", "aliases": ["Excel", "数据透视表"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "tool.latex", "title": "LaTeX 写作", "aliases": ["LaTeX", "排版", "公式输入"], "difficulty": "Intermediate", "roles": ["writer"]}
+          ]
+        },
+        {
+          "subcat_id": "H.3",
+          "title": "数据获取",
+          "id_prefix": "tool",
+          "concepts": [
+            {"concept_id": "tool.datasource", "title": "数据查找渠道", "aliases": ["数据来源", "公开数据", "Kaggle"], "difficulty": "Beginner", "roles": ["coder", "modeler"]},
+            {"concept_id": "tool.crawler", "title": "简单爬虫基础", "aliases": ["爬虫", "requests", "BeautifulSoup"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "tool.dataquality", "title": "数据质量评估", "aliases": ["数据质量", "可靠性", "完整性检查"], "difficulty": "Beginner", "roles": ["coder", "modeler"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "I",
+      "title": "模型验证与误差分析",
+      "priority": "P2",
+      "subcategories": [
+        {
+          "subcat_id": "I.1",
+          "title": "模型验证方法",
+          "id_prefix": "valid",
+          "concepts": [
+            {"concept_id": "valid.split", "title": "训练集/测试集划分", "aliases": ["数据集划分", "留出法", "hold-out"], "difficulty": "Beginner", "roles": ["coder"]},
+            {"concept_id": "valid.cv", "title": "交叉验证（K-Fold）", "aliases": ["交叉验证", "K-Fold", "k折"], "difficulty": "Intermediate", "roles": ["coder"]},
+            {"concept_id": "valid.overfit", "title": "过拟合与欠拟合", "aliases": ["过拟合", "欠拟合", "泛化"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.sensitivity", "title": "灵敏度分析", "aliases": ["灵敏度分析", "敏感性分析", "参数扰动"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.residual", "title": "残差分析与模型诊断", "aliases": ["残差分析", "模型诊断", "拟合优度"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]}
+          ]
+        },
+        {
+          "subcat_id": "I.2",
+          "title": "模型选择准则",
+          "id_prefix": "valid",
+          "concepts": [
+            {"concept_id": "valid.aicbic", "title": "AIC/BIC 准则", "aliases": ["AIC", "BIC", "信息准则"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.biasvar", "title": "偏差-方差权衡", "aliases": ["偏差方差", "bias-variance"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.occam", "title": "模型复杂度控制（奥卡姆剃刀）", "aliases": ["模型复杂度", "奥卡姆剃刀"], "difficulty": "Beginner", "roles": ["modeler"]}
+          ]
+        },
+        {
+          "subcat_id": "I.3",
+          "title": "误差分析",
+          "id_prefix": "valid",
+          "concepts": [
+            {"concept_id": "valid.metrics", "title": "误差度量（R²/相对误差/RMSE）", "aliases": ["R2", "相对误差", "RMSE", "MAE", "误差指标"], "difficulty": "Beginner", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.ci", "title": "置信区间", "aliases": ["置信区间", "区间估计", "95%置信"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "valid.bootstrap", "title": "Bootstrap 方法", "aliases": ["Bootstrap", "自助法", "重采样"], "difficulty": "Advanced", "roles": ["coder"]},
+            {"concept_id": "valid.errorprop", "title": "误差传播分析", "aliases": ["误差传播", "error propagation"], "difficulty": "Advanced", "roles": ["modeler"]}
+          ]
+        }
+      ]
+    },
+    {
+      "module_id": "J",
+      "title": "数学基础",
+      "priority": "P3",
+      "subcategories": [
+        {
+          "subcat_id": "J.1",
+          "title": "数学工具与基础",
+          "id_prefix": "math",
+          "concepts": [
+            {"concept_id": "math.notation", "title": "求和符号与基本记号", "aliases": ["求和符号", "Sigma", "数学记号"], "difficulty": "Beginner", "roles": ["modeler"]},
+            {"concept_id": "math.calculus", "title": "求导与微积分基础", "aliases": ["求导", "导数", "微积分"], "difficulty": "Beginner", "roles": ["modeler"]},
+            {"concept_id": "math.matrix", "title": "矩阵运算", "aliases": ["矩阵", "矩阵乘法", "转置", "向量内积"], "difficulty": "Beginner", "roles": ["modeler", "coder"]},
+            {"concept_id": "math.stats", "title": "统计基础（均值/方差/正态）", "aliases": ["均值", "方差", "正态分布", "描述统计"], "difficulty": "Beginner", "roles": ["modeler", "coder"]},
+            {"concept_id": "math.probability", "title": "概率论基础", "aliases": ["概率论", "条件概率", "贝叶斯公式", "期望", "常见分布"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]},
+            {"concept_id": "math.eigen", "title": "特征值与特征向量", "aliases": ["特征值", "特征向量", "eigenvalue"], "difficulty": "Intermediate", "roles": ["modeler"]},
+            {"concept_id": "math.svd", "title": "奇异值分解（SVD）", "aliases": ["SVD", "奇异值分解", "矩阵分解"], "difficulty": "Advanced", "roles": ["modeler", "coder"]},
+            {"concept_id": "math.gradient", "title": "梯度与方向导数", "aliases": ["梯度", "方向导数", "多元函数优化"], "difficulty": "Intermediate", "roles": ["modeler", "coder"]}
+          ]
+        }
+      ]
+    }
+  ]
+}

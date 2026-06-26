@@ -1,0 +1,93 @@
+{
+  "schema_version": 3,
+  "concept_id": "pred.interp",
+  "title": "插值与拟合拓展",
+  "taxonomy_path": [
+    "常用建模方法",
+    "预测方法",
+    "插值与拟合拓展"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.7",
+  "aliases": [
+    "插值",
+    "样条插值",
+    "拉格朗日插值",
+    "多项式拟合"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "插值与拟合是从离散数据点中构造连续函数的方法，插值要求曲线严格通过每个点，拟合则允许曲线平滑地逼近数据，用于预测未知值或去除噪声。",
+    "intuition": "想象你有一组散落的点（比如某天每隔1小时测一次温度），你想知道任意时刻的温度。插值就像用一根橡皮筋穿过所有点，保证每个点都在线上；拟合则像画一条尽量靠近所有点的平滑曲线，不要求完全穿过，适合有测量误差的数据。样条插值是把橡皮筋分成小段，每段用光滑的曲线连接，整体非常平滑；拉格朗日插值是用一个高次多项式穿过所有点，但点多了容易抖动（龙格现象）；正则化拟合是在拟合时加入惩罚项，防止曲线过于弯曲，提高预测稳定性。",
+    "when_to_use": "当你有离散数据点，需要估计中间值（插值）或找出整体趋势（拟合）时使用。具体场景：数据缺失需要填充（插值）、数据有噪声需要平滑（拟合）、需要生成高分辨率曲线（插值）、预测未来值（拟合）。如果数据点精确且要求曲线通过所有点，用插值；如果数据有误差或需要简洁模型，用拟合。",
+    "definition": "插值：给定一组数据点 $(x_i, y_i), i=0,1,\\dots,n$，构造一个函数 $f(x)$ 使得 $f(x_i) = y_i$ 对所有 $i$ 成立。拟合：构造一个函数 $g(x)$（通常为低次多项式或参数化模型），使得 $\\sum_{i=0}^n (g(x_i) - y_i)^2$ 最小化，不要求严格通过所有点。",
+    "math_principle": "**样条插值**：将区间 $[x_0, x_n]$ 分成 $n$ 个子区间 $[x_i, x_{i+1}]$，在每个子区间上构造三次多项式 $S_i(x) = a_i + b_i(x-x_i) + c_i(x-x_i)^2 + d_i(x-x_i)^3$。要求：$S_i(x_i)=y_i$，$S_i(x_{i+1})=y_{i+1}$，且相邻多项式在节点处一阶、二阶导数连续。自然边界条件 $S''(x_0)=S''(x_n)=0$ 给出唯一解。通过求解三对角线性方程组得到系数。\n\n**拉格朗日插值**：构造基函数 $L_i(x) = \\prod_{j \\neq i} \\frac{x - x_j}{x_i - x_j}$，则插值多项式为 $P(x) = \\sum_{i=0}^n y_i L_i(x)$。$L_i(x)$ 在 $x_i$ 处为1，在其他节点处为0。\n\n**正则化拟合**：在最小二乘目标函数中加入惩罚项，如岭回归：$\\min \\sum_{i=0}^n (y_i - \\sum_{j=0}^m \\beta_j x_i^j)^2 + \\lambda \\sum_{j=0}^m \\beta_j^2$，其中 $\\lambda$ 控制正则化强度，防止过拟合。",
+    "step_by_step": [
+      "1. 收集数据点 $(x_i, y_i)$，确定插值或拟合的目标（精确通过或近似）。",
+      "2. 选择方法：若需精确通过且数据点较少（<10），可用拉格朗日插值；若需光滑且数据点较多，用三次样条插值；若数据有噪声，用多项式拟合加正则化。",
+      "3. 对于样条插值：构造三对角方程组，求解系数 $a_i, b_i, c_i, d_i$。",
+      "4. 对于拉格朗日插值：计算每个基函数 $L_i(x)$ 在待求点 $x$ 的值，加权求和。",
+      "5. 对于正则化拟合：选择多项式次数 $m$ 和正则化参数 $\\lambda$（可通过交叉验证），求解最小二乘问题。",
+      "6. 使用得到的函数计算任意 $x$ 处的预测值。",
+      "7. 评估结果：检查残差、光滑性，必要时调整参数。"
+    ],
+    "worked_example": "已知数据点：(0,1), (1,2), (2,0)。用三次样条插值求 $x=0.5$ 处的值。\n\n解：区间 $[0,1]$ 和 $[1,2]$。设 $S_0(x)=a_0+b_0x+c_0x^2+d_0x^3$（取 $x_0=0$），$S_1(x)=a_1+b_1(x-1)+c_1(x-1)^2+d_1(x-1)^3$。\n\n条件：\n- $S_0(0)=1 \\Rightarrow a_0=1$\n- $S_0(1)=2 \\Rightarrow 1+b_0+c_0+d_0=2$\n- $S_1(1)=2 \\Rightarrow a_1=2$\n- $S_1(2)=0 \\Rightarrow 2+b_1+c_1+d_1=0$\n- 一阶导数连续：$S_0'(1)=S_1'(1) \\Rightarrow b_0+2c_0+3d_0 = b_1$\n- 二阶导数连续：$S_0''(1)=S_1''(1) \\Rightarrow 2c_0+6d_0 = 2c_1$\n- 自然边界：$S_0''(0)=0 \\Rightarrow 2c_0=0 \\Rightarrow c_0=0$\n- $S_1''(2)=0 \\Rightarrow 2c_1+6d_1=0$\n\n解方程组得：$c_0=0$，由 $2c_0+6d_0=2c_1$ 得 $6d_0=2c_1$；由 $S_0(1)=2$ 得 $1+b_0+d_0=2 \\Rightarrow b_0+d_0=1$；由 $S_1(2)=0$ 得 $2+b_1+c_1+d_1=0$；由一阶导数连续得 $b_0+3d_0=b_1$；由 $S_1''(2)=0$ 得 $2c_1+6d_1=0$。解得 $d_0=-1/2, b_0=3/2, c_1=-3/2, d_1=1/2, b_1=0$。\n\n因此 $S_0(x)=1+\\frac{3}{2}x - \\frac{1}{2}x^3$，$S_0(0.5)=1+0.75-0.0625=1.6875$。",
+    "pitfalls": [
+      "拉格朗日插值在高次时（n>10）会出现龙格现象，即区间两端剧烈振荡，应避免使用高次多项式。",
+      "样条插值需要求解线性方程组，数据点很多时计算量较大，但可通过追赶法高效求解。",
+      "正则化拟合中，正则化参数 $\\lambda$ 选择不当会导致欠拟合（$\\lambda$ 太大）或过拟合（$\\lambda$ 太小），需用交叉验证确定。",
+      "插值方法对噪声敏感，若数据有测量误差，插值曲线会扭曲，此时应使用拟合方法。",
+      "外推（预测区间外的点）不可靠，插值和拟合都只在数据范围内有效。"
+    ],
+    "tools": "Python 中可用 `scipy.interpolate` 进行插值，`numpy.polyfit` 进行多项式拟合，`sklearn.linear_model.Ridge` 进行正则化拟合。\n\n```python\nimport numpy as np\nfrom scipy.interpolate import CubicSpline\nimport matplotlib.pyplot as plt\n\n# 数据点\nx = np.array([0, 1, 2, 3, 4])\ny = np.array([1, 2, 0, 3, 5])\n\n# 三次样条插值\ncs = CubicSpline(x, y, bc_type='natural')\nxs = np.linspace(0, 4, 100)\nys = cs(xs)\n\n# 多项式拟合（3次）\ncoeffs = np.polyfit(x, y, 3)\npoly = np.poly1d(coeffs)\ny_fit = poly(xs)\n\n# 正则化拟合（岭回归）\nfrom sklearn.linear_model import Ridge\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.pipeline import make_pipeline\n\nmodel = make_pipeline(PolynomialFeatures(3), Ridge(alpha=1.0))\nmodel.fit(x.reshape(-1,1), y)\ny_ridge = model.predict(xs.reshape(-1,1))\n\nplt.plot(x, y, 'o', label='data')\nplt.plot(xs, ys, label='cubic spline')\nplt.plot(xs, y_fit, label='polyfit')\nplt.plot(xs, y_ridge, label='ridge')\nplt.legend()\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "S_i(x) = a_i + b_i(x-x_i) + c_i(x-x_i)^2 + d_i(x-x_i)^3",
+      "variables": {
+        "S_i(x)": "第 i 个子区间上的三次样条函数",
+        "a_i, b_i, c_i, d_i": "待定系数",
+        "x_i": "第 i 个节点"
+      }
+    },
+    {
+      "latex_code": "L_i(x) = \\prod_{j \\neq i} \\frac{x - x_j}{x_i - x_j}",
+      "variables": {
+        "L_i(x)": "拉格朗日基函数",
+        "x_i": "第 i 个节点",
+        "x_j": "第 j 个节点"
+      }
+    },
+    {
+      "latex_code": "P(x) = \\sum_{i=0}^n y_i L_i(x)",
+      "variables": {
+        "P(x)": "拉格朗日插值多项式",
+        "y_i": "第 i 个节点的函数值",
+        "L_i(x)": "拉格朗日基函数"
+      }
+    },
+    {
+      "latex_code": "\\min \\sum_{i=0}^n (y_i - \\sum_{j=0}^m \\beta_j x_i^j)^2 + \\lambda \\sum_{j=0}^m \\beta_j^2",
+      "variables": {
+        "y_i": "第 i 个观测值",
+        "x_i": "第 i 个自变量",
+        "\\beta_j": "多项式系数",
+        "m": "多项式次数",
+        "\\lambda": "正则化参数"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C30",
+      "supp_E10"
+    ],
+    "from_papers": []
+  }
+}

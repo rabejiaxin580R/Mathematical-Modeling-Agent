@@ -1,0 +1,1401 @@
+Team #8124
+​ ​
+Page 1 of 28
+​ ​ ​ ​ ​ ​
+2017 HiMcM
+​ ​
+Ski Slope Design Summary Sheet
+​ ​ ​ ​ ​ ​ ​ ​
+M
+Team Control Number: 8124
+​ ​ ​ ​ ​ ​
+Problem Chosen: B
+C
+​ ​ ​ ​
+M
+i
+Abstract: H
+As the 2018 Winter Olympics is approaching, s：kiing fans are excited and prompted to
+​​​​​​​​​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+construct a new ski resorts in Wasatch Peaks Ranch. Upon their request, we construct 21 skiing
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+routes with 1-2-2 difficulty level distributi号on and a total slope length over 160 kilometers.
+​​ ​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+In part 1, we simplify the problem by constructing a 13-by-13 0-1 matrix, seeking all the
+​​​​​​​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+potential ski slopes as decision variables. To construct a topological structure for the routes, we
+​​ ​​ ​​ ​​ ​​ 众​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+find the nodes on the smooth terrains by comparing the normal vectors. We fill the matrix with 1
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+or 0 to show whether the node is used after optimizing the solution using Lingo. On top of that,
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+公
+we apply Cluster Analysis to group the peaks into different groups to find the typical peaks and
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+bowls that can be applied to the Linear Programming (0-1 matrix) Model.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+In part 2, we ev信aluate all the given data by employing multiple-criteria decision analysis. Our
+​​​​​​​​​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+design of the resort is within the top 5 resorts among the given resorts. After processing the data,
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+we go through an analytic hierarchy process to construct a clear criteria and apply it to our
+​​ ​​ 微​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+design. The major criteria include the total distance, skiable acres, vertical drop, number of runs,
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+distribution of difficulty, number of lifts, and annual snowfall.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+After building our model, we come up with specific solution and design to each question.
+​​​​​​​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+Keywords: 0-1 matrix, multiple-criteria decision analysis, optimal solution, analytical
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+hierarchy process, pairwise comparison.
+​​ ​​ ​​
+1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 2 of 28
+​ ​ ​ ​ ​ ​
+Contents
+1. Letter to Ms. Mogul……………………..…………………………………3
+​ ​ ​ ​ ​ ​
+2. Introduction………………………………...………………………………5
+a. Background………………...…………………………………………5
+​
+b. Problem Restatement………………....………………………………5
+​ ​ ​ M
+3. Assumptions and Justifications……………………………………....……6
+​ ​ ​ ​
+4. Data Gathering…………………………………………C…..………....……6
+​ ​
+5. Mathematical Modeling………………………………………....…………8
+​ ​ M
+a. Parameters ……………………………………………………....……8
+​ ​​
+b. Plan of optimal node locations……………i…………………..………9
+​ ​ ​ ​ ​ ​ ​ ​ ​ H
+c. The Optimization for skiing Slopes and Nodes for Ski Lifts …….…13
+​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​​
+：
+6. Evaluation
+a. Introduction …………………………………………………………16
+​ ​​ 号
+b. Methodology …………………………………………………..……17
+​ ​​
+c. Application ………………………………………………………….19
+​ ​​ 众
+7. Model Evaluation…………………………………………………………26
+​ ​
+a. Strengths……………………………………………..………………26
+​公
+b. Weaknesses……………………………...…………..………………26
+​
+8. Reference………………………………………………..…………………27
+信
+9. Appendix………………………………………………..………....………28
+微
+2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 3 of 28
+​ ​ ​ ​ ​ ​
+I. Letter to Ms. Mogul
+​ ​ ​ ​ ​ ​ ​ ​
+Dear Ms. Mogul,
+​​ ​​
+Thank you for your interest in the possibility of developing the Wasatch Peak Ranch into
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+a ski resort. Over the past two days, our team has worked out a design solution of ski trails on the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+amount of available mountain land that we have that would fit not only the purposes of a ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resort, but also the potential future of a location hosting the Winter Olympics.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+M
+In the process of designing the trails, we took a variety of factors into consideration upon
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​ ​​
+your request. By locating the nodes of the mountain, which are the most Csmooth and locally
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+non-steep regions, we construct 5 ski lifts for skiers’ convenience to ski again from the peaks.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​M​ ​​ ​​ ​​ ​​ ​​
+Other factors include difficulty levels of based on the rise and run ratio. To make the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+construction economic and less costly, we minimized the distance of the total distance of slopes.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ i​​ ​​ ​​ ​​ ​​ ​​
+We arrived at our final design based on 0-1 Linear ProgramHming, and designed 20 routes for
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+skiers’ choice.
+​​ ：
+Additionally, we ranked our design against other existing major North American ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+号
+resorts for quality evaluation. We confirmed that our design is very competitive to all other ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resorts around the world. Taking into account the size, variety of slopes, convenience, and
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+quality of a ski resort, our design o众f Wasatch ski resort ranks the 6th against 15 other major ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resorts in North America. This proves our plan to be very cost-effective since we minimized cost
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+in designing the resort.
+​​ ​​ ​​ 公
+Attached is an overview of our final ski trail design. Thank you again for your interest, and we
+​​ ​​ ​​ 信​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+look forward to your feedback!
+​​ ​​ ​​ ​​
+Sincerely, 微
+Team 8124
+​​
+3
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 4 of 28
+​ ​ ​ ​ ​ ​
+Attachment:
+The specific location and distance of each skiing slope:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+4
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 5 of 28
+​ ​ ​ ​ ​ ​
+II. Introduction
+​ ​
+A. Background
+The upcoming Winter Olympics in South Korea excited every skiing fans. Over 55
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+ski-related events, including Cross-Country, Ski Jumping, and Snowboarding, will
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+compete on the best ski resorts in February 2018. To satisfy the need of the winter sports
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​M​​ ​​ ​​
+fans, we design a math model to identify the ski trails in Wasatch Peaks Ranch, aiming to
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+become a top ski resort in North America. The Ranch has large acres of land and a long
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ C​​ ​​ ​​ ​​ ​​
+ridgeline for the development of the ski slopes. In our design, there are a variety of trails
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+of different levels- beginner, intermediate, and professionaMl skiers- to make the resort an
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+enjoyable resort for everyone. Furthermore, the resort also provides enough ski slopes-
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+over 160 km in total -to avoid congestions. By using Liniear Programming and 0-1 matrix,
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ H​​ ​​ ​​ ​​ ​​
+We also chose optimal locations for 5 bases with lifts to make it convenient to ski the
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+trails again. ：
+​​
+However, Wasatch Peaks Ranch does not only aim for completion and convenience, but
+号
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+also a potential Winter Olympics location. To adjust our design in making Wasatch Peaks
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+Ranch more competitive, we evaluated other major ski areas in North America based on
+​​ ​​ ​​ 众​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+their resort size and slopes’ design by employing multiple-criteria decision analysis. In
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+general, the objective of our solution is to identify best ski slopes for different levels of
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+公
+skiers with convenience and efficiency and to qualify for potential Winter Olympics
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​
+location.
+信
+B. Problem Restatement
+​​
+微
+The Wasatch Peaks Ranch is located in Peterson, Utah, USA, and because of its long
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+ridgeline of 11 miles that includes 24 peaks, 15 bowls and cirques, the skiing fans are
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+considering if they should buy the ranch and develop it into a ski resort. They also hope it
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+will become competitive for Winter Olympics with other well-known resorts.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+To make skiing in Wasatch Peaks Ranch an enjoyable experience for every skier, the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+skiing slopes should be long and vary in difficulty levels. However, the geography of the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+Ranch is very complex to design all the potential slopes precisely. Built according to
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+existing topography, nodes can be set up on smooth terrains, serving as stations for ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+lifts. If these nodes can be found, they can be connected to determine potential skiing
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+slopes, and after a selection of these potential slopes, we can optimize the ski slopes.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+5
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+|     |     |     |     |     |     |     |     |     |     |     |     |     | ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Page 6 of 28
+|     |     |     |     |     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+Therefore, we need to construct and analyze two models for this problem- for both
+|     |     | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |     | ​​ ​​ | ​​  | ​​ ​​ |     | ​​ ​​ |     |
+| --- | --- | --- | --- | ----- | --- | --- | --- | ----- | --- | ----- | --- | ----- | --- |
+finding the nodes and needed slopes - using Linear Programming and Analytic Hierarchy
+|     |     | ​​ ​​ | ​​  | ​​  | ​​  | ​​  | ​​  | ​​ ​​ |     |     | ​​ ​​ | ​​  |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | ----- | --- | --- | ----- | --- | --- |
+in the following report.
+|     | ​​  | ​​  | ​​  |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+III. Assumptions and Justifications
+| ​   | ​   |     |     | ​ ​ | ​ ​ |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+1. Assume the skiing slopes will not overlap;
+|     |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​  |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+Justification: The skiing slopes cannot overlap besides the node connections. That will cause
+|     |     | ​​ ​​ | ​​  | ​​  | ​​  |     | ​​  | ​​ ​​ | ​​  |     | ​​  | ​​ ​​ |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | ----- | --- | --- | --- | ----- | --- |
+confusion of the skiers during the skiing experience and unexpectedly ski on mMore difficult
+|     | ​​  | ​​ ​​ | ​​  | ​​  | ​​  | ​​  |     | ​​ ​​ |     | ​​  | ​​ ​​ | ​​  |     |
+| --- | --- | ----- | --- | --- | --- | --- | --- | ----- | --- | --- | ----- | --- | --- |
+slopes than anticipated.
+|     | ​​ ​ | ​   |     |     |     |     |     |     |     |     |     |     |     |
+| --- | ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+2. Assume the area within the ranch can construct a ski slope;  C
+|     |     | ​​  | ​​ ​​ | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​  |     |     |     |     |
+| --- | --- | --- | ----- | --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- |
+Justification: We assume that all area within the map can construct a ski slope, so we do not need
+|     |     | ​​ ​​ |     | ​​ ​​ | ​​ ​​ | ​​  | ​​  | ​​ ​​ | M​​ | ​​ ​​ |     | ​​ ​​ ​​ | ​​ ​​ |
+| --- | --- | ----- | --- | ----- | ----- | --- | --- | ----- | --- | ----- | --- | -------- | ----- |
+to put limitations on the design of the ski slopes.
+| ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​ ​​ | ​​  |     |     |     |     |     |     |     |
+| --- | --- | --- | ----- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+3. Assume the the data given are accurate and precise;
+|     |     | ​​  | ​​ ​​ | ​​  | ​​ ​​ |     | ​​  | ​​  | i   |     |     |     |     |
+| --- | --- | --- | ----- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+Justification: We assume that the data in the brochure are aHccurate so that we can build accurate
+|     |     | ​​ ​​ |     | ​​ ​​ | ​​ ​​ | ​​ ​​ |     | ​​ ​​ |     | ​​ ​​ | ​​ ​​ | ​​ ​​ |     |
+| --- | --- | ----- | --- | ----- | ----- | ----- | --- | ----- | --- | ----- | ----- | ----- | --- |
+model on top of that.
+|     | ​​ ​​ | ​​ ​​ |     |     |     |     | ：   |     |     |     |     |     |     |
+| --- | ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+IV. Data Gathering
+|     |     |     |     |     |     | 号   |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ​   | ​   | ​ ​ |     |     |     |     |     |     |     |     |     |     |     |
+
+A. Finding Peaks and Bowls众.
+|     |     | ​​  | ​​  | ​​  |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+We were given that Wasatch Peak Ranch has a total of 24 peaks and 15 bowls. A holistic
+|     | ​   | ​ ​​ | ​​  | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​  |
+| --- | --- | ---- | --- | --- | --- | --- | --- | ----- | -------- | --- | --- | ----- | --- |
+view of the mountain is rendered in Google Earth, where the ridgeline of the mountain is
+|     |     | ​​ ​​ | ​​  | 公​​ ​​ |     | ​​ ​​ |     | ​​ ​​ | ​​  | ​​  | ​​  | ​​ ​​ | ​​  |
+| --- | --- | ----- | --- | ------ | --- | ----- | --- | ----- | --- | --- | --- | ----- | --- |
+shown. In order to determine the locations of the 24 peaks on the mountain, we traced the
+|     |     | ​​ ​​ | ​​  | ​​  | ​​  | ​​  | ​​  | ​​ ​​ ​​ | ​​  | ​​ ​​ |     | ​​ ​​ | ​​  |
+| --- | --- | ----- | --- | --- | --- | --- | --- | -------- | --- | ----- | --- | ----- | --- |
+ridgeline with the “path” function, and obtained an elevation graph of the points on the
+|     |     | ​​ 信​​ |     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ |     | ​​  | ​​ ​​ | ​​ ​​ | ​​  |
+| --- | --- | ------ | --- | --- | --- | --- | --- | ----- | --- | --- | ----- | ----- | --- |
+ridgeline:
+
+微
+6
+关注 HiMCM
+|     |     |     |     |     |     |     |     |     |     |     |     | ×+ −÷ |        |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+
+Team #8124
+​ ​
+Page 7 of 28
+​ ​ ​ ​ ​ ​
+M
+C
+M
+i
+H
+：
+(Figure 4.1)
+​​
+号
+By determining the local maximum of the the curve, we were able to locate the peaks’
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+coordinates. The bowls, on众 the other hand, were discovered through a similar approach.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+By comparing the elevation graphs of the adjacent paths, we were able to find bowls, or
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+areas on the mountain that have a relative lower elevation.
+​​ ​​ ​​ 公​​ ​​ ​​ ​​ ​​ ​​
+信
+微
+7
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 8 of 28
+​ ​ ​ ​ ​ ​
+
+M
+C
+M
+i
+
+H
+(Figure 4.2)
+​​
+：
+
+The exact location of the peaks and bowls are attached (See Appendix 1.1).
+|     | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​ ​​ | ​​  |
+| --- | ----- | -------- | --- | --- | ----- | ----- | --- |
+|     |       |          |     | 号   |       |       |     |
+V. Mathematical Modeling
+| ​ ​ |     | ​ ​ |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+众
+
+A.Parameters
+公
+
+| L   |     | The length of the nth slope;  |     |     |     |     |     |
+| --- | --- | ----------------------------- | --- | --- | --- | --- | --- |
+n
+|     |     | ​​  | ​​ ​​ ​​ | ​​  |     |     |     |
+| --- | --- | --- | -------- | --- | --- | --- | --- |
+信
+| N     |     | The number of slopes designed in total;  |       |     |       |     |     |
+| ----- | --- | ---------------------------------------- | ----- | --- | ----- | --- | --- |
+| total |     | ​​                                       | ​​ ​​ | ​​  | ​​ ​​ |     |     |
+微
+| C (Lat, Lng)  |     | The location of the nth                              |       |  nodes;  |     |     |     |
+| ------------- | --- | ---------------------------------------------------- | ----- | -------- | --- | --- | --- |
+| n             |     | ​​                                                   | ​​ ​​ | ​​  ​​   |     |     |     |
+| a             |     | The altitude of a random point around the nth node;  |       |          |     |     |     |
+n
+|     |     | ​​  | ​​ ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​  |
+| --- | --- | --- | -------- | --- | --- | ----- | --- |
+a  The average altitude within 1km*1km range of the nth node;
+|     |     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​ ​​ ​​ |
+| --- | --- | --- | --- | --- | --- | ----- | -------- |
+σ   The standard deviation of the altitudes of the nth node;
+| n             |     | ​​                                           | ​​    | ​​ ​​ | ​​    | ​​ ​​ ​​ | ​​  |
+| ------------- | --- | -------------------------------------------- | ----- | ----- | ----- | -------- | --- |
+| S (Lat, Lng)  |     | The location of the start of the nth slope;  |       |       |       |          |     |
+| n             |     | ​​                                           | ​​ ​​ | ​​ ​​ | ​​ ​​ | ​​       |     |
+| E (Lat, Lng)  |     | The location of the end of the nth slope;    |       |       |       |          |     |
+n
+|     |     | ​​  | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​  |     |
+| --- | --- | --- | ----- | -------- | --- | --- | --- |
+8
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 9 of 28
+​ ​ ​ ​ ​ ​
+D The difficulty level of the of the nth slope.
+n ​​ ​​ ​​ ​​ ​​​​ ​​ ​​ ​​
+B. Plan for optimal node locations
+​ ​ ​ ​ ​ ​ ​ ​ ​ ​
+1. Basic Description of our Model:
+​​ ​​ ​​ ​​
+In this model, we try to find the nodes within the area. The nodes are defined and
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+determined to play two roles:
+​​ ​​ ​​ ​​
+(1) Locations that are suitable for construction of ski lifts;
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ M
+(2) Connecting the nodes to sketch the potential ski slopes;
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+C
+2. Using Normal Vector to find smooth terrains:
+​​​​​​​​​​​​ ​​​​​​ ​​ ​​ ​​ ​​ ​​ ​​
+Upon research, we found that the 3D model of the MWasatch mountain ranch can
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+be generated through the Terrain STL generator (Terrain2STL), which comes in
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+as a point cloud form and can be rendered on Maitlab:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​H​​
+：
+号
+众
+公
+信
+微
+(Figure 5.1)
+​​
+(The figure’s scale is moderated to adapt Terrain2STL:
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+Top Left: Latitude: 41.1413; Longitude: 111.9183: x=0, y=200
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+Down Right: Latitude: 41.0075555;Longitude:-111.7647778 x=150, y=0)
+​​ ​​ ​​ ​​​​ ​​
+The point cloud model is based on the three coordinates x, y and z, and represent respectively the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+latitude, longitude and elevation of a point on the mountain. For each point in the point cloud, it
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+is possible to calculate a normal vector of that point by finding the neighboring points, creating a
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+9
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 10 of 28
+|     |     |     |     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+plane out of those points, and calculating the direction vector v orthogonal to that plane. The
+|     | ​​ ​​ ​​ | ​​  | ​​  | ​​  | ​​  | ​​  |     | ​​  | ​​ ​​ | ​​ ​​ | ​​  | ​​  |
+| --- | -------- | --- | --- | --- | --- | --- | --- | --- | ----- | ----- | --- | --- |
+resulting vector reflects the direction in which the small local section of the mountain faces.
+|     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​  | ​​ ​​ | ​​ ​​ |     | ​​  |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | ----- | ----- | --- | --- |
+
+Of the 40796 points in the point cloud set, we calculated the normal vectors every 10 point,
+| ​​  | ​​ ​​ |     | ​​ ​​ | ​​ ​​ | ​​  | ​​ ​​ |     | ​​  | ​​ ​​ | ​​  | ​​  | ​​  |
+| --- | ----- | --- | ----- | ----- | --- | ----- | --- | --- | ----- | --- | --- | --- |
+obtaining a total of roughly 4080 vectors. Below is a graph of the direction vectors placed on
+|     | ​​ ​​ | ​​ ​​ |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​ ​​ | ​​ ​​ | ​​  | ​​  | ​​  |
+| --- | ----- | ----- | --- | --- | --- | --- | ----- | ----- | ----- | --- | --- | --- |
+their respective points:
+| ​​  |     | ​​  |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+M
+C
+M
+i
+H
+：
+号
+
+众
+(Figure 5.2)
+​​
+
+公
+信
+微
+
+(Figure 5.3)
+​​
+
+Upon closer inspection, we found that some of the vectors have a negative z component value,
+|     | ​​ ​​ |     | ​​  | ​​  | ​​ ​​ | ​​  | ​​ ​​ | ​​  | ​​ ​​ | ​​ ​​ |     | ​​  |
+| --- | ----- | --- | --- | --- | ----- | --- | ----- | --- | ----- | ----- | --- | --- |
+and point towards the inside of the mountain, instead of outwards to the sky. Those vectors are
+| ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |     | ​​ ​​ | ​​ ​​ | ​​ ​​ | ​​  | ​​  |
+| --- | --- | --- | --- | ----- | --- | --- | --- | ----- | ----- | ----- | --- | --- |
+flipped to become their opposite so that all vectors are pointing outward:
+|     | ​​ ​​ | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​  | ​​  |     |     |     |
+| --- | ----- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- |
+
+10
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #8124
+​ ​
+Page 11 of 28
+|     |     |     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+|     |     |     |     |     |     | (Figure 5.4)  |     |     |     | M   |     |
+| --- | --- | --- | --- | --- | --- | ------------- | --- | --- | --- | --- | --- |
+​​
+
+We theorized that for any vector v, its angle 𝛳 with the upward pointing Cunit vector u <0,0,1> is
+| ​​  |     | ​​  | ​​ ​​ ​​ | ​​ ​​ | ​​  | ​​​ ​​​ | ​​ ​​ | ​​  | ​​  | ​​  | ​​ ​​ ​​ |
+| --- | --- | --- | -------- | ----- | --- | ------- | ----- | --- | --- | --- | -------- |
+an indicator of how steep a local region is on the mountain. For a relatively smooth area, the
+| ​​  |     | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​  | ​​ ​​ ​​ |     | ​​ ​​ ​M​ | ​​  |     | ​​ ​​ |
+| --- | --- | ----- | -------- | --- | --- | -------- | --- | --------- | --- | --- | ----- |
+angle between its normal vector and u would be a small value, as u is the normal vector of a
+|     | ​​  | ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​ ​​ |
+| --- | --- | ----- | --- | --- | ----- | -------- | --- | ----- | -------- | --- | ----- |
+completely horizontal plane; for steeper areas, the angle difference increases.
+|     |     | ​ ​ | ​​  | ​​ ​​ | ​​  | ​​ ​​ | ​​  | i​​ |     |     |     |
+| --- | --- | --- | --- | ----- | --- | ----- | --- | --- | --- | --- | --- |
+
+H
+Based on the dot/scalar product of vectors, we were able to find out the set of angles between u
+|     | ​​ ​​ | ​​  | ​​  | ​​ ​​ |     | ​​ ​​ ：​​ | ​​  | ​​ ​​ | ​​ ​​ ​​ | ​​  | ​​ ​​ |
+| --- | ----- | --- | --- | ----- | --- | --------- | --- | ----- | -------- | --- | ----- |
+and all 4080 v vectors. The dot product of two vectors a = [a1, a2, ..., an] and b = [b1, b2, ..., bn]
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+is defined as:
+​​ ​​
+号
+
+众
+
+公
+whereas according to the geometric definition, the dot product value is also
+|     | ​​  |     | ​​ ​​ ​​ |     | ​​  | ​​ ​​ | ​​  | ​​  | ​​ ​​ |     |     |
+| --- | --- | --- | -------- | --- | --- | ----- | --- | --- | ----- | --- | --- |
+
+信
+
+微
+Therefore, 𝛳 = cos-1   ​​[ (v *u +v *u +v*u) / |v| * |u| ], where 𝛳 is the angle between a vertical vector
+​​​ ​​ ​​ ​ ​ ​​ ​x ​x ​y ​y z​ ​z ​​ ​​ ​​ ​​ ​​ ​​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+|     |     |     | ​ ​ | ​ ​ | ​ ​ |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+pointing upwards and the normal vector to a certain point on the mountain. To find the nodes, we
+|     | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​ ​​ | ​​ ​​ | ​​  | ​​  | ​​ ​​ ​​ |
+| --- | --- | --- | ----- | --- | --- | ----- | ----- | ----- | --- | --- | -------- |
+try to find the normal of points, finding the top 35 most smooth terrain on the map:
+| ​​  | ​​  | ​​ ​​ | ​​ ​​ | ​​  | ​​  | ​​ ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​  |     |
+| --- | --- | ----- | ----- | --- | --- | -------- | --- | --- | ----- | --- | --- |
+11
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #8124
+​ ​
+Page 12 of 28
+​ ​ ​ ​ ​ ​
+M
+C
+M
+(Figure 5.5 The latitude and longitude of the potential nodes)
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+i
+Using Cluster Analysis in SPSS, we get the following ten nHodes:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+：
+号
+众
+(Figure 5.6)
+​​
+公
+The nodes are connected to form potential ski slopes, and we get the following distance between
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+each node by calculating the linear distance between the two nodes:
+​​ ​​ ​​ 信​​ ​​ ​​ ​​ ​​ ​​ ​​
+微
+(Figure 5.7)
+​​
+To generate the network of the ski slopes, we chose three peaks using k-means clustering again
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+to choose, and we find the following three peaks:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+12
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 13 of 28
+​ ​ ​ ​ ​ ​
+M
+(Figure 5.8)
+​​
+C
+we used topological structure to connect all the peaks and these nodes, So we constructed slopes
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ M​​ ​​ ​​ ​​
+using topological structure. The topological structure is often used in subway system, and we use
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+the structure in this problem to construct all the potential routes (13*13 diagram).
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​i​ ​​
+H
+C. The Optimization of Skiing Slopes and Nodes for Ski Lifts
+：
+​ ​​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​
+1. Basic Description of Linear Programming:
+​​ ​​ ​​ ​​ ​​ 号
+Linear Programming is a well-known mathematical model to achieve the goal, using the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+technique for the optimization of the objective of a linear objective function. It is heavily
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+众
+used for planning, production, transportations, and etc. With the existing constraints, such
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+as limited expenditure, workforce, and distribution, linear programming can provide a
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+feasible and optimi公zed solution for the problem.
+​​ ​​ ​​ ​​ ​​ ​​
+In this part, we apply Linear Programming to our model. Based on the data of all the
+​​ ​​ 信​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+potential skiing slopes provided, we use Lindo/Lingo to satisfy the requirements with the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+minimum cost.
+微​​
+2. Metric Design:
+​​ ​​
+In order to choose the best slopes, we quantify the choice of all potential slopes with a
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​ ​​ ​​ ​​
+0-1 metric.
+​ ​
+3. The establishment of linear programming:
+​​ ​​ ​​ ​​ ​​
+To reduce the expenditure of the skiing fans, we decide to minimize the cost of
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+construction, so we choose the combination of slopes with the shortest overall distance
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+while the distribution of different levels is guaranteed. In this model, we have the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+following hypothesis:
+​​
+13
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 14 of 28
+​ ​ ​ ​ ​ ​
+1. The length of the slopes are calculated as linear distance from the starting point to its
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+destination (from nodes to nodes);
+​​ ​​ ​​ ​​
+2. The difficult level of each ski slopes are determined as rise , and if one part of the entire
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ run ​​​​ ​​ ​​ ​​ ​​ ​​ ​​
+slope is difficult, the entire route is considered difficult (even if other parts are all
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+intermediate and beginner level);
+​​ ​​ ​​
+Objective function: minimizing the total distance of the ski slopes:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+13 13
+min ∑ ∑ A D
+​​ ij ij
+i=1j=1
+M
+To meet the needs of ski fans and make the Wasatch Peaks Ranch competitive for winter
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ C​​ ​​
+Olympics, we list the following object function:
+​​ ​​ ​​ ​​ ​​ ​​
+(1) The total distance of selected slopes should be least 160 mMiles in total:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+13 13
+∑ ∑ A D ≥ 160;
+ij ij i
+i=1j=1 H
+(2) The total distance of slopes for beginners should be approximately 20% of the total
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+：
+distance;
+13 13
+A
+(i,j) ∈ B, ∑ ∑ ij = 0.20
+号N
+i=1j=1
+(3) The total distance of slopes for intermediates should be approximately 40% of the total
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+distance; 众
+13 13
+A
+(i,j) ∈ I, ∑ ∑ ij = 0.40
+N
+公 i=1j=1
+(4) The total distance of slopes for professionals should be approximately 40% of the total
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+distance.
+信
+13 13
+A
+(i,j) ∈ H, ∑ ∑ ij = 0.40
+N
+i=1j=1
+So our com微bined model is:
+​​ ​​ ​​ ​​
+13 13
+Goal: min ∑ ∑ A D
+​​ ij ij
+i=1j=1
+13 13
+S.t. ∑ ∑ A D ≥ 160
+​​ ij ij
+i=1j=1
+13 13
+A
+(i,j) ∈ B, ∑ ∑ ij = 0.20
+N
+i=1j=1
+13 13
+A
+(i,j) ∈ I, ∑ ∑ ij = 0.40
+N
+i=1j=1
+13 13
+A
+(i,j) ∈ H, ∑ ∑ ij = 0.40
+N
+i=1j=1
+14
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 15 of 28
+​ ​ ​ ​ ​ ​
+A ∈ {0,1}
+ij
+4. The result of the model:
+​​ ​​ ​​ ​​ ​​
+As a result, we find the following routes:
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+(Figure 5.9)
+​​
+微
+With the minimum total distance and relative 20%-40%-40% ratio for difficulty
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+distribution.
+VI. Ranking our ski resorts against other ski resorts
+​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​ ​
+1. Introduction
+15
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 16 of 28
+|     |     |     |     |     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+Our objective is to rank our proposed ski area against existing ski resorts in North
+|     |     | ​​  | ​​ ​​ | ​​  | ​​ ​​ |     | ​​ ​​ | ​​  | ​​  |     | ​​ ​​ | ​​ ​​ |     |
+| --- | --- | --- | ----- | --- | ----- | --- | ----- | --- | --- | --- | ----- | ----- | --- |
+America. This requires us to develop a comprehensive and consistent model for evaluating ski
+|     | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |     | ​​  | ​​  |     | ​​ ​​ | ​​  | ​​  |
+| --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+resorts with some flexibility in the selection of criteria. Through preliminary research, we
+|     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ |     | ​​ ​​ | ​​  |     | ​​  | ​​  | ​​  |     |
+| --- | --- | --- | --- | --- | ----- | --- | ----- | --- | --- | --- | --- | --- | --- |
+discovered that the desirability of ski resorts depend on a variety of both independent and
+|     |     | ​ ​ ​​ | ​​  |     | ​​ ​​ ​​ |     | ​​  | ​​ ​​ | ​​  | ​ ​ ​​ | ​​  | ​​  |     |
+| --- | --- | ------ | --- | --- | -------- | --- | --- | ----- | --- | ------ | --- | --- | --- |
+interrelated factors. In order to be as transparent and consistent as possible in our evaluation, we
+|     |     | ​​  | ​​ ​​ | ​​  | ​​ ​​ ​​ |     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |
+| --- | --- | --- | ----- | --- | -------- | --- | --- | --- | --- | --- | ----- | --- | --- |
+decide to utilize the multiple-criteria decision analysis (MCDA), a comprehensive, structured
+|     | ​​ ​​ | ​​  | ​​  |     | ​​  |     | ​​  | ​​  |     | ​ ​ ​​ |     | ​​  |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | ------ | --- | --- | --- |
+and coherent decision-making tool. The following figure shows the proposed MCDA framework
+| ​​  |     | ​​  |     |     | ​​ ​​ | ​​  |     | ​​ ​​ |     | ​​ ​​ | ​​  | ​​  |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | ----- | --- | ----- | --- | --- | --- |
+for evaluation. In the rest of the work on evaluation, section 2 sets out the methodology for
+| ​​  |     | ​​ ​​ | ​​  | ​​ ​​ | ​​ ​​ | ​​  |     | ​​  | ​​ ​​ | ​​  | ​​ ​​ M​​ |     |     |
+| --- | --- | ----- | --- | ----- | ----- | --- | --- | --- | ----- | --- | --------- | --- | --- |
+developing the model, section 3 describes the application and presents the results, and section 4
+|     |     | ​​ ​​ | ​​  |     | ​​ ​​ | ​​  | ​​  |     | ​​ ​​ |     | ​​ ​​ | ​​ ​​ | ​​  |
+| --- | --- | ----- | --- | --- | ----- | --- | --- | --- | ----- | --- | ----- | ----- | --- |
+puts forth the conclusions.
+| ​​  | ​​  | ​​  |     |     |     |     |     |     |     |     | C   |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+| Proposed Evaluation Framework:  |     |     |     |     |     |     |     |     |     | M   |     |     |     |
+| ------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|                                 | ​​  |     | ​​  |     |     |     |     |     |     |     |     |     |     |
+i
+H
+：
+号
+众
+公
+信
+微
+
+B. Methodology
+​​
+
+2.1 Objective defining and criteria selecting
+|     |     | ​​  | ​​  |     | ​​ ​​ |     | ​​  |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+16
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     |     |     | Hi CM | 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | ------ |
+
+Team #8124
+​ ​
+Page 17 of 28
+​ ​ ​ ​ ​ ​
+In ranking our proposed ski area against existing ski resorts in North America, the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+objective will be desirability to skiers. In ranking against past Winter Olympics location,
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+the objective will be the satisfaction of the requirements by the sports events.
+​​​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+We will pick criteria for each purpose by consulting research papers, well-recognized ski
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resorts report websites, and experienced skiers.
+​​ ​​ ​​ ​​ ​​
+For a structured and direct understanding of the relationships between the criteria and the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+objective, we will construct an analytical hierarchy.
+​​ ​​ ​​ ​​ ​​ ​​
+M
+2.2 Alternatives’ performance measuring
+​​ ​​ ​​
+C
+2.2.1 Alternatives
+​​
+M
+We will consider the ski resorts given in the SkiSlopeComparison file for
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+ranking of ski resorts in North America. i
+​​ ​​ ​​ ​​ ​​ ​​ H
+2.2.2 Data processing ：
+​​ ​​
+Since the criteria will cover very different aspects of the ski resorts, the
+号
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+data for each criteria will have different indication, units, and dimensions.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+Therefore, we need to transform the data to:
+​​ ​​ 众​​ ​​ ​​ ​​ ​​
+1) Ensure that a higher value indicates better performance in each criterion
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+公
+by taking the reciprocal of the values for which a higher number indicate
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+poorer performance (to be consistent with all other measures).
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+信2) Eliminate the units and rescale the data into smaller consistent range so
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+that the new index can provide useful and intuitive information on the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+performance of the ski resorts. We would normalize the data into a range
+微 ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+of (0,1) using the following feature scaling formula:
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+where x is an original value, and x' is the normalized value. This formula
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+will work well with our objective because there will be none or few
+​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​ ​​ ​​ ​​
+outliers in our data, considering that the different ski resorts are all
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+artificially built to serve the same specific purpose of skiing.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+2.3 Criteria Weights
+​​ ​​
+17
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 18 of 28
+​ ​ ​ ​ ​ ​
+The analytic hierarchy process (AHP) developed by Thomas Saaty is a structured method
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+for organizing and analyzing complex decisions. It has been widely accepted and applied
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+to solve complex MADM problems. Because it enables our varied and incommensurable
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+criteria to be compared to each other in a consistent way, we implement APH in our
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​ ​​ ​​
+evaluation to calculate the numerical weights of the ranking criteria. The steps we take
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+are as below:
+​​ ​​
+Step 1: Hierarchal framework construction:
+​​ ​​​ ​​ ​​ ​
+Decompose the decision-making problem into a hierarchy. The goal of the problem is
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ M​​ ​​ ​​
+defined at the first level of the hierarchy, the ranking criteria and sub-criteria at the
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+second level, and the alternative at the third level.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ C
+Step 2: Criteria Weight determination: M
+​​ ​​​ ​​ ​​ ​
+a) Formulating matrices for all the ranking criteria by making pairwise
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+comparison on a (1-9) scale defined according toi the methodology adopted by
+​​ ​​ ​​ ​​ ​​​ ​​ H​​ ​​ ​​ ​​ ​​
+Caldara:
+：
+号
+众
+公
+信
+b) Normalizing the resulting matrices: each element in the column is divided by
+微​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+the column sum to yield its normalized score, reducing the sum of each column to
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+1.
+c) Checking the consistency of the original preference ratings:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+i. Calculate the consistency measures by multiplying the the pair-wise
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+matrix by the weights, and then dividing it by the criterion weight.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​ ​ ​​ ​​ ​​
+ii. Calculate λmax by averaging the consistency measures.
+​​ ​​​ ​​​ ​​ ​​ ​​ ​​
+iii. Calculate the approximate consistency index (CI) using the following
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+formula:
+18
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 19 of 28
+​ ​ ​ ​ ​ ​
+where n is the matrix order number.
+​​ ​​ ​​ ​​ ​​ ​​
+iv. Calculate the consistency ratio (CR) using the following formula:
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+Where the random index (RI) is determined based on thMe matrix order
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+number by the following table:
+​​ ​​ ​​ ​​
+C
+M
+i
+H
+If CR ≤ 0.1, the judgement is considered acceptable. Else we will
+​​ ​​ ​​ ​​ ​​ ​：​ ​​ ​​ ​​ ​​ ​​
+reexamine and revise the ratings we give in pair-wise comparison.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+号
+2.4 Ranking Alternatives
+​​ ​​
+众
+We will calculate the final weighted total score of each alternative by:
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+1) Adding weight to the raw scores by multiplying each raw score with its
+公
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+corresponding criterion weight
+​​ ​​
+2) Adding up the weighted score for each alternative to get the final weighted
+信​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+total score of each alternative
+​​ ​​ ​​ ​​
+微
+We will then rank all the alternatives according to their final scores.
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+3. Application
+​​
+3.1 Objective defining and criteria selecting
+​​ ​​ ​​ ​​ ​​
+Criteria Description
+Total distance Longer total distance of the slope indicates
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+bigger size of the resort, resulting in higher
+​​ ​​ ​​ ​​ ​​ ​​ ​​
+desirability.
+19
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 20 of 28
+|     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+| Skiable Acres  |     |     | Longer total distance of the slope indicates  |     |     |       |       |     |     |
+| -------------- | --- | --- | --------------------------------------------- | --- | --- | ----- | ----- | --- | --- |
+| ​​             |     |     |                                               |     | ​​  | ​​ ​​ | ​​ ​​ | ​​  |     |
+bigger size of the resort, resulting in higher
+|     |     |     |     | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+desirability.
+| Vertical Drop  |     |     | Calculated from peak elevation - base  |     |     |       |     |       |     |
+| -------------- | --- | --- | -------------------------------------- | --- | --- | ----- | --- | ----- | --- |
+| ​​             |     |     |                                        |     | ​​  | ​​ ​​ |     | ​​ ​​ |     |
+elevation. Greater vertical drop indicates
+|     |     |     |     |     | ​​  | ​​  | ​​  | ​​  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+bigger size of the resort, resulting in higher
+|     |     |     |     | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+desirability.
+M
+| Number of Runs  |     |     | More runs indicates bigger the size of the  |     |     |     |     |     |       |
+| --------------- | --- | --- | ------------------------------------------- | --- | --- | --- | --- | --- | ----- |
+| ​​ ​​           |     |     |                                             | ​​  | ​​  | ​​  | ​​  | ​​  | ​​ ​​ |
+resort, resulting in higher desirability.
+|     |     |     |     | ​​  |     | ​​ ​​ | ​​  |     |     |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+C
+Distribution of Difficulty  The ideal distribution of the difficulty of trails
+| ​​ ​​ |     |     |     | ​​  | ​​  | M​​ | ​​ ​​ |     | ​​ ​​ |
+| ----- | --- | --- | --- | --- | --- | --- | ----- | --- | ----- |
+is defined to be 20% beginner level, 40%
+|     |     |     |     | ​​  | ​​  | ​​ ​​ ​​ |     | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | -------- | --- | --- | --- |
+intermediate level and 40% difficulty level.
+|     |     |     |     |     |     | ​​ i​​ | ​​ ​​ |     | ​​  |
+| --- | --- | --- | --- | --- | --- | ------ | ----- | --- | --- |
+The deviHation from the ideal distribution is
+|     |     |     |     | ​​  |     | ​​ ​​ | ​​  | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+calculated with a formula similar to that of
+|     |     |     | ：​​ |     |     | ​​ ​​ | ​​  | ​​  | ​​ ​​ |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | ----- |
+standard deviation, where we take the square
+|     |     |     |     |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​  |
+| --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- |
+root of the sum of squared difference between
+|     |     |     |     | ​​  | ​​ ​​ | ​​ ​​ | ​​  |     | ​​  |
+| --- | --- | --- | --- | --- | ----- | ----- | --- | --- | --- |
+号
+the ideal percentage and the real percentage of
+|     |     |     |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+a specific resort. Smaller deviation from the
+|     |     |     |     | ​​  | ​​  | ​​  | ​​  |     | ​​ ​​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- |
+众ideal distribution of difficulty indicates a
+|     |     |     |     | ​​  |     | ​​ ​​ |     | ​​  | ​​  |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | --- |
+more ideal variety in trails, resulting in higher
+|     |     |     |     | ​​  | ​​  | ​​ ​​ | ​​  |     | ​​ ​​ |
+| --- | --- | --- | --- | --- | --- | ----- | --- | --- | ----- |
+desirability.
+公
+Number of Lifts  More lifts means skiers can get around more
+| ​​ ​​ |     |     |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |
+| ----- | --- | --- | --- | --- | --- | --- | ----- | --- | --- |
+信 conveniently, resulting in higher desirability.
+|                  |     |     |                                            |     |     | ​​    | ​​ ​​ | ​​  |     |
+| ---------------- | --- | --- | ------------------------------------------ | --- | --- | ----- | ----- | --- | --- |
+| Annual Snowfall  |     |     | Greater annual snow fall indicates better  |     |     |       |       |     |     |
+| ​​ 微             |     |     |                                            |     | ​​  | ​​ ​​ | ​​    | ​​  |     |
+quality of the skiing experience, resulting in
+|     |     |     |     |     | ​​ ​​ | ​​ ​​ |     | ​​  | ​​  |
+| --- | --- | --- | --- | --- | ----- | ----- | --- | --- | --- |
+higher desirability.
+​​
+
+Then we constructed the analytical hierarchy structure:
+| ​​ ​​ | ​​ ​​ | ​​  |     | ​​  |     |     |     |     |     |
+| ----- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+20
+关注 HiMCM
+|     |     |     |     |     |     |     |     |     | ×+ −÷     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --------- |
+|     |     |     |     |     |     |     |     | Hi  | CM 获取更多资讯 |
+
+Team #8124
+​ ​
+Page 21 of 28
+|     |     |     |     |     |     |     |     |     |     | ​ ​ ​ ​ ​ ​ |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----------- |
+
+M
+C
+M
+i
+H
+：
+2.2 Alternatives’ performance measuring
+| ​​  |     | ​​  |     | ​​  |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+号
+2.2.1 Alternatives and Data Processing
+|     |     | ​​  |     | ​​ ​​ | ​​  |     |     |     |     |     |
+| --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- |
+
+We gather data from众 both the given spreadsheet and online websites. Then, we
+|     | ​​  | ​​  | ​​  | ​​  | ​​ ​​ | ​​  | ​​  | ​​ ​​ | ​​  | ​​  |
+| --- | --- | --- | --- | --- | ----- | --- | --- | ----- | --- | --- |
+calculate the secondary data we need from the primary data. The data of the final
+|     |     | ​​  | ​​  | ​​  | ​​ ​​ | ​​ ​​ | ​​  | ​​ ​​ | ​​ ​​ | ​​ ​​ |
+| --- | --- | --- | --- | --- | ----- | ----- | --- | ----- | ----- | ----- |
+criteria that公 will enter into evaluation is highlighted, with the same color
+|     |     | ​​  | ​​ ​​ | ​​  | ​​  | ​​ ​​ |     | ​​ ​​ ​​ | ​​  |     |
+| --- | --- | --- | ----- | --- | --- | ----- | --- | -------- | --- | --- |
+indicating the same category of criteria.
+|     |     | ​​  | ​​  | ​​  | ​​ ​​ |     |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- |
+
+信
+微
+
+21
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     | Hi  | CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --------- |
+
+Team #8124
+​ ​
+Page 22 of 28
+​ ​ ​ ​ ​ ​
+Then we processed our data to ensure that a higher value indicates better
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+performance.
+M
+C
+M
+i
+H
+Then we normalized our data.
+​​ ​​ ​​ ​​
+：
+号
+众
+公
+信
+微
+2.3 Criteria Weights
+​​ ​​
+First we formulated our comparison matrices:
+​​ ​​ ​​ ​​ ​​
+22
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 23 of 28
+​ ​ ​ ​ ​ ​
+M
+C
+M
+i
+H
+：
+号
+Then we normalized the m众atrices where it is needed, calculated the weight of each
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+criteria, and checked consistency. All of our weights have passed the consistency check.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+公
+信
+微
+23
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 24 of 28
+​ ​ ​ ​ ​ ​
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+24
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 25 of 28
+​ ​ ​ ​ ​ ​
+2.4 Ranking Alternatives
+​​ ​​
+We calculated the final weighted score of each alternative as such:
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+The ranking therefore is:
+​​ ​​ ​​ M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+In conclusion, considering the size, variety, convenience, and quality of a ski resort, our
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+design of W微asatch ski resort ranks the 6th against 15 other major ski resorts in North America.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+This proves our plan to be very cost-effective since we minimized cost in designing the Wasatch
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resort.
+25
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 26 of 28
+​ ​ ​ ​ ​ ​
+VII. Model Evaluation:
+​ ​ ​ ​
+i.Strengths:
+● We apply the model of 0-1 Programming in our model. The 0-1 Model can effectively
+​ ​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+give an optimal selection of ski slopes in the resort. The model simplifies our computer
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+programming process, making the problem more accountable to understand and solve.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+● Tractability: Our model is easy to analyze and apply, and the calculation is easy to
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+follow.
+● Generalizability: Our model fits multiple situations and circumstances given the amount
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+of variables it contains. M
+​​ ​​ ​​
+● Precision: Our model can offer an overall accurate design of the most cost-efficient most
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+for the ski resort design. C
+​​ ​​ ​​ ​​
+● We employ multiple-criteria decision analysis, taking most factors into consideration
+​ ​ ​​ ​​ ​​ ​​ ​​ M​​ ​​ ​​
+while evaluating the top ski resorts around the world.
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+ii.Weaknesses:
+i
+● Our model contain rounded decimal numbers that mHay cause inaccuracy in nodes’
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+locations;
+：
+● The process of designing optimal ski slopes is over-simplified. Certain assumptions make
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+our model fail to be truly realistic.
+​ ​ ​​ ​​ ​​ ​​ ​​
+号
+● Our model doesn’t take into account the other specific factors when evaluating the top ski
+​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​ ​​
+resorts, including transportation, location, and safety precautions.
+​​ ​​ ​​ ​​ ​​ ​​
+众
+公
+信
+微
+26
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 27 of 28
+​ ​ ​ ​ ​ ​
+VIII.Reference.
+[1] https://zhidao.baidu.com/question/263517662345549725.htmlMatlab Utilization
+​​ ​​
+[2] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5645903/Utilization of multiple-criteria
+​​ ​​ ​​
+decision analysis (MCDA) to support healthcare decision-making
+​​ ​​ ​​ ​​ ​​ ​​
+[3] http://soleadventure.com/2011/07/adding-topographic-maps-to-google-earth/
+​​
+[4] https://developers.google.com/maps/documentation/elevation/intro
+​​
+[5] http://jthatch.com/Terrain2STL/ M
+​​
+[6] http://www.econ.ohio-state.edu/jpeck/Econ501aL3.pdf
+​​
+[7]https://ac.els-cdn.com/S1877705817314248/1-s2.0-S1877705817314C248-main.pdf?_tid=f29b
+6e12-c623-11e7-979b-00000aab0f01&acdnat=1510324515_36ada039fc7885163af82f92be4fae2
+M
+7
+[8]https://ac.els-cdn.com/S1877705816307615/1-s2.0-S1877705816307615-main.pdf?_tid=ebde
+i
+c0b0-c623-11e7-bd34-00000aacb360&acdnat=151032450H4_db0e965a361e57e407b61acc5fc760
+d5
+：
+[9] https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5645903/table/T0004/
+​​
+[10] http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0101-74382012000100004
+​​​
+号
+众
+公
+信
+微
+27
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8124
+​ ​
+Page 28 of 28
+​ ​ ​ ​ ​ ​
+IX. Appendix.
+​ ​
+1.1 Exact Location for Peaks and Bowls:
+​​ ​​ ​​ ​​ ​​ ​​
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+28
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

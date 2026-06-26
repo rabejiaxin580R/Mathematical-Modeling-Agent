@@ -1,0 +1,148 @@
+{
+  "paper_id": "4880",
+  "meta": {
+    "paper_id": "4880",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2014,
+    "problem": "B",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2014\\B\\4880.pdf",
+    "kind": "pdf"
+  },
+  "items": [
+    {
+      "concept_id": "ode.sir",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文基于SIR模型，引入潜伏期E，构建SEIR模型，用于模拟疾病传播。",
+      "formulas": [
+        {
+          "latex_code": "\\frac{dS}{dt} = -\\beta S I",
+          "variables": {
+            "S": "易感者人数",
+            "I": "感染者人数",
+            "β": "传播率"
+          }
+        },
+        {
+          "latex_code": "\\frac{dE}{dt} = \\beta S I - \\frac{E}{D_L}",
+          "variables": {
+            "E": "潜伏期人数",
+            "D_L": "潜伏期持续时间"
+          }
+        },
+        {
+          "latex_code": "\\frac{dI}{dt} = \\frac{E}{D_L} - \\frac{I}{D_I}",
+          "variables": {
+            "D_I": "感染期持续时间"
+          }
+        },
+        {
+          "latex_code": "\\frac{dR}{dt} = \\frac{I}{D_I}",
+          "variables": {
+            "R": "移除者人数（康复或死亡）"
+          }
+        }
+      ],
+      "source_excerpt": "To model the spread of the disease through the population, we modified the SIR model to include a new factor E, which represents the number of individuals in the ‘latency phase’, which means that they are exposed and infected by the disease but are not showing symptoms yet. This model is known as the SEIR model."
+    },
+    {
+      "concept_id": "stoch.montecarlo",
+      "concept_label": "",
+      "stage": "solve",
+      "how_used": "论文使用蒙特卡洛模拟来估计基本再生数R0，通过多次随机模拟得到R0的分布。",
+      "formulas": [
+        {
+          "latex_code": "R_0 = \\beta \\cdot D_I",
+          "variables": {
+            "R_0": "基本再生数",
+            "β": "传播率",
+            "D_I": "感染期持续时间"
+          }
+        }
+      ],
+      "source_excerpt": "Using this method, we determined the disease to be transmitted primarily through air, with a R0 of 1.79, meaning that on average an infected person will pass it on to 1.79 other people."
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文定义了6个疾病阶段，每个阶段赋予权重常数，加权求和得到资源需求指标W(t)。",
+      "formulas": [
+        {
+          "latex_code": "W(t) = \\frac{k I_1 + l I_2 + p I_3 + q I_4 + r I_5 + v I_6}{N - (S+E)}",
+          "variables": {
+            "I_1": "阶段1人数（无症状）",
+            "I_2": "阶段2人数（轻症）",
+            "I_3": "阶段3人数（中症）",
+            "I_4": "阶段4人数（重症）",
+            "I_5": "阶段5人数（危重）",
+            "I_6": "阶段6人数（死亡）",
+            "k,l,p,q,r,v": "各阶段资源权重常数",
+            "N": "总人口",
+            "S": "易感者人数",
+            "E": "潜伏期人数"
+          }
+        }
+      ],
+      "source_excerpt": "The raw number of individuals in stage x, represented by I_x, was multiplied by a constant (k, l, p, q, r, and v for stages 1, 2, 3, 4, 5, and 6 respectively) which was determined by how many resources an individual in that stage would need compared to someone in another stage. ... The sum of the variables multiplied by their respective constants is then divided by the number of individuals on the island minus the number of individuals who are not infected, which yields a value W(t)."
+    },
+    {
+      "concept_id": "pred.linreg",
+      "concept_label": "",
+      "stage": "build",
+      "how_used": "论文使用线性回归模型，基于GDP比值和距离，预测各国提供援助的适宜性。",
+      "formulas": [
+        {
+          "latex_code": "A_P = \\frac{R_P}{d}",
+          "variables": {
+            "A_P": "医生分配指标",
+            "R_P": "医生比例（该国与印尼之比）",
+            "d": "该国与岛屿的距离"
+          }
+        },
+        {
+          "latex_code": "A_S = \\frac{R_{GDP}}{d}",
+          "variables": {
+            "A_S": "物资分配指标",
+            "R_{GDP}": "GDP比值（该国与印尼之比）",
+            "d": "该国与岛屿的距离"
+          }
+        }
+      ],
+      "source_excerpt": "The shorter the distance, the more convenient transportation of resources will be to the island, so the distance between the country and the island is defined as d. The general abundance of supplies is quantified by the ratio of GDP of the country to the GDP of Indonesia and is defined as R_GDP."
+    },
+    {
+      "concept_id": "writing.assumptions",
+      "concept_label": "",
+      "stage": "assume",
+      "how_used": "论文列出了9条模型假设，包括人口年龄结构、出生死亡率恒定、疾病传播方式分类等。",
+      "formulas": [],
+      "source_excerpt": "Assumptions: 1. The age structure of the population on the island is similar to that of Indonesia as a whole. 2. Throughout the period, the crude birth rate (CBR) and crude death rate (CDR) are constant. ..."
+    },
+    {
+      "concept_id": "writing.threeline",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文使用三线表展示不同传播方式代表疾病的数据，包括R0、潜伏期和感染期。",
+      "formulas": [],
+      "source_excerpt": "Table 1. Representative Diseases of Methods of Transmission"
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "concept_label": "",
+      "stage": "sensitivity",
+      "how_used": "论文通过改变R0值进行灵敏度分析，观察疾病是否被控制。",
+      "formulas": [],
+      "source_excerpt": "Using this value, we also determined that the disease is not contained since the number of infected individuals is still increasing since R0 is greater than 1. If R0 is less than 1, then the number of cases will slowly decrease and the disease will slowly disappear from the system."
+    },
+    {
+      "concept_id": "viz.charttype",
+      "concept_label": "",
+      "stage": "write",
+      "how_used": "论文在摘要和正文中使用了图表来展示模型结果，如SEIR模型曲线和资源分配图。",
+      "formulas": [],
+      "source_excerpt": "（论文中包含图表，但文本中未明确描述，根据上下文推断）"
+    }
+  ]
+}

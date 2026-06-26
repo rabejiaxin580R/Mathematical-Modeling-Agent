@@ -1,0 +1,1367 @@
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2014
+17th Annual High School Mathematical Contest in Modeling (HiMCM) Summary MSheet
+(Please attach a copy of this page to your Solution Paper.)
+C
+Team Control Number: 4813
+Problem Chosen: A M
+Please type a summary of your results on this page. Please remember not to include the
+i
+name of your school, advisor, or team members on this page.
+H
+The goal of our model is to show the amou：nt of time it would take people in a crowded
+train station to leave their trains, make their way to the stairway, and exit the station.
+First, we mapped out the problem and identified constants: for some elements of the
+号
+station, such as platform width and seat width, we assigned values that are similar to the average
+values of standard trains and that follow certain train specification and standard transportation
+众
+industry guidelines. The number of people that can be on the stairway at a certain time is limited;
+thus, we realized that a queue would build up around the bottom of the stairs. We soon realized
+that the queue is a central 公element of the entire model because of the magnitude of the effect it
+has on time required to leave the station. To simulate this effect, we allowed a person waiting in
+the queue to take up about 4 sq ft of space and calculated a new reduced walking speed for
+信
+people standing in the queue. We made the queue a rectangular shape to accurately simulate
+human behavior and made the width of the rectangle the platform width of 29.5 ft., which is the
+average pl微atform width of a regular railway station. People enter the stairs, join the queue, and
+walk at three different constant rates. The rate is set by the capacity of the stairs to take up new
+people every second, so we were able to precisely determine the speed at which people in the
+queue would walk in a real-world situation.
+Second, we developed a mathematical model to optimize for time. We began by
+obtaining the rate at which people arrive at the queue by finding the amount of time it takes the
+average passenger to leave the train car. Then, we calculated the distance traveled in the queue
+and the distance traveled on the platform. Using all of this information, we calculated the amount
+of time all of the passengers spent in the queue and on the platform.
+Finally, we optimized the time based on the scenario given. Using the functions we
+developed, we found that a queue around the bottom of the stairway would only collect when the
+train cars had more than 19 rows. Because the number of cars did not affect the time it takes to
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+exit the station as much as the number of rows in a car, choose a reasonable number of rows of
+cars (more than 10 to fit the constraints of the problem and use train cars of reasonable length;
+fewer than 20 to avoid producing a queue) for the train. We found these figures to be the same
+regardless of whether there are one or two trains unloading at the platform. When considering the
+relocation of the stairways, if there is only a single staircase, it is best to insert that staircase in
+the middle of the platform. With more than one staircase, it is best to pair the stairways such that
+the steps face opposite directions. Increases both in the number of staircases and the number of
+people that can be accommodated on each staircase (more precisely, on each row of the staircase,
+depending on the width) would reduce the amount of time needed to exit the station due to the
+reduction of the length of the queues by the stairs. However, having an excessMive number of
+staircases would not do anything to optimize time once the queues are eliminated and it would
+only waste resources, as well as space on the platform. As long as the nuCmber and size of
+stairways ensure that no queue develops, the people could quickly walk out of the platform and
+M
+reach street level. It is also important to note that having an infinite number of staircases is
+neither feasible nor desirable.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 1 of 33
+Choo­choo
+Unloading Commuter Trains
+M
+HiMCM Problem A
+Group #4813
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 2 of 33
+Table of Contents
+Section Pg.
+1 Introduction and General Interpretation 3
+1.2 Assumptions 4
+1.3 Variables M 6
+2 Model 7
+2.1 Approach C 8
+15
+2.2 Requirement 1: Optimize time traveled to reach street level for passengers on
+M
+one fully occupied train
+2.3 Requirement 2: Optimize time traveled to reach street level for passengers of 19
+two fully occupied trains i
+H
+3 Requirement 3: Optimize location of stairways 22
+4 Requirement 4: Relationship between time and number of stairways 25
+：
+5 Requirement 5: Relationship between time and number of people accommodated by 27
+stairways
+6 Model Analysis 号 29
+7 Non­technical Letter 31
+8 Works Cited 32
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 3 of 33
+1 Introduction and General Interpretation
+Congestion in train stations is a major issue for large cities. Thus, optimizing the time for
+a commuter to travel from their seat in the train car to the exit of the station is crucial to maintain
+a steady pedestrian flow and maintain efficiency within the station. In the context of this
+problem, a commuter rail station has a pair of tracks that each stop on one side of a central
+platform. For our mathematical model, we assumed that there was a two column staircase that
+was located at the end of the platform. As the passengers approached the stairway after exiting
+the train, a queue would gradually form by the staircase. The commuters exit the train by
+M
+walking toward the middle of the platform and then turning to walk toward the stairs, but they
+are held up by the queue. The larger the queue, the longer they are held up. Our model accounts
+for the fact that in practice, people will not queue in a line, but rather conCgregate at the base of
+the stairs and then inch slowly forward at a rate determined by the width of the queue and the
+capacity of the stairs to take in new people, to ensure the most reaMlistic interpretation of the
+scenario.
+In this problem, we first addressed the optimization of tiime when one and two fully
+H
+occupied trains unloaded their passengers at the station. We discussed how to change the length
+of a car and the number of cars to minimize the time it takes for a passenger to exit the station:
+：
+by maximizing car length up to the point that a queue begins to form. Then, we analyzed current
+transportation research to determine the optimal location of the staircase because such a problem
+is more psychologically based than mathe号matically based. Finally, we used the mathematical
+model we developed to determine how the number of stairways and number of people
+accommodated by the stairway affects the time required to exit the station.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 4 of 33
+1.2 Assumptions
+General Assumptions:
+1. People are reasonable and use the exit closest to their seat.
+Justification: There is no accurate way to predict how many people exit through each
+door if we do not assume that people exit through the door nearest to them. Further, in a
+crowded train, it would be very surprising if someone were to take the effort to go out of
+their way to use an exit that would lengthen their travel time.
+2. Nothing is to be optimized other than the amount of time required to exit the station.
+Justification: We were explicitly asked to minimize the amount of time required and
+M
+nothing else. Optimization of other variables would likely come at the expense of time.
+3. Except for Requirements 3 and 4, there is only one stairway; thus, s = 1.
+C
+Justification: the problem states “...there is a ‘fan’ of passengers from the train trying to
+get up the stairway. The stairway could accommodate two columns…” “The stairway”
+M
+implies one stairway.
+4. d represents the length of each car in rows (thus, a car of length 2d would have 2 rows of
+i
+seats)
+H
+Justification: d would work as any measurement of length; we make this assumption
+purely for convenience and simplicity. Ma：king d the number of rows in each car would
+simplify our calculations regarding the relationship between the number of passengers
+and the length of the car.
+号
+5. The passengers involved in the problem are the working population and physically
+mobile. Thus, mobility impediments that could cause congestion need not be considered.
+Justification: the problem suggests that the train station is one for commuter trains.
+众
+Commuter trains are designed for use by commuters, generally working­age people.
+Furthermore, commuters with significant mobility limitations generally cannot use a
+commuter train effe公ctively because it would likely require them to walk from the station
+to the place of their employment.
+6. The exits from the train are on the side with two seats per row.
+信
+Justification: the train company ostensibly packs as many people as possible into each
+car to maximize profit. The exit will inevitably displace some seats that could be used for
+paying passengers. The train company will prefer to displace two paying passengers
+微
+rather than three; thus, they will place the exits on the sides with fewer seats.
+7. A person occupies two steps of the staircase at any given moment.
+Justification: climbing the stairs requires one foot on the current step and another on the
+next step. Once on the next step, the following step must also be free to climb.
+8. People who sit directly across from the exit do not move any distance parallel to the train
+tracks to exit the train; in other words, they do not move “down the car,” only “across it.”
+Justification: People will want to exit in the quickest way possible. See Assumption 1.
+Since they are directly across from the exit, they do not need to travel down the car. We
+make this assumption because this is relevant in our calculations later on.
+9. Passengers walk straight forward from the exit upon exiting, turn left or right upon
+reaching the middle of the platform, and walk straight toward the stairs.
+Justification: Because each passenger will exit at the same time as many other
+passengers, they will walk forward before turning toward the stairway: they will feel
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 5 of 33
+“pushed” out of the train and feel compelled to move into the middle of the platform
+before turning toward the stairs. Although some may walk past the halfway point and
+others may walk less than half the width, the number of people who do each should be the
+same, thus making it reasonable to assume that on average, each person walks to the
+middle of the platform.
+10. The two trains that enter the station are identical.
+Justification: If the two trains that enter into the stations are different, we would need to
+optimize a function with four variables, which is beyond the scope of conventional
+mathematics. In addition, trains that enter into the same station at the same time are
+likely to have similar structure and build. The problem also implies the use of uniform
+trains because it gives specific variables for car length and number asM well as guidelines
+for what most trains are like ­ “most trains are long (perhaps 10 or more cars long)”.
+C
+Numerical Assumptions:
+11. People shuffle out of their seats at a constant velocity of 14M5 ft/min inside the car. As
+they move to the exit through the aisle of the train car, they walk at a constant velocity of
+250 ft/min. Passengers also walk across the platform at 2i50 ft/min.
+H
+Justification: Industrial transit companies assume such values when designing platforms,
+thus we should be able to use these constants when designing a mathematical model to
+：
+optimize time. (Source: Transportation)
+12. The width of the seat is 17 inches and the distance between the rows of seats is 3.67 feet.
+Justification: (Sources: Haughney 号and Svensson)
+13. The width of the platform is 29.5 feet.
+Justification: (Source: California)
+众
+14. There are 58 stairs in a staircase.
+Justification: We found the depth of a typical train tunnel to be 394 inches and combined
+this with regulations regarding the acceptable height of individual stairs in the United
+公
+States (about 6.75 inches). This yielded about 58 stairs in a train station staircase, a
+reasonable number. (Source: U.S.)
+15. The aisle o信f the train can hold two people.
+Justification: most trains are designed this way so that people can pass each other in the
+aisle when the train operates on a track of standard gauge.
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 6 of 33
+1.3 Variables
+Given:
+n = number of cars to a train; as given by the problem, n ≥ 10
+d = length of the car; in assumption 4, we set its unit to be rows for convenience (thus, d
+= 1 means 1 row)
+p = length of platform (feet)
+q = number of stairs in each staircase
+s = number of stairways
+M
+k = number of people who can fit side to side on the stairway
+Established: C
+t = time taken to travel from car door to bottom stairway
+l = distance traveled when walking from car seat to street Mlevel
+l = total distance traveled by all passengers within the queue
+q
+l = total distance traveled by all passenger on the platforim, but not in the queue
+p
+H
+t = sum of all times passengers spend traveling in the queue
+q
+t = sum of all times passengers spend traveling on the platform, but not in the queue
+q ：
+B = people added to the queue for one train
+B = people added to the queue for two trains
+t
+V = growth rate of the queue 号
+V = growth rate of the queue for two trains
+t
+v = velocity of people traveling within the queue
+q 众
+v = velocity of people traveling on the platform, but not in the queue
+p
+v = general speed
+x = number of people per car
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 7 of 33
+2 Model
+Single Train Model: t = expression below
+Surface plot for one fully occupied train:
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微 (Figure 1)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 8 of 33
+2.1 Approach
+We used the general equation:
+l= vt
+to set up our model for the amount of time it takes for a passenger to reach the street level of the
+station. We started by looking at the average distance as a function of n and d.
+We chose to split the total distance traveled by each passenger from their seat in the train
+to the top of the stairs into three parts. Part one is the distance from their seat to the door of the
+train car. Part two is the distance from the train car to the bottom of the stairs. Part three is the
+M
+distance from the bottom of the stairs to street level.
+Part 1: C
+To calculate the amount of time it takes people to exit the car, we assume that they
+M
+shuffle out of their seat and to the center aisle at a rate of 145 ft/min, or 1740 in/min (see
+Assumption 11). Furthermore, we define that a person is in the aisle once the person is no longer
+touching the chair on the side of the train on which s/he was sittiing. From this, we assign seats
+H
+certain positions, as shown below in the red numbers. Then, because we have assumed the seat
+width to be 17 inches, those in position 1 will have to move 17 inches to enter the aisle, those in
+：
+position 2 will move 34 inches, and those in position 3 will move 51.
+We must subtract one position 1 seat and one position 2 seat for each half of each car
+because there is an exit door in their place号.
+Position 1 has d­1 people per half car and thus the total time it takes all those people to
+move into the aisle is 17(d­1)/1740. For position 2 this value is 34(d­1)/1740. Then for position
+众
+3, instead of using d for the number of people sitting in position 3, we use d/2 because only one
+side of the train has position 3 seats (but we do not subtract 1 for the exit door; see Assumption
+6), so the amount in people in that position take a total time to enter the aisle of 51(d/2)/1740.
+公
+Therefore, the total amount of time taken by all the people in the train to enter the aisles
+is
+信 17(d−1)+34(d−1)+51(d/2)
+1740
+which simplifies to
+微 76.5d−51 minutes (1)
+1740
+The distance between the rows is 3.67 feet, so then the total distance all the passengers
+travel in the aisle to reach a position where they can travel perpendicular to the train to exit is
+given by:
+d/2 d/2 d/2
+(d/2)(d/2+1)
+3.67∑(k−1)= 3.67(∑ k− ∑ 1)= 3.67( −d/2)
+2
+k=1 k=1 k=1
+Because every person will travel d/2 times the row they sit in because people travel to the
+door nearest them, effectively cutting the length of the car by half. Furthermore, those closer to
+the exit will travel less than those towards the middle of the car, which is accounted for by the
+summation of (k­1), which represents the people in the car who have reached the aisles.
+Then, by assuming that people walk in the aisle at 250 ft/min, we arrive at a total time of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 9 of 33
+3.67(d2−7d)/250
+minutes =
+8
+3.67
+(d2−7d)minutes
+2000
+Lastly, the total amount of time it takes all the people in a car to move from the aisle to
+the exit door (this is just the length of three seats: one for getting out to the the aisle from the seat
+plus two seats for walking by the railing) is given by:
+(5d−4)(51) = 255d−204 minutes. (3)
+250*12 3000
+The total time it takes for all the people in a car to exit the train onto the platform for each
+M
+half car is given by the sum of quantities (1), (2), and (3):
+76.5d−51 + 3.67(d2−7d) + 255d−204 minutes.
+1740 2000 3000 C
+Then to obtain the total time for all people to exit the entire train we have
+2n( 76.5d−51 + 3.67(d2−7d)+ 255d−204 ) Mminutes.
+1740 2000 3000
+i
+H
+：
+号
+众
+公
+信
+微 (Figure 2)
+It is important to note that although this calculation is important in the following steps,
+the average amount of time it takes for a person to exit the train car is negligible in comparison
+to how much time it takes for them to travel down the platform and up the stairs. For instance,
+when plugging in n=20 and d=20, we found that it took 3.68 minutes or 220.80 seconds to travel
+through the car. However, the time spent on the platform and in the queue is 7647.73 seconds.
+Adding in the time spent on the stairs, time spent exiting the car becomes an even smaller
+proportion. Since the problem indicates that the time spent on the platform is extremely long, and
+since there is no way to optimize time spent exiting the train car except by bringing the length of
+the cars as close to 0 as possible (but there is a way to optimize platform time without reducing
+the length of the cars to 0: see our extensive discussion of the queue later on). Since it cannot be
+optimized and is a small proportion, we treat this amount of time as negligible in our
+optimization.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #4813 |     |     |     |     |     |     |     | Page 10 of 33  |     |
+| ---------- | --- | --- | --- | --- | --- | --- | --- | -------------- | --- |
+
+In order to find the number people who enter the queue per minute, we divided the total
+amount of people (n(5d­4)) by the total number of minutes that they took to exit the train (2n(
+| 76.5d−51 | + 3.67(d2−7d) |      | 255d−204 |                                                         |     |     |     |     |     |
+| -------- | ------------- | ---- | -------- | ------------------------------------------------------- | --- | --- | --- | --- | --- |
+|          |               | +    |          | ) because the number of people who enter the queue per  |     |     |     |     |     |
+| 1740     |               | 2000 | 3000     |                                                         |     |     |     |     |     |
+minute is the same as the number of people who exit the train per minute. Therefore, the queue
+gets
+n(5d−4)
+people per minute
+2n(76.5d−51+ 3.67(d2−7d)+ 255d−204
+|     |                       |     | 1740   | 2000       | 3000 |            |     |                    |     |
+| --- | --------------------- | --- | ------ | ---------- | ---- | ---------- | --- | ------------------ | --- |
+|     |                       |     | 367d 3 | 4136497d 2 |      |            |     |                    |     |
+|     |                       |     |        | +          |      | − 1898321d | +   | 1411               |     |
+|     | After simplification: |     |        |            |      |            |     | people per minute  |     |
+|     |                       |     | 40000  | 8700000    |      | 2175000    |     | 3625               |     |
+which we called B
+t.
+The net growth of the queue, however, is what we obtained in the equaMtion above
+subtracted by the number of people who enter the staircase per minute. This is 120 people/min
+because each person climbs at 2 stairs/sec and takes up 2 stairs at a time, so in each column of  C
+the stairs, one person reaches street level and one person starts climbing the stairs per second.
+Because we have 2 columns, 2 people go up the stairs each secondM, therefore 120 people up per
+minute. The net growth equals:
+n(5d−4)
+­120 peoiple/min
+2n(76.5d−51+ 3.67(d2−7d)+ 255d−204
+H
+|     |     |     | 1740 | 2000 |     | 3000 |     |     |     |
+| --- | --- | --- | ---- | ---- | --- | ---- | --- | --- | --- |
+
+：
+|     |                        |     |     | 367d 3 | 4136497d 2 | 1898321d |     | 868589        |     |
+| --- | ---------------------- | --- | --- | ------ | ---------- | -------- | --- | ------------- | --- |
+|     | After simplification:  |     |     | +      |            | −        |     | − people/min  |     |
+|     |                        |     |     | 80000  | 17400000   | 4350000  |     | 7250          |     |
+
+|     |     |     |     | 号 7d) 3 |     | 4136497(3.67d) 2 |     |                  |          |
+| --- | --- | --- | --- | ------- | --- | ---------------- | --- | ---------------- | -------- |
+|     |     |     |     | 367(3.6 | +   |                  |     | − 1898321(3.67d) | − 868589 |
+Convert to ft/min (1 row=3.67 ft): ft/min
+|     |     |     |     | 80000 |     | 17400000 |     | 4350000 | 7250 |
+| --- | --- | --- | --- | ----- | --- | -------- | --- | ------- | ---- |
+which we called V.
+众
+
+Part 2:
+We found an expression for total distance traveled by all passengers in terms of the
+公
+length of the car (d, in rows), and the number of cars (n). Then we found an expression for
+velocity in terms of the same variables. Using these two expressions, we were able to solve for
+the average amoun信t of time taken by a passenger to reach the bottom of the stairway (by dividing
+by the total number of passengers, a function of the number of cars and the number of rows in
+each of those cars). Figure 3 is an illustration of our scenario with n = 7 and d = 6, which is
+微
+explained in the paragraphs that follow.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 11 of 33
+M
+C
+M
+i
+(Figure 3)
+H
+The total distance traveled by all the people in all the cars of the train is given by:
+n
+：
+∑[(k−1)xd]+(1/2)xnd+(1/2)nxw
+k=1
+where x is the number of people in each car, d is the length of the car, n is the number of cars
+号
+(corresponding to the blue numbers in Figure 3), and w is the width of the platform.
+This is found by assuming that each passenger exits the train through the door nearest to
+them (Assumption 1) and that each passenger goes straight forward w/2 ft. once they leave the
+众
+train, where w is the width of the platform, and then turn left or right and walk toward the stairs
+(Assumption 9). The total distance traveled by all passengers from the train car to the middle of
+the platform is thus 公
+nw(5d−4)
+(distance 1)
+2
+because w/2 is half信 the width of the platform and the number of passengers on the train is given
+by n(5d­4): the number of cars times the number of people in the car, where the number of
+people in the car is five times the number of rows, minus the four seats displaced by the exit.
+微
+As in the picture above, we treated the two adjacent exits of adjacent train cars as one exit
+for 5d­4 people (or the amount of people in one train car) because the separation between train
+cars is negligible. (To clarify, we did not assume people were using a single exit; rather, we
+treated the difference between the locations of the two exits as negligible). Therefore, if we let
+the first single exit be exit #1, the second and third exits be exit #2, the fourth and fifth exits be
+exit #3, and so on and the last pair of exits be exit #n (n = number of train cars), as shown in
+Figure 3, then the total horizontal distance that all passengers walk across the platform is
+calculated by
+n
+∑[(k−1)*d*(5d−4)](distance 2)
+k=1
+At exit #1, the passengers walk 0 ft horizontally, since their exit is right next to the stairway out
+of the station. At exit #2, the passengers (5d­4 of them, to be exact), need to walk the distance d
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 12 of 33
+rows to get to the stairs (see Figure 3). At exit #3, the passengers need to walk distance 2d rows
+(2 times the number of rows in each car is the length of the two cars they must walk past) to get
+to the stairs, and so on for each subsequent exit to exit #n from which the passengers need to
+walk (n­1)d rows to get to the stairs.
+5d−4
+At the last exit (the n + 1th exit), the passengers ( of them, because, unlike the exits
+2
+in the middle of the train, the end exits take just half of a car rather than two adjacent halves of
+different cars; in this case, they come from the half of the last car that is closer to this last exit)
+walk nd rows to get to the stairway (see Figure 3). So the total distance that these last passengers
+walk is:
+nd(5d−4)
+(distance 3)
+2 M
+Therefore, our grand total distance (l ) is the sum of the highlighted total distances 1, 2,
+total
+and 3 above:
+C
+n
+nw(5d−4) nd(5d−4)
+l = +∑[(k−1)*d*(5d−4)]+
+total 2 2
+k=1 M
+After simplification using summations:
+l = n(5d−4)[d(n+2)+27.5]
+total 2 i
+H
+A note on the queue: given the nature of human behavior, it is not realistic that humans
+：
+will queue up in a straight line as they wait to climb up the stairs. Thus, in our analysis, we have
+assumed that a rectangular mass of people with a width of w = 29.5 ft (the width of the platform,
+see Assumption 13) forms at the bottom of the staircase, and the length of this mass grows as
+号
+people exit the train and arrive at the base of the stairs. People will, however, travel in an
+essentially straight line through the queue to the staircase. Thus, when we later find the total
+distance traveled through the queu众e, this is just a straightline distance from start to end. But when
+we analyze how fast the queue is growing, we use the square footage each person takes up in the
+throng of people waiting at the bottom of the stairs in conjunction with the width of the platform
+公
+to precisely quantify how quickly the back of the queue is spilling out onto the platform.
+To find the growth of the queue, we looked at the rate of people stepping onto the
+platform from the train. Because people walk on the platform outside the queue at a constant
+信
+speed, the number of people exiting the car is equal to the number of people entering the queue
+at any given time. To do find the queue growth, then, we divided the number of people in the
+train (n(5d微­4)) by the amount of time it took for people to exit the train (See Part 1 of Approach
+for detailed derivation):
+B = 367d 3 + 4136497d 2 − 1898321d + 1411
+80000 17400000 4350000 7250
+Because we need to find the growth rate of the queue (B represents the number of people added
+to the queue), we must subtract the number of people who leave the queue per minute (by
+entering the staircase). Knowing that 2 people exit the queue and step onto the staircase per
+second, 120 people leave the queue per minute. Subtracting 120 from the above expression, we
+get (Again, see Part 1 of Approach):
+V = 367d 3 + 4136497d 2 − 1898321d − 868589
+80000 17400000 4350000 7250
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #4813 |     |     |     |     |     | Page 13 of 33  |
+| ---------- | --- | --- | --- | --- | --- | -------------- |
+
+Because we need d in terms of feet, we input 3.67d instead of just d because each row is about
+3.67 feet wide, and d has been considered to be in rows for the previous equations. Thus,
+|     |      | 367(3.67d) 3 | 4136497(3.67d) 2 |     |                  |          |
+| --- | ---- | ------------ | ---------------- | --- | ---------------- | -------- |
+|     | V =  |              | +                |     | − 1898321(3.67d) | − 868589 |
+
+|     |     | 80000 |     | 17400000 | 4350000 | 7250 |
+| --- | --- | ----- | --- | -------- | ------- | ---- |
+
+Let l be the total distance traveled through the queue. It is the sum of the distances
+q
+traveled in the queue by every person on the train. Let l be the total distance traveled by all the
+p
+passengers on the platform. Then let t and t be the total of the times all the passengers spend
+|     |     |     | p   | q   |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+traveling on the platform and in the queue, respectively. Let V be the growth rate of the queue in
+ft2/min (remember that we have considered the queue to be 2­dimensional). Last, let v and v be
+p q
+the (constant) velocities of the people traveling on the platform and in the queMue, respectively.
+We know that the total distance travelled by everyone is:
+|     |     |     |     | l     | =l + l   | C   |
+| --- | --- | --- | --- | ----- | -------- | --- |
+|     |     |     |     | total | q p      |     |
+for l being the total distance everyone spends in queue and l  being the total distance everyone
+| q   |     |     |     |     | p   |     |
+| --- | --- | --- | --- | --- | --- | --- |
+M
+spends walking on the platform and not in queue.
+We also know that total distance spent inside the queue (l q ) is equal to
+|     |     |     |     | l q = v | q *t q   i |     |
+| --- | --- | --- | --- | ------- | ---------- | --- |
+H
+with v q being the velocity at which a passenger walks in queue, which is approximately .2712
+ft/sec because 2 people leave the queue to go on the stairs each second, opening up 8 ft2 of space
+：
+at the front of the line (each person takes up approximately 4 ft2 of personal space). Because the
+total area of the rectangular queue before a passenger in line decreases by 8 ft2/sec, the total
+length of the queue before that passenger d号ecreases by (8 ft2/sec)/(29.7 ft)≈.2712 ft/sec, meaning
+that a passenger in queue moves forward by .2712 ft/sec. t  is the total amount of time every
+q
+passenger spends in queue around the stairs.
+众
+We also know that the length of the queue is equal to the speed at which it’s length is
+changing times the given time. For each passenger the length of the queue when they arrive at
+the queue is the rate of cha公nge of the queue (V) times the time they spent walking on the
+platform. We also noticed however, that a queue does not form until the first group of passengers
+reach the bottom of the stairs and the time that it take that group of passengers to do so would be
+the time it takes them to walk halfway across the platform to reach the stairs, which is (w/2)/v 信  =
+p
+((29.5 ft)/2)/((250 ft/min)*((1 min)/(60 sec))) = 7.08 sec. So the actual time that we should
+multiply V by to find the sum of the lengths of the queue for every passenger is
+微
+(t −7.08n(5d−4)), where t = the sum of times every passenger spends in line because
+| p   |     | p   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+ l =( l + l +... + l =V( t −7.08+t −7.08+...+t −7.08)=V(t −7.08n(5d−4))
+| q 1 | 2   | k   | 1   | 2   | k   | p   |
+| --- | --- | --- | --- | --- | --- | --- |
+Thus,
+|     |     |     | l q | = V (t p −7.08n(5d−4))  |     |     |
+| --- | --- | --- | --- | ----------------------- | --- | --- |
+
+We also know that total distance spent walking on the platform not in queue (l ) is equal
+p
+to regular walking speed (250 ft/min = 25 ft/sec) times the total amount of time spent walking on
+6
+the platform not in queue.
+|     |     |     |     | l = v      | *t   |     |
+| --- | --- | --- | --- | ---------- | ---- | --- |
+|     |     |     |     | p          | p p  |     |
+|     |     |     |     | l = 25/6*t |      |     |
+|     |     |     |     | p          | p    |     |
+
+| Solving this system of four equation for two variables (t |     |     |     |     |  and t | ):  |
+| --------------------------------------------------------- | --- | --- | --- | --- | ------ | --- |
+q p
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 14 of 33
+
+|     |     |     | V (t −7.08n(5d−4))= l |                 | = v *t   |     |
+| --- | --- | --- | --------------------- | --------------- | -------- | --- |
+|     |     |     | p                     |                 | q q q    |     |
+|     |     |     | t = V (t              | −7.08n(5d−4))/v |          |     |
+|     |     |     | q                     | p               | q        |     |
+2
+|     |     |     | v = (8 ft | /s)/29.5ft ≈ .2712 ft/s  |     |     |
+| --- | --- | --- | --------- | ------------------------ | --- | --- |
+q
+
+| We were able to find t |     | in terms of t | , V, and n and d:  |     |     |     |
+| ---------------------- | --- | ------------- | ------------------ | --- | --- | --- |
+|                        |     | q             | p                  |     |     |     |
+V(t −7.08n(5d−4))
+|     |     |     |     | = p |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+t
+q .2712
+
+|     |     |     |     | l −l q  =l p = v p | *t p   |     |
+| --- | --- | --- | --- | ------------------ | ------ | --- |
+total
+|     |     |     | l −V (t | p −7.08n(5d−4)) | = v p *t p   |     |
+| --- | --- | --- | ------- | --------------- | ------------ | --- |
+total
+M
+v p = 25/6 ft/s
+
+| We found t |  in terms of l | , V, n, and, d.   |     |     | C   |     |
+| ---------- | -------------- | ----------------- | --- | --- | --- | --- |
+p
+total
+l +V(7.08n(5d−4))
+|     |     |     | t   | =  total |     |     |
+| --- | --- | --- | --- | -------- | --- | --- |
+|     |     |     | p   |          | M   |     |
+V+25/6
+
+Now, we have a function of total time (t +t ) in terms of n and d (because both l and
+|                                                          |     |     |     | q p | i   | total |
+| -------------------------------------------------------- | --- | --- | --- | --- | --- | ----- |
+| V we have in terms of n and d), which is what we want.   |     |     |     | H   |     |       |
+After substituting t into the equation for t , adding the highlighted equations above,
+|     |     | p   |     | ：q  |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+dividing by the number of passengers (n*(5d­4)) to get the average time and simplifying, we
+obtain:
+号
+
+which is the equation for average amount of time each passenger spends walking from the exit of
+众
+their train car to the bottom of the stairs on one fully loaded train with d rows per car and n cars.
+
+| Part 3:  |     | 公   |     |     |     |     |
+| -------- | --- | --- | --- | --- | --- | --- |
+We found the average stair­climbing speed of an average person to be 2 stairs/second.
+We also set that a person would take up 2 stairs at a time. The length of the average train station
+| staircase is 58 steps so we decided to use that value for our staircase. Since there are 58 stairs and  | 信   |     |     |     |     |     |
+| ------------------------------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+each person climbs the stairs at 2 stairs per second, the amount of time spent by each person
+climbing the stairs is 29 seconds, a constant.
+微
+|     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 15 of 33
+2.2 Requirement 1: Optimize time traveled to reach street level for
+passengers on one fully occupied train
+Interpretation:
+We interpreted this part of the problem as asking us to relate the time an average person
+takes to exit the station (start from his/her seat in the train car and finish at the top of the stairs)
+to n, the number of cars, and d, the number of rows per car and to find the n and d that minimize
+the amount of time or to suggest a general principle of selecting n and/or d that would optimize
+amount of time spent traveling to reach street level.
+M
+Approach:
+C
+To do this, we created a model, A, that is a function of all the variables determinant of the
+time required to exit the station. What determines the amount of time needed to fully exit the
+M
+station?
+We realized that the only period of time that matters is the amount of time it takes for a
+i
+passenger to walk on the platform and arrive at the base of the stairs because first, the amount of
+H
+time for each passenger to exit the train car is constant because
+The method for deriving this model can be： found in the Approach section. After using
+excel to create a surface plot (Figure 4) with the number of rows in each car (d) and the number
+of train cars (n) as explanatory variables and the amount of time it takes for the passenger to
+号
+walk from the train car to the bottom of the stairs (t) as the response variable, we found that the
+time required is optimized when n and d are minimized, which is reasonable as we would expect
+the platform to be less congested if there are fewer people on the train.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 16 of 33
+M
+C
+M
+i
+H
+：
+号
+(Figure 4)
+众
+While our model confirms the intuitive idea that less people means less congestion, it
+does not help train manufa公cturers or train stations decide how to minimize wait time for
+passengers as it would be unrealistic to have a train with 1 car and 1 row of seats. In our model,
+however, is also the build up rate of the queue or fan of people at the bottom of the stairs (V).
+信
+V = 367(3.67d) 3 + 4136497(3.67d) 2 − 1898321(3.67d) − 868589
+80000 17400000 4350000 7250
+微
+V only depends on d because each passenger walks at an approximately constant speed across
+the platform when there is no queue (Assumption 9). Thus, the number of passengers arriving at
+the queue would be the same for any n as people in the farther cars would just take longer to get
+to the queue. Graphing and solving for zeros of V(d), we found that V(d)≥ 0 ∀ d>19.7747,
+meaning that the queue will begin accumulating when the number of rows in each train car
+exceeds 19 or is greater or equal to 20 (Figures 4, 5, 6).
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 17 of 33
+M
+(Figure 5)
+C
+M
+i
+H
+：
+号
+众
+(Figure 6)
+公
+信
+微
+Therefore, we can conclude that in order to avoid the queueing/fanning phenomenon for one
+fully occupied train, we should have train cars with less than or equal to 19 rows. However,
+because the queue does not form at all for d≤ 19, we would recommend 19 rows to be installed
+in each train car to maximize the number of people transport as well as minimize the amount of
+time spent leaving the platform.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 18 of 33
+Table of Projected Times for One Train: d∈(4, 30) and n∈(10, 50) with d > 19 highlighted
+M
+C
+(Figure 7)
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 19 of 33
+2.3 Requirement 2: Optimize time traveled to reach street level for
+passengers of two fully occupied trains
+Interpretation:
+This part of the problem asks us to use the method we found in Requirement 1 for with
+two fully occupied and identical trains (Assumption 10), resulting in twice the amount of people
+as in Requirement 1 arriving in the station.
+Approach:
+M
+In order to optimize time traveled to reach street level from two fully occupied trains, we
+applied the same equation as in requirement 1 except we double the amount by which the queue
+C
+grows because the there are twice amount of passengers making their way to the staircase,
+assuming the two trains stationed are identical in number of rows and number of cars.
+M
+The equation for the growth rate of the queue in people per minute is given by:
+B = 2(367d 3 + 4136497d 2 − 1898321d + 1411)
+t 80000 17400000 435000i0 7250
+B = 367d 3 + 4136497d 2 − 1898 H 321d + 1411
+t 40000 8700000 2175000 3625
+：
+To look at B as the growth rate of the queue, we must subtract the constant depletion rate
+t
+of the queue, 120 ppl/min, from B. We must also convert this d into feet as well, swapping 3.67d
+t 号
+for d.
+V = 367d 3 + 4136497d 2 − 1898321d − 433589
+t 40000 8700000 2175000 3625
+众
+The number of passengers also doubles with the two trains. So, the total number of
+commuters is:
+公
+2n(5d−4)
+Because there are two trains, the total distance travelled to the stairway (assuming that
+there is no queue) 信is doubled as well since twice as many people walk the same distance. Thus,
+l is multiplied by two:
+total
+l = n(5d−4)[d(n+2)+27.5]
+微 total 2
+When we plug all of these changes to the original model equation for one train and simplify, we
+get:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 20 of 33
+The surface plot of this function is:
+M
+C
+M
+i
+H
+：
+号
+(Figure 8)
+众
+Note that again the average amount of time increases and both n and d increase, so
+ideally, we would want n and d to be as small as possible. However, like in Requirement 1, we
+again find that V is negativ公e up to d = 19 rows, because V for two trains is 2*V for one train as
+twice as many people will join the queue per period of time since twice as many people exit their
+respective cars per period of time and the zero of a function does not change if that function is
+multiplied by a con信stant. Therefore, we would still recommend for each train car to have 19 rows
+of seats (or fewer, if necessary).
+微
+Table of Projected Times for Two Trains: d∈(4, 30) and n∈(10, 50) with d > 19
+highlighted:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 21 of 33
+M
+C
+(Figure 9)
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 22 of 33
+3 Requirement 3: Optimize location of stairways
+Interpretation:
+This part of the problem asks us to, if given a set number of stairways, figure out the
+configuration of them in the train station that would reduce the average amount of time for which
+it takes passengers to exit the station. We chose to interpret this question as asking us to research
+and find the general building guidelines and practices of major train stations and use them to
+compile a comprehensive report of the optimal locations of one and multiple stairways.
+M
+Approach:
+While we assumed that the single staircase was located at the end of the platform, layouts
+from other central train stations show that staircases in the middle of the Cplatform may be most
+optimal for controlling traffic flow. Below are images of layouts from three of the busiest train
+stations, Central Station (Figure 10), Penn Station (Figure 10), andM Union Station (Figure 10), in
+the United States.
+i
+H
+：
+号
+众
+公
+信
+微
+(Figure 10)
+All three of the stations mentioned above include staircases located in the middle of the
+platform. We see this trend in Great Britain as well, in the Cardiff central station (Figure 11):
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 23 of 33
+M
+(Figure 11)
+C
+What if there was more than one staircase? Modeling the layouts from the Shinjuku and
+M
+Shibuya stations in Japan (Figures 12 and 13), two of the busiest train stations in the world, we
+would pair staircases such that they face opposite directions. These staircases would be spread
+i
+out evenly throughout the platform such that there would bHe enough space for passengers to wait
+on the platform for their respective trains but also have sufficient staircases so that traffic is
+minimized. Both the Shibuya and Shinjuku station：s employ this model and considering each
+serves over one billion commuters a year, this placement of staircases should minimize traffic in
+the context of this problem.
+号
+众
+公
+信
+微
+Shinjuku Station, Japan
+(Figure 12)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 24 of 33
+M
+C
+MShibuya Station, Japan
+(Figure 13)
+i
+H
+In conclusion, if we were to use a single two column staircase, we would put it in the
+middle of the platform to minimize the time it takes to exit the station. With multiple stairways,
+：
+we would pair them such that they face opposite directions and spread them evenly across the
+platform. There should be enough space between the staircases to allow crowds coalesce on the
+platform and not have a hazardous risk. 号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 25 of 33
+4 Requirement 4: Relationship between time and number of stairways
+Interpretation:
+This part asks us to find the number of stairways of a station that will minimize the
+average amount of time it takes a person to exit the station (again, from their seat to top of
+stairs). We interpreted this requirement as asking us to solve for the optimal number of stairways
+(s) based on n and d that minimizes time as well as concluding a relationship between time to
+street level and s.
+M
+Approach:
+In requirements 1 and 2, we worked extensively on an analysis of the queue’s effect on
+the time required to exit the station. The “fan” that develops at the bottomC of the stairway
+significantly impacts people’s ability to leave in a timely manner. If more stairways were made
+available, people would take advantage of the emptiest stairway, mMinimizing the crowding
+around the other staircases.
+i
+H
+：
+号
+众
+公
+信
+微
+(Figure 14)
+Increasing the number of stairways would reduce the length of the queue until there is no
+queue. This point is where the number of people leaving the train per second divided by the
+number of staircases equals 2 people per second. Because the staircases can take 2 people per
+second, once the rate of people entering the stairs equals the rate of people exiting the stairs,
+there is no queue at the bottom.
+We found in Requirement 1 that the number of people exiting the train per second is:
+367d 3 + 4136497d 2 − 1898321d + 1411
+4800000 1044000000 261000000 435000
+Given that there are s staircases, the rate at which people enter each staircase is:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| Team #4813 |     |     |     |     |     |     |     |     |     |     | Page 26 of 33  |
+| ---------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------- |
+
+|     |     |     | ( 367d 3 |     | + 4136497d 2 |     | −         | 1898321d | +   | 1411   | )1   |
+| --- | --- | --- | -------- | --- | ------------ | --- | --------- | -------- | --- | ------ | ---- |
+|     |     |     | 4800000  |     | 1044000000   |     | 261000000 |          |     | 435000 | s    |
+
+We can set this expression equal to 2 people per second because no queue forms when the
+number of people leaving to go onto the stairs is equal to the number of people getting to the
+bottom of the stairs. Setting the expression equal to 2 and not less than 2 allows the maximum
+number of people to arrive in each train.
+|     |     |         | 367d 3 | 4136497d 2 |     |     |           |     |        |         |     |
+| --- | --- | ------- | ------ | ---------- | --- | --- | --------- | --- | ------ | ------- | --- |
+|     |     | (       |        | +          |     | −   | 1898321d  | +   | 1411   | )1 = 2  |     |
+|     |     | 4800000 |        | 1044000000 |     |     | 261000000 |     | 435000 | s       |     |
+
+|     |     |         | 367d 3 | 4136497d 2 |     |     | 1898321d  |     | 1411   | )1   |     |
+| --- | --- | ------- | ------ | ---------- | --- | --- | --------- | --- | ------ | ---- | --- |
+|     |     | (       |        | +          |     | −   |           | +   |        | = s  |     |
+|     |     | 4800000 |        | 1044000000 |     |     | 261000000 |     | 435000 | 2    | M   |
+
+Once this equality is reached, building more staircases is just costly and unhelpful.
+C
+Furthermore, inserting more staircases reduces the amount of space on the platform, meaning
+that people would need to squeeze together when waiting for theirM respective trains. This would
+pose an injury hazard that would counteract the optimization of time. Thus, the only variable
+needed to optimize time is the number of people in the queue. As soon as the queue is
+i
+| eliminated, time is optimized.   |     |     |     |     |     |     |     | H   |     |     |     |
+| -------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Therefore, time to street level would decrease as s approaches
+：
+| 367d 3  | 4136497d 2 |     | 1898321d  |     | 1411   | )1  |     |     |     |     |     |
+| ------- | ---------- | --- | --------- | --- | ------ | --- | --- | --- | --- | --- | --- |
+| (       | +          | −   |           | +   |        |     |     |     |     |     |     |
+| 4800000 | 1044000000 |     | 261000000 |     | 435000 | 2   |     |     |     |     |     |
+from the negative side, but would not really change as s becomes greater than this
+号
+expression as no queue would form. If we let d = 20, s = 1.027, which means that two
+two­column staircases would optimize amount of time needed because 1.027>1, meaning that
+one stairway would still cause queueing while two stairways will eliminate the queue.
+众
+
+|     |     |     |     |     |     |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 27 of 33
+5 Requirement 5: Relationship between time and number of people
+accommodated by stairways
+Interpretation:
+We interpreted Requirement 5 to be asking for the relationship (preferably a function)
+between amount of time spent walking to the stairway and the number of people, k, the stairway
+can accommodate. We again chose to interpret time as the average amount of time for a
+passenger to walk from the exit of a train car to the bottom of the stairway because, as stated
+earlier in Section 2.2. We also chose to define k as not the total number of people that can stand
+M
+on the stairway at one time but as the number of people that can stand side­by­side in one row of
+the stairs because the number of people that can stand on the stairs lengthwise, representing the
+C
+length of the stairs, should be constant as the elevation of the train tracks and the elevation of the
+street level are constant. Therefore, only k as the number of people able to stand side­by­side in a
+M
+row on the stairs is related to the amount of time passengers spend walking to street level.
+i
+Approach:
+H
+If the number of people who can fit side by side on the stairway at any one time, k,
+changes (right now, it is given that two columns o：f people can climb the stairs at a time; thus,
+there are two people on any given stair while the train is unloading), the length of the queue at
+the bottom of the stairway will be significantly affected. k is then equal to the amount of people
+号
+exiting or entering the staircase every second because according to our calculations, each second
+one row of people exit and a new row of people enter the stairway. Queue length is a prominent
+determinant of the time it takes to leave the station; thus, if the length of the queue can be
+众
+reduced by using a wider stairway that accommodates more people, the time it takes to exit the
+station when one (or two) crowded trains arrives is greatly reduced.
+公
+信
+微
+(Figure 15)
+As with requirement 4, widening the stairways can result in a great reduction in time up
+to a certain point, and that point is when the stairways are wide enough such that no queue ever
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 28 of 33
+develops at the bottom of the stairs. We found in Requirement 1 that the amount of people
+leaving the train per second (B) is
+367d 3 + 4136497d 2 − 1898321d + 1411
+4800000 1044000000 261000000 435000
+which is also the number of people enter the queue per second because we assume that each
+passenger moves along the platform at a constant speed. Given that k, the number of people per
+row on the stairway, is also equal to the number of people that exit/enter the stairway every
+second, we know that V, the change in number of people in the queue is
+V = people entering queue ­ people exiting queue
+V = people entering queue ­ people entering stairway
+V = 367d 3 + 4136497d 2 − 1898321d + 1411 − k M
+4800000 1044000000 261000000 435000
+We then plugged V above into our model and assigned d = 20 rows and n = 20 cars
+because we are looking for a relationship between time and the number oCf people accommodated
+by the stairway, so we can plug in common numbers for the number of rows and train cars in
+order to find time directly as a function of k and know that time asM a function of k will be roughly
+the same shape for any ordered pair of d and n. We found t as a function of k to equal:
+i
+H
+t =
+：
+Graph of t as a function of k with x­axis as number of people accommodated in one row of stairs
+(k) and y­axis as amount of time (t) for k≤ 20because a stairway that can accommodate over 20
+people per row would be unreasonably lar号ge:
+众
+公
+信
+微
+(Figure 16)
+As we can see, as the number of people accommodated in one row of the stairway
+increases (as the width of the stairway increases), the average amount of time needed to walk
+from the train car to the bottom of the stairway decreases nearly linearly because the queue
+becomes shorter as more people are able to exit per second.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 29 of 33
+6 Model Analysis
+Strengths and weaknesses:
+The most significant strength of our model is our analysis of the queue. We considered
+the queue to be critically important to time optimization and devoted much of our effort to
+modeling it in a robust and effective manner. First, we considered the queue to be a
+two­dimensional body, rather than a one­dimensional line of disciplined, orderly people, which
+would be much easier to calculate, yet completely unrealistic. Using realistic constants (such as
+platform widths recommended by major railway administrations), we were able to model the
+M
+speed of individuals in the queue. We also modeled the growth of the queue as it spilled out onto
+the platform as a function of the number of rows in each car and cars in each train, as this affects
+the number of people streaming onto the platform and expanding the queCue. Since people can
+climb stairs at a fairly rapid rate, small trains will produce no queue at the bottom of the stairs at
+all: the number of people leaving the train will not overwhelm theM capacity of the stairs. Once the
+ridership of the train reaches a certain point, however, a queue will begin to develop. While a
+more simplistic model would eventually yield the realization thait the best way to optimize time
+H
+is just by shrinking the train to essentially zero to eliminate crowding and greatly reduce distance
+covered on the platform, we can look to a single, most preferable point. Of course, the absolute
+：
+minimum would be approaching 0 cars and 0 rows, but our model allows us to find a special
+point: the point at which the trains can be made as large as possible before the queue begins to
+form. Outside of basic distance covered, c号rowding and congestion are the major determinants of
+the time required to exit the station. Modeling the queue allows us to find a point that optimizes
+the most relevant two variables: distance covered through the station, and time wasted moving
+众
+slowly through a queue creeping toward the stairs. Our ability to find this one optimum point, a
+clear deliverable to the manager of the station, in a highly realistic simulation of the actual train
+terminal is the single most important strength of our model.
+公
+Weaknesses of our model arise mostly out of the values we have negated. For example,
+when we calculated the amount of time it takes for a person to exit the train car, we found that
+the value was arou信nd 3% of the total time taken to egress from the train station. Although three
+percent is a small amount, it is still a significant amount and not necessarily small enough to
+truly be negligible.
+微
+Sensitivity Analysis
+Our model is very accurate even at large amounts of passengers. Given a train with 20
+rows per car, we can fit the entire population of Bedford, Massachusetts (12595 people from
+2010 US census) in a train with 131 cars. Using our model we obtain a time of 43993.369956
+seconds for all the people to exit the train and leave the station. This translates to about 12.22
+hours for every person to leave the station, which is a very reasonable time for a small town to
+get off of a train.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 30 of 33
+7 Non­technical Letter
+Dear Director of Transportation,
+We are high school students concerned about the excessive amount of time required to
+exit a train at the central train station in the city. We would like to propose a model that would
+minimize this time. Knowing that the layout of stations vary throughout the rail line, we
+designed our model with a platform that runs in between two tracks. There is one staircase at the
+end of the platform, and it can accommodate two people standing side by side on each stair. The
+M
+platform is 29.5 feet wide. After disembarking from the train, people would form a rectangular
+queue at foot of the stairs. Our model describes this current situation. We then altered the model
+by altering the location of the staircase(s), adding additional stairways, aCnd widening the stairs
+by adding more columns.
+M
+Our mathematical model describes the time needed to exit the station in terms of the
+number of cars on the trains and the number of rows per car. Foir example, using our model,
+H
+when there are 10 cars per train with 10 rows each, the average person takes about 5 minutes to
+exit the station. This prediction is reasonable in this situation: given the nature of the station, 5
+：
+minutes seems quite normal. According to our model, increasing the number of cars does not
+have as drastic as an effect as changing the number of rows a car has on the time spent on the
+platform. We found that the optimal numb号er of rows a car has is 19, as having less than 19 rows
+avoids the formation of a queue, but having more than 19 creates a queue that drastically
+increases the time required to leave the station.
+众
+Furthermore, stairways should be improved in both quantity and wideness to prevent the
+buildup of a queue at the bottom of the stairway. With one staircase, it would be best to put it in
+公
+the middle of the platform. When building new more stairways, it is important to equally
+distribute the stairways along the length of the platform where trains will stop. The addition of
+staircases will decr信ease the amount of time required to exit the station. Because people will
+spread themselves out over multiple staircases, the queue length decreases, making it faster to
+access the staircase. The width of the staircase also decreases the time needed to exit the station.
+微
+Adding more columns to the staircases indicates that more people can be on the stairs at a time,
+reducing the queue length.
+We hope that after careful analysis of our model, you take our recommendations into
+consideration. We have considered a variety of important aspects of the train station with special
+emphasis on factors we have found to be the greatest determinants of egress time and assure you
+that our model is a highly robust, effective representation of the amount of time required to exit
+the platform. The suggestions we made, if followed, will lead to the most efficient method of
+unloading the train and minimal amount of time needed to exit the station.
+Sincerely,
+Team #4813
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 31 of 33
+8 Works Cited
+Information Works Cited
+"10 of the Grandest, Busiest Train Stations." Governing the States and Localties. N.p., n.d. Web.
+09 Nov. 2014.
+California High­Speed Rail Authority. California High­Speed Train Project. High­Speed Train
+M
+Station Platform Geometric Design. By Cecily Way. Ed. John Chirco and Ken Jong.
+C
+Comp. Anthony Daniels. California High­Speed Rail Authority, n.d. Web. 9 Nov. 2014.
+M
+<http://www.tillier.net/stuff/hsr/TM­2.2.4­Station­Platform­Geometric­Design­R1­100630.
+i
+H
+pdf>.
+：
+Haughney, Christine. "Transit Agencies Face the New Calculus of Broader Backsides." The New
+号
+York Times 16 Jan. 2012: A16. Www.nytimes.com. The New York Times, 15 Jan. 2012.
+Web. 9 Nov. 2014.
+众
+<http://www.nytimes.com/2012/01/16/nyregion/transit­agencies­in­new­york­area­conside
+公
+r­wider­seats.html?pagewanted=all&_r=1&>.
+信
+Le Blanc, Steven, and Masami M. "The 51 Busiest Train Stations in the World­­ All but 6
+Located in Japan." RocketNews24 RSS. N.p., 3 Jan. 2013. Web. 09 Nov. 2014.
+微
+Sahaleh, Amir S., Michel Bierlaire, Antonin Danalet, Flurin S. Hanseler, and Bilal Farooq.
+"Scenario Analysis of Pedestrian Flow in Public Spaces." TRANSP­OR (2012): 3­24. Web.
+9 Nov. 2014.
+<http://www.strc.ch/conferences/2012/Sahaleh_Bierlaire_Farooq_Damalet_Haensler.pdf>.
+Seitz, Michael J., Felix Dietrich, and Gerta Koster. "A Study of Pedestrian Stepping Behaviour
+for Crowd Simulation." Transportation Research Procedia 2 (2014): 282­90.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 32 of 33
+ScienceDirect. Web. 9 Nov. 2014.
+<http://ac.els­cdn.com/S2352146514000908/1­s2.0­S2352146514000908­main.pdf?_tid=d
+3edc796­679c­11e4­9bcc­00000aab0f26&acdnat=1415488579_7b5a3777a67e17865514bd
+30195f7c20>.
+Svensson, Einar. "Vehicle­Train Combinations." Urbanaut.com. The Urbanaut Monorail
+Technology, 2009. Web. 09 Nov. 2014. M
+<http://www.urbanaut.com/Vehicle%20Concepts%20and%20CapaCcities%204.htm>.
+Transportation Research Board. "Transit Capacity and Quality of MService Manual." Trb.org. The
+Transportation Research Board of the National Academiesi, n.d. Web. 9 Nov. 2014.
+H
+<http://onlinepubs.trb.org/onlinepubs/tcrp/tcrp100/part%207.pdf>.
+：
+U.S. Department of Labor. "Fixed Stairways ­ 1917.120." Osha.gov. U.S. Department of Labor
+号
+Occupational Health and Safety Administration, n.d. Web. 09 Nov. 2014.
+众
+<https://www.osha.gov/pls/oshaweb/owadisp.show_document?p_table=STANDARDS&p
+_id=10406>.
+公
+U.S. Department of Transportation. National Transportation Library. Designing for Pedestrians.
+信
+By John J. Fruin. Washington, DC: Bureau of Transportation Statistics, n.d. Print.
+微
+Wolfram Alpha. Mathematica. Computer software. Wolframcloud.com. Vers. 10. Wolfram
+Alpha, n.d. Web. 9 Nov. 2014. <https://mathematica.wolframcloud.com>.
+Ye, Sang, and Geremie R. Barme. "Beijing Underground." Chinaheritagequarterly.org. The
+Australian National University, 14 Mar. 2014. Web. 09 Nov. 2014.
+<http://www.chinaheritagequarterly.org/features.php?searchterm=014_undergroundBeijing
+.inc&issue=014>.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #4813 Page 33 of 33
+Images Works Cited
+Amtrak. Layout of Union Station, Washington DC. Digital image. Greater Greater Washington.
+N.p., n.d. Web.
+Beserra, Sueli. Map of Grand Central Station. Digital image. Gopixpic. N.p., n.d. Web.
+Layout of Penn Station. Digital image. Friends of Moynihan Station. N.p., n.dM. Web
+Layout of Shibuya Station. Digital image. Tokyo Insider. N.p., n.d. Web.C
+Layout of Shinjuku Station. Digital image. Odakyu. N.p., n.d. WeMb
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

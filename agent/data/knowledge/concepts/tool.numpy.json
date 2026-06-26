@@ -1,0 +1,67 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.numpy",
+  "title": "NumPy 数组操作",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "Python 数据科学栈",
+    "NumPy 数组操作"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.1",
+  "aliases": [
+    "NumPy",
+    "数组",
+    "广播"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "NumPy 数组操作让你像处理表格或矩阵一样快速、灵活地处理大量数据，是 Python 数据科学的基石。",
+    "intuition": "想象你有一张巨大的数字照片，每个像素点是一个数字（0-255 表示亮度）。NumPy 数组就像这张照片的“数字表格”，你可以轻松地裁剪、旋转、调整亮度，或者把多张照片叠加。它比 Python 普通列表快得多，因为底层用 C 语言实现，并且支持“广播”这种智能操作，比如给整张照片每个像素加 10，不用写循环。",
+    "when_to_use": "当你的数据是表格、图像、时间序列、任何多维结构，或者需要做向量/矩阵运算时，就该用 NumPy 数组。比如：处理传感器数据、图像像素、金融时间序列、机器学习特征矩阵。",
+    "definition": "NumPy 数组（ndarray）是一个同质数据的多维容器，所有元素类型相同，支持快速向量化操作和广播机制。",
+    "math_principle": "NumPy 数组操作基于线性代数中的矩阵运算和广播规则。广播机制允许不同形状的数组进行算术运算，规则是：从尾部维度开始比较，若维度大小相等或其中一个为1，则兼容；否则抛出异常。例如，形状为(3,1)的数组与形状为(1,4)的数组相加，结果形状为(3,4)。矩阵乘法遵循线性代数定义：若A为m×n矩阵，B为n×p矩阵，则C=AB为m×p矩阵，其中$c_{ij}=\\sum_{k=1}^n a_{ik}b_{kj}$。NumPy中通过`np.dot`或`@`运算符实现。",
+    "step_by_step": [
+      "1. 导入 NumPy：`import numpy as np`",
+      "2. 创建数组：从列表创建 `np.array([1,2,3])`，或使用内置函数如 `np.zeros((3,4))`, `np.ones((2,2))`, `np.arange(10)`, `np.random.rand(3,3)`",
+      "3. 查看数组属性：`arr.shape`, `arr.dtype`, `arr.ndim`, `arr.size`",
+      "4. 索引与切片：类似列表，但支持多维，如 `arr[0,1]`, `arr[:, 2:5]`",
+      "5. 形状变换：`arr.reshape((2,3))`, `arr.flatten()`, `arr.T` 转置",
+      "6. 算术运算：直接使用 `+`, `-`, `*`, `/` 进行元素级运算，利用广播机制",
+      "7. 线性代数：`np.dot(A, B)` 或 `A @ B` 矩阵乘法，`np.linalg.inv(A)` 求逆",
+      "8. 聚合操作：`arr.sum()`, `arr.mean()`, `arr.max()`, `arr.argmax()` 等"
+    ],
+    "worked_example": "假设你有一个 3x3 的矩阵 A 和一个 3x1 的向量 b，想计算 Ax=b 的解。\n```python\nimport numpy as np\nA = np.array([[1,2,3], [4,5,6], [7,8,10]])\nb = np.array([1, 2, 3])\nx = np.linalg.solve(A, b)\nprint(x)  # 输出解向量\n```\n另外，演示广播：给矩阵每行加一个向量。\n```python\nmatrix = np.array([[1,2,3], [4,5,6]])\nrow_vector = np.array([10, 20, 30])\nresult = matrix + row_vector  # 广播，每行加\nprint(result)  # [[11 22 33], [14 25 36]]\n```",
+    "pitfalls": [
+      "1. 数组维度不匹配时广播会出错，务必检查形状。",
+      "2. 切片返回的是视图（view）而非副本，修改切片会影响原数组，用 `.copy()` 避免。",
+      "3. 整数索引与切片索引行为不同：`arr[0]` 降维，`arr[0:1]` 保持维度。",
+      "4. 浮点数精度问题：比较浮点数时用 `np.isclose` 而非 `==`。",
+      "5. 忘记导入 NumPy 或使用 `np.` 前缀。"
+    ],
+    "tools": "Python 的 NumPy 库，核心函数：`np.array`, `np.zeros`, `np.ones`, `np.arange`, `np.reshape`, `np.dot`, `np.linalg.solve`。最小可运行代码：\n```python\nimport numpy as np\na = np.array([1, 2, 3])\nb = np.array([4, 5, 6])\nprint(a + b)  # [5 7 9]\nprint(a @ b)  # 32 (点积)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "c_{ij} = \\sum_{k=1}^n a_{ik} b_{kj}",
+      "variables": {
+        "c_{ij}": "结果矩阵 C 的第 i 行第 j 列元素",
+        "a_{ik}": "矩阵 A 的第 i 行第 k 列元素",
+        "b_{kj}": "矩阵 B 的第 k 行第 j 列元素",
+        "n": "A 的列数（也是 B 的行数）"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "lec005_010_03",
+      "supp_H01"
+    ],
+    "from_papers": []
+  }
+}

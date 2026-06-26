@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.lingo",
+  "title": "LINGO/LINDO 优化求解",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "专用工具",
+    "LINGO/LINDO 优化求解"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.2",
+  "aliases": [
+    "LINGO",
+    "LINDO",
+    "优化求解器"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "coder",
+    "modeler"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "LINGO/LINDO 是专门用来求解优化问题的工具，你只需像写数学公式一样描述问题，它就能自动算出最优解，不用自己写复杂的算法代码。",
+    "intuition": "想象你要规划一次旅行，想花最少的钱玩最多的地方，但有很多限制（比如时间、预算）。LINGO/LINDO 就像一个超级聪明的旅行规划师，你告诉它你的目标和限制，它就能瞬间给出最佳方案，而不用你自己去试各种组合。",
+    "when_to_use": "当你遇到需要做决策的问题，并且有明确的目标（如最小化成本、最大化利润）和约束条件（如资源限制、逻辑关系），且问题可以用数学公式表达时，就应该想到用 LINGO/LINDO。特别适合线性规划、整数规划、非线性规划等标准优化问题。",
+    "definition": "LINGO 和 LINDO 是专门用于求解数学规划问题的建模语言和求解器，允许用户以接近自然语言的方式描述优化模型，并自动调用高效的求解算法（如单纯形法、内点法、分支定界法等）来求解。",
+    "math_principle": "LINGO/LINDO 内部集成了多种优化算法。对于线性规划，采用单纯形法或内点法求解标准形式：\n\\[ \\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad \\mathbf{Ax} \\leq \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0} \\]\n对于整数规划，使用分支定界法或割平面法；对于非线性规划，使用序列二次规划或广义简约梯度法。用户只需输入模型，求解器自动选择合适算法。",
+    "step_by_step": [
+      "1. 明确优化问题：确定决策变量、目标函数和约束条件。",
+      "2. 用 LINGO 语法编写模型：在 LINGO 编辑器中输入模型，例如：\n   MODEL:\n   MIN = 2*x + 3*y;\n   x + y >= 10;\n   x <= 6;\n   y <= 8;\n   END",
+      "3. 运行求解器：点击求解按钮，LINGO 会自动调用合适的算法求解。",
+      "4. 解读结果：查看求解报告，获取最优解和最优值。",
+      "5. 验证和调整：检查结果是否合理，必要时修改模型重新求解。"
+    ],
+    "worked_example": "以论文8124中的滑雪道节点选择为例：假设有5个候选节点，需要选择其中3个，使得总成本最小，且每个节点只能选一次。决策变量为0-1变量，目标函数为总成本最小，约束为恰好选3个。LINGO模型如下：\nMODEL:\nSETS:\n  NODES /1..5/: C, X;\nENDSETS\nDATA:\n  C = 10 20 15 30 25;\nENDDATA\nMIN = @SUM(NODES(I): C(I)*X(I));\n@SUM(NODES(I): X(I)) = 3;\n@FOR(NODES(I): @BIN(X(I)));\nEND\n求解后得到最优解：选择节点1,3,5，总成本50。",
+    "pitfalls": [
+      "1. 模型规模过大时，求解时间可能很长，甚至无法在合理时间内得到最优解。",
+      "2. 非线性规划可能陷入局部最优，而非全局最优。",
+      "3. 整数规划问题可能无解或需要很长时间，尤其是变量很多时。",
+      "4. 语法错误：LINGO 对语法敏感，如忘记分号或括号不匹配会导致错误。",
+      "5. 数据输入错误：在 DATA 段中数据顺序或数量错误会导致模型错误。"
+    ],
+    "tools": "LINGO 软件（商业软件，有学生版），Python 中可使用 pulp 或 scipy.optimize 作为替代。最小可运行代码（Python pulp）：\n```python\nimport pulp\n\n# 定义问题\nprob = pulp.LpProblem(\"Example\", pulp.LpMinimize)\n\n# 定义变量\nx = pulp.LpVariable('x', lowBound=0, cat='Continuous')\ny = pulp.LpVariable('y', lowBound=0, cat='Continuous')\n\n# 目标函数\nprob += 2*x + 3*y\n\n# 约束\nprob += x + y >= 10\nprob += x <= 6\nprob += y <= 8\n\n# 求解\nprob.solve()\n\n# 输出结果\nprint(pulp.value(x), pulp.value(y), pulp.value(prob.objective))\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\min \\mathbf{c}^T \\mathbf{x} \\quad \\text{s.t.} \\quad \\mathbf{Ax} \\leq \\mathbf{b}, \\mathbf{x} \\geq \\mathbf{0}",
+      "variables": {
+        "\\mathbf{c}": "目标函数系数向量",
+        "\\mathbf{x}": "决策变量向量",
+        "\\mathbf{A}": "约束系数矩阵",
+        "\\mathbf{b}": "约束右端项向量"
+      }
+    }
+  ],
+  "cases": [
+    "8124"
+  ],
+  "provenance": {
+    "from_lectures": [
+      "supp_H06"
+    ],
+    "from_papers": [
+      "8124"
+    ]
+  }
+}

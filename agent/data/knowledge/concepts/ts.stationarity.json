@@ -1,0 +1,80 @@
+{
+  "schema_version": 3,
+  "concept_id": "ts.stationarity",
+  "title": "平稳性与自相关",
+  "taxonomy_path": [
+    "常用建模方法",
+    "时间序列分析",
+    "平稳性与自相关"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.2",
+  "aliases": [
+    "平稳性检验",
+    "ADF",
+    "ACF",
+    "PACF",
+    "自相关"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "平稳性就是时间序列的统计性质不随时间变化，自相关就是序列自己跟自己过去的相关性，两者是时间序列分析的基础。",
+    "intuition": "想象一个平静的湖面，没有风浪，水位稳定，波动幅度和频率都差不多——这就是平稳序列。而自相关就像今天的温度与昨天的温度有关，如果今天热，明天大概率也热。",
+    "when_to_use": "当你拿到时间序列数据，想做预测或建模时，首先就要检查平稳性，因为很多模型（如ARIMA）要求数据平稳。自相关则用于识别序列内部的依赖模式，比如季节性、趋势等。",
+    "definition": "平稳性：时间序列的均值、方差和自协方差不随时间改变。自相关：序列与其自身滞后版本之间的相关性。",
+    "math_principle": "平稳性分为严平稳和宽平稳。宽平稳要求：均值 $\\mu$ 常数，方差 $\\sigma^2$ 常数，自协方差 $\\gamma_k = \\text{Cov}(X_t, X_{t+k})$ 只与滞后 $k$ 有关。自相关函数 $\\rho_k = \\gamma_k / \\gamma_0$。常用单位根检验（如ADF检验）判断平稳性。",
+    "step_by_step": [
+      "1. 可视化数据：画出时间序列图，观察是否有趋势或季节性。",
+      "2. 计算描述性统计：将数据分成几段，比较各段均值、方差是否大致相同。",
+      "3. 进行单位根检验：使用ADF检验，原假设为序列非平稳。若p值小于0.05，拒绝原假设，认为平稳。",
+      "4. 若非平稳，进行差分：一阶差分 $\\Delta X_t = X_t - X_{t-1}$，然后重复步骤1-3。",
+      "5. 计算自相关函数（ACF）和偏自相关函数（PACF），绘制相关图。",
+      "6. 根据ACF和PACF的截尾或拖尾特征，识别可能的AR或MA模型阶数。"
+    ],
+    "worked_example": "以某股票日收益率数据为例。首先画图，发现收益率围绕0波动，无明显趋势。将数据分为前后两半，均值分别为0.001和0.0008，方差分别为0.0002和0.00019，接近。ADF检验p值为0.01，小于0.05，认为序列平稳。计算ACF，发现滞后1阶的自相关为0.05，接近0，说明收益率无明显自相关，可能为白噪声。",
+    "pitfalls": [
+      "1. 误将趋势平稳当作差分平稳：趋势平稳序列有确定性趋势，差分会导致过度差分。",
+      "2. 忽略结构突变：序列可能在某个时间点发生均值或方差突变，导致整体非平稳。",
+      "3. 自相关图误读：样本自相关在零附近波动，但可能因随机性出现假显著。",
+      "4. 单位根检验功效低：小样本下ADF检验可能无法正确识别平稳性。"
+    ],
+    "tools": "Python中常用statsmodels库。平稳性检验：`from statsmodels.tsa.stattools import adfuller`，`adfuller(series)`。自相关图：`from statsmodels.graphics.tsaplots import plot_acf`，`plot_acf(series)`。示例代码：\n```python\nimport pandas as pd\nimport numpy as np\nfrom statsmodels.tsa.stattools import adfuller\nfrom statsmodels.graphics.tsaplots import plot_acf\nimport matplotlib.pyplot as plt\n\n# 生成示例数据（平稳白噪声）\nnp.random.seed(42)\ndata = np.random.randn(100)\n\n# ADF检验\nresult = adfuller(data)\nprint('ADF Statistic:', result[0])\nprint('p-value:', result[1])\n\n# 自相关图\nplot_acf(data, lags=20)\nplt.show()\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\gamma_k = \\text{Cov}(X_t, X_{t+k}) = \\mathbb{E}[(X_t - \\mu)(X_{t+k} - \\mu)]",
+      "variables": {
+        "\\gamma_k": "滞后k的自协方差",
+        "X_t": "时间t的观测值",
+        "\\mu": "均值",
+        "\\mathbb{E}": "期望"
+      }
+    },
+    {
+      "latex_code": "\\rho_k = \\frac{\\gamma_k}{\\gamma_0}",
+      "variables": {
+        "\\rho_k": "滞后k的自相关函数",
+        "\\gamma_k": "滞后k的自协方差",
+        "\\gamma_0": "方差"
+      }
+    },
+    {
+      "latex_code": "\\Delta X_t = X_t - X_{t-1}",
+      "variables": {
+        "\\Delta X_t": "一阶差分",
+        "X_t": "当前值",
+        "X_{t-1}": "前一时刻值"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [],
+    "from_papers": []
+  }
+}

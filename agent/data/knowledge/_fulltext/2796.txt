@@ -1,0 +1,967 @@
+Problem B: Curbing Crime Violence
+Team 2796
+M
+Contents
+C
+1 Introduction 3
+M
+2 General Assumptions and Justifications 3
+3 Objectives i 4
+H
+4 Task 1: Creating the Model 4
+：
+4.1 Profiling the City . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+4.2 Surveying the Problem . . . . . . . . . . . . . . . . . . . . . . . . 5
+4.3 Correlated Parameters with Violence Incidents . . . . . . . . . . 5
+4.4 The Effect of Education号on Unemployment . . . . . . . . . . . . 6
+4.5 The Effect of Education on the Juvenile Jail Population . . . . . 7
+4.6 The Effect of Unemployment on the Jail Population . . . . . . . 8
+4.7 The Effect of B众ehavior on Jail . . . . . . . . . . . . . . . . . . . . 8
+4.8 Effect of Education on Parole Violations . . . . . . . . . . . . . . 9
+4.9 Results of the Population Characteristics Survey . . . . . . . . . 10
+公
+5 Task 2: Mapping the Problem 11
+5.1 Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+5.2 Mapping Overview . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+信
+5.3 Gaussian Distribution . . . . . . . . . . . . . . . . . . . . . . . . 12
+5.4 Results. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+微6 Task 3: Finding a Solution 14
+6.1 Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+6.2 Proposal 1: Creation of a City Wide After-School Program for
+Failing Students . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+6.3 Proposal 2: Create a New School . . . . . . . . . . . . . . . . . . 15
+7 Task 4: Model Regression for Predicted Solution Implementa-
+tion 16
+8 Discussion 17
+8.1 Pros/Cons of the Model . . . . . . . . . . . . . . . . . . . . . . . 17
+8.2 Topics for Future Study . . . . . . . . . . . . . . . . . . . . . . . 18
+1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+9 Letter to the Mayor 18
+10 References 19
+11 Appendix 20
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+1 Introduction
+As urban develop throughout the world continues to expand, there is a natural
+contingencyforcrime. Theweaksocioeconomicalstatusofpartsofthecitymay
+maketheregionsconducivetoproblemswithgangsandviolence. Forregulation
+of city crimes, resources are allocated to provide these deprived communities
+with opportunities for jobs and education. However, other cities put emphasis
+on enforcement of the crimes via an increased officers and investment police
+M
+departmentresources. Regardless,crimeisanissuethatconcernsanypopulated
+| metropolitan | area. | In  | this study, | we look | to determine | the | source | of crime. |
+| ------------ | ----- | --- | ----------- | ------- | ------------ | --- | ------ | --------- |
+C
+| 2 General |     | Assumptions |     |     | and | Justifications |     |     |
+| --------- | --- | ----------- | --- | --- | --- | -------------- | --- | --- |
+M
+Assumption: Similar populated sized cities have similar areas, amount of
+| schools, | and layout. |     |     |     |     |     |     |     |
+| -------- | ----------- | --- | --- | --- | --- | --- | --- | --- |
+i
+Justification: Population of a city is limited to tHhe size of that city; a smaller
+sizedcitycannotgrowandbeaspopulatedasalargerareacity. Thepopulation
+affectsthenumberofschoolsandotherin：frastructure;morepeoplerequiremore
+schools and a more infrastructure. Similarly populated cites, therefore, would
+| have a | similarly | sized | region and | a similar | amount | of schools. |     |     |
+| ------ | --------- | ----- | ---------- | --------- | ------ | ----------- | --- | --- |
+号
+| Assumption: |     | The city | can be modeled |     | using | a pure square | grid | system. |
+| ----------- | --- | -------- | -------------- | --- | ----- | ------------- | ---- | ------- |
+Justification: When observing the two cities that best matched the demo-
+graphics of the given city, we noticed that these cities mostly followed a grid
+众
+system. We generalized that this city can be modeled with a pure square grid,
+| therefore, | to make | the | problem more | solvable. |     |     |     |     |
+| ---------- | ------- | --- | ------------ | --------- | --- | --- | --- | --- |
+公
+| Assumption: |     | Schools | are placed | where | there | is a population |     | need. |
+| ----------- | --- | ------- | ---------- | ----- | ----- | --------------- | --- | ----- |
+Justification: Schools are placed where there is need. If a region in not popu-
+| lated, then | there | would | not be a | need | for a school | there. |     |     |
+| ----------- | ----- | ----- | -------- | ---- | ------------ | ------ | --- | --- |
+信
+| Assumption: |     | People | are not predisposed |     | to commit | crime. |     |     |
+| ----------- | --- | ------ | ------------------- | --- | --------- | ------ | --- | --- |
+Justification: Ifpeopleinherentlycommitcrime,thenunderanycircumstance,
+微theywillstillcommitcrime,makingtheproblemimpossibletosolve. Assuming
+| solvability | of the | issues | is necessary | to  | solve it. |     |     |     |
+| ----------- | ------ | ------ | ------------ | --- | --------- | --- | --- | --- |
+Assumption: National-level crimes involving state and federal officials will
+not be committed.
+Justification: Few crimes become national headlines and the chance that it
+| will happen | in  | a specific   | city is even | smaller. |        |         |            |     |
+| ----------- | --- | ------------ | ------------ | -------- | ------ | ------- | ---------- | --- |
+| Assumption: |     | Unemployment | statistics   |          | do not | include | teenagers. |     |
+Justification: The U.S unemployment rate is calculated by the number of
+people who collect unemployment checks. Teens do not formally collect unem-
+| ployment | checks | and are | not counted | in  | the unemployment |     | numbers. |     |
+| -------- | ------ | ------- | ----------- | --- | ---------------- | --- | -------- | --- |
+3
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Assumption: Discouraged workers are not significant in this model.
+Justification: Discouraged workers are sample of the population that is not
+getting unemployment checks. It is nearly impossible to accurately calculate
+the number of discouraged workers in the American economy.
+Assumption: Thetotalcitypopulationdoesnotincludethenumberofpeople
+in prison.
+M
+Justification: There are more people in prison then there are people in the
+city. The only way to justify this fact is if the prison population is not include
+in the city population. C
+Assumption: Population density decreases constantly aMs the distance from
+a center increases.
+Justification: The center of the city is defined as the area with the highest
+concentration of commerce and people. As we move awiay from the city, pop-
+H
+ulation density tends to decrease as we can see in cities such as Phoenix, AZ
+and the two cities that best match the given citys profile: Springfield, MA, and
+：
+Salinas, CA (Rex, 2000).
+3 Objectives
+号
+4 Task 1: Creating the Model
+众
+4.1 Profiling the City
+Given the population statistics, we searched for cities with similar population
+公
+andlocatedinsimilarlypopulatedcounty. Wesearchedwithin±5%toleranceof
+the2008populationofthiscity. LookingthroughtheCensusBureau2008July
+estimates, we found 22 cities that had similar population sizes. After running a
+信
+Q test, to determine whether the population of the 24 cities matched the given
+city, we determined that 2 of these cities were outliers, and threw them out.
+Afterwards,weprofiledtheamountofpeopleinthecountythateachrespective
+微
+citywaslocatedin,andperformedaQtesttofindwhichcountiesweresimilarto
+the given citys county. We found that only 2 of these cities matched the profile
+with a ±10% tolerance: Springfield, Massachusetts and Salinas, California.
+Afterchoosingthesetwocities,wetooktheaverageoftheirareatodetermine
+the area of our city, which we calculated to be 28 square miles. Looking at
+the two cities, we determined that these cities can be modeled on a Cartesian
+coordinate plane. We calculated the average of high school between the two
+cities and determined there were 5 high schools.
+4
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+| 4.2 | Surveying |     | the | Problem |     |     |     |     |     |
+| --- | --------- | --- | --- | ------- | --- | --- | --- | --- | --- |
+In order to identify the strategy for improving the city, we surveyed different
+aspects of the sample city distribution given. The primary method for per-
+forming these surveys was multiple regression analysis. The multiple regression
+analysis was performed on the parameters with regards to time. The multiple
+regressionscanperformregressionformultipleindependent-variableparameters
+(X) and a single dependant-variable result (Y). β is analogous to the slope of
+n
+the Pearson linear regression of the independent parameter and the depMendant-
+variable. The valueisthey-interceptanalogyofthePearsonlinearcorrelation.
+The β gives the relative influence of the parameter on the de-
+|     | standardized−weight |     |     |     |     |     |     | C   |     |
+| --- | ------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+pendantvariable. Onceweestablishwhichindependentvariablesarecorrelated
+withthedependantvariables,wecanproceedbyapproachingpossiblesolutions.
+M
+| 4.3 | Correlated |     | Parameters |     | with | Violence | Incidents |     |     |
+| --- | ---------- | --- | ---------- | --- | ---- | -------- | --------- | --- | --- |
+i
+A multiple regression analysis was run on city popHulation (X ), county popula-
+1
+tion(X 2 ),theinverseofhighschoolenrollment(X 3 ),therateofstudentfailure
+to graduate (X ), the high school drop o：uts (X ), and unemployed population
+|     |     | 4   |     |     |     | 5   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+(X ) with the overall incidence of violence (Y). The multiple regressions were
+6
+done as a function of the time (in years). All statistical tests were run using
+VassarStats. The regression was given in the following general form, where X
+|     |             |     |      | 号             |              |     |     |     | n   |
+| --- | ----------- | --- | ---- | ------------- | ------------ | --- | --- | --- | --- |
+| is  | a parameter | and | Y is | the incidence | of violence: |     |     |     |     |
+众
+|     | Y           | =α+β                     | X +β       | X +β        | X +β X      | +β X    | ++β         | X +β X             | (1) |
+| --- | ----------- | ------------------------ | ---------- | ----------- | ----------- | ------- | ----------- | ------------------ | --- |
+|     |             | 1                        | 1          | 2 2 3       | 3 4 4       | 5       | 5           | 6 6 7 7            |     |
+|     | Y           | ≈−公18433.2981+(−0.0522)X |            |             | +0.0463X    |         | +7.586∗107X |                    | (2) |
+|     |             |                          |            |             | 1           |         | 2           | 3                  |     |
+|     |             | +463.1819X               |            | +(−1.5634)X | +(−0.0293)X |         |             |                    |     |
+|     |             |                          |            | 4           | 5           |         | 6           |                    |     |
+|     | We信observed | a                        | relatively | significant | correlation | between |             | all the parameters |     |
+(R2
+and the incidence of violence = 0.804, df = 6). The elimination of any
+individual parameter |n|−1 reduced the strength of the correlation where |n|
+is the number of parameters and p(X) is the p-value of statistical significance
+微
+p(X ) > p(X ). The selected parameter provided the optimal statistical
+|     | |n|−1 | |n| |     |     |     |     |     |     |     |
+| --- | ----- | --- | --- | --- | --- | --- | --- | --- | --- |
+significance between the parameters and the incidence of violence. Correlation
+of all permutations of parameters and incidents of violence are shown in the
+| following |     | multiple | regression | correlation | matrix: |     |     |     |     |
+| --------- | --- | -------- | ---------- | ----------- | ------- | --- | --- | --- | --- |
+5
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+M
+Table 1
+C
+A partial negative correlation was observed between X and X with Y.
+1 2
+These parameters are attributed to the characteristics of the sample popula-
+M
+tion. This suggests that an increase in the population yields a lower incidence
+ofviolence. Othersstudies(Wirth,1938;Sampson,2006)haveobserveddensity-
+dependant urban crime, contradicting the results of thisidata. Due to the mul-
+tiversityoftheinfluenceofpopulationchangeontHhefunctionofthesociety, we
+assumethatthecorrelationisaresponsetoasocietalresponsefrompopulation
+growthnotgiveninthegivenparameters：. Forthepurposeofthisstudy,wewill
+consider density (D) and incidence of violence (V) to be directly proportional
+(D = kV). The β of each parameter is given as the follow-
+standardized−weight
+ing: X (-2.3327), X (8.6558)号, X (9.4401), X (0.279), X (-1.8489), and
+1 2 3 4 5
+X (-0.962). The β values show that among the parameters
+6 standardized−weight
+enrollment in high school was most significantly correlated.
+众
+4.4 The Effect of Education on Unemployment
+Although other studies (Ashenfelter & Ham, 1979; Barry & Hannan, 1997)
+公
+have pointed to the inverse correlation between education and unemployment,
+we decided to determine whether there is a statistically significant correlation
+betweentheinverseofhighschoolenrollment(S ),therateofstudentsthatfail
+信 1
+to graduate (S ), the number of high school drop outs (S ), and the population
+2 3
+that is unemployment (U) for this particular city. All calculations and data
+were acquired using the same method as the previous section (Correlated of
+微
+ParameterswithViolenceIncidents). Asignificantcorrelationwasnotobserved
+between any educational parameters and unemployment (R2 = 0.0457, df = 3,
+p = 0.0319). The following is the correlation matrix of all permutations of this
+multiple regression:
+6
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+M
+|     |     |     |     | Table 2 |     |     |     |     |     |
+| --- | --- | --- | --- | ------- | --- | --- | --- | --- | --- |
+JaCil
+| 4.5 The | Effect | of Education |     | on  | the | Juvenile |     | Popula- |     |
+| ------- | ------ | ------------ | --- | --- | --- | -------- | --- | ------- | --- |
+tion
+M
+Since we observed that the educational aspects of the community did to lead to
+unemployment, we decided to identify any effect of education on the number of
+juvenile inmates. A multiple regression analysis was donie as shown previously
+H
+testing the influence of the inverse of high school enrollment (H 1 ), the rate of
+studentfailuretograduate(H ), andthenumberofhighschooldropouts(H )
+|     |     |     | 2   | ：   |     |     |     |     | 3   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+on juvenile inmates (J). A highly significant correlation was observed between
+the educational parameters and the juvenile jail population (R2 = 0.9804, df =
+| 3, p<0.01). | This yielded | the | following | functionalized |     | regression |     | formula: |     |
+| ----------- | ------------ | --- | --------- | -------------- | --- | ---------- | --- | -------- | --- |
+号
+|     |     | J =α+β |     | 1 H 1 +β 2 H | 2 +β | 3 H 3 |     |     | (3) |
+| --- | --- | ------ | --- | ------------ | ---- | ----- | --- | --- | --- |
+众
+−54362.8309+(5.54)108H
+| J ≈   |                     |     |      | +(−4920.2935)H |     |       | +(−8.7266)H |            | (4) |
+| ----- | ------------------- | --- | ---- | -------------- | --- | ----- | ----------- | ---------- | --- |
+|       |                     |     |      | 1              |     | 2     |             | 3          |     |
+| The β | 公of                 |     | each | parameter      | is  | given | as the      | following: | H   |
+|       | standardized−weight |     |      |                |     |       |             |            | 1   |
+(0.7617), H (-0.0617), and H (-0.3384). The most attributable parameter is
+|     | 2   |     | 3   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+high school enrollment, followed by the failure to graduate and the number of
+highsc信hooldropouts. Thefollowingisthecorrelationmatrixofallpermutations
+| of this multiple | regression: |     |     |     |     |     |     |     |     |
+| ---------------- | ----------- | --- | --- | --- | --- | --- | --- | --- | --- |
+微
+|            |              |     |        | Table 3         |     |     |             |             |     |
+| ---------- | ------------ | --- | ------ | --------------- | --- | --- | ----------- | ----------- | --- |
+| The Effect | of Education |     | on the | Jail Population |     | The | significant | correlation |     |
+between juvenile jail population and education parameters suggested that the
+there may be a correlation between the effect of education on the general jail
+7
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+population. The factors that were used in this multiple regression analysis
+were the influence of the inverse of high school enrollment (E ), the rate of
+1
+student failure to graduate (E ), and the number of high school drop outs
+2
+(E 3 ). These were used to determine any potential influence on the total prison
+population (P). A moderately significant correlation was established between
+the parameters and the total prison population (R2 = 0.618, df = 3). This
+| resulted | in the | following | multiple |     | regression | analysis | function: |     |     |     |
+| -------- | ------ | --------- | -------- | --- | ---------- | -------- | --------- | --- | --- | --- |
+M
+|     |     |     | P =α+β |     | E +β | E +β | E   |     |     | (5) |
+| --- | --- | --- | ------ | --- | ---- | ---- | --- | --- | --- | --- |
+|     |     |     |        |     | 1 1  | 2 2  | 3   | 3   |     |     |
+C
+≈258481.4447+(−9.41∗108)E
+| P   |         |             |     |                | +(−46732.4669)E |          |     | +58.1383E     |             | (6) |
+| --- | ------- | ----------- | --- | -------------- | --------------- | -------- | --- | ------------- | ----------- | --- |
+|     |         |             |     |                | 1               |          |     | M 2           | 3           |     |
+| The | reduced | significant |     | of correlation |                 | compared |     | to the highly | significant |     |
+correlation established between the education parameters and the juvenile jail
+i
+population. Thismaybeattributedtodangerousbehaviorcommittedfollowing
+H
+the completion of high school. The standardized-weight of each parameter is
+given as the following: E 1 (-0.876), E 2 (-0.2106), ：3 and E (0.5143). The most
+attributable parameter is the number of high school drop outs, followed by the
+failure to graduate and high school enrollment. The following is the correlation
+| matrix | of all | permutations |     | of this | multiple | regression: |     |     |     |     |
+| ------ | ------ | ------------ | --- | ------- | -------- | ----------- | --- | --- | --- | --- |
+号
+众
+公
+|     |     |     |     |     | Table | 4   |     |     |     |     |
+| --- | --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- |
+信
+| 4.6 | The | Effect | of Unemployment |     |     |     | on the | Jail Population |     |     |
+| --- | --- | ------ | --------------- | --- | --- | --- | ------ | --------------- | --- | --- |
+微
+Inadditiontoeducation,welookedatunemploymentasasourceforthehighjail
+population. AStudentst-testwasperformedonthepopulationunemployedand
+the prison population. The F-test revealed a significant difference in variance
+between the two samples (F = 16.57, df = 8, p = 0.000319). A statistically
+significant difference was observed between the two samples (t = -67.64, df =
+16, p<0.0001). This statistical rejects the idea that unemployment and prison
+| population | are | related | for the     | crime | present | in   | this given | city. |     |     |
+| ---------- | --- | ------- | ----------- | ----- | ------- | ---- | ---------- | ----- | --- | --- |
+| 4.7        | The | Effect  | of Behavior |       | on      | Jail |            |       |     |     |
+Wedefinebehaviorthroughtheinverseofhighschoolenrollment(B 1 ), therate
+of student failure to graduate (B ), the population of high school graduates
+2
+8
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+(B ), andthepopulationunemployed(B ). Thesebehavioralfactorswereused
+| 3   |     |     |     |     | 4   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+observe any possible correlations to the prison population (R). We observed a
+relativelysignificantcorrelation(R2 =0.7893,df =4). Thiscorrelationyielded
+| the following |     | equation | of multiple | regressions: |      |      |     |     |     |     |
+| ------------- | --- | -------- | ----------- | ------------ | ---- | ---- | --- | --- | --- | --- |
+|               |     | R=α+β    |             | B +β         | B +β | B +β | B   |     |     | (7) |
+|               |     |          |             | 1 1          | 2 2  | 3 3  | 4 4 |     |     |     |
+M
+|     |                     | R≈280436.9018+(−8.62∗108)B |     |                   |     | +(−43210.6989)B |        |            |     | (8)  |
+| --- | ------------------- | -------------------------- | --- | ----------------- | --- | --------------- | ------ | ---------- | --- | ---- |
+|     |                     |                            |     |                   |     | 1               |        | 2          |     |      |
+|     |                     | +43.7365B                  |     | +(−1.7211)B       |     |                 |        | C          |     |      |
+|     |                     |                            |     | 3                 | 4   |                 |        |            |     |      |
+| The | β                   |                            |     | of each parameter |     | is given        | as the | following: |     | B (- |
+|     | standardized−weight |                            |     |                   |     |                 | M      |            |     | 1    |
+0.8026), B 2 (-0.1947), B 3 (0.3869), and B 3 (-0.4228). The most attributable
+parameterishighschoolenrollment,followedbythefailuretograduateandthe
+number of high school drop outs. The following is the ciorrelation matrix of all
+| permutations |     | of this | multiple | regression: |     | H   |     |     |     |     |
+| ------------ | --- | ------- | -------- | ----------- | --- | --- | --- | --- | --- | --- |
+：
+号
+众
+|     |     |     |     | Table | 5   |     |     |     |     |     |
+| --- | --- | --- | --- | ----- | --- | --- | --- | --- | --- | --- |
+公
+| 4.8 | Effect | of Education |     | on Parole |     | Violations |     |     |     |     |
+| --- | ------ | ------------ | --- | --------- | --- | ---------- | --- | --- | --- | --- |
+信
+To observe the potential relationship between education and the effect on post-
+high school behavior, we studied the correlation between three educational pa-
+rameters [the inverse of high school enrollment (F 1 ), the number of high school
+微
+dropouts(F ),andtherateoffailuretograduate(F )]andunemployment(F )
+|     |     | 2   |     |     |     | 3   |     |     |     | 4   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+with the number of parole violations per year (L). The relationship, although
+(R2
+moderately significant = 0.6865 , df = 4), incorporated multiple variables,
+allowingforareasonableextendforvariationofthecoefficientofdetermination
+| (R2).                | This | provided the | following | equation | and  | correlation | matrix:  |     |     |      |
+| -------------------- | ---- | ------------ | --------- | -------- | ---- | ----------- | -------- | --- | --- | ---- |
+|                      |      |              | L=α+β     | F +β     | F +β | F +β        | F        |     |     | (9)  |
+|                      |      |              |           | 1 1      | 2 2  | 3 3         | 4 4      |     |     |      |
+| L≈1.49∗105+−4.9∗108Z |      |              |           | +109.25Z | +    | −356.065Z   | +−1.498Z |     |     | (10) |
+|                      |      |              |           | 1        | 2    |             | 3        |     | 4   |      |
+9
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+M
+C
+M
+i
+|     |     | Table | 6 H |     |
+| --- | --- | ----- | --- | --- |
+：
+| 4.9 Results   | of the           | Population  | Characteristics | Survey   |
+| ------------- | ---------------- | ----------- | --------------- | -------- |
+| The following | flow chart gives | an overview | of the survey   | results: |
+号
+众
+公
+信
+微
+|     |     | Figure | 1   |     |
+| --- | --- | ------ | --- | --- |
+10
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Allcorrelationsweredoneassets,sobracketswereusedtoshowthesetsthat
+wereusedforcorrelation. Forexample,theeducation-relatedparametersetwas
+used in multiple tests for comparison to different dependant-crime associated
+factors. Unemployment had no correlation to the education parameter set.
+However, a correlation was established within the high school parameter set.
+Incidence of violence showed a correlation with the education parameter set
+andunemployment. Additionally,juvenilejailpopulationandprisonpopulation
+bothshowedacorrelationwiththeeducationparameters,althoughthejuvenile
+M
+jail population had a stronger correlation.
+Forthesestatisticaltests,wecandeterminesignificantparameters. Through
+these tests, we can see that the rate of student failure to graduCate, the high
+school drop outs, high school enrollment, and unemployed population are sig-
+nificantfactors. Furthermore,welookedattheinterconnectMionbetweenmultiple
+parametersandobservedthecomplexityinteractionofbetweenparametersand
+their effects. The goals of this solution model will be to address these parame-
+ters. i
+H
+5 Task 2: Mapping the ：Problem
+5.1 Objectives
+号
+Our question was to model the incidence of violence and to give a solution to
+reduce violence in the city. Our first objective in finding a solution to reduce
+violence is to identify various changes that can be made in the city in order to
+众
+improve factors such as high school, enrollment, high school graduation, unem-
+ployment, etc. Our next objective is to find how these changes will specifically
+(percentage wise) affect the before-mentioned factors. By finding these values
+wewillbeable公tofindadirecteffectofthechangenotonlyonimmediatefactors
+but also the effect on the overall change in the prevalence of incidence of crime
+and in turn number of incarcerated persons within the city. The final objective
+is to fi信nd the overall improvement in the crime rate of the city through all of
+the changes we made to see the effectiveness of our proposed improvements.
+Another side objective in this section is to model the city graphically in order
+微to obtain a visual representation of our changes.
+5.2 Mapping Overview
+A computer-based program that can model a simple city such as the one in
+question is determined to be extremely important to facilitate both quantita-
+tive and qualitative simulation of our solutions. Using MATLAB, a program
+waswrittentomodelpopulationdistributionusingrandomsimulation,estimate
+percentages of populations going to each school, and determine the effect of a
+new school in conditions similar to that described in the prompt. After run-
+ning the simulation several times, it was determined that introducing a school
+towards the center would result in 10
+11
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+To model population density of the city, it was first assumed that the city
+wasintheconfinesofasquare. Itwasadditionallyassumedthatthepopulation
+wasmostheavilyconcentratedinsomeregioninthecenterofthecity, andthat
+the distance from this central location was inversely proportional with popula-
+tion density. The program, however, did simulate some variance in where the
+center of the city really is, as is common in most mid-size and large cities. Ad-
+ditionally, the population density was not a perfect Gaussian distribution, but
+rather closely approximated it. Thus, applications of the model could expand
+M
+to most cities, but not just the perfect city.
+To model high school locations and the volume of students, it was assumed
+thatapopulationinacertainregionwasproportionalwithregulaCrparticipants
+of school, and thus density determined on a map generated of a city could
+be representative on a grayscale image, with white demMarcating the highest
+populated regions and black the lower populated region. The four high schools
+were also assumed to enroll equally-sized populations of students, though not
+necessarilyexactlyequally-populatedregions. Theseexisitinghighschoolswould
+H
+thenbepresentinthecenterofoneofthefourequally-sizedquadrantsthatcould
+be made from the city. The new high school, on the other hand, would be built
+：
+near or around the center of the city, and though enrolling boundaries were
+confined to a smaller region than the other schools, the population of students
+would remain more or less the same as in the other four schools. The new
+号
+high school would enroll from a diamond-shaped portion of the city in order to
+optimize travel distance for all four schools.
+众
+5.3 Gaussian Distribution
+To complete the model of the city we needed to model how the population
+density varied公over the span of the city. To do this we used a Gaussian distri-
+bution to show the population density as a function of the distance from the
+mean density. Gaussian (normal) distribution is utilized in statistics as a form
+of probability distribution. It is generally used to represent the spread of real-
+信
+ity based random variables that cluster about a mean value. The function to
+represent a normal distribution in two dimensions can be modeled by:
+微 1 −(x−µ)2
+f(x)=
+(cid:112)
+e (2(σ)2)
+(2πσ2)
+Thefunctionaboveisdefinedbytwoconstants(µandσ2). Theseconstants
+represent certain statistical values:
+µ∈R
+is the mean value and σ2 > 0 is the variance. For the purposes of creat-
+ing a model that would satisfy the parameters that we set up (a mean value
+µ=7,8,9,or10andamaximumof32)wehadtomanipulatethefunctionintothe
+one below:
+12
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+π(x−µ)2
+f(x)=32e
+128
+4
+2
+M
+|     |     |     | 5 10 | 15  |     |     |
+| --- | --- | --- | ---- | --- | --- | --- |
+-2
+C
+-4
+M
+|     |     |     | Figure 2 |     |     |     |
+| --- | --- | --- | -------- | --- | --- | --- |
+i
+| The graph | above was | calculated | with a =8.5 | fHor the | purpose of showing | a   |
+| --------- | --------- | ---------- | ----------- | -------- | ------------------ | --- |
+generalsolutioninthemiddleofourdata. Thegraphbelowshowstheequation
+graphed with the =7,8,9,and 10 overlayin：g each other. The reason for choosing
+those four mean values instead of just the average is to make it more realistic.
+In real life the center of a city is not located in the geographical center, but is
+in the general vicinity. Since we divided our city into a 16x16 matrix, we chose
+号
+| the population | center to | be randomly | picked | within the | center 4x4 matrix. |     |
+| -------------- | --------- | ----------- | ------ | ---------- | ------------------ | --- |
+30众
+25
+20
+公
+15
+10
+信5
+|     |     |     | 5 10 | 15  |     |     |
+| --- | --- | --- | ---- | --- | --- | --- |
+微
+|         |              |           | Figure 3 |            |                         |     |
+| ------- | ------------ | --------- | -------- | ---------- | ----------------------- | --- |
+| Another | measure that | was taken | to make  | the map of | the city more realistic |     |
+was to not model the density strictly off of a normal distribution, but to let
+it vary a little around the normal distribution. To put this into our particular
+model, we use the derivative of the normal distribution function above in order
+to find the rate at which the density changes in order to calculate how much
+the grayscale value of each concentric perimeter from the randomized center
+would decrease from the previous perimeter. The equation modeling that is
+seen below:
+|     |     |                | π µ)2  |      |     |     |
+| --- | --- | -------------- | ------ | ---- | --- | --- |
+|     |     | f(cid:48)(x)=− | π(x −  |      |     |     |
+|     |     |                | e 1 28 | (x−µ |     |     |
+2
+13
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+)
+30
+25
+20
+15
+M
+10
+5
+C
+5 10 15
+Figure 4 M
+Then to add the realistic variance we allowed the program to shade the
+i
+density of each square by following method: TaHke the rounded value of the
+normal distribution function for that square Take the rounded value of the
+derivative of the distribution function fo：r that square Create a range defined
+by: f(x)−1/2f(cid:48)(x), f(x)+1/2f(cid:48)(x) Pick a random number within that range
+as the grayscale value
+Byfollowingthismethodwe号wereabletocreateapopulationdensitymodel
+that follows a normal distribution, but also allows for variance that would nor-
+mally be seen in the real world, such as the center and rate of change.
+众
+5.4 Results
+Aseriesofsimulationsrevealedthatthefourexistingschoolswould,onaverage,
+公
+have their student bodies cut by 9.21%. Correlation
+6 Task 3: Finding a Solution
+信
+6.1 Overview
+微
+Fromthesurvey, werecognizethat3ofthe4mainfactorstoaddressareschool
+related: high school graduation, high school dropout, and high school enroll-
+ment. Any solution to the crime rates must address the school system. We
+assume the following definition of each of these parameters: high school grad-
+uation is the number of people who graduated from high school, high school
+dropout is the number of people who dropped out of high school since the be-
+ginning of the school year, and high school enrollment is the number of people
+who are still registered as students in the school.
+14
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+6.2 Proposal 1: Creation of a City Wide After-School Pro-
+gram for Failing Students
+Justification: Statistically, the most significant issue is high school graduation,
+which is purely influenced by the academic performance of the students. In
+order to address this, after-school programs will be created in all schools for
+the purpose of educated students. Each program will be headed by at least
+one or two qualified teachers from the school. The rest of the teachers would
+M
+be a mix of part and part time facility. Students would receive individual
+attention in the subject areas that needed to be taught the most. According
+to a study on California after school programs, the inclusion of after-school
+C
+programsinthemselvesreducehighschooldropoutrateby27%andanincrease
+in graduation rate by 21% (Brown et al, 2002). Taking a fixed proportion of
+M
+this to fit to our data, we can model effectively change in dropout rate to be
+13.5% and the change in graduation rate to be 10.5%. This is because of the
+increased amount of people served, and therefore, the rediuced effect in treating
+each individual student. The Department of JustiHce (DOJ) through the Office
+of Justice Programs (OJP) sponsors 4.2 billion dollars worth of after-school
+programs meant to keep students out of：trouble (Maurer, 2010). Tapping into
+several of these funds we could fund this after school help sessions. According
+to The Cost and Benefits of After School Program, after school programs cost
+10,038 dollars to implement, bu号t reduces other related cost in the future, on
+the low end, about 89,500 dollars for a net gain of 79,500 dollars (Brown et al,
+2002). The program would have to be externally funded for about 5 or 6 years
+before the benefits of th众e program start to outweigh the external cost.
+6.3 Proposal 2: Create a New School
+公
+Justification: Various studies have shown that the school size is correlated with
+the number of crime incidences (Wilson et al, 2001). This is primarily because
+smaller schools have lower student to teacher ratio, and can give each student
+信
+more individualized focus. Smaller schools have an 8% increase in enrollment,
+Studieshaveshownthatbetweenaschoolof300and1000students,theaverage
+crimerategoesupby56%. Newerschoolstendtohavealowerdropoutthanthe
+微dropoutratearoundtheschool(4.6%vs12.9%). Thecreationofanewschool,
+thereforewilldirectlyreducethedropoutrate(7%),andincreasetheenrollment
+(8%) (Chicago 2010). In addition, in the creation of the new school, we will
+generateanumberofpermanentteachingjobsandtemporaryconstructionjobs,
+reducingtheunemploymentrate. SpringfieldPublicHighSchoolhasabout148
+teachers in its similarly sized high school. We will instead increase the number
+ofteachersinournewhighschoolto160toreducethestudenttoteacherratio.
+With the addition on non teaching jobs, we can expect the school to employ
+about 200 people. With construction jobs, assuming the school takes a year to
+build,andthecostofthecontractorfeestotheUSaverage(ReedConstruction),
+andtheaveragewageoftheworkeris842dollarsperweek(BLS)wecanexpect
+to create 60 temporary construction jobs (Reed 2008) (BLS, 2010). According
+15
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+toReedConstruction,theaverageschoolcost17milliontocreate. Fundingcan
+be secured by borrowing bonds against the saving that we plan to make in the
+| next two proposals. |                |            |     |           |       |
+| ------------------- | -------------- | ---------- | --- | --------- | ----- |
+| 7 Task              | 4: Model       | Regression | for | Predicted | Solu- |
+| tion                | Implementation |            |     |           |       |
+M
+A multiple regression was run to develop an equation using the following pa-
+rameters: the inverse of high school enrollment (Z ), high school drop outs
+1
+(Z ),therateofstudentfailuretograduate(Z ),andunemploymeCnt(Z ). The
+| 2   |     |     | 3   |     | 4   |
+| --- | --- | --- | --- | --- | --- |
+dependant variable (V) used for modeling the relationship between these vari-
+ables and crime was incidence of crime. Although a regresMsion was established
+between all parameters and the dependant variable, a multiple regression anal-
+ysis was run on this particular subset of parameters due to the influence of the
+proposed actions on these specific parameters. A moderiate significant was ob-
+H (R2
+served for the multiple regressions of these factors = 0.7154, df = 4). The
+primary implication of using correlation as source to characterize this model is
+：
+the ambiguity in whether the correlation is due to causation. For the purpose
+of simple implementation of this model and the diversity of sources suggesting
+causation, all correlations established by this regression will be acknowledged
+号
+as the result of causation. The regression provided the specific equation and
+| correlation | matrix as follows: |     |     |     |     |
+| ----------- | ------------------ | --- | --- | --- | --- |
+众
+|     | V =α+β | Z +β Z | +β Z +β | Z   | (11) |
+| --- | ------ | ------ | ------- | --- | ---- |
+|     |        | 1 1 2  | 2 3 3   | 4 4 |      |
+公
+| V =385.1969+1618665.7845Z |     | +0.1943Z | +7.4918Z | +0.0073Z | (12) |
+| ------------------------- | --- | -------- | -------- | -------- | ---- |
+|                           |     | 1        | 2        | 3        | 4    |
+信
+微
+|     |     | Figure | 5   |     |     |
+| --- | --- | ------ | --- | --- | --- |
+16
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Using the given multiple regression correlation, we can substitute predicted
+values for the inverse of school enrollment, the number of high school drop
+outs, the rate of student failure to graduate, and the population unemployed
+in order determine the effects of the previously suggested (Task 3) solutions to
+the crime problem. This equation will provide a prediction of the number of
+incidents that will occur in the city after the completion of this crime-curving
+reform. The changes in the parameter values for the equation will be based
+on known variation attributed to the parameter due to the known effect of the
+M
+proposed solution shown in existing societal studies. These changes will all be
+based relative to the 2008 city education parameters and unemployment data
+provided. For parameters influenced my multiple of the proposedCsolutions, we
+will take the influence (
+M
+V =385.1969+1618665.7845(1.046∗10−4∗0.92))+0.1943(147∗0.715)+7.4918(0.11∗0.895)+0.0073(17805.964∗0.81)
+i (13)
+H
+：
+V =667.41 (14)
+As shown through this equation, the V value was around 69 incidents less
+thanthecities2008value(736).号Thisisanapproximately10%reductioninthe
+incidence of violence. By performing the proposed goals to improve the citys
+education and employment characteristics, we will be capable of making this
+improvement. 众
+8 Discussion
+公
+8.1 Pros/Cons of the Model
+The p信ros to this model is that it address the long term goals of improved high
+school education with different levels of approach, initially looking at the voca-
+tional, after-school education, and then an increased number of schools. Our
+model served to help deal with the problems of unemployment and education.
+微
+However, we neglect to account for the needs of enforcement of the community.
+Inaddition, weneglecttoconsiderthefactorsofrealestateonthedevelopment
+of a new school. One positive for this model is that we account for density in
+our MATLAB model of the optimal school placement. However, the number
+of schools and the density characteristics that we obtained were based on only
+two cities of similar country and city population. If more cities were used the
+accuracy of the model would have been better. The ability of this model to be
+visualized is another positive attribute, particularly when conveying the model
+to the public. Furthermore, the analysis of the problem through multiple forms
+of multiple regression analyses and Students t-tests provided support for the
+models and establishes the legitimacy of our model. However, additional tests
+could have been used to give a deeper insight into the condition of the city.
+17
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+8.2 Topics for Future Study
+Futurestudiesshouldlookintoincorporatingallparametersintothemodel. For
+example, we could model the distribution of employment throughout the city
+and observed any method for improving the unemployment problem. Another
+characteristic to observe are the distributions of law enforcement by looking
+at the ability of the police to maintain the stability of regions of concentrated
+crime, primarily in densely population regions. Education parameters such as
+theteachertostudentratioandqualityoftheschoolprogramshouldbeaMreasfor
+futureconsiderations. Itwouldbeparticularlysignificanttoseethedistribution
+oftheparameterswithregardstoitslocationinthecity. Furtherstatisticaltests
+C
+must to be performed to establish the best form of correlation. One possible
+way to approach these statistical tests is the parameterization and testing of
+M
+generated decision trees using data mining through the WEKA 3 data mining
+software. Other factors and larger sample sizes are important factors to study.
+i
+H
+9 Letter to the Mayor
+：
+My fellow residents of Honeycomb, right now we live in a time of great strife.
+Thecityroadsarepouredwiththescreamsandcriesoftheinnocentbeingtaken
+advantageof. Wehaveconductedvariousstatisticalanalysisandmodelsandwe
+号
+have determined the 3 most important factors that determine crime rates, high
+school dropout rates, high school enrollment rates, and high school graduation
+rate. What this tells us is that committing crime is not controlled by a single
+point in time, it tells us众that long term factors, many coming from adolescence
+age, drives the formation of the criminal mind. While this may not deter crime
+right away, it tells us that crime can be tackled early on, and people can be
+moved away fr公om committing crime. We propose three programs to address
+these factors and in the long term reduce crime rates. First, create a system
+of afterschool programs, both educational and recreational. Our research has
+shown信thatkeepingkidsinschoolandkeepingtheminvolvedafterschool,isthe
+bestwaytodetercrime. Secondly,wewillcreateasystemofvocationallearning
+withinourschools. Someofourstudentsaremorelikelytobeinterestedinbeing
+微electricians, plumbers, and carpenters, jobs that are quickly fleeing our cities.
+Instead of being made to go through the core curriculum, a separate system
+will be made to teach our youth the skills they need to stay off the streets and
+becomeproductivemembersofsociety. Lastly, andmostambitiously, Ipropose
+creating a new high school in the center of the city. This school will lower the
+student to teacher ratio of all four schools, giving the youth more attention
+they need, especially the ones at risk for crimes. New schools are also less
+likely to have violent reputations and established culture, allowing for us and
+the students to create a safe, working environment for these schools. According
+to the model, we would reduce the incidence of violent crimes by 70 crimes.
+18
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+10 References
+Alsapugh, John W. (2003). The Relationship between School, Size, Student
+Teacher Ratio and School Efficiency. Education 114(4), 593-601. Retrieved
+from
+| Amos, | Jason | (2008). | Dropouts, | Diplomas, |     | and Dollars: |     | U.S High | Schools |
+| ----- | ----- | ------- | --------- | --------- | --- | ------------ | --- | -------- | ------- |
+and the Nations Economy. Washington D.C: Alliance for Excellent Education.
+Retrieved November 14, 2010 from http://www.all4ed.org/publication_
+M
+material/reports/Econ2008
+| Ashenfelter, |     | Orley, Ham, |     | John (1979). |     | Education, | Unemployment, |     | and |
+| ------------ | --- | ----------- | --- | ------------ | --- | ---------- | ------------- | --- | --- |
+Earnings. Journal of Political Economy 87(5), 99-116. RetrievedCfrom http:
+//www.jstor.org/stable/1829910
+| Barry, | F., Hanna, | A   | (1997). | Education, |     | Deprivation, | M   | Hysteresis, | Unem- |
+| ------ | ---------- | --- | ------- | ---------- | --- | ------------ | --- | ----------- | ----- |
+ployment. Retrived from College Dublin, Department of Political Economy
+Web site. http://logec.repec.org/scripts/paperstat.pf?h=RePEc:fth:
+| dublec:97/24 |         |     |         |         |             |      | i   |                   |     |
+| ------------ | ------- | --- | ------- | ------- | ----------- | ---- | --- | ----------------- | --- |
+| Brown,       | William | O., | Frates, | Steven, | B., RudgeH, | Ian, | S., | Tradewell,Richard |     |
+L (2002). The Cost and Benefits of After School Programs. Retrieved from
+Claremont-MckennaCollege,TheRoseIn：stituteWebsite:
+www.claremontmckenna.
+edu/rose/publications/pdf/after_school.pdf
+| Bureau       | of Labor                                     | Statistics.                                     |         | (2010). | Construction. |          | Retrieved | November  | 15,        |
+| ------------ | -------------------------------------------- | ----------------------------------------------- | ------- | ------- | ------------- | -------- | --------- | --------- | ---------- |
+| 2010 from    | http://www.bls.gov号/oco/cg/cgs003.htm#nature |                                                 |         |         |               |          |           |           |            |
+| Chicago      | Public                                       | Schools                                         | (2010). | Small   | Schools:      | Research |           | Retrieved | Novem-     |
+| ber 15, 2010 | from                                         | http://smallschools.cps.k12.il.us/research.html |         |         |               |          |           |           |            |
+| Hughes,      | Katherine                                    | L众.,                                            | Bailey  | Thomas, | Mechur,       | Melinda  |           | (2001).   | School-to- |
+Work: Making a Difference in Education. Retrieved from Columbia University,
+InstituteonEducationandtheEconomyWebsite: http://www.tc.columbia.
+edu/iee/stwre公lease.htm
+| Hyperphysics |     | (2010). | Gaussian | Distribution |     | Function. | Retrieved |     | November |
+| ------------ | --- | ------- | -------- | ------------ | --- | --------- | --------- | --- | -------- |
+15,2010fromhttp://hyperphysics.phy-astr.gsu.edu/hbase/math/gaufcn.
+html
+信
+| Raphael, | Steven, | Stoll, | Michael | (2004). |     | The Effect | of  | Prison | release on |
+| -------- | ------- | ------ | ------- | ------- | --- | ---------- | --- | ------ | ---------- |
+Regional Crime Rates. Papers on Urban Affairs 204-255. doi.10.1353/urb.
+2004.0011
+微
+| Reed | Construction | Data | (2008). | Construction |     | Cost | Estimate: |     | High School |
+| ---- | ------------ | ---- | ------- | ------------ | --- | ---- | --------- | --- | ----------- |
+ConstructionCosts. RetrievedNovember15,2010fromhttp://www.reedconstructiondata.
+com/rsmeans/models/high-school/
+| Sampson,Robert. |        | J.(1983),StructuralDensityandCriminalVictimization. |                                        |         |        |          |     |             |       |
+| --------------- | ------ | --------------------------------------------------- | -------------------------------------- | ------- | ------ | -------- | --- | ----------- | ----- |
+| Criminology,    | 21(2), | 276293.                                             | doi:10.1111/j.1745-9125.1983.tb00262.x |         |        |          |     |             |       |
+| South           | Dakota | State                                               | University                             | (2010). | Higher | Earnings |     | for College | Grad- |
+uates. Retrieved November 15, 2010 from http://www.sdstate.edu/news/
+college-earnings-commentator.cfm
+| Stern, | David, | Dayton, | Charles, | Paik, | Il-Woo, | Weisberg, |     | Alan (1989). | Ben- |
+| ------ | ------ | ------- | -------- | ----- | ------- | --------- | --- | ------------ | ---- |
+efits and Cost of Dropout Prevention in a High School Program Combining
+Academic and Vocational Education: Third-Year Results from Replications of
+19
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+the California Academies. Educational Evaluations and Policy Analysis 11(4),
+| 405-416. | Retrieved | from      | http://www.jstor.org/stable/1163992 |            |            |      |     |          |     |
+| -------- | --------- | --------- | ----------------------------------- | ---------- | ---------- | ---- | --- | -------- | --- |
+| Swanson, | Gordon    | I (1978). |                                     | Vocational | Education: | Fact | and | Fantasy. | The |
+PhiDeltaKapan60(2),87-90. Retrievedfromhttp://www.jstor.org/stable/
+20299230
+| Tung, | Rosann, | Ouimette | Monique, |     | Feldman, | Jay (2004). | How | Are | Boston |
+| ----- | ------- | -------- | -------- | --- | -------- | ----------- | --- | --- | ------ |
+Pilot School Students Faring? Boston: Center for Collaborative Education.
+Retrieved November 15, 2010 from http://www.ccebos.org/pilots.faring.
+M
+2004.pdf
+| Tyler,JohnH,Lofstrom,Magnus(2009). |     |     |     |     | FinishingHighSchool: |     |     | Alternative |     |
+| ---------------------------------- | --- | --- | --- | --- | -------------------- | --- | --- | ----------- | --- |
+Pathways and Dropout Recovery. The Future of the Children 1C9(1), 77-103.
+doi:10.1353/foc.0.0019
+| U.SBureauoftheCensus(2008). |     |     |     | AnnualEstimatesofMResidentPopulation |     |     |     |     |     |
+| --------------------------- | --- | --- | --- | ------------------------------------ | --- | --- | --- | --- | --- |
+Counties: April 1, 2008 to July 1,2008. Retrieved November 14, 2010 from
+http://www.census.gov/popest/counties/CO-EST2008-01.html
+| U.S | Bureau | of the Census |     | (2008). | Population | Esitimates: |     | Incorporated |     |
+| --- | ------ | ------------- | --- | ------- | ---------- | ----------- | --- | ------------ | --- |
+H
+Places and Minor Civil Division. Retrieved November 14, 2010 from http:
+//www.census.gov/popest/cities/SUB-EST2009-4.html
+：
+| U.S | Department | of Education |     | (2010). | Implications |     | and Conclusion. |     | Re- |
+| --- | ---------- | ------------ | --- | ------- | ------------ | --- | --------------- | --- | --- |
+trieved November 15, 2010 from http://www2.ed.gov/pubs/VoEd/Chapter3/
+Part8.html
+号
+| United | States | Government |     | Accountability | Office. | (2010). | Oversight |     | of DOJ |
+| ------ | ------ | ---------- | --- | -------------- | ------- | ------- | --------- | --- | ------ |
+Funds for Recreational Activities (GAO publication No.10-661R). Washington
+| D.C: Retrieved |     | from www.gao.gov/new.items/d10661r.pdf |     |     |     |     |     |     |     |
+| -------------- | --- | -------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
+G众ottfredson
+| Wilson, | David | B,  |     | Denise, | C., Najak, | Stacy, | S.  | (2001). | School- |
+| ------- | ----- | --- | --- | ------- | ---------- | ------ | --- | ------- | ------- |
+Based Prevention of Problem Behavior: A Meta-Analysis. Journal of Quanti-
+| tative Criminology |        | 17(3),    | 247-272. |                                     |              |          |     |         |          |
+| ------------------ | ------ | --------- | -------- | ----------------------------------- | ------------ | -------- | --- | ------- | -------- |
+| Writh,             | Loui公s | (1938).   | Urbanism | as a                                | Way of Life. | American |     | Journal | of Soci- |
+| ology 44(1),       | 1-24.  | Retrieved | from     | http://www.jstor.org/stable/2768119 |              |          |     |         |          |
+11 信 Appendix
+LATEX Code
+微
+20
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

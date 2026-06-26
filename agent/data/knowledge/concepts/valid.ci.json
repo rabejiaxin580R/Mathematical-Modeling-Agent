@@ -1,0 +1,73 @@
+{
+  "schema_version": 3,
+  "concept_id": "valid.ci",
+  "title": "置信区间",
+  "taxonomy_path": [
+    "模型验证与误差分析",
+    "误差分析",
+    "置信区间"
+  ],
+  "module_id": "I",
+  "subcat_id": "I.3",
+  "aliases": [
+    "置信区间",
+    "区间估计",
+    "95%置信"
+  ],
+  "difficulty": "Intermediate",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P2",
+  "explain": {
+    "one_liner": "置信区间告诉你，根据样本数据，总体参数最可能落在哪个范围内，并给出这个范围的可信程度。",
+    "intuition": "想象你要估计一个池塘里鱼的平均长度。你捞了50条鱼，算出平均长度是30厘米。但如果你再捞50条，平均长度可能变成31厘米或29厘米。所以，只给一个数字（点估计）不够可靠。置信区间就像说：“我有95%的把握，所有鱼的平均长度在28到32厘米之间。”这个区间比单个数字更可信，因为它考虑了抽样误差。",
+    "when_to_use": "当你需要根据样本数据推断总体参数（如均值、比例、方差）时，并且希望表达估计的不确定性。常见于假设检验、回归分析、A/B测试、调查报告等场景。",
+    "definition": "置信区间是一种区间估计，它由样本统计量构造，以一定的置信水平（如95%）包含总体参数的真值。例如，总体均值μ的95%置信区间为：\\(\\bar{X} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}\\)（σ已知）或\\(\\bar{X} \\pm t_{\\alpha/2}(n-1) \\frac{s}{\\sqrt{n}}\\)（σ未知）。",
+    "math_principle": "基于抽样分布理论。样本均值\\(\\bar{X}\\)的抽样分布近似正态分布（中心极限定理），均值为μ，标准差为\\(\\sigma/\\sqrt{n}\\)。因此，\\(\\frac{\\bar{X}-\\mu}{\\sigma/\\sqrt{n}}\\)服从标准正态分布。对于置信水平1-α，有\\(P(-z_{\\alpha/2} \\leq \\frac{\\bar{X}-\\mu}{\\sigma/\\sqrt{n}} \\leq z_{\\alpha/2}) = 1-\\alpha\\)。整理得\\(P(\\bar{X}-z_{\\alpha/2}\\frac{\\sigma}{\\sqrt{n}} \\leq \\mu \\leq \\bar{X}+z_{\\alpha/2}\\frac{\\sigma}{\\sqrt{n}}) = 1-\\alpha\\)。当σ未知时，用样本标准差s代替，且统计量服从t分布。",
+    "step_by_step": [
+      "1. 确定总体参数（如均值μ）和置信水平（如95%）。",
+      "2. 收集样本数据，计算样本均值\\(\\bar{X}\\)和样本标准差s（若σ未知）。",
+      "3. 确定临界值：若σ已知，查标准正态分布表得\\(z_{\\alpha/2}\\)；若σ未知，查t分布表得\\(t_{\\alpha/2}(n-1)\\)。",
+      "4. 计算标准误差：\\(\\frac{\\sigma}{\\sqrt{n}}\\)或\\(\\frac{s}{\\sqrt{n}}\\)。",
+      "5. 计算置信区间：\\(\\bar{X} \\pm \\text{临界值} \\times \\text{标准误差}\\)。",
+      "6. 解释：在重复抽样中，大约有(1-α)×100%的区间包含总体参数真值。"
+    ],
+    "worked_example": "假设某校学生身高服从正态分布，随机抽取25名学生，测得平均身高\\(\\bar{X}=170\\)cm，样本标准差s=10cm。求总体平均身高的95%置信区间。\n步骤：\n1. 置信水平95%，α=0.05，自由度df=24。\n2. 查t分布表得\\(t_{0.025}(24)=2.064\\)。\n3. 标准误差=\\(s/\\sqrt{n}=10/5=2\\)。\n4. 置信区间：\\(170 \\pm 2.064 \\times 2 = [165.872, 174.128]\\)。\n5. 解释：我们有95%的把握认为全校学生平均身高在165.87cm到174.13cm之间。",
+    "pitfalls": [
+      "1. 误解：95%置信区间并不意味着总体参数有95%的概率落在区间内。正确解释是：重复抽样中，95%的区间包含真值。",
+      "2. 样本量过小或分布严重偏态时，t分布或正态近似的置信区间可能不准确。",
+      "3. 置信区间仅反映抽样误差，不涵盖系统误差（如测量偏差）。",
+      "4. 当σ未知且样本量很小时，t分布临界值较大，区间较宽，可能失去实用价值。"
+    ],
+    "tools": "Python中可用scipy.stats计算置信区间。示例代码：\n```python\nimport numpy as np\nfrom scipy import stats\n\ndata = [165, 170, 172, 168, 175]  # 样本数据\nn = len(data)\nmean = np.mean(data)\nse = stats.sem(data)  # 标准误\nconfidence = 0.95\nalpha = 1 - confidence\ndf = n - 1\nt_crit = stats.t.ppf(1 - alpha/2, df)\nci_low = mean - t_crit * se\nci_high = mean + t_crit * se\nprint(f\"95% CI: [{ci_low:.2f}, {ci_high:.2f}]\")\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\bar{X} \\pm z_{\\alpha/2} \\frac{\\sigma}{\\sqrt{n}}",
+      "variables": {
+        "\\bar{X}": "样本均值",
+        "z_{\\alpha/2}": "标准正态分布的上α/2分位数",
+        "\\sigma": "总体标准差",
+        "n": "样本容量"
+      }
+    },
+    {
+      "latex_code": "\\bar{X} \\pm t_{\\alpha/2}(n-1) \\frac{s}{\\sqrt{n}}",
+      "variables": {
+        "\\bar{X}": "样本均值",
+        "t_{\\alpha/2}(n-1)": "t分布的上α/2分位数，自由度n-1",
+        "s": "样本标准差",
+        "n": "样本容量"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_I08"
+    ],
+    "from_papers": []
+  }
+}

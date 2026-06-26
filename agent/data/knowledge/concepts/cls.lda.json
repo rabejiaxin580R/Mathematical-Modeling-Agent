@@ -1,0 +1,89 @@
+{
+  "schema_version": 3,
+  "concept_id": "cls.lda",
+  "title": "判别分析（Fisher/LDA）",
+  "taxonomy_path": [
+    "常用建模方法",
+    "分类与识别方法",
+    "判别分析（Fisher/LDA）"
+  ],
+  "module_id": "C",
+  "subcat_id": "C.6",
+  "aliases": [
+    "判别分析",
+    "LDA",
+    "Fisher判别"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "判别分析是一种监督学习方法，通过寻找一个最佳投影方向，让不同类别的数据尽可能分开，同类数据尽可能聚拢，从而用于分类或降维。",
+    "intuition": "想象你在看一场足球赛，观众席上有两队球迷（红队和蓝队）。你想找一个角度拍照，使得照片里红队球迷都挤在一起，蓝队球迷也挤在一起，而且两队之间隔得远远的。这个角度就是Fisher判别分析要找的投影方向。",
+    "when_to_use": "当你有一个分类问题，数据是数值型的，并且你希望找到一个线性分类器，或者想将高维数据降到低维同时保留类别区分信息时，可以考虑使用LDA。常见于模式识别、人脸识别、信用评分等场景。",
+    "definition": "Fisher线性判别分析（LDA）是一种监督学习的降维和分类方法，通过寻找一个线性投影方向，使得不同类别样本在该方向上的投影尽可能分离（类间散度大），同时同类样本的投影尽可能聚集（类内散度小）。",
+    "math_principle": "设样本集包含两类，每类样本数为$n_1$、$n_2$，样本维度为$p$。定义类内散度矩阵$S_w = \\sum_{i=1}^2 \\sum_{x \\in C_i} (x - \\mu_i)(x - \\mu_i)^T$，类间散度矩阵$S_b = (\\mu_1 - \\mu_2)(\\mu_1 - \\mu_2)^T$。Fisher准则为最大化广义瑞利商$J(w) = \\frac{w^T S_b w}{w^T S_w w}$。最优投影方向$w$满足$S_b w = \\lambda S_w w$，即$w \\propto S_w^{-1}(\\mu_1 - \\mu_2)$。对于多类情形，扩展为求解$S_w^{-1}S_b$的特征向量。",
+    "step_by_step": [
+      "1. 收集数据：获取带有类别标签的样本集，每个样本有p个特征。",
+      "2. 计算各类均值向量：分别计算每一类样本的均值$\\mu_1$和$\\mu_2$。",
+      "3. 计算类内散度矩阵$S_w$和类间散度矩阵$S_b$。",
+      "4. 求解广义特征值问题：$S_w^{-1}S_b w = \\lambda w$，取最大特征值对应的特征向量作为投影方向$w$。",
+      "5. 投影数据：将原始数据投影到$w$上，得到一维特征。",
+      "6. 分类：对于新样本，计算其在$w$上的投影，根据与各类中心投影的距离（如最近邻）或贝叶斯决策规则进行分类。"
+    ],
+    "worked_example": "假设有两类数据：第一类：$(1,2), (2,3), (3,3)$；第二类：$(6,5), (7,8), (8,9)$。计算均值：$\\mu_1=(2, 8/3)$，$\\mu_2=(7, 22/3)$。类内散度矩阵$S_w$和类间散度矩阵$S_b$，然后求解$w$。具体计算略。得到$w$后，将每个点投影到$w$上，例如新点$(4,5)$投影后与两类中心投影比较，归为最近的一类。",
+    "pitfalls": [
+      "1. LDA假设各类数据服从正态分布且协方差矩阵相同，如果实际数据严重偏离此假设，效果可能不佳。",
+      "2. 当样本数远小于特征数时，$S_w$可能奇异，无法直接求逆，需要正则化或使用PCA降维。",
+      "3. LDA只能找到线性边界，对于非线性可分问题需要引入核技巧（如KLDA）。",
+      "4. 对异常值敏感，因为均值和散度矩阵受异常值影响较大。"
+    ],
+    "tools": "Python中可以使用scikit-learn库的`LinearDiscriminantAnalysis`类。最小可运行代码：\n```python\nfrom sklearn.discriminant_analysis import LinearDiscriminantAnalysis\nimport numpy as np\n\nX = np.array([[1,2],[2,3],[3,3],[6,5],[7,8],[8,9]])\ny = np.array([0,0,0,1,1,1])\nlda = LinearDiscriminantAnalysis(n_components=1)\nX_lda = lda.fit_transform(X, y)\nprint(X_lda)\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "S_w = \\sum_{i=1}^2 \\sum_{x \\in C_i} (x - \\mu_i)(x - \\mu_i)^T",
+      "variables": {
+        "S_w": "类内散度矩阵",
+        "C_i": "第i类样本集合",
+        "x": "样本向量",
+        "\\mu_i": "第i类样本均值向量"
+      }
+    },
+    {
+      "latex_code": "S_b = (\\mu_1 - \\mu_2)(\\mu_1 - \\mu_2)^T",
+      "variables": {
+        "S_b": "类间散度矩阵",
+        "\\mu_1": "第一类均值向量",
+        "\\mu_2": "第二类均值向量"
+      }
+    },
+    {
+      "latex_code": "J(w) = \\frac{w^T S_b w}{w^T S_w w}",
+      "variables": {
+        "J(w)": "Fisher准则函数",
+        "w": "投影方向向量",
+        "S_b": "类间散度矩阵",
+        "S_w": "类内散度矩阵"
+      }
+    },
+    {
+      "latex_code": "w \\propto S_w^{-1}(\\mu_1 - \\mu_2)",
+      "variables": {
+        "w": "最优投影方向",
+        "S_w^{-1}": "类内散度矩阵的逆",
+        "\\mu_1 - \\mu_2": "两类均值差"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_C28"
+    ],
+    "from_papers": []
+  }
+}

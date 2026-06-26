@@ -1,0 +1,66 @@
+{
+  "schema_version": 3,
+  "concept_id": "tool.pandas",
+  "title": "Pandas 数据处理",
+  "taxonomy_path": [
+    "编程工具与实现",
+    "Python 数据科学栈",
+    "Pandas 数据处理"
+  ],
+  "module_id": "H",
+  "subcat_id": "H.1",
+  "aliases": [
+    "Pandas",
+    "DataFrame",
+    "数据清洗"
+  ],
+  "difficulty": "Beginner",
+  "roles": [
+    "coder"
+  ],
+  "priority": "P1",
+  "explain": {
+    "one_liner": "Pandas 是 Python 里处理表格数据的“瑞士军刀”，让你像操作 Excel 一样轻松清洗、转换和分析数据。",
+    "intuition": "想象你有一张巨大的 Excel 表格，里面有几千行数据，你想筛选出某些行、计算平均值、或者把两张表合并。手动操作很慢，还容易出错。Pandas 就像给你的表格装上了“自动化引擎”，用几行代码就能完成这些操作。它的核心是 DataFrame，可以看作一个带标签的表格（有行索引和列名），而 Series 是表格中的一列。",
+    "when_to_use": "只要你的数据是结构化的（比如 CSV、Excel 表格、数据库查询结果），并且需要进行清洗（处理缺失值、重复值）、转换（改变列类型、添加新列）、聚合（分组统计）、合并（连接多个表）或简单分析（描述统计、排序），就应该用 Pandas。在数学建模中，几乎任何涉及表格数据的步骤都可以用 Pandas 快速完成。",
+    "definition": "Pandas 是一个基于 NumPy 的 Python 库，提供了 DataFrame（二维带标签数据结构）和 Series（一维带标签数组）两种主要数据结构，以及丰富的数据操作函数，用于数据清洗、转换、聚合、合并和文件读写。",
+    "math_principle": "Pandas 的底层基于 NumPy 数组，但增加了轴标签（行索引 index 和列名 columns）。其核心操作包括：\n- 索引与选择：通过标签或位置访问数据，本质是数组切片和布尔掩码。\n- 分组聚合：`groupby` 操作将数据按键拆分成组，然后对每组应用聚合函数（如 sum、mean），最后合并结果。例如，对数值列求和可表示为：\n  \\text{result} = \\sum_{i \\in \\text{group}} x_i\n  其中 x_i 为组内数值。\n- 缺失值处理：常用方法如 `fillna`（填充）和 `dropna`（删除），本质是矩阵运算和广播机制。\n- 合并：`merge` 类似 SQL 的 JOIN，基于键列进行行匹配。",
+    "step_by_step": [
+      "1. 导入 Pandas：`import pandas as pd`",
+      "2. 读取数据：使用 `pd.read_csv('file.csv')` 或 `pd.read_excel('file.xlsx')` 将文件读入 DataFrame。",
+      "3. 初步查看：用 `df.head()` 查看前几行，`df.info()` 查看列类型和缺失值，`df.describe()` 查看数值列统计。",
+      "4. 数据清洗：处理缺失值（`df.dropna()` 或 `df.fillna(value)`），删除重复行（`df.drop_duplicates()`），转换列类型（`df['col'] = df['col'].astype(float)`）。",
+      "5. 数据选择与过滤：用 `df['column']` 选择列，`df[df['age'] > 30]` 选择行，或用 `df.loc` 和 `df.iloc` 进行更灵活的索引。",
+      "6. 数据转换：添加新列（`df['new'] = df['a'] + df['b']`），应用函数（`df['col'].apply(func)`）。",
+      "7. 分组聚合：`df.groupby('category')['value'].mean()` 按类别计算平均值。",
+      "8. 合并数据：`pd.merge(df1, df2, on='key')` 类似 SQL 的 JOIN。",
+      "9. 输出结果：`df.to_csv('output.csv', index=False)` 保存为 CSV 文件。"
+    ],
+    "worked_example": "假设有一个学生成绩表 `grades.csv`，包含列：姓名、班级、语文、数学、英语。我们想计算每个班级的平均总分。\n\n```python\nimport pandas as pd\n\n# 读取数据\ndf = pd.read_csv('grades.csv')\nprint(df.head())\n\n# 添加总分列\ndf['总分'] = df['语文'] + df['数学'] + df['英语']\n\n# 按班级分组，计算平均总分\nresult = df.groupby('班级')['总分'].mean()\nprint(result)\n\n# 保存结果\nresult.to_csv('班级平均总分.csv')\n```\n\n输出示例：\n```\n班级\n一班    270.5\n二班    285.0\n三班    260.0\nName: 总分, dtype: float64\n```",
+    "pitfalls": [
+      "1. 链式赋值警告：不要用 `df[df['a'] > 0]['b'] = 1`，这可能会修改副本而非原数据，应使用 `df.loc[df['a'] > 0, 'b'] = 1`。",
+      "2. 索引混乱：合并或分组后索引可能不是连续的整数，重置索引用 `reset_index(drop=True)`。",
+      "3. 数据类型错误：读取 CSV 时数字可能被读成字符串，需用 `pd.to_numeric` 转换。",
+      "4. 内存不足：大数据集避免一次性读入，可用 `chunksize` 参数分块读取。",
+      "5. 忽略缺失值：聚合函数默认跳过 NaN，但有时需要显式处理，如 `skipna=False`。"
+    ],
+    "tools": "Python 的 Pandas 库（版本 >= 1.0）。最小可运行代码：\n\n```python\nimport pandas as pd\n\n# 创建简单 DataFrame\ndata = {'Name': ['Alice', 'Bob', 'Charlie'],\n        'Age': [25, 30, 35],\n        'Score': [85, 90, 95]}\ndf = pd.DataFrame(data)\nprint(df)\n\n# 计算平均年龄和分数\nprint(df[['Age', 'Score']].mean())\n```\n\n输出：\n```\n      Name  Age  Score\n0    Alice   25     85\n1      Bob   30     90\n2  Charlie   35     95\nAge      30.0\nScore    90.0\ndtype: float64\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "\\text{result} = \\sum_{i \\in \\text{group}} x_i",
+      "variables": {
+        "result": "分组求和的结果",
+        "group": "分组键确定的组",
+        "x_i": "组内第 i 个数值"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_H02"
+    ],
+    "from_papers": []
+  }
+}

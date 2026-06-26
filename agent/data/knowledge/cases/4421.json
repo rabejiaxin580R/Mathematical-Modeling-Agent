@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "paper_id": "4421",
+  "meta": {
+    "paper_id": "4421",
+    "source": "himcm",
+    "contest": "HiMCM",
+    "year": 2013,
+    "problem": "A",
+    "path": "C:\\Users\\haisen\\Desktop\\revent\\agent\\HiMCMpapers\\2013\\A\\4421.pdf",
+    "kind": "pdf"
+  },
+  "concepts_used": [
+    {
+      "concept_id": "writing.assumptions",
+      "title": "模型假设的写法",
+      "stage": "assume",
+      "how_used": "论文列出了5条假设，包括区域内部均匀、每个人独立且等可能遇险、每辆救护车可响应任何区域、单次紧急事件、每辆救护车放置在不同区域，并给出了每条假设的合理性论证。",
+      "source_excerpt": "Assumption: Zones are internally uniform. Justification: We were given no information on population density... Assumption: Each person is independent and equally likely to face an emergency. ... Assumption: Each ambulance can respond to any zone in the city. ... Assumption: A single emergency will occur at once... Assumption: Each ambulance will be placed in a different zone."
+    },
+    {
+      "concept_id": "graph.shortestpath",
+      "title": "最短路径算法（Dijkstra、Floyd）",
+      "stage": "build",
+      "how_used": "利用给定的区域间平均旅行时间矩阵，将问题建模为图，每个区域为节点，旅行时间为边权，用于计算从救护车所在区域到其他区域的最短时间。",
+      "source_excerpt": "Figure 1: Average Travel Time in Minutes for an Ambulance to Reach a Zone (table of travel times between zones)"
+    },
+    {
+      "concept_id": "eval.weightsum",
+      "title": "加权求和评价",
+      "stage": "solve",
+      "how_used": "定义了'people-minutes'指标，即每个区域的人口乘以到达该区域的最短时间，然后求和得到总人-分钟，再除以总人口得到平均响应时间，以此加权评价不同救护车布置方案的优劣。",
+      "source_excerpt": "we defined a new unit, people-minutes, which refers to the total amount of time required to reach every individual given a single arrangement of ambulances. ... we found the average time required to reach an individual by finding the total minimum people minutes for a given ambulance arrangement and dividing this by the total population of the county."
+    },
+    {
+      "concept_id": "opt.integer",
+      "title": "整数规划与 0-1 规划",
+      "stage": "solve",
+      "how_used": "枚举所有可能的救护车放置组合（从6个区域中选择3个、2个或1个区域放置救护车，每个区域最多一辆），共C(6,3)=20种、C(6,2)=15种、C(6,1)=6种，然后检查每种组合是否能在8分钟内覆盖所有区域。",
+      "source_excerpt": "In total, there are C(6,3) possible ways to arrange three ambulances in six zones with only one ambulance in each zone. This leaves only twenty different ways to arrange the ambulances. We tabulated all twenty different ways to arrange the ambulances."
+    },
+    {
+      "concept_id": "valid.sensitivity",
+      "title": "灵敏度分析",
+      "stage": "sensitivity",
+      "how_used": "对每种救护车数量（3辆、2辆、1辆）分别进行了灵敏度分析，考虑平均旅行时间增加10%的情况，观察覆盖范围的变化，并评估模型的鲁棒性。",
+      "source_excerpt": "For each of these cases, we also considered situations where conditions may not be ideal and looked at the difference in coverage when the average travel time increased by ten percent. Our models were all relatively robust as a large proportion of the population could still be reached in eight minutes."
+    },
+    {
+      "concept_id": "stoch.montecarlo",
+      "title": "蒙特卡洛模拟",
+      "stage": "solve",
+      "how_used": "在灾难事件分析中，模拟了多个区域同时发生紧急情况的情景，计算了成功覆盖的概率（87.25%），并评估了不同救护车数量下的应对能力。",
+      "source_excerpt": "We looked at the best plan of action for the ambulances when multiple emergencies occurred at once. ... Overall, 87.25% of these situations can be successfully covered."
+    },
+    {
+      "concept_id": "writing.imrad",
+      "title": "论文整体结构（IMRaD 格式）",
+      "stage": "write",
+      "how_used": "论文采用IMRaD结构：引言（Introduction）、方法（Creating a Model）、结果（包含在模型部分）、讨论（Catastrophic Events和Conclusion），并附有致紧急服务协调员的信函。",
+      "source_excerpt": "1 Introduction and Restatement of the Problem ... 3 Creating a Model ... 4 Catastrophic Events ... 5 Conclusion ... 6 Letter to the Emergency Service Coordinator"
+    },
+    {
+      "concept_id": "viz.charttype",
+      "title": "常用图表类型及选择指南",
+      "stage": "write",
+      "how_used": "使用了表格（Figure 1: 平均旅行时间矩阵，Figure 2: 所有可能的救护车放置组合）来清晰展示数据和枚举结果，便于读者理解。",
+      "source_excerpt": "Figure 1: Average Travel Time in Minutes for an Ambulance to Reach a Zone (table) ... Figure 2: All Possible Locations for Three Ambulances (table)"
+    }
+  ]
+}

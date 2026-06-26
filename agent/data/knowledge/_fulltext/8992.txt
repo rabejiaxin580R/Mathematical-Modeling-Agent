@@ -1,0 +1,1451 @@
+Team #8992 Page 1 of 38
+For office use only Team Control Number For office use only
+8992
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ Problem Chosen F3 ________________
+A
+T4 ________________ F4 ________________
+2018
+HiMCM M
+Summary Sheet
+C
+Our final goal is to develop algorithms for ranking roller-coasters that can be employed in
+apps. Thus, we created two ranking algorithms for two different type of users: the casual explorer
+M
+who just needs an objective ranking, and the professional who wants a personalized ranking
+optimized to their tastes. To do so, we utilized the dataset given to construct the methods.
+i
+To correct for missing data, we designed Linear Iterative Imputation, a technique that uses
+H
+linear regression to iteratively impute the features based on which useful features (statistically
+significant at 5%) are selected by the linear model： to impute the value of the missing one. In our
+problem, we first imputed speed, as the variable in the constructed linear model, height, was
+present in all entries where speed is missing. Then we imputed length with the variables duration
+号
+and speed, as now all the entries with missing length had duration and speed. We then repeat this
+to create 6 linear models that imputes the 6 variables in which there are missing values. Majority
+of our models achieve over R2 of 0.5, which exceeds greatly the R2 of 0 from mean imputation.
+众
+After imputing the dataset, we grouped the descriptors of the rollercoaster into 3 groups:
+Thrill, Fundamental, and Inversion, based on their relations in the linear models identified above.
+The reason for clustering t公hem is to reduce dimensionality in the comparisons conducted below,
+and improve ease of use for the app that we need to develop.
+With these 4 groups, we develop two algorithms: the first one, denoted General Roller-
+coaster Ranking (G信RR), uses a linear model to give a rating for each rollercoaster, with the
+variables normalized and the weights chosen to balance the importance of each variable group.
+We further corrected differences in construction methods to ensure fair comparisons.
+微
+The second one, called the Personalized Rollercoaster Ranking (PRR), employs the Analytic
+Hierarchy Process (AHP). As roller-coaster ranking is indeed a very subjective process, we ask
+the user to enter his/her own preference of the 3 variable groups. Then using AHP we can devise
+personalized regression weights to use in GRR in order to achieve a final ranking.
+Based on our two algorithms, we developed our concept of the application that takes into
+account the casual and the enthusiast. In the first case, our baseline algorithm confirms the
+popularity of most highly ranked rollercoasters worldwide. In the second case, with the
+dimensionality reduction conducted above, we are able to expose a friendly interface to the
+enthusiast without overwhelming them with the potential levers they could move. The users are
+also able to limit the regions and the types of rollercoasters included in the ranking.
+This results in an application that is able to provide an accurate reflection of universal
+acclaim of rollercoasters in one click, or alternatively provide one with a personalized ranking
+with just 3 simple questions.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 2 of 38
+M
+Personalizing Rollercoasters
+C
+M
+Mathematical Models for the Ranking of Rollercoasters Worldwide
+i
+H
+2018 HiMCM Problem A
+：
+Team #8992
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 3 of 38
+Table of Contents
+1. Introduction ........................................................................................................................................... 5
+2. Data and Imputation .............................................................................................................................. 6
+2.1 Introduction to Data and Preprocessing ........................................................................................ 6
+2.2 Variables ....................................................................................................................................... 7
+2.3 Assumptions .................................................................................................................................. 7
+2.4 Linear Iterative Imputation ........................................................................................................... 7
+2.4.1 Illustration of Linear Model Construction ............................................................................ 8
+M
+2.4.2 Final Results ........................................................................................................................ 10
+3. General Rollercoaster Ranking (GRR) Model ............................................. C ....................................... 11
+3.1 The Approach ............................................................................M.................................................. 11
+3.2 Variables ..................................................................................................................................... 14
+i
+3.3 Assumptions ................................................................................................................................ 15
+H
+3.4 Results and Comparison.............................................................................................................. 15
+：
+3.5 Sensitivity Analysis .................................................................................................................... 18
+3.5.1 Sensitivity Against 𝛽𝒕 ......................................................................................................... 18
+号
+3.5.2 Sensitivity Against 𝛽𝒇 ........................................................................................................ 19
+3.5.3 Sensitivity Against 𝛽𝑰 ......................................................................................................... 20
+众
+3.6 Strengths and Weaknesses .......................................................................................................... 21
+3.6.1 Strengths ............................................................................................................................. 21
+公
+3.6.2 Weaknesses ......................................................................................................................... 21
+4. Personalized Rollercoaster Ranking (PRR) Model ............................................................................. 22
+信
+4.1 The Approach .............................................................................................................................. 22
+4.2 V微ariables ..................................................................................................................................... 24
+4.3 Illustration of PRR ....................................................................................................................... 24
+4.4 Strengths and Weaknesses .......................................................................................................... 26
+4.4.1 Strengths ............................................................................................................................. 26
+4.4.2 Weaknesses ......................................................................................................................... 26
+5. News Release ...................................................................................................................................... 27
+New Way to find your favorite Rollercoaster! ........................................................................................ 27
+6. App Design and Development ............................................................................................................ 28
+6.1 Flowchart of App ........................................................................................................................ 28
+6.2 App Design ................................................................................................................................. 29
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 4 of 38
+7. Appendix ............................................................................................................................................. 32
+7.1 References ................................................................................................................................... 32
+7.2 Code ............................................................................................................................................ 33
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 5 of 38
+1. Introduction
+Rollercoaster is an extremely popular form of entertainment worldwide. After the end of
+the first golden age of coasters in the 1930s, it was revived again starting in the 1980s, when
+there were only 145 coasters operating worldwide. Now, there are over 4000 coasters all around
+the globe. This of course begs the question, which is the best?
+This problem has been studied by enthusiasts and industry alike for manMy years. Every
+year, there is a closely watched industry event – the Golden Ticket Awards that give out awards
+for the best rollercoaster ride around the world. Many individuals and weCbsites have conducted
+polls or keep rankings of various rollercoasters all over the world. However, all of these awards
+M
+are based on popularity and human rating, which is extremely subjective. This causes most of
+these rankings to have high personal bias based on individual likings of the rollercoasters.
+i
+H
+Therefore, there is a need for an objective rollercoaster rating system in which the physical
+：
+characteristics of the rollercoaster determines the rating of it. Moreover, the objective
+rollercoaster rating system would allow us to predict ratings of roller coasters when they are just
+coming out, without the need to wait for re号views to ramp up. However, at the end of the day, the
+fundamental purpose of rating rollercoasters is so that we could select ones we would enjoy, so it
+is quite clear that there is a strong need to listen to true experiences and preferences of people.
+众
+What is less clear, however, is the degree of incorporation of “people’s experience/preference”
+into the model. Roughly, we can separate it into two levels:
+公
+1. General Population Level: We only incorporate information about what the general
+population 信thinks is a good rollercoaster. This means that we would want our rating to
+correspond on the universally acclaimed rollercoasters, as doing elsewise would be
+contradicting the general view of the rollercoaster.
+微
+2. Specific Individual Level: We incorporate personal tastes about what the individual thinks is
+important in a good rollercoaster. This is thus a “personalized” ranking and would have
+massive appeal due to its understanding of individual preferences. However, the drawback
+is that most people do not understand the technical details of rollercoasters, and thus asking
+them to explain the reasoning behind a good rollercoaster experience might be extremely
+difficult.
+Thus, we see that there are two levels of personal preference we can include, with arguments
+for/against both sides. It is clear that the “average” user would in fact benefit more from the first
+approach than the second one as he/she would be able to check the ranking without entering any
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 6 of 38
+information, and vice versa for the enthusiast. Thus, to provide a good experience to both types
+of people, we thus construct two models that share the underlying mathematical basis, but
+incorporate the personal preferences in different ways to give rise to different algorithms.
+To construct these models, we would need data on the objective characteristics of the
+rollercoasters, which is provided in the dataset given. This dataset however, contains much
+missing data, and therefore before we can talk about the algorithm for ranking, we first need to
+develop a model for imputing the data, which we would explore in the next section.
+M
+2.Data and Imputation
+C
+M
+2.1 Introduction to Data and Preprocessing
+i
+H
+We are given a dataset of 300 roller-coasters with ：19 characteristics. Excluding the non-
+informative statistics (Status, as every coaster included here is operating), and factors dealing
+with name and places, we are left with 12 statistics: Construction, Type, Year Opened, Height,
+号
+Speed, Length, Inversions (Yes/No), Number of Inversions, Drop, Duration, G Force, and
+Vertical Angle.
+众
+We identify that many statistics are missing, with in fact only the Construction, Type, Year, and
+Inversions statistics being fully present. We identify that Height is also only missing in one roller
+公
+coaster – the Harbin Happy Angel Coaster. A deeper dive onto this specific coaster reveals that it
+is a very recent coaster that has only been in operation for less than a few months. As most of its
+信
+statistics is missing, we decided to remove this coaster from this database – we do not believe
+that it could reliably imputed from other coasters as it utilizes “a new construction method” and
+is “a new c微oncept”, according to Xinhua News.
+Thus, in the 299 coasters we are left with, the following is a table of the amount of missing
+entries in each column:
+Column Number of Entries with Missing Data
+Speed 4
+Length 4
+Drop 157
+Duration 75
+G Force 216
+Vertical Angle 208
+Table 1: Number of Missing Entries for Each Column
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 7 of 38
+We see in Table 1 that both Speed and Length are almost fully known while Drop, G Force, and
+Vertical Angle are highly missing. To impute the values of these data, we utilize linear
+regression to iteratively impute these values, based on what variables is needed. We call this
+Linear Iterative Imputation.
+2.2 Variables
+Variable Symbol Name/Meaning
+𝒚
+𝒎
+The missing variable that wMe want to predict
+𝒙 A potential covariate for imputing the missing
+𝒊
+variable
+C
+𝜷 The coefficient for the potential covariate for
+𝒊
+imputing the missing variable
+M
+2.3 Assumptions i
+H
+：
+• We assume that the underlying true relations of these variables are linear
+号
+Justification: It is hard to justify that the true underlying relationships between these
+variables are actually linear, but to be able to impute the data, we nevertheless need some
+众
+assumption, and in this case a linear model is suffice as we show through our high accuracy.
+公
+• We assume this dataset is a representative dataset of the entire set of rollercoasters
+信
+Justification: If this dataset was not a representative dataset from the entire sample of
+rollercoasters, then the data that we are imputing might be biased or generate wrong relations
+微
+due to how this sample was generated. In this case, we assume that the 200 rollercoasters we
+are given is not strongly skewed in any particular covariate.
+2.4 Linear Iterative Imputation
+To conduct Linear Iterative Imputation, we first need to understand what variables each missing
+variable need to predict it well. We do this by constructing linear models for each variable that
+has missing data against at most 9 statistics – all 12 identified statistics excluding Drop, G Force,
+and Vertical Angle are considered. These three are excluded due to the massive amount of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 8 of 38
+
+missing data. That is for every missing variable 𝑦 , we select variables 𝑥 ,𝑥 ,…,𝑥  so that we
+|     |     |     |     | 𝑚   |     | 1 2 𝑘 |
+| --- | --- | --- | --- | --- | --- | ----- |
+have the model:
+|     |     | 𝑦   | = 𝛽 | 𝑥 +𝛽 𝑥 +⋯+𝛽 | 𝑥   |     |
+| --- | --- | --- | --- | ----------- | --- | --- |
+|     |     | 𝑚   | 1   | 1 2 2       | 𝑘 𝑘 |     |
+To ensure that we are only selecting useful variables, we only keep variables 𝑥  that are
+𝑖
+significant on the 5% level.
+In the interest of clarity, we would only illustrate the process of building the model for one such
+variable as the process is similar for all variables.
+M
+2.4.1 Illustration of Linear Model Construction
+C
+We first run a standard linear regression for the variable Drop agaMinst all other variables, to
+reveal the following estimates of the coefficients and p-values:
+i
+|                      | Variable         |     | Estimated CoefficiHent   |           |     | 𝒑-value  |
+| -------------------- | ---------------- | --- | ------------------------ | --------- | --- | -------- |
+| Construction (Wood)  |                  |     |                          | -404.7  ： |     | 0.01     |
+|                      | Type (Inverted)  |     |                          | -11.34    |     | 0.88     |
+|                      | Type (Sit Down)  |     |                          | 1.620     |     | 0.89     |
+号
+|     | Type (Stand Up)  |     |     | 1.785   |     | 0.59  |
+| --- | ---------------- | --- | --- | ------- | --- | ----- |
+|     | Type (Wing)      |     |     | -8.585  |     | 0.99  |
+众-14.74
+|     | Year Opened  |     |     |         |     | 0.17         |
+| --- | ------------ | --- | --- | ------- | --- | ------------ |
+|     | Height       |     |     | 0.1579  |     | 1.12 * 10-6  |
+|     | Speed        |     |     | 3.116   |     | <1 * 10-16   |
+公
+|                      | Length  |     |     | -0.001287  |     | 0.50  |
+| -------------------- | ------- | --- | --- | ---------- | --- | ----- |
+| Inversions (Yes/No)  |         |     |     | -9.996     |     | 0.12  |
+信
+| Number of Inversions  |           |     |     | 0.09277  |     | 0.93  |
+| --------------------- | --------- | --- | --- | -------- | --- | ----- |
+|                       | Duration  |     |     | 0.04418  |     | 0.38  |
+微
+Table 2: Coefficients for First Linear Model for Drop
+We see that only Construction, Height, and Speed are significant. We then rerun the model with
+only these three variables:
+|                      | Variable  |     | Estimated Coefficient   |          |     | 𝒑-value       |
+| -------------------- | --------- | --- | ----------------------- | -------- | --- | ------------- |
+| Construction (Wood)  |           |     |                         | -5.77    |     | 0.08          |
+|                      | Height    |     |                         | 0.33804  |     | 1.69 * 10-11  |
+|                      | Speed     |     |                         | 2.956    |     | <1 * 10-16    |
+Table 3: Coefficients for Second Linear Model for Drop
+Now we see that the Construction variable is not significant on the 5% level. Therefore, by our
+criteria, we drop it further:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 9 of 38
+
+| Variable  |     | Estimated Coefficient   |         |     |     | 𝒑-value       |
+| --------- | --- | ----------------------- | ------- | --- | --- | ------------- |
+| Height    |     |                         | 0.3513  |     |     | 2.67 * 10-12  |
+| Speed     |     |                         | 2.94    |     |     | <1 * 10-16    |
+Table 4: Coefficients for Third Linear Model for Drop
+In Table 4 we see that both remaining variables are significant, and therefore, we define Height
+and Speed to be the useful variables in imputing Drop.
+The following table illustrates the variables identified in the final linear models:
+M 𝑹𝟐
+| Missing Variable  |     | Useful Variables   |         |     |     |        |
+| ----------------- | --- | ------------------ | ------- | --- | --- | ------ |
+| Speed             |     |                    | Height  |     |     | 0.696  |
+C
+| Length    |     |                       | Duration, Speed  |     |     | 0.526  |
+| --------- | --- | --------------------- | ---------------- | --- | --- | ------ |
+| Drop      |     |                       | Speed, Height    |     | M   | 0.954  |
+| Duration  |     | Length, Construction  |                  |     |     | 0.514  |
+| G Force   |     | Length, Construction  |                  |     |     | 0.477  |
+i
+| Vertical Angle  |                                        |     | G Force  | H   |     | 0.233  |
+| --------------- | -------------------------------------- | --- | -------- | --- | --- | ------ |
+|                 | Table 5: Linear Models for Imputation  |     | ：        |     |     |        |
+We see that in most models, we manage to select only a few variables while retaining relatively
+high accuracy.   号
+Here there is one caveat: The final variable, Vertical Angle, cannot be accurately imputed by any
+众
+of the 9 variables identified above. However, when we use G Force to regress against it, it is
+significant at the 5% level. Thus, even though the G Force and the Vertical Angle are both
+missing many entries, we d公ecided to use the fitted relation between G Force and Vertical Angle
+
+信
+Once we now have this set of relations, we can construct an ordering of imputation so that we
+can use these 6 models effectively. For example, we cannot impute Drop before Speed, as Speed
+微
+is required to impute Drop. However, here we have a potential problem as to impute Length we
+need Duration but to impute Duration we need Length!
+Fortunately, for all the entries in which length is missing (which there are only 4), duration
+exists, so we can first use the existing duration to impute the length, and then use the fully
+complete length to impute the rest of the durations.
+Thus, a valid ordering is:
+| 𝑆𝑝𝑒𝑒𝑑 → 𝐿𝑒𝑛𝑔𝑡ℎ | → 𝐷𝑟𝑜𝑝 | →   | 𝐷𝑢𝑟𝑎𝑡𝑖𝑜𝑛 | → 𝐺 𝐹𝑜𝑟𝑐𝑒 | → 𝑉𝑒𝑟𝑡𝑖𝑐𝑎𝑙 𝐴𝑛𝑔𝑙𝑒  |     |
+| -------------- | ------ | --- | -------- | --------- | ----------------- | --- |
+And we thus impute iteratively accordingly. This gives us a full dataset.
+
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 10 of 38
+2.4.2 Final Results
+To illustrate the effectiveness of our imputation, we would show the correlation between the
+numeric variables in the 9 statistics before and after imputation. Ideally we would like the
+correlation to not change before and after imputation so that the data can be considered similar.
+The following graph is a plot of the correlation before the imputation (on the subset in which
+these statistics exist):
+M
+C
+M
+i
+H
+：
+号
+众
+公
+Figure 1: Correlation of Variables before Imputation
+信
+The next graph shows the correlation after Imputation;
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 11 of 38
+M
+C
+M
+i
+H
+Figure 2: Correlation of V：ariables after Imputation
+One could see that these two graphs are very similar, which suggests that our imputation
+号
+algorithm has done a good job of keeping the relations between the original variables intact.
+众
+3.General Rollercoaster Ranking (GRR)
+公
+Model
+信
+3.1 The Approach
+微
+Through the imputation process, we can see that the variables which form natural groups with
+each other due to the high relevance/correlation with each other. We can roughly see three
+groups:
+• Thrill (Speed, Drop, Height): As it is clear in Table 5, we can use Height to Impute Speed
+while using Height and Speed to impute Drop with high confidence. This implies that these
+variables share deep relationship with each other. It is quite clear that all of these variables
+define the excitement or more specifically the thrill of the ride: Drop, Height and Speed
+are what would commonly be used to define how extreme a ride is. Note that we did not
+artificially create this grouping – it fell out naturally from the imputation process.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 12 of 38
+• Fundamentals (Vertical Angle, G Force, Length, Duration): These 5 variables form a
+second group as can be seen through the high correlation between each variable in Figure
+2, and the linear model relations in Table 5. One could describe this group of variables as
+the fundamentals – these are characteristics that define the construction of the rollercoaster
+and is more hampered by the physical and engineering constraints than the first group.
+• Inversion (Number of Inversions, Inversions(Yes/No)): These 2 variables were not
+present in any linear model and they share high correlation with each other, as it is clear
+that one is merely a masked version of the other. Inversions on a rollercoaster is another
+common attraction point, but from Table 5 it is clear that it is in its own group and not
+M
+highly related to the other descriptive variables. For the model, since Inversions (Yes/No)
+is just a masked version of the Number of Inversions statistic, we would only use Number
+C
+of Inversions.
+M
+Note here three variables have not been classified out of the 12 statistics: The Year of Opening,
+i
+Construction and the Type of Ride. We would treat them individually, as reasoned below:
+H
+• The year of opening had low correlation w：ith any other variable and was not important in
+the linear model. Moreover, “when the ride was opened” should not be a factor in
+determining if a ride’s experience is good or not if the ride has been kept in good condition.
+号
+Thus, we would remove this variable.
+• On the other hand the type of ride, on the other hand, might potentially impact people’s
+tastes based on individual众 preferences. However, as explained in the introduction, this
+model is only designed to capture general population trends and thus we would ignore it.
+• The construction v公ariable is again a very subjective variable, with many articles arguing
+for and against the merit of a wood construction against a steel construction. It is generally
+accepted that the steel coasters have better statistics than the wood coasters due to physical
+信
+capabilities of steel, however wood coasters often have a much more “thrilling” ride due
+to the wobbly nature of the track. We would consider this variable in the model, but in a
+sep微arate way from the grouped variables above.
+Therefore, with these three groups, we can devise a linear model for a ranking, where the rating
+of a rollercoaster is 𝑟 :
+𝐺
+𝑟 = 𝛽 𝑥 +𝛽 𝑥 +𝛽 𝑥 +𝛽 𝑥 +𝛽 𝑥 +𝛽 𝑥 +𝛽 𝑥 + 𝛽 𝑥
+𝐺 𝑡 𝑠 𝑡 𝑑𝑟 𝑡 ℎ 𝑓 𝑣𝑎 𝑓 𝑔 𝑓 𝑙 𝑓 𝑑 𝐼 𝑛
+Where 𝑥 is the variable representing speed, 𝑥 drop, 𝑥 height, 𝑥 vertical angle, 𝑥 G Force,
+𝑠 𝑑𝑟 ℎ 𝑣𝑎 𝑔
+𝑥 length, 𝑥 construction, 𝑥 duration, and 𝑥 number of inversions. The three coefficients 𝛽 ,
+𝑙 𝑐 𝑑 𝑛 𝑡
+𝛽 and 𝛽 are group coefficients that represent how important each group is, as identified above.
+𝑓 𝐼
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 13 of 38
+
+To make these three coefficients meaningful, we first need to scale the 𝑥 variables appropriately.
+For example, it is not appropriate for length to have the same coefficient as G force as the former
+takes values of thousands while the latter never exceeds 10. Thus, for each variable, we would
+first apply a scaling such that the mean of the variable in the dataset is 0, and the variance of it is
+1. The following is a table of the various means and variances of the variables:
+| Variable  |     |     |     | Mean 𝝁  |     |     | Variance 𝝈𝟐  |        |
+| --------- | --- | --- | --- | ------- | --- | --- | ------------ | ------ |
+| 𝒙         |     |     |     | 59.5    |     |     |              | 264.4  |
+𝒔
+| 𝒙   |     |     |     | 129.3  |     |     |     | 5475.8  |
+| --- | --- | --- | --- | ------ | --- | --- | --- | ------- |
+𝒅𝒓
+| 𝒙   |     |     |     | 135.5  |     |     |     | M4408.6  |
+| --- | --- | --- | --- | ------ | --- | --- | --- | -------- |
+𝒉
+| 𝒙   |     |     |     | 77.1  |     |     |     | 55.71  |
+| --- | --- | --- | --- | ----- | --- | --- | --- | ------ |
+𝒗𝒂
+C0.21
+| 𝒙   |     |     |     | 4.18  |     |     |     |     |
+| --- | --- | --- | --- | ----- | --- | --- | --- | --- |
+𝒈
+| 𝒙   |     |     |     | 3150.8  |     |     |     | 2102981  |
+| --- | --- | --- | --- | ------- | --- | --- | --- | -------- |
+| 𝒍   |     |     |     |         |     | M   |     |          |
+| 𝒙   |     |     |     | 121.2   |     |     |     | 2139.5   |
+𝒅
+| 𝒙   |     |     |     | 2.21  |     |     |     | 6.75  |
+| --- | --- | --- | --- | ----- | --- | --- | --- | ----- |
+| 𝒏   |     |     |     |       |     | i   |     |       |
+Table 6: Means and Variances for vHarious Variables
+：
+
+Thus, we would scale our variables so that we have:
+号
+𝑥 −𝜇
+|     |     |     |     | 𝑥′ 𝑖 | 𝑖   |     |     |     |
+| --- | --- | --- | --- | ---- | --- | --- | --- | --- |
+|     |     |     |     | =    |     |     |     |     |
+|     |     |     |     | 𝑖 𝜎  |     |     |     |     |
+|     |     | 众   |     |      | 𝑖   |     |     |     |
+Where 𝜎 denotes the standard deviation (square root of variance) for variable 𝑖, and 𝜇  the mean
+| 𝑖   |     |     |     |     |     |     |     | 𝑖   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+for variable 𝑖.  公
+Therefore, in fact our rating equation is actually:
+信
+| 𝑟 = 𝛽 | 𝑥′ +𝛽 | 𝑥′ +𝛽 | 𝑥′ +𝛽 | 𝑥′   | +𝛽 𝑥′ | +𝛽 𝑥′ +𝛽 | 𝑥′ + 𝛽 | 𝑥′  |
+| ----- | ----- | ----- | ----- | ---- | ----- | -------- | ------ | --- |
+| 𝐺     | 𝑡 𝑠   | 𝑡 𝑑𝑟  | 𝑡 ℎ   | 𝑓 𝑣𝑎 | 𝑓     | 𝑔 𝑓 𝑙 𝑓  | 𝑑      | 𝐼 𝑛 |
+微
+Then, for this general model, we would assume that for the general population, the fundamentals
+are just as important as the thrill, which is more important than the number of inversions (as
+inversions are usually only pursued by enthusiasts). In accordance with the Analytic Hierarchy
+Process, we assign an overall weight of 5 to groups Thrill and Fundamentals, and a weight of 1
+to group Inversion. Then, we further correct the weights by the number of variables in each
+group to reach the individual coefficients:
+|     |     |     | 5             |     | 5         |       |     |     |
+| --- | --- | --- | ------------- | --- | --------- | ----- | --- | --- |
+|     |     | 𝛽   | =           𝛽 | =   |         𝛽 | = 1   |     |     |
+|     |     | 𝑡   |               | 𝑓   |           | 𝐼     |     |     |
+|     |     |     | 3             |     | 4         |       |     |     |
+As there are 3 variables in the thrill group, 4 in the fundamentals group and only 1 in the
+inversion group.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 14 of 38
+Therefore, our rating model now becomes:
+5 5
+𝑟 = (𝑥′ +𝑥′ +𝑥′)+ (𝑥′ +𝑥′ +𝑥′ +𝑥′)+ 𝑥′
+𝐺 3 𝑠 𝑑𝑟 ℎ 4 𝑣𝑎 𝑔 𝑙 𝑑 𝑛
+Here, we have ignored the effect of different construction. As noted in Table 5, the construction
+has a major effect on the duration and G Force of the ride. Thus, to compare Steel and Wood
+rides fairly, we have to correct for it. The linear models suggests that using wood construction on
+average makes the duration of the ride 26.2 seconds shorter and decreases the G Force by
+0.7620. Thus, we correct by that amount in the Steel trains. Therefore, our final model is:
+M
+5 5
+𝑟 = (𝑥′ +𝑥′ +𝑥′)+ (𝑥′ +𝑥′ +𝑥′ +𝑥′)+𝑥′ for Wood Coasters
+𝐺 3 𝑠 𝑑𝑟 ℎ 4 𝑣𝑎 𝑔 𝑙 𝑑 𝑛 C
+5 5 −0.7620 −26.2
+𝑟 = (𝑥′ +𝑥′ +𝑥′)+ (𝑥′ +𝑥′ +𝑥′ +𝑥′ + + )+𝑥′ for Steel Coasters
+{ 𝐺 3 𝑠 𝑑𝑟 ℎ 4 𝑣𝑎 𝑔 𝑙 𝑑 √0.21 M √2139.5 𝑛
+i
+H
+3.2 Variables
+：
+Variable Symbol 号 Name/Meaning
+𝑥 Speed of the Rollercoaster
+𝑠
+𝑥 Drop length of the Rollercoaster (Feet)
+𝑑𝑟 众
+𝑥 Height of the Rollercoaster (Feet)
+ℎ
+𝑥 Vertical Angle of the Rollercoaster
+𝑣𝑎
+公
+𝑥 G Force of the Rollercoaster
+𝑔
+𝑥 Length of the Rollercoaster
+𝑙
+信
+𝑥 Duration of the Rollercoaster
+𝑑
+𝑥 Number of Inversions on the Rollercoaster
+𝑛
+微𝑥 Speed of the Rollercoaster
+𝑠
+𝑥′ Scaled versions of the variables above
+𝑖
+𝜇′ Mean of the variables above
+𝑖
+𝜎′ Standard Deviation of the variables above
+𝑖
+𝜷 Linear coefficient for the Thrill Group
+𝒕
+𝜷 Linear coefficient for the Fundamentals Group
+𝒇
+𝜷 Linear coefficient for the Inversions Group
+𝑰
+𝒓 Rating for the Rollercoaster
+𝑮
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 15 of 38
+3.3 Assumptions
+• We assume that the rating of the rollercoaster is a linear model of its respective variables.
+Justification: For most of the variables, more means better, and in a linear way. For example,
+a 5km rollercoaster is the “same amount of better” than a 4km rollercoaster as a 6km one is
+to a 5km one. However, arguably, there are variables such as g force and vertical angle that
+are physically constrained and should not be linear. However, in the interest of simplicity, we
+M
+would assume they are linear in this model. It is further discussed in the Strengths and
+Weaknesses section.
+C
+M
+• We assume the coefficients within each respective group (Thrill, Fundamentals, Inversion)
+i
+are the same
+H
+Justification: It is conceivable that the coeffici：ents can be different within these groups,
+especially among different people. However, our imputation showed strong correlation
+between these variables, suggesting that whenever one variable changes, the other does also.
+号
+For example, when you go for a higher rollercoaster, the G Force you are experiencing most
+likely increases – which is quite intuitive. Thus, grouping them together is a justified
+众
+decision, and has many benefits down the road in reducing complexity and enabling more
+complex processes to be added later, as shown in the PRR model.
+公
+3.4 Resul信ts and Comparison
+微
+Using the rating model identified above, our ranking results in the following. Note we extend our
+list from Top 10 as required by the question to Top 20 to achieve a more holistic comparison:
+Ride Rating
+Kingda Ka (USA) 0.994
+Formula Rossa (UAE) 0.872
+Top Thrill Dragster (USA) 0.598
+Red Force (Spain) 0.360
+Steel Dragon 2000 (Japan) -0.041
+Wildfire (Sweden) -0.070
+Superman: Escape from Krypton (USA) -0.073
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 16 of 38
+Leviathan (Canada) -0.176
+Fury 325 (USA) -0.201
+Lightning Rod (USA) -0.249
+Tower of Terror II (Australia) -0.262
+Goliath (USA) -0.272
+Wodan Timbur Coaster (Germany) -0.343
+Intimidator 305 (USA) -0.376
+El Toro (USA) -0.390
+T Express (South Korea) -0.394
+M
+Beast (USA) -0.395
+Voyage (USA) -0.448
+C
+Do-Dodonpa (Japan) -0.573
+Millennium Force (USA) M-0.599
+Table 7: Top 20 Ranking of GRR
+i
+H
+We compare our results to two other ranking syste：ms. The first ranking system is the
+Coasterbuzz rating system, which is an average of all submitted user ratings, and is thus a purely
+subjective rating mechanism. The top 20 in that are:
+号
+Top 20 of Coasterbuzz
+众Steel Vengeance
+Fury 325
+El Toro
+公
+Lightning Rod
+Twisted Timbers
+信
+Millenium Force
+Twisted Colossus
+微 Boulder Dash
+Wicked Cyclone
+Voyage
+Maverick
+Iron Rattler
+Superman The Ride
+Goliath
+Leviathan
+Ravine Flyer II
+Outlaw Run
+Mako
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 17 of 38
+Nemesis
+Phoenix
+Table 7: Top 20 Ranking of Coasterbuzz
+Coasterbuzz mainly has North American reader base, so it is not surprising that none of the
+foreign coasters in the top 20 we chosen are in the top list in Coasterbuzz. Out of the 12
+USA/Canadian coasters we chose, 7 also appeared in the top 20 list of Coasterbuzz, suggesting
+that we are able to replicate the preference of people towards rollercoasters with a purely
+M
+objective basis.
+The second baseline we will compare to is Lifed.com ranking, which is aCn expert ranking. The
+top 20 list is:
+M
+Top 20 of Lifed
+Bizarro i
+H
+Millennium Force
+El To：ro
+Expedition GeForce
+号Voyage
+Kingda Ka
+Intimidator 305
+众
+Goliath
+Behemoth
+公
+Nemesis
+Balder
+信 Top Thrill Dragster
+X2
+T Express
+微
+Katun
+Boulder Dash
+Ravin Flyer
+Formula Rossa
+Maverick
+Nitro
+Table 8: Top 20 Ranking of Lifed
+Here we share 8/20 names, which again is a respectable percentage. We note that compared to
+this list, (in which the expert team is again US based) which has 4/20 rides outside of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 18 of 38
+USA/Canada, we contain 8/20 rides outside of Canada, suggesting a much more global reach
+while able to replicate many of the top opinions across the community.
+3.5 Sensitivity Analysis
+There are three parameters in our model: 𝛽 , 𝛽 and 𝛽 . Therefore, we would conduct sensitivity
+𝑡 𝑓 𝐼
+analysis against each of the parameters
+3.5.1 Sensitivity Against 𝜷 M
+𝒕
+C
+We increase 𝛽 by 0.1 to test how does the ranking change with changing 𝛽 . The New Top 20
+𝑡 𝑡
+M
+from our algorithm is:
+Top 20 after 𝜷 Change i
+𝒕
+H
+Kingda Ka (USA)
+Formula Ro：ssa (UAE)
+Top Thrill Dragster (USA)
+Red Force (Spain)
+号
+Superman: Escape from Krypton (USA)
+Steel Dragon 2000 (Japan)
+众
+Leviathan (Canada)
+Fury 325 (USA)
+公Tower of Terror II (Australia)
+Wildfire (Sweden)
+Intimidator 305 (USA)
+信
+Lightning Rod (USA)
+Goliath (USA)
+微
+El Toro (USA)
+Wodan Timbur Coaster (Germany)
+Do-Dodonpa (Japan)
+T Express (South Korea)
+Millennium Force (USA)
+Beast (USA)
+Voyage (USA)
+Table 9: Top 20 Ranking after 𝛽 Change
+𝑡
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 19 of 38
+The italicized ranking shows the ranking where something has changed, and the new Top 20
+rides under this scenario are highlighted. We can see that even after a 10% change, there are no
+new rides coming into the Top 20, with others basically a slight reshuffling of the ranking. More
+importantly, the Top 4 did not even move, suggesting that their rankings are extremely robust
+against change.
+3.5.2 Sensitivity Against 𝜷
+𝒇
+We increase 𝛽 by 0.1 to test how does the ranking change with changing 𝛽 . TMhe New Top 20
+𝑓 𝑓
+from our algorithm is:
+C
+Top 20 after 𝜷 Change
+𝒕
+Kingda Ka (USA) M
+Formula Rossa (UAE)
+Top Thrill Dragster (USA) i
+H
+Red Force (Spain)
+Steel Dragon 2：000 (Japan)
+Superman: Escape from Krypton (USA)
+Lev号iathan (Canada)
+Wildfire (Sweden)
+Fury 325 (USA)
+众
+Tower of Terror II (Australia)
+Lightning Rod (USA)
+公
+Intimidator 305 (USA)
+Goliath (USA)
+信Wodan Timbur Coaster (Germany)
+Beast (USA)
+T Express (South Korea)
+微
+El Toro (USA)
+Voyage (USA)
+Coaster Through the Clouds (China) -- New
+Do-Dodonpa (Japan)
+Table 10: Top 20 Ranking after 𝛽 Change
+𝑓
+The italicized ranking shows the ranking where something has changed, and the new Top 20
+rides under this scenario are highlighted. We can see that even after a 10% change, there is only 1
+new ride coming into the Top 20, with others basically a slight reshuffling of the ranking. Again,
+the Top 4 did not even move, suggesting that their rankings are extremely robust against change.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 20 of 38
+3.5.3 Sensitivity Against 𝜷
+𝑰
+We increase 𝛽 by 0.1 to test how does the ranking change with changing 𝛽. The New Top 20
+𝐼 𝐼
+from our algorithm is:
+Top 20 after 𝜷 Change
+𝑰
+Kingda Ka (USA)
+Formula Rossa (UAE)
+Top Thrill Dragster (USA)
+M
+Red Force (Spain)
+Wildfire (Sweden)
+C
+Steel Dragon 2000 (Japan)
+M
+Superman: Escape from Krypton (USA)
+Leviathan (Canada)
+i
+Goliath (USA)
+H
+Fury 325 (USA)
+：
+Lightning Rod (USA)
+Tower of Terror II (Australia)
+Wodan Tim号bur Coaster (Germany)
+Intimidator 305 (USA)
+El Toro (USA)
+众
+T Express (South Korea)
+Beast (USA)
+公
+Voyage (USA)
+Outlaw Run (USA) – New
+信 Do-Dodonpa (Japan)
+Table 11: Top 20 Ranking after 𝛽 Change
+𝐼
+微
+The italicized ranking shows the ranking where something has changed, and the new Top 20
+rides under this scenario are highlighted. We can see that even after a 10% change, there is only 1
+new ride coming into the Top 20, with others basically a slight reshuffling of the ranking. Again,
+the Top 4 did not even move, suggesting that their rankings are extremely robust against change.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 21 of 38
+3.6 Strengths and Weaknesses
+3.6.1 Strengths
+• The GRR model only uses objective factors and does not incorporate personal preferences.
+• The GRR model does not attempt to group variables together in an ad-hoc way. Instead, it
+employs the information from the Linear Iterative Imputation to create natural groupings
+of the variables. M
+• The GRR model corrects for the differences between steel and wood coasters, and thus
+allow comparisons across these categories to be fair. C
+• The model is linear, so that a scaling of the weights would not impact the final result. This
+M
+is important in hierarchical decision models, as the scale of the weights itself does not mean
+anything, and thus should not affect the final ranking.
+i
+H
+3.6.2 Weaknesses
+：
+• The GRR model does not capture 号any personal preferences, which means that it can only
+serve as a general ranking without the capability of correcting against different tastes.
+• The model does not try to consider interaction effects between different variables and only
+众
+considers the original variables on a linear model; non-linear models might improve
+explaining of some factors. For example, G- Force can never exceed 2G due to human
+constraints – thus i公nstead of using a linear model where the G Force seems like it could be
+extrapolated infinitely far, one might be better off using a model that tapers off at large
+values (such as logistic model).
+信
+• The model focuses only on the specific factors that were given in the dataset and does not
+consider additional factors that are objective but could affect the rating/experience of a
+微
+person – this includes information about the general park, the area, and the country. As
+such, Kingda Ka, which holds many top records, stays comfortably at the top even in our
+sensitivity tests. While it does appear in most top rollercoaster rankings, its position usually
+isn’t as stable as it may seem from our ranking, as the physical attributes of the ride might
+not be everything in determining a ranking of the best roller coaster.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 22 of 38
+4.Personalized Rollercoaster Ranking
+(PRR) Model
+4.1 The Approach
+With the GRR model detailed in the last section, we created a model that was able to grasp the
+ratings of top rollercoasters reasonably well. However, it was not flexible and could not adjust
+M
+for personal preferences. Thus, in this section, we introduce a new layer based on the Analytic
+Hierarchy Process (AHP) that allows us to personalize the ranking.
+C
+Let us first reproduce the general formula for the GRR from the last model:
+M
+𝑟 = 𝛽 𝑥′ +𝛽 𝑥′ +𝛽 𝑥′ +𝛽 𝑥′ +𝛽 𝑥′ +𝛽 𝑥′ +𝛽 𝑥′ + 𝛽 𝑥′
+𝐺 𝑡 𝑠 𝑡 𝑑𝑟 𝑡 ℎ 𝑓 𝑣𝑎 𝑓 𝑔 𝑓 𝑙 𝑓 𝑑 𝐼 𝑛
+i
+H
+In the GRR, we took a specific combination of (𝛽 ,𝛽 ,𝛽 ) based on the general population’s
+𝑡 𝑓 𝐼
+preference. However, it is clear that everyone coul：d be different. Thus, to solve this problem, we
+would employ AHP to decide the coefficients for this model.
+We want to specifically highlight here that号 it is the grouping of the variables, powered by our
+imputation method that allowed us to utilize the AHP efficiently. If we directly utilized AHP on
+the 8 variables above, we would have to compare the relative importance of all pairs of the 8
+众
+variables – that would be 28 pairs. Conscious that our algorithm is user-facing, it is infeasible to
+ask the user 28 questions just to get a personalized rollercoaster ranking. With 3 groups however,
+公
+we only need to ask 3 comparative questions, which is much more feasible.
+The process of the PRR model is as followed:
+信
+1. For each possible Pair (Thrill vs Fundamentals, Fundamentals vs Inversion, etc), we would
+ask微 the person to rate the relative importance of one to another based on the Fundamental
+Scale for Pairwise Comparisons, reproduced below.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 23 of 38
+M
+C
+M
+i
+H
+Figure 3: Fundamental Scale Diagram
+：
+2. Then, in the Criteria matrix below, we fill in the respective numbers. Here (𝑡,𝑓) represents
+the relative importance of thrill to fundamentals, rated on the fundamental scale above.
+号
+Similarly (𝑡,𝐼) represents the relative importance of thrill to Inversions.
+众
+1 (𝑡,𝑓) (𝑡,𝐼)
+𝐶 = 1/(𝑡,𝑓) 1 (𝑓,𝐼)
+公1/(𝑡,𝐼) 1/(𝑓,𝐼) 1
+3. After filling in the matrix, we calculate the principal normalized eigenvector of 𝐶 , 𝑣 .
+𝐶
+信
+Denote the 3 values coordinates of the principal eigenvector as (𝑣 ,𝑣 ,𝑣 ) . Then the
+𝐶1 𝐶2 𝐶3
+weights for the linear model would be:
+微
+𝑣 𝑣
+𝐶1 𝐶2
+𝛽 = 𝛽 = 𝛽 = 𝑣
+𝑡 3 𝑓 4 𝐼 𝐶3
+4. Run the GRR Model with the specified combination and show the ranking.
+Note there is no Sensitivity Test nor Results section for this model as it innately depends on the
+input of the user to perform the ranking. For the general overview of how stable is the algorithm,
+one could see the sensitivity tests conducted in the GRR Model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 24 of 38
+4.2 Variables
+We only list the additional new variables that appeared here:
+Variable Symbol Name/Meaning
+(𝒕,𝒇) The relative importance of ThMrill with respect to
+Fundamentals
+(𝒕,𝑰) The relative importance of Thrill with respect to
+C
+Inversions
+(𝒇,𝑰) The relative importance of Fundamentals with
+M
+respect to Inversions
+𝒗 The principal eigenvector of the Criteria Matrix
+𝑪
+𝒗 ,𝒗 ,𝒗 The three dimiensions of the principal eigenvector
+𝑪𝟏 𝑪𝟐 𝑪𝟑
+H
+𝑪 The Criteria Matrix (AHP)
+：
+号
+4.3 Illustration of PRR
+众
+In this section, we would illustrate a particular case for using PRR. We would assume the
+answers to the question公s are as below:
+• “What is the relative importance of Thrill to Fundamentals?” – “Thrill is extremely
+信
+important compared to Fundamentals (9)”
+• “What is the relative importance of Fundamentals to Inversion?” – “Fundamentals is
+equally important compared to Inversion (1)”
+微
+• “What is the relative importance of Thrill to Inversion” – “Thrill is extremely important
+compared to Inversion (9)”
+Here we are describing the profile of a person who is extremely thrill-seeking but is not
+really into inversions, and would prefer a balanced ride fundamentals with number of
+inversions. The matrix for him/her is thus:
+1 9 9
+𝐶 = 1/9 1 1
+1/9 1 1
+The principle eigenvector is thus:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 25 of 38
+9
+√83
+𝑣 = 1
+𝐶
+√83
+1
+(√83)
+Thus, our beta values are:
+3 1 1
+𝛽 = 𝛽 = 𝛽 = M
+𝑡 𝑓 𝐼
+√83 4√83 √83
+C
+Then we run the GRR model, to produce the following ranking:
+M
+Top 20 for PRR Run
+Kingda Ka (USA)
+i
+Top Thrill Dragster (USA)
+H
+Formula Rossa (UAE)
+：
+Red Force (Spain)
+Superman: Escape from Krypton (USA)
+Tower of号 Terror II (Australia)
+Fury 325 (USA)
+Steel Dragon 2000 (Japan)
+众
+Do-Dodonpa (Japan)
+Leviathan (Canada)
+公
+Millenium Force (USA)
+Intimidator 305 (USA)
+信Soaring Dragon & Dancing Phoenix (China) -- New
+Hyperion (Poland) -- New
+Eejanaika (Japan) -- New
+微
+Coaster Through the Clouds (China) -- New
+Titan (USA) -- New
+Shambhala (Spain) -- New
+Outlaw Run (USA) – New
+Goliath (USA)
+Table 12: Top 20 Ranking for PRR
+Note that this ranking is vastly different from the original GRR ranking - There are 7 coasters
+appearing on the Top 20 list that did not appear below. Even the Top 4, which were extremely
+stable in the sensitivity tests, swapped orders as Top Thrill Dragster over took Formula
+Rossa. This is mainly due to the fact that Top Thrill Dragster has a height of 420m compared
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 26 of 38
+to Rossa’s 171m, with similar speed and a higher drop. Thus, though Rossa’s ride is much
+longer, the thrill of the Top Thrill Dragster moved its place from third to second.
+4.4 Strengths and Weaknesses
+4.4.1 Strengths
+• The PRR model is able to capture significant personal preferenceMs within 3 simple
+questions that the users need to answer.
+• It retains all of the desirable properties of the GRR Model (robusCtness, ease to use, etc)
+4.4.2 Weaknesses
+M
+i
+H
+• The PRR model can only capture personal preferences on the two dimensions that we have
+defined – more granular personal preferenc：es are lost in the process.
+• The PRR though solving one of the weaknesses of GRR by adding personal preferences,
+still retains most of the weaknesses of GRR.
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 27 of 38
+5.News Release
+New Way to find your favorite Rollercoaster!
+Tired of deciding which rollercoaster is the best? Need some suggestions on what rollercoaster to
+next go to? With the efforts of the entire Team #8992, we have devised a new way to provide you
+M
+all the answers!
+C
+Unlike previous rankings which heavily relied on experts and/or personal ratings which are
+subject to much bias, we only use objective mathematical quantities, such as how long the ride
+M
+is, how much force you would experience on the ride, what’s the maximum speed on the ride,
+etc. We then develop a model to use all of these features and provide a rating that is objective and
+i
+reflects the true performance of these rollercoasters. H
+：
+If you want more, there is even a personalized ranking algorithm in which in just three questions,
+we would create a ranking that is suited just for you. This algorithm is asks you about the relative
+importance of different qualities of the rid号e to determine which ride would be best for you. Then
+it produces a personalized list that is unique for you.
+All of this is available in an easy t众o use app, along with other features such as region/type
+selection.
+公
+Best
+-Team #8922
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 28 of 38
+6.App Design and Development
+As requested in the question, we would design an app for people to check the current top
+rankings of the rollercoasters. As in the algorithm development, we have already thought
+about the two different type of users that would use this app, so we would prepare two
+workflows in the app to accommodate the two different types of users.
+6.1 Flowchart of App
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+As one could see above, there are two flows within the app. When you open the app, you
+would see two buttons – one for the general ranking, and one for the personalized ranking. If you
+choose general ranking, you would immediately see the general ranking of rollercoasters
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 29 of 38
+worldwide as generated by the GRR Algorithm. You can then further limit your choices to
+specific regions or type of rollercoasters you would like to enjoy.
+If you choose the advanced path, then you would be prompted 3 AHP type questions as detailed
+in the PRR algorithm. Then the PRR Algorithm would calculate a ranking that adheres to your
+tastes.
+6.2 App Design
+M
+To illustrate the app, we would show a few mockup of the screens. The home page would just be
+populated by two buttons as shown below: C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 4: Home Screen
+These two buttons would take you down either the General Ranking Path or the Personalized
+Ranking path. If you choose the Advanced Mode (Personalized), then you get the following
+screen:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 30 of 38
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 5: Questions
+Then after the user finish answering the questions, the ranking would appear:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 31 of 38
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Figure 6: Ranking
+The plus icon on the top side indicates that the user could add additional options to filter his
+ranking. This includes filtering by region, ride, and others.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 32 of 38
+7.Appendix
+7.1 References
+https://www.rcdb.com.
+M
+https://www.ultimaterollercoaster.com/
+C
+M
+https://coasterpedia.net/
+i
+H
+https://abcnews.go.com/WNT/story?id=130111&p：age=1
+号
+http://goldenticketawards.com/
+众
+https://www.lifed.com/top-25-best-roller-coasters-in-the-world/
+公
+https://coasterbuzz信.com/
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 33 of 38
+7.2 Code for GRR and PRR
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+library(ggthemes)
+M
+library(corrplot)
+comapdata=read_csv("COMAP_RollerCoasterData_2018.csv") C
+comapdata$`Height (feet)`=as.numeric(comapdata$`Height (feet)`) M
+ecdf1=ecdf(comapdata$`Height (feet)`)
+i
+H
+plot(ecdf1)
+：
+qqnorm(comapdata$`Height (feet)`)
+号
+comapdata$`G Force`=as.numeric(comapdata$`G Force`)
+众
+ecdf1=ecdf(comapdata$`G Force`)
+plot(ecdf1)
+公
+qqnorm(comapdata$`G Force`)
+信
+comapdata$`Inversions (YES or NO)`[comapdata$`Inversions (YES or NO)`=="YES"]=1
+微
+comapdata$`Inversions (YES or NO)`[comapdata$`Inversions (YES or NO)`=="NO"]=0
+comapdata$`Inversions (YES or NO)`=as.numeric(comapdata$`Inversions (YES or NO)`)
+comapdata$`Duration (min:sec)`=as.numeric(comapdata$`Duration (min:sec)`)/60
+comapdata$`Speed (mph)`=as.numeric(comapdata$`Speed (mph)`)
+ecdf1=ecdf(comapdata$`Speed (mph)`)
+plot(ecdf1)
+qqnorm(comapdata$`Speed (mph)`)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 34 of 38
+cor(comapdata[complete.cases(comapdata[,10:19]),10:19])
+ggplot(comapdata, aes(x=`Height (feet)`, y=`Speed (mph)`)) + geom_point(color="blue") +
+theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95)
+ggplot(comapdata, aes(x=`Length (feet)`, y=`Speed (mph)`)) + geom_point(color="blue") +
+theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95)
+ggplot(comapdata, aes(x=`Duration (min:sec)`*`Speed (mph)`, y=`Length (feet)`)) + geom_point(color="blue")
++ theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95) M
+C
+M
+lm1<-lm(`Speed (mph)`~`Height (feet)`,data=comapdata)
+i
+H
+：
+lm2<-lm(`Length (feet)`~`Duration (min:sec)`:`Speed (mph)`,data=comapdata)
+号
+lm3<-lm(`Drop (feet)`~`Speed (mph)`,data=comapdata)
+众
+ggplot(comapdata, aes(x=`Number of Inversions`, y=`Drop (feet)`)) +
+公
+geom_point(color="blue") +
+theme_few()+geom信_smooth(se=TRUE, fullrange=FALSE, level=0.95)
+微
+ggplot(comapdata, aes(x=`Length (feet)`/`Speed (mph)`, y=`Duration (min:sec)`)) +
+geom_point(color="blue") +
+theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95)
+lm4<-lm(`Duration (min:sec)`~I(`Length (feet)`/`Speed (mph)`)+I(`Drop (feet)`/`Speed
+(mph)`)+Construction,data=comapdata)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 35 of 38
+comapdata=read_csv("COMAP_RollerCoasterData_2018_Fixed.csv")[1:299,1:19]
+lm5<-lm(GForce~Length+Construction,data=comapdata)
+M
+length(lm5$fitted.values) C
+comapdata$GForce=predict(lm5,newdata = comapdata) M
+i
+H
+ggplot(comapdata, aes(x=`Length (feet)`, y=`G Force`)) +
+：
+geom_point(color="blue") +
+theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95)
+号
+众
+ggplot(comapdata, aes(x=`Length (feet)`, y=`Vertical Angle (degrees)`)) +
+geom_point(color="blue") +
+公
+theme_few()+geom_smooth(method="lm", se=TRUE, fullrange=FALSE, level=0.95)
+信
+微
+lm6<-lm(Vangle~GForce,data=comapdata)
+comapdata$Vangle=predict(lm6,newdata = comapdata)
+write_csv(comapdata,"COMAP_RollerCoasterData_2018_Full.csv")
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 36 of 38
+comapdata=read_csv("COMAP_RollerCoasterData_2018_Full.csv")
+comapdata[,11:19]=scale(comapdata[,11:19])
+comapdata=comapdata[comapdata$Construction=="Steel",]
+# comapdata$Construction=as.numeric(factor(comapdata$Construction))-1
+comapdata$Construction=NULL
+M
+comapdata$Status=NULL
+comapdata$Type=NULL C
+comapdata$Year=NULL M
+comapdata$IInversion=NULL
+i
+H
+comapdata$Park=NULL
+：
+comapdata$District=NULL
+comapdata$City=NULL
+号
+comapdata$Region=NULL
+众
+weights=c(3/sqrt(83),1/(4*sqrt(83)),1/(sqrt(83)))
+公
+coefs=c(weights[1]/3,weights[1]/3,weights[2]/4,weights[3],weights[1]/3,weights[2]/4,weights[2]/4,weights[2
+]/4) 信
+ans=as.vector(data.matrix(comapdata[,3:10])%*%coefs)-weights[2]*(0.7620/sqrt(0.21)+26.2/sqrt(2139.5))
+微
+comapdata=read_csv("COMAP_RollerCoasterData_2018_Full.csv")
+comapdata[,11:19]=scale(comapdata[,11:19])
+comapdatawood=comapdata[comapdata$Construction=="Wood",]
+# comapdata$Construction=as.numeric(factor(comapdata$Construction))-1
+comapdatawood$Construction=NULL
+comapdatawood$Status=NULL
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 37 of 38
+comapdatawood$Type=NULL
+comapdatawood$Year=NULL
+comapdatawood$IInversion=NULL
+comapdatawood$Park=NULL
+comapdatawood$District=NULL
+comapdatawood$City=NULL
+M
+comapdatawood$Region=NULL
+C
+weights=c(3/sqrt(83),1/(4*sqrt(83)),1/(sqrt(83))) M
+coefs=c(weights[1]/3,weights[1]/3,weights[2]/4,weights[3],weights[1]/3,weights[2]/4,weights[2]/4,weights[2
+i
+]/4) H
+ans2=as.vector(data.matrix(comapdatawood[,3:10])%*%：coefs)
+号
+comapdata=read_csv("COMAP_RollerCoasterData_2018_Full.csv")
+comapdata$ans=0 众
+comapdata$ans[comapdata$Construction=="Steel"]=ans
+公
+comapdata$ans[comapdata$Construction=="Wood"]=ans2
+信
+微
+corrplot(cor(comapdata[,10:19]))
+comapdataold=read_csv("COMAP_RollerCoasterData_2018.csv")
+colnames(comapdataold)<-colnames(comapdata)
+comapdataold$Height=as.numeric(comapdataold$Height)
+comapdataold$IInversion[comapdataold$IInversion=="YES"]=1
+comapdataold$IInversion[comapdataold$IInversion=="NO"]=0
+comapdataold$IInversion=as.numeric(comapdataold$IInversion)
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #8992 Page 38 of 38
+comapdataold$Duration=as.numeric(comapdataold$Duration)/60
+comapdataold$Speed=as.numeric(comapdataold$Speed)
+corrplot(cor(comapdataold[complete.cases(comapdataold[,10:17]),10:17]))
+corrplot(cor(comapdata[,10:19]))
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

@@ -1,0 +1,1643 @@
+For office use only For office use only
+T1 ________________ F1 ________________
+T2 ________________ F2 ________________
+T3 ________________ F3 ________________
+T4 ________________ F4 ________________
+2012
+15th Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+(Please attach a copy of this page to each copy of your Solution Paper.)
+M
+Team Control Number: 3681
+C
+Problem Chosen: B
+M
+Please type a summary of your results on this page. Please remember not to include the
+name of your school, advisor, or team members on this page.
+i
+H
+The average American family spent $368 per month, or $4416 per year, on gasoline in 2011. Gas has gone up by
+an average of 19 cents per year over the past 9 years. For ou：r model city (New York City), our model saved 1.75% over
+normal consumers when driving 200 miles a week. This would translate to $77.45 savings per year for the average
+American family just from optimizing the timing of gas purchases. These numbers explain the immediate importance of
+this problem to all Americans. 号
+Our model is a multiple regression for the change in price of gas, given past weeks change in gas, past change
+众
+prices of crude oil, and the displacement of the current price of gas from the average. It uses all linear combinations
+between past weeks change in gas, and all linear combinations of past change prices of crude oil. The R2 of our model for
+our model city, or the percentage of variance in the output variable that is explained by variance in the input variables, is
+公
+.784. More importantly, the model correctly forecasted the direction of change in price of gas in 40 out of 45 weeks in
+2012 after being trained on data from 2011.
+信
+We also investigated other methods of calculating the change, finding that a simple Markov process could make
+many effective predictions. We included this model in our analysis, and used it in our letter to the editor, as it is easy to
+understand and sim微ple to implement in actual gas buying routine.
+We then calculated the savings garnered using the multivariate linear model in 2012 and compared it to the simple
+Markov model, the model that buys gasoline whenever the tank is empty, the model that fills the tank every week, and
+the optimal solution, found using Dijkstra's Algorithm. Our model saved more than the simple Markov model in most
+cases. Variance in savings can be attributed to the severity of errors in the model's predictions.
+Our model is consistent in saving money and picking the correct direction of change. It is not as useful for predicting
+amount of change, and does not predict wild swings with great frequency, but rapidly adapts to them. The simplified
+Markov model in particular would be very easy and effective to
+implement in real life.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+M
+C
+M
+i
+| A Week | Ahead | of the | GHas Market |
+| ------ | ----- | ------ | ----------- |
+：
+|     | Team | #3681 |     |
+| --- | ---- | ----- | --- |
+号
+| COMAP | HiMCM | Competition | 2012 |
+| ----- | ----- | ----------- | ---- |
+众
+|     | Problem | B   |     |
+| --- | ------- | --- | --- |
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 1
+Summary
+The average American family spent $368 per month, or $4416 per year, on
+gasoline in 2011. Gas has gone up by an average of 19 cents per year over the
+past 9 years. For our model city (New York City), our model saved 1.75%
+over normal consumers when driving 200 miles a week. This would translate
+to $77.45 savings per year for the average American family just from opti-
+M
+mizing the timing of gas purchases. These numbers explain the immediate
+importance of this problem to all Americans.
+C
+Our model is a multiple regression for the change in price of gas, given past
+M
+weeks change in gas, past change prices of crude oil, and the displacement
+of the current price of gas from the average. It uses all linear combinations
+i
+between past weeks change in gas, and all linear combinations of past change
+H
+prices of crude oil. The R2 of our model for our model city, or the percentage
+of variance in the output variable that：is explained by variance in the input
+variables, is .784. More importantly, the model correctly forecasted the di-
+rection of change in price of gas in 40 out of 45 weeks in 2012 after being
+号
+trained on data from 2011.
+We also investigated oth众er methods of calculating the change, finding that a
+simple Markov process could make many effective predictions. We included
+this model in our analysis, and used it in our letter to the editor, as it is easy
+公
+to understand and simple to implement in actual gas buying routine.
+We then calculated the savings garnered using the multivariate linear model
+信
+in 2012 and compared it to the simple Markov model, the model that buys
+gasolinewheneverthetankisempty, themodelthatfillsthetankeveryweek,
+an微dtheoptimalsolution, foundusingDijkstra’sAlgorithm. Ourmodelsaved
+more than the simple Markov model in most cases. Variance in savings can
+be attributed to the severity of errors in the model’s predictions.
+Our model is consistent in saving money and picking the correct direction
+of change. It is not as useful for predicting amount of change, and does not
+predict wild swings with great frequency, but rapidly adapts to them. The
+simplified Markov model in particular would be very easy and effective to
+implement in real life.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 2
+Contents
+| 1 Restatement | of the | Problem |     | 3   |
+| ------------- | ------ | ------- | --- | --- |
+| 2 Information | Given  |         |     | 3   |
+| 3 Assumptions |        |         |     | 4   |
+M
+| 4 Model | Design |     |     | 4   |
+| ------- | ------ | --- | --- | --- |
+C
+| 5 Model | Testing and | Analysis |     | 6   |
+| ------- | ----------- | -------- | --- | --- |
+.M.
+5.1 Model City . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+5.2 Other Cities . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+i
+| 6 Alternative | Approaches |     | H   | 16  |
+| ------------- | ---------- | --- | --- | --- |
+：
+| 7 Strengths | and Weaknesses |     |     | 17  |
+| ----------- | -------------- | --- | --- | --- |
+7.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+7.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+号
+| 8 Letter | to the Editor |     |     | 19  |
+| -------- | ------------- | --- | --- | --- |
+众
+| A Example     | Data    |     |     | 21  |
+| ------------- | ------- | --- | --- | --- |
+| B Data        | Charts公 |     |     | 23  |
+| C Mathematica | Code    |     |     | 28  |
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 3
+| 1 Restatement |     | of  | the Problem |     |
+| ------------- | --- | --- | ----------- | --- |
+The price of gasoline is one of the most volatile prices on the consumer mar-
+ket today, and everyone who drives a car has to buy gasoline occasionally, so
+the question of when to buy gas is an important and difficult one. In order
+to evaluate when the best time to buy gas is, a model should be created that
+gives an answer to the question “Should I buy gas this week?”ThMe problem
+presents a consumer and a car for which the model should be tailored. The
+car has a 16 gallon gas tank and consistently achieves 25 miles per gallon.
+C
+The consumer goes to the gas station once each week. Every time the con-
+sumer is at the gas station he has to make a choice bMetween three options:
+filling the gas tank of the car all the way up, filling the gas tank of the car
+| halfway, | or not buying | any gas. |     |     |
+| -------- | ------------- | -------- | --- | --- |
+i
+H
+As a solution, we will create a model that advises the consumer on how
+：
+much gas to buy every week. The model will be refined with gas price data
+from 2011 from numerous big cities around the country and tested with gas
+price data from 2012. This model will include the predicted movement in gas
+号
+priceinthenextweekandhowmuchgastobuyinthecurrentcircumstances.
+众
+| 2 Information |             | Given             |                   |     |
+| ------------- | ----------- | ----------------- | ----------------- | --- |
+| 1. The        | gas tan公k   | holds 16 gallons. |                   |     |
+| 2. The信car    | will always | get 25            | miles per gallon. |     |
+微
+| 3. The | car will travel | 400 miles | per tank | of gas. |
+| ------ | --------------- | --------- | -------- | ------- |
+4. The consumer can go to the gas station once a week, as required.
+5. Theconsumerconsistentlytraveleitherexactly100orexactly200miles
+| per | week. |     |     |     |
+| --- | ----- | --- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 4
+Frequency
+of Oc-
+curence
+M
+Change in Gas Price per Week (USD)
+C
+Figure 1: Change in Gas Price per WMeek
+3 Assumptions i
+H
+1. Changes in gas price between weeks are normally distributed.
+：
+Inspection of Figure 1 reveals that the changes in price between weeks
+are normally distributed.
+号
+2. The government reports accurate gas price data and accurate crude oil
+price data.
+众
+It is reasonable to assume that official government data is accurate as
+the government is required by law to be truthful in their reports.
+公
+4 Model Design
+信
+First, it is necessary to determine what data is required to predict when to
+buy gas. If the price of gas is going to go down, it is optimal to not purchase
+a f微ull tank, whereas if the price is going to rise, it is. Because we need to
+determine how much gas to buy to maximize savings, the model needs to
+predict the action the price of gas will take in the next week.
+Because the prediction only needs to be used in the short term, a variety
+of longer term variables were rejected. Seasonal variances due to changes in
+EPA regulation for the summer and increases in price of gas over a period of
+years due to inflation were found to be too macroscopic in scope to affect our
+model’s predictions, verified by preliminary statistical analysis. Additionally,
+variance in travel due to holiday peaks, such as July Fourth, were considered,
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 5
+butwerenotfoundtobecorrelatedwithgasprices. Catastrophiceventssuch
+as the Terrorist Attacks of 9/11 or the destruction of the gulf states due to
+Hurricane Katrina, while influential on gas production, are difficult to im-
+possible to predict, as there were several cases of Class 5 hurricanes that were
+followed by a decrease in price of gas.
+The variables that were consistently significant enough to meriMt inclusion
+in our model were “change in crude oil price in the previous week”, “change
+in crude oil price during the week before”, “displacement of price per gallon
+C
+from average price”, “change in the price of gas during the previous week”,
+“change in price of gas two weeks previously”, and “cMhange in price of gas
+three weeks ago”, as well as multiplicative combinations of some of these.
+i
+Preliminary inspection of the data showed heavHy amounts of noise, but the
+price of gas increases from one week to the next, the next week is dispro-
+：
+portionately likely to continue to increase, so it was predicted that change
+during previous week would be a large factor in determining the change in
+price next week. This was affirm号ed by our Markov model, which showed that
+for the majority of cases, the trend the previous week continues.It is worth
+noting that the 200 mile case and the 100 mile case are identical to the model
+众
+at the formula stage, as the trend predicted for the next week does not in
+any case we tested change when attempting to predict a trend two weeks out
+from the same data.
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 6
+Table 1: Equation to find the Change in Price of Gas in the Next Week
+|     |     |      | (cid:80) | +3.52117∗10−6 |       |
+| --- | --- | ---- | -------- | ------------- | ----- |
+|     |     | F(x) | = β f    |               | where |
+i i
+β f
+| 0.0151589    |     |                                              |     | ChangefromAveragePriceofGas |                         |
+| ------------ | --- | -------------------------------------------- | --- | --------------------------- | ----------------------- |
+| 0.00534611   |     |                                              |     |                             | ChangeinPriceofCrudeOil |
+| −0.000400537 |     | ChangeinPriceofCrudeOilduringthePreviousWeek |     |                             |                         |
+M
+| 0.843016  |     |     | ChangeinPriceofGasduringthePreviousWeek |                                 |     |
+| --------- | --- | --- | --------------------------------------- | ------------------------------- | --- |
+| 0.0759353 |     |     |                                         | ChangeinPriceofGasThreeWeeksAgo |     |
+C
+| −0.245513 |     |     |     | ChangeinPriceofGasTwoWeeksAgo |     |
+| --------- | --- | --- | --- | ----------------------------- | --- |
+M
+| 5 Model |     | Testing |     | and Analysis |     |
+| ------- | --- | ------- | --- | ------------ | --- |
+i
+Our model is a linear regression of multiple varHiables for the change in price
+of gas. The sign of the output of the function is used in conjunction with the
+：
+| amount | of gas | left in | the tank | to determine | action taken. |
+| ------ | ------ | ------- | -------- | ------------ | ------------- |
+The variables used in the model are change in the price of crude oil, change
+号
+in price of crude oil during the previous week, displacement from average
+price of gas cubed, change in price of gas during the past week, change in
+ag众o,
+price of gas two weeks and change in price of gas three weeks ago. The
+only input it requires to calculate these six variables and their combinations
+| is crude | oil data | and gasoline |     | price data. |     |
+| -------- | -------- | ------------ | --- | ----------- | --- |
+公
+The model is coded to take input data from 2011 for a given city into the
+program M信athematica. It can then assess its own success using data from
+2012.
+微
+| 5.1 | Model | City |     |     |     |
+| --- | ----- | ---- | --- | --- | --- |
+The process will be demonstrated with New York City, as shown by Figures
+| 3, 4, and | 5, Table | 1, and | Table | 2.  |     |
+| --------- | -------- | ------ | ----- | --- | --- |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 7
+FFFooorrreeecccaaasssttt   fffooorrr   GGGaaasss   PPPrrriiiccceeesss   fffooorrr   NNNeeexxxttt
+MMiilleess  LLeefftt  iinn   M
+WWWeeeeeekkk
+TTaannkk
+|     |     | Up  | Stable | Down |
+| --- | --- | --- | ------ | ---- |
+C
+|     | 0   | Fill Tank | Fill Tank | MHalf Tank |
+| --- | --- | --------- | --------- | ---------- |
+i
+H
+|     | 100 | Fill Tank | Fill Tank | No Gas |
+| --- | --- | --------- | --------- | ------ |
+：
+号
+|     | 200 | Fill Tank | Fill Tank | No Gas |
+| --- | --- | --------- | --------- | ------ |
+众
+|     | 300 | Fill Tank | Fill Tank | No Gas |
+| --- | --- | --------- | --------- | ------ |
+公
+信
+|     | 0   | Fill Tank | Fill Tank | Half Tank |
+| --- | --- | --------- | --------- | --------- |
+微
+|        | 200     | Fill Tank | Fill Tank | No Gas       |
+| ------ | ------- | --------- | --------- | ------------ |
+| Figure | 2: When | Gasoline  | should    | be Purchased |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 8
+Price
+of Gas
+(USD)
+M
+C
+Year
+M
+|     | Figure | 3: New | York | City. | Price of Gas | vs. Time |
+| --- | ------ | ------ | ---- | ----- | ------------ | -------- |
+i
+H
+：
+号
+众
+Price
+of Gas
+(USD)
+公
+|          | 信        |          |          |             | Year     |                 |
+| -------- | -------- | -------- | -------- | ----------- | -------- | --------------- |
+| 微Figure  | 4:       | New York | City.    | Change      | in Price | of Gas vs. Time |
+|          |          | Table    | 2:       | Statistical | Values   |                 |
+| R2       | Adjusted | R2       | Standard | Deviation   |          |                 |
+| 0.722511 | 0.685512 |          |          | 0.0278984   |          |                 |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     |     |     | Team #3681, Page 9 |
+| --- | --- | --- | --- | --- | --- | ------------------ |
+Week of the Year
+M
+C
+CMhange
+Figure 5: Residual Plot of the Regression for the in the Price of
+Gasoline
+i
+H
+In New York City, we predicted a rise in price when the price actually
+dropped twice and predicted a drop in：price when it raised three times. We
+were correct in the other 40 cases. We spent an average $3.6636 per gallon
+over the course of 2012 when deciding whether to buy based on our model
+号
+for 2011, driving 100 miles per week, while a simple markov model spent
+$3.65723, a slight improvement. However, a consumer that bought whenever
+hercarwasoutofgaswouldhavespent$3.74991inthatcase, andaconsumer
+众
+that filled his car every week would have spent $3.73764, savings of $0.0863
+and $0.074, respectively. When driving 200 miles per week, we had less
+opportunity to sa公ve, saving only $0.0656 and $0.0602, respectively. In the
+| 200 miles | per week | case,   | that is still | a minimum | savings | of  |
+| --------- | -------- | ------- | ------------- | --------- | ------- | --- |
+|           | 信Dollars |         | Gallon        | Miles     | Weeks   |     |
+|           |          | (       | )(            | )(        | )(      | )   |
+|           |          | Gallons | Miles         | Week      | Year    |     |
+| 微         |          |         | = $50.0885    | per year  |         |     |
+| 5.2       | Other    | Cities  |               |           |         |     |
+As our model was written for a general case, we also calculated models for
+Boston, Chicago, Denver, Houston, Los Angeles, and San Francisco.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 10
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 11
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 12
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 13
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 14
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     | Team | #3681, Page | 15  |
+| --- | --- | --- | ---- | ----------- | --- |
+AAAAvvvveeeerrrraaaaggggeeee    MMMMoooonnnneeeeyyyy    SSSSppppeeeennnntttt    oooonnnn    GGGGaaaassssoooolllliiiinnnneeee    ppppeeeerrrr    GGGGaaaalllllllloooonnnn    ffffoooorrrr    tttthhhheeee    2222000011112222    YYYYeeeeaaaarrrr
+100 mi/week
+((((UUUUSSSSDDDD))))
+|       |            | Under the    |               |                  | Optimal model  |
+| ----- | ---------- | ------------ | ------------- | ---------------- | -------------- |
+|       | Under our  |              | Filling only  | Filling to full  |                |
+| Cites |            | Markov model |               |                  | (Dijkstra’s    |
+|       | model      |              | when on empty | everMy week      |                |
+Algorithm)
+|     | 3.58739 | 3.57170 | 3.67000 | 3.66153 | 3.54563 |
+| --- | ------- | ------- | ------- | ------- | ------- |
+Boston
+| Chicago | 3.82763 | 3.91729 | 3.94164 | C 3.92016 | 3.74551 |
+| ------- | ------- | ------- | ------- | --------- | ------- |
+| Denver  | 3.42832 | 3.45288 | 3.51964 | 3.51800   | 3.41200 |
+| Houston | 3.43667 | 3.41815 | 3.56518 | 3.55422   | 3.43142 |
+M
+| Los Angeles   | 4.09271 | 4.05150 | 4.16445  | 4.15087 | 3.98009 |
+| ------------- | ------- | ------- | -------- | ------- | ------- |
+| New York City | 3.66838 | 3.65723 | 3.74991  | 3.73764 | 3.61830 |
+| San Francisco | 4.05080 | 3.98675 | i4.11055 | 4.10349 | 3.93902 |
+H
+：
+Figure 6: Average Money Spent per Gallon of Gasoline When Travelled 100
+号
+miles
+众
+公
+AAAAvvvveeeerrrraaaaggggeeee    MMMMoooonnnneeeeyyyy    SSSSppppeeeennnntttt    oooonnnn    GGGGaaaassssoooolllliiiinnnneeee    ppppeeeerrrr    GGGGaaaalllllllloooonnnn    ffffoooorrrr    tttthhhheeee    2222000011112222    YYYYeeeeaaaarrrr
+200 mi/week
+((((UUUUSSSSDDDD))))
+|        |            | Under the    |               |                  | Optimal model  |
+| ------ | ---------- | ------------ | ------------- | ---------------- | -------------- |
+|        | Under our  |              | Filling only  | Filling to full  |                |
+| 信Cites |            | Markov model |               |                  | (Dijkstra’s    |
+|        | model      |              | when on empty | every week       |                |
+Algorithm)
+| Boston  | 3.60179 | 3.58332 | 3.66777 | 3.66153 | 3.54563 |
+| ------- | ------- | ------- | ------- | ------- | ------- |
+| Chicago | 3.84495 | 3.93610 | 3.93755 | 3.92016 | 3.74551 |
+微
+| Denver        | 3.44814 | 3.47329 | 3.52632 | 3.51800 | 3.41200 |
+| ------------- | ------- | ------- | ------- | ------- | ------- |
+| Houston       | 3.45066 | 3.42977 | 3.56336 | 3.55422 | 3.43142 |
+| Los Angeles   | 4.11060 | 4.06619 | 4.15382 | 4.15087 | 3.98009 |
+| New York City | 3.68244 | 3.66787 | 3.74309 | 3.73764 | 3.61830 |
+| San Francisco | 4.07098 | 4.00264 | 4.10473 | 4.10349 | 3.93902 |
+Figure 7: Average Money Spent per Gallon of Gasoline When Travelled 200
+miles
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 16
+6 Alternative Approaches
+There are many possible ways to approach this problem, of which many
+are not insightful to the question of whether or not to buy gas during the
+next week. Some other approaches we attempted were Wavelet Analysis and
+Markov Chain Analysis.
+M
+In Wavelet Analysis, the data is analyzed and then represented by a series
+of wavelets. By ignoring the wavelets that account for less than a threshold
+C
+amount of the system’s energy, it is possible to reduce noise vastly. This
+proved not useful to modeling this situation because geMtting rid of that noise
+that operates on a microscopic level renders the model useless to making
+predictions from one week to another.
+i
+H
+Markov Chain Analysis is more successful. Markov Chains work by tak-
+：
+ing only the previous state of the system as input for the next state. We
+constructed the transition matrix using excel. For Boston,
+(cid:20) 号 (cid:21)
+0.390243902 0.119918699
+A =
+0.119918699 0.369918699
+众
+where A indicates the probability that if it is in state i, it will transition to
+i,j
+state j, with 1 being an increase in price and 2 being a decrease. By predict-
+ing that the high公est probability in a column will come true in that case, we
+can make decisions about the price of gas given the price last week. For our
+case, this amounts to simply assuming that the trend from last week will hold
+during thi信s week. A more complex matrix, using either the trend from the
+week before last week or the sign of the most recent change in trend, makes
+the same predictions, and thus the same errors. The error percentage of the
+微
+model for Boston when applied to the 2012 data is 20%. We also constructed
+a larger Markov matrix using partitions of the data, however the same action
+was always taken, so no benefit was gained. Still, the very simplistic model
+If the price increased during the previous week, buy as much gas as possible.
+If the price declined during the previous week, buy as little gas as possible.
+saved a similar amount of money per gallon over the course of the year to the
+much more involved Multivariate Linear Model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 17
+7 Strengths and Weaknesses
+7.1 Strengths
+Despite gas price data having a massive amount of statistical noise, our model is
+capable of explaining the majority of the variation in the price in gasoline and
+predicting the change is price for the next week. The model is correct about the
+M
+direction in which the prices will move 89% of the time. It only uses two data
+sets to calculate its decisionpast two weeks of crude oil price values and past three
+weeks of gas price data for the given city. The models high R2 valCue indicates that
+a large portion of the variance in change of price in gasoline is explained by our
+model. M
+Overall, the model accomplishes its goal of saving the consumer money. As com-
+i
+pared with other more simple models, such as fillinHg the tank every week or only
+filling the tank when on empty, the model saves more than 6 cents per gallon in
+：
+every city we tested. The average consumer uses one of these basic models, so the
+average consumer would save an average of 9 cents per gallon when driving 100
+miles per week. The model is also more effective than the Markov Chain model in
+号
+saving the consumer money.
+This model was a good choice for the problem, using a full first order regres-
+众
+sion on the three previous weeks of change in price of gas, a cubic component of
+the displacement from the mean price, and a full first order regression on the two
+previous weeks cha公nge in price of crude oil. This effectively calculated short term
+differences. A model that used longer term variables would not be as reliable for
+one week predictions, and a model that used freak variables to account for poten-
+tial spikes信such as Katrina would not be possible to use, as level of devastation is
+immensely hard to predict.
+微
+Additionally, we provide an easy to use variant that can be easily implemented
+with just a post-it note on the dashboard or a smartphone notes application.
+7.2 Weaknesses
+The model does not accurately predict sudden changes in direction of gas due to
+the retrospective nature of the model. If the second-order derivative of the gas
+pricefunctionisnearintherangeusedtoforecastforthemodel, themodelcannot
+always predict a drastic change in the slope of the cost function. Thus the model
+is prone to overshooting or undershooting values when the cost of gas suddenly
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 18
+changes. However, themodelisself-correcting, andwillreturntothecostfunction
+after an unexpected change in slope. This weakness is minimized with increasing
+density of data.
+Such sudden changes in slope may be caused by several factors. For example,
+in 2005, Hurricane Katrina severely damaged several refineries, and caused gas
+process to spike dramatically. Our model cannot predict such catastrophes. An-
+M
+other example that our model cannot predict includes terrorist activities.
+C
+One bad decision — buying when the price of gas is about to fall by a lot —
+can result in a much higher price per gallon than optimal. This is due partly to
+M
+simple bad luck: it can just so happen that one of the few mistakes our model
+makes occurs when it is able to buy a full tank of gas at a very high rate.
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 19
+8 Letter to the Editor
+Dear Good Times Dispatch,
+High gas prices have been affecting people for years. By buying fuel when the
+price is at its lowest, it is possible to save money on gas, however the seemingly
+random nature of change of gas prices makes it difficult to know when fuel prices
+M
+are about to rise or drop. Attempting to save money on fuel is hardly an esoteric
+concern, butit is not easy to actually save money. It may seem like too much work
+to do the math to figure out when the optimal times to buy gueCss are, especially
+since it only shaves cents off the price, with a risk of not saving any money at all.
+M
+Without going too far into the calculations, I would like you to know that it is
+not only very possible to make significant savings over time, but very easy. If you
+already take the time to drive around hunting for the loiwest gas price, you won’t
+find this difficult to add to your routine at all. H
+：
+A simple trend easily observed in the data is that the change in gas price between
+weekstendstonotchangedirectionmoreoftenthanitdoeschangedirection. This
+means that if the price is going up it will most likely continue to go up and if the
+号
+price is going down it will most likely continue to go down. When you drive by the
+gas station you normally buy from on the day you normally buy on, write down
+the price. If, next week, th众e price has gone up, it would be in your best interests
+to fill your tank of gas, as the price is likely to continue to increase. If the price
+has decreased, only buy gas if you are out. You can put a sticky note with the
+numbers on your d公ash, or record the data on a smartphone.
+For a consumer driving 200 miles a week in New York City in 2012, following
+信
+this process will save $62.58 if the average savings hold through the end of the
+year. The same model followed in Houston under the same conditions will save
+$113.5 over the course of the year. Would $113.5 make it worth it to you to record
+微
+a few pieces of data?
+Sincerely,
+A Mathematical Concerned Citizen
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     |     |     |     | Team | #3681, | Page 20 |
+| --- | --- | --- | --- | --- | --- | --- | ---- | ------ | ------- |
+References
+[1] Chevron. ”How Fuel Is Delivered.” The Price of Fuel. Last modified 2011.
+http://www.thepriceoffuel.com/howfuelisdelivered/.
+[2] CNN. ”Your Monthly Gas Bill: $368.” CNN Money. Last modified May 6,
+2011.
+http://money.cnn.com/2011/05/05/news/economy/gas prices incMome spen
+ding/index.htm.
+C
+| [3] ”List                         | of Category |     | 5 Atlantic | Hurricanes.” |             | In  | Wikipedia. |             |     |
+| --------------------------------- | ----------- | --- | ---------- | ------------ | ----------- | --- | ---------- | ----------- | --- |
+| http://en.wikipedia.org/wiki/List |             |     |            |              | of Category |     | 5 Atlantic | hurricanes. |     |
+M
+[4] U.S. Department of Energy. ”Weekly Retail Gasoline and Diesel Prices.”
+U.S. Energy Information Administration. Last modiified November 5, 2012.
+| http://www.eia.gov/dnav/pet/pet |     |     |     |     | pri | gnd a | eHpmr pte | dpgal | w.htm. |
+| ------------------------------- | --- | --- | --- | --- | --- | ----- | --------- | ----- | ------ |
+For：mulations
+| [5] ”Weekly | Boston, |        | MA Regular  |     | All             |     | Retail   | Gasoline | Prices.” |
+| ----------- | ------- | ------ | ----------- | --- | --------------- | --- | -------- | -------- | -------- |
+| Table.      | U.S.    | Energy | Information |     | Administration. |     | November | 6,       | 2012.    |
+http://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=
+号
+| EMM | EPMR | PTE | YBOS | DPG&f=W. |     |     |     |     |     |
+| --- | ---- | --- | ---- | -------- | --- | --- | --- | --- | --- |
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 21
+A Example Data
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 22
+WWWeeeeeekkklllyyy   NNNeeewww   YYYooorrrkkk   CCCiiitttyyy   RRReeeggguuulllaaarrr   AAAllllll   FFFooorrrmmmuuulllaaatttiiiooonnnsss   RRReeetttaaaiiilll   GGGaaasssooollliiinnneee   PPPrrriiiccceeesss
+hhhttttttppp::://////wwwwwwwww...eeeiiiaaa...gggooovvv///dddnnnaaavvv///pppeeettt///hhhiiisssttt///LLLeeeaaafffHHHaaannndddllleeerrr...aaassshhhxxx???nnn===PPPEEETTT&&&sss===EEEMMMMMM___EEEPPPMMMRRR___PPPTTTEEE___YYY333555NNNYYY___DDDPPPGGG&&&fff===WWW
+111999:::555000:::000222   GGGMMMTTT---000555000000   (((EEESSSTTT)))
+SSSooouuurrrccceee:::   UUU...SSS...   EEEnnneeerrrgggyyy   IIInnnfffooorrrmmmaaatttiiiooonnn   AAAdddmmmiiinnniiissstttrrraaatttiiiooonnn
+M
+| Week of WWeeeekkllyy  NNeeww  YYoorrkk  CCiittyy  RReegguullaarr  AAllll  FFoorrmmuullaattiioonnss  RReettaaiill  GGaassoolliinnee  PPrriicceess  ((UUSSDD)) |       |     |     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- | --- | --- |
+| Nov 5, 2012                                                                                                                                                  | 3.695 |     |     |
+| Oct 29, 2012                                                                                                                                                 | 3.692 |     |     |
+C
+| Oct 22, 2012 | 3.816 |     |     |
+| ------------ | ----- | --- | --- |
+| Oct 15, 2012 | 3.917 |     |     |
+| Oct 8, 2012  | 3.958 |     | M   |
+| Oct 1, 2012  | 3.931 |     |     |
+| Sep 24, 2012 | 3.938 |     |     |
+| Sep 17, 2012 | 3.99  |     |     |
+i
+| Sep 10, 2012 | 3.895 |     |     |
+| ------------ | ----- | --- | --- |
+H
+| Sep 3, 2012  | 3.869   |     |     |
+| ------------ | ------- | --- | --- |
+| Aug 27, 2012 | 3.838   | ：   |     |
+| Aug 20, 2012 | 3.821   |     |     |
+| Aug 13, 2012 | 3.794   |     |     |
+| Aug 6, 2012  | 3.705   |     |     |
+| Jul 30, 2012 | 3.653 号 |     |     |
+| Jul 23, 2012 | 3.649   |     |     |
+| Jul 16, 2012 | 3.553   |     |     |
+| Jul 9, 2012  | 3.497   |     |     |
+众3.443
+Jul 2, 2012
+| Jun 25, 2012 | 3.467 |     |     |
+| ------------ | ----- | --- | --- |
+| Jun 18, 2012 | 3.514 |     |     |
+| Jun 11, 2012 | 3.584 |     |     |
+公
+| Jun 4, 2012   | 3.66  |     |     |
+| ------------- | ----- | --- | --- |
+| May 28, 2012  | 3.705 |     |     |
+| May 21, 2012  | 3.758 |     |     |
+| 信May 14, 2012 | 3.808 |     |     |
+| May 7, 2012   | 3.851 |     |     |
+| Apr 30, 2012  | 3.899 |     |     |
+| Apr 23, 2012  | 3.95  |     |     |
+微Apr 16, 2012 3.963
+| Apr 9, 2012  | 3.974 |     |     |
+| ------------ | ----- | --- | --- |
+| Apr 2, 2012  | 3.913 |     |     |
+| Mar 26, 2012 | 3.869 |     |     |
+| Mar 19, 2012 | 3.825 |     |     |
+| Mar 12, 2012 | 3.817 |     |     |
+| Mar 5, 2012  | 3.81  |     |     |
+| Feb 27, 2012 | 3.772 |     |     |
+| Feb 20, 2012 | 3.703 |     |     |
+| Feb 13, 2012 | 3.66  |     |     |
+| Feb 6, 2012  | 3.619 |     |     |
+| Jan 30, 2012 | 3.588 |     |     |
+| Jan 23, 2012 | 3.522 |     |     |
+| Jan 16, 2012 | 3.484 |     |     |
+| Jan 9, 2012  | 3.459 |     |     |
+| Jan 2, 2012  | 3.366 |     |     |
+| Dec 26, 2011 | 3.331 |     |     |
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 23
+B Data Charts
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 24
+Boston
+M
+0.05
+C
+0.00
+ChangeIn
+M
+PriceOf
+Gasoline
+￿0.05
+i
+H
+￿0.10
+：
+￿0.15
+2011 2012
+号Date
+Chicago
+0.2
+众
+0.1
+公
+0.0
+ChangeIn
+PriceOf
+Gasolin信e ￿0.1
+￿0.2
+微
+￿0.3
+2011 2012
+Date
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+Out[738]=
+
+Team #3681, Page 25
+2 Untitled-4
+Denver
+0.05 M
+0.00 C
+ChangeIn
+￿0.05 M
+PriceOf
+Gasoline
+￿0.10
+i
+H
+￿0.15
+：
+￿0.20
+2011 2012
+号Date
+Houston
+众
+0.10
+0.05
+公
+0.00
+ChangeIn
+Out[738]= PriceOf ￿0.05
+Gasolin信e
+￿0.10
+微￿0.15
+￿0.20
+2011 2012
+Date
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Out[738]=
+Team #3681, Page 26
+Untitled-4 3
+LosAngeles
+0.2 M
+0.1 C
+ChangeIn M
+PriceOf 0.0
+Gasoline
+i
+￿0.1 H
+：
+￿0.2
+2011 2012
+号Date
+NewYorkCity
+0.10 众
+0.05
+公
+ChangeIn 0.00
+PriceOf
+Gasolin信e
+￿0.05
+微
+￿0.10
+￿0.15
+2011 2012
+Date
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Out[738]=
+Team #3681, Page 27
+4 Untitled-4
+SanFrancisco
+0.2
+M
+0.1 C
+ChangeIn M
+PriceOf
+Gasoline 0.0
+i
+H
+￿0.1
+：
+￿0.2
+2011 2012
+号Date
+众
+公
+信
+微
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 28
+C Mathematica Code
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     | Team | #3681, | Page 29 |
+| --- | --- | --- | --- | ---- | ------ | ------- |
+￿Inourcase,thedatawasdownloadedtothedesktopofamacintoshcomputerfromhttp:
+www.eia.govdnavpetpet_pri_gnd_a_epmr_pte_dpgal_w.htm￿bostonGasData￿
+| DropImport"DesktopWeeklyBostonMARegularAllFormulationsRetailGasolinePrices.csv", |     |     |     |     |     | 5;  |
+| -------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| ￿                                                                                |     |     |     |     | ￿￿  |     |
+chicagoGasData￿DropImport
+|     | ￿   | ￿ ￿ | ￿   |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+"DesktopWeeklyChicagoRegularAllFormulationsRetailGasolinePrices.csv",5;
+| ￿   | ￿   | ￿   |     |     |     | ￿ ￿ |
+| --- | --- | --- | --- | --- | --- | --- |
+denverGasData￿DropImport"DesktopWeeklyDenverRegularAllFormulationsRetailGasolinePrices.csv",
+|     |     | ￿ ￿ |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- |
+5;houstonGasData￿
+|                                                                                   | ￿   |     |     |     | ￿ ￿ |     |
+| --------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| DropImport"DesktopWeeklyHoustonAllGradesAllFormulationsRetailGasolinePrices.csv", |     |     |     |     |     | 5;  |
+|                                                                                   |     | ￿ ￿ | ￿   |     |     | M￿  |
+laGasData￿
+￿
+| DropImport"DesktopWeeklyLosAngelesRegularAllFormulationsRetailGasolinePrices.csv", |     |     |     |     |     | 5;  |
+| ---------------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| ￿                                                                                  | ￿   | ￿   |     |     |     | ￿ ￿ |
+nycGasData￿DropImport
+| "DesktopWeeklyNewYorkCityRegularAllFormulationsRetailGasolinePriceCs.csv", |     |     |     |     |     | 5;  |
+| -------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| ￿                                                                          | ￿   | ￿   |     |     |     | ￿ ￿ |
+sanfranGasData￿DropImport
+￿ ￿
+| "DesktopWeeklySanFranciscoRegularAllFormulationsRetailGasolinePrices.csv", |     |     |     |     |     | 5;  |
+| -------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+|                                                                            | ￿   |     |     | M￿  |     | ￿   |
+￿WeusedthecrudeoilpricedatafromWTI,Cushing,Oklahoma.￿
+|                                                                         |     | ￿ ￿ |     |     |     |     |
+| ----------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- |
+| cushingCrudeData￿DropImport"DesktopWeeklyCushingOKWTISpotPriceFOB.csv", |     |     |     |     | 5;  |     |
+|                                                                         | ￿   |     |     |     |     | ￿ ￿ |
+| ￿                                                                       |     |     | ￿   |     |     |     |
+i
+|     |     | ￿ ￿ | ￿   |     | ￿   | ￿   |
+| --- | --- | --- | --- | --- | --- | --- |
+H
+：
+号
+众
+公
+信
+微
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+|     |     |     |     |     | Team | #3681, | Page | 30  |
+| --- | --- | --- | --- | --- | ---- | ------ | ---- | --- |
+2   Final Commented Code.nb
+￿Thisfunctiontakesacity'sdataasinputandrespondswithamultipleregressionforthechangeintheprice
+ofgasfromthepreviousweekwiththevariables"changeincrudeoilpriceinthepreviousweek",
+"changeincrudeoilpriceintheweekbefore","changeinpricepergallonfromaverageprice",
+￿
+"changeinthepriceofgasduringthepreviousweek","changeinpriceofgastwoweekspreviously",
+and"changeinpriceofgasthreeweeksago".Thisusesdatafrom2011,
+withtwoweeksfrom2010includedforuseincalculatingthelasttwovariables.￿
+| linearModel2011citydata_            | :￿LinearModelFitTranspose |     |               |     |     |     |     |     |
+| ----------------------------------- | ------------------------- | --- | ------------- | --- | --- | --- | --- | --- |
+| TakeDropDifferencescushingCrudeData |                           |     | All,2 ,45,52, |     |     |     |     |     |
+￿
+| TakeDropDifferencescushingCrudeData |       |                          | All,2 ,46,52,                        |       |        |           | M         |       |
+| ----------------------------------- | ----- | ------------------------ | ------------------------------------ | ----- | ------ | --------- | --------- | ----- |
+| ￿                                   | ￿     |                          | ￿ ￿￿                                 |       |        |           |           |       |
+| TakeDropcitydata                    | All,2 | ￿ Plus￿￿TakeDropcitydata |                                      | All,2 | ,46,52 | 52,46,52, |           |       |
+| ￿ ￿                                 | ￿     |                          | ￿ ￿￿                                 | ￿ ￿   |        |           |           |       |
+| TakeDifferencesDropcitydata         |       | All,2                    | ,46 ,52,TakeDifferencesDropcitydata  |       |        |           | All,2 ,47 | ,52,  |
+| ￿ ￿                                 | ￿     |                          | ￿ ￿￿                                 | ￿ ￿   |        |           |           |       |
+| TakeDifferencesDropcitydata         |       | All,2                    | ,48 ,52,TakeDifferencesDropcitydaCta |       |        |           | All,2 ,45 | ,52 , |
+| ￿ ￿                                 | ￿ ￿   | ￿                        | ￿ ￿                                  | ￿     | ￿ ￿    | ￿￿￿       | ￿ ￿       |       |
+ChangeinPriceofCrudeOil,ChangeinPriceofCrudeOilduringthePreviousWeek,
+| ￿   | ￿ ￿ | ￿   | ￿ ￿￿ ￿ | ￿   | ￿   | ￿   | ￿ ￿ ￿￿ | ￿   |
+| --- | --- | --- | ------ | --- | --- | --- | ------ | --- |
+ChangefromAveragePriceofGas^3,ChangeinPriceofGasduringthePreviousWeek,
+| ￿   | ￿ ￿ | ￿   | ￿ ￿￿ ￿ | ￿   | ￿ M￿ |     | ￿ ￿ ￿￿ | ￿￿￿ |
+| --- | --- | --- | ------ | --- | ---- | --- | ------ | --- |
+ChangeinPriceofGasTwoWeeksago,ChangeinPriceofGasThreeWeeksago,
+￿
+ChangeinPriceofGasduringthePreviousWeek￿ChangeinPriceofGasThreeWeeksago,
+ChangeinPriceofGasduringthePreviousWeek￿ChangeinPriceofGasTwoWeeksago,
+| ChangeinPriceofGasduringthePreviousWeek￿ |     |     |     |     | i   |     |     |     |
+| ---------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+ChangeinPriceofGasTwoWeeksago￿ChangeinPriceofGasTHhreeWeeksago,
+ChangeinPriceofGasTwoWeeksago￿ChangeinPriceofGasThreeWeeksago,
+ChangeinPriceofCrudeOil,ChangeinPriceofCrude：OilduringthePreviousWeek,
+ChangefromAveragePriceofGas,ChangeinPriceofGasduringthePreviousWeek,
+￿
+| ChangeinPriceofGasTwoWeeksago,ChangeinPriceofGasThreeWeeksago |     |     |     |     |     | ;   |     |     |
+| ------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+￿
+| linearModel2011citydata_,n_          | :￿LinearModelFitTranspose |     |                 |     |     |     |     |     |
+| ------------------------------------ | ------------------------- | --- | --------------- | --- | --- | --- | --- | --- |
+| TakeDropDifferencescushingCru号deData |                           |     | All,2 ,45￿n,52, |     |     |     |     |     |
+￿￿
+| TakeDropDifferencescushingCrudeData |       |                          | All,2 ,46￿n,52,                       |       |        |           |             |     |
+| ----------------------------------- | ----- | ------------------------ | ------------------------------------- | ----- | ------ | --------- | ----------- | --- |
+| ￿                                   | ￿     |                          | ￿ ￿￿                                  |       |        |           |             |     |
+| TakeDropcitydata                    | All,2 | ￿ Plus￿￿TakeDropcitydata |                                       | All,2 | ,46,52 | 52,46,52, |             |     |
+| ￿ ￿                                 | ￿     |                          | ￿ ￿￿                                  | ￿     | ￿      |           |             |     |
+| TakeDifferencesDropcitydata         |       | All,2                    | ,46￿n ,52,                            |       |        |           |             |     |
+| ￿ ￿                                 | 众￿    |                          | ￿ ￿￿                                  | ￿     | ￿      |           |             |     |
+| TakeDifferencesDropcitydata         |       | All,2                    | ,47￿n ,52,TakeDifferencesDropcitydata |       |        |           | All,2 ,48￿n | ,   |
+| ￿ ￿                                 | ￿ ￿   | ￿                        | ￿ ￿                                   | ￿     | ￿ ￿    | ￿￿￿       | ￿ ￿         |     |
+| 52,TakeDifferencesDropcitydata      |       |                          | All,2 ,45￿n                           | ,52 , |        |           |             |     |
+| ￿                                   | ￿ ￿   | ￿                        | ￿ ￿￿ ￿                                |       |        |           |             |     |
+ChangeinPriceofCrudeOil,ChangeinPriceofCrudeOilduringthePreviousWeek,
+| ￿   | ￿ ￿ | ￿   | ￿ ￿￿ ￿ | ￿   |     | ￿ ￿ | ￿ ￿ | ￿￿  |
+| --- | --- | --- | ------ | --- | --- | --- | --- | --- |
+ChangefromAveragePriceofGas^3,ChangeinPriceofGasduringthePreviousWeek,
+| ￿ 公￿ | ￿   | ￿   | ￿ ￿ | ￿￿ ￿￿￿ |     |     |     |     |
+| ---- | --- | --- | --- | ------ | --- | --- | --- | --- |
+ChangeinPriceofGasTwoWeeksago,ChangeinPriceofGasThreeWeeksago,
+￿
+ChangeinPriceofGasduringthePreviousWeek￿ChangeinPriceofGasThreeWeeksago,
+ChangeinPriceofGasduringthePreviousWeek￿ChangeinPriceofGasTwoWeeksago,
+Ch信angeinPriceofGasduringthePreviousWeek￿
+ChangeinPriceofGasTwoWeeksago￿ChangeinPriceofGasThreeWeeksago,
+ChangeinPriceofGasTwoWeeksago￿ChangeinPriceofGasThreeWeeksago,
+ChangeinPriceofCrudeOil,ChangeinPriceofCrudeOilduringthePreviousWeek,
+微ChangefromAveragePriceofGas,ChangeinPriceofGasduringthePreviousWeek,
+￿
+ChangeinPriceofGasTwoWeeksago,ChangeinPriceofGasThreeWeeksago
+￿
+￿￿
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+|     |     |     |     |     |     |     |     | Hi CM 获取更多资讯 |
+| --- | --- | --- | --- | --- | --- | --- | --- | ------------ |
+
+Team #3681, Page 31
+Final Commented Code.nb 3
+In[530]:= ￿Thisgivessummarystatisticsofthemodelforagivencity,
+includingthemodel'sequation,theRSquared,AdjustedRSquared,andStandardDeviation,
+andalabelledResidualsPlot.Includedatthebottomisthenumberofoverestimations
+￿
+whenthemodelpredictedthatgaspriceswouldgoupandtheyinsteaddeclined,
+underestimations,andwhenthemodelcorrectlypredictedthedirectionthatgaspriceswould
+travel.Ofnoteisthatweassumedthatgaspricesremainingconstantcouldbeconsidered
+￿ ￿
+gaspricesnotdecreasingwhenconsideringwhethertodelaypurchasingafulltank,
+andthusshouldbepredictedasanincrease.TheSummaryfor2011explainsourresults
+wheninterpolatingandtheSummaryfor2012explainsourresultswhenextrapolating￿ M
+summary2011citydata_ :￿ Print"SummaryforModelin2011";
+Block lm￿linearModel2011citydata,m￿HeavisideThetalinearModel2011citydata ￿￿￿Transpose
+￿
+TakeDropDifferencescushingCrudeData All,2 ,45,52, C
+￿ ￿ ￿ ￿ ￿
+TakeDropDifferencescushingCrudeData All,2 ,46,52,Take
+￿￿ ￿ ￿ ￿ ￿ ￿ ￿￿
+DropnycGasData All,2 ￿ Plus￿￿TakeDropcitydata All,2 ,46,52 52,46,52,
+￿ ￿ ￿ ￿ ￿￿ ￿M￿
+TakeDifferencesDropcitydata All,2 ,46 ,52,TakeDifferences
+￿ ￿ ￿ ￿ ￿￿ ￿ ￿ ￿
+Dropcitydata All,2 ,47 ,52,TakeDifferencesDropcitydata All,2 ,48 ,52 ￿
+￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿
+If￿￿￿0,1,HeavisideTheta￿ & ￿TakeDropDifferencescitydata All,2 ,45,52 ,
+Print"ChangeInPr
+￿
+iceofGasin
+￿
+theN
+￿
+extWee
+￿
+k￿"No
+￿
+rma
+￿
+l
+￿
+lm
+￿
+;
+i￿ ￿
+PrintGrid "RSquared" ￿ ,"Adjust ￿ edRS ￿ quare ￿￿ d"," ￿ Standa ￿ rdHDeviation ￿ ", ￿ ￿ ￿ ￿￿ ￿￿￿￿
+￿ ￿ ￿ ￿￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿￿
+lm"RSquared",lm"AdjustedRSquared",StandardDeviationlm"FitResiduals" ;
+￿ ￿ ￿￿
+PrintLabeledListPlotlm"FitResiduals",Ima：geSize￿Large,
+￿ ￿￿￿ ￿
+"ResidualsPlotforRegressionforChangeinPriceofGasoline","Errorin
+￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿￿￿￿￿
+Cents
+￿ ￿ ￿ ￿ ￿ ￿
+per
+gallon", To ￿ p,Left ; 号
+PrintGrid "Overestimations","Underestimations","Correct",
+Countm,1,Countm,￿1,Countm,0 ; ;
+￿ ￿ ￿￿￿
+summary2012citydata_ :￿ Print"SummaryforModelin2012";
+￿ ￿￿￿ 众 ￿
+Block lm￿linearModel2011citydata,m￿HeavisideThetalinearModel2011citydata ￿￿￿Transpose
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿￿￿￿￿￿
+TakeDifferencescushingCrudeData All,2 ,45,
+￿ ￿ ￿ ￿ ￿
+TakeDropDifferencescushingCrudeData All,2 ,1,45,
+￿￿ ￿ ￿ ￿ ￿ ￿ ￿￿
+TakeDropnycGasData All,2 ￿ Plus￿￿TakeDropcitydata All,2 ,1,45 45,46,45,
+公￿ ￿ ￿ ￿￿ ￿
+TakeDifferencesDropcitydata All,2 ,1 ,45,TakeDifferencesDropcitydata All,2 ,2 ,
+￿ ￿ ￿ ￿ ￿￿ ￿ ￿
+45,TakeDifferencesDropcitydata All,2 ,3 ,45 ￿
+￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿
+If￿￿￿0,1,HeavisideTheta￿ & ￿TakeDifferencescitydata All,2 ,45 ,
+￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿
+Pr信int"ChangeInPriceofGasintheNextWeek￿"Normallm ;
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿￿￿￿
+PrintGrid "RSquared","AdjustedRSquared","StandardDeviation",
+￿ ￿ ￿ ￿￿ ￿ ￿ ￿ ￿ ￿￿ ￿￿￿
+lm"RSquared",lm"AdjustedRSquared",StandardDeviationlm"FitResiduals" ;
+￿ ￿ ￿￿
+PrintLabeledListPlotlm"FitResiduals",ImageSize￿Large,
+￿ ￿￿￿ ￿
+微"ResidualsPlotforRegressionforChangeinPriceofGasoline","Errorin
+￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿￿￿￿￿
+Cents
+￿ ￿ ￿ ￿ ￿ ￿
+per
+￿
+gallon", Top,Left ;PrintGrid
+"Overestimations","Underestimations","Correct", Countm,1,Countm,￿1,Countm,0 ;
+In[645]:= ￿Thiss￿ho￿wsthesu￿￿m￿mary￿forex￿trapolationto2012forourmodelforeachofthecitiesinalphabeticorder.￿
+Print￿ 1￿￿;summary2012￿ 2 & ￿ "Boston",bostonGasD￿a￿ta, ￿ ￿ ￿ ￿ ￿ ￿￿￿￿￿￿￿
+"Chicago",chicagoGasData, "Denver",denverGasData, "Houston",houstonGasData,
+￿ ￿
+"LosAngeles",laGasData, "NewYorkCity",nycGasData, "SanFrancisco",sanfranGasData
+￿ ￿ ￿ ￿￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+In[672]:= ￿Th￿issegmentofcodecalculate￿st￿hedollarsspentongasthr￿ou￿ghthecourseof2012byour￿algorithm,
+asim￿plermodel,someonethat￿bu￿yswhentheirfueltankisemp￿ty￿, ￿￿
+andsomeonethatfillstheirtankeveryweek.Itthencalculatestheaveragecostpergallon,
+￿
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team #3681, Page 32
+4 Final Commented Code.nb
+In[672]:=
+andreturnsalistofcitiesandtheiraverageprices.Itgivesoutputintheform city,modelpricepergallon,
+savingsovermarkovpricepergallon,savingsoverbuywhenemptypricepergallon,savingsover
+alwaysbuypricepergallon.Ittakesinputinaslightlydifferentformat,sohasaredoneimport.￿
+￿
+bostonGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+DropImport"DesktopWeeklyBostonMARegularAllFormulationsRetailGasolinePrices.csv", 5;
+￿
+chicagoGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+DropImport"DesktopWeeklyChicagoRegularAllFormulationsRetailGasolinePrices.csv",5;
+￿ ￿ ￿ ￿ ￿
+denverGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+DropImport"DesktopWeeklyDenverRegularAllFormulationsRetailGasolinePrices.csv"M, 5;
+￿ ￿ ￿ ￿ ￿
+houstonGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+DropImport"DesktopWeeklyHoustonAllGradesAllFormulationsRetailGasolinePrices.csv", 5;
+￿ ￿ ￿ ￿ ￿
+laGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿ C
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+DropImport"DesktopWeeklyLosAngelesRegularAllFormulationsRetailGasolinePrices.csv", 5;
+￿ ￿ ￿ ￿ ￿
+miamiGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿ M
+DropImport"DesktopWeeklyMiamiFLRegularAllFormulationsRetailGasolinePrices.csv", 5;
+￿ ￿ ￿ ￿ ￿
+nycGasData￿ DateList ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿
+DropImport"DesktopWeeklyNewYorkCityRegularAllFormulationsRetailGasolinePrices.csv", 5;
+sanfranGas ￿ Data￿ ￿ DateList ￿ ￿ 1 , "Month", "Day", "Year" , ￿ 2 & ￿iDrop ￿ ￿
+Impo
+￿
+rt"Deskt
+￿
+o
+￿
+p
+￿
+W
+￿
+ee
+￿
+klySanFranciscoRegula
+￿
+r
+￿￿
+AllF
+￿
+o
+￿
+rm
+￿Hul ￿
+ationsRetailGasolinePrices.csv", 5;;
+￿ ￿ ￿ ￿ ￿
+gasTankSize￿16;
+￿ ￿￿ ￿ ￿ ￿ ￿￿￿ ￿ ￿￿ ￿ ￿
+mileage￿25; ：
+￿ ￿ ￿ ￿
+totalYearPricecityData_, year_, milesPerWeek_ :￿ TotalMapIndexed
+IfSimplify ￿2 gasTankSizemileage milesPerWeek ￿Integers,
+gasTankSize￿1,
+￿
+0
+号￿ ￿ ￿ ￿
+￿ ￿￿ ￿￿￿ ￿￿ ￿￿ ￿
+&,
+￿ 2 & ￿SelectcityData, ￿ 1 1 ￿year&
+,gasTankSizeIntegerPart
+Le ￿ ngth 众
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿
+￿ 2 & ￿SelectcityData, ￿ 1 1 ￿year&
+￿￿ ￿
+gasTankSizemileage milesPerWeek
+￿
+totalYearPriceAlwaysFillcityData_, year_, milesPerWeek_ :￿
+￿ ￿ ￿ 公￿ ￿ ￿ ￿￿ ￿ ￿￿
+Total milesPerWeek mileage ￿& ￿ ￿ 2 & ￿SelectcityData, ￿ 1 1 ￿year& ,
+￿￿￿￿ ￿￿ ￿￿￿
+milesPerWeek mileage Length ￿ 2 & ￿SelectcityData, ￿ 1 1 ￿year&
+￿ ￿
+￿ ￿￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿￿
+outcityd信ata_ :￿
+￿ ￿ ￿ ￿￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿￿￿
+ApplylinearModel2011citydata,Transpose TakeDifferencescushingCrudeData All,2 ,45,
+TakeDropDifferencescushingCrudeData All,2 ,1,45,
+￿ ￿
+TakeDropnycGasData All,2 ￿Plus￿￿TakeDropcitydata All,2 ,1,45 45,46,45,
+￿ ￿ ￿ ￿￿ ￿ ￿ ￿￿ ￿￿￿ ￿
+微TakeDifferencesDropcitydata All,2 ,1 ,45,TakeDifferencesDropcitydata All,2 ,2 ,45,
+￿ ￿ ￿ ￿￿ ￿￿￿ ￿ ￿
+TakeDifferencesDropcitydata All,2 ,3 ,45 , 1 ;
+￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿￿ ￿ ￿
+￿ ￿ ￿ ￿￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿ ￿￿ ￿￿ ￿￿ ￿
+totalYearPriceModeledcityData_,milesPerWeek_ :￿Block
+￿ ￿ ￿ ￿￿ ￿￿ ￿￿ ￿￿￿ ￿ ￿￿
+weeks￿ReverseoutcityData , currentGas￿milesPerWeek mileage, total￿0,
+prices￿Reverse￿ 2 & ￿SelectcityData, ￿ 1 1 ￿2012& , totalGas￿0,
+￿ ￿ ￿
+Forweek￿1,week￿Lengthweeks,week￿￿,
+￿ ￿ ￿ ￿￿ ￿
+currentGas￿￿ milesPerWeek mileage;
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿ ￿
+If weeks week ￿0,
+￿ ￿ ￿
+total￿￿ gasTankSize￿currentGas prices week ;
+￿ ￿ ￿
+totalGas￿￿ gasTankSize￿currentGas;
+￿ ￿ ￿
+currentGas￿gasTankSize;, ￿buy￿,
+￿ ￿ ￿ ￿
+￿ ￿
+￿ ￿
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+In[672]:=
+Team #3681, Page 33
+Final Commented Code.nb 5
+IfcurrentGas￿0,
+total￿￿ gasTankSize 2 prices week ; ￿don'tbuy￿
+totalGas￿￿ gasTankSize 2;
+￿
+currentGas￿gasTankSize 2;;
+￿ ￿ ￿ ￿ ￿ ￿ ￿
+;
+￿ ￿ ￿
+;
+￿ ￿
+total, totalGas
+￿
+;totalYearPriceSimpleModeledcityData_,milesPerWeek_ :￿Block
+￿
+currentGas￿milesPerWeek mileage, total￿0, M
+￿ ￿
+prices￿Reverse￿ 2 & ￿SelectcityData, ￿ 1 1 ￿2012& , totalGas￿0,
+￿ ￿ ￿ ￿
+Forweek￿1,week￿Lengthprices,week￿￿,
+￿ ￿
+currentGas￿￿ milesPerWeek mileage; C
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿ ￿￿ ￿
+If prices week ￿prices week￿1 ￿0,
+￿ ￿ ￿
+total￿￿ gasTankSize￿currentGas prices week ;
+￿ ￿ ￿ M
+totalGas￿￿ gasTankSize￿currentGas;
+￿￿ ￿ ￿ ￿ ￿￿
+currentGas￿gasTankSize;, ￿buy￿,
+￿ ￿ ￿ ￿
+IfcurrentGas￿0,
+total￿￿ ￿ gasTankSize 2 prices wee ￿ k ; ￿don'tbuy￿ i
+totalGas￿￿ gasTankSiz ￿ e 2; ￿ H
+￿
+currentGas￿gasTankSize 2;;
+￿ ￿ ￿ ￿ ￿ ￿ ￿
+; ：
+￿ ￿ ￿
+;
+￿ ￿
+total, totalGas
+￿
+;Block miles￿200,
+￿ ￿ 1 ,totalYearPriceModeled￿ 2 ,mile号s 1 totalYearPriceModeled￿ 2 ,miles 2 ,
+￿ ￿
+totalYearPriceSimpleModeled￿ 2 ,miles 1 totalYearPriceSimpleModeled￿ 2 ,miles 2 ￿
+￿ ￿￿ ￿
+totalYearPriceModeled￿ 2 ,miles 1 totalYearPriceModeled￿ 2 ,miles 2 ,
+￿ ￿ ￿ ￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿
+totalYearPrice￿ 2 ,2012,miles 1 totalYearPrice￿ 2 ,2012,miles 2 ￿
+totalYearPriceModele众d￿ 2 ￿ ,m ￿ il ￿ es 1 ￿ t ￿ ot ￿ a ￿ lYearPriceModeled￿ 2 ,miles ￿ 2 ￿ , ￿ ￿￿ ￿
+￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿
+totalYearPriceAlwaysFill￿ 2 ,2012,miles 1 totalYearPriceAlwaysFill￿ 2 ,2012,miles 2 ￿
+￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿
+totalYearPriceModeled￿ 2 ,miles 1 totalYearPriceModeled￿ 2 ,miles 2 & ￿
+￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿
+"Boston",bostonGasData, "Chicago",chicagoGasData, "Denver",denverGasData,
+公￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿
+"Houston",houstonGasData, "LosAngeles",laGasData,
+￿ ￿ ￿ ￿￿ ￿￿ ￿ ￿ ￿ ￿￿ ￿￿ ￿
+"NewYorkCity",nycGasData, "SanFrancisco",sanfranGasData
+￿￿ ￿ ￿ ￿ ￿ ￿
+In[719]:= ￿This￿functionreturnstheoptimalt￿ot￿algaspricefor2012, ￿
+givena￿ll信ofthedataforacity,assum￿ing￿thatthedriverdrives100milespe￿￿r￿week￿
+optimizePricecityData_,100 :￿optimizePrice100MilescityData;
+￿
+optimizePricecityData_,200 :￿optimizePrice200MilescityData;
+￿
+optimizePrice100MilescityData_ :￿Block
+微￿ ￿ ￿ ￿
+strippedCityData￿￿ 2 & ￿SelectcityData, ￿ 1,1 ￿2012& ,
+￿ ￿ ￿ ￿
+GraphDistance
+￿ ￿ ￿
+Graph
+￿ ￿ ￿ ￿ ￿ ￿ ￿ ￿￿
+Flatten
+￿
+Join
+￿
+10￿￿ 24, 10￿ 212,
+2 ￿12￿ 312,212￿ 38,24￿ 312,24￿ 30,
+￿
+312￿ 412, 312￿ 48,38￿ 412, 38￿ 44, 30￿ 412, 30￿ 44,
+412￿ 512, 412￿ 58, 48￿ 512, 48￿ 54,44￿ 512, 44￿ 50
+,
+Table
+￿
+￿
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+In[719]:=
+Team #3681, Page 34
+6 Final Commented Code.nb
+Join
+i ￿0￿ i￿1 gasTankSize2￿4 ,
+￿ i0￿ i￿1 gasTankSize￿4
+, ￿ ￿ ￿￿ ￿￿ ￿
+Table ￿ ￿
+￿ ￿
+￿
+ij￿￿ i￿1
+gasTankSize￿4
+, M
+￿ ij￿ i￿1 j￿4
+, ￿ ￿
+￿ ￿
+j, 4, gasTa￿nk￿Size￿4,4 C
+￿ ￿
+,
+￿
+i,5, LengthstrippedCityData ￿1 M
+￿ ￿ ￿ ￿￿
+,
+￿
+L ￿ engthstripp ￿ edCityData 0￿￿ Leng ￿ thstrippedCityData ￿1,
+￿ LengthstrippedCityData 4￿ LengthstrippedCityData ￿1i,
+￿￿
+Lengt
+￿
+hstrippedCityDat
+￿
+a
+￿
+8￿￿ Lengt
+￿
+hstrippedCityDHat
+￿
+a ￿
+￿
+1,
+￿
+Length
+￿
+strippedCityData
+￿￿
+12￿￿ Length
+￿
+strippedCityData
+￿
+￿1
+￿
+￿ ￿ ￿￿ ￿ ￿：￿ ￿
+,
+￿ ￿ ￿￿ ￿ ￿ ￿ ￿￿
+EdgeWeight￿Flatten
+￿
+Join
+￿
+16strippedCityData 1 , 8s号trippedCityData 1 ,
+￿
+4strippedCityData 2 , 0, 12strippedCityData 2 , 0,
+￿
+4strippedCityData 3 ,0,
+￿ ￿ ￿ ￿ ￿
+8strippedCityData 3 , 0, 16strippedCityData 3 , 8strippedCityData 3 ,
+众￿ ￿ ￿ ￿
+4strippedCityData 4 , 0, 8strippedCityData 4 , 0, 12strippedCityData 4 ,
+￿ ￿
+0,
+￿ ￿ ￿ ￿ ￿ ￿
+Table
+￿ ￿ ￿ ￿ ￿ ￿
+Join
+￿ 公
+￿
+gasTankSize 2 strippedCityData i ,
+￿
+gasTankSize strippedCityData i
+￿
+信,
+￿ ￿ ￿ ￿￿
+Table
+￿ ￿ ￿￿
+￿
+gasTankSize￿j strippedCityData i ,
+￿
+微 0
+￿
+,
+￿ ￿ ￿￿
+j, 4, gasTankSize￿4,4
+,
+￿
+i,5, LengthstrippedCityData ￿1
+￿ ￿ ￿ ￿￿
+,
+￿
+0,0,0,0
+￿ ￿ ￿ ￿
+￿
+￿ ￿
+,
+￿
+10,
+￿
+LengthstrippedCityData ￿1,
+￿
+￿ ￿
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+In[719]:=
+|     |     |     |     |     |     |     | Team | #3681, Page 35 |
+| --- | --- | --- | --- | --- | --- | --- | ---- | -------------- |
+Final Commented Code.nb   7
+Method￿"Dijkstra"
+￿
+￿Thisfunctionreturnstheoptimaltotalgaspricefor2012,
+￿
+givenallofthedataforacity,assumingthatthedriverdrives200milesperweek￿
+| optimizePrice200MilescityData_ |     |     | :￿Block |     |     |     |     |     |
+| ------------------------------ | --- | --- | ------- | --- | --- | --- | --- | --- |
+￿
+| strippedCityData￿￿ |     | 2   | & ￿SelectcityData, |     | ￿ 1,1 | ￿2012& | ,   |     |
+| ------------------ | --- | --- | ------------------ | --- | ----- | ------ | --- | --- |
+|                    |     |     |                    |     |       |        | ￿   | M   |
+GraphDistance
+|     |     | ￿   | ￿   | ￿   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Graph
+| ￿   |     | ￿ ￿ | ￿ ￿ |     | ￿ ￿ | ￿￿  |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Flatten
+|     | ￿   |     |     |     |     |     |     | C   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Join
+￿
+|     | 11 ￿￿ 21,  | 11￿ 22, |           |     |          |       |                        |      |
+| --- | ---------- | ------- | --------- | --- | -------- | ----- | ---------------------- | ---- |
+|     | Ta ble i1￿ | i￿11,   | i1￿ i￿12, | i2￿ | i￿11,i2￿ | i￿21, | i, 2,L M engthcityData | ￿2 , |
+￿
+|     | Lengthstripped |       | CityData ￿11￿ | LengthstrippedCityData1, |               |         |       |        |
+| --- | -------------- | ----- | ------------- | ------------------------ | ------------- | ------- | ----- | ------ |
+|     | ￿              |       | ￿             |                          |               |         |       |        |
+|     | Len gthst      | rippe | dCityDa ta ￿  | 12￿ L                    | ength strippe | dCit yD | a ta1 |        |
+|     | ￿￿             | ￿     | ￿ ￿           | ￿                        | ￿ ￿           | ￿ ￿     | ￿ ￿   | ￿ ￿ ￿￿ |
+|     | ￿￿             | ￿     | ￿             | ￿                        | ￿             |         | ￿ i   |        |
+,
+|     | ￿   | ￿   | ￿   | ￿   | ￿   | H￿  | ￿   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+EdgeWeight￿Flatten
+￿
+Join
+|     | ￿                 |     | 16strippedCityD：ata |     |     |     |     |     |
+| --- | ----------------- | --- | ------------------- | --- | --- | --- | --- | --- |
+|     | 8strippedCityData |     | 1 ,                 |     |     | 1 , |     |     |
+￿
+|     | Table | 8strippedCityData | i   | , 16strippedCityData |     | i , 0,8strippedCityData |     | i , |
+| --- | ----- | ----------------- | --- | -------------------- | --- | ----------------------- | --- | --- |
+￿
+|     | i, 2,LengthstrippedCityData |     |                        | ￿2  | ,   |       |     |     |
+| --- | --------------------------- | --- | ---------------------- | --- | --- | ----- | --- | --- |
+|     | ￿                           |     | ￿ ￿                    |     | ￿   | ￿￿    |     |     |
+|     | strippedCityData            |     | LengthstrippedCityData |     |     | ￿1 ,0 |     |     |
+|     | ￿￿                          |     | ￿￿号￿￿                  |     |     |       |     | ￿￿￿ |
+|     | ￿                           |     | ￿                      | ￿   | ￿￿  |       |     |     |
+,
+|     | ￿   |     | ￿ ￿ |     | ￿   | ￿ ￿ |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+VertexLabels￿"Name"
+￿
+|     | ,   |     | 众   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+￿
+11,
+LengthstrippedCityData1,
+￿
+Method￿"Dijkstra"
+公
+|     | ￿   |     | ￿   |     |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+￿
+￿
+信
+微
+Printed by Mathematica for Students
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

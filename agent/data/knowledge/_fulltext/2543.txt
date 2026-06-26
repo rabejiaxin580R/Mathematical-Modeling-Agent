@@ -1,0 +1,1560 @@
+Team 2543 Pg 1 of 36
+High School Mathematical Contest in Modeling 2010
+Problem A: Bicycle Club
+Summary
+M
+Based on existing bike stations in Chicago, Denver and Des Moines, our
+group aims to develop an efficient bike rental program and determinCe the locations in
+which new bike stations should be constructed. M
+We first determined the factors that would impact bike usage. By categorizing
+i
+H
+existing bike stations according to zip codes, we found a general positive relationship
+：
+between the number of bike stations and each of the various factors we studied, such
+as population density, civic center p号opularity, and the number of tourist attractions in
+within the zip code. After deriving and combining the functions, we were able to
+众
+arrive at a final rating system:
+公 0.00141
+R = 3.1964e3.6396C + T + (3.926285282 * 10-5)(1.0000709285)P +
+0.0067125S
+信
+This rating system considers the relative weightings of each variable, and can be used
+to evaluate the need for new biking stations at certain locations.
+微
+To locate the different sites for upcoming bike stations that would efficiently
+serve the increase in bike usage and demand, we substituted data in our model to
+obtain ratings of the zip codes near city center. By comparing these different rankings
+and considering the maximum number of stations an area can carry, we found the
+ideal locations for the expansion of the bike program in the next five years in zip
+codes: 60611, 60605, 60616, 50309, 50312, 80204, 80205, 80206, 80209, 80210,
+80211, 80218, 80223, and 80207.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 2 of 36
+Restatement Clarification of the Problem
+Based on the information of the areas surrounding current B-cycle stations
+in Denver, Des Moines, and Chicago, we will develop a plan for an efficient bike
+rental program. To begin with, we will create an algorithm which includes a
+mathematical model that will help evaluate the need to set up new bike stations at a
+given location. In the process of constructing the model, we will take into
+M
+consideration the existing bike paths, local attractions, other modes of transportation,
+C
+bike usage, traffic, and the population density of the area surrounding each current
+M
+bike station. After developing a model, we will assume that the bike usage increases
+i
+at an annual rate of 30%, and then demonstrate how tHo implement our model to build
+：
+new bike stations for the coming five years. Finally, in a short letter to the mayor, we
+will explain our model and analyze its strengths.
+号
+众
+Assumptions with Rationale/Justification
+公
+1. The information provided within the zip code of the bike station provides
+sufficient data and accurately reflects the stations’ surroundings.
+信
+When analyzing the factors that affect the area in which each station is
+微
+located, we considered the factors within the zip code area. On average, each
+zip code area that we analyzed had an area of 3.25 squared miles, which
+covers an area that is large enough such that a reasonable number of factors
+were considered.
+2. Wealth is not a major determinant of bike usage.
+The purpose of this program is to encourage people to get around using bikes
+rather than cars in order to promote sustainable living. We assume that
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 3 of 36
+people with high income are just as likely to use bikes as people from the
+lower ends of society. Thus in our model, we will not take into account the
+degree of wealth of the areas.
+3. Renting bikes is cheaper than paying for bus and rail fees.
+We must assume that the bike rental program is able to compete against other
+transportation industries. In other words, the bike industry will not be driven
+M
+out of the market due to fierce competition.
+C
+4. The map we relied on is an accurate and up to date representation of the cities
+M
+of study.
+5. Tourist attractions are approximately equal in populiarity.
+H
+We assume that there are approximately an equal number of tourists visiting
+：
+each tourist attraction. Therefore, in our model, each attraction bears an
+号
+equal weight.
+6. The size of each civic center is an accurate representation of its popularity.
+众
+By estimating the number of visitors to each civic center based on the size, we
+公
+may consider the area of each civic center as one of the factors that affect
+whether or not a bike station should be constructed at a certain location.
+信
+7. The bike stations that are listed as “Not In Use” and “Coming Soon” (on the
+微
+B-cycle website) are not significant.
+We assume the bike stations are not in use because they are not making a
+good business due to its unideal location. Regarding the stations that are
+“Coming Soon”, we cannot assume that the business will be successful in that
+location. Thus, we will not incorporate these stations into our model.
+8. Bike usage will not be affected by the seasons.
+We must assume that bike usage will grow at a constant annual rate of 30%
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 4 of 36
+even during winter, when the conditions are not favorable for biking.
+9. The 30% growth in usage each year is measured by bike stations:
+It is quite difficult to track the growth of the bike paths because there are no
+defined bike routes.
+10. Other factor that may affect growth of bike stations and not taken into account
+in our model is neglected.
+M
+For example, the shape of the city, the distribution of districts, and the profiles
+C
+of residents in each neighborhood will not influence bike usage and its growth.
+M
+Variables and Terms Defined i
+H
+- R = the rating of the suitability of a： bike station at a given location
+- C = the average area (per square mile) of all the civic centers in the zip code
+号
+area
+- T = the density (per 众square mile) of the tourist attractions in each zip code area
+- P = the combined density of people (including the population density and the
+公
+density of employees) in each zip code area
+信
+- S = the density of the student population in each zip code area
+- y = number of current existing bike stations in each zip code area
+微
+- Efficiency: the ability to maximize the usage of resources
+- Bike paths: the shortest distance one can take on a bike
+- Bike usage: the demand for bikes as a transportation tool
+- Bike Station Limit (Limit): the recommended maximum number of bike
+stations per zip code
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 5 of 36
+Model Design and Justification
+Our final model consists of two parts, a rating system (mathematical model)
+that generates a value that reflects how suitable a certain location is for the
+construction of a bike station, and an algorithm that determines the location of new
+bike stations. In order to develop an efficient bike rental program, we willM work with
+the zip code areas in which each of the current bike stations (B-cycle) are located.
+C
+Within each zip code, we will consider multiple factors such as the bike usage within
+M
+the location, its relationship with other bike stations, and its competitiveness with
+i
+H
+other transportations.
+：
+To determine the bike usage, we will focus our research on civic centers,
+tourist attractions, population densit号ies (including residential and work populations),
+and student population densities, which are possible factors that may influence
+众
+preferences for bikes. For civic centers, we will measure the sizes of shopping malls,
+parks, cinemas, and公 sports stadiums located within each zip code area. Regarding
+tourist attractions, we will look for museums, sightseeing locations, amusement parks,
+信
+and other notable attractions. To find information about the student and working
+微
+populations, we will research on schools, universities, and operating firms in each zip
+code area. After plotting each variable against the number of bike stations in each zip
+code area, we will differentiate each variable against a common variable and add
+these derivatives to develop a weighted rating system.
+Lastly, we will demonstrate how to locate new bike stations in Chicago,
+Denver and Des Moines with a series of steps that determines the maximum number
+of stations a zip code can hold and incorporates our mathematical model.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 6 of 36
+Sorting into Zip Codes
+To make our model applicable to the three different cities, we will take into account
+the difference in areas by sorting bike stations into zip codes as shown below. This
+way, we can more easily to determine the various bike stations that fall into these
+areas and the factors that might affect it, such as local civic centers.
+Figure 1: Dividing Bike Stations into Zip Codes
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+Combined Density (Population Density and Employee Density)
+The number and size of business firms is a factor in determining whether or
+not a station should be located in the area. This is because the business firms are an
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 7 of 36
+indication of how many employees work in the area, which affects bike usage. The
+website that we are obtaining the employee information from only gives a range of
+the number of employees and the number of establishments (in the area represented
+by the zip code) that employ workers in each range. To calculate the total number of
+employees, we will take the midpoint of the range of given values and multiply this
+number by the number of establishments (with the corresponding number of
+M
+employees), and then find the sum of these values. We will perform these calculations
+for each of the zip codes in the three cities as shown below:  C
+M
+| Zip  | 1000  500- | 250- 100- | 50- 20-     | 10- 5-9  | 1-4  Total  |
+| ---- | ---------- | --------- | ----------- | -------- | ----------- |
+| Cod  | +  999     | 499  249  | 99  49 i19  | (Avg     | (Avg Numbe  |
+-e  (Avg:  (Avg:  (Avg:  (Avg:  (AvgH(Avg (Avg : 7)  :  r of
+|        | 1500)  749.5 | 374.5 174.5 | :  :       | :        | 2.5)  Employ |
+| ------ | ------------ | ----------- | ---------- | -------- | ------------ |
+|        | )            | )  )        | ：74.5 34.5 | 14.5     | ees          |
+|        |              |             | )  )       | )        |              |
+| 80202  | 4  5         | 16  33      | 66  99     | 94  103  | 362  32820   |
+| 80203  | 0  4         | 3  号10      | 11  42     | 59  24   | 170  9584    |
+| 80204  | 2  2         | 5  8        | 8  24      | 18  17   | 35  9659     |
+| 80205  | 0  2         | 3  6        | 7  14      | 21  28   | 45  5287     |
+众
+| 80206  | 1  1  | 3  7  | 16  29  | 25  14  | 33  7330  |
+| ------ | ----- | ----- | ------- | ------- | --------- |
+| 80209  | 1  0  | 1  2  | 4  15   | 14  17  | 80  3561  |
+公
+信
+微
+Table 1: Total Number of Employees
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 8 of 36
+| 80210  | 2   | 0   | 1   |     | 6   | 11  33  | 25  | 45  | 86   | 7272   |
+| ------ | --- | --- | --- | --- | --- | ------- | --- | --- | ---- | ------ |
+| 80211  | 0   | 0   | 1   |     | 3   | 6  24   | 19  | 21  | 30   | 2671   |
+| 80218  | 3   | 0   | 1   |     | 3   | 6  21   | 21  | 28  | 47   | 7188   |
+| 50309  | 2   | 6   | 12  |     | 13  | 14  23  | 19  | 25  | 94   | 16782  |
+| 60605  | 4   | 4   | 1   |     | 11  | 11  19  | 19  | 25  | 72   | 13398  |
+| 60611  | 4   | 9   | 10  |     | 37  | 47  88  | 82  | 87  | 187  | 31750  |
+| 60616  | 3   | 2   | 4   |     | 2   | 8  28   | 34  | 33  | 98   | 10377  |
+
+Since each zip code covers a different area of land, in order to compare the
+M
+working populations, we will divide the total number of employees in each zip code
+by the land area of each zip code. After finding the densities of emplCoyees in each
+area, we will add the densities of residents in each zip code. OMur results are shown
+below:
+i
+H
+Table 2: Working Population Density (in each zip code)
+：
+|           | Population  |        |            |       |      |           | Employee     |       | Combined     |        |
+| --------- | ----------- | ------ | ---------- | ----- | ---- | --------- | ------------ | ----- | ------------ | ------ |
+| Stations  | Density     |        | Land Area  |       |      | Employee  | Density      |       | Density      |        |
+|           | 19          | 4156   |            | 号1.1  |      | 32820     | 29836.36364  |       | 33992.36364  |        |
+|           | 4           | 17767  |            |       | 1.1  | 1584      |              | 1440  |              | 19207  |
+|           | 5           | 6059   |            |       | 5.8  | 19659     | 3389.482759  |       | 9448.482759  |        |
+众
+|     | 7   | 7112  |     |     | 4.5  | 29287  | 6508.222222  |       | 13620.22222  |        |
+| --- | --- | ----- | --- | --- | ---- | ------ | ------------ | ----- | ------------ | ------ |
+|     | 4   | 8763  |     |     | 2.5  | 7330   |              | 2932  |              | 11695  |
+|     | 1   | 6527  |     |     | 3.4  | 3561   | 1047.352941  |       | 7574.352941  |        |
+公
+|     | 5   | 5631   |     |     | 6.1  | 19272  | 3159.344262  |         | 8790.344262  |          |
+| --- | --- | ------ | --- | --- | ---- | ------ | ------------ | ------- | ------------ | -------- |
+|     | 1   | 8995   |     |     | 4.5  | 2671   | 593.5555556  |         | 9588.555556  |          |
+|     | 1   | 11991  |     |     | 1.6  | 7188   |              | 4492.5  |              | 16483.5  |
+信
+|     | 2   | 6003   |     |     | 2    | 13398  |              | 6699  |              | 12702  |
+| --- | --- | ------ | --- | --- | ---- | ------ | ------------ | ----- | ------------ | ------ |
+|     | 1   | 13727  |     |     | 3.4  | 7077   | 2081.470588  |       | 15808.47059  |        |
+| 微4  |     | 1666   |     |     | 3    | 16782  |              | 5594  |              | 7260   |
+
+Graph 1: Number of Stations vs. Number of Employees (in each zip code)
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543 Pg 9 of 36
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+From the graph, it can be seen that there is an exponential relationship
+微
+between the combined density (P) and the number of stations (y), modeled by the
+equation
+y = 1.2151665628 * 1.0000769285P.
+The residuals shown in the residual plot are randomly scattered about the x-
+axis, which indicates that the exponential relationship is a suitable model. In addition,
+the coefficient of determination, r2= 0.79625, indicates that 79.625% of the variation
+in the number of bike stations can be explained by the exponential model of the
+number of bike stations against the combined density, indicating a relatively strong
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 10 of 36
+relationship.
+
+Schools
+The number of schools plays a big role in determining the location of the bike
+stations since schools consist of a large number of employers and students who are
+likely to ride bikes daily. Through the City Data website, we will find the names of
+M
+the schools in each city. We will not include elementary schools because there is a
+C
+low probability that elementary students would independently ride bikes to school.
+M
+After obtaining a list of the schools in each city, we will search for the schools that
+are located in each zip code area, and then research the numiber of enrolled students in
+H
+each school. To obtain the student population density, we will divide the total number
+：
+of students (in each zip code) by the land area of each zip code. The results are shown
+号
+in the tables below:
+Table 3: Total Number of Students (in each zip code)
+众
+| DENVER  |         |                                       |        |
+| ------- | ------- | ------------------------------------- | ------ |
+| 80202   |         | 公Colorado State University            | 24875  |
+|         |         | Denver School Of the Arts             | 902    |
+|         |         | Metropolitan State College of Denver  | 24008  |
+|         | 信TOTAL  |                                       | 49785  |
+| 80203   |         | Online High School                    | 126    |
+|         |         | Connections Academy                   | 301    |
+|         |         | The Art Institute of Colorado         | 2100   |
+微
+|        |     | TOTAL                                           | 2527   |
+| ------ | --- | ----------------------------------------------- | ------ |
+| 80204  |     | Lake Middle School                              | 603    |
+|        |     | Colorado High School                            | 178    |
+|        |     | Emily Griffith Opportunity School               | 543    |
+|        |     | Life Skills Center of Denver School             | 314    |
+|        |     | West High School                                | 967    |
+|        |     | Ace Commnity Challenge Charter School           | 191    |
+|        |     | Denver Center For International Studies School  | 416    |
+|        |     | P.S.1 Charter School                            | 380    |
+|        |     | Community College of Denver Ccd West            | 13373  |
+|        |     | La Academia at the Denver Inner City Parish     | 586    |
+|        |     | Beth Jacob High School                          | 305    |
+|        |     | TOTAL                                           | 17856  |
+| 80205  |     | Manual High School                              | 163    |
+|        |     | Skyland Community High School                   | 140    |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 11 of 36
+|        |     | Bruce Randolph School                            |     | 680    |
+| ------ | --- | ------------------------------------------------ | --- | ------ |
+|        |     | Community College of Denver                      |     | 13373  |
+|        |     | Wartburg College West                            |     | 2461   |
+|        |     | Crowley Foundation                               |     | 459    |
+|        |     | Denver Venture School                            |     | 845    |
+|        |     | TOTAL                                            |     | 18121  |
+| 80206  |     | Bromwell School                                  |     | 331    |
+|        |     | Teller School                                    |     | 288    |
+|        |     | East High School                                 |     | 2159   |
+|        |     | The Denver Waldorf School                        |     | 545    |
+|        |     | Denver Street School                             |     | 1966   |
+|        |     | Colorado School of Traditional Chinese Medicine  |     | 901    |
+M
+|        |     | TOTAL                       |     | 6190  |
+| ------ | --- | --------------------------- | --- | ----- |
+| 80209  |     | St. John's Lutheran School  |     | 178   |
+|        |     | TOTAL                       |     | 178   |
+C
+| 80210  |     | Grant Middle School    |     | 461  |
+| ------ | --- | ---------------------- | --- | ---- |
+|        |     | Merrill Middle School  |     | 639  |
+M
+|     |     | South High School         |     | 5407   |
+| --- | --- | ------------------------- | --- | ------ |
+|     |     | Iliff School of Theology  |     | 548    |
+|     |     | University of Denver      | i   | 16644  |
+H
+|     |     | Denver Christian Schools  |     | 202  |
+| --- | --- | ------------------------- | --- | ---- |
+|     |     | Mile High Academy         |     | 890  |
+：
+|     |     | Our Lady of Lourdes Catholic School  |     | 574    |
+| --- | --- | ------------------------------------ | --- | ------ |
+|     |     | St. Vincent de Paul School           |     | 459    |
+|     |     | TOTAL                                |     | 25824  |
+号
+| 80211  |     | Horace Mann Middle School                  |     | 210  |
+| ------ | --- | ------------------------------------------ | --- | ---- |
+|        |     | Skinner Middle School                      |     | 357  |
+|        |     | Contemporary Learning Academy High School  |     | 251  |
+众
+|     |     | Fred N Thomas Career Education Center School  |     | 371   |
+| --- | --- | --------------------------------------------- | --- | ----- |
+|     |     | North High School                             |     | 1080  |
+|     |     | Emerson Street School                         |     | 42    |
+公
+|          |     | Escuela Tlatelolco School         |     | 79     |
+| -------- | --- | --------------------------------- | --- | ------ |
+|          |     | Prep Assessment Center School     |     | 44     |
+|          |     | TOTAL                             |     | 2434   |
+| 80218    | 信   | Morey Middle School               |     | 712    |
+|          |     | Academy of Urban Learning School  |     | 69     |
+|          |     | Brooks Divinity School            |     | 75     |
+|   微      |     | TOTAL                             |     | 856    |
+| CHICAGO  |     |                                   |     |        |
+| 60605    |     | Columbia College Chicago          |     | 10228  |
+|          |     | East-West University              |     | 880    |
+|          |     | Roosevelt University              |     | 2245   |
+|          |     | TOTAL                             |     | 13353  |
+
+| 60611  |     | Loyola University Chicago                     |     | 15951  |
+| ------ | --- | --------------------------------------------- | --- | ------ |
+|        |     | Northwestern University                       |     | 16377  |
+|        |     | TOTAL                                         |     | 32328  |
+| 60616  |     | Williams Middle Prep Academy School           |     | 114    |
+|        |     | Big Picture High - Metro School               |     | 47     |
+|        |     | Dunbar Vocational Career Academy High School  |     | 1575   |
+|        |     | Graham R Training Center School               |     | 186    |
+|        |     | Perspective Charter High School               |     | 1081   |
+|        |     | Youth Connections Charter High School         |     | 2042   |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 12 of 36
+|             |     | Illinois College of Optometry        |     |     |     |     | 516    |     |     |
+| ----------- | --- | ------------------------------------ | --- | --- | --- | --- | ------ | --- | --- |
+|             |     | Illinois Institute of Technology     |     |     |     |     | 7707   |     |     |
+|             |     | Shimer College                       |     |     |     |     | 104    |     |     |
+|             |     | Williams Middle Prep Academy School  |     |     |     |     | 114    |     |     |
+|             |     | Big Picture High - Metro School      |     |     |     |     | 47     |     |     |
+|             |     | TOTAL                                |     |     |     |     | 13372  |     |     |
+| DES MOINES  |     |                                      |     |     |     |     |        |     |     |
+| 50309       |     | Downtown School                      |     |     |     |     | 356    |     |     |
+|             |     | Walnut Street School                 |     |     |     |     | 1655   |     |     |
+|             |     | Pace School                          |     |     |     |     | 590    |     |     |
+|             |     | Scavo High School                    |     |     |     |     | 877    |     |     |
+|             |     | Des Moines Central Campus School     |     |     |     |     | 1123   |     |     |
+M
+|     |     | TOTAL  |     |     |     |     | 4601  |     |     |
+| --- | --- | ------ | --- | --- | --- | --- | ----- | --- | --- |
+
+C
+Table 4: Student Population Density
+M
+Number of
+| Zip Code  |     | Stations  | Land Area  |     | Students  |     | Student Density  |     |     |
+| --------- | --- | --------- | ---------- | --- | --------- | --- | ---------------- | --- | --- |
+i
+|     | 80202  |     | 19  | 1.1  |     | 49785  |     | 45259.09091  |     |
+| --- | ------ | --- | --- | ---- | --- | ------ | --- | ------------ | --- |
+H
+|     | 80203  |     | 4        | 1.1  |     | 2527   |     | 2297.272727  |       |
+| --- | ------ | --- | -------- | ---- | --- | ------ | --- | ------------ | ----- |
+|     | 80204  |     | 5  ：5.8  |      |     | 17856  |     | 3078.62069   |       |
+|     | 80205  |     | 7        | 4.5  |     | 18121  |     | 4026.888889  |       |
+|     | 80206  |     | 4        | 2.5  |     | 6190   |     |              | 2476  |
+|     | 80209  |     | 号1       | 3.4  |     | 178    |     | 52.35294118  |       |
+|     | 80210  |     | 5        | 6.1  |     | 25824  |     | 4233.442623  |       |
+|     | 80211  |     | 1        | 4.5  |     | 2434   |     | 540.8888889  |       |
+众
+|     | 80218  |     | 1   | 1.6  |     | 856    |     |              | 535     |
+| --- | ------ | --- | --- | ---- | --- | ------ | --- | ------------ | ------- |
+|     | 60605  |     | 2   |      | 2   | 13353  |     |              | 6676.5  |
+|     | 60616  |     | 1   | 3.4  |     | 13372  |     | 3932.941176  |         |
+公
+|     | 50309  |     | 4   |     | 3   | 4601  |     | 1533.666667  |     |
+| --- | ------ | --- | --- | --- | --- | ----- | --- | ------------ | --- |
+Graph 2: Number of Bike Stations vs. Student Population Density
+
+信
+
+微
+
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     | Hi  | CM  |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+获取更多资讯
+
+Team 2543 Pg 13 of 36
+M
+From the graph above, it can be seen that there is a square rooCt relationship
+between the student population density (S) and the number ofM bike stations (y),
+represented by the equation
+i
+H
+y = 0.0067125S +0.000737682.
+：
+The r2 value of 0.97264 indicates that 97.264% of the variations in the number
+号
+of bike stations can be explained by the regression line of number of bike stations
+against student population density. This shows that there is a strong correlation
+众
+between these two variables.
+公
+Tourist Attractions
+信
+The number of tourist attractions in each area is another factor that
+微
+significantly affects bike usage. Museums, amusement parks, gardens, and scenic
+views attract a lot of people. Since many of the tourist attractions are similar, it is
+reasonable to assume that there are approximately an equal number of tourists visiting
+each attraction. Thus, we will count the number of tourist attractions within each zip
+code. In order to compare the density of the tourist attractions, we will divide the
+number of tourist attractions in each zip code by the land area. Our findings are
+shown in the table below:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 14 of 36
+Table 5: Tourist Attractions
+| Zip Code  | Tourist Attractions  |     |     | Address                         |     |     |
+| --------- | -------------------- | --- | --- | ------------------------------- | --- | --- |
+| 80202     | Historic Denver Inc  |     |     | 1536 Wynkoop Street Suite 400A  |     |     |
+Museum of Contemporary Art-
+|        | Denver                    |     |     |  1275 19th Street             |     |     |
+| ------ | ------------------------- | --- | --- | ----------------------------- | --- | --- |
+| 80203  | Molly Brown House Museum  |     |     |  1340 Pennsylvania Street     |     |     |
+|        | Vance Kirkland Museum     |     |     | 1311 Pearl Street             |     |     |
+| 80204  | Denver Art Museum         |     |     | 100 West 14th Avenue Parkway  |     |     |
+Denver Firefighters Museum  1326 Tremont Place, Denver, CO 80204,
+|     | Gift Store         |     |     | United States  |     |     |
+| --- | ------------------ | --- | --- | -------------- | --- | --- |
+|     | Buckhorn Exchange  |     |     |                |     |     |
+M
+  Museo de las Americas  861 Santa Fe Drive, Denver, CO 80204
+  6 Flags Elitch Gardens  2000 Elitches Circle, Denver, CO 80204-1889
+| 80205  | Black American West Museum  |     |     |  3091 California StrCeet  |     |     |
+| ------ | --------------------------- | --- | --- | ------------------------- | --- | --- |
+Stiles African American
+|     | Heritage CNTR  |     |     |     |     |     |
+| --- | -------------- | --- | --- | --- | --- | --- |
+M
+|     | Gates Planetarium  |     |     |  2001 Colorado Boulevard  |     |     |
+| --- | ------------------ | --- | --- | ------------------------- | --- | --- |
+|     | Imax               |     |     |                           |     |     |
+i
+Denver Museum of Miniatures
+H
+| 80206  | Dolls & Toys  |     |     |  1880 Gaylord Street  |     |     |
+| ------ | ------------- | --- | --- | --------------------- | --- | --- |
+1007 York Street, Denver, CO 80206, United
+：
+|        | Denver Botanic Gardens  |     |     | States  |     |     |
+| ------ | ----------------------- | --- | --- | ------- | --- | --- |
+| 80209  | None                    |     |     |         |     |     |
+| 80210  | None                    |     |     |         |     |     |
+号
+2121 Children's Museum Drive, Denver, CO
+| 80211  | Children's Museum of Denver  |     |     | 80211, United States  |     |     |
+| ------ | ---------------------------- | --- | --- | --------------------- | --- | --- |
+| 80218  | None                         |     |     |                       |     |     |
+众
+50309  Fort Des Moines Memorial Park   514 East Locust Street
+|     |   Historical Outfitters        |     |     |     | 511 E 6th St Suite C      |     |
+| --- | ------------------------------ | --- | --- | --- | ------------------------- | --- |
+|     |   Hubbell Historical Center    |     |     |     | 507 Southwest 7th Street  |     |
+公
+|        |   Science Center of Iowa       |     |     |     | 401 Martin Luther King Jr #  |     |
+| ------ | ------------------------------ | --- | --- | --- | ---------------------------- | --- |
+| 60605  | Adler Planetarium & Astronomy  |     |     |     |                              |     |
+|        |   Museum                       |     |     |     | 1300 South Lake Shore Drive  |     |
+信
+|        |   Big Time Tours & Events  |     |     |     | 828 South Wabash Avenue      |     |
+| ------ | -------------------------- | --- | --- | --- | ---------------------------- | --- |
+|        |   The Field Museum         |     |     |     | 1201 South Lake Shore Drive  |     |
+| 60611  | The Arts Club of Chicago   |     |     |     | 201 East Ontario Street      |     |
+微
+  Chicago Children's Museum  700 East Grand Avenue Suite 127
+|        |   Museum of Contemporary Art          |     |     |     | 220 East Chicago Avenue   |     |
+| ------ | ------------------------------------- | --- | --- | --- | ------------------------- | --- |
+| 60616  | Chicago Sightseeing                   |     |     |     | 2701 South Wabash Avenue  |     |
+|        |   Chinese-American Museum of Chicago  |     |     |     |                           |     |
+
+Table 6: Density of Tourist Attractions (within each zip code)
+
+Number of
+|           |        |                 | Number of    |     |            | Tourist           |
+| --------- | ------ | --------------- | ------------ | --- | ---------- | ----------------- |
+|           |        | Number of Bike  | Tourist      |     |            | Attraction Per    |
+| Zip Code  |        | Stations        | Attractions  |     | Land Area  | Sq. Mile          |
+|           | 80202  |                 | 19           |     | 8          | 1.1  7.272727273  |
+|           | 80203  |                 | 4            |     | 2          | 1.1  1.818181818  |
+|           | 80204  |                 | 5            |     | 5          | 5.8  0.862068966  |
+|           | 80205  |                 | 7            |     | 5          | 4.5  1.111111111  |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543 Pg 15 of 36
+80206 4 2 2.5 0.8
+80209 1 0 3.4 0
+80210 5 3 6.1 0.491803279
+80211 1 1 4.5 0.222222222
+80218 1 0 1.6 0
+60605 2 3 2 1.5
+60616 1 2 3.4 0.588235294
+50309 4 4 3 1.333333333
+Graph 3: Number of Bike Stations vs. Density of Tourist Attractions
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+From the graph above, it can be seen that there is a positive linear relationship
+微
+between the number of tourist attractions (T) and the number of bike stations (y),
+represented by the equation
+y = 2.3808T + 1.3257.
+The r2 value of 0.87511 indicates that 87.511% of the variations in the number of bike
+stations can be explained by the regression line of number of bike stations against
+number of tourist attractions. Thus, there is a relatively strong correlation between
+these two variables.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 16 of 36
+
+Civic Centers
+Civic centers not only attract tourists, but also attract locals. The entertainment
+centers that we will consider include cinemas, shopping malls, parks, plazas,
+stadiums, golf courses, and libraries. Since different-sized civic centers attract a
+different number of people, we will assume that the area of the civic center is a good
+M
+indication of the number of people visiting each center. Thus, we will find the total
+area of the civic centers in each zip code. Similar to the calculations we performed for  C
+M
+working population, student population, and tourist attractions, we will divide the
+total area of civic centers in each zip code by the land area iof each zip code to obtain
+H
+the density of these civic centers. Our results are presented in the table below:
+：
+Table 7: Civic Centers
+号
+| Zip Codes  | Civic Centers  | Area  |     |
+| ---------- | -------------- | ----- | --- |
+ Butler Field, Buckingham Fountain, Logan
+| 60605  | Monument, Grant Park  |     | 1.01  |
+| ------ | --------------------- | --- | ----- |
+众
+|     | Dearborn Park   |     | 0.0196   |
+| --- | --------------- | --- | -------- |
+|     | Park 479        |     | 0.00444  |
+|     | Roosevelt Park  |     | 0.00711  |
+公
+|        | Merle Reskin Theatre, Chicago, IL, United States  |     |       |
+| ------ | ------------------------------------------------- | --- | ----- |
+| 60611  | Waveland Avenue Golf Course                       |     | 0.88  |
+|        | Lincoln Park                                      |     | 0.39  |
+信
+|        | Cityfront Plaza  |     | 0.028    |
+| ------ | ---------------- | --- | -------- |
+| 60616  | Woodland Park    |     | 0.00444  |
+|        | Dunbar Park      |     | 0.0857   |
+微
+|        | Douglas Monument Park              |     | 0.00741   |
+| ------ | ---------------------------------- | --- | --------- |
+|        | Prairie Avenue Historic District   |     |           |
+|        | Armour Square Park                 |     | 0.04      |
+|        | Lake Meadows Park                  |     | 0.0264    |
+|        | Groveland Park                     |     | 0.00667   |
+| 80202  | United Nations Park                |     | 0.106     |
+| 80203  | Governors park                     |     | 0.00612   |
+| 80204  | Lincoln Park                       |     | 0.0765    |
+|        | Sunken Gardens                     |     | 0.07      |
+|        | Barnum Park                        |     | 0.334     |
+| 80205  | City Park                          |     | ; 1.3km2  |
+|        | Saint Charles Place Park           |     | 0.000612  |
+|        |  Fuller Park                       |     | 0.0306    |
+|        |  Schafer Park                      |     | 0.0329    |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 17 of 36
+|     |     |     | Curtis Park  |     |     |     | 0.0367  |
+| --- | --- | --- | ------------ | --- | --- | --- | ------- |
+
+Table 8: Total Area of Civic Centers (in each zip code)
+|     |     | Total Area of  | Number of  |     | Average Area  |     |     |
+| --- | --- | -------------- | ---------- | --- | ------------- | --- | --- |
+Zip Code  Civic Centers  Bike Stations  Land Area  of Civic Centers
+|     | 80202  |     | 1.78186   | 19  | 1.1  1.619872727    |          |     |
+| --- | ------ | --- | --------- | --- | ------------------- | -------- | --- |
+|     | 80203  |     | 0.00612   | 4   | 1.1  0.005563636    |          |     |
+|     | 80204  |     | 0.9542    | 5   | 5.8  0.164517241    |          |     |
+|     | 80205  |     | 2.00812   | 7   | 4.5  0.446248889    |          |     |
+|     | 80206  |     | 0.212     | 4   | 2.5                 | 0.0848   |     |
+|     | 80209  |     | 0.34745   | 1   | 3.4  M0.102191176   |          |     |
+|     | 80210  |     | 0.4024    | 5   | 6.1  0.065967213    |          |     |
+|     | 80211  |     | 0.1073    | 1   | 4.5  0.023844444    |          |     |
+|     | 80218  |     | 0.236305  | 1   | 1.6  C 0.147690625  |          |     |
+|     | 60605  |     | 0.4115    | 2   | 2                   | 0.20575  |     |
+M
+|     | 60616  |     | 0.17062  | 1   | 3.4  0.050182353  |         |     |
+| --- | ------ | --- | -------- | --- | ----------------- | ------- | --- |
+|     | 50309  |     | 0.0243   | 4   | 3                 | 0.0081  |     |
+
+i
+Graph 4: Number of Bike Stations vs. Density of CHivic Centers
+：
+
+|     |     |     | 号   |     |     |     |     |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+
+众
+
+公
+
+信
+
+微
+
+Evidently, there is an exponential relationship between the average area of
+civic centers (C) and the number of bike stations (y), modeled by the equation y =
+2.0909e1.4053C. In addition, there are no obvious patterns shown by the residuals in the
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543 Pg 18 of 36
+residual plot, which indicates that the exponential model is a suitable fit. Although the
+coefficient of determination of r2=0.4449 does not indicate a very strong fit, from the
+graph, it can be seen that the data points generally follow a exponential pattern.
+Calculations
+In order to develop a rating system that includes all of the factors that we
+M
+considered, we will differentiate each of the models obtained above, and then add
+C
+them up to determine the final rating. The derivative of each function represents the
+M
+change of the number of bike stations in proportion to the change in each variable,
+which reflects the weight of the variable in the rating systemi. After determining the
+H
+derivative of each function, we will compare each of the derivatives with one set
+：
+variable. In our model, we will choose our “constant” variable to be the average
+号
+number of tourist attractions due to its simple derivative. In order to compare all the
+variables with each other, we will find the ratio between the derivative of the variable
+众
+and that of the average number of tourist attractions. For instance, to determine the
+公
+dy dy
+extra weight of the average area of civic centers, we will divide by :
+dC dT
+信
+dy dT dT
+微 × =
+dC dy dC
+Hence, we would achieve a mathematical representation of how much more
+influential a square mile of civic center is than an increase in the average of tourist
+attractions is to the number of bike stations. We will repeat the same method for the
+remaining two variables.
+First, we will calculate the derivative of the number of bike stations against density of
+tourist attractions:
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 19 of 36
+y = 2.3808T + 1.3257
+dy
+ = 2.3808
+dT
+Next, we will calculate the derivative of the number of bike stations against combined
+density:
+y = 1.2151665625*1.0000769285 P
+dy
+= (9.3477*10-5)(1.0000709285)P  M
+dP
+(9.3477*10−5)(1.0000769285)P C
+dy dy
+÷  =
+| dP dT | 2.3808 |     |
+| ----- | ------ | --- |
+M
+dT
+ = (3.926285282*10-5)(1.0000709285)P
+i
+dP
+H
+Similarly, we will calculate the derivative of the number of bike stations against
+：
+student population density:
+号
+| y =  0.0067125S | +0.000737682  |     |
+| --------------- | ------------- | --- |
+| 众dy             | 0.00335625    |     |
+|                 | =             |     |
+| dS              | 0.0067125S    |     |
+公
+| dy dy | 0.00335625 | 1      |
+| ----- | ---------- | ------ |
+| ÷     |  =         | *      |
+| dS dT | 0.0067125S | 2.3808 |
+信
+| dT  | 0.00141    |     |
+| --- | ---------- | --- |
+|     |  =         |     |
+| dS  | 0.0067125S |     |
+微
+Finally, we will calculate the derivative of the number of bike stations against average
+area of civic centers:
+y = 2.0909e1.4053C
+dy
+ = 7.610e3.6396C
+dC
+7.610e3.6396C
+| dy  | dy        |     |
+| --- | --------- | --- |
+|     | ÷  =      |     |
+| dC  | dT 2.3808 |     |
+dT
+ = 3.1964 e3.6396C
+dC
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543 Pg 20 of 36
+Combining these functions brings us to our final model:
+0.00141
+R = 3.1964e3.6396C + T + (3.926285282 * 10-5)(1.0000709285)P +
+0.0067125S
+Determining Where to Add New Locations in Five Years
+To satisfy all the prerequisites, using our model, we will develop an algorithm
+that helps determine where to locate new bike stations for the next five yeMars.
+C
+1. How many new stations do we need to add each yeaMr?
+With an assumed 30% growth in bike stations each year, we can calculate the
+i
+H
+number of new bike stations by multiplying the original number in the city by 1.3.
+：
+2. Do we need to add more bike号 stations to existing zip codes?
+When deciding whether or not we want to either expand existing bike stations
+众
+or find new bike stations, we must take the existing bike paths and stations into
+account. 公
+Before we answer the above question our first step is to determine at what
+信
+distance from the old locations the new stations should be located. From our
+微
+knowledge of the existing stations, we will estimate the walking distance between the
+closest stations.
+Figure 2: Determining distances
+0.09 miles
+0.2 miles
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 21 of 36
+0.2 miles
+0.3 miles
+M
+C
+To be more efficient, we will only consider a random sample of 20 to
+M
+represent the 54 stations. We will label each station from 1- 54 and use a random digit
+table to choose 20 stations. From those 20 stations, we willi estimate the shortest
+H
+walking distance to the closest station by drawing tree diagrams that are weighted by
+：
+distance as shown below. After generalizing our results, we will obtain a good idea of
+号
+where we should locate our new stations. Below is a table that shows the
+approximated walking distances from the random stations:
+众
+Table 9: Walking Distances from Random Stations
+公
+Random Walking
+Stations distances
+1 0.9
+信
+2 0.3
+3 0.6
+微
+4 0.8
+5 0.2
+6 0.4
+7 0.6
+8 0.7
+9 0.2
+10 0.3
+11 0.2
+12 0.5
+13 0.9
+14 0.8
+15 0.3
+16 0.9
+17 0.1
+18 0.1
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 22 of 36
+19 0.3
+20 0.7
+Average 0.49
+As seen from above, the average shortest distance of a bike station to another
+bike station is 0.49 miles. This makes sense because it is not favorable to have a bike
+station that is too far away. This may make bikers feel obligated to travel a long way
+to the next bike station in order to store their bikes. Therefore, the new bikMe locations
+should be roughly 0.49 miles away from old bike locations.
+C
+Since our model is based on zip codes, we must also consider the questions of
+M
+how many bike stations we need per zip code and whether or not we need to add any
+i
+H
+more bike stations to existing zip codes.
+：
+Given that the average distance between stations is 0.49 miles, we can
+conclude that the approximate area around a bike station is:
+号
+0.492 = 0.2401 miles2
+众
+Therefore, the number of stations per zip code would equal:
+公 AreaOfZipCode
+NumberOfBikeStations=
+0.2401
+After we fi信nd out the set number of bike stations, we will compare them with the
+number of existing bike stations and determine where the new stations should be
+微
+added.
+a) If the existing number of bike stations is less than number of bike stations we
+find, new bike stations should be located in that zip code.
+b) If the existing number of bike stations is equal to or greater than the number of
+bike stations we find, then we should stop adding new bike stations in that zip
+code and proceed to the next step.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 23 of 36
+3. Adding new bike stations to zip codes
+Using the following model, we will calculate the ratings to determine the need for
+bike stations in each zip code:
+0.00141
+R = 3.1964e3.6396C + T + (3.926285282 * 10-5)(1.0000709285)P +
+0.0067125S
+We will place the new bike stations in the zip code with the greatest rating and
+when the limit is reached, we will proceed to add new bike stations to the Marea with
+the second greatest rating.
+C
+M
+4. Where to place the new bike stations within the zip codes.
+i
+H
+When we plan new bike locations, we must consider how to make the stations
+：
+more competitive in the area so that people would choose bikes over buses and other
+forms of transportation. One reason 号that people would choose bikes over other means
+of transportation is time. Often times, not only are bus or transit routes located in
+众
+inconvenient places, requiring people to walk to the stations, they also entail long
+waiting times and c公ongested traffic. Therefore, bike stations should aim to be located
+at places that are most convenient and minimize travelling time. This is evident when
+信
+we look at the existing bike stations. For example, when we compare the shortest bike
+微
+time, walk time and bus/ transit time, even though bike distances may be longer, the
+bike time is always less than that of other travelling means.
+Table 10: Traveling Times for Different Modes of Transportation
+Bike Walk Bus/Transit
+Distance Bike Time Distance Walk Time Time
+0.9 5 0.9 18 18
+0.7 6 0.6 12 8
+0.7 6 0.7 15 9
+0.6 2 0.3 5 5
+0.9 17 0.9 6 20
+0.9 5 0.9 19 18
+0.7 3 0.7 12 4
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 24 of 36
+Figure 3: Examining bike
+routes
+M
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+New Locations in Chicago
+1. How many new stations do we need each year?
+Table 11: New Stations in Chicago
+New
+stations
+Total Total each
+Year stations Rounded year
+0 5
+1 6.5 6 1
+2 8.45 8 2
+3 10.985 10 2
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543                                                                                                                  Pg 25 of 36
+|     |     |     | 4   |     | 14.2805   |     | 14  |     | 4   |     |     |
+| --- | --- | --- | --- | --- | --------- | --- | --- | --- | --- | --- | --- |
+|     |     |     | 5   |     | 18.56465  |     | 18  |     | 4   |     |     |
+
+2. & 3.  Adding New Bike Stations
+
+Table 12: Ratings of Zip Codes in Chicago
+|           |     |            |      | Population  |          |              |     | Rounded  |     | Current  |         |
+| --------- | --- | ---------- | ---- | ----------- | -------- | ------------ | --- | -------- | --- | -------- | ------- |
+| Zip Code  |     | Land Area  |      |             | Density  | Limit        |     | Limit    |     | Number   | Rating  |
+| 60605     |     |            | 2    |             | 6003     | 8.329862557  |     |          | 8   | 2        | 5.768   |
+| 60611     |     |            | 1.6  |             | 16739    | 6.663890046  |     |          | 6   | 2        | 12.116  |
+| 60616     |     |            | 3.4  |             | 13727    | 14.16076635  |     |          | 14  | 1        | 4.018   |
+
+|     |     |     |     |     |     |     |     |     |     | M   |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+The first station that will be needed in the following year due to the thirty
+percent increase in bike usage should be added into the zip code areaC of 606011. This
+is because the rating of 60611 is the highest amongst the zip cModes while the current
+number of bike stations in that area has not reached the limit we calculated. During
+i
+H
+the second year, two new stations will also be added in the same zip code area
+：
+because the need for bike stations in that area has not been fully satisfied. In the third
+year, one new bike station should be号 set in 60611 and another in 60605. This is
+because after adding the new bike station in 60611, the limit will be reached and the
+众
+zip code area with the next highest rating should then be taken into account. This
+method is then repe公ated for five years and by the end of the fifth year, four new
+stations should be added to 60611, six stations to 60605, and three stations to 60616.
+信
+
+微
+New Locations in Des Moines
+1.  How many new stations do we need each year?
+Table 13: New Stations in Des Moines
+|     | Year  |     |     | Total stations  |     | Total Rounded  |     |     | New stations each  |     |     |
+| --- | ----- | --- | --- | --------------- | --- | -------------- | --- | --- | ------------------ | --- | --- |
+year
+|     | 0   |     |     |           | 4   |     |     |     |     |     |     |
+| --- | --- | --- | --- | --------- | --- | --- | --- | --- | --- | --- | --- |
+|     | 1   |     |     | 5.2       |     |     | 5   |     |     | 1   |     |
+|     | 2   |     |     | 6.76      |     |     | 6   |     |     | 1   |     |
+|     | 3   |     |     | 8.788     |     |     | 8   |     |     | 2   |     |
+|     | 4   |     |     | 11.4244   |     |     | 11  |     |     | 3   |     |
+|     | 5   |     |     | 14.85172  |     |     | 14  |     |     | 3   |     |
+
+关注
+HiMCM
+×+
+−÷
+|     |     |     |     |     |     |     |     |     |     | Hi CM |     |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ----- | --- |
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 26 of 36
+
+2. & 3.  Adding New Bike Stations
+Since there is currently only one zip code area in Des Moines in which the
+firm has implemented its bike program, we need to consider whether the new stations
+constructed in the next five years will surpass the limits of that zip code. In total, after
+the next five years, ten new stations will be added to serve the increase in bike usage
+and the demand in the local market. However, there are only eight spaces remaining
+M
+in the current zip code area. Thus, new areas must be considered in order to decide the
+C
+locations of the remaining two new stations.
+M
+Table 14: Ratings of Zip Codes in Des Moines
+i
+|           |            |       |               | Limit of Bike  |      | RounHded  |     | Current  |              |
+| --------- | ---------- | ----- | ------------- | -------------- | ---- | --------- | --- | -------- | ------------ |
+| Zip Code  | Land Area  |       |               | Stations       |      | Limit     |     | Number   | Rating       |
+| 50309     |            | 3     |               | 1666           | ：12  |           |     | 4        | 4.566829645  |
+| 50310     |            | 7.6   | 31.65347772   |                |      | 31        |     | 0        | 3.528324908  |
+| 50311     |            | 3.7   | 15.41024573   |                |      | 15        |     | 0        | 4.569023901  |
+| 50312     |            | 5.8   | 24.1566号0142  |                |      | 24        |     | 0        | 5.123065457  |
+| 50313     |            | 18.3  |               | 76.2182424     |      | 76        |     | 0        | 3.556095461  |
+| 50314     |            | 2.5   |               | 10.4123282     |      | 10        |     | 0        | 3.78654546   |
+| 50315     |            | 9.4   | 众39.15035402  |                |      | 39        |     | 0        | 3.678546345  |
+| 50316     |            | 3.6   |               | 14.9937526     |      | 14        |     | 0        | 4.349831982  |
+| 50321     |            | 12    | 49.97917534   |                |      | 49        |     | 0        | 2.94543956   |
+
+公
+As seen from the table above, the remaining two new stations should be added
+to zip code信 area 50312, which has the highest rating among the surrounding areas.
+Therefore, in the city of Des Moines, the bike program will be expanding in two zip
+微
+code areas, 50309 and 50312, in the next five years.
+
+New Locations in Denver
+| 1.  How many new stations do we need each year?   |     |     |     |     |     |     |     |     |     |
+| ------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+Table 15: New Stations in Denver
+New
+|     |     |       |     | Total     |          | Total  | stations   |     |     |
+| --- | --- | ----- | --- | --------- | -------- | ------ | ---------- | --- | --- |
+|     |     | Year  |     | stations  | Rounded  |        | each year  |     |     |
+|     |     | 0     |     | 47        |          |        |            |     |     |
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 27 of 36
+|     |     | 1   |            | 61.1   | 61   |     | 14  |     |     |     |
+| --- | --- | --- | ---------- | ------ | ---- | --- | --- | --- | --- | --- |
+|     |     | 2   |            | 79.43  | 79   |     | 18  |     |     |     |
+|     |     | 3   | 103.259    |        | 103  |     | 24  |     |     |     |
+|     |     | 4   | 134.2367   |        | 134  |     | 31  |     |     |     |
+|     |     | 5   | 174.50771  |        | 174  |     | 40  |     |     |     |
+
+2.  & 3.  Adding New Bike Stations
+Table 16: Ratings of Zip Codes in Denver (Area with Existing Bike Stations)
+Current
+| Zip    |            |      |              |        |     | Rounded  | Number of  |            | Combined     |          |
+| ------ | ---------- | ---- | ------------ | ------ | --- | -------- | ---------- | ---------- | ------------ | -------- |
+| Code   | Land Area  |      |              | Limit  |     | Limit    |            | StatiMons  |              | Density  |
+| 80202  |            | 1.1  | 4.581424406  |        |     | 4        |            | 19         | 33992.36364  |          |
+| 80203  |            | 1.1  | 4.581424406  |        |     | 4        |            | 4          |              | 19207    |
+C
+| 80204  |     | 5.8  | 24.15660142  |     |     | 24  |     | 5   | 9448.482759  |     |
+| ------ | --- | ---- | ------------ | --- | --- | --- | --- | --- | ------------ | --- |
+| 80205  |     | 4.5  | 18.74219075  |     |     | 18  |     | 7   | 13620.22222  |     |
+M
+| 80206  |     | 2.5  |              | 10.4123282  |     | 10  |     | 4   |              | 11695  |
+| ------ | --- | ---- | ------------ | ----------- | --- | --- | --- | --- | ------------ | ------ |
+| 80209  |     | 3.4  | 14.16076635  |             |     | 14  |     | 1   | 7574.352941  |        |
+| 80210  |     | 6.1  |              | 25.4060808  |     | 25  |     | 5   | 8790.344262  |        |
+i
+| 80211  |               | 4.5       | 18.74219075         |        |              | H18         |              | 1       | 9588.555556  |     |
+| ------ | ------------- | --------- | ------------------- | ------ | ------------ | ----------- | ------------ | ------- | ------------ | --- |
+| 80218  |               | 1.6       | 6.663890046         |        |              | 6           |              | 1       | 16483.5      |     |
+|        |               |           |                     |   ：    |              |             |              |         |              |     |
+|        | Average Area  |           | Number of Tourist   |        |              |             |              |         |              |     |
+| Zip    |               | of Civic  | Attraction Per Sq.  |        |              | Student     |              |         |              |     |
+| Code   |               | Centers   |                     | 号Mile  |              | Density     |              | Rating  |              |     |
+| 80202  | 0.625436357   |           | 7.272727273         |        | 45259.09091  |             | 38.40920325  |         |              |     |
+| 80203  | 0.002148132   |           | 1.818181818         |        | 2297.272727  |             | 5.040182705  |         |              |     |
+| 80204  | 0.063520462   |           | 0.862068966         |        |              | 3078.62069  | 4.890231428  |         |              |     |
+众
+| 80205  | 0.172297659  |     | 1.111111111  |      | 4026.888889  |       | 7.095667968  |     |     |     |
+| ------ | ------------ | --- | ------------ | ---- | ------------ | ----- | ------------ | --- | --- | --- |
+| 80206  | 0.032741463  |     |              | 0.8  |              | 2476  | 4.401361757  |     |     |     |
+| 80209  | 0.039456234  |     |              | 0    | 52.35294118  |       | 3.692459137  |     |     |     |
+公
+| 80210  | 0.025470083  |     | 0.491803279  |     | 4233.442623  |      | 3.999018703  |     |     |     |
+| ------ | ------------ | --- | ------------ | --- | ------------ | ---- | ------------ | --- | --- | --- |
+| 80211  | 0.009206391  |     | 0.222222222  |     | 540.8888889  |      | 3.528357961  |     |     |     |
+| 80218  | 0.057023669  |     |              | 0   |              | 535  | 3.934523498  |     |     |     |
+信
+
+Though zip code area 80202 has an outstandingly high rating, its current
+微
+number of stations has surpassed the approximate limit of bike stations that
+neighborhood should have. Thus, for the following year, new bike stations should be
+added to other areas that have not reached their limit. The next highest rating falls on
+area 80205. Eleven stations can be constructed in 80205 during the first year and three
+other stations should be added to area 80204. Then, the next 18 new stations in the
+second year can be distributed throughout areas 80204 and 80206. In the third year,
+24 new stations can be established in 80206 and 80210. Thirty-one stations can be
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543                                                                                                                  Pg 28 of 36
+added to 80218, 80209, and 80211 in the fourth year. Lastly, during the fifth year,
+80211, the zip code area with the lowest rating in the above table, will reach its limit
+after four of the 40 new stations are added to its neighborhood. As a result, the
+company would need to expand to other nearby zip code areas. The following table
+shows our consideration of the surrounding areas to determine where the remaining
+36 stations should be located.
+M
+Table 17: Ratings of Zip Codes in Denver (Possible Areas of Expansion)
+Current
+|           |            |              | Rounded  | Number of  C |              |
+| --------- | ---------- | ------------ | -------- | ------------ | ------------ |
+| Zip Code  | Land Area  | Limit        | Limit    | Stations     | Rating       |
+| 80216     | 14.9       | 61.82572614  | 61  M0   |              | 3.163498795  |
+| 80207     | 4.3        | 17.84232365  | 17       | 0            | 4.887284723  |
+| 80220     | 8.2        | 34.02489627  | 34       | 0            | 3.094730395  |
+i
+| 80246  | 1.7  | 7.053941909  | 7   | 0   | 2.99834851  |
+| ------ | ---- | ------------ | --- | --- | ----------- |
+H
+| 80223  | 5    | 20.74688797   | 20  | 0   | 5.13723897   |
+| ------ | ---- | ------------- | --- | --- | ------------ |
+| 80219  | 7.5  | 31.1203319：5  | 31  | 0   | 3.78380513   |
+| 80214  | 2.4  | 9.958506224   | 9   | 0   | 3.000212333  |
+
+As the table shows, zip code area 80223 has the highest rating among the
+号
+surrounding areas. Its limit is 20 and this would be also fulfilled during the fifth year.
+众
+The remaining 16 new stations will then fall into the second highest rating area –
+80207. There are 17公 spaces in this zip code area; thus, this area will be sufficient for
+the construction of these new sites. In sum, within the next five years,19 new stations
+信
+should be constructed in 80204, 11 stations in 80205, 6 stations in 80206, 13 stations
+in 微80209, 20 stations in 80210, 17 stations in 80211, 5 stations in 80218, 20 stations
+in 80223, 16 stations in 80207.
+All the new stations in the next Five Years
+Chicago
+(cid:131)  4 stations in 60611
+(cid:131)  6 stations in 60605
+(cid:131)  3 stations in 60616.
+关注
+HiMCM
+×+
+−÷
+Hi CM
+获取更多资讯
+
+Team 2543 Pg 29 of 36
+Des Moines
+(cid:131) 8 stations in 50309
+(cid:131) 2 stations in 50312
+Denver
+(cid:131) 19 new stations should be constructed in 80204
+(cid:131) 11 stations in 80205
+M
+(cid:131) 6 stations in 80206
+C
+(cid:131) 13 stations in 80209
+M
+(cid:131) 20 stations in 80210
+(cid:131) 17 stations in 80211 i
+H
+(cid:131) 5 stations in 80218
+：
+(cid:131) 20 stations in 80223
+号
+(cid:131) 16 stations in 80207
+众
+Model Testing and Sensitivity Analysis
+公
+To test our mathematical model, we will make sure that each of our
+信
+relationships makes logical sense.
+微First of all, according to our model, there is an increasing exponential
+relationship between the combined density (sum of employee density and population
+density) (P) and the number of bike stations (y). This makes sense because as the
+number of people in an area increase, bike usage is higher thus there must be more
+bike stations to accommodate everybody’s needs.
+Regarding schools, there is a square root relationship between the student
+population density (S) and the number of bike stations (y). This relationship makes
+sense because students often ride bikes to school thus a greater student population
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 30 of 36
+density would result in higher bike usage. As a result, there would be a greater
+number of bike stations. The rationale behind the square-root relationship is because
+as the population gets more and more dense, the number of bike stations continues to
+increase but at a decreasing rate due to the limitations in resources, land, and cost.
+On the other hand, there is a positive linear relationship between the number
+of tourist attractions (T) and the number of bike stations (y). The rationale behind is
+M
+similar to those above. Tourists may choose to bike so that they can enjoy the view
+C
+along the way. Therefore, as the number of tourist attractions increase, the number of
+M
+tourists increase, causing bike usage to increase.
+Finally, there is an exponential relationship betweeni the average area of civic
+H
+centers (C) and the number of bike stations (y). Since parks are a huge part of
+：
+recreational life and are great venues for biking, the greater the average area of civic
+号
+centers, the greater the number of bike stations. The exponential relationship may also
+be explained by the civic center’s popularity. As we assumed, the larger the civic
+众
+center, the more popular it is. The more people there are, the more bike stations
+公
+available.
+Our mathematical model makes sense because by taking the derivative of the
+信
+model of each subcategory, we are finding the rate of change. This means that the
+微
+steeper the slope, the greater the value (or weight) of the subcategory thus the bigger
+role it will play in determining the final rate. Also, the results (rating for each zip
+code) make sense. The rating is higher for zip codes with more stations. For example,
+80202 in Denver has a high rating of 38.4. It also has an exceptionally large number
+of biking stations. The high rating indicates the great needs of the area, hence the
+large number of biking stations.
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 31 of 36
+Strengths and Weaknesses
+One of the greatest strengths of our model is that we included a lot of factors.
+We took into account resident population density, employee population density,
+student population density, tourist attractions, other modes of transportation, and civic
+centers. We conducted in depth research of the information of each area. We
+considered even the small industries and schools, and included a wide variety of
+M
+tourist attractions and civic centers into our model. This greatly contributes to the
+C
+accuracy of our model.
+M
+Another strength of our model is that we weighted each of the variables after
+examining the relationships between each of the variables wiith the number of bike
+H
+stations. Weighting the variables increases the accuracy of our final rating system.
+：
+By providing a mathematical model to evaluate the need of a new bike station
+号
+at a certain location, our approach will not only help answer where, but will also
+demonstrate why to locate the new bike stations. Additionally, when locating the new
+众
+stations, we took the existing B-cycle model into consideration. For example, we
+公
+analyzed the average distances and took bus routes and other transportation into
+considerati信on by analyzing the time required to travel from one station to another. Our
+model considers the fact that areas with existing bike stations still need additional
+微
+stations in order to satisfy the demand for bikes, which accurately models the real-
+world situation.
+The main weakness of our model is that we did not include enough data
+points. Since we only worked with 12 zip codes, we only have 12 data points to
+determine each relationship. To strengthen our model, we could have researched
+different bicycle programs in more cities in order to obtain more information about
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 32 of 36
+bike stations in a wider variety of locations. This would not only provide us with
+more data points to work with, but also ensure that our model would be more
+generalized thus be more applicable to other cities.
+Another weakness of our model is that we only considered the zip code in
+which the bike station is located. This may not be a truly accurate representation since
+there may be some factors lying outside of the zip code area that affect bike usage
+M
+within the area.
+C
+M
+i
+H
+：
+号
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 33 of 36
+Letter to the Mayor
+Dear Mr. Mayor,
+We are a group of enthusiastic high school math students who are aware that
+the selfish actions of humans are exacerbating the state of our environment and
+putting our Earth at stake. In order to promote a sustainable future, we would like to
+propose an efficient bike rental program that would encourage people to travel around
+M
+by bike rather than by car.
+C
+By studying the areas where current bike stations are located, we have
+M
+developed a mathematical model that could help determine whether or not a bike
+i
+station should be constructed at a certain location. ThHe following model gives the
+rating of how well a bike station would suit a： certain area,
+0.00141
+R = 3.1964e3.6396C + T + (3.926285282 * 10-5)(1.0000709285)P +
+号
+0.0067125S
+where R = the rating of the suitability of a bike station,
+众
+C = the average area (per square mile) of all the civic centers in the zip code,
+公
+T = the density (per square mile) of the tourist attractions
+P = the combined density of people (including the population density and the density
+信
+of employees)
+微
+and S = the density of the student population
+The strength of our model is that it takes a lot of factors into account. By
+conducting in depth research of the information of each area, we incorporated even
+the smallest industries, schools and tourist attractions into our model. In addition, our
+final model does not just simply consist of the sum of the individual ratings of each
+sub-category, it also considers the weighting of the individual ratings based on the
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 34 of 36
+strength of the relationship between each category and the number of existing bike
+stations.
+We also propose an algorithm in conjunction with our model to help locate
+new bike stations in the next five years. This algorithm considers the existing bike
+stations by comparing the maximum number of bike stations per zip code using
+AreaOfZipCode
+NumberOfBikeStations=
+0.2401 M
+and the existing numbers of bike stations. It also adjusts according to current
+C
+transportations in the area. Therefore, our proposal not only accounts for the expand
+M
+of the program, but can also satisfy the needs within each zip code appropriately,
+i
+given current real world situations. H
+：
+Mr. Mayor, I strongly encourage you to adopt this efficient bike program not
+only to reduce traffic, but also to save our Earth.
+号
+众
+Sincerely,
+公
+High School Mathematical Modeling Team 2543
+信
+13th November, 2010
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 35 of 36
+Works Cited
+03, By Nov. Denver Bikes | Denver Bike Sharing Program | B-Cycle | Bcycle.com.
+Web. 13 Nov. 2010. <http://denver.bcycle.com/>.
+"Area Route Map - Des Moines Area Regional Transit Authority." Dart. Web. 13
+Nov. 2010. <http://www.ridedart.com/area-route-map.cfm>.
+B-cycle, Moines. Des Moines B-cycle | Des Moines Bike-Sharing Program | B-Cycle |
+M
+Bcycle.com. Web. 13 Nov. 2010. <http://desmoines.bcycle.com/>.
+C
+"Chicago Bike Laws - Search Results." City of Chicago Bicycle Program. Web. 13
+M
+Nov. 2010.
+<http://www.chicagobikes.org/bikelaws/index.php?ishow=search&terms=ridin
+H
+g bikes on crosswalks>.
+：
+Chicago Bikes | Chicago Bike Sharing Program | B-Cycle | Bcycle.com. Web. 13
+号
+Nov. 2010. <http://chicago.bcycle.com/>.
+"Chicago Neightborhoods: Population & Population Density: 1980 to 2000."
+众
+DEMOGRAPHIA: Demographics Development Impacts Market Research &
+公
+Urban Policy. Web. 13 Nov. 2010. <http://www.demographia.com/db-chi-
+nhd2000.htm>.
+信
+Denver, Of. "The City of Denver - Recreation and Culture." City and County of
+微
+Denver Homepage. Web. 13 Nov. 2010.
+<http://www.denvergov.org/LivinginDenver/RecreationandCulture/tabid/4355
+38/Default.aspx>.
+"Find Colorado (CO) Colleges & Universities - Online Education.net Campus
+Finder." Find College Campuses and Universities Near You. Web. 13 Nov.
+2010. <http://campus.online-education.net/campus/Colorado-SCO/>.
+"Find Private Schools - Private School Review." Private School Review - Profiles of
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯
+
+Team 2543 Pg 36 of 36
+USA Private Schools. Web. 13 Nov. 2010.
+<http://www.privateschoolreview.com/find_schools.php>.
+Google Maps. Web. 13 Nov. 2010. <http://maps.google.com/>.
+Name, By. "Denver Yellow Pages - YP.COM." YP.COM - Yellow Pages, the New
+YELLOWPAGES.COM. Web. 13 Nov. 2010.
+<http://www.yellowpages.com/denver-co?g=Denver, CO>.
+M
+Regional Transportation District. RTD I Home. Web. 13 Nov. 2010. <http://www.rtd-
+C
+denver.com/>.
+M
+RTA TRip Planner: Plan Your Trip in Chicago or Its Suburbs on CTA, Metra and
+Pace. Web. 13 Nov. 2010. <http://www.rtd-denver.icom/>.
+H
+Stats about All US Cities - Real Estate, Relocation Info, House Prices, Home Value
+：
+Estimator, Recent Sales, Cost of Living, Crime, Race, Income, Photos, Education,
+号
+Maps, Weather, Houses, Schools, Neighborhoods, and More. Web. 13 Nov. 2010.
+<http://www.city-data.com/>.
+众
+公
+信
+微
+关注 HiMCM
+×+ −÷
+Hi CM 获取更多资讯

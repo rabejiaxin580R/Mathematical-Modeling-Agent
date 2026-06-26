@@ -1,0 +1,75 @@
+{
+  "schema_version": 3,
+  "concept_id": "meta.sa",
+  "title": "模拟退火算法",
+  "taxonomy_path": [
+    "模型求解算法",
+    "启发式/元启发式算法",
+    "模拟退火算法"
+  ],
+  "module_id": "D",
+  "subcat_id": "D.2",
+  "aliases": [
+    "模拟退火",
+    "SA",
+    "Metropolis准则"
+  ],
+  "difficulty": "Advanced",
+  "roles": [
+    "modeler",
+    "coder"
+  ],
+  "priority": "P0",
+  "explain": {
+    "one_liner": "模拟退火算法是一种模仿金属退火过程的随机优化方法，通过偶尔接受更差的解来跳出局部最优，最终找到全局最优或近似最优解。",
+    "intuition": "想象你在一个凹凸不平的山谷中寻找最低点。如果你只往低处走，很容易困在一个小坑里（局部最优）。模拟退火就像给爬山者一个“热”的状态，允许他偶尔往高处跳一跳，温度高时跳得远，温度低时只在小范围内移动。随着温度慢慢降低，他最终会稳定在最低的谷底。",
+    "when_to_use": "当问题具有多个局部最优解，且传统梯度方法或贪心算法容易陷入局部最优时，比如旅行商问题、调度问题、神经网络权重优化等。适合解空间大、目标函数复杂或不可导的情况。",
+    "definition": "模拟退火算法（Simulated Annealing, SA）是一种基于物理退火过程的随机优化算法，通过引入概率性接受劣解来跳出局部最优，最终收敛到全局最优或近似全局最优。",
+    "math_principle": "算法核心是Metropolis准则：在温度T下，从当前解i生成新解j，若目标函数值f(j) ≤ f(i)，则接受j为新解；否则以概率P = exp(-(f(j)-f(i))/(k_B T))接受j，其中k_B为玻尔兹曼常数（通常取1）。温度T随迭代逐渐降低（退火），常用降温策略为T_{k+1} = α T_k，α ∈ (0.9, 0.99)。算法在高温时接受劣解概率大，利于全局探索；低温时接受劣解概率小，趋于局部搜索。",
+    "step_by_step": [
+      "1. 初始化：设置初始温度T0（足够高），初始解x0，降温系数α（如0.95），终止温度T_end（如1e-8），每个温度下的迭代次数L（如100）。",
+      "2. 在当前温度T下，重复L次：",
+      "   a. 从当前解x生成邻域解x'（例如随机扰动）。",
+      "   b. 计算目标函数差值Δf = f(x') - f(x)。",
+      "   c. 若Δf ≤ 0，接受x'为新解；否则以概率exp(-Δf/T)接受x'。",
+      "3. 降温：T = α * T。",
+      "4. 检查终止条件：若T < T_end或连续若干步解无变化，则停止；否则返回步骤2。",
+      "5. 输出当前最优解。"
+    ],
+    "worked_example": "求函数f(x)=x^2在区间[-10,10]上的最小值。初始解x=5，T0=100，α=0.9，L=1。\n- 第1次迭代：T=100，生成邻域解x'=4（随机扰动），Δf=16-25=-9≤0，接受x=4。\n- 第2次迭代：T=90，生成x'=7，Δf=49-16=33>0，接受概率exp(-33/90)≈0.69，假设随机数0.5<0.69，接受x=7（跳出局部）。\n- 继续迭代，温度逐渐降低，最终解会接近0。",
+    "pitfalls": [
+      "1. 参数敏感：初始温度、降温系数、迭代次数等需要调参，不当设置可能导致收敛慢或陷入局部最优。",
+      "2. 收敛速度慢：相比梯度下降等算法，SA通常需要更多迭代。",
+      "3. 邻域结构设计关键：邻域生成方式直接影响搜索效率，需针对问题设计。",
+      "4. 不保证全局最优：理论上只有无限慢降温才保证收敛到全局最优，实际中只能得到近似解。"
+    ],
+    "tools": "Python中可使用scipy.optimize.dual_annealing或自定义实现。\n```python\nimport numpy as np\n\ndef simulated_annealing(func, bounds, T0=100, alpha=0.95, T_end=1e-8, L=100):\n    x = np.random.uniform(bounds[:,0], bounds[:,1])\n    f = func(x)\n    T = T0\n    best_x, best_f = x.copy(), f\n    while T > T_end:\n        for _ in range(L):\n            x_new = x + np.random.uniform(-1,1, size=x.shape) * (bounds[:,1]-bounds[:,0])*0.1\n            x_new = np.clip(x_new, bounds[:,0], bounds[:,1])\n            f_new = func(x_new)\n            delta = f_new - f\n            if delta < 0 or np.random.rand() < np.exp(-delta/T):\n                x, f = x_new, f_new\n                if f < best_f:\n                    best_x, best_f = x.copy(), f\n        T *= alpha\n    return best_x, best_f\n```"
+  },
+  "formulas": [
+    {
+      "latex_code": "P = \\exp\\left(-\\frac{f(j)-f(i)}{k_B T}\\right)",
+      "variables": {
+        "P": "接受劣解的概率",
+        "f(j)": "新解的目标函数值",
+        "f(i)": "当前解的目标函数值",
+        "k_B": "玻尔兹曼常数（通常取1）",
+        "T": "当前温度"
+      }
+    },
+    {
+      "latex_code": "T_{k+1} = \\alpha T_k",
+      "variables": {
+        "T_{k+1}": "下一时刻温度",
+        "T_k": "当前温度",
+        "\\alpha": "降温系数（0.9~0.99）"
+      }
+    }
+  ],
+  "cases": [],
+  "provenance": {
+    "from_lectures": [
+      "supp_D06"
+    ],
+    "from_papers": []
+  }
+}
