@@ -74,6 +74,22 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 确定版本号
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="v1.0.0-beta.${{ github.run_number }}"
+            git tag "$TAG"
+            git push origin "$TAG"
+          else
+            TAG="${{ github.ref_name }}"
+          fi
+          echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
+
       - name: 下载所有平台产物
         uses: actions/download-artifact@v4
         with:
@@ -82,10 +98,11 @@ jobs:
       - name: 发布到 Releases
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.RELEASE_TAG }}
           files: artifacts/**/*
           generate_release_notes: true
           body: |
-            ## 数学建模助教 ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '最新版' }}
+            ## 数学建模助教 ${{ env.RELEASE_TAG }}
 
             自带运行环境的桌面版，下载对应系统的包，解压/安装后双击即用，无需另装 Python。
 
