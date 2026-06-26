@@ -79,6 +79,11 @@ if (-not (Test-Path (Join-Path $pySrc "python.exe"))) {
 Copy-Item $pySrc -Destination $PyDst -Recurse -Force
 $PyExe = Join-Path $PyDst "python.exe"
 
+# ── 修复 GitHub Actions 中文路径 → pip 编码崩溃（cp1252 无法编码中文） ──
+$env:PYTHONUTF8       = 1
+$env:PYTHONIOENCODING = "utf-8"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 # ── 2. 安装依赖到内置运行时 ──
 Write-Host "[2/5] 安装依赖到内置 Python…" -ForegroundColor Yellow
 & $PyExe -m pip install --upgrade pip --no-warn-script-location
