@@ -28,6 +28,10 @@ logger = logging.getLogger(__name__)
 
 _PBKDF2_ROUNDS = 120_000
 
+# 同一 IP 24 小时内最多注册次数
+_MAX_REGISTRATIONS_PER_IP = 3
+_REGISTRATION_WINDOW_SECONDS = 24 * 3600
+
 
 # ── 密码哈希 ──
 def hash_password(password: str) -> str:
@@ -86,31 +90,100 @@ def verify_token(token: str) -> str | None:
     return payload.get("uid")
 
 
+# ── IP 提取 / 注册限流 ──
+def get_client_ip(request) -> str:
+    """从 FastAPI Request 对象提取客户端真实 IP。
+    优先检查 X-Forwarded-For / X-Real-IP（反代场景），
+    回退到 request.client.host（直连场景）。"""
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    real_ip = request.headers.get("X-Real-IP", "")
+    if real_ip:
+        return real_ip.strip()
+    if request.client:
+        return request.client.host or "unknown"
+    return "unknown"
+
+
+def check_registration_limit(ip: str) -> bool:
+    """检查该 IP 在时间窗口内的注册次数是否超限。"""
+    if not ip or ip == "unknown":
+        return True  # 无法判断时不拦截
+    cutoff = time.time() - _REGISTRATION_WINDOW_SECONDS
+    count = db.get_conn().execute(
+        "SELECT COUNT(*) as cnt FROM registration_log "
+        "WHERE ip_address=? AND created_at > ?",
+        (ip, cutoff),
+    ).fetchone()
+    return (count["cnt"] if count else 0) < _MAX_REGISTRATIONS_PER_IP
+
+
+def record_registration(user_id: str, ip: str, user_agent: str):
+    """记录一次成功注册（用于后续限流统计）。"""
+    conn = db.get_conn()
+    with db.write_lock():
+        conn.execute(
+            "INSERT INTO registration_log (user_id, ip_address, user_agent, created_at) "
+            "VALUES (?,?,?,?)",
+            (user_id, ip, (user_agent or "")[:256], time.time()),
+        )
+        conn.commit()
+
+
 # ── 注册 / 登录 ──
 def _normalize_phone(phone: str) -> str:
     return (phone or "").strip()
 
 
-def register(phone: str, password: str, nickname: str = "") -> dict:
-    """注册新用户：写 users 表，赠送免费额度。返回 {user, token}。"""
-    phone = _normalize_phone(phone)
-    if not phone or len(password) < 6:
-        raise HTTPException(400, "手机号/邮箱不能为空，密码至少 6 位")
+def _normalize_email(email: str) -> str:
+    return (email or "").strip().lower()
 
+
+def register_step1_request_code(email: str, password: str, nickname: str = "",
+                                    client_ip: str = "") -> dict:
+    """注册第 1 步：发送验证码。校验输入 → 生成验证码 → 发邮件。"""
+    email = _normalize_email(email)
+    if not email or len(password) < 6:
+        raise HTTPException(400, "邮箱不能为空，密码至少 6 位")
+
+    # 检查是否已注册
+    conn = db.get_conn()
+    if conn.execute("SELECT 1 FROM users WHERE phone=?", (email,)).fetchone():
+        raise HTTPException(409, "该邮箱已注册")
+
+    from . import verify_codes
+    verify_codes.request_code(
+        email,
+        hash_password(password),
+        (nickname or "").strip()[:20] or "建模用户",
+        client_ip,
+    )
+    return {"ok": True, "message": f"验证码已发送到 {email}，10 分钟内有效"}
+
+
+def register_step2_verify(email: str, code: str) -> dict:
+    """注册第 2 步：校验验证码 → 创建用户 → 返回 token。"""
+    from . import verify_codes
+    return verify_codes.verify_and_register(email, code)
+
+
+def create_user(email: str, password_hash: str, nickname: str) -> dict:
+    """在 DB 中创建用户并赠送免费额度。返回 {user, token}。"""
     conn = db.get_conn()
     with db.write_lock():
-        if conn.execute("SELECT 1 FROM users WHERE phone=?", (phone,)).fetchone():
-            raise HTTPException(409, "该账号已注册")
+        if conn.execute("SELECT 1 FROM users WHERE phone=?", (email,)).fetchone():
+            raise HTTPException(409, "该邮箱已注册")
         uid = "u_" + uuid.uuid4().hex[:12]
         now = time.time()
         conn.execute(
             "INSERT INTO users (id, phone, password_hash, nickname, balance_cents, "
             "free_tokens_left, is_admin, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?)",
-            (uid, phone, hash_password(password), (nickname or "").strip()[:20] or "建模用户",
+            (uid, email, password_hash, (nickname or "").strip()[:20] or "建模用户",
              0, config.FREE_TOKENS_ON_SIGNUP, 0, now, now),
         )
         conn.commit()
-    logger.info("注册新用户 %s (%s)", uid, phone)
+    logger.info("验证码注册新用户 %s (%s)", uid, email)
     return {"user": public_user(uid), "token": issue_token(uid)}
 
 

@@ -95,7 +95,33 @@ CREATE TABLE IF NOT EXISTS cards (
     redeemed_at  REAL DEFAULT 0
 );
 
+-- 邮箱验证码：注册时发送 6 位数字，10 分钟过期，用完即删
+CREATE TABLE IF NOT EXISTS email_verifications (
+    email      TEXT NOT NULL,
+    code       TEXT NOT NULL,
+    password_hash TEXT NOT NULL DEFAULT '',
+    nickname   TEXT NOT NULL DEFAULT '',
+    expires_at REAL NOT NULL,
+    attempts   INTEGER NOT NULL DEFAULT 0,
+    ip_address TEXT NOT NULL DEFAULT '',
+    created_at REAL NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_everify_email ON email_verifications(email);
+CREATE INDEX IF NOT EXISTS idx_everify_ip ON email_verifications(ip_address, created_at);
+
+-- 注册日志：记录每次注册的 IP 和 User-Agent，用于限流防滥用
+CREATE TABLE IF NOT EXISTS registration_log (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id     TEXT NOT NULL,
+    ip_address  TEXT NOT NULL DEFAULT '',
+    user_agent  TEXT NOT NULL DEFAULT '',
+    created_at  REAL NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_keys_user ON api_keys(user_id);
+CREATE INDEX IF NOT EXISTS idx_reglog_ip ON registration_log(ip_address, created_at);
 CREATE INDEX IF NOT EXISTS idx_usage_user ON usage_log(user_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_recharge_user ON recharge_log(user_id, created_at);
 """

@@ -9,12 +9,12 @@
 """
 import logging
 
-from fastapi import FastAPI, HTTPException, Header, Depends
+from fastapi import FastAPI, HTTPException, Header, Depends, Request
 from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import auth, billing, db, proxy
+from . import auth, billing, db, proxy, mail
 from .config import config
 
 logging.basicConfig(
@@ -99,13 +99,27 @@ class KeyCreateRequest(BaseModel):
     name: str = ""
 
 
+class VerifyCodeRequest(BaseModel):
+    email: str
+    code: str
+
+
 class RedeemRequest(BaseModel):
     code: str
 
 
-@app.post("/api/register")
-def api_register(req: RegisterRequest):
-    return auth.register(req.phone, req.password, req.nickname)
+@app.post("/api/register/request-code")
+def api_register_request_code(req: RegisterRequest, request: Request):
+    """注册第 1 步：请求邮箱验证码。"""
+    client_ip = auth.get_client_ip(request)
+    return auth.register_step1_request_code(req.phone, req.password, req.nickname,
+                                             client_ip=client_ip)
+
+
+@app.post("/api/register/verify")
+def api_register_verify(req: VerifyCodeRequest):
+    """注册第 2 步：校验验证码，完成注册。"""
+    return auth.register_step2_verify(req.email, req.code)
 
 
 @app.post("/api/login")
@@ -198,6 +212,16 @@ def admin_cards(req: AdminCardsRequest, _: bool = Depends(auth.require_admin)):
     except ValueError as e:
         raise HTTPException(400, str(e))
     return {"amount_cents": req.amount_cents, "count": len(codes), "codes": codes}
+
+
+@app.get("/api/admin/test-mail")
+def admin_test_mail(to: str = "", _: bool = Depends(auth.require_admin)):
+    """检测 SMTP 配置是否正确。请求头需带 X-Admin-Token。
+    可选 ?to=you@example.com 发送测试邮件到指定地址。"""
+    err = mail.test_config(to.strip() if to else "")
+    if err:
+        return {"ok": False, "error": err}
+    return {"ok": True, "message": f"SMTP 配置正常{'，测试邮件已发送' if to else ''}"}
 
 
 _NO_CACHE = {"Cache-Control": "no-store, must-revalidate"}
