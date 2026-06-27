@@ -48,6 +48,13 @@ class Config:
     # 管理员口令：调用 /api/admin/* 需在请求头 X-Admin-Token 带此值。务必改强随机值。
     ADMIN_TOKEN = _get("ADMIN_TOKEN", "dev-admin-change-me")
 
+    # ── 邮件发送（SMTP，用于注册验证码） ──
+    SMTP_HOST = _get("SMTP_HOST", "sg-smtp.qcloudmail.com")
+    SMTP_PORT = int(_get("SMTP_PORT", "465"))
+    SMTP_USER = _get("SMTP_USER", "")
+    SMTP_PASSWORD = _get("SMTP_PASSWORD", "")
+    SMTP_FROM = _get("SMTP_FROM", "noreply@math-modeling.top")
+
     # ── 数据 / 服务 ──
     DATA_DIR = ROOT_DIR / "data"
     STATIC_DIR = ROOT_DIR / "static"
