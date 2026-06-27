@@ -14,12 +14,34 @@
     $("who").textContent = u.nickname || u.phone;
   }
 
+  const FREE_TOTAL = 1500000;
+
   async function loadBalance() {
     const r = await G.authedFetch("/api/balance");
     if (!r.ok) return;
     const b = await r.json();
-    $("balance").textContent = G.yuan(b.balance_cents);
-    $("free").textContent = b.free_tokens_left > 0 ? `另有免费额度 ${b.free_tokens_left} token` : "";
+    const left = Math.max(0, b.free_tokens_left || 0);
+    const used = Math.max(0, FREE_TOTAL - left);
+    const pct = Math.min(100, (used / FREE_TOTAL) * 100);
+
+    $("balance").textContent = left.toLocaleString();
+    $("token-total").textContent = FREE_TOTAL.toLocaleString();
+    $("usage-fill").style.width = pct.toFixed(1) + "%";
+    $("token-meta").textContent = left > 0
+      ? `已用 ${used.toLocaleString()} token，剩余 ${left.toLocaleString()}`
+      : "免费额度已用完";
+
+    // 免费试用横幅
+    const banner = $("free-banner");
+    const bannerText = $("free-banner-text");
+    if (left > 0) {
+      banner.style.display = "";
+      bannerText.textContent =
+        `剩余免费额度 ${left.toLocaleString()} token` +
+        (used > 0 ? `（已用 ${used.toLocaleString()}）` : "（全新账号，尽情使用吧！）");
+    } else {
+      banner.style.display = "none";
+    }
   }
 
   async function loadKeys() {
@@ -64,13 +86,14 @@
     }
     for (const u of items) {
       const tr = document.createElement("tr");
-      const cost = u.cost_cents > 0 ? `¥${G.yuan(u.cost_cents)}`
-        : (u.free_tokens_used > 0 ? `免费 ${u.free_tokens_used} tok` : "—");
+      const tok = (u.free_tokens_used && u.free_tokens_used > 0)
+        ? u.free_tokens_used
+        : (u.prompt_tokens || 0) + (u.completion_tokens || 0);
       tr.innerHTML = `
         <td>${G.fmtTime(u.created_at)}</td>
         <td class="mono">${escapeHtml(u.model)}</td>
         <td>${u.prompt_tokens} / ${u.completion_tokens}</td>
-        <td>${cost}</td>`;
+        <td>${tok.toLocaleString()} tok</td>`;
       tb.appendChild(tr);
     }
   }
@@ -97,25 +120,6 @@
     if (r.ok) loadKeys();
   }
 
-  async function redeem() {
-    const code = $("card-code").value.trim();
-    if (!code) return;
-    $("redeem").disabled = true;
-    const m = $("redeem-msg");
-    try {
-      const d = await G.postJSON("/api/redeem", { code }, true);
-      m.className = "msg ok";
-      m.textContent = `兑换成功，充值 ¥${G.yuan(d.amount_cents)}`;
-      $("card-code").value = "";
-      await loadBalance();
-    } catch (e) {
-      m.className = "msg err";
-      m.textContent = e.message;
-    } finally {
-      $("redeem").disabled = false;
-    }
-  }
-
   function escapeHtml(s) {
     return String(s || "").replace(/[&<>"']/g, (c) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -131,7 +135,6 @@
   });
 
   $("create-key").onclick = createKey;
-  $("redeem").onclick = redeem;
   $("logout").onclick = () => {
     G.clearToken();
     location.href = "/";
