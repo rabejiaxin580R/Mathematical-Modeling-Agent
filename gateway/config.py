@@ -25,19 +25,18 @@ class Config:
     UPSTREAM_API_KEY = _get("UPSTREAM_API_KEY", "")
     UPSTREAM_BASE_URL = _get("UPSTREAM_BASE_URL", "https://api.deepseek.com/v1")
     # 允许调用的模型白名单（逗号分隔）；空=不限制。防止用户借网关调贵模型。
-    _allowed = _get("ALLOWED_MODELS", "deepseek-chat,deepseek-reasoner")
+    _allowed = _get("ALLOWED_MODELS", "deepseek-v4-pro")
     ALLOWED_MODELS = {m.strip() for m in _allowed.split(",") if m.strip()}
 
     # ── 计费 ──
     # 计费倍率：上游成本 × markup = 售价，覆盖利润与汇率/价格波动。
     BILLING_MARKUP = float(_get("BILLING_MARKUP", "2.0"))
     # 新用户注册赠送的免费 token 额度（按总 token 计，0 = 不送）。
-    FREE_TOKENS_ON_SIGNUP = int(_get("FREE_TOKENS_ON_SIGNUP", "0"))
+    FREE_TOKENS_ON_SIGNUP = int(_get("FREE_TOKENS_ON_SIGNUP", "1500000"))
     # 模型价格表：model 名 → (输入价, 输出价)，单位「元 / 百万 token」。
-    # ⚠️ 上线前务必核对上游官网真实价格（这里默认填 DeepSeek 标准价 cache miss）。
+    # ⚠️ 纯 token 模式下金额计费休眠；占位价仅作兜底，上线前务必核对上游官网真实价格。
     MODEL_PRICES = {
-        "deepseek-chat": (2.0, 8.0),
-        "deepseek-reasoner": (4.0, 16.0),
+        "deepseek-v4-pro": (4.0, 16.0),
     }
     MODEL_PRICE_DEFAULT = (4.0, 16.0)
 

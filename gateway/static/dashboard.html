@@ -15,30 +15,39 @@
     </div>
   </div>
 
+  <!-- 免费试用横幅 -->
+  <div class="free-banner" id="free-banner" style="display:none">
+    <div class="free-banner-inner">
+      <span class="free-banner-icon">&#x1f381;</span>
+      <div>
+        <strong>免费试用中</strong>
+        <span id="free-banner-text"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
-    <!-- 余额 + 兑换 -->
-    <div class="card">
-      <h2>余额</h2>
-      <div class="balance-row">
-        <div class="balance-big">¥<span id="balance">0.00</span></div>
-        <div class="balance-free" id="free"></div>
+    <!-- Token 额度 -->
+    <div class="card card-balance">
+      <h2>Token 额度</h2>
+      <div class="token-balance">
+        <span class="token-left" id="balance">0</span>
+        <span class="token-total">/ <span id="token-total">1,500,000</span> token</span>
       </div>
-      <div class="row" style="margin-top:18px">
-        <input type="text" id="card-code" placeholder="输入卡密兑换充值" />
-        <button class="btn" id="redeem">兑换</button>
-      </div>
-      <div class="msg" id="redeem-msg"></div>
+      <div class="usage-bar"><div class="usage-bar-fill" id="usage-fill"></div></div>
+      <div class="token-meta" id="token-meta"></div>
     </div>
 
     <!-- 接入说明 -->
     <div class="card">
       <h2>如何接入</h2>
-      <p class="hint">在「数学建模助教」本地 app 的「设置」里，把下面两项填进去，即可用本服务的额度：</p>
+      <p class="hint">在「数学建模助教」本地 App 的「设置」页面填入以下信息即可接入：</p>
       <table>
         <tr><th style="width:140px">API 地址 (Base URL)</th><td class="mono" id="base-url"></td></tr>
-        <tr><th>API Key</th><td>下方生成，复制粘贴到设置里的「API 密钥」</td></tr>
-        <tr><th>模型</th><td class="mono" id="models"></td></tr>
+        <tr><th>API Key</th><td>在下方「API Key」卡片中生成，复制粘贴到设置里的「API 密钥」</td></tr>
+        <tr><th>可用模型</th><td><span class="model-pill" id="models">—</span></td></tr>
       </table>
+      <p class="hint" style="margin-top:14px">提示：首次使用前请先生成 API Key，然后填入 App 的设置中。</p>
     </div>
 
     <!-- API Key 管理 -->
@@ -60,13 +69,17 @@
     <div class="card">
       <h2>最近用量</h2>
       <table>
-        <thead><tr><th>时间</th><th>模型</th><th>输入/输出 token</th><th>花费</th></tr></thead>
+        <thead><tr><th>时间</th><th>模型</th><th>输入/输出 token</th><th>扣减 Token</th></tr></thead>
         <tbody id="usage-body"></tbody>
       </table>
     </div>
   </div>
 
+  <footer class="dash-footer">
+    <span>Powered by <strong>DeepSeek</strong> · deepseek-v4-pro</span>
+  </footer>
+
   <script src="/static/common.js?v=2"></script>
-  <script src="/static/dashboard.js?v=2"></script>
+  <script src="/static/dashboard.js?v=4"></script>
 </body>
 </html>
