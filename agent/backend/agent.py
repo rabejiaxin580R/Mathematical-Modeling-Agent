@@ -127,6 +127,9 @@ class Agent:
         self.client = OpenAI(
             api_key=api_key,
             base_url=config.get_llm_base_url(),
+            # Cloudflare WAF 会拦截 OpenAI 库的默认 User-Agent（含 "PythonBindings" 字样），
+            # 用无害的浏览器 UA 绕过，确保通过网关 Cloudflare 防护。
+            default_headers={"User-Agent": "Mozilla/5.0 MathModelingAgent/1.0"},
         )
 
     def reconfigure(self):

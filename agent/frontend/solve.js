@@ -598,6 +598,7 @@
 
   // ========== 模型与 API 设置（与工作台同款，独立实现） ==========
   const PROVIDER_PRESETS = {
+    gateway:  { base_url: "https://math-modeling.top/v1", model: "deepseek-v4-pro" },
     deepseek: { base_url: "https://api.deepseek.com/v1", model: "deepseek-chat" },
     qwen:     { base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1", model: "qwen-plus" },
     openai:   { base_url: "https://api.openai.com/v1", model: "gpt-4o-mini" },
@@ -650,6 +651,21 @@
     $("btn-save-settings").onclick = async () => {
       const statusEl = $("settings-status");
       statusEl.className = "settings-status";
+
+      const apiKey = $("setting-api-key").value.trim();
+      if (apiKey && apiKey.includes("****")) {
+        statusEl.className = "settings-status err";
+        statusEl.textContent = "请填入真实的 API Key（当前为掩码占位符，未实际修改）";
+        $("setting-api-key").focus();
+        return;
+      }
+      if (apiKey && apiKey.length < 15) {
+        statusEl.className = "settings-status err";
+        statusEl.textContent = "API Key 太短，请检查是否完整粘贴";
+        $("setting-api-key").focus();
+        return;
+      }
+
       statusEl.textContent = "保存中…";
       try {
         const resp = await fetch("/api/settings", {
@@ -724,4 +740,101 @@
     if (more) more.addEventListener("click", () => { closeMenu(); $("settings-overlay").classList.add("open"); loadSettings(); });
     document.addEventListener("click", (e) => { if (!selector.contains(e.target)) closeMenu(); });
   }
+
+  // ===== 首次使用 · 工作目录选择弹窗 =====
+  (function initFolderModal() {
+    var STORAGE_KEY = "mm_folder_setup_done";
+    if (localStorage.getItem(STORAGE_KEY) === "1") return;
+
+    var overlay = document.getElementById("fm-overlay");
+    if (!overlay) return;
+    overlay.hidden = false;
+
+    // Tab 切换
+    var tabs = overlay.querySelectorAll(".fm-tab");
+    var panelNew = document.getElementById("fm-panel-new");
+    var panelExisting = document.getElementById("fm-panel-existing");
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        tabs.forEach(function (t) { t.classList.remove("active"); });
+        tab.classList.add("active");
+        if (tab.dataset.tab === "new") {
+          panelNew.hidden = false;
+          panelExisting.hidden = true;
+        } else {
+          panelNew.hidden = true;
+          panelExisting.hidden = false;
+        }
+      });
+    });
+
+    // 完成：设置工作目录，关闭弹窗
+    function finish(dir) {
+      var wd = document.getElementById("workdir");
+      if (wd) { wd.value = dir; }
+      // 也通过 IDE 模块设置
+      if (window.IDE && window.IDE.setWorkdir) { window.IDE.setWorkdir(dir); }
+      localStorage.setItem(STORAGE_KEY, "1");
+      overlay.hidden = true;
+    }
+
+    // 新建文件夹
+    document.getElementById("fm-btn-create").addEventListener("click", function () {
+      var name = document.getElementById("fm-new-name").value.trim();
+      var parent = document.getElementById("fm-new-parent").value.trim();
+      var msgEl = document.getElementById("fm-msg-new");
+
+      if (!name) { msgEl.textContent = "请输入文件夹名称"; return; }
+
+      if (!parent) {
+        var home = "";
+        try { home = process && process.env ? (process.env.USERPROFILE || process.env.HOME || "") : ""; } catch (_) {}
+        parent = home ? home + "\\Desktop" : "C:\\";
+      }
+
+      var fullPath = parent.replace(/[\\/]+$/, "") + "\\" + name;
+
+      fetch("/api/ide/mkdir", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: fullPath }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.ok) { finish(fullPath); }
+          else { msgEl.textContent = "创建失败：" + (data.error || "未知错误"); }
+        })
+        .catch(function (e) { msgEl.textContent = "请求失败：" + e.message; });
+    });
+
+    // 打开已有文件夹
+    document.getElementById("fm-btn-open").addEventListener("click", function () {
+      var path = document.getElementById("fm-existing-path").value.trim();
+      var msgEl = document.getElementById("fm-msg-existing");
+
+      if (!path) { msgEl.textContent = "请输入文件夹路径"; return; }
+
+      fetch("/api/ide/tree?path=" + encodeURIComponent(path))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.ok) { finish(path); }
+          else { msgEl.textContent = "无法访问该目录：" + (data.error || "请检查路径是否正确"); }
+        })
+        .catch(function (e) { msgEl.textContent = "请求失败：" + e.message; });
+    });
+
+    // 回车快捷提交
+    document.getElementById("fm-new-name").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") document.getElementById("fm-btn-create").click();
+    });
+    document.getElementById("fm-existing-path").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") document.getElementById("fm-btn-open").click();
+    });
+
+    // 跳过
+    document.getElementById("fm-skip").addEventListener("click", function () {
+      localStorage.setItem(STORAGE_KEY, "1");
+      overlay.hidden = true;
+    });
+  })();
 })();

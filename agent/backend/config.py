@@ -49,7 +49,7 @@ class Config:
 
     # 代码执行
     CODE_TIMEOUT = int(_get("CODE_TIMEOUT", "30"))
-    MAX_CODE_ITERATIONS = int(_get("MAX_CODE_ITERATIONS", "3"))
+    MAX_CODE_ITERATIONS = int(_get("MAX_CODE_ITERATIONS", "6"))
 
     # 本地文件操作（read_file / write_file / list_dir / delete_file）
     FILEOPS_MAX_READ_BYTES = int(_get("FILEOPS_MAX_READ_BYTES", str(5 * 1024 * 1024)))
@@ -88,11 +88,11 @@ class Config:
     # ── 内置计费网关（新手「用我们提供的额度」一键路径） ──
     # 网关注册站点：用户在这里注册账号、领/兑换额度、生成 API Key。
     # 部署你自己的 gateway/ 后，把下面两个值改成你的公网域名（或在 .env 覆盖）。
-    GATEWAY_SIGNUP_URL = _get("GATEWAY_SIGNUP_URL", "")
+    GATEWAY_SIGNUP_URL = _get("GATEWAY_SIGNUP_URL", "https://math-modeling.top/dashboard")
     # 网关的 OpenAI 兼容端点（填到设置里的 Base URL），通常是 https://你的域名/v1
-    GATEWAY_BASE_URL = _get("GATEWAY_BASE_URL", "")
+    GATEWAY_BASE_URL = _get("GATEWAY_BASE_URL", "https://math-modeling.top/v1")
     # 走网关时默认使用的模型名
-    GATEWAY_MODEL = _get("GATEWAY_MODEL", "deepseek-chat")
+    GATEWAY_MODEL = _get("GATEWAY_MODEL", "deepseek-v4-pro")
 
     # ── 运行时 LLM 设置（字典，优先于环境变量） ──
     _lock = threading.Lock()
@@ -149,10 +149,17 @@ class Config:
         cls._load_runtime_settings()
         with cls._lock:
             api_key = cls._runtime["api_key"] or cls._ENV_LLM_API_KEY
+        # 安全掩码：长度 >= 8 才做前后缀保留，否则全掩
+        if len(api_key) >= 12:
+            masked = api_key[:4] + "****" + api_key[-4:]
+        elif len(api_key) > 0:
+            masked = api_key[:2] + "****"
+        else:
+            masked = ""
         return {
             "base_url": cls.get_llm_base_url(),
             "model": cls.get_llm_model(),
-            "api_key": api_key[:4] + "****" + api_key[-4:] if len(api_key) > 8 else "****",
+            "api_key": masked,
             "has_api_key": bool(api_key),
         }
 
@@ -160,14 +167,34 @@ class Config:
     def update_settings(cls, api_key: str = "", base_url: str = "", model: str = "") -> dict:
         """更新运行时 LLM 设置，保存到 settings.json。"""
         with cls._lock:
-            if api_key and api_key != "****":
-                cls._runtime["api_key"] = api_key
+            if api_key:
+                # 拒绝掩码 key（前端未修改时传回 "sk-c****7da" 等）
+                if "****" in api_key:
+                    pass  # 保持原值不变
+                elif not cls._is_valid_api_key(api_key):
+                    pass  # 格式明显不对，拒绝写入
+                else:
+                    cls._runtime["api_key"] = api_key
             if base_url:
                 cls._runtime["base_url"] = base_url
             if model:
                 cls._runtime["model"] = model
         cls._save_runtime_settings()
         return cls.get_settings()
+
+    @staticmethod
+    def _is_valid_api_key(key: str) -> bool:
+        """基本合法性检查：排除明显不是 API key 的值（如文件路径）。"""
+        if len(key) < 15:
+            return False
+        # Windows 绝对路径混入了 API key 字段
+        if "\\" in key and len(key.split("\\")) >= 3:
+            return False
+        # 标准 OpenAI 兼容 key 以 sk- 开头
+        if key.startswith("sk-"):
+            return True
+        # 其他厂商可能有不同前缀，底线是至少不含反斜杠且足够长
+        return "\\" not in key and len(key) >= 20
 
     @classmethod
     def ensure_dirs(cls):

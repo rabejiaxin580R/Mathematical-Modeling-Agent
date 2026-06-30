@@ -684,6 +684,7 @@ loadSettings();
 
 // ===== 模型与 API 设置 =====
 const PROVIDER_PRESETS = {
+  gateway:   { base_url: "https://math-modeling.top/v1", model: "deepseek-v4-pro" },
   deepseek:  { base_url: "https://api.deepseek.com/v1", model: "deepseek-chat" },
   qwen:      { base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1", model: "qwen-plus" },
   openai:    { base_url: "https://api.openai.com/v1", model: "gpt-4o-mini" },
@@ -751,6 +752,22 @@ document.addEventListener("keydown", (e) => {
 $("#btn-save-settings").onclick = async () => {
   const statusEl = $("#settings-status");
   statusEl.className = "settings-status";
+
+  const apiKey = $("#setting-api-key").value.trim();
+  // 前端校验：拒绝掩码 key（打开设置面板后未修改就保存）
+  if (apiKey && apiKey.includes("****")) {
+    statusEl.className = "settings-status err";
+    statusEl.textContent = "请填入真实的 API Key（当前为掩码占位符，未实际修改）";
+    $("#setting-api-key").focus();
+    return;
+  }
+  if (apiKey && apiKey.length < 15) {
+    statusEl.className = "settings-status err";
+    statusEl.textContent = "API Key 太短，请检查是否完整粘贴";
+    $("#setting-api-key").focus();
+    return;
+  }
+
   statusEl.textContent = "保存中…";
   try {
     const resp = await fetch("/api/settings", {
