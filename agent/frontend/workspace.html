@@ -43,9 +43,7 @@
       <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
       <button class="ide-btn run" id="btn-run" title="运行（Ctrl+Enter）">▶ 运行</button>
       <button class="ide-btn" id="btn-stop" title="停止当前进程" disabled>⛔ 停止</button>
-      <a class="ws-link" href="/build" title="返回做建模">⌂ 做建模</a>
-      <a class="ws-link" href="/ide" title="旧版极简 IDE">IDE</a>
-      <a class="ws-link" href="/chat" title="旧版纯聊天页">聊天</a>
+      <a class="ws-link" href="/home" title="返回首页">⌂ 首页</a>
       <button class="btn-icon" id="btn-settings" title="模型与 API 设置">⚙</button>
       <div class="model-selector" id="model-selector">
         <button class="model-pill" id="model-pill" title="点击切换模型">
@@ -56,6 +54,7 @@
         </button>
         <div class="model-menu" id="model-menu" hidden>
           <div class="model-menu-title">快速切换模型</div>
+          <button class="model-opt" data-provider="gateway"><b>🎁 数学建模网关</b><span>deepseek-v4-pro · 免费额度</span></button>
           <button class="model-opt" data-provider="deepseek"><b>DeepSeek</b><span>deepseek-chat</span></button>
           <button class="model-opt" data-provider="qwen"><b>通义千问</b><span>qwen-plus</span></button>
           <button class="model-opt" data-provider="openai"><b>OpenAI</b><span>gpt-4o-mini</span></button>
@@ -146,6 +145,47 @@
       </section>
     </div>
   </div>
+  <!-- 首次使用：选择/创建工作目录弹窗 -->
+  <div class="fm-overlay" id="fm-overlay" hidden>
+    <div class="fm-backdrop"></div>
+    <div class="fm-modal">
+      <div class="fm-inner">
+        <div class="fm-brand">
+          <div class="fm-mark">绣</div>
+          <div class="fm-head">
+            <div class="fm-title">选择工作目录</div>
+            <div class="fm-desc">新建或选择一个文件夹来存放建模文件</div>
+          </div>
+        </div>
+
+        <div class="fm-tabs">
+          <button class="fm-tab active" data-tab="new">＋ 新建文件夹</button>
+          <button class="fm-tab" data-tab="existing">📂 打开已有</button>
+        </div>
+
+        <div class="fm-panel" id="fm-panel-new">
+          <label for="fm-new-name">文件夹名称</label>
+          <input type="text" id="fm-new-name" placeholder="例如：mcm_workspace" autofocus />
+          <label for="fm-new-parent">放在哪个目录（默认桌面）</label>
+          <input type="text" id="fm-new-parent" placeholder="C:\Users\用户名\Desktop" />
+          <button class="fm-btn primary" id="fm-btn-create">创建并进入 →</button>
+          <div class="fm-msg" id="fm-msg-new"></div>
+        </div>
+
+        <div class="fm-panel" id="fm-panel-existing" hidden>
+          <label for="fm-existing-path">文件夹路径</label>
+          <input type="text" id="fm-existing-path" placeholder="粘贴或输入项目文件夹的绝对路径" />
+          <button class="fm-btn primary" id="fm-btn-open">进入此文件夹 →</button>
+          <div class="fm-msg" id="fm-msg-existing"></div>
+        </div>
+
+        <div class="fm-foot">
+          <button class="fm-skip" id="fm-skip">暂不选择，使用临时目录</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="settings-overlay" id="settings-overlay">
     <div class="settings-modal">
       <div class="settings-head">
@@ -156,6 +196,7 @@
         <div class="settings-section">
           <label>快速选择</label>
           <div class="provider-presets" id="provider-presets">
+            <button class="preset" data-provider="gateway">🎁 网关</button>
             <button class="preset" data-provider="deepseek">DeepSeek</button>
             <button class="preset" data-provider="qwen">通义千问</button>
             <button class="preset" data-provider="openai">OpenAI</button>

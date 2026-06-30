@@ -352,4 +352,117 @@
   const mo = new MutationObserver(enhanceCodeBlocks);
   mo.observe($("messages"), { childList: true, subtree: true });
   enhanceCodeBlocks();
+
+  // ===== 首次使用 · 工作目录选择弹窗 =====
+  (function initFolderModal() {
+    const STORAGE_KEY = "mm_folder_setup_done";
+    if (localStorage.getItem(STORAGE_KEY) === "1") return;
+
+    const overlay = document.getElementById("fm-overlay");
+    if (!overlay) return;
+    overlay.hidden = false;
+
+    // Tab 切换
+    const tabs = overlay.querySelectorAll(".fm-tab");
+    const panelNew = document.getElementById("fm-panel-new");
+    const panelExisting = document.getElementById("fm-panel-existing");
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        tabs.forEach(function (t) { t.classList.remove("active"); });
+        tab.classList.add("active");
+        var target = tab.dataset.tab;
+        if (target === "new") {
+          panelNew.hidden = false;
+          panelExisting.hidden = true;
+        } else {
+          panelNew.hidden = true;
+          panelExisting.hidden = false;
+        }
+      });
+    });
+
+    // 完成：设置工作目录，加载文件树，关闭弹窗
+    function finish(dir) {
+      var wd = document.getElementById("workdir");
+      if (wd) { wd.value = dir; }
+      localStorage.setItem(STORAGE_KEY, "1");
+      overlay.hidden = true;
+      // 触发加载文件树
+      if (wd) { wd.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true })); }
+    }
+
+    // 新建文件夹
+    document.getElementById("fm-btn-create").addEventListener("click", function () {
+      var name = document.getElementById("fm-new-name").value.trim();
+      var parent = document.getElementById("fm-new-parent").value.trim();
+      var msgEl = document.getElementById("fm-msg-new");
+
+      if (!name) { msgEl.textContent = "请输入文件夹名称"; return; }
+
+      // 默认父目录：桌面
+      if (!parent) {
+        var home = (function () {
+          var h = "";
+          try { h = process && process.env ? (process.env.USERPROFILE || process.env.HOME || "") : ""; } catch (_) {}
+          return h;
+        })();
+        parent = home ? home + "\\Desktop" : "C:\\";
+      }
+
+      var fullPath = parent.replace(/[\\/]+$/, "") + "\\" + name;
+
+      fetch("/api/ide/mkdir", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: fullPath }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.ok) {
+            finish(fullPath);
+          } else {
+            msgEl.textContent = "创建失败：" + (data.error || "未知错误");
+          }
+        })
+        .catch(function (e) {
+          msgEl.textContent = "请求失败：" + e.message;
+        });
+    });
+
+    // 打开已有文件夹
+    document.getElementById("fm-btn-open").addEventListener("click", function () {
+      var path = document.getElementById("fm-existing-path").value.trim();
+      var msgEl = document.getElementById("fm-msg-existing");
+
+      if (!path) { msgEl.textContent = "请输入文件夹路径"; return; }
+
+      // 验证路径：尝试列出目录
+      fetch("/api/ide/tree?path=" + encodeURIComponent(path))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.ok) {
+            finish(path);
+          } else {
+            msgEl.textContent = "无法访问该目录：" + (data.error || "请检查路径是否正确");
+          }
+        })
+        .catch(function (e) {
+          msgEl.textContent = "请求失败：" + e.message;
+        });
+    });
+
+    // 回车快捷提交
+    document.getElementById("fm-new-name").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") document.getElementById("fm-btn-create").click();
+    });
+    document.getElementById("fm-existing-path").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") document.getElementById("fm-btn-open").click();
+    });
+
+    // 跳过：使用临时目录
+    document.getElementById("fm-skip").addEventListener("click", function () {
+      localStorage.setItem(STORAGE_KEY, "1");
+      overlay.hidden = true;
+    });
+  })();
 })();

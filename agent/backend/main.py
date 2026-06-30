@@ -947,6 +947,13 @@ def ide_tree(path: str = "."):
     return fileops.list_dir(path)["display"]
 
 
+@app.post("/api/ide/mkdir")
+def ide_mkdir(req: SaveRequest):
+    """创建目录（含缺失的父目录），供前端首次使用弹窗调用。"""
+    result = fileops.make_dir(req.path)
+    return result["display"]
+
+
 @app.get("/api/ide/read")
 def ide_read(path: str):
     """读取任意路径文件内容（复用 fileops.read_file），供「打开到编辑器」「插入内容到对话」。

@@ -8,6 +8,7 @@
 
 const KeySetup = (() => {
   const PRESETS = {
+    gateway:  { name: "数学建模网关", base_url: "https://math-modeling.top/v1", model: "deepseek-v4-pro", get: "https://math-modeling.top/dashboard" },
     deepseek: { name: "DeepSeek", base_url: "https://api.deepseek.com/v1", model: "deepseek-chat", get: "https://platform.deepseek.com/api_keys" },
     qwen:     { name: "通义千问", base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1", model: "qwen-plus", get: "https://bailian.console.aliyun.com/?apiKey=1" },
     openai:   { name: "OpenAI", base_url: "https://api.openai.com/v1", model: "gpt-4o-mini", get: "https://platform.openai.com/api-keys" },
@@ -66,9 +67,9 @@ const KeySetup = (() => {
         <div class="ks-choices" id="ks-choices">
           <button class="ks-choice ${gw.enabled ? "" : "ks-disabled"}" data-go="gateway" ${gw.enabled ? "" : "disabled"}>
             <div class="ks-choice-ic">🎁</div>
-            <h3>用我们提供的额度</h3>
-            <p>${gw.enabled ? "去注册站点领取额度、生成一个 Key，粘回来即可。新手最省事。" : "（管理员未配置内置网关，暂不可用）"}</p>
-            <span class="ks-tag">${gw.enabled ? "推荐新手" : "未开启"}</span>
+            <h3>用我们提供的免费额度</h3>
+            <p>${gw.enabled ? "打开控制台注册账号，新用户免费领 150 万 token 额度，生成 Key 粘回来即可。" : "（管理员未配置内置网关，暂不可用）"}</p>
+            <span class="ks-tag">${gw.enabled ? "✨ 推荐新手 · 免费额度" : "未开启"}</span>
           </button>
 
           <button class="ks-choice" data-go="byok">
@@ -124,11 +125,11 @@ const KeySetup = (() => {
     panel.innerHTML = `
       ${backRow()}
       <ol class="ks-steps">
-        <li>点下方按钮打开注册站点，注册账号（手机号即可），领取或兑换额度。</li>
-        <li>在站点的「API Key」页生成一个 Key（形如 <code>sk-…</code>），复制它。</li>
+        <li>点下方按钮打开控制台，注册账号（邮箱即可），新用户自动获得 <b>150 万 token</b> 免费额度。</li>
+        <li>在控制台里点击「生成 API Key」，复制生成的 Key（形如 <code>sk-…</code>）。</li>
         <li>回到这里，把 Key 粘到下面，点「保存并开始」。</li>
       </ol>
-      <a class="ks-open-site" href="${gw.signup_url}" target="_blank" rel="noopener">🌐 打开注册站点领取额度</a>
+      <a class="ks-open-site" href="${gw.signup_url}" target="_blank" rel="noopener">🌐 打开控制台 → 注册领免费额度</a>
       <label class="ks-label">把生成的 API Key 粘到这里</label>
       <input class="ks-input" id="ks-gw-key" type="text" placeholder="sk-xxxxxxxxxxxxxxxx" autocomplete="off" />
       <p class="ks-mini">接口地址将自动设为 <code>${gw.base_url}</code>，模型 <code>${gw.model}</code>。</p>
@@ -137,6 +138,8 @@ const KeySetup = (() => {
     overlay.querySelector("#ks-gw-save").onclick = () => {
       const key = overlay.querySelector("#ks-gw-key").value.trim();
       if (!key) return setStatus("请先粘贴 API Key", "err");
+      if (!key.startsWith("sk-")) return setStatus("API Key 格式不对，应以 sk- 开头，请检查是否完整复制", "err");
+      if (key.length < 20) return setStatus("API Key 太短，请检查是否完整复制", "err");
       save({ api_key: key, base_url: gw.base_url, model: gw.model });
     };
   }
@@ -168,6 +171,8 @@ const KeySetup = (() => {
       const url = overlay.querySelector("#ks-bk-url").value.trim();
       const model = overlay.querySelector("#ks-bk-model").value.trim();
       if (!key) return setStatus("请填入你的 API 密钥", "err");
+      if (key.length < 15) return setStatus("API 密钥太短，请检查是否完整粘贴", "err");
+      if (key.includes("****")) return setStatus("请填入真实的 API 密钥，不要使用掩码占位符", "err");
       if (!url) return setStatus("请填入接口地址 Base URL", "err");
       if (!model) return setStatus("请填入模型名称", "err");
       save({ api_key: key, base_url: url, model });
