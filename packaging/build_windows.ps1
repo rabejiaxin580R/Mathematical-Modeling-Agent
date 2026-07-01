@@ -105,7 +105,7 @@ if (Test-Path (Join-Path $AppSrc ".env.example")) {
 # 只读数据：知识库 + 真题库 + 附件 + 论文缓存（不带 conversations/runs/profiles 等运行时数据）
 $dataDst = Join-Path $AppDst "data"
 New-Item -ItemType Directory -Force -Path $dataDst | Out-Null
-foreach ($d in @("knowledge", "problems", "problem_assets", "problem_papers")) {
+foreach ($d in @("knowledge", "problems", "problem_assets", "problem_papers", "assessment")) {
   $src = Join-Path $AppSrc "data\$d"
   if (Test-Path $src) {
     Copy-Item $src -Destination (Join-Path $dataDst $d) -Recurse -Force

@@ -79,7 +79,7 @@ cp -R "$APP_SRC/frontend" "$APP_DST/frontend"
 cp "$APP_SRC/requirements.txt" "$APP_DST/"
 [ -f "$APP_SRC/.env.example" ] && cp "$APP_SRC/.env.example" "$APP_DST/" || true
 mkdir -p "$APP_DST/data"
-for d in knowledge problems problem_assets problem_papers; do
+for d in knowledge problems problem_assets problem_papers assessment; do
   if [ -d "$APP_SRC/data/$d" ]; then cp -R "$APP_SRC/data/$d" "$APP_DST/data/$d"; echo "      + data/$d"; fi
 done
 find "$APP_DST" -name '__pycache__' -type d -prune -exec rm -rf {} + 2>/dev/null || true
