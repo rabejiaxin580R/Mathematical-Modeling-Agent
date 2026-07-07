@@ -99,6 +99,73 @@
 
     // 评级引导：未评测且未跳过的用户，弹窗引导去测评/选等级
     showAssessmentReminder(p);
+
+    // 更新日志按钮
+    bindChangelog();
+  }
+
+  function bindChangelog() {
+    const btn = document.getElementById("btn-changelog");
+    if (!btn) return;
+    btn.onclick = showChangelog;
+  }
+
+  function showChangelog() {
+    // 防止重复弹窗
+    if (document.querySelector(".clog-overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "clog-overlay";
+
+    const card = document.createElement("div");
+    card.className = "clog-card";
+    card.innerHTML = `
+      <div class="clog-close" title="关闭">×</div>
+      <div class="clog-title">🆕 更新日志</div>
+      <div class="clog-ver">v2.1.0 · 2026-07-07</div>
+      <div class="clog-body">
+        <div class="clog-section">
+          <div class="clog-h">🐛 修复：AI 回答被"吞掉"的严重 Bug</div>
+          <p>流式回答有时会在眼前消失——深入排查 6 个独立根因并全部修复：</p>
+          <ul>
+            <li>SSE 缓冲区未 flush 导致最后的事件丢失</li>
+            <li>网络错误时覆盖而非追加已有内容</li>
+            <li>收尾阶段清空 DOM 重建导致闪白/丢失（核心修复）</li>
+            <li>LLM 流中断时异常处理缺失</li>
+            <li>渲染错误导致整个 SSE 流崩溃</li>
+            <li>空 done 事件覆盖 token 增量渲染结果</li>
+          </ul>
+        </div>
+        <div class="clog-section">
+          <div class="clog-h">✨ 知识库按评级分层展示</div>
+          <p>检索结果根据你的 L1~L5 评级自动调整：</p>
+          <ul>
+            <li><b>L1/L2 萌新/入门</b>：优先展示「一句话总结」+「举个例子」</li>
+            <li><b>L4/L5 熟练/高手</b>：优先展示数学公式 + 推导 + 代码</li>
+          </ul>
+        </div>
+        <div class="clog-section">
+          <div class="clog-h">✨ 首页评级引导弹窗</div>
+          <p>注册后若未评级，主页自动提醒去测评/选等级。</p>
+        </div>
+        <div class="clog-section">
+          <div class="clog-h">🔧 改进</div>
+          <ul>
+            <li>角色/评级独立性澄清：难度深度 × 内容侧重 两个独立维度</li>
+            <li>输入框侧重按钮 "跟随评级" → "自动"</li>
+          </ul>
+        </div>
+      </div>
+    `;
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    const close = () => overlay.remove();
+    card.querySelector(".clog-close").onclick = close;
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+    document.addEventListener("keydown", function esc(e) {
+      if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); }
+    });
   }
 
   async function showAssessmentReminder(p) {
