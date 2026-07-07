@@ -173,10 +173,11 @@ _PRACTICE_TOOL_NAMES = {"search_knowledge", "run_python", "read_document", "list
 PRACTICE_TOOLS_SCHEMA = [t for t in TOOLS_SCHEMA if t["function"]["name"] in _PRACTICE_TOOL_NAMES]
 
 
-def dispatch_tool(name: str, arguments: dict, run_id: str) -> dict:
-    """执行一个工具调用，返回 {content: str(给模型), display: dict(给前端)}。"""
+def dispatch_tool(name: str, arguments: dict, run_id: str, level: str = "") -> dict:
+    """执行一个工具调用，返回 {content: str(给模型), display: dict(给前端)}。
+    level：用户能力评级（L1..L5），传给知识库检索做分层展示。"""
     if name == "search_knowledge":
-        return _do_search(arguments.get("query", ""))
+        return _do_search(arguments.get("query", ""), level=level)
     if name == "run_python":
         return _do_run(arguments.get("code", ""), run_id)
     if name == "read_document":
@@ -201,7 +202,7 @@ def dispatch_tool(name: str, arguments: dict, run_id: str) -> dict:
     }
 
 
-def _do_search(query: str) -> dict:
+def _do_search(query: str, level: str = "") -> dict:
     results = knowledge_base.search(query)
     citations = []
 
@@ -227,7 +228,7 @@ def _do_search(query: str) -> dict:
 
     context_parts = [f"检索「{query}」得到以下知识点（按相关度排序）：\n"]
     for u, score in strong:
-        context_parts.append(u.to_context())
+        context_parts.append(u.to_context(level))
         context_parts.append("")  # 空行分隔
         citations.append({**u.to_citation(), "score": round(score, 2)})
 

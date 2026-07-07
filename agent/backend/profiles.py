@@ -52,12 +52,22 @@ def save(profile: dict):
     p.write_text(json.dumps(profile, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def create(nickname: str, avatar: str = "") -> dict:
+VALID_ROLES = ("", "coding", "writing", "modeling")
+
+
+def _norm_role(role: str | None) -> str:
+    r = (role or "").strip()
+    return r if r in VALID_ROLES else ""
+
+
+def create(nickname: str, avatar: str = "", role: str = "") -> dict:
     now = time.time()
     profile = {
         "id": new_id(),
         "nickname": (nickname or "").strip()[:20] or "建模新手",
         "avatar": (avatar or "").strip()[:32] or "fox",
+        # 分工偏好：""=无偏好（按能力评级自适应）/ coding=编程手 / writing=写作手 / modeling=建模手
+        "role": _norm_role(role),
         "created_at": now,
         "updated_at": now,
         "learn": {"completed": [], "visited": []},
@@ -88,6 +98,7 @@ def list_all() -> list[dict]:
 
 def _ensure_shape(profile: dict):
     """容错：补全旧档案可能缺失的字段。"""
+    profile["role"] = _norm_role(profile.get("role"))
     learn = profile.setdefault("learn", {})
     learn.setdefault("completed", [])
     learn.setdefault("visited", [])
@@ -249,3 +260,73 @@ def mark_assessment_skipped(profile_id: str) -> dict | None:
     profile["assessment"]["skipped"] = True
     save(profile)
     return profile
+
+
+def set_role(profile_id: str, role: str) -> dict | None:
+    """更新分工偏好（编程手/写作手/建模手/无偏好），返回更新后的档案。"""
+    profile = load(profile_id)
+    if profile is None:
+        return None
+    _ensure_shape(profile)
+    profile["role"] = _norm_role(role)
+    save(profile)
+    return profile
+
+
+# ── 自适应回答风格：把「能力评级 + 分工偏好」翻译成给助教的行文指令 ──
+
+# 各能力等级 → 讲解深度侧重（对应 assessment.py 的 L1..L5 与「一句话总结/举例/公式/代码」等模块）
+_LEVEL_STYLE = {
+    "L1": "对方是**萌新**：多用「一句话总结」开头点题、多「举个例子」和生活化类比，"
+          "少堆数学公式与术语；出现术语要顺带一句白话解释；代码给最小可跑版本并逐行注释。",
+    "L2": "对方是**入门**：先给「一句话总结」，配直观例子，再引入必要的公式；"
+          "术语第一次出现时简单解释；代码保持简洁并加注释。",
+    "L3": "对方是**进阶**：正常给出思路、公式与代码，例子按需补充，不必事事从零解释。",
+    "L4": "对方**较熟练**：可以直接上核心数学公式与完整代码，精简铺垫，多讲权衡与坑点。",
+    "L5": "对方是**高手**：直接给严谨的数学公式、推导与工程化代码，聚焦深层原理、"
+          "复杂度与优化，省去基础解释。",
+}
+
+# 分工偏好 → 回答侧重
+_ROLE_STYLE = {
+    "coding": "对方偏好**编程手**视角：优先给可运行的 Python 代码、实现细节、库用法与调试建议，"
+              "公式够用即可，重点落在「怎么写出来、怎么跑通」。",
+    "writing": "对方偏好**写作手**视角：优先讲论文/报告的结构、表述、图表规范与摘要写法，"
+               "把方法讲清楚便于成文，代码点到为止。",
+    "modeling": "对方偏好**建模手**视角：优先讲模型选择、假设、变量与公式推导、结果的合理性与敏感性，"
+                "先把数学建模思路讲透，代码作为验证手段。",
+}
+
+_ROLE_LABEL = {"coding": "编程手", "writing": "写作手", "modeling": "建模手"}
+
+
+def style_directive(level: str = "", role: str = "") -> str:
+    """把能力评级 + 分工偏好拼成一段「回答风格」系统指令，供助教自适应作答。
+
+    level：L1..L5（空=未定级，按 L3 中性处理）；——决定回答的**难度深度**
+    role：coding/writing/modeling（空=无偏好，仅按评级自适应）；——决定回答的**内容侧重**
+    两者都为空时返回空串（保持原有默认行为）。
+    """
+    level = level if level in _LEVEL_STYLE else ""
+    role = _norm_role(role)
+    if not level and not role:
+        return ""
+    parts = ["# 面向当前用户的回答侧重",
+             "（**难度深度**由能力评级 L1..L5 决定，**内容侧重**由分工偏好决定，两者独立。）"]
+    if level:
+        parts.append("- " + _LEVEL_STYLE[level])
+        # 按评级追加知识库使用方法
+        if level == "L1":
+            parts.append("- 检索知识库后，**优先引用**「一句话总结」和「举个例子」部分来讲，"
+                         "公式只保留核心一两个并用白话解释。")
+        elif level == "L2":
+            parts.append("- 检索知识库后，先用「一句话总结」点题，再讲必要公式，配上例子。")
+        elif level in ("L4", "L5"):
+            parts.append("- 检索知识库后，**优先引用**数学公式、推导与代码实现，例子只作为辅助参考。")
+    if role:
+        parts.append("- " + _ROLE_STYLE[role])
+    parts.append(
+        "- 以上是**表达侧重**，不改变答案的正确性与完整性：该有的关键公式/代码/结论不能因迁就而省略，"
+        "只调整详略、顺序与切入角度。"
+    )
+    return "\n".join(parts)

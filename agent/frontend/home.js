@@ -32,6 +32,15 @@
     user.appendChild(badge);
     user.appendChild(name);
 
+    // 分工偏好：显示当前分工，点击可修改
+    const roleBtn = document.createElement("button");
+    roleBtn.className = "home-logout";
+    roleBtn.title = "修改分工偏好，助教会据此调整回答侧重";
+    const setRoleLabel = (role) => { roleBtn.textContent = "分工：" + Profile.roleLabel(role); };
+    setRoleLabel(p.role || "");
+    roleBtn.onclick = () => Profile.openRolePicker(p.role || "", (role) => { p.role = role; setRoleLabel(role); });
+    user.appendChild(roleBtn);
+
     user.appendChild(logout);
 
     // 进度概览
@@ -87,6 +96,49 @@
         user.appendChild(keyBtn);
       }
     }
+
+    // 评级引导：未评测且未跳过的用户，弹窗引导去测评/选等级
+    showAssessmentReminder(p);
+  }
+
+  async function showAssessmentReminder(p) {
+    const asm = p.assessment || {};
+    if (asm.level || asm.skipped) return;  // 已评级或已跳过
+
+    // 创建弹窗
+    const overlay = document.createElement("div");
+    overlay.className = "asm-remind-overlay";
+
+    const card = document.createElement("div");
+    card.className = "asm-remind-card";
+    card.innerHTML = `
+      <div class="asm-remind-close" title="关闭（下次还会提醒）">×</div>
+      <div class="asm-remind-title">你还没有评级哦</div>
+      <div class="asm-remind-msg">完成入门测评，助教会根据你的水平调整回答深度与讲解方式。只需 5 分钟。</div>
+      <div class="asm-remind-actions">
+        <button class="asm-remind-btn primary">去测评 / 选等级</button>
+        <button class="asm-remind-btn">稍后再说</button>
+      </div>
+    `;
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    const close = () => overlay.remove();
+
+    // 关闭按钮（不 skip，下次还提醒）
+    card.querySelector(".asm-remind-close").onclick = close;
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+
+    // 「去测评」
+    card.querySelector(".asm-remind-btn.primary").onclick = () => {
+      location.href = "/assessment";
+    };
+
+    // 「稍后再说」
+    card.querySelector(".asm-remind-btn:not(.primary)").onclick = async () => {
+      try { await fetch("/api/assessment/skip", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pid: p.id }) }); } catch (_) {}
+      close();
+    };
   }
 
   init();

@@ -112,6 +112,8 @@ class ChatRequest(BaseModel):
     conversation_id: str | None = None
     message: str
     regenerate: bool = False
+    pid: str = ""            # 用户档案 id：取能力评级 + 分工偏好，做自适应回答
+    focus: str = ""          # 本次会话临时侧重：auto/coding/writing/modeling（覆盖档案分工）
 
 
 class SettingsRequest(BaseModel):
@@ -124,11 +126,13 @@ class SettingsRequest(BaseModel):
 class ProfileCreateRequest(BaseModel):
     nickname: str = ""
     avatar: str = ""
+    role: str = ""           # 分工偏好：coding/writing/modeling/""（无偏好）
 
 
 class ProfileUpdateRequest(BaseModel):
     nickname: str = ""
     avatar: str = ""
+    role: str | None = None  # None=不改；""=清空为无偏好
 
 
 class LearnRequest(BaseModel):
@@ -310,11 +314,41 @@ def chat(req: ChatRequest):
             conv["title"] = req.message[:20] or "新对话"
         conv["messages"].append({"role": "user", "content": req.message})
 
+    # 自适应回答：按用户档案的能力评级 + 分工偏好（focus 可临时覆盖分工）拼一段风格指令，
+    # 只影响本次生成，不写入会话存档（下次可随 focus 变化重算）。
+    style = _resolve_style_directive(req.pid, req.focus)
+
+    # 解析用户评级，传给知识库检索层做分层展示（L1→多给例子，L5→多给公式与代码）
+    level = ""
+    if req.pid:
+        profile = profiles.load(req.pid)
+        if profile:
+            level = (profile.get("assessment") or {}).get("level", "")
+
     # 通用聊天与做题共用同一套流式 + 落盘逻辑，仅基础提示词不同
-    return StreamingResponse(_run_chat_stream(conv), media_type="text/event-stream")
+    return StreamingResponse(_run_chat_stream(conv, extra_system=style, level=level), media_type="text/event-stream")
 
 
-def _run_chat_stream(conv: dict, base_prompt: str | None = None):
+def _resolve_style_directive(pid: str, focus: str) -> str:
+    """由档案能力评级 + 分工偏好（focus 覆盖）得到自适应回答的风格指令。"""
+    if not pid:
+        return ""
+    profile = profiles.load(pid)
+    if profile is None:
+        return ""
+    profiles._ensure_shape(profile)
+    level = (profile.get("assessment") or {}).get("level", "")
+    focus = (focus or "").strip()
+    if focus == "auto":
+        role = profile.get("role", "")      # 跟随档案分工
+    elif focus in ("coding", "writing", "modeling"):
+        role = focus                        # 本次临时侧重
+    else:
+        role = profile.get("role", "")      # 未指定 → 档案分工
+    return profiles.style_directive(level, role)
+
+
+def _run_chat_stream(conv: dict, base_prompt: str | None = None, extra_system: str = "", level: str = ""):
     """聊天流式响应的共享实现：跑 agent 工具循环、SSE 推送、落盘（含文件快照/工具配对）。
 
     /api/chat（通用助教）与 /api/solve/chat（做题共创伙伴）都调用它，
@@ -324,6 +358,8 @@ def _run_chat_stream(conv: dict, base_prompt: str | None = None):
     run_id = conv["id"]
     workspace_files = _workspace_files(run_id)
     system_extra = conv.get("system_extra", "")
+    if extra_system:
+        system_extra = (system_extra + "\n\n" + extra_system) if system_extra else extra_system
 
     def event_stream():
         yield _sse({"type": "meta", "conversation_id": conv["id"], "title": conv["title"]})
@@ -335,9 +371,11 @@ def _run_chat_stream(conv: dict, base_prompt: str | None = None):
         final_text = ""
         try:
             for ev in agent.stream_reply(history, run_id, workspace_files,
-                                         system_extra=system_extra, base_prompt=base_prompt):
+                                         system_extra=system_extra, base_prompt=base_prompt,
+                                         level=level):
                 if ev["type"] == "done":
-                    final_text = ev["content"]
+                    if ev["content"]:
+                        final_text = ev["content"]
                 elif ev["type"] == "token":
                     final_text += ev["text"]
                 else:
@@ -425,7 +463,7 @@ def update_settings(req: SettingsRequest):
 # ── 用户档案 API ──
 @app.post("/api/profiles")
 def create_profile(req: ProfileCreateRequest):
-    profile = profiles.create(req.nickname, req.avatar)
+    profile = profiles.create(req.nickname, req.avatar, req.role)
     logger.info("新建档案: %s (%s)", profile["nickname"], profile["id"])
     return profile
 
@@ -448,6 +486,8 @@ def update_profile(pid: str, req: ProfileUpdateRequest):
         profile["nickname"] = req.nickname.strip()[:20]
     if req.avatar:
         profile["avatar"] = req.avatar.strip()[:32]
+    if req.role is not None:
+        profile["role"] = profiles._norm_role(req.role)
     profiles.save(profile)
     return profile
 
@@ -1069,12 +1109,6 @@ def solve_page():
 def practice_page():
     """模式3：真题练习。"""
     return FileResponse(FRONTEND_DIR / "practice.html")
-
-
-@app.get("/chat")
-def chat_page():
-    """旧版纯聊天页（退路，保留）。"""
-    return FileResponse(FRONTEND_DIR / "index.html")
 
 
 if FRONTEND_DIR.exists():

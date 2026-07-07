@@ -64,8 +64,14 @@ class KnowledgeUnit:
         parts.append(self.source_excerpt)
         return " ".join(p for p in parts if p)
 
-    def to_context(self) -> str:
-        """格式化为喂给大模型的上下文片段（带出处标记）。"""
+    def to_context(self, level: str = "") -> str:
+        """格式化为喂给大模型的上下文片段（带出处标记）。
+
+        level：用户能力评级（L1..L5），控制段落排序与侧重点。
+        - L1/L2：优先展示「一句话总结」「举个例子」等新手友好内容
+        - L4/L5：优先展示数学原理、公式、步骤
+        - L3/空：保持原有平衡排序
+        """
         s = self.summary
         lines = [
             f"【知识点 {self.chunk_id}｜{self.title}｜分类：{self.category}】",
@@ -77,26 +83,105 @@ class KnowledgeUnit:
             meta.append(f"前置知识：{'、'.join(self.prerequisites)}")
         if meta:
             lines.append("｜".join(meta))
-        if s.get("definition"):
-            lines.append(f"定义：{s['definition']}")
-        if s.get("math_principle"):
-            lines.append(f"数学原理：{s['math_principle']}")
-        if self.formulas:
-            for f in self.formulas:
-                latex = f.get("latex_code", "")
-                if latex:
-                    lines.append(f"公式：$$ {latex} $$")
-                variables = f.get("variables", {})
-                if variables:
-                    var_desc = "；".join(f"{k}: {v}" for k, v in variables.items())
-                    lines.append(f"变量说明：{var_desc}")
-        if s.get("application_scenarios"):
-            lines.append("应用场景：" + "；".join(s["application_scenarios"]))
-        if s.get("key_caveats"):
-            lines.append("关键要点：" + "；".join(s["key_caveats"]))
-        if s.get("step_by_step"):
-            steps = "；".join(f"{i+1}.{x}" for i, x in enumerate(s["step_by_step"]))
-            lines.append(f"步骤：{steps}")
+
+        # 按用户评级决定展示顺序
+        is_beginner = level in ("L1", "L2")
+        is_advanced = level in ("L4", "L5")
+
+        if is_beginner:
+            # 新手：先给直观入口
+            beginner_parts = []
+            ex = self.explain or {}
+            if ex.get("one_liner"):
+                beginner_parts.append(f"一句话总结：{ex['one_liner']}")
+            if ex.get("intuition"):
+                beginner_parts.append(f"直观理解：{ex['intuition']}")
+            if ex.get("worked_example"):
+                beginner_parts.append(f"举个例子：{ex['worked_example']}")
+            if s.get("teaching_examples"):
+                beginner_parts.append(f"教学例子：{s['teaching_examples']}")
+            if beginner_parts:
+                lines.append("💡 新手入口：" + "｜".join(beginner_parts))
+
+            # 补充核心定义
+            if s.get("definition"):
+                lines.append(f"📖 定义：{s['definition']}")
+            if s.get("math_principle"):
+                lines.append(f"📖 数学原理：{s['math_principle']}")
+            if self.formulas:
+                for f in self.formulas:
+                    latex = f.get("latex_code", "")
+                    if latex:
+                        lines.append(f"📖 公式：$$ {latex} $$")
+                    variables = f.get("variables", {})
+                    if variables:
+                        var_desc = "；".join(f"{k}: {v}" for k, v in variables.items())
+                        lines.append(f"变量说明：{var_desc}")
+            if s.get("application_scenarios"):
+                lines.append("应用场景：" + "；".join(s["application_scenarios"]))
+            if s.get("key_caveats"):
+                lines.append("⚠ 注意：" + "；".join(s["key_caveats"]))
+            if s.get("step_by_step"):
+                steps = "；".join(f"{i+1}.{x}" for i, x in enumerate(s["step_by_step"]))
+                lines.append(f"步骤：{steps}")
+
+        elif is_advanced:
+            # 高手：先给公式和原理
+            advanced_parts = []
+            if s.get("math_principle"):
+                advanced_parts.append(f"数学原理：{s['math_principle']}")
+            if self.formulas:
+                for f in self.formulas:
+                    latex = f.get("latex_code", "")
+                    if latex:
+                        advanced_parts.append(f"公式：$$ {latex} $$")
+                    variables = f.get("variables", {})
+                    if variables:
+                        var_desc = "；".join(f"{k}: {v}" for k, v in variables.items())
+                        advanced_parts.append(f"变量说明：{var_desc}")
+            if s.get("step_by_step"):
+                steps = "；".join(f"{i+1}.{x}" for i, x in enumerate(s["step_by_step"]))
+                advanced_parts.append(f"步骤：{steps}")
+            if advanced_parts:
+                lines.append("🔬 核心内容：" + "｜".join(advanced_parts))
+
+            # 补充定义
+            if s.get("definition"):
+                lines.append(f"定义：{s['definition']}")
+            if s.get("application_scenarios"):
+                lines.append("应用场景：" + "；".join(s["application_scenarios"]))
+            if s.get("key_caveats"):
+                lines.append("⚠ 注意：" + "；".join(s["key_caveats"]))
+            # 例子放最后参考
+            ex = self.explain or {}
+            if ex.get("intuition"):
+                lines.append(f"📎 参考·直观理解：{ex['intuition']}")
+            if ex.get("worked_example"):
+                lines.append(f"📎 参考·例子：{ex['worked_example']}")
+
+        else:
+            # 默认（L3 或空）：原平衡排序
+            if s.get("definition"):
+                lines.append(f"定义：{s['definition']}")
+            if s.get("math_principle"):
+                lines.append(f"数学原理：{s['math_principle']}")
+            if self.formulas:
+                for f in self.formulas:
+                    latex = f.get("latex_code", "")
+                    if latex:
+                        lines.append(f"公式：$$ {latex} $$")
+                    variables = f.get("variables", {})
+                    if variables:
+                        var_desc = "；".join(f"{k}: {v}" for k, v in variables.items())
+                        lines.append(f"变量说明：{var_desc}")
+            if s.get("application_scenarios"):
+                lines.append("应用场景：" + "；".join(s["application_scenarios"]))
+            if s.get("key_caveats"):
+                lines.append("关键要点：" + "；".join(s["key_caveats"]))
+            if s.get("step_by_step"):
+                steps = "；".join(f"{i+1}.{x}" for i, x in enumerate(s["step_by_step"]))
+                lines.append(f"步骤：{steps}")
+
         return "\n".join(lines)
 
     def to_citation(self) -> dict:

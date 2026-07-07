@@ -9,6 +9,7 @@ const convListEl = $("#conv-list");
 let currentConvId = null;
 let streaming = false;
 let attachedFiles = [];  // 已上传到当前会话工作目录的文件名
+let currentFocus = "auto";  // 本次回答侧重：auto/coding/writing/modeling
 
 // ---------- Markdown + 公式渲染 ----------
 marked.setOptions({
@@ -112,7 +113,7 @@ function addUserMsg(text, animate) {
   div.innerHTML = `<div class="msg-role">我</div><div class="bubble"></div>`;
   div.querySelector(".bubble").textContent = text;
   messagesEl.appendChild(div);
-  scrollDown();
+  scrollDownForce();
   return div;
 }
 
@@ -279,7 +280,17 @@ function escapeHtml(s) {
   return (s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-function scrollDown() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+// 「粘底」策略：仅当用户本来就在底部附近时，流式增量才自动滚到底；
+// 一旦用户上滚去阅读，就不再打断他（消除「AI 多打印一段就被拽到底」的问题）。
+let autoStick = true;
+function nearBottom(el, pad = 80) {
+  return el.scrollHeight - el.scrollTop - el.clientHeight < pad;
+}
+messagesEl.addEventListener("scroll", () => { autoStick = nearBottom(messagesEl); });
+// 流式/增量渲染用：尊重用户是否在阅读
+function scrollDown() { if (autoStick) messagesEl.scrollTop = messagesEl.scrollHeight; }
+// 用户主动动作（发送、切换会话）用：强制回到底部并重新粘底
+function scrollDownForce() { autoStick = true; messagesEl.scrollTop = messagesEl.scrollHeight; }
 
 // ---------- 发送 + SSE 流 ----------
 let abortController = null;
@@ -324,7 +335,10 @@ async function send(text, opts = {}) {
     const resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ conversation_id: currentConvId, message: text || "", regenerate }),
+      body: JSON.stringify({
+        conversation_id: currentConvId, message: text || "", regenerate,
+        pid: (window.Profile && Profile.id) || "", focus: currentFocus,
+      }),
       signal: abortController.signal,
     });
 
@@ -352,7 +366,19 @@ async function send(text, opts = {}) {
         if (!line) continue;
         let ev;
         try { ev = JSON.parse(line); } catch { continue; }
-        handleEvent(ev);
+        try { handleEvent(ev); } catch (e) { console.error("handleEvent error:", e); }
+      }
+    }
+    // 流结束：flush decoder 待决字节，并补处理 sseBuf 中残留的完整事件（防截断丢失）
+    sseBuf += decoder.decode();
+    if (sseBuf.trim()) {
+      const parts = sseBuf.split("\n\n");
+      for (const part of parts) {
+        const line = part.replace(/^data: /, "").trim();
+        if (!line) continue;
+        let ev;
+        try { ev = JSON.parse(line); } catch { continue; }
+        try { handleEvent(ev); } catch (e) { console.error("handleEvent(residual) error:", e); }
       }
     }
   } catch (e) {
@@ -362,16 +388,36 @@ async function send(text, opts = {}) {
     } else {
       if (!bubble) bubble = addAssistantShell();
       bubble.classList.remove("cursor");
-      bubble.innerHTML = `<p style="color:var(--rouge)">连接出错：${escapeHtml(String(e))}</p>`;
+      bubble.innerHTML += `<p style="color:var(--rouge)">连接出错：${escapeHtml(String(e))}</p>`;
     }
   } finally {
     setStreamingUI(false);
     abortController = null;
     removeThinking();
     if (bubble) bubble.classList.remove("cursor");
-    // 从已保存的会话重渲染：下标稳定，顺带给每条用户消息挂上回溯按钮
-    if (currentConvId) await openConversation(currentConvId);
-    else { addRegenerateButton(); loadConversations(); }
+    const keepScroll = !autoStick;
+    const prevTop = messagesEl.scrollTop;
+    // 不重建 DOM（避免清空流式渲染好的内容导致"吞回答"），
+    // 只在已有 DOM 上补 UI 元素：回溯按钮、重新生成按钮、侧栏更新。
+    if (currentConvId) {
+      try {
+        const conv = await (await fetch(`/api/conversations/${currentConvId}`)).json();
+        // 给每条用户消息挂回溯按钮（按会话 messages 里的真实下标）
+        const userDivs = messagesEl.querySelectorAll(".msg.user");
+        let userIdx = 0;
+        for (let i = 0; i < conv.messages.length; i++) {
+          if (conv.messages[i].role === "user" && userIdx < userDivs.length) {
+            addRollbackButton(userDivs[userIdx], i);
+            userIdx++;
+          }
+        }
+        addRegenerateButton();
+      } catch (_) { /* 收尾增强失败不阻塞 */ }
+    } else {
+      addRegenerateButton();
+    }
+    loadConversations();
+    if (keepScroll) { autoStick = false; messagesEl.scrollTop = prevTop; }
   }
 
   function handleEvent(ev) {
@@ -410,7 +456,8 @@ async function send(text, opts = {}) {
         if (!bubble && ev.content) bubble = addAssistantShell();
         if (bubble) {
           bubble.classList.remove("cursor");
-          renderMarkdown(bubble, ev.content);
+          if (ev.content) renderMarkdown(bubble, ev.content);
+          // ev.content 为空则保留 token 增量渲染的既有内容，不覆盖
         }
         break;
       case "saved":
@@ -507,7 +554,7 @@ async function openConversation(id) {
   }
   addRegenerateButton();
   loadConversations();
-  scrollDown();
+  scrollDownForce();
 }
 
 async function deleteConversation(id) {
@@ -652,6 +699,18 @@ function bindChips() {
   });
 }
 bindChips();
+
+// 回答侧重分段按钮：切换本次会话的侧重点（auto 跟随档案评级/分工）
+(function bindFocusBar() {
+  const bar = $("#focus-bar");
+  if (!bar) return;
+  bar.querySelectorAll(".focus-opt").forEach((b) => {
+    b.onclick = () => {
+      currentFocus = b.dataset.focus || "auto";
+      bar.querySelectorAll(".focus-opt").forEach((x) => x.classList.toggle("sel", x === b));
+    };
+  });
+})();
 
 // 欢迎页：建议卡级联入场 + 极淡点阵网络母题
 function enhanceWelcome() {

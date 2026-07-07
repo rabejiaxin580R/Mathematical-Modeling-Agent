@@ -177,7 +177,7 @@ class Agent:
         return msgs
 
     def stream_reply(self, history: list[dict], run_id: str, workspace_files: list[str] | None = None,
-                     system_extra: str = "", base_prompt: str | None = None):
+                     system_extra: str = "", base_prompt: str | None = None, level: str = ""):
         """生成器，产出事件 dict：
         {type: "token", text}            模型文本增量
         {type: "tool_call", name, call_id, arguments}   工具开始调用
@@ -185,6 +185,7 @@ class Agent:
         {type: "done", content}          本轮最终文本
         {type: "error", message}         出错
         base_prompt：基础系统提示词，默认通用助教；做题 agent 传 self.solve_prompt。
+        level：用户能力评级（L1..L5，空=未定级），传给工具层做分层检索与知识展示。
         """
         messages = self.build_messages(history, workspace_files, system_extra, base_prompt)
         max_rounds = config.MAX_CODE_ITERATIONS + 4  # 检索 + 多轮代码迭代余量
@@ -210,29 +211,39 @@ class Agent:
             content_buf = ""
             tool_calls = {}  # index -> {id, name, args_str}
 
-            for chunk in stream:
-                # usage 通常在最后一个 chunk（choices 为空）随 include_usage 返回
-                if getattr(chunk, "usage", None):
-                    usage_total["prompt_tokens"] += chunk.usage.prompt_tokens or 0
-                    usage_total["completion_tokens"] += chunk.usage.completion_tokens or 0
-                if not chunk.choices:
-                    continue
-                delta = chunk.choices[0].delta
+            try:
+                for chunk in stream:
+                    # usage 通常在最后一个 chunk（choices 为空）随 include_usage 返回
+                    if getattr(chunk, "usage", None):
+                        usage_total["prompt_tokens"] += chunk.usage.prompt_tokens or 0
+                        usage_total["completion_tokens"] += chunk.usage.completion_tokens or 0
+                    if not chunk.choices:
+                        continue
+                    delta = chunk.choices[0].delta
 
-                if delta.content:
-                    content_buf += delta.content
-                    yield {"type": "token", "text": delta.content}
+                    if delta.content:
+                        content_buf += delta.content
+                        yield {"type": "token", "text": delta.content}
 
-                if delta.tool_calls:
-                    for tc in delta.tool_calls:
-                        idx = tc.index
-                        slot = tool_calls.setdefault(idx, {"id": "", "name": "", "args": ""})
-                        if tc.id:
-                            slot["id"] = tc.id
-                        if tc.function and tc.function.name:
-                            slot["name"] = tc.function.name
-                        if tc.function and tc.function.arguments:
-                            slot["args"] += tc.function.arguments
+                    if delta.tool_calls:
+                        for tc in delta.tool_calls:
+                            idx = tc.index
+                            slot = tool_calls.setdefault(idx, {"id": "", "name": "", "args": ""})
+                            if tc.id:
+                                slot["id"] = tc.id
+                            if tc.function and tc.function.name:
+                                slot["name"] = tc.function.name
+                            if tc.function and tc.function.arguments:
+                                slot["args"] += tc.function.arguments
+            except Exception as e:
+                logger.error("LLM 流中断：%s", e)
+                # 流中断但有部分内容 → 作为截断回答返回
+                if content_buf:
+                    yield {"type": "token", "text": "\n\n（流中断，回答截断）"}
+                    final_text = content_buf
+                yield {"type": "usage", **usage_total}
+                yield {"type": "done", "content": final_text or ""}
+                return
 
             # 没有工具调用 → 本轮就是最终回答
             if not tool_calls:
@@ -267,7 +278,7 @@ class Agent:
 
                 yield {"type": "tool_call", "name": name, "call_id": call_id, "arguments": args}
 
-                result = dispatch_tool(name, args, run_id)
+                result = dispatch_tool(name, args, run_id, level=level)
                 logger.info("工具调用: %s, 参数: %s", name, json.dumps(args, ensure_ascii=False)[:200])
                 yield {
                     "type": "tool_result",
@@ -370,7 +381,7 @@ class Agent:
                 except json.JSONDecodeError:
                     args = {}
                 yield {"type": "tool_call", "name": name, "call_id": call_id, "arguments": args}
-                result = dispatch_tool(name, args, run_id)
+                result = dispatch_tool(name, args, run_id, level=level)
                 logger.info("本步工具调用: %s, 参数: %s", name, json.dumps(args, ensure_ascii=False)[:200])
                 yield {"type": "tool_result", "display": result["display"],
                        "call_id": call_id, "content": result["content"]}
