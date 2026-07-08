@@ -1,10 +1,10 @@
 <p align="center">
-  <h1 align="center">📐 数学建模助教 v2.0</h1>
+  <h1 align="center">📐 数学建模助教 v2.1</h1>
   <p align="center"><em>基于 40 小时数学建模课程知识库的 AI 智能助教<br>自动拆解问题 · 有出处地答疑 · 写代码跑代码 · 手把手教零基础</em></p>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v2.0.0-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-v2.1.0-2ea44f?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge" alt="Platform">
   <img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License">
 </p>
@@ -15,7 +15,19 @@
 
 ---
 
-## 🆕 v2.0 更新亮点
+## 🆕 v2.1 更新亮点
+
+| 🎯 | 内容 |
+|---|------|
+| 🐛 | **修复 AI 回答被"吞掉"的严重 Bug**：流式回答有时在眼前消失，深挖出 **6 个独立根因**并全部修复，回答稳稳到底 |
+| ✨ | **知识库按评级分层**：检索结果随你的 L1~L5 水平自动调整——萌新多给「一句话总结 + 举例」，高手多给「公式 + 推导 + 代码」 |
+| ✨ | **首页评级引导**：未评级用户进主页自动提醒，一键去测评/选等级 |
+| 🔧 | **角色 × 评级独立**：「内容侧重」由分工决定、「难度深度」由评级决定，两个维度互不干扰 |
+
+> 📋 [完整更新日志](CHANGELOG.md)
+
+<details>
+<summary>📦 v2.0 更新亮点</summary>
 
 | 🎯 | 内容 |
 |---|------|
@@ -24,7 +36,7 @@
 | 📧 | **一键注册领额度**：邮箱 + 验证码 30 秒搞定，控制台生成 API Key 粘贴即用 |
 | 🍎 | **macOS 重要提醒**：千万不要把应用放在 iCloud 云盘里！ |
 
-> 📋 [完整更新日志](CHANGELOG.md)
+</details>
 
 ---
 
@@ -40,7 +52,7 @@
 
 ---
 
-## 🎁 免费领 Token（v2.0 重磅）
+## 🎁 免费领 Token
 
 我们部署了独立的 API 网关，**专门给数学建模助教用户提供免费额度**：
 
@@ -60,11 +72,11 @@
 
 开箱即用，**自带完整 Python 运行环境，无需安装任何东西**。
 
-> 📥 **[前往 Releases 下载 v2.0 →](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases)**
+> 📥 **[前往 Releases 下载 v2.1 →](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases)**
 
 | 系统 | 下载 |
 |------|------|
-| 🪟 **Windows** | `数学建模助教-安装程序-v2.0.0.exe` 或 `数学建模助教-windows-x64.zip` |
+| 🪟 **Windows** | `数学建模助教-安装程序-v2.1.0.exe` 或 `数学建模助教-windows-x64.zip` |
 | 🍎 **macOS** | `数学建模助教-macos-arm64.tar.gz`（⚠️ 不要放在 iCloud 云盘！） |
 | 🐧 **Linux** | `数学建模助教-linux-x86_64.tar.gz` |
 
