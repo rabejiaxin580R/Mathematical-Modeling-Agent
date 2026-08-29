@@ -31,6 +31,8 @@ from . import grader
 from . import framework
 from . import executor
 from . import dyn_problems
+from . import paper_gen
+from . import paper_db
 
 # 前端目录始终在程序根目录下（不能用 DATA_DIR.parent：打包后 DATA_DIR 指向用户可写目录）
 FRONTEND_DIR = config.ROOT_DIR / "frontend"
@@ -1068,6 +1070,244 @@ async def ide_terminal(ws: WebSocket):
         session.cleanup()
 
 
+# from . import diagnose as _diagnose_mod  # 已删除
+
+
+# ── 思路矫正（思路诊断器）──
+
+class DiagnoseRequest(BaseModel):
+    approach_text: str
+
+
+class RejectCorrectionRequest(BaseModel):
+    stage: str
+    kb_ref: str = ""
+    issue_type: str
+
+
+@app.post("/api/diagnose")
+def diagnose_endpoint(req: DiagnoseRequest):
+    """思路矫正：对用户提交的完整解题思路做定点诊断，SSE 流式返回矫正建议列表。
+
+    事件序列：
+      progress  — 进度提示（kb_search / llm_call）
+      result    — {corrections, stage_coverage, rejected_count}
+      done      — 结束标志
+      error     — 诊断失败（含错误消息）
+    """
+    # 功能暂时禁用 - diagnose 模块已删除
+    raise HTTPException(501, "思路诊断功能暂时不可用")
+
+
+@app.post("/api/diagnose/reject")
+def reject_correction(req: RejectCorrectionRequest):
+    """永久拒绝一条矫正建议，记入 rejected_corrections 表，后续诊断不再提示。
+
+    返回 {ok: True, fingerprint: "..."}。
+    """
+    # 功能暂时禁用 - diagnose 模块已删除
+    raise HTTPException(501, "思路诊断功能暂时不可用")
+    from . import paper_db
+    try:
+        conn = paper_db.get_conn()
+        fp = paper_db.record_rejection(conn, req.stage, req.kb_ref, req.issue_type)
+        conn.close()
+    except Exception as e:
+        logger.error("记录拒绝失败：%s", e)
+        raise HTTPException(500, f"记录失败：{e}")
+    return {"ok": True, "fingerprint": fp}
+
+
+# ── 论文生成 ──
+
+class CreatePaperRequest(BaseModel):
+    solve_session_id: str
+
+
+class UpdateSectionRequest(BaseModel):
+    content_md: str
+    status: str = "draft"  # draft | approved
+
+
+@app.post("/api/paper/create")
+def paper_create(req: CreatePaperRequest):
+    """从做题存档创建论文会话。
+
+    返回 {paper_session_id, sections: [{section_key, heading, status}]}。
+    """
+    ss = solve_sessions.load(req.solve_session_id)
+    if ss is None:
+        raise HTTPException(404, "做题存档不存在")
+    problem = ss.get("problem", {}) or {}
+    topic = ss.get("title", "我的题目")[:100]
+    problem_md = (problem.get("background") or problem.get("statement") or
+                  f"Topic: {topic}").strip()
+    if not problem_md or len(problem_md) < 20:
+        raise HTTPException(400, "做题存档中未找到有效题面（至少20字符）")
+
+    conn = paper_db.get_conn()
+    try:
+        sid = paper_db.create_paper_session(
+            conn, topic=topic, problem_md=problem_md,
+            source_solve_id=req.solve_session_id, contest="HiMCM",
+        )
+        # 返回节列表供前端渲染
+        sections = []
+        for sk in paper_db.SECTION_ORDER:
+            h = paper_gen.section_heading(sk)
+            sections.append({"section_key": sk, "heading": h, "status": "pending"})
+    finally:
+        conn.close()
+
+    logger.info("论文会话创建: %s ← 做题存档 %s", sid, req.solve_session_id)
+    return {"paper_session_id": sid, "topic": topic, "sections": sections}
+
+
+@app.get("/api/paper/session/{session_id}")
+def paper_get_session(session_id: str):
+    """加载论文会话 + 所有节（含内容）。"""
+    conn = paper_db.get_conn()
+    try:
+        ps = paper_db.load_session(conn, session_id)
+        if ps is None:
+            raise HTTPException(404, "论文会话不存在")
+        all_sections = paper_db.load_approved_sections(conn, session_id)
+        # 如果某节还没生成过（approved_sections 只返回 draft/approved），补上 pending 行
+        existing_keys = {s["section_key"] for s in all_sections}
+        sections = []
+        for sk in paper_db.SECTION_ORDER:
+            h = paper_gen.section_heading(sk)
+            if sk in existing_keys:
+                s = next(x for x in all_sections if x["section_key"] == sk)
+                sections.append({
+                    "section_key": sk, "heading": h,
+                    "status": s["status"], "content_md": s.get("content_md", ""),
+                    "chars": len(s.get("content_md") or ""),
+                })
+            else:
+                sections.append({
+                    "section_key": sk, "heading": h,
+                    "status": "pending", "content_md": "", "chars": 0,
+                })
+        return {
+            "session": {
+                "session_id": ps["session_id"], "topic": ps["topic"],
+                "contest": ps["contest"], "status": ps["status"],
+                "source_solve_id": ps.get("source_solve_id", ""),
+                "created_at": ps["created_at"],
+            },
+            "sections": sections,
+        }
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/generate/{session_id}/{section_key}")
+def paper_generate_section(session_id: str, section_key: str):
+    """生成论文的单一章节（SSE 流式，含进度提示与最终 result）。
+
+    自动从 source_solve_id 引用的做题存档中提取该阶段的对话上下文。
+    """
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+
+    conn = paper_db.get_conn()
+    try:
+        ps = paper_db.load_session(conn, session_id)
+        if ps is None:
+            conn.close()
+            raise HTTPException(404, "论文会话不存在")
+
+        # 加载来源做题存档（如果有）
+        solve_session = None
+        source_id = ps.get("source_solve_id", "")
+        if source_id:
+            solve_session = solve_sessions.load(source_id)
+    except HTTPException:
+        conn.close()
+        raise
+    except Exception:
+        conn.close()
+        raise
+
+    def event_stream():
+        try:
+            for ev in paper_gen.generate_section(conn, session_id, section_key, solve_session):
+                yield _sse(ev)
+        except Exception:
+            logger.exception("论文节生成 SSE 异常")
+            yield _sse({"type": "error", "message": "服务端内部错误"})
+        finally:
+            conn.close()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.post("/api/paper/generate-all/{session_id}")
+def paper_generate_all(session_id: str):
+    """逐节生成论文全部章节（SSE 流式，每节一个 result 事件）。"""
+    conn = paper_db.get_conn()
+    try:
+        ps = paper_db.load_session(conn, session_id)
+        if ps is None:
+            conn.close()
+            raise HTTPException(404, "论文会话不存在")
+        solve_session = None
+        source_id = ps.get("source_solve_id", "")
+        if source_id:
+            solve_session = solve_sessions.load(source_id)
+    except HTTPException:
+        conn.close()
+        raise
+    except Exception:
+        conn.close()
+        raise
+
+    def event_stream():
+        try:
+            for ev in paper_gen.generate_all(conn, session_id, solve_session):
+                yield _sse(ev)
+        except Exception:
+            logger.exception("论文全篇生成 SSE 异常")
+            yield _sse({"type": "error", "message": "服务端内部错误"})
+        finally:
+            conn.close()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.post("/api/paper/section/{session_id}/{section_key}/update")
+def paper_update_section(session_id: str, section_key: str, req: UpdateSectionRequest):
+    """用户编辑/批准某一节。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    if req.status not in ("draft", "approved", "skipped"):
+        raise HTTPException(400, f"无效的 status：{req.status}")
+    conn = paper_db.get_conn()
+    try:
+        result = paper_db.upsert_section(
+            conn, session_id, section_key, req.content_md, req.status,
+        )
+    finally:
+        conn.close()
+    return result
+
+
+@app.get("/api/paper/assemble/{session_id}")
+def paper_assemble(session_id: str):
+    """拼装完整论文 Markdown 并返回。"""
+    conn = paper_db.get_conn()
+    try:
+        ps = paper_db.load_session(conn, session_id)
+        if ps is None:
+            raise HTTPException(404, "论文会话不存在")
+        md = paper_gen.assemble(conn, session_id)
+        return {"ok": True, "content_md": md, "chars": len(md),
+                "session_id": session_id, "topic": ps["topic"]}
+    finally:
+        conn.close()
+
+
 # ── 静态前端 ──
 @app.get("/")
 def index():
@@ -1109,6 +1349,380 @@ def solve_page():
 def practice_page():
     """模式3：真题练习。"""
     return FileResponse(FRONTEND_DIR / "practice.html")
+
+
+@app.get("/guide-lab")
+def guide_lab_page():
+    """引导实验室（测试专用）：零后端的轻量镜像，用于开发/回放新用户引导流程。
+    重定向到 /static 下，使其相对同级引用（style.css 等）正确解析。"""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/static/guide-lab.html")
+
+
+@app.get("/paper")
+def paper_page():
+    """论文生成页面（旧版，直接生成完整论文）"""
+    return FileResponse(FRONTEND_DIR / "paper.html")
+
+
+@app.get("/outline")
+def outline_page():
+    """论文大纲页面（新版，用户可调整大纲后再生成完整论文）"""
+    return FileResponse(FRONTEND_DIR / "outline.html")
+
+
+# ── 论文生成完整流程 API ──
+class PaperGenerateRequest(BaseModel):
+    problem_id: str = ""
+    problem_title: str
+    problem_description: str
+    search_query: str
+    user_thought: str = ""  # 用户口述思路（可选，与题目描述分开）
+    user_data: str = ""  # 用户真实数据/结果（可选；未提供则 analyze/solve 生成标注的占位数据）
+    session_id: str = ""  # 复用已有大纲会话（可选；提供则跳过新建会话，沿用已确认的符号/结果）
+
+
+@app.post("/api/paper/upload-problem")
+async def upload_problem_file(file: UploadFile = File(...)):
+    """上传题目文件（PDF / Word / txt 等），提取文本内容返回，供大纲生成使用。
+
+    返回 {filename, content, size}，content 为提取后的纯文本（最长 12000 字符）。
+    """
+    safe = _safe_name(file.filename)
+    ext = ("." + safe.rsplit(".", 1)[-1].lower()) if "." in safe else ""
+    if ext not in config.UPLOAD_ALLOWED_EXTS:
+        raise HTTPException(
+            400, f"不支持的文件类型：{ext or '无扩展名'}。允许：{', '.join(sorted(config.UPLOAD_ALLOWED_EXTS))}"
+        )
+
+    data = await file.read()
+    if len(data) > config.UPLOAD_MAX_BYTES:
+        raise HTTPException(400, f"文件过大（>{config.UPLOAD_MAX_BYTES // (1024*1024)}MB）。")
+
+    config.ensure_dirs()
+    tmp_dir = config.DATA_DIR / "_problem_uploads"
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    tmp_path = tmp_dir / safe
+    tmp_path.write_bytes(data)
+
+    # 提取文本：富格式走 MarkItDown，纯文本直接读
+    from .documents import _get_md
+    text = ""
+    try:
+        text = _get_md().convert(str(tmp_path)).text_content or ""
+    except Exception as e:
+        logger.warning("提取题目文件失败 %s: %s", safe, e)
+        # 回退：纯文本直读
+        try:
+            text = data.decode("utf-8", errors="replace")
+        except Exception:
+            raise HTTPException(400, f"无法解析文件内容：{e}")
+
+    # 清理文本：去 BOM、统一换行、压缩多余空行
+    text = text.replace("﻿", "").replace("\r\n", "\n").replace("\r", "\n")
+    text = text.strip()
+
+    full_len = len(text)
+    if full_len > 12000:
+        text = text[:12000] + f"\n...[文档过长，已截断，共 {full_len} 字符]"
+
+    logger.info("题目文件上传: %s → %d 字符", safe, full_len)
+    return {"filename": safe, "content": text, "size": len(data)}
+
+
+@app.post("/api/paper/outline")
+def generate_paper_outline(req: PaperGenerateRequest):
+    """生成9章节的简化大纲（快速版，1-2分钟），供用户预览和调整。
+
+    返回 SSE 流：
+    - progress 事件：搜索文献、提取内容
+    - outline_ready 事件：返回 9 个章节的简化版（标题 + 150字摘要 + 1-2公式 + 文献引用）
+    """
+    from . import literature_search, paper_gen
+
+    def event_stream():
+        paper_conn = None
+        try:
+            # Step 1: 创建 paper_db 会话（复用逐节流水线，符号/模型/结果可闭环）
+            yield _sse({"type": "progress", "step": "create_session", "message": "创建论文会话..."})
+            paper_conn = paper_db.get_conn()
+            session_id = paper_db.create_paper_session(
+                paper_conn,
+                topic=req.problem_title,
+                problem_md=req.problem_description,
+                contest="HiMCM",
+            )
+            paper_conn.commit()
+
+            # Step 2: 搜索文献
+            yield _sse({"type": "progress", "step": "search_literature", "message": "搜索学术文献..."})
+            papers = literature_search.search_literature(
+                query=req.search_query, sources=["arxiv", "semantic_scholar"], max_per_source=5
+            )
+            yield _sse({"type": "progress", "step": "literature_found", "count": len(papers)})
+
+            # Step 3: 准备文献上下文（仅使用论文元数据，不深度提取）
+            yield _sse({"type": "progress", "step": "prepare_context", "message": "准备文献上下文..."})
+
+            lit_context = ""
+            if papers:
+                # 标题 + 作者 + 年份 + 摘要（前200字符），让 LLM 能判断相关性
+                lit_context = "\n\n".join([
+                    f"[{i+1}] {p.get('title', 'Untitled')}\n"
+                    f"    Authors: {p.get('authors', 'Unknown')} ({p.get('year', 'N/A')})\n"
+                    f"    Abstract: {(p.get('abstract', '') or 'No abstract.')[:200]}"
+                    for i, p in enumerate(papers[:5])  # 最多5篇
+                ])
+
+            # Step 4: 逐节生成大纲摘要（复用 paper_gen.generate_outline_section 的逐节流水线）
+            sections = paper_db.SECTION_ORDER[:9]  # 前9个（不含 abstract）
+            outline_sections = []
+
+            for i, section_key in enumerate(sections):
+                yield _sse({
+                    "type": "progress",
+                    "step": "generate_outline",
+                    "current": i + 1,
+                    "total": len(sections),
+                    "message": f"正在生成「{paper_gen.section_heading(section_key)}」大纲（{i+1}/{len(sections)}）…",
+                })
+
+                for ev in paper_gen.generate_outline_section(
+                    paper_conn, session_id, section_key,
+                    user_thought=req.user_thought,
+                    user_data=req.user_data,
+                    literature_context=lit_context,
+                ):
+                    if ev.get("type") == "outline_section":
+                        outline_sections.append({
+                            "section_key": ev["section_key"],
+                            "title": ev["title"],
+                            "summary": ev["summary"],
+                            "formulas": ev["formulas"],
+                            "citations": ev["citations"],
+                            "needs_user_data": ev.get("needs_user_data", False),
+                            "data_checklist": ev.get("data_checklist", ""),
+                        })
+                    elif ev.get("type") == "error":
+                        # 单节失败不中断，用占位大纲补齐，继续生成其余章节
+                        logger.warning(f"章节 {section_key} 大纲失败：{ev.get('message')}")
+                        outline_sections.append({
+                            "section_key": section_key,
+                            "title": paper_gen.section_heading(section_key),
+                            "summary": "",
+                            "formulas": [],
+                            "citations": [],
+                            "needs_user_data": section_key in paper_gen._DATA_CHECKLIST,
+                            "data_checklist": paper_gen._DATA_CHECKLIST.get(section_key, ""),
+                        })
+
+            yield _sse({
+                "type": "outline_ready",
+                "session_id": session_id,
+                "sections": outline_sections,
+                "literature_stats": {
+                    "papers": len(papers),
+                    "chunks": 0  # 大纲模式不深度提取片段
+                }
+            })
+
+        except Exception as e:
+            logger.exception("大纲生成失败")
+            yield _sse({"type": "error", "message": str(e)})
+        finally:
+            if paper_conn is not None:
+                try:
+                    paper_conn.close()
+                except Exception:
+                    pass
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.post("/api/paper/generate-full")
+def generate_full_paper(req: PaperGenerateRequest):
+    """完整论文生成流程（搜索文献 → 提取 → 生成章节 → 拼装）"""
+    from openai import OpenAI
+    from . import paper_literature
+    from . import literature_search
+
+    def event_stream():
+        lit_conn = None
+        paper_conn = None
+
+        try:
+            # Step 1: 复用或创建 paper_db 会话
+            paper_conn = paper_db.get_conn()
+            existing = paper_db.load_session(paper_conn, req.session_id) if req.session_id else None
+            reused = existing is not None
+
+            if reused:
+                session_id = req.session_id
+                title = existing.get("topic") or req.problem_title
+                desc = existing.get("problem_md") or req.problem_description
+                yield _sse({"type": "progress", "step": "session_reused",
+                            "session_id": session_id,
+                            "message": f"复用大纲会话: {session_id}（沿用已确认的符号/结果）"})
+            else:
+                yield _sse({"type": "progress", "step": "create_session", "message": "创建论文会话..."})
+                session_id = paper_db.create_paper_session(
+                    paper_conn,
+                    topic=req.problem_title,
+                    problem_md=req.problem_description,
+                    contest="HiMCM",
+                )
+                paper_conn.commit()
+                title = req.problem_title
+                desc = req.problem_description
+                yield _sse({"type": "progress", "step": "session_created",
+                            "session_id": session_id, "message": f"会话已创建: {session_id}"})
+
+            query = req.search_query or title
+
+            # Step 2: 搜索文献
+            yield _sse({"type": "progress", "step": "search_literature", "message": "搜索学术文献..."})
+
+            papers = literature_search.search_literature(
+                query=query,
+                sources=["arxiv", "semantic_scholar"],
+                max_per_source=5,
+            )
+
+            yield _sse({
+                "type": "progress",
+                "step": "literature_found",
+                "count": len(papers),
+                "message": f"找到 {len(papers)} 篇相关文献",
+            })
+
+            # Step 3: 存储文献 + LLM 提取片段
+            total_chunks = 0
+            if papers:
+                lit_conn = paper_literature.get_lit_conn()
+                store_result = paper_literature.store_papers(lit_conn, session_id, papers)
+                yield _sse({
+                    "type": "progress",
+                    "step": "literature_stored",
+                    "stored": store_result.get("stored", 0),
+                    "message": f"已存储 {store_result.get('stored', 0)} 篇文献",
+                })
+
+                yield _sse({"type": "progress", "step": "extract_content",
+                            "message": "LLM 提取文献关键内容..."})
+
+                llm_client = OpenAI(
+                    api_key=config.get_llm_api_key(),
+                    base_url=config.get_llm_base_url(),
+                )
+                extract_result = paper_literature.batch_process_papers(
+                    lit_conn, session_id, llm_client, desc
+                )
+                total_chunks = extract_result.get("total_chunks", 0)
+                yield _sse({
+                    "type": "progress",
+                    "step": "content_extracted",
+                    "chunks": total_chunks,
+                    "message": f"提取了 {total_chunks} 个知识片段",
+                })
+
+            # Step 4: 逐节生成全部 10 个章节
+            sections = paper_db.SECTION_ORDER  # 全部 10 节
+            for i, section_key in enumerate(sections):
+                yield _sse({
+                    "type": "progress",
+                    "step": "generate_section",
+                    "section": section_key,
+                    "current": i + 1,
+                    "total": len(sections),
+                    "message": f"生成章节 {i+1}/{len(sections)}: {section_key}",
+                })
+
+                for ev in paper_gen.generate_section(paper_conn, session_id, section_key):
+                    if ev.get("type") == "result":
+                        yield _sse({
+                            "type": "section_done",
+                            "section": section_key,
+                            "heading": ev.get("heading", ""),
+                            "chars": ev.get("chars", 0),
+                        })
+                    elif ev.get("type") == "error":
+                        # 某节生成失败不中断整体，记录并继续
+                        yield _sse({
+                            "type": "section_error",
+                            "section": section_key,
+                            "message": ev.get("message", ""),
+                        })
+
+            # Step 5: 拼装完整论文
+            yield _sse({"type": "progress", "step": "assemble", "message": "拼装完整论文..."})
+            paper_md = paper_gen.assemble(paper_conn, session_id)
+
+            # Step 6: 导出 Word（to_docx 返回字节，需手动写盘）
+            yield _sse({"type": "progress", "step": "export_docx", "message": "导出 Word 文档..."})
+            docx_bytes = export_docx.to_docx(paper_md)
+            docx_path = config.DATA_DIR / f"paper_{session_id}.docx"
+            docx_path.write_bytes(docx_bytes)
+
+            # 统计
+            lit_papers = 0
+            lit_chunks = 0
+            lit_citations = 0
+            if lit_conn:
+                lit_stats = paper_literature.get_literature_stats(lit_conn, session_id)
+                lit_papers = lit_stats.get("total_papers", 0)
+                lit_chunks = lit_stats.get("total_chunks", 0)
+                lit_citations = lit_stats.get("total_citations", 0)
+
+            yield _sse({
+                "type": "complete",
+                "session_id": session_id,
+                "stats": {
+                    "sections": len(sections),
+                    "papers": lit_papers,
+                    "chunks": lit_chunks,
+                    "citations": lit_citations,
+                    "words": len(paper_md),
+                },
+                "paths": {
+                    "docx": f"/api/paper/download/{session_id}.docx",
+                    "markdown": f"/api/paper/view/{session_id}",
+                },
+            })
+
+        except Exception as e:
+            logger.exception("论文生成失败")
+            yield _sse({"type": "error", "message": str(e)})
+        finally:
+            if lit_conn:
+                lit_conn.close()
+            if paper_conn:
+                paper_conn.close()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.get("/api/paper/download/{session_id}.docx")
+def download_paper_docx(session_id: str):
+    """下载生成的 Word 文档"""
+    docx_path = config.DATA_DIR / f"paper_{session_id}.docx"
+    if not docx_path.exists():
+        raise HTTPException(404, "文档不存在")
+    return FileResponse(
+        str(docx_path),
+        filename=f"paper_{session_id}.docx",
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+
+
+@app.get("/api/paper/view/{session_id}")
+def view_paper_markdown(session_id: str):
+    """查看 Markdown 论文"""
+    conn = paper_db.get_conn()
+    try:
+        md = paper_gen.assemble(conn, session_id)
+        return Response(content=md, media_type="text/markdown; charset=utf-8")
+    finally:
+        conn.close()
 
 
 if FRONTEND_DIR.exists():

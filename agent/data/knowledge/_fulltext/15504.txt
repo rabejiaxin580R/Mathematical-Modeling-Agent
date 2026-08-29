@@ -1,0 +1,882 @@
+ğ
+
+Team Control Number
+15504
+Problem Chosen
+A
+2024
+Summary Sheet
+
+The Olympic Games, a quadrennial global sporting spectacle, continually evolves with certain
+sports/disciplines/events (SDEs) being  added or removed. The International Olympic Committee (IOC)
+employs six criteria to evaluate potential additions. The  problem requires us to develop a model based on
+factors in line with IOC’s criteria, predicting the inclusion of SDEs in future Olympics.
+The core challenge of this problem is a binary classification task: determining whether  a specific SDE
+should be included or excluded from the Olympics. As constrained by a limited number of SDEs per Olympic
+Games, the selection process prioritizes SDEs based on their relative significance. Probability offers a robust
+tool to assess the likelihood of an SDE’s inclusion in alignment with Olympic values.
+We developed a logistic regression model that incorporates three key items (Problem 2): a base probability
+(P0) that evaluates the adherence to IOC’s values based on nine quantitative and qualitative subcriteria we
+developed, an inertia component (Pin) accounting for the effect of past inclusion of an SDE in the Olympics,
+and a bias-correction item (Pit) that offers the flexibility to adjust the model best match the historical data. We
+developed nine subcriteria and collected historical  data on Olympics sports from the Internet and literature s
+(Problem 1). Our model demonstrates strong predictive accuracy, accurately reproducing historical inclusion
+patterns, such as continuous presence, newly added or removed (Problem 3).
+Sensitivity analysis revealed that the Popularity and Relevance and Innovation criteria are most influential
+factors in determining an SDE’s likelihood of inclusion ( Problem 5). According to our model prediction, in
+the 2032 Brisbane Olympics, Australian football takes the most potential  to be included, followed by Zwift
+cycling and netball, among a total of 7 candidate sports including most popular ones in Australia (Problem 4).
+As Zwift virtual cycling becomes more popular among young people, it is more likely to be included in 2036
+or beyond (Problem 4).
+Compared to traditional methods such as the Analytical Hierarchy Process, our approach offers a more
+objective and flexible framework. Unlike subjective expert judgements, our model learns and constrains the
+weights and parameters from historical data to identify patterns and trends. While data collection remains a
+significant challenge, future efforts in collecting more comprehensive data can further enhance the model’s
+predictive power. Our current model operates at the discipline level, it can be extended to the event leve l
+provided event-specific data is available. This would allow for even more granular predictions and insights
+into the future of the Olympic Games.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+2
+
+Table of Contents
+
+1. Introduction ............................................................................................................................................... 3
+1.1 Background ................................................................................................................................................................ 3
+1.2 Problem Restatement .................................................................................................................................................. 3
+1.3 Problem Analysis ........................................................................................................................................................ 4
+1.4 Our work .................................................................................................................................................................... 5
+2. Assumptions and Justifications ............................................................................................................... 6
+3. Evaluation criteria (Problem 1) ............................................................................................................... 7
+4. Materials and Methodology ................................................................................................................... 10
+4.1 Data Collection and Preprocessing ........................................................................................................................... 10
+4.2 Estimating Subcriteria Data for Gap Years and Future Olympics ............................................................................ 11
+4.3 Modeling SDE inclusion (Problem 2) ...................................................................................................................... 12
+4.4 Model Testing (Problem 3) ....................................................................................................................................... 13
+4.5 Influential Factors Analysis (Problem 5) .................................................................................................................. 14
+4.6 Prediction for the 2032 Olympics and Beyond (Problem 4) .................................................................................... 14
+5. Results and Analyses ............................................................................................................................... 15
+5.1 The Evaluation Model (Problem 2) .......................................................................................................................... 15
+5.2 Performance in Predicting Historical Patterns (Problem 3) ..................................................................................... 16
+5.3 Prediction for the 2032 Brisbane Olympics (Problem 4): ........................................................................................ 17
+5.4 Prediction for 2036 and Beyond Olympics (Problem 4) .......................................................................................... 18
+6. Sensitivity Analysis.................................................................................................................................. 19
+6.1 Influential Factors for Inclusion of an Olympic Sport (Problem 5) ......................................................................... 19
+6.2 Sensitivity on model parameters .............................................................................................................................. 19
+7. Strength and Limitations ....................................................................................................................... 20
+8. Conclusions .............................................................................................................................................. 20
+References ....................................................................................................................................................... 21
+Appendices ...................................................................................................................................................... 21
+A Letter to IOC .............................................................................................................................................. 24
+AI Use Report ................................................................................................................................................. 25
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+3
+
+1. Introduction
+1.1 Background
+The Olympic Games, a global sporting spectacle, have evolved significantly since their inception Athens,
+Greece in 1896. The International Olympic Committee (IOC) continuously adapts the Sports, Disciplines, or
+Events (SDEs) to reflect societal changes and maintain the Game’s relevance. Over the past century, the
+Olympic program has expanded dramatically, incorporating a diverse range of sports  (Figure 1), such as the
+recent addition of skateboarding, sport climbing, and surfing in the 2020 Tokyo Olympics. Conversely, some
+SDEs, like rope climbing , have been dropped due to factors such as declining popularity or high costs .
+Interestingly, some sports have been revived, such as baseball and softball, which will make a comeback at
+the 2028 Los Angeles Olympics after a 20-year absence.
+To guide the selection of SDEs, the IOC employs six criteria: Popularity and Accessibility, Gender Equity,
+Sustainability, Inclusivity, Relevance and Innovation, and Safety and Fair Play. With these criteria provide a
+qualitative framework, a quantitative approach can future facilitate the decision-making process.
+By framing the SDE selection problem as a binary classification task, we can leverage probabilistic
+methods to prioritize SDEs based on their relative importance. This approach allows us to model the complex
+interplay of factors that influence an SDE’s inclusion in the Olympic Games, such as historical trends, global
+popularity, and alignment with Olympic values. Here, our team aims to refine the IOC’s criteria and develop
+a model that can accurately predict the inclusion of SDEs in future Olympic Games.
+
+Figure 1 Evolution of Sports/Disciplines/Events (SDEs) in 1896-2024 Olympic Games (data source:
+HiMCM_Olympic_Data.xlsx)
+1.2 Problem Restatement
+Problem 1: Identifying key factors for SDE evaluation
+What are the specific, measurable factors that influence the IOC's decision-making process for including
+or excluding SDEs in the Olympic Games? These factors should be categorized as quantitative or qualitative,
+constant or variable, and deterministic or probabilistic . Justify the selection of these factors and provide
+relevant units of measurement where applicable.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+4
+
+Problem 2: Developing a predictive model
+Create a mathematical model that can accurately predict the likelihood of an SDE being included in future
+Olympic Games. The model should incorporate  the identified factors and align with the IOC's established
+criteria.
+Problem 3: Model validation
+Evaluate the model's performance by testing it on a diverse set of SDEs. This should include both recently
+added and removed SDEs (e.g., from the 2020, 2024, and 2028 Olympics) and long-standing SDEs (e.g., those
+included since 1988 or earlier). Analyze the model's ability to accurately predict the current status of these
+SDEs.
+Problem 4: Predicting future SDEs
+Identify three SDEs that are potential candidates for inclusion in the 2032 Brisbane Olympics. Rank these
+SDEs based on their predicted likelihood of  inclusion. Additionally, estimate on potential SDEs for future
+Olympic Games in 2036 or beyond.
+Problem 5: Sensitivity analysis
+Conduct a sensitivity analysis to assess the impact of various factors on the model's predictions. Identify
+the most influential factors and discuss the potential implications for the model's robustness and reliability.
+Problem 6: Communicating findings to the IOC
+Prepare a concise and informative one-page report summarizing the key findings and recommendations.
+Clearly explain the model's methodology, its strengths and limitations, and the specific SDEs that are predicted
+to be strong candidates for future inclusion or exclusion.
+1.3 Problem Analysis
+For Problem 1 : While the IOC outlines six primary criteria, these are often qualitative in nature and
+difficult to directly quantify. To address this challenge, we will identify specific, measurable subcriteria, either
+quantitative or qualitative, that align with the IOC's broader objectives.
+Data availability is a significant constraint. While the contest itself did not provide specific data, we will
+need to gather relevant information from various sources, such as historical Olympic data, sports statistics,
+and media reports. Given the challenges in obtaining comprehensive data for both sports and events, we will
+focus our analysis on disciplines. This approach allows us to balance the need for a sufficient sample size with
+the complexity of modeling the inclusion of SDEs.
+For Problem 2: Traditional methods like the Analytical Hierarchy Process (AHP) or Analytic Network
+Process (ANP) could be used to evaluate SDEs based on the established criteria. However, these methods rely
+heavily on expert judgment and lack the abili ty to learn from historical data. This can limit their predictive
+accuracy.
+The inclusion or exclusion of an SDE in the Olympics is essentially a binary classification problem. As
+constrained by a limited number of SDEs per Olympic Games, the selection process prioritizes SDEs based
+on their relative importance. By applying probabilistic methods, we can assess the likelihood of an SDE's
+inclusion, considering factors aligning with IOC’s values. Logistic regression is a suitable statistical method
+ᇿ Hi MCM
+ሧ࿟
+ğ
+5
+
+to model this binary classification problem, using the identified factors as input variables
+However, we must also consider the temporal dependency of SDE inclusion, as we can notice from the
+provided file HiMCM_Olympic_Data.xlsx. Historical data suggests that there is an "inertia effect," where the
+inclusion of an SDE in previous Olympics increases its chances of future inclusion. This effect is not accounted
+for in logistical regression models. We will adapt the model to account for this effect.
+While training the logistic regression model on historical data significantly improved its overall accuracy,
+it is important to address the inherent constraints of the Olympic Games. For example, we will limit the total
+number of SDEs that can be included in a given Olympics. By incorporating these constraints, we can improve
+the model's accuracy and relevance. In other words, by enforcing constraints to the model, we have the ability
+to best match the patterns of SDE inclusion.
+For Problems 3 and 4: Our collected data  are absent for years after 2016. W e have to assume that the
+historical trends observed from 1900 to 2016 are indicative of future trends. To validate the model and make
+predictions for the 2020, 2024, and 2028 Olympics, as well as future Games , we will employ appropriate
+extrapolation techniques.
+For Problem 5: Sensitivity analysis will be conducted to assess the impact of different factors on the
+model's predictions. We will examine the sensitivity of the model to changes in the input factors. Additionally,
+we will investigate the sensitivity of the model to changes in its parameters.
+1.4  Our work
+Our workflow is illustrated in Figure 2. First, we identify  the IOC’s six criteria by developing specific
+subcriteria and collecting relevant data from public sources (Problem 1). Next, we develop a predictive model
+that incorporates logistic regression, inertia, and bias correction to assess the likelihood of an SDE’s inclusion
+(Problem 2). We then validate the model ’s performance by testing it on historical data and predicting the
+inclusion of SDEs in various inclusion/exclusion patterns for recent and future Olympics (Problems 3 and 4).
+We perform a sensitivity analysis to identify the most influential factors (Problem 5), and finally, we submit
+a report to the IOC summarizing our findings and recommendations (Problem 6).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+6
+
+Figure 2  The workflow of our work
+2. Assumptions and Justifications
+Assumption 1: We assume that the nine subcriteria we have identified adequately capture the essential factors
+considered by the IOC.
+Justification: While it is possible to expand the number of subcriteria, data availability poses a significant
+constraint [1]. Therefore, we have focused on a core set of factors that are both relevant and measurable. It is
+important to note that the performance of our model is contingent upon the quality and relevance of the input
+data. As more data becomes available, the model performance can be further improved.
+Assumption 2: Due to data availability constraints, our analysis is primarily based on historical data up to
+2016. We assume that the underlying trends and patterns observed in this period are indicative of future trends.
+Justification: Given the time constraints of the contest, we were limited to collecting data up to 2016. By
+analyzing the historical data, we identified underlying patterns that can be extrapolated to make predictions
+for future Olympic Games. Recognizing the challenges associated with data collection, we opted to leverage
+a grey prediction model to extend the historical trends into the future. This approach is particularly suitable
+for scenarios where data is limited, and future trends are uncertain.
+Assumption 3: We assume that no significant unforeseen events will occur during the forecast period that
+could substantially disrupt the Olympic Games or the inclusion of specific sports.
+Justification: Historical data shows that while unforeseen events, such as extreme weather conditions,
+can lead to the cancellation of specific events (e.g., sailing and rowing in the 1896 Games), such occurrences
+are relatively rare within the broader context of the Oly mpic Games. Given the long history of the modern
+Olympics, the impact of such isolated incidents on the overall pattern of sport inclusion is considered
+negligible for our predictive model.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+7
+
+3. Evaluation criteria (Problem 1)
+The IOC’s Olympic Programme Commission  has established evaluation criteria for SDEs , including
+Popularity and Accessibility, Gender Equity, Sustainability, Inclusivity, Relevance and Innovation, and Safety
+and Fair Play . To align with these six criteria, we have selected the following qualitative and quantitative
+subcriteria, as shown in Table 1.
+Table 1 Established subcriteria influencing the inclusion of an SDE in the Olympics
+IOC criteria Subcriteria Unit Data type Range
+Popularity and Accessibility Participants to each Discipline (X1) persons quantitative  [0,2508]
+Gender Equity Difference in participants’ gender ratios (X2) % quantitative  [-100,100]
+Sustainability
+Public recognition (X3) % quantitative [0,50.06]
+New facilities constructed (X4) % quantitative [0,53.92]
+Inclusivity Number of participating countries (X5)  quantitative [0,201]
+Relevance and Innovation
+Percentage of athletes under 30 (X6) % quantitative  [0,100]
+Innovation potential (X7)  qualitative
+(low,middle,
+high)
+Safety and Fair Play
+Average injury rate (X8) % quantitative  [0,34]
+Doping risk (X9) % quantitative [0,1.2]
+For Popularity and Accessibility, we use the number of participants in each SDE as a quantitative metric.
+The IOC has previously categorized sports based on popularity, considering factors such as ticket sales,
+television viewership, and media coverage  [2-3]. Figure 3 shows that popular sports , such as athletics and
+swimming, tend to have higher participation numbers. Therefore, the number of participants can serve as a
+proxy for popularity and accessibility.
+
+Figure 3 Temporal changes in the numbers of participants to the Olympics (data source as described in
+Section 4.1)
+We selected the gender ratio difference within each SDE as an indicator of gender equality. In recent
+years, the Olympic movement has accelerated efforts to promote gender equality both on and off the field,
+thanks in part to progressive initiatives by the  IOC. As Table 2 shows, the proportion of female athletes
+ᇿ Hi MCM
+ሧ࿟
+ğ
+8
+
+increased from 0% to 10.5% between 1896 and 1952. This trend continued to accelerate in subsequent decades.
+By the 2020 Tokyo Olympics, female participation reached a new record of 48%, and the 2024 Paris Olympics
+achieved complete gender parity [4]. As gender equality awareness grows, the gender ratio in different sports
+is converging, with the difference betwe en male and female participation rates approaching zero. Therefore,
+to reflect the gender equality of different disciplines, we use the gender ratio difference.
+Table 2 Female participants ratios in the 1896-2024 Olympic Games (data source as described in Section
+4.1)
+Olympic Games Athens
+1896
+Paris
+1900
+St.Louis
+1904
+London
+1908
+Stockholm
+1912
+Antwerp
+1920
+Female ratio (%) 0 2.2 0.9 1.8 2 2.5
+Olympic Games Paris
+1924
+Amsterdam
+1928
+Los Angeles
+1932
+Berlin
+1936
+London
+1948
+Helsinki
+1952
+Female ratio (%) 4.4 9.6 9.5 8.4 9.5 10.5
+Olympic Games Melboume
+1956
+Rome
+1960
+Tokyo
+1964
+Mexioo City
+1968
+Munich
+1972
+Montreal
+1976
+Female ratio (%) 11.3 11.4 13.2 14.2 14.8 20.7
+Olympic Games Moscow
+1980
+Los Angeles
+1984
+Seoul
+1988
+Barcelona
+1992
+Atlanta
+1996
+Sydney
+2000
+Female ratio (%) 21.5 22.9 26.1 28.9 34 38.2
+Olympic Games Athens
+2004
+Beijing
+2008
+London
+2012
+Rio
+2016
+Tokyo2
+020
+Paris 2
+024
+Female ratio (%) 40.7 42.4 44.2 45 47.8 50
+Sustainability in the context of the Olympics refers to the organizing committee's commitment to hosting
+the Games in an environmentally responsible, economically viable, and socially inclusive manner. The IOC
+emphasizes sustainability to ensure that the Olympics contribute to the UN's Sustainable Development Goals
+and address global environmental challenges [5]. Public recognition of the Olympics reflects the host's
+commitment to social responsibility, as governments that provide better social welfare and security during the
+Games tend to receive higher approval ratings. The Olympics can have a profound environmental impact on
+host cities. Constructing new venues and infrastructure often requires significant land use and can lead to
+habitat destruction, pollution, and increased carbon emissions. To mitigate these impacts, host cities should
+prioritize the use of existing facilities, invest in sustainable construction practices, and take measures to reduce
+resource consumption. Therefore, we selected public recognition of the event and the proportion of new
+facilities constructed as indicators of sustainability.
+Inclusivity measures a sport's ability to attract a large number of participants from diverse geographical
+and cultural backgrounds (at least 75 countries across four continents practicing the sport). To assess the level
+of inclusivity, we use the number of participating countries. A higher number of participating countries
+indicates broader international recognition and greater cultural diversity. In addition to traditional sports like
+athletics and swimming, which have a large number of participating countries, sports like Judo, Kara te, and
+Taekwondo represent different regional cultures (Figure 4a).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+9
+
+For the Relevance and Innovation criteria, we selected the percentage of athletes under 30 and the
+innovation potential of different SDEs . Attracting youth to the Olympic movement is one of the three main
+themes of Olympic Agenda 2020. Therefore, the proportion of young people reflects the relevance criterion.
+Figure 4b shows that the percentage of athletes under 30 in different SDEs has been increasing over time. We
+also conducted expert rating of the future innovation potential of different SDEs to reflect modern trends, such
+as the inclusion of breaking dancing in the 2024 Paris Olympics, which reflects the Olympic movement's focus
+on youth.
+
+Figure 4 Variations in participating countries (a) and the proportion of athletes under 30 years old (b) across
+various SDEs (data source as described in Section 4.1)
+
+"It takes more than crossing the line first to make a champion. A champion is more tha n a winner. A
+champion is someone who respects the rules, rejects doping and competes in the spirit of fair play." - Jacques
+Rogge, IOC President. Fair competition is essential in sporting. Fair play means not cheating through the use
+of drugs or doping. Therefore, for the fairness criterion, we selected the risk of doping in different SDEs. For
+safety, we focused on risk management in sports, aiming to prevent injuries, protect athletes' health, and take
+proactive measures to eliminate potential hazards in  competitions. Therefore, we selected the injury risk of
+different SDEs as an indicator of safety. Figure 5 shows that sports like Cycling- BMX, football, and boxing
+have higher injury risks  [6], while sports like shooting, diving, and Rhythmic Gymnastics have relatively
+lower injury risks.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+10
+
+Figure 5 Aveage jury risks of selected SDEs (data source as described in Section 4.1)
+4. Materials and Methodology
+4.1 Data Collection and Preprocessing
+To support our modelling, we collected data on nine subcriteria (Table 3) from various sources.
+Specifically, data on athlete demographics (gender, age, nationality, and discipline) for the period of 1900 to
+2016 was sourced from Data World . This data allowed us t o calculate variables such as the number of
+participants per discipline (X1), gender ratio difference (X2), the number of participating countries (X5), and
+the percentage of athletes under 30 (X6). Information on new venue construction (X3) and public support (X4)
+for each Olympic  Games was obtained from the literature  [1]. Injury risk data (X8) was collected from
+Healthnews, and doping rate (X9) was sourced from World Anti-Doping Agency (WADA).
+Given the limited systematic research on the innovation potential of major sports (X7), we assigned scores
+based on expert opinion, considering factors such as technological integration like virtual reality. To predict
+potential sports for the 2032 Brisbane Olympics, we  incorporated data from the  Australian database,
+AUSPLAY, which provided information on injury risk (X8) and participant numbers (X1) for popular
+Australian sports.
+Table 3  Data sources providing data for established subcriteria. Variables X1~X9 are referred to Table 1.
+Database Variables Source
+Data World X1, X2, X5, X6 https://data.world/
+Müller et al., 2021 [1] X3, X4 https://doi.org/10.1038/s41893-021-00696-5
+Healthnews  X8 https://healthnews.com/
+WADA X9 https://www.wada-ama.org/
+AUSPLAY X1, X8 https://www.clearinghouseforsport.gov.au/
+To prepare the data for our model, we aggregated individual athlete data by discipline, calculating
+influential variables such as gender ratios, age demographics, and participation numbers. We also accounted
+for the evolving nature of the IOC's criteria, particularly in recent decades, by adjusting the data for earlier
+Olympic Games. This involved using time series extrapolation or averaging techniques to estimate missing or
+incomplete data. Ultimately, we created a dataset comprising 28 disciplines from 27 Olympic Games (1900
+ᇿ Hi MCM
+ሧ࿟
+ğ
+11
+
+and 2016). These disciplines represent a diverse range. This includes long-standing disciplines that have been
+of the Olympic program since its inception (e.g., football, athletics, and swimming), sports that were popular
+in the early years but subsequently removed (e.g., polo and roque), as well as those that were reinstated after
+a period of absence (e.g., cricket and golf). Additionally, the dataset includes sports that were either non -
+competitive or newly introduced to the official program during the study period (1900-2016), such as triathlon,
+softball, and baseball. To ensure comparability, we normalized the data for each subcriterion.
+4.2 Estimating Subcriteria Data for Gap Years and Future Olympics
+The collected subcriteria data are limited to the period from 1900 to 2016. To address the data gap beyond
+2016, we employed a grey prediction model, specifically the GM(1,1) model. This model is well -suited for
+systems with high uncertainty, making it suitable for forecasting the gap influential factor [7].
+Step 1: The initial data sequence for each subcriterion was denoted as:
+{ }
+(0) (0) (0) (0)(1), (2), , ( )X x x xn=   (1)
+Step 2: To ensure the suitability of the grey model, a ratio test was conducted on the original data. The
+ratio ()kσ  was calculated for each data point. If all ratios fell within the specified rage, the model could
+proceed.
+22(0)
+11
+(0)
+( 1)() ,() , ()
+nnxkk k eexkσσ
+− ++−= ∈
+  (2)
+Step 3: The accumulation generation operation was applied to the original data (0)x  to weaken the random
+fluctuation and enhance the regularity. The resulting sequence was denoted as:
+(1) (0)
+1
+, 1, 2, ,
+k
+ki
+x xk n
+=
+= =∑ 
+(3)
+Step 4: The mean generation operation was applied to (1)X  to generate a new sequence (1)Z :
+{ }
+(1) (1) (1) (1)(2), (3), , ( )Z z z zn=    (4)
+( )
+(1) (1) (1)1() () ( 1 )2zk xk xk= +−  (5)
+Step 5: The following GM(1,1) differential model was established:
+(0) (1)() ()x k az k b+=  (6)
+
+where a and b are parameters to be estimated using the least square method.
+Step 6: The estimated parameters were used to predict future values using the following equation:
+(1) (0) ( 1)ˆ )( ) (1  ,  1,2.....akbbxk x e k n aa
+−−= − +=
+(7)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+12
+
+4.3 Modeling SDE inclusion (Problem 2)
+We treat the inclusion or exclusion of an SDE as a binary classification problem. To assess the probability
+of inclusion of certain discipline in the Olympics , we develop a logistic regression model that incorporates
+three key components (Eq. 8): a base probability (P0) that evaluates the adherence to IOC’s values based on
+nine quantitative and qualitative subcriteria we developed, an inertia component (Pin) accounting for the effect
+of the historical inclusion or exclusion of the SDE, reflecting a “momentum effect”, and a bias-correction item
+(Pit) that adjusts the models predictions to best match historical data.
+0total in itP PP P=++  (8)
+When 0.5totalP > , the discipline is included; when 0.5totalP < , it is not included. Notably, we do not build
+individual models for each discipline but instead create a model able to estimate any discipline, which can be
+achieved by training the model using historical data across all disciplines.
+The logistic regression model is express as:
+0
+0
+ln1
+TP bP = +− wx  (9)
+where P0 is the base probability of SDE being included, 12 9( , ......XX X= )x  is a vector of values fro the nine
+subcriteria variables, 12 9( , ......WW W= )w  is a vector of weights for the nine subcriteria corresponding
+weights, and b is the bias term. The weights  w and the bias b are estimated using maximum likelihood
+estimation based on historical data.
+The inertia component (Pin) is calculated as the product of a weight  λi,j and a scaling parameter η . The
+weight λi,j is essentially the conditional probability of the current state (inclusion or exclusion) given the
+previous state. This probability is estimated from historical data (the provided HiMCM_Olympic_Data.xlsx).
+If the previous state was exclusion, λi,j is set to zero. The hyperparameter η scales the effect of the inertia. The
+value of η can be optimized to best fit the model results to the binarized historical records.
+, *in i jP λη=  (10)
+where subscripts (i, j) denotes i-th discpline at the j-th Olympic Games.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+13
+
+Figure 6 Diagram of the iterative modeling process
+The model was implemented in Python and the iterative process is illustrated  in Figure 6. The bias -
+correction component Pit is iteratively updated to improve the model’s accuracy. In each iteration, the model’s
+predictions are compared to the actual historical records , and P it  for each discipline i s adjusted by a small
+increment (0.001). The direction of the adjustment (increasing or decreasing) depends on whether the model’s
+prediction underestimates or overestimates the actual historical records.
+Initially, the inertia weight λi,j was estimated based on the classification results from the base probability
+P0. In subsequent iterations, ()
+,
+n
+ijλ  was updated based on the classification results calculated from
+( 1) ( 1)nn
+total inPP−− − .
+The iterative process continued until the model’s accuracy converged to a threshold of 0.001 or a maximum
+of 1000 iterations was reached. To optimize the hyperparameter η, a grid search was conducted over the range
+of 0 to 1 with a step size of 0.1. For each value of η, the iterative process was performed, and the optimal value
+was selected based on the model's accuracy.
+
+4.4 Model Testing (Problem 3)
+To demonstrate the generality of the proposed model, we evaluate it from three aspects : (1) cross-
+validation, (2) validation for newly included /reintroduced disciplines, and (3) validation for long-standing
+disciplines. Cross-validation helps reduce the evaluation bias introduced by random data partitioning, thereby
+providing a more stable estima te of the model’s performance. Considering the sample size (28 disciplines ×
+27 Olympic Games), we conduct 5- fold cross-validation for the logistic regression. Specifically, the dataset
+from 1900 to 2016 is randomly divided into 5 parts. Among them, 4 parts are used to train the model, and the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+14
+
+remaining 1 part is used for validation. The train-validation mode is repeated for 5 times to assure every part
+can be used as validation part. Then the averaged accuracy can be reliably represented the model performance.
+For the validation of newly included/ reintroduced disciplines in 2020, 2024, and 2028 Olympic Games,
+we use the model developed to make predictions , where t he corresponding subcriteria for 2024 -2028 are
+generated using the grey forecasting model as described in Section 5.2. To assess the model’s performance on
+long-standing disciplines, we arbitrarily select three common disciplines (Swimming, Athletics, Archery)
+from the historical records between 19884 and 1992. To ensure a rigorous evaluation, w e intentionally
+excluded these testing disciplines from the training dataset and trained a separate model for each.
+During the model performance evaluation, we primarily use the Overall Accuracy metric (i.e., the ratio
+of correct predictions  to total predictions), which is commonly used in binary classification problems.
+Additionally, we use Precision, Recall, and F1-Score to assess the cross-validation results.
+4.5 Influential Factors Analysis (Problem 5)
+To quantify the impact of subcriteria uncertainty on model accuracy, we applied ±2.5%, ±5.0%, ±7.5%,
+and ±10.0% perturbations to the model developed in Section 5.3 and examined the relative change in model
+accuracy after these perturbations. Additionally, during the model  building process, we performed uniform
+sampling within the range of the hyperparameter η  to obtain the best  accuracy for each η , of which the
+trajectory can be used to measure its influence.
+4.6 Prediction for the 2032 Olympics and Beyond (Problem 4)
+When considering potential SDEs for the 2032 Brisbane Olympics, it's important to account for the host
+country's sporting culture and global trends. Recent examples like the inclusion of Karate in the 2020 Tokyo
+Olympics and Breaking in the 2024 Paris Olympics highlight the influence of host nations.  Based on data
+from AUSPLAY, two potential SDEs that could be considered for the 2032 Brisbane Olympics stand out from
+the 9 most popular disciplines in Australia (Table 4).
+Australian Football is a highly acclaimed national sport in Australia with audiences reaching 6.75 million,
+of which over 1/10 younger than 30 years old. Its sustainability efforts are notable, as shared facilities with
+cricket fields help reduce carbon emissions. Recently, the sport has been rapidly expanded to over 20 countries
+[8].
+Netball attracts more than 1.2 million players across  various age groups and genders, establishing itself
+as Australia’s largest team sport. Its league can draw 0.12 million spectators per match. While traditionally a
+women's sport, netball is increasingly gaining popularity among men. It is also a globally popular sport, played
+in over 80 countries with more than 20 million participants [9].
+We also include Zwift cycling as a global trend , which was mentioned in the contest problem. Zwift
+cycling merges traditional cycling with virtual technology, boasting over 3 million users or participants across
+190 countries since its launch in 2015. The platform appeals to a young, offering accessible, low -cost, and
+safe participation.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+15
+
+Additionally, we considered the potential reintroduction of sports that have previously been part of the
+Olympic program. Based on recent trends, such as the return of baseball and softball to the 2028 Los Angeles
+Olympics, sports like polo, croquet, roque, and Basque pelota could be potential candidates for future inclusion.
+As a results, we identified a total of 7 candidate disciplines to be assessed for inclusion in future Olympics
+2032 and beyond.
+
+Table 4 Top 9 most popular sports in Australia [10]
+Rank Sport Popularity Included in the
+Olympics
+1 Australian Football 75.7 Million Fans No
+2 Cricket 14.0 Million Fans Yes
+3 Tennis 12.5 Million Fans Yes
+4 Netball 6.7 Million Fans No
+5 Swimming 6.0 Million Participants Yes
+6 Cycling 3.4 Million Participants Yes
+7 Football 2.0 Million Participants Yes
+8 Basketball 1.3 Million Participants Yes
+9 Rugby Union 1.3  Million Fans Yes
+5. Results and Analyses
+5.1 The Evaluation Model (Problem 2)
+The initial component of our model was estimated using a logistic regression. Table 5 presents the fitted
+weights of the nine subcriteria variables.  A variance inflation factor (VIF) below 3 for all variables indicates
+the absence of multicollinearity, satisfying a fundamental assumption of logistic regression. Furthermore, all
+coefficients were statistically significant (p < 0.05), suggesting that each variable contributed meaningfully to
+the model.
+Specifically, while new facility construction (X4) and doping risk (X9) had n egative impacts, other
+variables had positive effects. The most influential variable was the number of participants per discipline (X1),
+followed by the difference in participants' gender ratios (X2) and the number of participating countries (X7).
+These findings align with the IOC's selection criteria, as increasing X4 suggests unsustainability, while X9
+indicates a higher risk of unfair competition. Conversely, higher values of X1, X2, and X7 align with the IOC's
+preference for globally impactful sports.
+Table 5 The fitted parameters for the first component (P
+0) in the established model which is a logit function
+Subcriteria w p-value VIF
+Participants to each Discipline (X1) 1.33 0.006 1.065
+Difference in participants’ gender ratios (X2) 0.87 0.003 1.145
+Public recognition (X3) 0.24 0.008 1.546
+New facilities constructed (X4) -0.85 0.002 1.782
+Number of participating countries (X5) 0.81 0.006 1.264
+Percentage of athletes under 30 (X6) 0.72 0.045 1.105
+Innovation potential (X7) 0.10 0.032 1.245
+Average injury rate (X8) 0.32 0.039 1.463
+ᇿ Hi MCM
+ሧ࿟
+ğ
+16
+
+Doping risk (X9) -1.88 0.024 1.364
+Bias 0.10 0.029
+
+Iterative optimization significantly improved model accuracy from 0.833 for the first estimation to
+0.952 (Figure 7), reducing misclassifications from 125 to 36. Of these errors, 17 were false negatives,
+suggesting that the model was more likely to underestimate the inclusion of new disciplines. The optimal
+hyperparameter value, η = 0.47, balanced the influence of historical data and new information. The final
+values of Pᵢₜ (Table 6) indicate that the estimates initially overestimated the likelihood of inclusion, but
+the bias correction term effectively mitigated this bias.
+
+Figure 7 Model’s accuracies varying with the value of parameter η which scales the effect of inertia
+
+Table 6 The final values of Pit associated with each discipline
+Discipline Pit Discipline Pit  Discipline Pit  Discipline Pit
+Basketball -0.006 Shooting -0.003 Triathlon -0.068 Weightlifting 0.000
+Judo -0.007 Boxing -0.003 Polo -0.069 Water Polo -0.004
+Football -0.002 Taekwondo -0.069 Cricket -0.069 Softball -0.069
+Athletics -0.422 Diving -0.162 Croquet -0.069 Archery -0.017
+Swimming -0.422 Tennis -0.011 Roque -0.068 Fencing 0.000
+Badminton -0.011 Modern
+Pentathlon
+-0.332 Basque
+Pelota
+-0.069 Table Tennis -0.007
+Sailing 0.000 Golf -0.069 Rowing -0.02 Baseball -0.009
+5.2 Performance in Predicting Historical Patterns (Problem 3)
+In the case of  recently adjusted inclusion of disciplines , our model's predictions perfectly aligned with
+actual outcomes (Table 7). For newly introduced Baseball and Cricket, the predicted probabilities of inclusion
+were 0.592 and 0.549, respectively, exceeding the 0.5 threshold. Conversely, for the excluded Softball, the
+predicted probability was 0.365.
+Regarding long-standing cases, our model consistently predicted inclusion probabilities above 0.5 (Table
+8). Interestingly, we observed a notable difference in predicted probabilities between recently added and long-
+ᇿ Hi MCM
+ሧ࿟
+ğ
+17
+
+standing disciplines. Newly added disciplines had lower probabilities (0.5- 0.6) compared to long -standing
+disciplines (≥0.7), primarily due to lower scores in Popularity, Accessibility, and Inclusivity.
+These findings strongly support the high predictive accuracy of our proposed mode l, which effectively
+captures both long-standing and recently changed SDEs . It's worth noting that for recent changes, we relied
+on a grey forecasting model to estimate missing subcriteria. This further demonstrates our model's robustness
+to data uncertainties.
+Table 7 Validation for introduced or removed disciplines in recent Olympic Games
+subcriteria Baseball Cricket Softball
+2020 2028 2024
+X1 191 53 120
+X2(%) 100 100 0
+X3(%) 37.58 42.11 44.90
+X4(%) 14.47 15.68 15.81
+X5 8 7 8
+X6(%) 80 45 75
+X7 low low low
+X8(%) 11.00 8.48 13.00
+X9(%) 0.10 0.07 0.04
+True label 1 1 0
+Predicted  0.592 0.549 0.365
+
+Table 8 Validation for long-standing disciplines
+
+Discipline 1984 1988 1992
+True Label Swimming 1 1 1
+Predicted  Swimming 0.789 0.839 0.768
+True Label Athletics 1 1 1
+Predicted  Athletics 0.852 0.869 0.874
+True Label Archery 1 1 1
+Predicted  Archery 0.753 0.761 0.796
+
+5.3 Prediction for the 2032 Brisbane Olympics (Problem 4):
+Table 9 presents the predicted probabilities of inclusion for the seven candidate disciplines in the 2032
+Brisbane Olympics, as determined by our model. The results indicate a strong likelihood of Australian Football
+being included, with a predicted probability of 0.857. This aligns with the sport's growing global popularity
+and its deep roots in Australian culture. Zwift Cycling and Netball also have relatively high probabilities,
+reflecting their increasing participation rates and potential to attract a wide audience.
+In contrast, traditional sports like Polo, Croquet, Roque, and Basque Pelota have lower predicted
+probabilities, suggesting that they may fac e challenges in being reintroduced to the Olympic program. This
+could be due to factors such as declining popularity, limited global reach, or specialized infrastructure
+requirements.
+These findings highlight the potential of our model to identify promising candidates for future Olympic
+inclusion based on a range of factors. However, it is important to note that the final decision on which sports
+to include in the Olympics is ultimately made by the International Olympic Committee, and may be influenced
+by additional political, social, and economic considerations.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+18
+
+Table 9 Prediction of inclusion of 7 potential disciplines in the 2032 Brisbane Olympics
+Discipline Australian
+Football
+Netball Zwift
+Cycling
+Polo Croquet Roque Basque
+Pelota
+X1 220 140 120 21 19 4 2
+X2 (%) 60 -74 20 100 37 100 100
+X3 (%) 40 30 50 0 0 0 0
+X4 (%) 20 10 5 0 0 0 0
+X5 20 80 150 5 2 2 2
+X6 (%)      76 76 55 24 37 11 100
+X7   middle middle   high low   low    low low
+X8 (%) 6 5 2 3.36 0 0 0
+X9 (%) 0.047 0.047 0.047 0.047 0.047 0.047 0.047
+Predicted 0.757 0.536 0.710 0.327 0.288 0.274 0.255
+Rank 1 3 2 4 5 6 7
+5.4 Prediction for 2036 and Beyond Olympics (Problem 4)
+Using the grey forecasting method, we projected future values of the nine subcriteria for the top three
+disciplines in 2032 (Australian Football, Zwift Cycling, and Netball) up to 2040. These projected values were
+then fed into our model to predict future inclusion probabilities. As shown in Figure 8, Zwift Cycling exhibits
+a consistently increasing trend from 2032 onwards, while Australian Football and Netball display a decreasing
+trend followed by a slight increase. Notably, Zwift Cycling demonstrates the highest predicted inclusion
+probability, exceeding 0.85 from 2036 onward. Based on these results, we can infer that Zwift Cycling is the
+most likely of the three to be included as an Olympic event after 2036.
+
+Figure 8 Modelled probability of including Australian Football, Netball and Zwift cycling in 2032, 2036 and
+2040 Olympic Games
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+19
+
+6. Sensitivity Analysis
+6.1 Influential Factors for Inclusion of an Olympic Sport (Problem 5)
+We conducted a sensitivity analysis on the nine evaluation criteria listed in  Table 1 by systematically
+varying each criterion wh ile holding the others constant. Figure 9 illustrates the changes in model accuracy
+when perturbing each subcriterion by ±2.5%, ±5.0%, ±7.5%, and ±10.0%. Our findings indicate that when the
+perturbation exceeds 7.5%, the model's accuracy is primarily affected by the number of participants per
+discipline and the proportion of participants under 30 years old. As the perturbation increases to more than
+5%, the model's accuracy becomes more sensitive to the number of participating countries and the gender ratio
+difference, leading to an approximate 0.02 decrease in accuracy. For perturbations smaller than 5%, the
+model's predictions are less sensitive to changes in a discipline's innovative potential, public recognition, new
+facility construction, and doping risk. Overall, the model's accuracy remains relatively stable across various
+perturbation levels, demonstrating its robustness and ability to provide reliable assessments of different
+disciplines.
+
+Figure 9  Sensitivity analysis on the influential factors as inputs to the model. Participants to each Discipline
+(X1), Difference in participants’ gender ratios (X2) , Public recognition (X3) , New facilities constructed
+(X4), Number of participating countries (X5), Percentage of athletes under 30 (X6), Innovation potential
+(X7), Average injury rate (X8), Doping risk (X9).
+6.2 Sensitivity on model parameters
+We also conducted a sensitivity analysis on the inertia scaling parameter 𝜼𝜼, which varies between 0 and
+1, to evaluate its impact on model accuracy. As shown in Figure 7, the optimal model accuracy is achieved
+when η = 0.47. For values between 0 and 0.47, the model accuracy exhibits a fluctuating increase as η increases.
+Conversely, for values between 0.47 and 1, the accuracy fluctuates but with a decreasing trend. Overall, the
+model's sensitivity to η is relatively low, with the maximum decrease in accuracy being only 0.08 within the
+specified range. This indicates that the model is quite robust. The model's robustness can be attributed to the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+20
+
+bias-correction term incorporated into our model, which effectively compensates for the potential decrease in
+accuracy caused by variations in η.
+7. Strength and Limitations
+Key Strengths:
+1. Our model demonstrates a high level of accuracy in predicting the inclusion or exclusion of SDEs. It
+successfully captures historical trends and patterns.
+2. The model's performance is relatively insensitive to noise or uncertainty in the input data, ensuring
+reliable predictions even under varying conditions.
+3. The model incorporates a comprehensive set of criteria, including popularity, gender equity,
+sustainability, inclusivity, relevance, innovation, safety, and fair play, to provide a holistic assessment of SDEs.
+4. The model leverages historical data to learn patterns and make informed predictions, reducing reliance
+on subjective expert judgments. This data -driven approach ensures objectivity and consistency in the
+evaluation process.
+5. The model can be easily adapted to incorporate new data and emerging trends, making it a valuable
+tool for future decision -making. Additionally, the model's modular structure allows for customization and
+refinement as needed.
+Limitations:
+1. The model's accuracy is dependent on the quality and relevance of the input data. The nine subcriteria
+used in this study, while comprehensive, may not fully capture all the nuances of the IOC's decision -making
+process. Additional factors, such as geopolitical considerations or specific host city requirements, could
+influence the inclusion of SDEs.
+2. The analysis was based on 28 disciplines, which may not be fully representative of the entire universe
+of potential Olympic SDEs. A larger size would allow for more robust modeling and potentially improved
+predictive accuracy.
+3. The IOC's criteria for SDE selection have evolved over time, with increasing emphasis on factors like
+sustainability and gender equality in recent years. Our model may not fully account for these historical changes,
+potentially affecting its predictive accuracy for future Olympics.
+8. Conclusions
+We developed a probability-based model to predict the inclusion of sports, disciplines, and events (SDEs)
+in future Olympic Games, aligning with the International Olympic Committee's (IOC) criteria. The model
+integrates a base probability (P0) assessing IOC value adherence, an inertia component (Pin) accounting for
+past inclusion, and a bias-correction item (Pit) to optimize historical data fit. Sensitivity analysis highlighted
+ᇿ Hi MCM
+ሧ࿟
+ğ
+21
+
+the importance of Popularity and Relevance and Innovation criteria, with predictions for the 2032 Brisbane
+Olympics suggesting Australian football, Zwift cycling, and netball as leading candidates.
+Our model demonstrates high predictive accuracy and provides a data -driven alternative to traditional,
+subjective methods. By learning from historical trends, the model offers objective and flexible p redictions
+while being adaptable to more granular levels with sufficient data. Challenges in data collection remain, but
+future efforts could further refine the model's scope and enhance its reliability for evaluating Olympic SDE
+inclusions.
+
+References
+[1] Müller, M., Wolfe, S.D., Gaffney, C. et al. An evaluation of the sustainability of the Olympic Games. Nat
+Sustain 4, 340–348 (2021). https://doi.org/10.1038/s41893-021-00696-5
+[2] "Athletics to share limelight as one of top Olympic sports". The Queensland Times. 31 May 2013.
+Retrieved 18 July 2013.
+[3] Murray, Callum (29 May 2013). "Winners Include Gymnastics, Swimming - and Wrestling - as IOC
+Announces New Funding Distribution Groupings". ASOIF.com. St Petersburg: Association of Summer
+Olympic International Federations. Archived from the original on 14 July 2014. Retrieved 18 July 2013.
+[4] Gender equality through time.https://olympics.com/ioc/gender-equality/gender-equality-through-time
+[5] https://library.olympics.com/Default/doc/SYRACUSE/169337/olympic-review-official-publication-of-
+the-olympic-movement-vol-63-april-may-june-2007?_ga=2.237747717.461168666.1681109728-
+862628506.1677753585
+[6] Most Dangerous and Safest Olympic Sports by Injury Rates (8 May 2024). Edvardas Garbenis.
+https://healthnews.com/reports/most-dangerous-and-safest-olympic-sports-by-injury-rates/
+
+[7] Ding S., Dang Y . G., Xu N., Wang J. J., and Xu Z. D., A novel grey model based on the trends of driving
+factors and its application, The Journal of Grey System. (2018) 30, no. 3, 105–126.
+[8] Most Dangerous and Safest Olympic Sports by Injury Rates (8 May 2024). Edvardas Garbenis.
+https://healthnews.com/reports/most-dangerous-and-safest-olympic-sports-by-injury-rates/
+
+[9] Thompson, Shona M. (December 2002). "Women and sport in New Zealand". In Pfister, Gertrud;
+Hartmann-Tews, Ilse (eds.). Sport and Women: Social Issues in International Perspective . International
+Society for Comparative Physical Education & Sport. New York: Routledge . ISBN 0-415-24628-8
+.
+OCLC 50204306
+[10] https://www.clearinghouseforsport.gov.au/research/ausplay/results-2015-2023
+Appendices
+A The established model in Python
+ᇿ Hi MCM
+ሧ࿟
+ğ
+22
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+23
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+24
+
+A Letter to IOC
+
+Dear Members of the IOC:
+On behalf of HiMCM Olympic Consultants (HOC), we are honored to have been entrusted with the task
+of evaluating potential Sports, Disciplines, or Events (SDEs) for the 2032 Summer Olympics. Our team
+developed a sophisticated model to assess SDEs based on the IOC's criteria.
+Our model analyzes various factors such as popularity, gender equality, sustainability, and global reach
+to predict the likelihood of an SDE's inclusion. By considering historical data and future trends, our model
+provides valuable insights into the potential impact of different SDEs on the Olympic Games.
+Based on our analysis, we recommend the following SDEs for consideration in the 2032 Brisbane
+Olympics:
+• Australian Football: A popular sport in Australia with a growing global following.
+• Zwift Cycling: A virtual cycling platform that offers accessible and inclusive opportunities for
+athletes.
+• Netball: A global sport with a strong female following and a growing male participation rate.
+We believe that these SDEs align with the IOC's vision of promoting sportsmanship, excellence, and
+friendship. They have the potential to attract new audiences, enhance the diversity of the Olympic program,
+and contribute to the long-term success of the Olympic Games.
+While traditional sports like polo, croquet, roque, and Bas que pelota have historical significance, our
+model suggests that they may not be the best fit for future Olympics. This is due to factors such as declining
+popularity, limited global reach, and specialized infrastructure requirements.
+Our model offers a da ta-driven approach to evaluating SDEs, providing a more objective and evidence -
+based decision-making process. While data limitations and unforeseen circumstances may influence future
+outcomes, our model provides a solid foundation for informed decision-making.
+We are committed to further refining our model and providing ongoing support to the IOC. Please do not
+hesitate to contact us if you have any questions or require additional information.
+Thank you for your time and consideration.
+
+Yours sincerely,
+The HiMCM team
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+25
+
+AI Use Report
+Google’s Gemini language model was used solely to revise the language of the sections 1.1, 3 and 8, as
+well as the letter to IOC, building upon our draft. No generative AI tools were employed in the creation of
+the core content, methodology or programming.
+
+ᇿ Hi MCM
+ሧ࿟

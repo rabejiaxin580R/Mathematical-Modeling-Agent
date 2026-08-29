@@ -14,8 +14,10 @@ from fastapi.responses import StreamingResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import auth, billing, db, proxy, mail
-from .config import config
+from . import auth, billing, db, proxy, mail, graph, user_settings
+from . import literature
+from .config import config, Config, save_runtime_settings
+from .knowledge import knowledge_base
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,6 +34,11 @@ app = FastAPI(title="LLM API 网关")
 def _startup():
     config.ensure_dirs()
     db.init_db()
+    # 预加载知识库
+    try:
+        knowledge_base.load()
+    except Exception:
+        logger.exception("知识库加载失败")
     for p in config.validate():
         logger.warning(p)
     logger.info("上游：%s（白名单模型：%s）", config.UPSTREAM_BASE_URL,
@@ -81,6 +88,24 @@ def list_models(ctx: dict = Depends(_api_key_user)):
     models = sorted(config.ALLOWED_MODELS) or list(config.MODEL_PRICES.keys())
     return {"object": "list",
             "data": [{"id": m, "object": "model", "owned_by": "gateway"} for m in models]}
+
+
+class LiteratureSearchRequest(BaseModel):
+    query: str
+    sources: list[str] = ["arxiv", "semantic_scholar"]
+    max_per_source: int = 5
+
+
+@app.post("/v1/literature/search")
+def literature_search(req: LiteratureSearchRequest, ctx: dict = Depends(_api_key_user)):
+    """文献检索（鉴权但不计费）：服务端搜 arXiv / Semantic Scholar，结果缓存 7 天。
+
+    本地 app 用它替代直连，从而无需自己配代理或 API key。
+    """
+    papers = literature.search_literature(
+        req.query, sources=req.sources, max_per_source=req.max_per_source
+    )
+    return {"papers": papers}
 
 
 # ════════════════════════ 网站 API ════════════════════════
@@ -226,19 +251,251 @@ def admin_test_mail(to: str = "", _: bool = Depends(auth.require_admin)):
 
 _NO_CACHE = {"Cache-Control": "no-store, must-revalidate"}
 
+# ════════════════════════ 设置 ════════════════════════
+class SettingsRequest(BaseModel):
+    api_key: str = ""
+    base_url: str = ""
+    model: str = ""
+
+
+@app.get("/api/settings")
+def api_get_settings():
+    """返回当前上游配置（API Key 脱敏）。"""
+    key = config.UPSTREAM_API_KEY
+    masked = ""
+    if len(key) >= 12:
+        masked = key[:5] + "****" + key[-4:]
+    elif key:
+        masked = key[:3] + "****"
+    _PLACEHOLDER = ("your-real", "your-key", "your-deepseek", "change-me", "your-api", "example")
+    _has = bool(key and len(key) >= 15 and not any(p in key.lower() for p in _PLACEHOLDER))
+    return {
+        "api_key": masked,
+        "base_url": config.UPSTREAM_BASE_URL,
+        "model": (sorted(config.ALLOWED_MODELS)[0] if config.ALLOWED_MODELS else ""),
+        "has_key": _has,
+    }
+
+
+@app.post("/api/settings")
+def api_save_settings(req: SettingsRequest,
+                      user: dict = Depends(auth.get_current_user)):
+    """保存上游 API 配置（需登录）。"""
+    updates = {}
+    key = req.api_key.strip()
+    # 如果 key 不是脱敏占位（不含 ****），则更新
+    if key and "****" not in key and len(key) >= 15:
+        updates["api_key"] = key
+    if req.base_url.strip():
+        updates["base_url"] = req.base_url.strip()
+    if req.model.strip():
+        updates["model"] = req.model.strip()
+    if updates:
+        save_runtime_settings(updates)
+        Config.reload()
+    return {"ok": True, "has_key": bool(config.UPSTREAM_API_KEY)}
+
+
+@app.post("/api/settings/auto")
+def api_settings_auto(user: dict = Depends(auth.get_current_user)):
+    """一键配置：自动生成用户 API Key + 检测上游 Key 是否可用（需登录）。"""
+    _PLACEHOLDER = ("your-real", "your-key", "your-deepseek", "change-me", "your-api", "example")
+    upstream_key = config.UPSTREAM_API_KEY
+
+    # 1. 检查上游 Key 是否已配好（非占位符）
+    if (not upstream_key or len(upstream_key) < 15 or
+            any(p in upstream_key.lower() for p in _PLACEHOLDER)):
+        raise HTTPException(400, "管理员尚未配置上游 API Key。请在 .env 中设置 UPSTREAM_API_KEY 后重试。")
+
+    # 2. 自动生成一个用户 API Key（sk-xxx）
+    new_key = auth.create_api_key(user["id"], "一键配置自动生成")
+
+    # 3. 上游已配置 → 返回成功
+    return {
+        "ok": True,
+        "has_key": True,
+        "api_key": new_key.get("key", ""),
+        "api_key_prefix": new_key.get("key_prefix", ""),
+        "base_url": config.UPSTREAM_BASE_URL,
+        "model": sorted(config.ALLOWED_MODELS)[0] if config.ALLOWED_MODELS else "",
+    }
+
+
+# ── 用户级上游来源（AI 问答用平台额度 or 自己的 Key）──
+class UserUpstreamRequest(BaseModel):
+    source: str = ""          # platform | own（仅切换来源时传）
+    api_key: str = ""         # own 模式：自己的上游 Key
+    base_url: str = ""
+    model: str = ""
+
+
+@app.get("/api/user/upstream")
+def api_get_user_upstream(user: dict = Depends(auth.get_current_user)):
+    """返回当前用户的 AI 问答 API 来源配置（key 脱敏）。"""
+    return user_settings.get_public(user["id"])
+
+
+@app.post("/api/user/upstream")
+def api_set_user_upstream(req: UserUpstreamRequest,
+                          user: dict = Depends(auth.get_current_user)):
+    """切换来源 / 保存自己的上游 Key。
+    - 只传 source：切换来源（切 own 需已有有效 key）；
+    - 传了 api_key：保存自配上游，并默认切到 own。
+    """
+    try:
+        if req.api_key.strip():
+            return user_settings.save_own(user["id"], req.api_key, req.base_url,
+                                          req.model, switch=(req.source != "platform"))
+        if req.source:
+            return user_settings.set_source(user["id"], req.source)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return user_settings.get_public(user["id"])
+
+
+# ════════════════════════ 知识库 ════════════════════════
+@app.get("/knowledge")
+def page_knowledge():
+    """知识库浏览：课程地图 + 学习卡片（无需登录）。"""
+    return FileResponse(config.STATIC_DIR / "knowledge.html", headers=_NO_CACHE)
+
+
+@app.get("/knowledge-hall")
+def page_knowledge_hall():
+    """AI 知识大厅：AI 问答 + 知识地图（无需登录即可浏览，AI 问答需登录）。"""
+    return FileResponse(config.STATIC_DIR / "knowledge_hall.html", headers=_NO_CACHE)
+
+
+@app.get("/api/map")
+def api_map():
+    """课程地图：模块 → 子类 → 概念的嵌套结构（无需登录）。"""
+    return graph.build_map()
+
+
+@app.get("/api/graph/node/{chunk_id}")
+def api_graph_node(chunk_id: str):
+    """单个概念完整详情（无需登录）。"""
+    detail = graph.node_detail(chunk_id)
+    if detail is None:
+        raise HTTPException(404, "概念不存在")
+    return detail
+
+
+@app.get("/api/knowledge/search")
+def api_knowledge_search(q: str = "", top_k: int = 20):
+    """全文搜索概念（无需登录）。"""
+    results = knowledge_base.search(q, top_k)
+    return {
+        "query": q,
+        "results": [
+            {"concept_id": u.chunk_id, "title": u.title,
+             "one_liner": (u.explain or {}).get("one_liner", ""),
+             "difficulty": u.difficulty, "score": round(s, 4)}
+            for u, s in results
+        ]
+    }
+
+
+class KnowledgeChatRequest(BaseModel):
+    message: str
+    history: list[dict] = []
+
+
+@app.post("/api/knowledge/chat")
+async def api_knowledge_chat(req: KnowledgeChatRequest,
+                               user: dict = Depends(auth.get_current_user)):
+    """AI 知识问答（需登录，消耗 Token 额度）。
+    检索知识库 → 注入上下文 → 调用 DeepSeek → 流式返回 + 引用。
+    """
+    user_id = user["id"]
+
+    # 决定 API 来源：own（用自己的 Key，不扣 Token）| platform（扣平台额度）
+    upstream = user_settings.effective_upstream(user_id)
+    if upstream["billable"] and not billing.has_credit(user_id):
+        raise HTTPException(402, "免费额度已用完，可切换到「自己的 API Key」或充值后再用")
+
+    from .knowledge import format_chat_context
+
+    # 1. 检索相关概念
+    top_concepts = knowledge_base.search(req.message, top_k=config.KNOWLEDGE_TOP_K)
+    context_text = format_chat_context([u for u, _ in top_concepts])
+
+    # 2. 构建 system prompt
+    system_prompt = (
+        "你是数学建模领域的AI助教。请基于下面提供的知识库内容回答用户问题。\n"
+        "要求：\n"
+        "- 回答要有出处，引用知识点时使用 [citation:concept_id] 格式标注\n"
+        "- 如果知识库内容不足以回答，请诚实说明\n"
+        "- 使用中文回答，保持专业但通俗易懂的风格\n"
+        "- 数学公式使用 LaTeX 格式（行内 $...$，块级 $$...$$）\n\n"
+        "=== 知识库参考内容 ===\n" + context_text
+    )
+
+    # 3. 构建消息列表
+    messages = [{"role": "system", "content": system_prompt}]
+    messages.extend(req.history)
+    messages.append({"role": "user", "content": req.message})
+
+    # 4. 构建请求载荷（own 模式用用户自配模型，platform 用全局模型）
+    fallback_model = config.KNOWLEDGE_MODEL or (
+        sorted(config.ALLOWED_MODELS)[0] if config.ALLOWED_MODELS else "deepseek-chat")
+    model = upstream["model"] or fallback_model
+    payload = {
+        "model": model,
+        "messages": messages,
+        "stream": True,
+        "temperature": 0.7,
+        "max_tokens": 2048,
+    }
+
+    # 5. 调用代理基础设施（platform 扣费；own 用自己的上游，不扣平台 Token）
+    def on_usage(m: str, p: int, c: int):
+        if not upstream["billable"]:
+            return
+        try:
+            billing.charge(user_id, m, p, c)
+        except Exception:
+            logger.exception("知识问答扣费失败 user=%s", user_id)
+
+    return StreamingResponse(
+        proxy.stream_chat(payload, on_usage,
+                          api_key=upstream["api_key"], base_url=upstream["base_url"]),
+        media_type="text/event-stream")
+
+
 # ════════════════════════ 页面路由 ════════════════════════
 @app.get("/")
 def page_index():
+    """首页 = 产品展示 + 下载页（无需登录）。"""
+    return FileResponse(config.STATIC_DIR / "download.html", headers=_NO_CACHE)
+
+
+@app.get("/login")
+def page_login():
+    """登录/注册页（领免费 Token 入口）。"""
     return FileResponse(config.STATIC_DIR / "login.html", headers=_NO_CACHE)
 
 
 @app.get("/dashboard")
 def page_dashboard():
+    """用户控制台（需登录）。"""
     return FileResponse(config.STATIC_DIR / "dashboard.html", headers=_NO_CACHE)
+
+
+@app.get("/download")
+def page_download():
+    """下载页别名（与首页相同）。"""
+    return FileResponse(config.STATIC_DIR / "download.html", headers=_NO_CACHE)
 
 
 if config.STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(config.STATIC_DIR)), name="static")
+
+# /dl/ —— 安装包下载直链
+from .config import ROOT_DIR as _ROOT_DIR
+_DL_DIR = _ROOT_DIR.parent / "download"
+if _DL_DIR.exists():
+    app.mount("/dl", StaticFiles(directory=str(_DL_DIR)), name="download")
 
 
 if __name__ == "__main__":

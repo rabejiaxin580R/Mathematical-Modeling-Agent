@@ -1,0 +1,839 @@
+ğ
+2020 HIMCM PROBLEM A
+HIMCM GROUP 10656
+1. Summary
+The uncertainty caused by the COVID-19 pandemic has led many to begin making organized
+plans for the future. Among high school students, this involves looking to the summer of 2021 for
+crucial work experience amidst the pandemic. However, the job market is often intimidating through
+its sheer volume and variety, especially for high schoolers— many of whom have no experience
+with job-searching. In this paper, we develop a comprehensive model matching high schoolers
+with suitable jobs based on several inputs set by the job seeker. We extend this model to unpaid
+internships, another popular summer work opportunity for high school job seekers.
+We ﬁrst deﬁne several factors which delineate the most important priorities of a high school job
+candidate. These are, namely, COVID-19 risk, maximum physical exertion, wage, working hours, and
+ﬁelds of interest. The user’s input data is matched to a database of work opportunities, each with
+their own sets of data to illustrate the work experience. Combining user and job data in an ultimate
+mathematical formula yields a calculated score of suitability corresponding to every user-job pairing,
+with the ten most suitable jobs by score returned for the user. A similar formula is developed for
+unpaid internships, with a heavier emphasis on user interests.
+Both models are implemented in Python, allowing for easy testing of large and diverse data. The
+models are tested on 17 ﬁctional high school students with varying backgrounds: 10 searching for
+jobs and 7 searching for internships. Varying backgrounds allow for both extreme and moderate
+cases to be tested and evaluated. Holistically, the test data would be completely representative of all
+high school job seekers, given the criteria.
+We present our model as a simple and navigable online website. Job seeker input is gathered
+through a short questionnaire, establishing the user’s priorities, and our mathematical model is then
+run to return the best work opportunities for the user, based on their answers to the questionnaire.
+This presentation allows summer jobs and internships to be matched to high school opportunity
+seekers with ease, simplifying the chaotic job market into an organized, individualized list, and
+establishing a plan for the future during the uncertain present.
+1
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 2 of 24
+Contents
+1. Summary 1
+2. Introduction 2
+2.1. Background 2
+2.2. Problem Interpretation 2
+2.3. Assumptions 3
+3. Developing the Model 4
+3.1. Variables 4
+3.2. Developing the Data 6
+3.3. A Mathematical Formula for Jobs 7
+3.4. A Mathematical Formula for Internships 10
+4. Testing the Model 10
+4.1. Sensitivity Analysis 13
+5. Presenting the Model 13
+6. Strengths and Weaknesses 15
+7. Conclusion 16
+References 17
+8. Appendix I: Python Code for the Job Model 17
+9. Appendix II: Python Code for the Internship Model 19
+10. Appendix III: Full Job Recommendations for All Test Cases 20
+11. Appendix IV: Full Internship Recommendations for All Test Cases 21
+12. Appendix V: Full job and test database 22
+13. Appendix VI: Full internship and test database 23
+2. Introduction
+2.1. Background.
+As the end of 2020 approaches, high school students must plan ahead and search for work
+opportunities for the upcoming summer. This is easier said than done. Each student possesses
+a unique and diverse pool of interests, preferences, and needs which are suited to a myriad of
+diﬀerent summer jobs. Furthermore, most high school students— overwhelmed by the seemingly
+inﬁnite number of choices while unsure of where to ﬁnd speciﬁc job opportunities— are unaware of
+which jobs are best for them, prompting a need for an automated model to help them make a decision.
+The main problem lies in the countless number of factors which can be considered for each potential
+job. This only increases with the current COVID-19 pandemic. To avoid confusion, these factors
+must be dealt with by an automated algorithm or model, in which the most signiﬁcant interests and
+priorities must be extracted and processed to determine the “best” job.
+2.2. Problem Interpretation.
+Our objective is to create an algorithm which determines the best job match for a high school
+student in the summer of 2021 based on several aspects of the job seeker and the jobs themselves.
+We interpreted the problem as three fundamental questions:
+(1) What jobs for high schoolers will be available in the summer of 2021, and what will the job
+experiences entail?
+(2) What aspects of a summer job will an individual deem important? How can they be
+determined or quantiﬁed? What aspects of an individual will an employer deem important?
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 3 of 24
+(3) How can we evaluate the many opportunities for high school summer work opportunities and
+ﬁnd those which best ﬁt an individual based on their interests, preferences, and priorities?
+The solutions to the ﬁrst and second questions deﬁne the factors needed to determine a suitable job
+match. Answering the third question combines these factors into a meaningful model which can
+be quickly used to determine the best ﬁt. Keeping in mind the target audience, the model should
+be simple and presentable. We can also extend the model to search for unpaid internships, which
+involves a similar process.
+2.3. Assumptions.
+It is necessary to make a few preliminary assumptions, so that a clear and logical solution to be
+outlined:
+(1) Assumption 1: Demographics
+The model will only apply to high schoolers 14 years of age and above who are American
+citizens residing within the United States.
+Justiﬁcation: The bulk of occupational data and statistics available to us were collected
+from the United States of America. The vast majority of American citizens attending
+American high schools reside in the United States and would therefore be considering job
+opportunities within the United States. American federal child labor laws prohibit non-
+agricultural work for minors below the age of 14. Our model will only consider and encourage
+legal employment opportunities, as stated in Assumption 3. Thus, 14 years is used as the
+threshold age for a signiﬁcantly wide range of legal employment opportunities to open up.
+(2) Assumption 2: Deﬁnition of a Summer Job
+A summer job is deﬁned as a position where one is legally employed and paid for re-
+peated periods of labor over the course of a summer, while high school is not in session. This
+includes standard paid jobs and paid internships, but not unpaid internships and volunteering.
+Justiﬁcation: This deﬁnition of a job is widely accepted internationally. American high
+schools are not in session during most of the summer.
+(3) Assumption 3: Extent of Legality
+All jobs are compliant with American federal labor laws, but not necessarily state or local
+laws.
+Justiﬁcation: Labor laws vary to an extremely high degree amongst states, and to an even
+higher degree locally. To oﬀer a more uniform picture for all American high schoolers, we set
+the universal standard at the federal level. This means that unreported "under the table"
+jobs are not considered in this model, as well as any violations of age requirements.
+(4) Assumption 4: Qualiﬁcations
+High schoolers cannot hold any degree of education at or above a high school diploma,
+and all employers follow only the U.S. Bureau of Labor Statistics Occupational Outlook
+Handbook (OOH) in accepting applicants’ qualiﬁcations.
+Justiﬁcation: Fewer than 3% of high schoolers graduate early [8], so it is safe to assume
+that a high schooler using the model will not hold any formal degree of education. Although
+18 year-olds can have high school diplomas, which open up the job market, we found that
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 4 of 24
+most of these jobs, such as being a police oﬃcer or commercial pilot, require additional
+training after graduation and could therefore not be feasibly held the summer after gradua-
+tion. For simplicity and accuracy, we assume that no high schooler using our model holds
+any higher educational degree. We base our data oﬀ of OOH, as it is a deﬁnitive federal
+governmental database of labor statistics. This has two important ramiﬁcations regarding
+qualiﬁcations. First, all job categories which require a high school diploma, according to the
+OOH, are restricted from the model. Second, the remaining job categories will not consider
+any qualiﬁcations in accepting applicants.
+(5) Assumption 5: Job Categories
+All jobs within our given categories involve the same work, physical intensity, hours, and
+wages.
+Justiﬁcation: Speciﬁc aspects of jobs will vary widely based on employer and location
+within the United States. These aspects cannot be speciﬁcally identiﬁed even at the state or
+local level. For simplicity, we assumed that nationwide metrics would dictate the relative
+positioning of job categories in terms of our chosen factors.
+(6) Assumption 6: COVID-19 Safety Guidelines
+All in-person jobs follow all COVID-19 safety guidelines set by their respective states in
+November 2020.
+Justiﬁcation: We unfortunately project that the COVID-19 pandemic will still be wide-
+spread in the summer of 2021. Currently, many jobs take place in-person during the pandemic
+with added safety restrictions. We assume all jobs are legally compliant with all of these
+restrictions to establish a standard. This assumption allows the COVID-19 safety of a
+job to be evaluated solely based on the amount of contact on the job, which could vary
+widely based on location and regulation, but would not vary signiﬁcantly relative to other jobs.
+(7) Assumption 7: Consistent Work Schedule
+For all jobs, every day of work will consist of the same relative number of hours per day.
+Justiﬁcation: Typically, working hours can vary on a daily and weekly balance, especially
+for jobs with greater demand at certain times and days (e.g. restaurant cook). For simplicity,
+and to create a standardized time frame for working hours, we assume the average working
+hours per work day.
+3. Developing the Model
+3.1. V ariables.
+We list the variables at play in our model below:
+(1) Rc is the job’s COVID-19 risk rating, on a scale from1 to 4, with 1 being the lowest risk
+and 4 being the highest. Guidelines from OSHA [6] were used to score each job. The user
+input Ri, measured on the same scale, reﬂects the necessity of the summer job, based on
+how much of a COVID-19 risk the user is willing to accommodate for the sake of working.
+(2) Wages (measured in United States Dollars per hour) are the primary indicator of how much
+money is earned from a job. In our model, we draw entry-level wages from a job database,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 5 of 24
+which reﬂects nationwide data from 2018-2020 [7]. We classify these into three wage brackets,
+based on the hourly wage of the job:
+(1) $8-9, (2) $9-11, (3) $11+. The job wage valueWc is then 1, 2, or 3, depending on
+which wage bracket the job falls under. The user inputWi reﬂects the level of priority the
+user places on earning money through the summer job, inputted as the desired wage bracket
+the user would like to work for.
+(3) Hours (measured in working hours per day) are classiﬁed into three brackets:
+(1) 1-2 hour jobs, (2) half day jobs, or (3) full day jobs. The jobs each have two
+corresponding hour variables, Hm and HM, each being a number form 1 to 3. These
+represent the minimum and maximum time brackets the job generally provides.
+The user inputHi is the desired time bracket they desire to work for. It reﬂects the user’s
+level of commitment to the job, versus other summer activities and commitments such as
+recreation or academics.
+(4) We rank physical intensity on a four-point scale. A score of 1 means the job is completely
+sedentary and requires virtually no physical movement (e.g. virtual tutor). A score of 2
+means the job requires basic standing or minimal movement (e.g. cashier). A score of 3
+means the job requires walking or moderate movement (e.g. waiter), and a score of 4 means
+the job requires strenuous physical activity (e.g. construction worker). The valuePc shows
+how much physical activity the job requires.
+The user inputPi is the maximum amount of physical activity the user is willing to exert,
+which reﬂects the range of comfort the user has with varying levels of physical intensity. This
+may be aﬀected by physical disabilities or injuries.
+(5) Each job has a legal minimum age requirementAc of either 14, 16, or 18. This variable
+determines which jobs a student can legally apply to, and which students an employer can
+legally hire. The user inputAi is simply the age of the user.
+(6) Each job was tagged with a number of the following seven interest groups, which were
+adapted from several of the most popular ﬁelds of youth summer employment as in [3]:
+(a) Food
+(b) Service
+(c) Sales
+(d) Art
+(e) Technology
+(f) Manual Labor
+(g) Healthcare
+A synthesis of the data shown in [3] is shown in Figure 1.
+The interest groups submitted by the user are converted into a binary stringIi, where a
+1 in the kth bit denotes an interest in thekth ﬁeld, while a0 denotes that the user is not
+interested. This is matched to the associated binary string of each job (Ic), to determine
+how well the job ﬁt the speciﬁc interests of the user.
+This prioritizes jobs that applicants would enjoy working at, with a beneﬁt to mental
+health and job performance.
+For internships, the list of interests is diﬀerent and more speciﬁc, since internships tend
+to be more scientiﬁc and specialized. The list of interests is as below, inspired by the most
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 6 of 24
+Figure 1. The data in [3]. The list of seven interests was drawn from this list of
+popular jobs.
+popular internships listed at [4]:
+(a) Education
+(b) Life Sciences
+(c) Physical Sciences
+(d) Mathematics
+(e) Data Analysis
+(f) Engineering
+(g) Finances
+(h) Communications
+(i) Service
+(j) Art
+(k) Technology
+(7) The variableEi accounts for the user’s preference of gathering experience (interest) or earning
+pay. The value is set to one if the user values wages or zero if the user values interest.
+3.2. Developing the Data.
+Using Assumption 4 - that applicants were not allowed to hold a high school diploma- we ﬁltered
+the U.S. Bureau of Labor Statistics Occupational Outlook Handbook (OOH) for job categories which
+ﬁt this criteria [7]. This yielded a list of 108 occupations with the only criteria being that no formal
+education was required.
+From this list, we expanded certain categories. For example, the category “Ushers, Lobby Atten-
+dants, and Ticket Takers”, was expanded to three diﬀerent jobs, keeping in mind that each of these,
+while similar in type of work, are diﬀerent in terms of COVID-19 risk and physical intensity. We also
+removed categories, speciﬁcally categories which we found redundant. For example, the category “Mis-
+cellaneous entertainers and performers, sports and related workers” too broad a category to expand,
+and decided that two existing categories, “Musician/Singer” and “Artist” would suﬃciently cover
+the feasible occupations. This resulted in a list of 107 occupations which high schoolers could consider.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 7 of 24
+After this adjustment, we referenced federal child labor laws in conjunction with the OOH [2].
+Each of the jobs was assigned to an age bracket based on how old the applicant had to be to complete
+typical tasks required by the jobs. Federal law has preexisting age requirements for certain jobs,
+each group having an age minimum of 14, 16, and 18 years. From this list, we selected a diverse
+pool of 36 speciﬁc jobs representative of each age bracket (each with its legal age) and a diverse
+array of our 7 interest categories.
+For every job, we assessed the COVID-19 transmission riskRC on a discrete scale of 1 (highest risk)
+to 4 (lowest risk), which was adopted from a Department of Labor and Department of Health and
+Human Services “Guidance on Preparing Workplaces for COVID-19” handbook [6]. Seeing as very few
+jobs available to high schoolers met the “very high” or “high” risk level established by the handbook,
+we adjusted the scale within the “medium” and “low” risk levels. We assigned all virtual and remote
+jobs to aRc of 1, and jobs with the most exposure (such as waiters/waitresses) to a maximumRc of 4.
+We then assessed the hourly wageWC for each job, drawing from nationwide entry level wage
+data like OwlGuru as well as median wage data from O*NET (from [5], [1] respectively). We were
+able to group the jobs into the three general wage brackets outlined in Section 3.1.
+We then assessed the physical demandPc for each job, using our self-developed scale outlined
+in Section 3.1. Each job’s physical demand was derived from the job descriptions listed at [1]. All
+virtual and remote jobs were graded as less physically demanding relative to its in-person variant.
+Finally, we developed a range of work hour brackets betweenHm and HM to represent the time
+commitment to the job. Similarly, each job’s time commitment was derived from the job descriptions
+listed at [1].
+With all of these variables determined, we were left with a thorough proﬁle of 36 jobs, each
+with justiﬁed assessments for age requirement, COVID-19 transmission risk, hourly wage, physical
+demand, work hours, and set of interests. This proﬁle is shown in Appendix V. A similar process
+was done to curate a list of 25 internships, as shown in Appendix VI.
+3.3. A Mathematical F ormula for Jobs.
+We attempt to create a mathematical formula to assess how ﬁt a certain job is for an individual.
+This formula works by giving each jobj a score Sj. Higher scores mean the job is more ﬁt to the
+individual. First, we deﬁne seven terms, which will then be multiplied together to get the ﬁnal score.
+a1 =
+
+
+(|Ri−Rc+ 1
+2|
+Ri−Rc+ 1
+2
+)
+2 + 1
+2
+
+ (1.04)Ri−Rc
+The ﬁrst term,a1, is the COVID-19 risk term. As stated in Section 3.1, each job has a COVID-19
+risk rating from1 to 4, depending on the risk of contracting the disease at the workplace. This isRc.
+The user then inputs a numberRi that is the maximum COVID-19 risk rating they are willing to
+endure.
+The ﬁrst term in the product is1 exactly when Ri≥ Rc, and 0 otherwise. In other words, if the
+job has a higher risk than the user is willing to endure, its total index is0 and the job is thrown out
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 8 of 24
+of consideration. Otherwise, nothing happens. To see this, note that
+|Ri− Rc + 1
+2|
+Ri− Rc + 1
+2
+is−1 if and only ifRi− Rc≤− 1
+2. Since Ri and Rc are both integers, this is equivalent toRi < R c.
+Dividing by2 and adding 1
+2 yields 0. A similar analysis yields that the term is1 if and only ifRi≥ Rc.
+The second term in the product provides a slight bonus for jobs whose COVID-19 risk rating is
+lower than the user is willing to handle. This is because a lower COVID-19 risk rating is always
+beneﬁcial. This multiplier maxes out at1.12 in the case ofRi = 4 and Rc = 1, so it is not too
+inﬂuential. Its purpose is mostly to break ties.
+a2 =
+(
+2− max(0,Wi−Wc)
+)Ei+1
+The second term,a2, is a measure of wages. Each job has a wage bracketWc associated with it
+that is an integer from1 to 4, inclusive. The user also inputs the minimum wageWi they are willing
+to work for. We do not consider wage to be an end-all factor for jobs; that is, we assume the user
+would still be willing to work for a job with lower wages than they would like, albeit not as willingly.
+To implement this, we use an exponential decay function. Speciﬁcally, ifWi≤ Wc (that is,
+the job pays at least as much as the user is willing to work for), then this term evaluates to
+1 and has no eﬀect on the formula. Otherwise, if the job’s wage is less than the user is willing
+to work for, the function evaluates to1
+2 , 1
+4 , 1
+8, depending on how many wage bracketsWc and Wi diﬀer.
+The outermost exponent comes fromEi, which is1 if the user values wage over interest and0
+otherwise. Thus, if the user values wage as one of their top priorities, this term is squared to increase
+its prevalence in the product. Otherwise, nothing happens.
+a3 =
+( 1 + 0.25Si + 0.01Di
+2.75
+)2−Ei
+The third term,a3 is the interest term. As deﬁned in Section 3.1, each user has a seven-digit
+binary string Ii that they input, where thekth bit is0 if they are not interested in thekth topic and
+1 otherwise. Each job also has an associated binary stringIc, deﬁned similarly. We then deﬁneSi as
+the number of bits that are1 in both Ii and Ic. In other words, it is the number of interests that
+the user has that are also in the job. We also deﬁneDi to be the number of bits that are0 in both
+Ii and Ic. This is the number of interests that the user does not have that the job does not have as
+well. Matching interests provide a large bonus, while matching non-interests provide a smaller bonus,
+mostly for the purpose of breaking ties. This term is1 in the worst case and2.75 in the best. We
+divide by 2.75 to keep this term between0 and 1 (since all the other terms are). Thus, a job with
+no matching interests will have a low interest multiplier, while in the best case this multiplier will be1.
+The exponent comes fromEi, a variable which is1 if the user values wage over interests, and0
+otherwise. If the user does value the interest of the job more than the wage, this term is squared to
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 9 of 24
+increase its prevalence in the ﬁnal product. Otherwise, nothing happens.
+a4 =
+
+−
+(|Hm−Hi+ 1
+2|
+Hm−Hi+ 1
+2
+)
+2 + 1
+2
+
+
+(
+(0.7)Hi−min(HM ,Hi)
+)
+The fourth term,a4 is a measure of the working hours. Here,Hm and HM are the minimum and
+maximum amount of hours one can work at a speciﬁc job, respectively, where the scale is from1 to
+3 for low, medium, and high amounts of hours, respectively. The user also inputsHi, the maximum
+amount they are willing to work. The ﬁrst term of the product is constructed similarly to ﬁrst
+part of terma1, so that it is0 if and only ifHi < H m, and one otherwise. In other words, if the
+job oﬀers more hours than the user can handle, the term evaluates to0 and the whole job is discarded.
+The second term in the product is an exponential decay function for whenHi≤ Hm. If the user
+is able to work more hours than the job can provide (Hi > H M), this is not a reason to discard the
+whole job, but it is a reason to lower its overall score. Thus, we use an exponential decay function
+that lowers the score more the larger the diﬀerence betweenHM and Hi. This diﬀerence is at most
+2, so the constant0.7 was picked since(0.7)2 = 0.49, meaning this term will, at worst, roughly halve
+the score.
+a5 =
+(|Pi−Pc+ 1
+2|
+Pi−Pc+ 1
+2
+)
+2 + 1
+2
+The ﬁfth term,a5, is a measure of physical intensity. Each job has a physical intensityPc that is
+1 to 4, and the user inputs the maximum physical intensityPi that they are willing to endure. This
+term is constructed exactly the same as the ﬁrst part ofa1, meaning it is0 if and only ifPi < P c
+and 1 otherwise.
+a6 =
+(|Ai−Ac+ 1
+2|
+Ai−Ac+ 1
+2
+)
+2 + 1
+2
+The sixth term,a6, is a measure of age. Each job has a minimum ageAc, and the user inputs
+their age Ai. Similar to termsa5 and the ﬁrst part of terma1, this term is0 exactly when Ai < A c
+and 1 otherwise.
+Then, the formula is:
+6∏
+i=1
+ai
+For completeness, we write the complete expression for scoring a job:
+
+
+
+(|Ri−Rc+12|
+Ri−Rc+12
+)
+2 +12
+
+(1.04)Ri−Rc
+
+((2−max(0,Wi−Wc))Ei+1)((1+0.25Si+0.01Di2.75
+)2−Ei)
+
+
+−
+(|Hm−Hi+12|
+Hm−Hi+12
+)
+2 +12
+
+((0.7)Hi−min(HM,Hi))
+
+
+
+(|Pi−Pc+12|
+Pi−Pc+12
+)
+2 +12
+
+
+
+
+(|Ai−Ac+12|
+Ai−Ac+12
+)
+2 +12
+
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 10 of 24
+Note that the score of a job is0 if and only if any of the following are true, as these are considered
+to be irreversible conditions:
+(1) Ri < R c
+(2) Pi < P c
+(3) Ai < A c
+3.4. A Mathematical F ormula for Internships.
+We now propose a similar mathematical formula to evaluate unpaid internships, which follow a
+slightly diﬀerent set of constraints. Speciﬁcally, by the assumptions in Section 2.3, we need only
+consider physical demand, COVID-19 risk, and the interests of the student. Thus, the formula for
+scoring an internship is the product of three terms instead of six.
+We use three termsb1, b2, b3. The ﬁrst and second terms measure COVID-19 risk and physical
+demand, respectively. We have:
+b1 = a1, b2 = a5
+Term b3 is the interests term, but is constructed slightly diﬀerently froma3, the interests term
+for the job formula. First, we removeEi, since there is no concept of wages for unpaid intern-
+ships. We also consider interests to be far more important for internships than jobs; that is, if
+no interests match up, the interest term should be very close to0 and the overall score very low.
+There are11 interests, so we simply remove the1 at the beginning ofa3 so that termb3 maxes out at1:
+b3 =
+( 0.25Si + 0.01Di
+2.75
+)
+The ﬁnal formula for scoring an internship is then:
+3∏
+i=1
+bi
+For completeness, we write the complete expression for scoring an internship:
+
+
+
+
+(
+|R i− R c + 1
+2|
+R i− R c + 1
+2
+)
+2 + 1
+2
+
+ (1 .04) R i− R c
+
+
+
+
+(
+|P i− P c + 1
+2|
+P i− P c + 1
+2
+)
+2 + 1
+2
+
+
+(
+0 .25 S i +0 .01 D i
+2 .75
+)
+Once again, this score is0 if and only if eitherRi < R c or Pi < P c (or both).
+4. Testing the Model
+To test our model, we ﬁrst create a list of 17 high school students, 10 of whom are aiming for
+paid jobs, and 7 of whom are aiming for internships. We assign each student a list of inputs, all of
+which are plausible real-life situations. For example, person A’s inputs, as seen in Figure 2, can be
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 11 of 24
+supported by the following description: Person A is a 17-year-old high school junior who is in need
+of money and willing to work long hours at any physical level. However, they have many family
+members who are susceptible to COVID-19 at home, and they are searching for a lower-risk job.
+They are interested in manual labor, food, and service.
+Each of these inputs are plugged into Python code for the respective model. This code implements
+the model described in Section 3, and can be found in Appendices I and II. Jobs and internships are
+taken from the data developed as described in Section 3.2. Results of the code (the best jobs and
+internships for each inputted student), are found in Figures 2 and 3. These matchups are as accurate
+as they can be with the limited database of jobs. RADAR charts are shown in Figures 4, 5, 6, and 7
+for person A and person J. The shaded-in areas are very similar between person A and their selected
+job as well as person J and their selected job, demonstrating the strength of the model.
+Note that the code actually returns the top 10 jobs or internships that would best match with a
+user. This is done to give the user some choice, and the full output data is shown in Appendices III
+and IV. However, Figure 2 shows only the best match for succinctness.
+Figure 2. A table of the 10 job-seeking inputted users and their outputted best
+jobs. Both jobs are listed in the case of a tie.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 12 of 24
+Figure 3. A table of the 7 internship-seeking inputted users and their outputted
+best internships. Both internships are listed in the case of a tie.
+Figure 4. A RADAR
+chart depicting the in-
+puts of Person A.
+Figure 5. A RADAR
+chart depicting the at-
+tributes of Person A’s
+outputted best job.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 13 of 24
+Figure 6. A RADAR
+chart depicting the in-
+puts of Person J.
+Figure 7. A RADAR
+chart depicting the at-
+tributesofPersonJ’sout-
+putted best job.
+4.1. Sensitivity Analysis.
+To test the sensitivity of our model, we can examine Person B. Because the maximum hours for
+Person B is level 1, their jobs are limited to those with a time commitment of level 1. No jobs
+related to service or sales had a small enough time commitment, so Person B was unable to get any
+recommendations with jobs matching his interests. However, if we changeH1 = 1 and H1 = 2, we
+ﬁnd that the model is able to recommend Sales and Service related jobs like News/Street Vendor and
+Technology Consultant as top choices. Terma4, as in Section 3.3, lowers the score if the maximum
+hours oﬀered by a job is less than the user’s inputted hours. Thus, preference was given to jobs that
+could support level 2 hours (part-time work). Moreover, an increase in the amount of maximum
+hours increases the pool of available jobs, making jobs which align with Person B’s interest score
+higher.
+Another factor we can change slightly to get diﬀerent results is the wage level. Because the wage
+Person D chose wasWi = 1, wage did not aﬀect the comparisons between jobs. Thus, the top jobs
+were calculated mainly to ﬁt his their interests and safety, like Freelance Musician (remote) and
+Childcare Worker (remote). However, if we modify the wage choice fromWi = 1 to Wi = 2, we ﬁnd
+that these low paying jobs are replaced with Animal Shelter Worker and Freelance Musician (in
+person). Term a2, as in Section 3.3, halves the score if the wage level of the job is 1 less than the
+wage level the user inputs. Thus, the scores of the two previous top jobs were signiﬁcantly decreased
+and the two new jobs with higher pay were given a better ranking.
+5. Presenting the Model
+The models are presented using a website. Our model requires user input in the form of answers to
+many questions, so we decided a questionnaire was how we would gather user data. This questionnaire
+can be best represented through a website. We also need to do calculations in the background, so
+physical options like newspapers do not suﬃce.
+The ﬁrst question, on the homepage, determines whether or not the user is looking for a paid
+job or an unpaid internship. Since the models for the two are diﬀerent, this question allows the
+computer to know which model to use. Each answer leads to a separate form. If the user enters that
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 14 of 24
+they are looking for a job, they then answer the following questions on the respective form, each of
+which is accompanied by a set of choices with labels, as shown in Figure 8:
+(1) What is your age, in years?
+(2) Regarding COVID-19 risk, what is the maximum level of contact of your desired job?
+(3) What is your preferred minimum hourly wage?
+(4) What is the maximum daily hours you can work?
+(5) What is the maximum level of physical exertion you would prefer on the job?
+(6) Please check oﬀ your ﬁelds of interest!
+(a) Food
+(b) Service
+(c) Sales
+(d) Art
+(e) Technology
+(f) Manual Labor
+(g) Healthcare
+If the user desires an internship, they ﬁll out a shorter form:
+(1) Regarding COVID-19 risk, what is the maximum level of contact of your desired job?
+(2) What is the maximum level of physical exertion you would prefer on the job?
+(3) Please check oﬀ your ﬁelds of interest!
+(a) Education
+(b) Life Sciences
+(c) Physical Sciences
+(d) Mathematics
+(e) Data Analysis
+(f) Engineering
+(g) Finances
+(h) Communications
+(i) Service
+(j) Art
+(k) Technology
+After the user ﬁlls out their respective form, the computer performs the calculations based on the
+correct model. It is assumed there is access to a database of jobs near the user’s location. Based
+on their inputs, the computer computes a score for each job in proximity to the user and outputs
+the ten best jobs, accompanied by their scores. The top ten jobs are printed out as to give the user
+some choice, because all of the top ten jobs would ideally be suitable ﬁts.
+Figure 8 depicts a prototype of what the website would look like.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 15 of 24
+Figure 8. The setup of the website.
+6. Strengths and Weaknesses
+Our models compare diﬀerent jobs and internships based on user input very well, but there are
+still improvements to be made. We list some strengths and weaknesses of the model in Figure 9:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 16 of 24
+Figure 9. A table depicting the strengths and weaknesses of our model.
+7. Conclusion
+In this paper, we developed a model to ﬁnd the best work opportunity for a high school student in
+the summer of 2021, whether that be a job or unpaid internship. This model is based oﬀ the user’s
+input of a variety of relevant factors, such as COVID-19 risk, interests, and desired wage (in the
+case of a job). Each job and internship has assigned statistics for the same factors, and these are
+then combined to score each work opportunity with respect to the user. Two diﬀerent models were
+created for jobs and unpaid internships, because they operate oﬀ a slightly diﬀerent set of factors.
+However, the models are very similar in operation and sensitivity.
+The model was tested with 17 diﬀerent data inputs in the form of ﬁctional students, with 10
+students seeking jobs and 7 seeking internships. Jobs were selected for each of the 10 users from a
+database of 36 jobs, as curated in Section 3.2. A similar list of 25 internships was developed for the
+7 users seeking those opportunities. The input data was designed to be as realistic as possible while
+covering a large gamut of possible inputs to the model. The model was found to work suﬃciently in
+all input cases, providing reasonable work opportunities for all users, as desired. These opportunities
+matched the user’s preferences as well as possible from the small database available. We posit
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 17 of 24
+that, with a larger database of potential work opportunities, matches will only become more accurate.
+The model was presented using a website for the greatest ease of entering user input as well as
+the fact that all calculations could be run automatically. In the future, we desire to fully implement
+this model. We also hope to improve the model by factoring in commute and favoring jobs that are
+closer to home over jobs that are farther away. While it was infeasible to manually add commute
+data for each job on each input case, this could be done in a real implementation via a web scraper
+that scrapes job data from online using the user’s location. Another factor worth considering is
+qualiﬁcations. These were disregarded in the current model via Assumption 4, but the inclusion of
+these would make the model more accurate and realistic.
+References
+[1] Find occupations. [Online]. Available from:https://www.onetonline.org/find/. O*NET Online.
+[2] Child labor provisions of the fair labor standards act (ﬂsa) for nonagricultural occupations. [Online]. Available
+from: https://www.dol.gov/agencies/whd/fact-sheets/43-child-labor-non-agriculture , December 2016.
+U.S. Department of Labor.
+[3] Summer employment: A snapshot of teen workers : Career outlook. [Online]. Available from:https://www.bls.
+gov/careeroutlook/2017/article/youth-summer-employment.htm, June 2017. U.S. Bureau of Labor Statistics.
+[4] Top 20 ﬁelds for internships: Get your skills on. [Online]. Available from:https://www.nytimes.com/2017/02/
+03/education/edlife/top-20-fields-for-internships-get-your-skills-on.html?auth=login-google , Feb-
+ruary 2017. The New York Times.
+[5] Discover your career path. [Online]. Available from: https://www.owlguru.com/career/path/, March 2020.
+OwlGuru.
+[6] Guidance on preparing workplaces for covid-19. [Online]. Available from:https://www.osha.gov/Publications/
+OSHA3990.pdf, 2020. Occupation Safety and Health Administration.
+[7] Home : Occupational outlook handbook. [Online]. Available from:https://www.bls.gov/ooh/, September 2020.
+U.S. Bureau of Labor Statistics.
+[8] Kimberly Railey. Early high school graduation programs gain traction. [Online]. Available from:https://www.
+usatoday.com/story/news/nation/2013/07/27/early-high-school-graduation/2518817/, July 2013. USA To-
+day.
+8. Appendix I: Python Code for the Job Model
+import csv
+people_file = open( ’Job Database − JobPeople . csv ’ , ’r ’)
+peopl = csv . reader( people_file )
+people = [ line for line in peopl ]
+people .pop(0)
+jobs_file = open( ’Job Database − Jobs . csv ’ , ’r ’)
+jo = csv . reader( jobs_file )
+jobs = [ line for line in jo ]
+jobs .pop(0)
+def partition (arr , low , high ):
+i = (low − 1)
+pivot = arr [ high ][1]
+for j in range(low , high ):
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 18 of 24
+if arr [ j ][1] <= pivot :
+i = i + 1
+arr [ i ] , arr [ j ] = arr [ j ] , arr [ i ]
+arr [ i + 1] , arr [ high ] = arr [ high ] , arr [ i + 1]
+return ( i + 1)
+def quickSort(arr , low , high ):
+if len(arr) == 1:
+return arr
+if low < high :
+pi = partition (arr , low , high)
+quickSort(arr , low , pi − 1)
+quickSort(arr , pi + 1, high)
+def score (R,r ,W,w, Inte , inte ,P,p,H,hm,hM,A,a,poe ):
+rScore = (abs(R − r+0.5)/(R − r+0.5)/2.0+0.5) ∗(1.04 ∗ ∗(R− r ))
+wScore = 2.0 ∗∗( − max(0 ,W−w))
+count0 = 0
+count1 = 0
+for i in range (7):
+if Inte [ i ] == inte [ i ]:
+if Inte [ i ] == ’0 ’:
+count0 += 1
+if Inte [ i ] == ’1 ’:
+count1 += 1
+iScore = (1+(0.25 ∗count1) + (0.01 ∗ count0))/2.75
+pScore = abs(P −p+0.5)/(P −p+0.5)/2.0+0.5
+hScore = ( − 0.5) ∗(abs(hm −H− 0.5)/(hm −H− 0.5) − 1) ∗(0.7 ∗ ∗(H−min(hM,H)))
+aScore = abs(A − a+0.5)/(A − a+0.5)/2.0+0.5
+return rScore ∗ (wScore ∗∗ (poe+1)) ∗ ( iScore ∗∗ (2− poe)) ∗ pScore ∗
+hScore ∗ aScore
+recs = []
+for person in people :
+scores = []
+for job in jobs :
+scores .append ([ job [0] , score ( int (person [1]) , int (job [2]) ,
+int (person [2]) , int (job [2]) , person [3] , job [7] ,
+int (person [4]) , int (job [4]) , int (person [5]) ,
+int (job [5]) , int (job [6]) , int (person [6]) ,
+int (job [2]) , int (person [7]))])
+quickSort(scores , 0, len( scores) − 1)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 19 of 24
+top10 = scores [:: − 1][0:10]
+print ( scores [:: − 1][0:10])
+recs .append ([ person [0] , ’ ’])
+for rec in top10 :
+if rec [1] > 0:
+recs .append(rec)
+recs_file = open( ’ recs_file . csv ’ , ’w’)
+csvwriter = csv . writer ( recs_file )
+csvwriter . writerows( recs )
+9. Appendix II: Python Code for the Internship Model
+import csv
+people_file = open( ’Job Database − InternPeople . csv ’ , ’r ’)
+peopl = csv . reader( people_file )
+people = [ line for line in peopl ]
+people .pop(0)
+interns_file = open( ’Job Database − Internships . csv ’ , ’r ’)
+inter = csv . reader( interns_file )
+interns = [ line for line in inter ]
+interns .pop(0)
+def partition (arr , low , high ):
+i = (low − 1)
+pivot = arr [ high ][1]
+for j in range(low , high ):
+if arr [ j ][1] <= pivot :
+i = i + 1
+arr [ i ] , arr [ j ] = arr [ j ] , arr [ i ]
+arr [ i + 1] , arr [ high ] = arr [ high ] , arr [ i + 1]
+return ( i + 1)
+def quickSort(arr , low , high ):
+if len(arr) == 1:
+return arr
+if low < high :
+pi = partition (arr , low , high)
+quickSort(arr , low , pi − 1)
+quickSort(arr , pi + 1, high)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 20 of 24
+def score (R,r , Inte , inte ,P,p):
+rScore = (abs(R − r+0.5)/(R − r+0.5)/2.0+0.5) ∗(1.04 ∗ ∗(R− r ))
+count0 = 0
+count1 = 0
+for i in range (11):
+if Inte [ i ] == inte [ i ]:
+if Inte [ i ] == ’0 ’:
+count0 += 1
+if Inte [ i ] == ’1 ’:
+count1 += 1
+iScore = (0.25 ∗ count1 + 0.01 ∗count0)/2.75
+pScore = abs(P −p+0.5)/(P −p+0.5)/2.0+0.5
+#print (rScore , iScore , pScore)
+return rScore ∗iScore ∗pScore
+recs = []
+for person in people :
+scores = []
+for intern in interns :
+scores .append ([ intern [0] , score ( int (person [1]) ,
+int ( intern [2]) , person [3] , intern [1] ,
+int (person [2]) , int ( intern [3]))])
+quickSort(scores , 0, len( scores) − 1)
+top10 = scores [:: − 1][0:10]
+print ( scores [:: − 1][0:10])
+recs .append ([ person [0] , ’ ’])
+for rec in top10 :
+if rec [1] > 0:
+recs .append(rec)
+irecs_file = open( ’ irecs_file . csv ’ , ’w’)
+csvwriter = csv . writer ( irecs_file )
+csvwriter . writerows( recs )
+10. Appendix III: Full Job Recommendations for All Test Cases
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 21 of 24
+Figure 10. A table depicting the model’s job recommendations for all test cases.
+11. Appendix IV: Full Internship Recommendations for All Test Cases
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 22 of 24
+Figure 11. A table depicting the model’s internship recommendations for all test cases.
+12. Appendix V: Full job and test database
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 23 of 24
+Figure 12. The jobs and test cases that our model was tested with.
+13. Appendix VI: Full internship and test database
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10656, Page 24 of 24
+Figure 13. The internships and test cases that our model was tested with.
+ᇿ Hi MCM
+ሧ࿟

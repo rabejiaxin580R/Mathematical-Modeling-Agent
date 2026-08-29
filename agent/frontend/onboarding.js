@@ -78,9 +78,6 @@ const OnboardingTour = (() => {
     `;
     document.body.appendChild(overlayEl);
 
-    // 首次展示即标记已触发，防止页面切换后重复弹出
-    localStorage.setItem("ob_completed", "1");
-
     cardEl = document.getElementById("ob-card");
     dotsEl = document.getElementById("ob-dots");
 
@@ -216,12 +213,16 @@ const OnboardingTour = (() => {
 
   function skipTour() {
     if (transitioning) return;
+    // 用户主动跳过才标记完成（而非一打开就标记，保证未看完能再次自动弹出）
+    localStorage.setItem("ob_completed", "1");
     destroyOverlay();
     if (onFinishCallback) onFinishCallback();
   }
 
   function finishTour() {
     if (transitioning) return;
+    // 走完最后一步才标记完成
+    localStorage.setItem("ob_completed", "1");
     destroyOverlay();
     if (onFinishCallback) onFinishCallback();
   }

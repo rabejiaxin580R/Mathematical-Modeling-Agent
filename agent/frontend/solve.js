@@ -475,11 +475,33 @@
               break;
             case "done":
               if (!bubble && ev.content) bubble = addAssistantShell();
-              if (bubble) { bubble.classList.remove("cursor"); MMRender.renderMarkdown(bubble, ev.content); }
+              if (bubble) {
+                bubble.classList.remove("cursor");
+                if (ev.content) MMRender.renderMarkdown(bubble, ev.content);
+                // ev.content 为空则保留 token 增量渲染的既有内容，不覆盖（防"吞回答"）
+              }
               break;
             case "error":
               addError(ev.message || "出错了");
               break;
+          }
+        }
+      }
+      // 流结束：flush decoder 待决字节，并补处理残留的完整事件（防截断丢失）
+      sseBuf += decoder.decode();
+      if (sseBuf.trim()) {
+        for (const part of sseBuf.split("\n\n")) {
+          const line = part.replace(/^data: /, "").trim();
+          if (!line) continue;
+          let ev; try { ev = JSON.parse(line); } catch { continue; }
+          if (ev.type === "token") {
+            if (!bubble) bubble = addAssistantShell();
+            buf += ev.text; MMRender.renderMarkdown(bubble, buf);
+          } else if (ev.type === "done") {
+            if (!bubble && ev.content) bubble = addAssistantShell();
+            if (bubble) { bubble.classList.remove("cursor"); if (ev.content) MMRender.renderMarkdown(bubble, ev.content); }
+          } else if (ev.type === "error") {
+            addError(ev.message || "出错了");
           }
         }
       }
@@ -500,7 +522,7 @@
     div.innerHTML = `<div class="sv-msg-role">我</div><div class="sv-bubble"></div>`;
     div.querySelector(".sv-bubble").textContent = text;
     $("sv-chat").appendChild(div);
-    scrollDown();
+    scrollDownForce();
   }
 
   function addAssistantShell() {
@@ -538,7 +560,24 @@
     scrollDown();
   }
 
-  function scrollDown() { const c = $("sv-chat"); c.scrollTop = c.scrollHeight; }
+  // 「粘底」策略：仅当用户本来就在底部附近时，流式增量才自动滚到底；
+  // 用户上滚阅读时不再打断（消除「AI 多打印一段就被拽到底」的问题）。
+  let svAutoStick = true;
+  (function bindSvScroll() {
+    const c = $("sv-chat");
+    if (c) c.addEventListener("scroll", () => {
+      svAutoStick = c.scrollHeight - c.scrollTop - c.clientHeight < 80;
+    });
+  })();
+  function scrollDown() {
+    const c = $("sv-chat");
+    if (c && svAutoStick) c.scrollTop = c.scrollHeight;
+  }
+  function scrollDownForce() {
+    const c = $("sv-chat");
+    svAutoStick = true;
+    if (c) c.scrollTop = c.scrollHeight;
+  }
 
   // ── 工具卡片（紧凑版） ──
   function renderToolCard(display) {

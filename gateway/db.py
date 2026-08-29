@@ -120,6 +120,26 @@ CREATE TABLE IF NOT EXISTS registration_log (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- 用户级上游配置：允许用户切换 AI 问答的 API 来源。
+--   source = 'platform'（默认，用平台额度扣 Token）| 'own'（用自己的上游 Key，不扣 Token）
+--   own 模式下才读 api_key / base_url / model；key 明文存本表（用户自愿托管，仅本人可读写）。
+CREATE TABLE IF NOT EXISTS user_upstream (
+    user_id     TEXT PRIMARY KEY,
+    source      TEXT NOT NULL DEFAULT 'platform',   -- platform | own
+    api_key     TEXT NOT NULL DEFAULT '',
+    base_url    TEXT NOT NULL DEFAULT '',
+    model       TEXT NOT NULL DEFAULT '',
+    updated_at  REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- 文献搜索结果缓存（服务端 /v1/literature/search）：按 query+sources 去重，7 天过期。
+CREATE TABLE IF NOT EXISTS literature_cache (
+    key        TEXT PRIMARY KEY,                     -- sha256(query|sources|max_per_source)
+    papers     TEXT NOT NULL,                        -- JSON: 论文列表
+    created_at REAL NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_keys_user ON api_keys(user_id);
 CREATE INDEX IF NOT EXISTS idx_reglog_ip ON registration_log(ip_address, created_at);
 CREATE INDEX IF NOT EXISTS idx_usage_user ON usage_log(user_id, created_at);

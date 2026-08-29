@@ -1,18 +1,21 @@
 {
   "schema_version": 3,
   "concept_id": "writing.references",
-  "title": "参考文献格式（GB/T 7714）",
+  "title": "参考文献格式（APA 第七版）",
   "taxonomy_path": [
     "论文写作与学术规范",
     "竞赛论文结构规范",
-    "参考文献格式（GB/T 7714）"
+    "参考文献格式（APA 第七版）"
   ],
   "module_id": "A",
   "subcat_id": "A.1",
   "aliases": [
     "参考文献",
     "引用格式",
-    "references"
+    "references",
+    "APA",
+    "APA 7th",
+    "author-date"
   ],
   "difficulty": "Beginner",
   "roles": [
@@ -20,27 +23,35 @@
   ],
   "priority": "P0",
   "explain": {
-    "one_liner": "参考文献格式（GB/T 7714）是一套规则，告诉你在论文里如何规范地标注引用的来源，就像给每个引用贴上标准标签，方便读者查找。",
-    "intuition": "想象你在写一篇关于美食的文章，提到某道菜的做法来自一本菜谱。如果你只说“菜谱上说”，读者不知道是哪本。但如果你说“《家常菜大全》第50页（作者：张三，2020年出版）”，读者就能轻松找到。GB/T 7714就是给这种标注定了一套统一格式，让所有论文的引用都清晰、一致。",
-    "when_to_use": "任何时候你在论文中引用了别人的观点、数据、图表、代码或任何外部信息，都需要使用参考文献格式。特别是在数学建模竞赛论文中，当你引用文献资料、网络数据、报告等时，必须用GB/T 7714格式标注。",
-    "definition": "GB/T 7714是中国国家标准《信息与文献 参考文献著录规则》，规定了参考文献的著录项目、著录顺序、著录用符号以及参考文献在正文中的标注方法。它采用顺序编码制，即在正文引用处用序号（如[1]）标注，文末按序号列出详细条目。",
-    "math_principle": "无数学原理。核心逻辑是建立正文引用与文末列表之间的对应关系：正文中每出现一个引用，就按出现顺序分配一个序号（如[1]），文末列表按序号顺序列出每个引用的完整信息（作者、题名、出版信息等）。",
+    "one_liner": "APA 第七版是一套「作者—年份」制的引用规范：正文里写 (Smith, 2020)，文末按作者姓氏字母顺序列出完整条目。",
+    "intuition": "把引用想成给每句话标注出处。编号制（[1][2]）像给货物贴流水号，读者得翻到文末才知道是谁说的；APA 用 (Smith, 2020) 直接把作者和年份写在句子里，读者当场就知道这是谁、什么时候的研究，判断新旧和权威性都不用翻页。文末列表则按姓氏排序，像电话簿一样便于查找。",
+    "when_to_use": "任何引用了外部观点、数据、图表、代码或模型的地方。HiMCM 对引用格式不作硬性规定（实测 152 篇获奖论文里 APA 仅占约 8%，其余多为编号制、MLA 或混用），但全篇统一一种格式是基本的专业性要求，混用是明确的扣分点。本项目统一采用 APA 第七版。",
+    "definition": "APA 第七版是美国心理学会《出版手册》规定的学术引用规范，采用作者—年份制（author-date）。正文用括号夹注标注作者姓与年份；文末「References」章节按第一作者姓氏字母顺序排列，条目采用悬挂缩进（第二行起缩进 0.5 英寸）。核心著录顺序为：作者. (年份). 题名. 来源信息. DOI 或 URL。",
+    "math_principle": "无数学原理。核心是维护双向对应关系：正文每条夹注都必须在文末列表中有唯一匹配条目，反之文末每条也必须在正文至少被引用一次。这是一个二分图完全匹配约束，可用程序自动核验——提取正文所有 (作者, 年份) 对与列表条目做集合比对，任一侧的差集非空即为错误。",
     "step_by_step": [
-      "1. 在正文中需要引用文献的地方，用方括号标注序号，如[1]、[2]等，按首次出现的顺序递增。",
-      "2. 在论文末尾创建“参考文献”章节，按序号顺序列出所有引用。",
-      "3. 每个条目按GB/T 7714格式编写：作者. 题名[文献类型标识]. 出版地: 出版者, 出版年. 起止页码. 例如：张三. 数学建模方法[M]. 北京: 科学出版社, 2020. 50-60.",
-      "4. 对于网络资源，格式为：作者. 题名[EB/OL]. 发布日期 [引用日期]. 网址. 例如：李四. 中国人口数据[EB/OL]. 2020-01-01 [2023-07-15]. http://example.com.",
-      "5. 确保正文中的序号与文末列表一一对应，且序号连续。"
+      "1. 正文夹注：句末括号写 (Smith, 2020)；若作者名已出现在句子中，则写 Smith (2020) found that…。两位作者用 & 连接：(Smith & Jones, 2020)。三位及以上只写第一作者加 et al.：(Smith et al., 2020)。",
+      "2. 直接引用需加页码：(Smith, 2020, p. 15)。",
+      "3. 文末建立「References」章节（标题居中加粗），条目按第一作者姓氏字母顺序排列，不编号。",
+      "4. 每条用悬挂缩进：首行顶格，第二行起缩进 0.5 英寸（1.27 cm）。",
+      "5. 期刊论文格式：Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/xxxxx —— 注意期刊名与卷号用斜体，文章题名不用斜体且只首词首字母大写。",
+      "6. 书籍格式：Author, A. A. (Year). Title of the book (Edition). Publisher. —— 书名用斜体。",
+      "7. 网络资源格式：Author, A. A. (Year, Month Day). Title of the page. Site Name. URL —— 无作者时以机构名代替，无日期写 (n.d.)。",
+      "8. 数据集格式：Author/Organization. (Year). Title of dataset [Data set]. Publisher. URL —— 竞赛常引用政府或机构数据，务必标注 [Data set]。",
+      "9. 全文核验：每条夹注都能在列表找到，每条列表都在正文被引用过。"
     ],
-    "worked_example": "假设论文正文中引用了两篇文献：一篇是张三的书籍，另一篇是李四的网络文章。正文中写：“根据张三的研究[1]，... 此外，李四的数据[2]显示...”。文末参考文献列表为：\n[1] 张三. 数学建模方法[M]. 北京: 科学出版社, 2020. 50-60.\n[2] 李四. 中国人口数据[EB/OL]. 2020-01-01 [2023-07-15]. http://example.com.",
+    "worked_example": "正文：\nPrior work established that dandelion seed dispersal follows a gamma distribution (Jarriault & Mercer, 2012). Sheldon (2019) further showed that wind direction dominates the spread pattern, and recent surveys confirm this across climates (Bradford et al., 2018).\n\n文末（按姓氏字母序，悬挂缩进）：\n\nReferences\n\nBradford, A., Dutzik, T., & Rumpler, J. (2018). Trash in America: Moving from destructive\n    consumption to a zero-waste system. Frontier Group.\n    https://frontiergroup.org/reports/trash-in-america\n\nJarriault, D., & Mercer, A. R. (2012). Queen mandibular pheromone: Questions that remain to be\n    resolved. Apidologie, 43(3), 292–307. https://doi.org/10.1007/s13592-011-0117-6\n\nSheldon, R. (2019). Wind-driven seed dispersal in temperate grasslands. Ecological Modelling,\n    401, 45–58. https://doi.org/10.1016/j.ecolmodel.2019.03.012\n\nU.S. Geological Survey. (2021). Lake Mead monthly elevation data [Data set]. USGS.\n    https://www.usgs.gov/lake-mead-elevation",
     "pitfalls": [
-      "1. 序号不连续：正文中引用顺序跳跃，如先出现[2]再出现[1]，导致列表混乱。",
-      "2. 格式不一致：不同文献类型（书籍、期刊、网络）混用同一格式，缺少文献类型标识。",
-      "3. 网络资源缺少引用日期：网络内容可能变化，必须注明你访问的日期。",
-      "4. 作者姓名顺序错误：中文作者姓在前名在后，英文作者名在前姓在后，需注意。",
-      "5. 正文引用与列表不对应：正文标注了[3]但列表中没有第3条。"
+      "1. 混用格式：同一篇里既有 [1] 编号制又有 (Smith, 2020) 夹注。这是最常见也最容易被发现的扣分点——实测获奖论文里 mixed 占了相当比例，但它属于瑕疵而非可效仿的做法。",
+      "2. 列表未按字母排序：APA 按第一作者姓氏排，不是按正文出现顺序排（那是编号制的规则）。",
+      "3. 漏掉悬挂缩进：全部顶格或全部缩进，都不符合 APA 版式。",
+      "4. 斜体用错位置：期刊名和卷号要斜体、文章题名不要；书名要斜体、章节名不要。写反是高频错误。",
+      "5. 题名大小写照抄原文：APA 的文章题名用 sentence case（只首词与专有名词首字母大写），不是 Title Case。",
+      "6. 三位以上作者在正文写全：正文一律用 et al.，只有文末列表才写出全部作者（最多 20 位）。",
+      "7. 网络资源无日期不标 (n.d.)：留空或臆造年份都是错误。",
+      "8. 引用了数据集却不标 [Data set]：竞赛论文大量使用官方数据，漏标是常见疏漏。",
+      "9. 正文与列表不对应：列表里躺着从未被引用的条目，或夹注找不到对应条目。"
     ],
-    "tools": "常用工具：Zotero、EndNote、Mendeley等文献管理软件可自动生成GB/T 7714格式。手动编写时，可参考GB/T 7714标准文档。最小可运行代码片段（Python，使用bibtexparser库解析BibTeX并输出GB/T 7714格式）：\n```python\nimport bibtexparser\nwith open('references.bib') as bibfile:\n    db = bibtexparser.load(bibfile)\nfor entry in db.entries:\n    # 简单示例：输出作者和标题\n    print(f\"{entry['author']}. {entry['title']}.\")\n```\n注意：实际GB/T 7714格式更复杂，建议使用专业工具。"
+    "tools": "文献管理：Zotero、EndNote、Mendeley 均可一键输出 APA 第七版，Zotero 免费且有浏览器插件。\n\n本项目自动生成与自检的最小实现（结构化数据 → APA 字符串 + 双向对应核验）：\n```python\nimport re\n\ndef fmt_authors(authors):\n    \"\"\"[('Smith','J. A.'), ...] -> 'Smith, J. A., & Jones, B. B.'\"\"\"\n    names = [f\"{last}, {first}\" for last, first in authors]\n    if len(names) == 1:\n        return names[0]\n    return \", \".join(names[:-1]) + \", & \" + names[-1]\n\ndef apa_journal(entry):\n    return (f\"{fmt_authors(entry['authors'])} ({entry['year']}). \"\n            f\"{entry['title']}. {entry['journal']}, \"\n            f\"{entry['volume']}({entry.get('issue','')}), {entry['pages']}. \"\n            f\"https://doi.org/{entry['doi']}\")\n\ndef check_correspondence(body_text, entries):\n    \"\"\"正文夹注与列表条目双向核验，返回两侧差集。\"\"\"\n    cited = set()\n    for m in re.finditer(r\"\\(([A-Z][A-Za-z\\-']+)(?: et al\\.| & [A-Z][A-Za-z\\-']+)?, (\\d{4})\", body_text):\n        cited.add((m.group(1), m.group(2)))\n    listed = {(e['authors'][0][0], str(e['year'])) for e in entries}\n    return {\n        'cited_but_not_listed': sorted(cited - listed),   # 正文引了，列表没有\n        'listed_but_not_cited': sorted(listed - cited),   # 列表有，正文没引\n    }\n```\n注意 `check_correspondence` 的正则只覆盖常见夹注写法，叙述式引用（Smith (2020) found…）需另加一条规则。"
   },
   "formulas": [],
   "cases": [
@@ -58,6 +69,7 @@
       "2225",
       "2358",
       "2380"
-    ]
+    ],
+    "revision_note": "原为 GB/T 7714（国标顺序编码制）。赛制定为 HiMCM/美赛后整体改写为 APA 第七版作者—年份制。语料实测：152 篇获奖论文中 APA 仅 12 篇，故本条不可用语料当范例，须按规范生成。"
   }
 }

@@ -1,0 +1,1555 @@
+ğ
+Problem Chosen
+B
+2024
+Summary Sheet
+Team Control Number
+15502
+Summary
+Against the backdrop of energy shortages and growing environmental concerns, the energy
+consumption and carbon emissions of HPC have become issues that attract widespread attention.
+In response, we conducted a study on the energy consumption and carbon footprint of HPC.
+To assess the energy consumption of HPC, we designed an HPC energy consumption model
+that indirectly estimates energy use based on societal computing demands, overcoming the chal-
+lenge of obtaining HPC energy consumption data. Our model ﬁrst allocates the demand to two
+categories of systems: Massive Parallel Processing and cluster systems. Then, it proportionally
+distributes the computing tasks executed by these systems to individual high-performance comput-
+ers and determines the global annual energy consumption of HPC based on their energy efﬁciency
+metrics. Through our computational analyses, we discern that the annual energy consumption of
+HPC under full load is approximately bounded within the range of [1.97 × 108, 2.87 × 108] MWh,
+with the average annual consumption falling between [0.72 × 108, 1.43 × 108] MWh.
+To calculate the carbon emissions of HPC, we ﬁrst developed an HPC carbon emissions cal-
+culation model that incorporates the energy mix, drawing on traditional methods for calculating
+carbon emissions from energy sources. Secondly, we utilized grey prediction models, resistance
+differential equations, and ARIMA models to forecast future trends in HPC energy consumption,
+HPC utilization rates, and seven major energy sources. By combining these forecasting models
+with the carbon emissions calculation model, we can determine the annual carbon emissions of
+HPC for the coming years. Our computational ﬁndings indicate that the projected carbon emis-
+sions for the year 2030 are poised to lie within the interval of [8.18 × 108, 10.54 × 108] tons.
+Expanding upon these models, we constructed an HPC carbon emission calculation model
+with the proportion of clean energy and nuclear energy as variables. By iterating through the
+increase of clean energy and nuclear energy proportions from 0 to 100%, we found that increasing
+the proportion of clean energy can effectively reduce carbon emissions. For instance, when the
+nuclear energy proportion is 20% and the new energy proportion is 60%, carbon emissions can be
+reduced by 77%.
+Additionally, to study the impact of the increasing energy consumption of HPC on community
+energy rights, we took a distribution network that includes an HPC center as an example and used
+KCL and KVL to describe the relationship between the upper limit of community energy access
+and HPC energy consumption. By combining this with the aforementioned model’s predictions for
+HPC energy consumption, we determined the upper limits of community energy access from 2024
+to 2030. The results indicate that by 2028, the upper limit of community energy access is expected
+to drop below 80% of the 2024 level.
+Finally, based on our research ﬁndings, we propose two recommendations: 1) Offer electricity
+price discounts to attract HPC companies to locate their servers in the ocean; 2) Provide power
+generation subsidies to encourage new energy enterprises to develop ocean-based renewable en-
+ergy sources. By leveraging the abundant offshore new energy, we can offset the signiﬁcant energy
+consumption of high-performance computing, which is beneﬁcial for energy saving and carbon
+emission reduction.
+Keywords: HPC; Energy Consumption; Carbon Emissions; Carbon Emissions Model; Forecasting
+Model; Island New Energy
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 2 of 25
+Contents
+1 Introduction 3
+1.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.2 Problem Restatement and Section Organization . . . . . . . . . . . . . . . . . . . 3
+2 Part I: Assessing HPC Energy Consumption 3
+2.1 Model Assumptions and Overview . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2.2 HPC Energy Consumption Model Considering Computational Demand . . . . . . 5
+2.2.1 Model Solution and Result Analysis . . . . . . . . . . . . . . . . . . . . . 6
+3 Part II: Assessing HPC Carbon Emissions 8
+3.1 Model Assumptions and Overview . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3.2 Submodel 1: HPC Carbon Emission Calculation Model Considering Energy Mix . 8
+3.3 Submodel 2: Computing Power and Energy Forecast Model . . . . . . . . . . . . 11
+3.3.1 HPC Full Load Energy Consumption Forecast Model . . . . . . . . . . . . 11
+3.3.2 HPC Average Utilization Rate Forecast Model . . . . . . . . . . . . . . . 12
+3.3.3 Energy Forecast Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+3.4 Model Solution and Result Analysis . . . . . . . . . . . . . . . . . . . . . . . . . 14
+4 Part III: Discussing the Impact of Increasing the Share of New Energy 17
+5 Part V: Extending the Model to Other Key Areas 19
+5.1 Model of HPC’s Impact on Community Energy Rights . . . . . . . . . . . . . . . 19
+5.2 Model Solution and Result Analysis . . . . . . . . . . . . . . . . . . . . . . . . . 20
+6 Recommendations of Policy and Technology 21
+6.1 Recommendations to Reduce the Environmental Impact of HPC . . . . . . . . . . 21
+6.2 Model Upgrade . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+7 Strengths and Weaknesses 22
+8 Conclusion 23
+9 letter 25
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 3 of 25
+1 Introduction
+1.1 Background
+High Performance Computing (HPC) has become ubiquitous in today’s society, with its formidable
+computing power driving revolutionary progress in multiple ﬁelds. For instance, in the ﬁeld of ar-
+tiﬁcial intelligence, HPC has made it possible to train large language and painting models; in the
+ﬁeld of cloud computing, HPC has spurred the rapid development of big data analysis and online
+services[1]. Despite the advancements in society driven by HPC, it has also brought about numer-
+ous environmental issues, such as excessive energy consumption, generation of a large amount of
+electronic waste, constant noise production, and overexploitation of rare earth resources.
+Amidst energy shortages and environmental degradation, the performance of HPC in terms of
+energy consumption and carbon emissions has garnered unprecedented attention. HPC facilities,
+especially large-scale data centers and supercomputers, are becoming new giants in energy con-
+sumption. To meet the growing computational demands, they not only exacerbate the pressure on
+energy supply but also have a signiﬁcant impact on the environment. To ensure that HPC technol-
+ogy can serve the needs of future society in a more sustainable manner, it is essential to delve into
+its impact on energy consumption and carbon emissions and to develop innovative solutions.
+1.2 Problem Restatement and Section Organization
+Task Problem Restatement Organization
+1 Assess the global annual energy consumption of high-performance
+computing from the perspectives of maximum and average loads Section 2
+2 Establish an HPC carbon emission model considering factors such as
+energy production methods and energy mix Section 33 Explore the model changes when energy and HPC grow
+4 Predict the range of carbon emissions in 2030
+5 Discuss the reduction of HPC carbon emissions when the proportion of
+new energy increases Section 4
+6 Extend the model to another environmental factor Section 5
+7 Propose a set of recommendations to reduce the environmental impact
+of HPC Section 6
+8 Discuss how the proposed recommendation can be incorporated into the
+model
+9 Write a letter to the United Nations Consultative Committee Letter
+2 Part I: Assessing HPC Energy Consumption
+2.1 Model Assumptions and Overview
+When investigating the energy consumption of HPC, we found that there is currently a scarcity
+of data on HPC energy consumption. However, we have obtained information on the computing
+power required by society and the Top500 supercomputers[2], which provides detailed descriptions
+of the computing capabilities and energy consumption of typical HPC systems. Considering the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 4 of 25
+close relationship between energy consumption and the computing power demanded by society,
+we estimate the energy consumption of HPC indirectly through the computing power. To this end,
+we have made the following assumptions:
+Assumption The number of each computer in the Top500 list is the same worldwide.
+1 Justiﬁcation
+The exact number of each type of high-performance computer is difﬁcult to
+obtain, but for modeling purposes, it is reasonable to assume a uniform distri-
+bution.
+Assumption The required computational power of society is borne by the 500 types of
+HPC.
+2 Justiﬁcation
+Given that the Top500 list covers the most powerful systems currently, the
+impact of other high-performance computers with lower performance on the
+overall computational demand is negligible.
+Assumption Each computer bears tasks proportional to its rated computing capacity.
+3 Justiﬁcation
+Although it is impossible to know the speciﬁc tasks allocated to each HPC
+category, it is reasonable to assume that they are allocated according to their
+capacity.
+The modeling approach is illustrated in Figure 1. Firstly, we categorize these 500 models of
+HPC into two groups: Massive Parallel Processing (MPP) and Cluster systems. Secondly, we
+allocate the total computing power to these two broad categories. Then, we further distribute the
+computing power undertaken by MPP and Cluster systems to each individual HPC. Finally, by
+referring to the computing capabilities and energy conversion efﬁciency provided by the Top500
+list, we calculate the energy consumption of each HPC.
+Societal
+Computing
+Power
+MPP
+Cluster
+Energy Consumption
+of HPC
+. . .
+. . .
+Assign tasks according to the
+architecture
+Specific to HPC machine and
+computing consumption
+Calculate total consumption based
+on running time
+Step 1 Step 2 Step 3
+Figure 1: The framework diagramof HPC energy consumption model considering the computing
+power demand
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 5 of 25
+2.2 HPC Energy Consumption Model Considering Computational Demand
+We allocate the total computing demand of society evenly between MPP and Cluster based on
+their rated computing capabilities. The computing power that MPP and Cluster should undertake
+is shown in Equation 1.
+T b
+MPP = Tr ×
+PNMPP
+i=1 T max
+MPP,i
+PNMPP
+i=1 T max
+MPP,i + PNCluster
+i=1 T max
+Cluster,i
+T b
+Cluster = Tr ×
+PNCluster
+i=1 T max
+Cluster,i
+PNMPP
+i=1 T max
+Cluster,i + PNCluster
+i=1 T max
+Cluster,i
+(1)
+where Tr represents the computing power required by society, T max
+MPP,i denotes the rated computing
+capacity of the i-th MPP-type HPC, NMPP is the number of MPP-type HPCs, NCluster is the number
+of Cluster-type HPCs, T b
+MPP is the computing load that all MPP-type HPCs should bear, and T b
+Cluster
+is the computing load for all Cluster-type HPCs.
+We also need to further allocate the computing power undertaken by MPP and Cluster to each
+individual HPC. Subsequently, we calculate the power of each HPC by weighting it with the energy
+efﬁciency parameters of each HPC, as shown in Equation 2.
+PMPP,i = T b
+MPP × T max
+MPP,i
+PNMPP
+i=1 T max
+MPP,i
+× 1
+EMPP,i
+PCluster,i = T b
+Cluster × T max
+Cluster,i
+PNMPP
+i=1 T max
+Cluster,i
+× 1
+ECluster,i
+(2)
+where EMPP,i represents the energy efﬁciency of the i-th MPP-type HPC, ECluster,i denotes the
+energy efﬁciency of the i-th Cluster-type HPC, PMPP,i is the power of the i-th MPP-type HPC, and
+PCluster,i is the power of the i-th Cluster-type HPC.
+When calculating the annual energy consumption of global HPC at full load, simply multiply
+power by time, with the unit of energy consumption power being megawatts (MW). However, we
+also note that in addition to the computational energy consumption of the HPC itself, the normal
+operation of the HPC also requires auxiliary systems such as cooling and power distribution, and
+the energy consumption of these systems should also be included. The annual energy consumption
+of the HPC is shown in Equation 3.
+ECS Full = (ECS MAP
+Full + ECS Cluster
+Full ) × P U E
+= (
+NMPPX
+i=1
+PMPP,i × 8760 +
+NMPPX
+i=1
+PCluster,i × 8760) × P U E
+(3)
+where P U E stands for Power Usage Effectiveness, 8760 represents the total number of hours in a
+year, and ECS Full denotes the annual energy consumption of the HPC.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 6 of 25
+Additionally, we note that global HPCs do not operate at full capacity throughout the year[ 3].
+Therefore, it is necessary to incorporate the average utilization rate AU R to calculate the average
+annual energy consumption ECS Average of global HPCs.
+ECS Average = (
+NMPPX
+i=1
+PMPP,i × 8760 +
+NMPPX
+i=1
+PCluster,i × 8760) × AU R × P U E (4)
+2.2.1 Model Solution and Result Analysis
+Firstly, we collected the TOP500 dataset and performed data cleaning to eliminate some miss-
+ing data, ultimately obtaining relevant data for 187 high-performance computers, including com-
+puting power, energy efﬁciency, architectural type, etc., as shown in Figures 2a, 2b, and 2c. After
+consulting various sources, we found that by the end of 2023, the total computing power of society
+was approximately 551 EFlops[ 4], and the range of values for P U E is [1,2] [ 5]. Newly built or
+retroﬁtted HPC clusters can achieve below 1.5. Incorporating these results into Equation 2 allows
+us to determine the speciﬁc computing power that MPP and Cluster should undertake. Subse-
+quently, by applying these values into Equations 3 and 4, we can calculate the maximum annual
+energy consumption and the average annual energy consumption of HPCs.
+0 20 40 60 80 1001201401601802000
+2
+4
+6
+8
+10
+12
+14104
+(a) Computing Power
+0 20 40 60 80 1001201401601802000
+10
+20
+30
+40
+50
+60
+70 (b) Energy Efﬁciency
+0 2 4 6 8 10 12 14104
+0
+10
+20
+30
+40
+50
+60
+70 (c) Architecture Type
+Figure 2: Data related to the Top 500
+The annual energy consumption of HPC is related to the PUE indicator, average utilization rate,
+and the total computing power of society. Therefore, we discussed the annual energy consumption
+of HPC when PUE varies within the range of [1, 2] and the total computing power of society
+varies within [300, 900] EFlops, with the results shown in Table 2 and Figure 2. Additionally, we
+discussed the annual energy consumption of HPC when the average utilization rate varies within
+the range of [0.3, 0.9] and the total computing power of society varies within [300, 900] EFlops,
+with the results shown in Table 1 and Figure 3.
+In Table 2, the increase from top to bottom represents the average utilization rate rising from
+0.3 to 0.8, and the increase from left to right represents the societal computing power increasing
+from 300 EFlops to 900 EFlops. This indicates that higher average utilization rates and larger
+scales of societal computing power lead to greater annual energy consumption of HPCs. In Table
+1, the higher the PUE value, the more additional energy is required for cooling, power distribution,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 7 of 25
+Table 1: Global Annual Energy Consumption of HPC under Full Load
+PUE Required Computing Power [EFlops]
+300 400 500 600 700 800 900
+1 1.79 × 108 2.39 × 108 2.99 × 108 3.59 × 108 4.18 × 108 4.78 × 108 5.38 × 108
+1.166 2.09 × 108 2.79 × 108 3.49 × 108 4.18 × 108 4.88 × 108 5.58 × 108 6.28 × 108
+1.332 2.39 × 108 3.19 × 108 3.98 × 108 4.78 × 108 5.58 × 108 6.38 × 108 7.17 × 108
+1.498 2.69 × 108 3.59 × 108 4.48 × 108 5.38 × 108 6.28 × 108 7.17 × 108 8.07 × 108
+1.664 2.99 × 108 3.98 × 108 4.98 × 108 5.98 × 108 6.97 × 108 7.97 × 108 8.96 × 108
+1.83 3.29 × 108 4.38 × 108 5.48 × 108 6.57 × 108 7.67 × 108 8.77 × 108 9.86 × 108
+Table 2: Global Annual Energy Consumption of HPC Considering Average Utilization Rate
+AUR Required Computing Power [EFlops]
+300 400 500 600 700 800 900
+0.3 5.38 × 107 6.28 × 107 7.17 × 107 8.07 × 107 8.97 × 107 9.86 × 107 1.08 × 108
+0.4 7.17 × 107 8.37 × 107 9.56 × 107 1.08 × 108 1.20 × 108 1.32 × 108 1.43 × 108
+0.5 8.97 × 107 1.05 × 108 1.20 × 108 1.34 × 108 1.49 × 108 1.64 × 108 1.79 × 108
+0.6 1.08 × 108 1.26 × 108 1.43 × 108 1.61 × 108 1.79 × 108 1.97 × 108 2.15 × 108
+0.7 1.26 × 108 1.46 × 108 1.67 × 108 1.88 × 108 2.09 × 108 2.30 × 108 2.51 × 108
+0.8 1.43 × 108 1.67 × 108 1.91 × 108 2.15 × 108 2.39 × 108 2.63 × 108 2.87 × 108
+and other systems to maintain normal operation, demonstrating that more energy is consumed in
+scenarios with lower energy efﬁciency.
+02
+2
+4
+1000
+6
+108
+800
+8
+1.5
+10
+600
+12
+4001200
+2
+3
+4
+5
+6
+7
+8
+9
+10
+108
+(a) Full Load Energy Consumption
+00.8
+1
+1000
+2
+0.6
+108
+3
+800
+4
+6000.4
+5
+4000.2200
+1
+1.5
+2
+2.5
+3
+3.5
+4
+108 (b) Average Energy Consumption
+Figure 3: Full Load and Average Energy Consumption of HPC
+From Figure 3a, it can be observed that as the demand for societal computing power and the
+PUE increase, the full load energy consumption tends to rise. A lower PUE value indicates lower
+energy consumption for the same computing demand, signifying higher energy efﬁciency of HPCs.
+Figure 3b reveals that with the increase in computing demand and utilization rate, the average en-
+ergy consumption also increases. In recent years, the average utilization rate of HPCs has contin-
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 8 of 25
+ued to rise slowly with the expansion of the total societal computing power, indicating that there is
+still room for growth in the total demand for computing power.
+Considering the current range of PUE values from 1.1 to 1.6, the annual energy consumption
+under full load for HPCs can be calculated to be approximately within [1.97 × 108, 2.87 × 108]
+MWh. Referring to the average utilization rate range of [0.35, 0.5], the annual average consump-
+tion of HPCs can be calculated to be approximately within [0.69 × 108, 1.44 × 108] MWh.
+3 Part II: Assessing HPC Carbon Emissions
+3.1 Model Assumptions and Overview
+To assess the carbon emissions of HPC by 2030, we have made the following assumptions and
+developed two models: 1) the HPC carbon emission model considering the energy mix, and 2) the
+computing power and energy forecast model. The HPC carbon emission model uses HPC energy
+demand and energy mix as inputs and outputs the total carbon emissions. The computing power
+and energy forecast model is responsible for predicting the computing power and various energy
+situations that HPC will undertake in the coming years. By integrating these two models, we can
+obtain the annual carbon emissions of HPC for the subsequent years.The modeling approach is
+illustrated in Figure 4.
+Assumption Only seven types of energy sources are considered: coal, gas, oil, wind, solar,
+hydropower, and nuclear energy.
+1 Justiﬁcation According to the energy data published in 2024, these seven energy sources
+account for the largest proportion, and other energy sources can be neglected.
+Assumption
+The carbon emissions generated from the production of clean energy equip-
+ment, such as wind turbines and photovoltaic panels, are averaged over total
+produced electricity of their lifecycle.
+2 Justiﬁcation
+The latest research indicates that although wind turbines and photovoltaic
+panels do not produce carbon dioxide during operation, their production does
+generate carbon dioxide, which should be distributed over their lifecycle.
+Assumption The electricity demand of HPC grows exponentially.
+3 Justiﬁcation In recent years, HPC has developed rapidly, especially after the emergence of
+ChatGPT in 2022, showing an overall exponential growth pattern.
+3.2 Submodel 1: HPC Carbon Emission Calculation Model Considering
+Energy Mix
+We have observed that by 2023, fossil fuels such as coal, oil, and natural gas account for
+approximately 60% of the total electricity generation, while hydropower, nuclear energy, and re-
+newable sources like wind and solar account for about 39.2% [ 6]. These seven sources essentially
+constitute the global electricity generation. Therefore, we disregard other forms of energy and pri-
+marily consider these seven types. The total carbon emissions caused by HPC in year t are shown
+in Equation 5.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 9 of 25
+Carbon Emission Assessment of HPC
+Energy Forecast Model
+Carbon Emission
+Calculation Model
+Energy Consumption
+Forecast Model
+Average Utilization
+Rate Forecast Model
+HPC Carbon Emission
+Forecast Data for 2025-2030
+ARIMA
+Gray
+Forecasting
+Drag
+Differential
+Equation
+Fossil
+Clean Energy
+• Energy Generation
+Data
+• HPC Energy
+Consumption Data
+• HPC average
+utilization data
+Carbon Emission Calculation Model,
+Computing Power and Energy Forecast Model
+Obtain forecast data based on submodel
+Calculate carbon emission forecast
+data
+Step1 Step2 Step3
+Section 3.2
+Section 3.3.3
+Section 3.3.1
+Section 3.3.2
+Figure 4: The framework diagram of HPC Carbon Emission Model
+CE j = fCoal
+ 
+GCoal
+t
+
++ fOil
+ 
+GOil
+t
+
++ fGas
+ 
+GGas
+t
+
++ fWind
+ 
+GWind
+t
+
++ fSolar
+ 
+GSolar
+t
+
++ fHydro
+
+GHydro
+t
+
++ fNuclear
+ 
+GNuclear
+t
+ (5)
+where GCoal
+t , GOil
+t , GGas
+t , GWind
+t , GSolar
+t , GHydro
+t , and GNuclear
+t represent the electricity generation from
+Coal, Oil, Gas, Wind, Solar, Hydro, and Nuclear in year t, respectively. The functions fCoal(·),
+fOil(·), fGas(·), fWind(·), fSolar(·), fHydro(·), and fNuclear(·) represent the relationship between the
+electricity generation and carbon emissions of the aforementioned energy sources. We will provide
+a detailed explanation of these functions next.
+• Carbon Emissions from Fossil Fuels: Coal, Oil, Gas
+The carbon emissions from fossil fuel power generation can be roughly calculated using
+emission factors. The process of fossil fuel power generation essentially involves converting
+thermal energy into mechanical energy by power generation units, which is then used for
+electricity generation. The efﬁciency of the units varies under different operating conditions,
+affecting the CO2 emissions per unit of electricity generated [ 7]. Therefore, the carbon
+emissions from fossil fuel power generation cannot be simply multiplied by the emission
+factor; they must also be adjusted based on the operating conditions. The formula for the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 10 of 25
+Figure 5: HPC Carbon Emission Calculation Approach
+carbon emissions from fossil fuels is shown in Equation 6.
+fCoal
+ 
+GCoal
+t
+
+= η · kCoal · GCoal
+t
+fCoal
+ 
+GOil
+t
+
+= η · kOil · GOil
+t
+fGas
+ 
+GGas
+t
+
+= η · kGas · GGas
+t
+(6)
+η = a × P 3 + b × P 2 + c × P + d (7)
+In the equations, kCoal = 820 g/kWh is the carbon emission coefﬁcient for coal power, kOil =
+720 g/kWh is the carbon emission coefﬁcient for oil, and kGas = 490 g/kWh is the carbon
+emission coefﬁcient for gas [ 8, 9]. The correction factor η is a polynomial curve related to
+the load P of the power generation unit [ 10], as shown in Figure 6.
+Figure 6: Correction factors for carbon emission coefﬁcients of fossil energy
+• Carbon Emissions from Clean Energy: Wind, Solar, Hydro
+New energy sources such as wind, solar, and hydro power do not produce carbon dioxide
+during electricity generation and are considered completely clean. However, some studies
+indicate that considering new energy power generation as having zero carbon emissions is
+not reasonable. It is necessary to account for the carbon emissions associated with the entire
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 11 of 25
+lifecycle of new energy equipment, including production and transportation [ 11]. Therefore,
+when calculating the carbon emissions from new energy power generation, we adopt the ap-
+proach of allocating the full lifecycle carbon emissions to the expected electricity generation
+within the design service life of the equipment, calculated as the levelized carbon dioxide
+emissions, as shown in Equation 8.
+fWind
+ 
+GWind
+t
+
+= CE Wind
+m
+EP Wind
+use
+× GWind
+t
+fSolar
+ 
+GSolar
+t
+
+= CE Solar
+m
+EP Solar
+use
+× GSolar
+t
+fSolar
+
+GHydro
+t
+
+= CE Hydro
+m
+EP Hydro
+use
+× GHydro
+t
+(8)
+where CE Wind
+m , CE Solar
+m , and CE Hydro
+m represent the carbon emissions associated with the
+production and transportation of the equipment over their entire lifecycle. EP Wind
+use , EP Solar
+use ,
+and EP Hydro
+use represent the total electricity generated by the equipment over their service life.
+• Carbon Emissions from Nuclear Energy
+Nuclear energy harnesses the heat generated from nuclear ﬁssion of fuel in a reactor, which
+is then transferred to a steam generator by a coolant, heating the coolant to a high temper-
+ature and pressure state. The high-temperature, high-pressure steam drives the rotation of
+a turbine, which in turn drives the generator to produce electricity, without emitting carbon
+dioxide into the atmosphere. However, it is also necessary to consider the carbon emissions
+over its entire lifecycle, as shown in Equation 9.
+fNuclear
+ 
+GNuclear
+t
+
+= CE Nuclear
+m
+EP Nuclear
+use
+× GNuclear
+t (9)
+where CE Nuclear
+m represents the carbon emissions associated with the production and trans-
+portation of nuclear power plants over their entire lifecycle, and EP Nuclear
+use represents the total
+electricity generated by the equipment over its service life.
+3.3 Submodel 2: Computing Power and Energy Forecast Model
+3.3.1 HPC Full Load Energy Consumption Forecast Model
+HPC is a cutting-edge technology with limited available data, but it is developing rapidly,
+showing an exponential growth trend. In response to the characteristics of scarce data and rapid
+development, we have decided to use the grey prediction model to forecast the full load energy
+consumption of HPC. The GM(1,1) grey prediction model is a method used to establish an ap-
+proximate model for sequences that basically meet the conditions for forming differential equa-
+tions, in order to predict subsequent data [ 12]. Assuming the original sequence is w(0)(k) =
+(w(0)(1), w(0)(2), · · · , w(0)(n)), the original sequence is accumulated to obtain the cumulative gen-
+erating sequence, and a differential equation is constructed for the cumulative generating sequence,
+as follows:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 12 of 25
+(
+w(1) =
+
+w(1) (1) , w(1) (2) , w(1) (3) , ...w(1) (n)
+
+dw(1)
+dt + αw(1) = µ (10)
+where α represents the development grey number, and µ represents the internal control grey num-
+ber.
+Next, we solve Equation 10. Let Yn = [w(0)(2), w(0)(3), · · · , w(0)(n)]T , and the parameters are
+obtained using the least squares method.
+b∂ = (BT B)−1BT Y n (11)
+where b∂ represents the vector of parameters to be estimated, and B represents the intermediate
+quantity; their expressions are as follows:
+B =
+0
+BBB@
+− 1
+2 (w(1)(1) + w(1)(2)) 1
+− 1
+2 (w(1)(2) + w(1)(3)) 1
+... ...
+− 1
+2 (w(1)(n − 1) + w(1)(n)) 1
+1
+CCCA , b∂ =
+ a
+u
+
+Solving Equation 11 yields the discrete-time response function of the grey prediction, and then
+restoring the predicted values of the accumulated sequence allows us to obtain the prediction for
+the original sequence, as shown in Equation 12.
+ w(1)(t + 1) = [ w(0)(1) − u
+a ]e−at + u
+a
+bw(0)(t + 1) = bw(1)(t + 1) − bw(1)(t) , t = 0, 1, 2 · · · n − 1 (12)
+where bw(t + 1) represents the predicted value of the accumulated sequence.
+3.3.2 HPC A verage Utilization Rate Forecast Model
+With the popularization and development of technology, the average utilization rate of HPC
+will show an increasing trend, but the growth rate will gradually approach zero. This is because
+the total amount of electricity available in society is ﬁnite, and other industries also require energy,
+competing with HPC for resources, eventually reaching a state of equilibrium. In other words,
+the average utilization rate of HPC will increase gradually in a decelerating manner, eventually
+approaching a ﬁxed value. These characteristics are very similar to the SI model used in the study
+of infectious diseases, hence we establish a forecast model for the average utilization rate of HPC
+based on the SI model [ 13].
+Assume that the average utilization rate of HPC in year t is AU R(t), and the growth rate of the
+average utilization rate in year t is λ(t). Then, within the time interval [t, t + ∆t], the increase in
+the average utilization rate of HPC is shown in Equation 13.
+AU R(t + ∆t) − AU R(t) = λ (t) AU R(t) ∆t (13)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 13 of 25
+Considering the competitive relationship for energy resources among various industries, the
+growth rate of the average utilization rate of HPC, λ(t), cannot be a ﬁxed constant, as this would
+lead to an unlimited increase in the average utilization rate of HPC. Therefore, we assume that λ(t)
+decreases gradually and is linearly related to the decrease in AU R(t), as follows:
+λ (t) = λ0 (0.8 − AU R(t)) (14)
+where λ0 is the initial growth rate.
+By dividing both sides of Equation 13 by ∆t and taking the limit, we obtain the differential
+equation for predicting the average utilization rate of HPC, as shown in Equation 15.
+dAU R(t)
+dt = λ0 (0.8 − AU R(t)) AU R(t) (15)
+3.3.3 Energy Forecast Model
+We employ the ARIMA model to forecast the electricity generation of various energy sources
+in the coming years. This is because 1) electricity generation often exhibits signiﬁcant seasonality
+and trends, such as wind and solar power being inﬂuenced by seasonal and weather conditions; 2)
+electricity generation data are often non-stationary, meaning their statistical properties (like mean
+and variance) change over time. The ARIMA model combines three methods: Autoregression
+(AR), Integration (I), and Moving Average (MA), making it particularly suitable for processing and
+forecasting non-stationary time series data. Below is a detailed explanation of the mathematical
+principles of the ARIMA model [ 14]:
+• Autoregression (AR): The autoregressive part focuses on the linear relationship between
+the current value and past values in a time series. If the current value Yt of a time series can
+be expressed as a linear combination of its past p values plus a random error term ϵt, then
+the time series has autoregressive properties.
+Yt = ϕ1Yt−1 + ϕ2Yt−2 + . . . + ϕpYt−p + ϵt (16)
+where ϕ1, ϕ2, . . . , ϕp are the autoregressive coefﬁcients.
+• Integration (I): The integration part is the process of transforming a non-stationary time
+series into a stationary one. The number of differences d indicates how many times differ-
+encing is needed to make the series stationary. First differencing ∆Yt = Yt − Yt−1, second
+differencing ∆2Yt = ∆Yt − ∆Yt−1, and so on.
+• Moving A verage (MA):The moving average part focuses on the linear relationship between
+the current value and past error terms in a time series. If the current value Yt of a time series
+can be expressed as a linear combination of the current and past q error terms, then the time
+series has moving average properties. The mathematical expression is:
+Yt = µ + θ1ϵt−1 + θ2ϵt−2 + . . . + θqϵt−q + ϵt (17)
+where µ is the mean of the series, and θ1, θ2, . . . , θq are the moving average coefﬁcients.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 14 of 25
+The ARIMA model integrates the above three components, and its general form can be ex-
+pressed as:
+ϕ(B)(1 − B)dYt = θ(B)ϵt (18)
+where ϕ(B) = 1 − ϕ1B − ϕ2B2 − . . .− ϕpBp is the autoregressive polynomial, θ(B) = 1 + θ1B +
+θ2B2 + . . . + θqBq is the moving average polynomial, and B is the backshift operator, such that
+BYt = Yt−1.
+3.4 Model Solution and Result Analysis
+Firstly, we collected the electricity generation data of fossil fuels and new energy sources from
+2021 to 2024 [15]. We input this dataset into the ARIMA model as shown in Equation 18 to predict
+the generation trends of various energy sources up to 2030. The results are presented in Table 3
+and Figures 7 and 8, which allow us to forecast the changes in the global electricity generation
+energy mix for the coming years. Concurrently, we obtained the scale data of HPC for the past
+four years and substituted this data into the grey prediction model as Equation 12 to obtain the
+HPC computing power scale from 2021 to 2030 [ 16]. Together with the predicted energy mix data,
+these were input into the proposed HPC energy consumption model to derive the annual full load
+energy consumption of HPC for the coming years, as shown in Figure 9a. On the other hand, based
+on the average utilization rate data of HPC and the utilization rate forecast model, we were able
+to calculate the predicted data as shown in Figure 9b. By substituting into Equation 4, we could
+calculate the predicted annual average energy consumption data.
+Table 3: Changes and forecasts of fossil energy from 2021 to 2030
+Power generation [TWh]
+2024 2025 2026 2027 2028 2029 2030
+Coal 10533.60 10942.56 12095.74 12494.74 13634.06 14023.11 15148.62
+Gas 6733.13 7929.90 9365.64 11040.111 12953.09 15104.37 17493.72
+Oil 688.28 758.12 887.82 967.67 1107.37 1197.22 1346.92
+Wind 4488.75 4798.00 5705.75 6025.00 6942.75 7272.00 8199.75
+Solar 1496.25 1634.96 1911.70 2039.54 2294.71 2411.75 2646.22
+Hydro 4249.35 4547.36 4803.96 5017.75 5190.96 5327.06 5429.81
+Nuclear 2723.18 2852.87 3042.42 3182.12 3381.67 3531.37 3740.92
+From Table 3 and Figure 8, it can be observed that the electricity generation from coal and oil
+continues to rise. However, when considering the proportion within the energy mix, their share of
+electricity generation is showing a declining trend. Meanwhile, the generation from natural gas is
+increasing signiﬁcantly and is expected to surpass coal as the primary fuel for electricity generation
+by 2029. Renewable energy sources such as wind and solar power are developing rapidly and will
+capture a larger share of the global electricity generation mix in the coming years. Hydropower,
+being a mature resource for electricity generation, exhibits a slower growth trend in generation,
+nearing its maximum potential. Nuclear energy, as an emerging technology for power generation
+with high associated costs, still holds a small proportion of the total electricity generation but is
+showing a slow and steady growth pattern.
+From Figure 9a, it can be observed that the development trend of HPC is positive, with the
+projected energy consumption in 2030 expected to reach ﬁve times that of 2024. Concurrently, as
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 15 of 25
+20212022202320240
+2000
+4000
+6000
+8000
+10000
+12000
+14000
+16000True ValuePredicted ValuePredicted ValueTrue Value
+(a) Coal
+20212022202320240
+2000
+4000
+6000
+8000
+10000
+12000
+14000
+16000
+18000True ValuePredicted ValuePredicted ValueTrue Value (b) Gas
+20212022202320240
+200
+400
+600
+800
+1000
+1200
+1400 True ValuePredicted ValuePredicted ValueTrue Value (c) Oil
+Figure 7: Changes and forecasts of fossil fuels from 2021 to 2030
+20212022202320240
+1000
+2000
+3000
+4000
+5000
+6000
+7000
+8000
+9000 True ValuePredicted ValuePredicted ValueTrue Value
+(a) Wind
+20212022202320240
+500
+1000
+1500
+2000
+2500
+3000 True ValuePredicted ValuePredicted ValueTrue Value (b) Solar
+20212022202320240
+1000
+2000
+3000
+4000
+5000
+6000 True ValuePredicted ValuePredicted ValueTrue Value
+(c) Hydro
+20212022202320240
+500
+1000
+1500
+2000
+2500
+3000
+3500
+4000 True ValuePredicted ValuePredicted ValueTrue Value (d) Nuclear
+Figure 8: Changes and forecasts of clean energy from 2021 to 2030
+the application of HPC expands on a large scale and the technology matures, Figure 9b shows that
+the average utilization rate will gradually increase, reaching a critical peak of approximately 75%.
+In Tables 4 and Figure 11, we present the range of carbon emission forecasts for the years
+2024-2030. It can be observed that as the demand for societal computing power grows, energy
+consumption increases rapidly. However, the green transition in the global electricity generation
+energy mix is not yet mature, leading to a continued upward trend in carbon emissions. By 2030,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 16 of 25
+20212022202320240
+0.5
+1
+1.5
+2
+2.5
+3
+3.5109
+Model calculationModel calculation + predictionModel calculation + predictionModel calculation
+(a) Annual Full Load Energy Consumption of
+HPC
+20212022202320242025202620272028202920300
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100Rate [%]
+Average Utilization RateAverage Nonutilization Rate
+(b) Average Utilization Rate
+Figure 9: V ariations and Forecasts of HPC Energy Consumption and Utilization Rate from 2021
+to 2030
+Table 4: Carbon Emission Forecast for 2024-2030
+Carbon emissions [ton]
+2024 2025 2026 2027 2028 2029 2030
+Maximum 7.3 × 107 1.2 × 108 1.9 × 108 3.0 × 108 4.6 × 108 7.0 × 108 10.5 × 108
+Average 6.5 × 107 1.1 × 108 1.7 × 108 2.7 × 108 4.1 × 108 6.2 × 108 9.4 × 108
+Minimum 5.7 × 107 9.5 × 107 1.5 × 108 2.4 × 108 3.6 × 108 5.4 × 108 8.2 × 108
+2024 2025 2026 2027 2028 2029 20300
+2
+4
+6
+8
+10
+12108
+Maximum carbon emissionsTotal emissions over the years (Max)Average carbon emissionsTotal emissions over the years (Average)Minimum carbon emissionsTotal emissions over the years (Min)
+Figure 10: Carbon Emission Forecast for 2024-2030
+the emissions are projected to exceed the current levels by more than tenfold, approximately rang-
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 17 of 25
+ing from 8.18 × 108 to 10.54 × 108 tons of carbon dioxide equivalent.
+4 Part III: Discussing the Impact of Increasing the Share of
+New Energy
+We have categorized the seven types of energy discussed above into three categories based on
+their nature: 1) Fossil fuels, including coal, oil, and natural gas; 2) New energy sources, including
+wind, solar, and hydropower; 3) Nuclear energy. In this section, we discuss the impact of the
+proportion of these three types of energy on carbon emissions based on the calculation results for
+2030 from the models above.
+Let the electricity generation from coal, natural gas, and oil account for the fossil fuel electricity
+generation as ρ1
+fossil, ρ2
+fossil, and ρ3
+fossil, respectively. Then the average carbon emissions from fossil
+fuel power generation are shown in Equation 19.
+CE average
+fossil = fCoal
+ 
+GCoal
+2030
+
+GWind
+2030
+· ρ1
+fossil + fGas
+ 
+GGas
+2030
+
+GGas
+2030
+· ρ2
+fossil + fOil
+ 
+GOil
+2030
+
+GOil
+2030
+· ρ3
+fossil (19)
+where the speciﬁc values of ρ1
+fossil, ρ2
+fossil, and ρ3
+fossil are based on the United Nations’ forecast for
+various energy sources in 2030.
+Let the electricity generation from wind, solar, and hydropower account for the clean energy
+generation as ρ1
+clean, ρ2
+clean, and ρ3
+clean, respectively. Then the average carbon emissions from clean
+energy power generation are shown in Equation 20.
+CE average
+clean = fWind
+ 
+GWind
+2030
+
+GWind
+2030
+· ρ1
+clean + fSolar
+ 
+GSolar
+2030
+
+GSolar
+2030
+· ρ2
+clean +
+fHydro
+
+GHydro
+2030
+
+GOil
+2030
+· ρ3
+clean (20)
+Let ρfossil be the proportion of fossil fuels, ρclean be the proportion of clean energy, and ρnuclear
+be the proportion of nuclear energy, then the carbon emissions of HPC are shown in Equation 21.
+CE 2030 = (CE average
+fossil · ρfossil + CE average
+clean · ρclean) · ESC 2030
+Average + fNuclear
+ 
+ρnuclear · ESC 2030
+Average
+
+(21)
+where ESC 2030
+Average is the average annual energy consumption of HPC in 2030, calculated from the
+above models, as shown in Figure 9.
+Since ρfossil + ρclean + ρnuclear = 1, Equation 21 can be rewritten as follows:
+CE 2030 = (CE average
+fossil · (1 − ρclean − ρnuclear) + CE average
+clean · ρclean) · ESC 2030
+Average
++ fNuclear
+ 
+ρnuclear · ESC 2030
+Average
+ (22)
+Taking the carbon emissions of HPC for 2030 from the above model as the baseline value
+dCE 2030, we can obtain the carbon emission reduction after changing the proportion of new energy
+and nuclear energy, as shown in Equation 23.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 18 of 25
+CE reduce =
+dCE 2030 − CE 2030
+dCE 2030
+× 100 (23)
+We discuss the reduction in carbon emissions and the percentage reduction when ρclean varies
+within [0, 1] and ρnuclear varies within [0, 1], as shown in Figure 11. The horizontal axis of the
+graph represents the proportion of new energy, the vertical axis represents the proportion of nu-
+clear energy, the numbers in the grid represent the carbon emissions and the percentage reduction
+compared to the baseline scenario, and grids without numbers indicate no reduction in carbon
+emissions.
+0 0.10.20.30.40.50.60.70.80.91Proportion of renewable energy
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1 Proportion of nuclear energy
+365.5
+298.4
+231.3
+164.2
+97.1
+365
+297.9
+230.8
+163.7
+96.6
+364.5
+297.4
+230.3
+163.2
+96.1
+364
+296.9
+229.8
+162.7
+95.6
+363.5
+296.4
+229.3
+162.2
+95.1
+363
+295.9
+228.8
+161.7
+94.6
+295.4
+228.3
+161.2
+94.1
+227.8
+160.7
+93.6
+160.2
+93.1
+92.6
+432.6
+30
+432.1
+29.5
+431.6
+29
+431.1
+28.5
+430.6
+28
+27.5
+27
+26.5
+26
+25.5
+25
+50
+100
+150
+200
+250
+300
+350
+400
+NaN
+(a) Carbon Emissions under Different Propor-
+tions
+0 0.10.20.30.40.50.60.70.80.91Proportion of renewable energy
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1 Proportion of nuclear energy
+38.29
+47.86
+38.36
+47.93
+38.43
+48
+38.5
+48.07
+38.57
+48.15
+48.22
+57.43
+67
+76.58
+86.15
+95.72
+57.5
+67.08
+76.65
+86.22
+95.79
+57.57
+67.15
+76.72
+86.29
+95.86
+57.65
+67.22
+76.79
+86.36
+95.93
+57.72
+67.29
+76.86
+86.43
+96.01
+57.79
+67.36
+76.93
+86.5
+96.08
+57.86
+67.43
+77
+86.58
+96.15
+67.5
+77.08
+86.65
+96.22
+77.15
+86.72
+96.29
+86.79
+96.36
+96.43
+40
+50
+60
+70
+80
+90
+NaN
+(b) Percentage reduction in carbon emissions
+Figure 11: Reduction in Carbon Emissions with the Growth of New Energy and Nuclear Energy
+From Figure 11, it can be seen that as the proportion of renewable energy and nuclear power
+generation increases, carbon emissions signiﬁcantly decrease, and the increase in the proportion of
+renewable energy generation brings more signiﬁcant emission reduction beneﬁts. When the power
+generation structure fully shifts to renewable energy and nuclear power, carbon emissions will drop
+to 4%-5% of the current level, essentially achieving green computing for HPC.
+After our research, we found that using 100% new energy to power HPC would bring the
+following potential issues:
+1. Unstable Power Supply: Meteorological factors such as wind speed and solar radiation
+are random and uncertain, which determines that new energy cannot provide a stable power
+supply. For example, when there is no wind or illumination at night, new energy equipments
+cannot generate power, which is fatal for HPC and may lead to server shutdowns.
+2. V oltage Instability: Traditional thermal power units are considered voltage sources and
+can provide stable support for grid voltage, while new energy often adopts grid-following
+control and is considered a current source, unable to support grid voltage. Therefore, when
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 19 of 25
+the proportion of new energy is high, the grid’s ability to resist disturbances weakens, which
+may lead to potential power outage incidents.
+3. Massive Energy Storage Required: To overcome the problems brought by the randomness
+of new energy, energy storage is often needed. Currently, the cost of energy storage is high
+and its lifespan is short. When the proportion of new energy is high, a large amount of energy
+storage is required, which not only creates signiﬁcant costs but also faces maintenance and
+recycling issues for the storage devices in the next decade.
+5 Part V: Extending the Model to Other Key Areas
+5.1 Model of HPC’s Impact on Community Energy Rights
+We have chosen to investigate the upper limit of energy access for local communities affected
+by HPC facilities. The energy demand of HPC facilities may exert pressure on local power grids,
+leading to unstable electricity supply and even power shortages. This tension in energy distribution
+may force electricity providers to prioritize the needs of HPC facilities over those of residential and
+small commercial users, thereby affecting employment and the healthy development of the com-
+munity economy. We consider the upper limit of energy that can be accessed as a right, and this
+section addresses the impact of HPC’s high energy consumption on the energy rights of communi-
+ties.
+A simple power system containing an HPC center is shown in Figure 13, where the transmis-
+sion grid transmits electrical energy to the distribution grid through transformers, and communities
+and HPC centers are connected to the distribution grid busbar to obtain electrical energy. Figure
+13b is the equivalent circuit diagram, where Vgrid represents the output voltage of the transformer,
+Vbus is the distribution grid busbar voltage, Z 1
+line and Z 2
+line represent line impedances, ZR represents
+the equivalent impedance of residential loads, and ZHPC represents the equivalent impedance of the
+HPC center. Due to the voltage division effect of Z 1
+line, Vbus will be lower than Vgrid, but standards
+stipulate that Vbus should not be lower than 0.9Vgrid, which determines that the power obtained by
+communities and HPC centers is capped.
+Residential
+Load · · ·
+Transmission Grid
+Transformer
+HPC Center
+(a) System Diagram
+(b) Equivalent Circuit
+Figure 12: Power system including HPC center
+First, we derived the currents in each branch, and then, according to Kirchhoff’s current law
+(KCL), which states that the sum of currents entering a node equals the sum of currents leaving
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 20 of 25
+the node, we constructed a system of algebraic equations. After simpliﬁcation, we established the
+relationship between Vbus and ZHPC, as shown in Equation 24.
+8
+>>>><
+>>>>:
+I 1
+line = I 2
+line + IR
+I 1
+line = Vgrid−Vbus
+Z1
+line
+I 2
+line = Vbus
+Z2
+line+ZR
+IR = Vbus
+ZHPC
+=⇒ Vgrid − Vbus
+Z 1
+line
+= Vbus
+ZR
++ Vbus
+Z 2
+line + ZHPC
+(24)
+Setting Vbus = 0.9Vgrid, we can calculate the relationship between ZR and ZHPC under maximum
+transmission conditions, as shown in Equation 25.
+ZR = 9Z 1
+line (Z 2
+line + ZHPC)
+Z 2
+line + ZHPC − 9Z 1
+line
+(25)
+Equation 25 uses an impedance model to equivalently represent the loads of residential and
+HPC center loads, which is not intuitive. Considering P = V 2
+Z , Equation 25 is rewritten in terms
+of power variables, as shown in Equation 26.
+PR =
+Z 2
+line + (V ref
+bus )
+2
+PHPC
+− 9Z 1
+line
+9Z 1
+line
+
+Z 2
+line + (V ref
+bus )
+2
+PHPC
+ ×
+
+V ref
+bus
+2
+(26)
+where V ref
+bus is the rated value of the busbar voltage.
+5.2 Model Solution and Result Analysis
+We have constructed a regional distribution network and discussed the changes in HPC center
+load from 2024 to 2030, as well as the changes in residential and commercial power under voltage
+stability constraints, as shown in Figure 13a, where the vertical axis of the bar chart represents the
+percentage of residential and commercial power compared to 2024. At the same time, we analyzed
+the ﬂuctuation of busbar voltage when HPC center load and residential commercial power load
+change, as shown in Figure 13b.
+From Figure 13a, it can be observed that without upgrading the power supply capacity of
+the regional distribution network, as the HPC center load increases year by year, the electricity
+available to community residents shows an accelerating downward trend. By 2028, their electricity
+rights are less than 80% of 2024, causing inconvenience to residential electricity use. By 2030, it
+drops to below 40%, severely affecting the production and life of residents and local businesses.
+Moreover, when both are at their peak, the busbar voltage will drop below 105V , far exceeding the
+5% voltage drop standard set by the NEC, which may lead to a collapse of the local power grid
+and cause signiﬁcant economic losses.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 21 of 25
+2024 2025 2026 2027 2028 2029 20300
+2000
+4000
+6000 Power of community loadPower of PHC center
+20242025202620272028202920300
+20
+40
+60
+80
+100Rights reservation [%]
+(a) HPC centre load - residential commercial
+power relationship
+1040
+106
+0
+108
+110
+112
+114
+2 2
+116
+118
+4 4106 1066 68 81010
+(b) Bus voltage-load relationship
+Figure 13: Impact of HPC centre loads on power systems
+6 Recommendations of Policy and Technology
+6.1 Recommendations to Reduce the Environmental Impact of HPC
+We have noticed that some top technology companies are already using island new energy to
+power their undersea HPC centers, and at the same time using seawater as a cooling medium, set-
+ting an excellent example for improving P U E and reducing the carbon emission intensity of HPC
+[17, 18]. Policies and technological developments can be leveraged to guide the layout of HPC to-
+wards islands/deep-sea development, and thus we propose the following three recommendations.
+1. Attracting Enterprise Relocation Policies: For enterprises willing to relocate their HPC
+centers to islands or deep-sea areas where new energy sources are more abundant, offer a
+discount subsidy on electricity prices based on electricity consumption.
+2. Industrial Chain Agglomeration Policies: For enterprises willing to build new energy
+power generation facilities for the HPC industry in areas with abundant new energy sources
+such as islands or deep-sea areas, purchase electricity at a higher price to help enterprises
+quickly recoup investments.
+3. Developing Seawater Cooling Technology: Provide HPC centers with better and more
+cost-effective cooling systems, enhancing the energy efﬁciency of HPC centers.
+The ﬁrst two policy recommendations aim to use electricity price subsidies to attract the HPC
+industry to relocate to island/deep-sea areas rich in new energy resources, making the energy mix
+of the HPC industry more environmentally friendly. At the same time, they encourage new energy
+companies to accelerate the construction of local new energy networks, promote energy restruc-
+turing, and reduce carbon emissions from electricity use. The third suggestion, tailored to the
+unique environment of islands/deep-sea areas, involves the development of distinctive seawater
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 22 of 25
+Attracting
+Enterprise
+Relocation
+Industrial Chain
+Agglomeration
+Seawater Cooling
+Technology
+Mitigation of
+Environmental Impact
+Environmentally
+Friendly Energy
+Mix
+Promote Energy
+Restructuring
+Enhance Energy
+Efficiency
+(a) Recommendation Diagram
+(b) HPC with Energy Island
+Figure 14: Impact of Recommendations
+cooling technology to enhance the energy efﬁciency of HPC centers and further reduce the energy
+consumption of HPC. The predicted effects are shown as ﬁgure 14b.
+6.2 Model Upgrade
+Assuming that the aforementioned Recommendation 1 is adopted, since the HPC centers are
+relocated to areas with a richer supply of new energy, their electricity energy structure will contain a
+greater proportion of renewable sources such as wind and solar power, corresponding to a reduction
+in carbon emissions. Therefore, it is necessary to re-model the power generation energy structure
+and forecasting models for island and other new energy-rich areas, replacing the global energy
+structure and forecasting models in the original models, as shown in the table below.
+Table 5: Model Upgrade Comparison
+Model Origin Upgraded
+Section 2 Considering that the proposed policy has no impact on the model
+Section 3.2 Considering HPC power Consider net power of the island
+Section 3.3.1 Considering that the proposed policy has no impact on the model
+Section 3.3.2 Considering that the proposed policy has no impact on the model
+Section 3.3.3 Consider Global Energy Trend Consider Energy developing on Island Grid
+Section 5.1 Consider the structure Consider the island grid structure
+7 Strengths and Weaknesses
+Strengths
+1. Innovative Estimation Method. Our model indirectly estimates the energy consumption
+of HPC by the required computing power of society, innovatively linking computational
+demand with energy consumption, solving the problem of difﬁcult access to direct energy
+consumption data of HPC.
+2. Comprehensiveness. Our model takes into account a variety of energy types and calculates
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 23 of 25
+carbon emissions based on the characteristics of each type of energy, enabling the model to
+more accurately assess the impact of different energy mixes on HPC carbon emissions.
+3. Adaptability. Our model has predictive capabilities, able to forecast future changes in HPC
+energy consumption and energy mix, which helps to more precisely calculate the carbon
+footprint of HPC.
+Weaknesses
+1. Dependence on Assumptions. Our model makes many assumptions of uniform distribution,
+such as the number of each type of computer in the TOP500 list being consistent, and the
+computing power undertaken by each type of computer being evenly distributed according
+to rated computing power. These assumptions deviate from reality.
+2. Data Limitations. Our model is limited by the quality and scope of available data. For
+instance, speciﬁc energy consumption data for HPC and lifecycle carbon emission data for
+new energy devices, if incomplete or outdated, can affect the model’s predictive capabilities
+and the reliability of the results.
+3. Lack of Technical Details. When assessing the impact of HPC energy consumption on
+community energy rights, we simpliﬁed the AC power grid into a DC grid because we only
+learned about DC models during high school, which certainly deviates from the actual AC
+power grid.
+8 Conclusion
+This study presents a comprehensive assessment model for the energy consumption and carbon
+emissions of High Performance Computing (HPC), aiming to provide a quantitative analysis of the
+environmental impact of HPC and to explore the potential effects of increasing the share of new
+energy on reducing carbon emissions. Here are the main conclusions from our research:
+1. HPC Energy Consumption Assessment: We found that the annual global energy consump-
+tion of HPC is closely related to the Average Utilization Rate (AUR), Power Usage Effective-
+ness (PUE), and the total scale of societal computing demands. By analyzing scenarios with
+different PUE values and scales of computing demands, we concluded that the annual en-
+ergy consumption of HPC under full load ranges roughly between [1.97 × 108, 2.87 × 108]
+MWh, while the average annual consumption falls between [0.69 × 108, 1.44 × 108] MWh.
+2. HPC Carbon Emissions Model: Considering the energy mix, we predict that by 2030, the
+carbon emissions of HPC will exceed the current level by more than ten times, ranging
+from 8.18 × 108 to 10.54 × 108 tons of carbon dioxide equivalent. This forecast highlights
+the potential environmental impact of HPC, especially in the context of a global electricity
+structure that has not yet fully transitioned to green energy.
+3. Impact of New Energy Proportion on Carbon Emissions: Our model indicates that as the
+proportion of new energy and nuclear power generation increases, the carbon emissions of
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 24 of 25
+HPC signiﬁcantly decrease. When the power generation structure fully shifts to new energy
+and nuclear power, carbon emissions will drop to 4%-5% of the current level, essentially
+achieving green computing for HPC.
+4. Impact of HPC on Community Energy Rights: We constructed an electrical power system
+model to analyze the impact of HPC facilities on the upper limit of energy access for local
+communities. The results show that without upgrading the power supply capacity of the re-
+gional distribution network, as the load of HPC centers increases, the electricity available to
+community residents exhibits an accelerating downward trend, dropping below 40% of 2024
+levels by 2030, severely affecting the production and life of residents and local businesses.
+5. Policy and Technology Recommendations: Our three recommendations, Attracting Enter-
+prise Relocation Policies, Industrial Chain Agglomeration Policies, and the development of
+Seawater Cooling Technology aim to use electricity price subsidies to attract the HPC in-
+dustry to relocate to island/deep-sea areas rich in new energy resources, while encouraging
+new energy companies to accelerate the construction of local new energy networks, promote
+energy restructuring, and reduce carbon emissions from electricity use.
+In conclusion, based on our research ﬁndings, we have written a letter to the United Nations
+Consultative Committee urging them to improve the section on the environmental impact of high-
+performance computing in their development goals for 2030.
+References
+[1] Qian, Depei. (2016). High performance computing: a brief review and prospects. National Science Review. 3. nww009. 10.1093/nsr/nww009.
+[2] June 2024 | TOP500, www.top500.org. https://www.top500.org/lists/top500/2024/06/
+[3] M. Radulovic, Kazi Asifuzzaman, P . Carpenter, Petar Radojkovi, and Eduard Ayguadé, HPC Benchmarking: Scaling Right and Looking
+Beyond the Average, Lecture notes in computer science, pp. 135146, Jan. 2018.
+[4] China Computing Power Development Report (2024), Cpz.org.cn, 2024. https://www.cpz.org.cn/news/720071589999399213.html.
+[5] Ensuring the Steady Operation of the Digital World, Huawei.com, 2024. https://digitalpower.huawei.com/cn/data-center-
+facility/news/detail/2027.html.
+[6] Statistical Review of World Energy 2024, KPMG, Aug. 26, 2024. https://kpmg.com/xx/en/our-insights/esg/statistical-review-of-world-
+energy-2023.html
+[7] M. Y ang, Y . Zhou, D. Wang, J. Han, and Y . Y an, Thermodynamic cycle analysis and optimization to improve efﬁciency in a 700 ˘aˇrC ultra-
+supercritical double reheat system, Journal of Thermal Analysis and Calorimetry, vol. 141, no. 1, pp. 8394, Nov. 2019.
+[8] S. Schlömer et al., Technology-speciﬁc Cost and Performance Parameters Editor: Lead Authors: Contribut-
+ing Authors: Technology-speciﬁc Cost and Performance Parameters Annex III AIII Contents, 2014. Available:
+https://www.ipcc.ch/site/assets/uploads/2018/02/ipcc_wg3_ar5_annex-iii.pdf
+[9] H. Ritchie, What Are the Safest and Cleanest Sources of energy?, Our World in Data, Feb. 10, 2020.
+[10] Thermal Efﬁciency | Deﬁnition, Examples & Calculation | nuclear-power.com, Nuclear Power. https://www.nuclear-power.com/nuclear-
+engineering/thermodynamics/laws-of-thermodynamics/thermal-efﬁciency/
+[11] D. Nugent and B. K. Sovacool, Assessing the lifecycle greenhouse gas emissions from solar PV and wind energy: A critical meta-survey,
+Energy Policy, vol. 65, pp. 229244, Feb. 2014.
+[12] B. Zeng, X. Ma, and J. Shi, Modeling Method of the Grey GM(1,1) Model with Interval Grey Action Quantity and Its Application, Complexity,
+vol. 2020, pp. 110, Jan. 2020.
+[13] Lorenzi, T., Pugliese, A., Sensi, M. et al. Evolutionary dynamics in an SI epidemic model with phenotype-structured susceptible compartment.
+J. Math. Biol. 83, 72 (2021).
+[14] C. Nichiforov, I. Stamatescu, I. Fgran and G. Stamatescu, "Energy consumption forecasting using ARIMA and neural network models," 2017
+5th International Symposium on Electrical and Electronics Engineering (ISEEE), Galati, Romania, 2017, pp. 1-4.
+[15] KPMG International, KPMG, 2024. https://kpmg.com/xx/en.html
+[16] The 2022-2023 Global Computing Index released-Tsinghua University School of Economics and Management-SEM Library, Ts-
+inghua.edu.cn, 2022. https://www.sem.tsinghua.edu.cn/en/info/1021/8248.htm.
+[17] J. Roach, Microsoft ﬁnds underwater datacenters are reliable, practical and use energy sustainably, Source, Sep. 14, 2020.
+https://news.microsoft.com/source/features/sustainability/project-natick-underwater-datacenter/
+[18] SSC, www.subseacloud.com. https://www.subseacloud.com/
+ᇿ Hi MCM
+ሧ࿟
+ğ
+T eam # 15502 Page 25 of 25
+9 letter
+Dear Members of the United Nations Advisory Board,
+We are writing to you in light of the recent report titled Governing AI for Humanity, which
+was issued in September 2024. We commend the Advisory Board for its comprehensive approach
+to AI governance; however, we note with concern that the report does not signiﬁcantly address the
+environmental impacts of High Performance Computing (HPC), a critical component of modern
+AI systems.
+Our research reveals that HPC, while indispensable in advancing ﬁelds like AI, climate science,
+and data analytics, also poses substantial environmental challenges. For instance, the annual global
+energy consumption of HPC, when operating at full load, ranges between 1.97×108 and 2.87×108
+MWh. This energy demand not only strains global power resources but also contributes heavily to
+carbon emissions, with projections suggesting that by 2030, HPC carbon emissions could exceed
+current levels by over tenfold, reaching up to 10.54 × 108 tons of carbon dioxide equivalents
+annually.
+Moreover, our ﬁndings indicate that a gradual transition to cleaner energy sources within the
+HPC sector could substantially mitigate its environmental impact. If HPC centers shift to renew-
+able energy sources like wind, solar, and nuclear power, emissions could be reduced by up to
+95%. However, such a transition requires targeted policies to encourage HPC centers to relocate
+to areas rich in renewable resources and adopt energy-efﬁcient cooling technologies like seawater
+cooling. Speciﬁc measures, such as providing electricity subsidies to HPC centers that integrate
+local renewable energy sources and expanding support for green technology development, could
+be pivotal in reducing the carbon footprint of HPC.
+Beyond environmental concerns, the unchecked growth of HPC infrastructure may also strain
+community energy resources. In regions where HPC facilities are sited, our models predict a po-
+tential reduction in local community energy access to as low as 40% of the current levels by 2030,
+threatening the energy security and quality of life of local populations. These ﬁndings emphasize
+the urgency of including HPC in sustainable development goals and call for policies that support
+equitable access to energy resources.
+To conclude, we respectfully ask the Advisory Board to recognize HPCs environmental impact
+within its 2030 goals. By addressing HPC in upcoming developmental agendas, the United Nations
+can lead the world toward responsible and sustainable technological advancement.
+Thank you for considering our recommendations. We look forward to seeing a more inclusive
+approach to HPC and AI governance in future reports.
+Sincerely yours,
+Y our friends
+ᇿ Hi MCM
+ሧ࿟

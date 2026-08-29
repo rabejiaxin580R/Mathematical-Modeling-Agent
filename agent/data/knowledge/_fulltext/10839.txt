@@ -1,0 +1,981 @@
+ğ
+
+Team Control Number
+10839
+Problem Chosen
+B
+2020
+Summary Sheet
+
+While thousands of species are facing extinction, the initiation of biodiversity conservation actions
+requires immediate attention. However, the fundraising efforts are hindered due to the complex impact
+associated with the starting year of each project, w hich vary in their cost, duration, feasibility of success,
+benefit, and the taxonomic uniqueness of their respective target plant. For this year’s HiMCM problem, teams
+are asked to consider several factors affecting each imperiled species, discuss relevant  objectives of the
+funding plan, and construct an algorithm to yield an optimized funding recommendation. Then, each team
+needs to make suggestions to the FRPCE Board to come up with a funding schedule. Finally, a non-technical
+memo needs to be composed to explain the results and the recommendations.
+We t he team 10839 constructed a user -friendly model, the Stochastic Model, which provides
+recommendations of funding plans based on its estimated total costs and deviations across yearly costs. The
+model satisfies four objectives: gathering funds for all 48 proposed projects, minimizing estimated total costs,
+minimizing yearly cost deviation, and reaching a certain benefit outcome (Section 3.1). To quantify the benefit
+outcome, the model considers several characteristics of each conservation project:  how threatened are the
+species, the feasibility of successfully protecting them, the taxonomic uniqueness of each species, and the
+ecological benefit of the conservation projects  (Section 1.2). Then, according to the assumptions, the model
+projects an exponential decay for all factors to calculate benefit regarding its starting year (Section 3.2). These
+factors go through sensitivity tests to analyze their impact on the outcome of the model (Section 4). After that,
+the model eliminates funding plans that yields a benefit outcome lower than the user -generated benchmark
+percentage (relative to maximum benefit outcome of all projects). Analyzing the filtered plans, the S. Model
+then rank them based on total costs and yearly cost deviation (Section 3.3). Finally, the funding plan yielding
+the highest score is obtained and will be the final recommendation for the user’s consideration.
+Using default setting, the S. Model repeats its algorithm for 500 billion times generates an optimized
+plan to recommend to the FRPCE Board. According to the calculation, this funding plan yields 89% maximum
+benefit outcome of every project, while only requiring an estimated $107,135,000 to complete and a $267,411
+standard distribution of annual cost. The plan requires 34 years to complete all conservation actions. Below is
+the chart for the cost of conservation plans with respect to years (values are in thousands of dollars):
+
+We recommend this funding project t o the FRPCE Board since  it has a relative consistent annual
+fundraising budget. This allows the FRPCE Board to expect “reliable” funds over “long- term” fundraising.
+This funding plan also provides a priority order of the funding for conservation projects and the amount of
+money allocated to each project with respect to years.
+Overall, the S. Model yields reasonable results that has its reference value for the FRPCE Board. Since
+the S. Model is easy to use and user-friendly, we find it worthwhile to present the result of the S. Model with
+further recommendations for adjustment to the FRPCE Board through a non-technical memo.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 2 of 23
+Contents
+1 Introduction 3
+1.1 Biodiversity Conservation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.2 Analysis of Factors in the Data Sheet . . . . . . . . . . . . . . . . . . . . . . . . 3
+2 Variables and Assumptions 5
+2.1 List of Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.2 Assumptions and Justiﬁcation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3 The Stochastic Model 6
+3.1 Objectives and Summary of the Stochastic Model . . . . . . . . . . . . . . . . . 6
+3.2 The Beneﬁt of a Project with Respect to Time . . . . . . . . . . . . . . . . . . . 7
+3.2.1 Taxonomic Uniqueness . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+3.2.2 Threatened Level . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+3.2.3 Feasibility of Success . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3.2.4 Ecological Beneﬁts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3.2.5 Overall Score . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3.2.6 Demonstration of Changes over Time . . . . . . . . . . . . . . . . . . . . 8
+3.3 Algorithms and Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.3.1 The Implementation of Stochastic Process . . . . . . . . . . . . . . . . . 9
+3.3.2 Filtering by Beneﬁt Value . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.3.3 Calculating an Estimation of Total Cost . . . . . . . . . . . . . . . . . . 10
+3.3.4 Using Standard Deviation to Eliminate Outliers . . . . . . . . . . . . . . 10
+3.3.5 Implementation of the Algorithm . . . . . . . . . . . . . . . . . . . . . . 11
+3.4 Results and Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+4 Sensitivity Analysis 12
+4.1 Changing Beneﬁt Benchmark . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+4.2 Changing Taxonomic Uniqueness Coeﬃcient . . . . . . . . . . . . . . . . . . . . 13
+4.3 Changing Ecological Beneﬁt Coeﬃcient . . . . . . . . . . . . . . . . . . . . . . . 14
+4.4 Changing Threatened Level Coeﬃcient . . . . . . . . . . . . . . . . . . . . . . . 15
+4.5 Conclusion of the Sensitivity Analysis . . . . . . . . . . . . . . . . . . . . . . . . 16
+5 Strength and Weakness 16
+5.1 Strength . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+5.2 Weakness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+6 Conclusion 17
+7 One-page Memo 18
+8 Appendix 19
+8.1 Python Code of the Stochastic Process . . . . . . . . . . . . . . . . . . . . . . . 19
+8.2 Works Cited . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 3 of 23
+1 Introduction
+1.1 Biodiversity Conservation
+The declining biodiversity of natural habitats is an urgent global crisis to be addressed. In
+Florida, 48 diﬀerent species of plants are currently imperiled and necessitate the implementa-
+tion of a reliable conservation plan to recover the population of these species. However, the
+fundraising eﬀorts are hindered due to the complex impacts associated with the deciding the
+starting year of each project. These impacts vary in their cost, duration, feasibility of success,
+beneﬁt, and the taxonomic uniqueness of their respective target plant.
+The Stochastic Model (S. Model) collects data of threatened level and the taxonomic unique-
+ness of a species, the duration, yearly cost, and the feasibility of success of the reservation
+project. The S. Model allocates each project into diﬀerent time slots. It then analyzes the fac-
+tors above based on certain assumptions below and scores each project given their respective
+starting time.
+The S. Model has four objectives: funding all 48 projects, minimizing the total amount of
+funds, minimizing the diﬀerence between the costs of conservation each year, and reaching a
+target beneﬁt value. The model divides the total cost of conserving the plant by the feasibility
+of success and obtains an estimated cost that theoretically ensures the success of the project.
+Since the longer the conservation project is postponed, the more endangered the plant is, and
+the less likely it is to save it. Thus, the feasibility of success of the conservation project decays
+over time.
+To optimize the schedule, the S. Model tries to minimize the diﬀerence between the costs of
+conservation each year along with minimizing total fund to be raised. This is realized through
+a ranking system that considers both factors above.
+A detailed description of algorithms is provided in Section 3.
+1.2 Analysis of Factors in the Data Sheet
+The incorporation of the following factors is critical for establishing an accurate model in
+order to maximize the beneﬁt of the organization. An analysis of each factor is provided below:
+Time: The most important part of the S. model is to determine when to start a conservation
+project. The time postponed to initiate a project is a dynamic variable to be determined
+by a fundraising plan, which aﬀects the overall beneﬁts and feasibility of the project by
+leaving the species unprotected. S. Model establishes a funding schedule that considers
+the eﬀect of time on other factors.
+The primary objective of the S. Model is to establish a funding schedule that considers
+the eﬀect of time on other factors. The optimized plan will yield a schedule of the starting
+plan of each project to address the time factor.
+Taxonomic Uniqueness: Taxonomic uniqueness accounts for how unique a species is in
+terms of its taxonomy. For an endangered species, the higher its uniqueness, the higher
+the overall potential beneﬁt from saving this species as it scales in biological importance.
+In the HiMCM scenario, the uniqueness factor is obtained from the “Taxonomic Unique-
+ness” column of the data spreadsheet.
+Threatened Level: The extent to which a species is threatened is measured by its declining
+population. This value increases if a species’ protection program is postponed. This
+would heavily aﬀect the feasibility of success for the conservation project of a species.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 4 of 23
+In the HiMCM scenario, the Threatened Level is obtained from the “beneﬁt” column of
+the data spreadsheet. This value is estimated to increase over time if the species is not
+conserved.
+Feasibility of Success: The feasibility of success of a project indicates the probability of a
+success conservation of a species after all funding actions are completed, which can be
+aﬀected by the current endangered state of a species. Therefore, although the amount
+of funds is constant, the decrease of the feasibility of success has a severe impact on the
+total adjusted cost.
+In the HiMCM scenario, the feasibility of success is determined by the “feasibility of
+success” column in the spreadsheet, which by default decreases exponentially over time.
+The more endangered a species is, the less probable a project is going to succeed.
+Ecological Beneﬁts of the Conservation Project : The ecological beneﬁt of a project
+given its starting time. This is rather a complex measure that includes a variety of
+factors: how feasible a project is, Threatened Level, the ecological value of the project,
+and the beneﬁt of the project to the entire habitat.
+In the HiMCM scenario, the beneﬁt of a project is obtained from the “beneﬁt” column
+of the data spreadsheet.
+Annual Budget of the Conservation Project : The annual budget of the conservation
+plan is the sum of the costs of proceeding projects in a particular year. This is vital
+to the fundraising organizations since they have to consider the practicality of budget
+distribution. Depending on the situation of each funding year, the annual budget should
+be kept relatively consistent. This would minimize the probability of failing to raise
+suﬃcient funds for a particular year with a high budget.
+The S. Model uses the standard deviation of yearly cost to evaluate the ﬂuctuation of
+annual budget. In order to provide a realistic funding schedule for the entirety of the
+organization, there should be as little ﬂuctuation from year to year as possible.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 5 of 23
+2 Variables and Assumptions
+2.1 List of Variables
+Here are the list of variables occurring in the calculation of the model.
+li The length of the protection program for the ith plant
+si The starting year of the project for protecting the ith plant
+ui,0 The initial taxonomic uniqueness of the ith plant
+Ti,0 The initial threatened level for the ith plant
+fi,0 The initial feasibility of success for the ith plant
+xi,0 The initial ecological beneﬁt for the ith plant
+ru
+The annual percentage increment of the taxonomic uniqueness of
+the ith plant
+rt
+The annual percentage increment of the threatened level of the ith
+plant
+rb
+The coeﬃcient determining the eﬀect of uniqueness on overall ben-
+eﬁt
+fi
+The actual feasibility of success of the ith project starting at year
+si
+ui
+The actual taxonomic uniqueness of the ith plant starting at year
+si
+Ti,t The actual threatened level of the ith plant at year t
+bti
+The overall score of the conservation project of the ith plant with
+respect to its starting year
+sch A 2-d array containing the cost for the ith project in jth year, which
+is stored in schi,j
+scha A 2-d array containing the cost for the ith project in jth year ad-
+justed by the feasibility of success, which is stored in scha
+i,j
+bti The overall beneﬁt of the ith project
+exp pct b The accepting percentage range of overall beneﬁt with respect to
+bti,max.
+C a
+total The sum of adjusted total cost
+ycj The yearly cost of jth year into the funding plan
+devc The standard deviation of yearly costs from a plan
+N The duration of the entire plan
+Score The ﬁnal score of the plan regarding total cost and deviation of
+yearly cost
+2.2 Assumptions and Justiﬁcation
+For the convenience of the calculation, and due to the limitation of available data, the S.
+Model assumes the following statements:
+Assumption 1: The beneﬁt of the corresponding project directly reﬂects the threatened level
+of a given species.
+Justiﬁcation: For the convenience of the model and the lack of given statistics, it is as-
+sumed that the given beneﬁt is determined by the status of the species and its uniqueness.
+Assumption 2: The threatened level of a given species undergoes an exponential increase over
+time.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 6 of 23
+Justiﬁcation: Since the population of an unprotected endangered plant species degen-
+erates overtime, it is assumed that the total beneﬁt of a certain project declines as the
+starting time of the corresponding conservation project postpones. For the convenience
+of this model, an exponential decay is used to estimate the change of population status.
+Assumption 3: Once a conservation project starts, it cannot be paused.
+Justiﬁcation: Since a break during the course of a proceeding conservation project can
+aﬀect the result of this project, it is assumed that the conservation project cannot be
+paused.
+Assumption 4: Once a conservation project starts, its relative beneﬁt and feasibility of success
+will not change.
+Justiﬁcation: As all conservation methods focus on conserving, it is assumed that the
+mentioned projects would also conserve its relative amount of beneﬁt and feasibility of
+success rather than letting it disintegrate along the process.
+Assumption 5: It is only possible to determine whether a project succeeds after it is ﬁnished.
+Justiﬁcation: Due to the ineﬃciency of data, it is not possible to determine the outcome
+of the project during its proceedings. This is to say that the feasibility of success cannot
+be separated into annual components to calculate the estimated budget.
+Assumption 6: The feasibility of success of a given conservation project decreases as the
+threatened level increases.
+Justiﬁcation: As previously stated in Assumption 2, the threatened level of a species
+increases over time. The diﬃculty of conserving a species increases along with higher
+threatened level. Thus, the feasibility of success would decrease accordingly.
+Assumption 7: The lower the feasibility of success of a given project is, the higher the total
+cost.
+Justiﬁcation: Feasibility of success can directly aﬀect the estimated total cost. It needs to
+be considered to ensure the funding for the project promises high successful probability.
+In order to quantify the expected cost for a given project, it is necessary to assume a
+quantitative relationship between them.
+3 The Stochastic Model
+3.1 Objectives and Summary of the Stochastic Model
+With the complexity of the issue, the S. Model focuses on the following primary objectives:
+1. Fund all 48 projects
+2. Minimize the total cost of all projects
+3. Minimize the ﬂuctuation of yearly cost
+4. Reaching a target beneﬁt value
+The fundamental concept of the S. Model is to ﬁlter funding plans based on their estimated
+overall beneﬁts and rank them according to their the estimated total cost. In the ﬁrst stage
+of ﬁltering, the overall beneﬁt is divided into diﬀerent subsets of factors: uniqueness, threaten
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 7 of 23
+level, ecological beneﬁts, and feasibility of success. After the overall beneﬁt of a funding plan is
+calculated, users need to provide a percentile value of the expected beneﬁt with respect to the
+maximum beneﬁt of all possible plans. Funding plans whose beneﬁt is lower than this percentile
+are eliminated. Then, the remaining plans undergo another process of evaluation regarding the
+total cost of the plan and the deviation of yearly cost. This is achieved by multiplying the
+standard deviation of the yearly cost and an adjusted total cost to fund all project with respect
+to feasibility of success. The money required to fund a project is calculated by dividing the
+total cost of the project by its feasibility of success. It is higher if a project starts early in the
+process of the funding plan.
+To fulﬁll the objectives, the S. Model takes into account all 48 projects in its random
+generation process of possible plans. The solution to the other three objectives are achieved
+by the characteristics of the algorithm. The speciﬁcs of algorithms are discussed in section 3.2
+and section 3.3.
+3.2 The Beneﬁt of a Project with Respect to Time
+The overall beneﬁt of a project is determined by four major factors: The taxonomic unique-
+ness of a species, the extent to which a species is endangered, the ecological beneﬁt yielded if
+the project succeeds, and the feasibility of success of a project. These factors are subjected
+to change over time. To address this issue, an algorithm is provided to evaluate the extent to
+which the change in these factors can aﬀect the beneﬁt outcome of the plan.
+3.2.1 Taxonomic Uniqueness
+According to section 1.2, the valueui,0 is obtained from the ”Taxonomic Uniqueness” column
+of the data spreadsheet. To enable further adjustment to the model, an exponential decay is
+used to express the relationship of the taxonomic uniqueness of a species to the starting time
+of its conservation project:
+ui = ui,0 (1 + ru)si−1
+In the equation, ru denotes for a annual increment of taxonomic uniqueness over time.
+In the HiMCM scenario, the values are scaled to [0,0.05] to adjust for the model. The
+default setting of the algorithm uses ru = 0.01. Users can adjust this value to match the extent
+of change in the real world scenarios.
+3.2.2 Threatened Level
+The threatened level of a species reﬂects the state of which a species is endangered. (Sec-
+tion 1.2). In the HiMCM scenario, the initial value Ti,0 is obtained from the “beneﬁt’ column
+to indicate the Threatened Level. The Threatened Level undergoes an exponential increase if
+no measure is applied to conserve the endangered species (Section 2.2 Assumption 2):
+Ti,t = Ti,0 (1 + rt)t−1
+Where Ti,0 is directly obtained from the “beneﬁt” column (Section 2.2 Assumption 1). rt is
+a weighting coeﬃcient that determine the increasing Threatened Level over time. It is obtained
+from a region [0,1], in which 0 indicates no change and 1 indicates the most amount of change.
+It is theoretically possible to estimate rt if a species’ population data in previous years can
+be obtained. However, the weight rt is a parameter that reﬂects the user’s understanding of
+the imperiled species. In the HiMCM scenario, rt is scaled to [0,1.25] with a default setting of
+rt = 1.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 8 of 23
+3.2.3 Feasibility of Success
+According to the assumption (Section 2.2 Assumption 6), the feasibility of success declines
+as the threatened level of a species increases. The actual feasibility of success with respect to
+the starting year of the project is calculated below:
+fi = fi,0· Ti,0
+Ti,si
+= fi,0· Ti,0(1 + rt)0
+Ti,0(1 + rt)si
+= fi,0(1 + rt)−si
+The ratio between the initial threatened level and the threatened level when the project
+starts reﬂects the extent to which the feasibility of success will decrease over time. This is
+because if a species is more endangered, it is more unlikely for the project to succeed.
+3.2.4 Ecological Beneﬁts
+To calculate the actual ecological beneﬁt, one needs a more abundant data set that includes
+factors mentioned in 1.2. Due to the lack of information, the S. Model collects values of xi,0
+directly from the ”beneﬁt” column to represent the ecological beneﬁt of a project. Since the
+ecological beneﬁt of a project does not change over time, it is simply denoted as xi,0.
+3.2.5 Overall Score
+The overall score of a project takes into account all the factors above. The formula of this
+calculation is given below:
+bti = xi,0· fi· (1− rbui)si−1
+Factor xi,0 indicates that the higher the beneﬁt of the project, the more need to initiate the
+project. Factor fi indicates that a project with higher feasibility of success should be prioritized.
+Factor (1− rbui)si−1 is more complicated, since the longer the project is postponed, the less
+beneﬁt it will produce. Therefore, the beneﬁt of the project undergoes an exponential decay
+over time.
+In the calculation, ru is a user-generated weighting coeﬃcient that indicates the extent to
+which the beneﬁt of a project decays over time. It is obtained from a region [0,5], in which 0
+indicates no decay and 0.05 indicates the greatest decay. In the real calculation, ru is scaled
+to adjust to the change of model outcome. In the HiMCM case, it is scaled to [0,0.05] with a
+default value 0.01.
+To obtain the overall beneﬁt of a plan, it is simply to take the sum of all bti;
+bt =
+48∑
+i=1
+bti
+For the ith project, bti is maximized if the plan starts from year 1. Therefore, bti has a
+maximum if si = 1 for every i∈ [1, 48].
+3.2.6 Demonstration of Changes over Time
+This section provides some graphic information that demonstrates the relationship between
+some factors and time. The graph describes the relationship of the starting year of the project,
+the threatened level of the species, and the overall beneﬁts in the end of the project. Eight
+projects are chosen for the analysis and are distributed in groups of two to compare the result
+of overall beneﬁts.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 9 of 23
+These graphs show that as the starting year of a project postpones, the overall beneﬁts of the
+project declines. Meanwhile, as the extent of population decay (Threatened Level) aggravates,
+the overall beneﬁts also decreases.
+3.3 Algorithms and Optimization
+Since the goal of the model is to minimize fundraising while guaranteeing a certain level of
+outcome beneﬁt, the S. Model incorporates these two factors to analyze whether a potential plan
+is feasible or not. Meanwhile, it is also important to consider that the fundraising schedule is
+reasonable to realize. This is to say that the ﬂuctuation of annual budget needs to be minimized
+while fulﬁlling other requirements.
+3.3.1 The Implementation of Stochastic Process
+The S. Model is established upon the concept of Stochastic Process, a process that gen-
+erates random funding plans and evaluates their total cost, deviation of annual costs, and
+beneﬁt. For every project, a random number si is generated within a bound denoted by
+unif orm(lower, upper), where lower indicates the minimum starting year and upper indicates
+the maximum starting year. To accelerate the calculation of the process, given values of upper
+and lower are assigned to a set of projects within a given region:
+li si
+li≤ 9 unif orm(1, 29)*
+9 < l i≤ 15 unif orm(1, 25)*
+li > 15 unif orm(1, 9)*
+*All upper and lower values in the chart are default settings. Real applications may be subjected to change.
+After the random generation of si is completed, they are stored in the array “order” to
+reﬂect the chosen starting year of each project:
+order[i] = si
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 10 of 23
+The “order” array will then be used to calculate all outcomes of the plan described in the
+array.
+3.3.2 Filtering by Beneﬁt Value
+Using the randomly generated starting year of the ith project, bti, the overall beneﬁt of
+the ith project starting in year si is obtained. According to the previous deﬁnition of bti in
+Section 3.2.5, the overall beneﬁt ∑ bti is maximized if every project starts in the ﬁrst year.
+Although this scenario is not a realistic option, it is used as a benchmark to compare with
+the overall beneﬁts of other plans. Then, the model requires a user to provide the minimum
+percentage of expected beneﬁt for a funding plan, denoted as exp pct b, with respect to the
+benchmark maximum overall beneﬁt. In this case, the benchmark of the model is bm =
+(∑ bti)max· exp pct b. If for the overall beneﬁt of a funding plan bti < bm, then it is discarded,
+and the algorithm continues to generate the next set of si until ∑ bti≥ bm is obtained. The
+overall beneﬁt of a feasible plan needs to be higher than a presupposed expectation of overall
+beneﬁt.
+After the eligible plans are ﬁltered into a setP in which for everyorderx∈ P , ∑
+si∈orderx bti≥
+bm, the elements of the set P proceed into the next process of total cost evaluation.
+3.3.3 Calculating an Estimation of Total Cost
+Let orderx∈ P , then for every orderx a funding schedule sch is created. While sch only
+denotes for the original cost of ith project starting in jth year, an estimation of required cost
+regarding the feasibility of success needs to be generated. According to the assumption, the es-
+timated cost of each plan is the original cost divided by the feasibility of success (Section 2.2 As-
+sumption 7). Therefore, another funding schedule with adjusted cost is donated as scha, in
+which:
+scha
+i,j = schi,j
+fi
+For every ith project, the cost of jth year is calculated as the original cost divided by the
+feasibility of success in jth year.
+Notice that fi is used regardless of the year j. This is because the feasibility of success
+for one project remains the same after it is initiated (Section 2.2 Assumption 3, Assumption
+4, Assumption 5).
+3.3.4 Using Standard Deviation to Eliminate Outliers
+From scha two key factors are calculated: C a
+total the total cost of the plan, and devc the
+standard deviation of original yearly cost (the original yearly cost is the “solid money” that
+needs to be funded, whereas the estimated cost may consist of some “extra money” if the
+project succeeds).
+The adjusted total cost of the project is obtained from:
+C a
+total =
+∑
+i,j
+scha
+i,j
+For the deviation of original yearly costs, let yc be an array such that ycj = ∑
+i schi,j, which
+is the sum of the funding without adjustment for each year. Then, the standard deviation is
+taken from yc and yields devc:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 11 of 23
+devc =
+vuu√ 1
+N− 1
+N∑
+i=1
+(yci− ¯yci)2
+Notice that devc takes from the original yearly costs instead of the adjusted one. This is
+because the original yearly cost is the actual budget for the fundraising process. The adjusted
+overall costs provide an estimation but contains extra unused funds. Therefore it is not suit for
+the actual fundraising process.
+To avoid scenarios where the cost of one year may be peculiarly high (for example: the total
+cost is minimized if every project starts in year 1, but the yearly cost varies dramatically over
+the course of fundraising), the standard deviation of original yearly cost and the total cost are
+both considered in the ﬁnal evaluation of the project. Therefore, the ﬁnal score of a plan is
+calculated as following:
+Score = C a
+total· devc
+The score of all plan from P is ranked in an increasing order. The ﬁrst plan from the ranking
+will be the “best plan” calculated by a single process. By doing this, the model ensures that
+the “best” plan not only minimizes the total cost, but also prevents any dramatic ﬂuctuations
+between each yearly cost.
+3.3.5 Implementation of the Algorithm
+The following default values are used for the test run of the S. Model:
+ru = 0.01; rb = 0.04; rt = 0.01 (f or every i ∈ [1, 48]); exp pct b = 85
+The “process” described in Section 3.3 is repeated by default 100,000 times in each call.
+Then, the algorithm initiates a “rep” function, which by default calls the “process” ﬁve hundred
+times. For every call i, let oi denote the array of starting years of each project, and Score i the
+minimum C a
+total· devc. Then, the top 3 funding plans with the minimum score are returned.
+This can ensure a higher accuracy of the result.
+3.4 Results and Analysis
+Using the default values of exp pct b, ru, rb, rt provided in Section‘3.3.5, the S. Model yields
+three best possible funding plans. Below is the one plan with the lowest C a
+total· devc score:
+Best Plan: devc = $267, 411.23, C a
+total = $107, 134, 718.35, exp pct b = 89%
+*All numerical values in the charts denote cost of the respective column.
+**All values of cost are in thousands of dollars
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 12 of 23
+The horizontal line indicates year, and the vertical line indicates yearly cost (in thousands of dollars)
+The details of this plan regarding the starting time of each conservation project (marked
+in yellow), the original yearly costs for every project, and the yearly cost of the funding plan are
+provided in the chart above. The adjusted overall cost of this funding plan is $107,134,718.35
+including suﬃcient budget to theoretically ensure the success of all 48 projects. The yearly cost
+deviation of the best funding plan is $267,411.23. The expected beneﬁt is 89%. C a
+total· devc =
+2.865× 1013
+This optimal solution is ﬁltered from a billion times of stochastic process using parameters
+ru = 0.01, r b = 0.04, rt = 1 (scaled accordingly as mentioned in Section 3.2). The coeﬃcient
+of beneﬁt decays, and the susceptibility coeﬃcient is high on their respective scales. The score
+for this funding schedule Score optimal = C a
+total−optimal· devc−optimal = 28647631 .6 = 2 .9× 107.
+The best scores obtained by randomly generated 10 million schedules is around 0 .9× 108, as
+is shown in the sensitivity analysis. So our optimal funding schedule has a score less than a
+third of the best score values. An excel ﬁle of the best 3 schedules is obtained simply by the
+command: get schedule(). This function by default does not require any input, and an excel
+ﬁle is created with key statistics of the schedule above.
+4 Sensitivity Analysis
+In this section, the S. Model is tested by some adjustments of its user inputs. The changes in
+results reﬂect how the changes in real scenarios and users’ preference can modify the evaluation
+of possible plans. Four adjustments regards the beneﬁt benchmark, the increase of taxonomic
+uniqueness over time for all species, the increase of Threatened Level for all species, and the
+eﬀect of taxonomic uniqueness on the overall calculation of beneﬁt.
+For the unspeciﬁed factors, their values are taken as the default value identical to the values
+mentioned in section 3.3.5.
+4.1 Changing Beneﬁt Benchmark
+This section analyzes how changes in the value of exp pct b alters the outcome of the
+algorithm. By adjusting the value of this factor, users can customize the required beneﬁts
+from the estimated plan. Sometimes users may compromise a low beneﬁt yield to decrease the
+overall cost of the plan; in other cases they may expect a higher beneﬁt regardless the expense
+of the plan. The modiﬁcation in exp pct b value reﬂects how users’ preference will aﬀect the
+result of the calculation. In theory, a higher value of exp pct b indicates a stricter requirement
+on the outcome of the funding plan. This would result in a larger percentage of possible plans
+eliminated in the calculation process.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 13 of 23
+For sensitivity testing, four diﬀerent values of exp pct b are implemented in the model:
+82%, 83%, 84%, and 85%. The algorithm in section 3.2 ﬁlters a set P containing plans that
+satisfy the exp pct b benchmark from all randomly generated possible plans. Then, the value
+C a
+total·devc for each feasible plan in P is obtained. The graph below investigates the distribution
+of C a
+total· devc for every plan that ﬁts the requirement of an adjusted exp pct b value.
+*Each process of random generation repeats for 10 million times.
+According to the graph, the distribution of C a
+total· devc value becomes more discrete as
+exp pct b increases. This is because the higher expectation of the overall beneﬁt implies a
+smaller sample size that may vary in the overall score.
+Meanwhile, the density of the region [0.85,0.93] decreases as exp pct b value increases. This
+shows that a higher restriction on the beneﬁt of the project yields a higher overall cost and
+larger yearly cost distribution of a plan.
+4.2 Changing Taxonomic Uniqueness Coeﬃcient
+This section analyzes how changes in the variable ru alters the outcome of the algorithm.
+Changes in ru determines how the user deﬁnesthe change in taxonomic uniqueness over time.
+In theory, an increase in ru indicates a more dramatic increase in the taxonomic uniqueness
+of a species if the starting time of its conservation project is postponed. This would result in
+a larger percentage of possible plans eliminated in the stochastic process. Since ru may vary
+according to the circumstances of surrounding environment, users may need to adjust this value
+to better simulate the circumstances in which the model will be implemented.
+For sensitivity testing, four diﬀerent values of ru are implemented in the model: 0.006,
+0.012, 0.018, and 0.024. After the implementation of the adjusted ru value, the algorithm
+in section 3.2 ﬁlters a set P containing plans that satisfy the exp pct b benchmark from all
+randomly generated possible plans. Then, the value C a
+total· devc for each feasible plan from P
+is obtained. The graph below investigates the distribution of C a
+total· devc for every plan in P
+that ﬁts the requirement of a default exp pct b value.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 14 of 23
+*Each process of random generation repeats for 10 million times.
+According to the graph, the distribution of C a
+total· devc value becomes more discrete as ru
+increases. This is because if the uniqueness of a species increases more dramatically over time,
+the overall beneﬁt will decrease if the protection plan for this particular species is postponed.
+Therefore, a higher ru value restricts the amount of time that a project can be postponed. This
+will lower the amount of feasible funding plans based on the algorithm’s calculation, which is
+shown in the graph as a more discrete data distribution.
+4.3 Changing Ecological Beneﬁt Coeﬃcient
+This section analyzes how changes in the variable rb alters the outcome of the algorithm.
+rb determines the extent to which the overall beneﬁt decreases over time before the start of
+the conservation project. In theory, an increase in rb indicates a more dramatic decay in the
+beneﬁt of the project if its starting time is postponed. This would result in a larger percentage
+of possible plans eliminated in the calculation process. In the real world scenario, this measure
+may be subjected to change due to the eﬀect of multiple factors discussed in section 1.2. For the
+implementation of the S. Model, users may need to manually adjustrb to suit the circumstances.
+For sensitivity tests, four diﬀerent values of rb are implemented in the model: 1, 2, 3, and 4,
+in which a higher score suggests a more decayed beneﬁt function. After the implementation of
+the adjusted rb value, the algorithm in section 3.2 ﬁlters a setP containing plans that satisfy the
+exp pct b benchmark from all randomly generated possible plans. Then, the value C a
+total· devc
+for each feasible plan from P is obtained. The graph below investigates the distribution of
+C a
+total· devc for every plan in P that ﬁts the requirement of a default exp pct b value.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 15 of 23
+*Each process of random generation repeats for 10 million times.
+According to the graph, the distribution of C a
+total· devc value becomes more discrete as rb
+increases. This is because if the beneﬁt of a species decreases more dramatically over time, the
+overall beneﬁt will decrease if the protection plan for this particular species is postponed. In
+this case, a higher rb value restricts the amount of time that a project can be postponed. This
+will lower the amount of feasible funding plans based on the algorithm’s calculation, which is
+shown in the graph.
+4.4 Changing Threatened Level Coeﬃcient
+This section analyzes how changes in the variable rt results in the outcome of the algo-
+rithm. rt determines how in real circumstances the population of an endangered species may
+decrease over time. In theory, an increase in ru indicates a more dramatic increase in a species’
+Threatened Level if the starting time of its conservation project is postponed. This would
+result in a larger percentage of possible plans eliminated in the calculation process. Since rt
+may vary according to the each species’ distinct characteristics and conditions, users may need
+to manually adjust this value to better simulate the circumstances in which the model will be
+implemented.
+For sensitivity tests, four diﬀerent values of rt are implemented in the model: 0.25, 0.50,
+0.75, and 1.00, in which 1.00 suggests the most threatened level and 0 the least. After the
+implementation of the adjusted rt value, the algorithm in section 3.2 ﬁlters a set P containing
+plans that satisfy the exp pct b benchmark from all randomly generated possible plans. Then,
+the value C a
+total·devc for each feasible plan from P is obtained. The graph below investigates the
+distribution of C a
+total· devc for every plan in P that ﬁts the requirement of a default exp pct b
+value.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 16 of 23
+*Each process of random generation repeats for 10 million times.
+According to the graph, the distribution of C a
+total· devc value becomes more discrete as rt
+increases. This is because if the species becomes more endangered over time, the feasibility of
+success for the protection plan also decreases. This will lead to a lower overall beneﬁt since the
+feasibility of success is directly proportional to the overall beneﬁt. In this case, a higher rt value
+also restricts the amount of time that a project can be postponed (for a larger postponing time
+yields a lower feasibility of success). This will lower the amount of feasible funding plans based
+on the algorithm’s calculation, which is shown in the graph as a more discrete data distribution.
+Meanwhile, the range of the data set tends to ”translate” to the left as rt increases. This is
+caused by the decrease on feasibility of success. Since a decreased feasibility of success requires
+a higher budget to ensure the success of a project, the overall cost of the project will therefore
+increase if the feasibility of success declines.
+4.5 Conclusion of the Sensitivity Analysis
+Based on the aforementioned four sensitivity tests, the S. Model proves to be helpful to
+yield results that are consistent with the theoretical estimations. This allows the S. Model to be
+ﬂexible to simulate diﬀerent real world conditions while maintaining the accuracy of its results.
+5 Strength and Weakness
+5.1 Strength
+Based on the distinct features of the S. Model, it has several strength over other models.
+1. Easy to Use
+Compared to other models that required a plethora of data input and convoluted calcu-
+lations, the operation of S. Model can be as simple as pressing a button. This is due to
+the fact that apart from the initial states of all species and their respective conservation
+projects, the operation of the S. Model does not require any other data from the user.
+All essential parameters of taxonomic uniqueness, Threatened Level, feasibility of success
+have a default value and can be modiﬁed if desirable. This largely shortens the learning
+curve while yielding the desirable results.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 17 of 23
+2. User Friendly Filtering System
+The S. Model can be adjusted based on the user’s preference. If the user prefers faster
+completion, the annual rate of increment of the endangered level and the decay rate of
+beneﬁt can be increased. If the user focuses more on a steady annual budget, the score
+system can increase the importance of standard deviation.
+3. Time-dependent Estimation
+The S. Model takes into account how time aﬀects the conditions of a species. By default
+the S. Model uses exponential decay function to estimate the change of beneﬁt over time
+based on certain assumptions, which makes the model suited for simulating real world
+scenarios.
+4. Pragmatic Funding Schedule
+By minimizing the product of adjusted total cost and the standard deviation of annual
+budget, the model yields a realistic funding schedule with little ﬂuctuation between years.
+5.2 Weakness
+Although the S. Model has many advantages, it still has some limitations in its real world
+application.
+1. Risks of Failing Projects
+The S. Model only gives the users an estimated beneﬁt outcome. Although the probability
+of failure is inevitable, the S. Model cannot consider a scenario in which a project fails.
+That is, a re-funding of a failed project is not included in the algorithm.
+2. Constant Parameter Values for Every Conservation Project/Species
+Although ru, rt, rb could be modiﬁed, they are the same for all projects once settled. This
+caveat could be ﬁxed by allowing a list of ru, rt, rb input for diﬀerent projects, but this
+function is excluded for the sake of being user-friendly.
+6 Conclusion
+The Stochastic Model swiftly utilizes data provided by the spreadsheet to calculate and
+synthesize a plan that is as eﬃcient as possible for the FRPCE board. The S. Model considers
+various aspects of imperiled plants, including their decreasing population and the increasing dif-
+ﬁculty associated with protecting them. Then, it adjusts the actual beneﬁt of the conservation
+projects by considering their respective time postponed, feasibility and target uniqueness to
+create a practical funding schedule that minimize the adjusted total cost as well as the annual
+standard deviation. It is user-friendly: three funding schedules will be created in an excel ﬁle
+with only one command ”get schedule()”. Users can create their own functions on key variables
+and view interactive 3-D plots comparing diﬀerent projects.
+On the other hand, the S. Model does not calculate total funds required for the absolute
+success of every single project, therefore the exclusion of re-funding scenarios. However, the S.
+Model does provide a result of an adjusted overall cost to theoretically ensure the success of all
+projects.
+Overall, the S. Model does a decent job achieving all the proposed objectives. The optimal
+funding schedule oﬀers a practical reference for the FRPCE board to plan their projects.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 18 of 23
+7 One-page Memo
+DATE: November 17, 2020 ‘
+TO: FRPCE Board Members
+FROM: HiMCM 2020 Team 10839
+SUBJECT: A Recommendation on Biodiversity Funding Plan
+Due to the need for a reliable and long-term funding schedule for the proposed 48 conservation
+plans, we propose that the Stochastic Model is constructed to optimize possible funding plans.
+Based on our calculation, a feasible funding plan is generated by its algorithm. The speciﬁc
+starting years and the yearly costs of each project according to this funding plan are given in
+the chart below:
+All values of cost are in thousands of dollars
+Based on the projection of this funding plan, all 48 recovery projects are allocated into 34
+years. We expect the plan to yield 89% of its maximum beneﬁt. The adjusted total cost of all
+conservation projects is $107,135,000, and the standard distribution of yearly cost is $267,411.
+This plan provides a consistent annual funding budget, indicating that the FRPCE Board can
+expect higher probability of success with the presence of a reliable funding source.
+The members of the FRPCE Board can make adjustments to several factors of the model
+regarding the uniqueness of each species, the rate of population decline for the imperiled species,
+feasibility of success of each project, and their ecological beneﬁt. Also, in need for a higher
+percentage of beneﬁt, the members of the FRPCE Board can raise the beneﬁt benchmark to
+suit their preference.
+Please be aware that the outcome of this model does not account for a certain level of risk in
+case of a failing project. The FRPCE Board needs to consider measures if a project fails in the
+end of its fundraising actions.
+We are conﬁdent that the results of S. Model can provide a good reference to the further
+consideration of fundraising schedules. We sincerely hope that the future fundraising of all
+reservation projects will be successful.
+Best,
+Team 10839
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 19 of 23
+8 Appendix
+8.1 Python Code of the Stochastic Process
+Below is the Python code for the calculation of S. Model.
+1 import math
+2 import random
+3 import numpy as np
+4 import pandas as pd
+5 from numba import njit
+6 import plotly . express as px
+7
+8 # data . xlsx must be in the same folder with this program
+9 df = pd . r e a d _ e x c e l ( ’ data . xlsx ’)
+10 df . rename ( columns ={ df . columns [0]: ’ Plant ’ , df . columns [2]: ’ U n i q u e n e s s ’} ,
+inplace = True )
+11
+12 L , TL = 48 ,24 # Reading data
+13 x ,u , f = np . zeros ( L +1) , np . zeros ( L +1) , np . zeros ( L +1) # initial benefit ,
+uniqueness , f e a s i b i l i t y
+14 b_r , u_r = 4 ,0.01 # b_r : decay rate of benefit , u_r : in cr em en t of
+u n i q u e n e s s
+15 cost = df . iloc [:48 ,4:4+ TL ]. copy ()
+16 f [1: L +1] , u [1: L +1] , x [1: L +1] = df . iloc [:48 ,3] , df . U n i q u e n e s s [0:48] , df .
+Benefit [0:48]
+17 cost = cost . apply ( pd . to_numeric , errors = ’ coerce ’)
+18 cost = round ( cost /1000)
+19 cost . replace ( np . nan ,0 , inplace = True )
+20 cv = cost . values # 2 d array of values in " cost " da ta fr am e
+21 leng = np . array ([ 0 , 3 , 3 , 3 , 3 , 3 , 3 , 4 , 3 , 5 , 3 , 5 , 5 , 5 ,
+5 , 3 , 3 ,
+22 5 , 5 , 16 , 3 , 3 , 5 , 5 , 6 , 3 , 5 , 5 , 5 , 5 , 5 , 3 , 5 , 9 ,
+23 24 , 5 , 11 , 5 , 5 , 5 , 9 , 5 , 17 , 5 , 5 , 10 , 10 , 14 , 20])
+24
+25 @njit
+26 def cur_u ( initial_u , start_year , u_r ) : # current u n i q u e n e s s
+27 # u_r : annual i nc re me nt of u n i q u e n e s s without p r o t e c t i o n
+28 return i ni ti al _u *(1+ u_r ) **( start_year -1)
+29 @njit
+30 def cur_t ( initial_t , start_year , t_r ) : # current T h r e a t e n e d Level
+31 # referred as the " e n d a n g e r e d level "
+32 # t_r is referred as the " e n d a n g e r e d c o e f f i c i e n t "
+33 return i ni ti al _t *(1+ t_r ) **( start_year -1)
+34 @njit
+35 def cur_f ( initial_t , start_year , t_r , initial_f , length ) :
+36 # f_i = f_0 * t_s / t_e
+37 t_s = cur_t ( initial_t ,1 , t_r /100)
+38 t_e = cur_t ( initial_t , start_year , t_r /100)
+39 return np . float32 ( in it ia l_ f * t_s / t_e )
+40 @njit
+41 def cur_b ( initial_u , start_year , u_r , initial_b , b_r , initial_t , t_r ,
+initial_f , length ) :
+42 # benefit of a project given its s t a r t _ y e a r
+43 f e a s i b i l i t y = cur_f ( initial_t , start_year , t_r , initial_f , length )
+44 return f e a s i b i l i t y * in it ia l_ b *(1 - cur_u ( initial_u , start_year , u_r ) * b_r /400)
+**( start_year -1)
+45
+46 def details ( order , u_r =0.01 , b_r =4 , t_r =1) :
+47 # return details given the starting years of each project , stored in
+order
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 20 of 23
+48 # order [ i ] stores the year when the ith project starts
+49 bt_i , ben =0 ,0
+50 for i in range (1 , L +1) :
+51 bt_i = bt_i + np . float32 ( cur_b ( u [ i ] ,1 , u_r , x [ i ] , b_r , x [ i ] , t_r , f [ i ] , leng [ i
+]) )
+52 for i in range (1 , L +1) :
+53 ben = ben + np . float32 ( cur_b ( u [ i ] , order [ i ] , u_r , x [ i ] , b_r , x [ i ] , t_r , f [ i ] ,
+leng [ i ]) )
+54
+55 sch = np . zeros (( L +1 ,45) )
+56 sch_a = np . zeros (( L +1 ,45) )
+57 for i in range (1 , L +1) :
+58 for j in range ( int ( order [ i ]) , int ( order [ i ]) + leng [ i ]) :
+59 sch [ i ][ j ] = cv [i -1 , j - int ( order [ i ]) ] # u n a d j u s t e d cost
+60 sch_a [ i ][ j ] = sch [ i ][ j ] / cur_f ( x [ i ] , order [ i ] , t_r , f [ i ] , leng [ i ])
+61 # u n a d j u s t e d cost
+62 tc , yc = np . sum ( sch_a ) , np . zeros (45)
+63
+64 for i in range (1 ,31) :
+65 yc [ i ] = np . sum ( sch [: , i ])
+66 dev = np . std ( yc [ yc >0])
+67 return { ’ tc ’: tc , ’ dev ’: dev , " yc " : yc , " sch " : sch , " sch_a " : sch_a , ’ pct ’: int ( ben /
+bt_i *100) }
+68
+69 @njit
+70 def process ( tot : int , u_r =0.01 , b_r =4 , t_r =1 , exp \ _pct \ _b = 87) :
+71
+72 bt_i = 0 # initial total benefit
+73 col_tcdv = np . ones ( tot )
+74 col_tcdv = col_tcdv * 3 0 0 0 0 0 0 0 0
+75 for i in range (1 , L +1) :
+76 bt_i = bt_i + np . float32 ( cur_b ( u [ i ] ,1 , u_r , x [ i ] , b_r , x [ i ] , t_r , f [ i ] , leng [ i
+]) )
+77
+78 order , border , btcdv = np . zeros (49) , np . zeros (49) ,3 e8
+79 bm_b = exp \ _pct \ _b /100* bt_i
+80
+81 for cnt in range ( tot ) :
+82 for i in range (1 , L +1) :
+83 if leng [ i ] <= 5:
+84 order [ i ]= int ( math . ceil ( random . uniform (0 ,24) ) )
+85 elif leng [ i ] <= 9:
+86 order [ i ]= int ( math . ceil ( random . uniform (0 ,19) ) )
+87 elif leng [ i ] <= 15:
+88 order [ i ]= int ( math . ceil ( random . uniform (0 ,14) ) )
+89 else :
+90 order [ i ]= int ( math . ceil ( random . uniform (0 ,6) ) )
+91
+92 ben = 0
+93 for i in range (1 , L +1) :
+94 ben = ben + np . float32 ( cur_b ( u [ i ] , order [ i ] , u_r , x [ i ] , b_r , x [ i ] , t_r , f [ i ] ,
+leng [ i ]) )
+95
+96 if ben < bm_b : continue
+97
+98 sch = np . zeros (( L +1 ,45) )
+99 sch_a = np . zeros (( L +1 ,45) )
+100 for i in range (1 , L +1) :
+101 for j in range ( int ( order [ i ]) , int ( order [ i ]) + leng [ i ]) :
+102 sch [ i ][ j ] = cv [i -1 , j - int ( order [ i ]) ]
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 21 of 23
+103 sch_a [ i ][ j ] = sch [ i ][ j ] / cur_f ( x [ i ] , order [ i ] , t_r , f [ i ] , leng [ i ])
+104
+105 tc , yc = np . sum ( sch_a ) , np . zeros (45) # total cost adjusted , yearly cost
+106 for i in range (1 ,31) : yc [ i ] = np . sum ( sch [: , i ])
+107 col_tcdv [ cnt ] = np . std ( yc ) * tc
+108
+109 if ( tc * np . std ( yc ) < btcdv ) & ( tc !=0) :
+110 btcdv = np . std ( yc ) * tc
+111 border = order . copy ()
+112 # print (" " ," trial complete ")
+113
+114 return col_tcdv , np . min ( col_tcdv ) , border
+115 # c o l l e c t i o n of scores , minimum score , best funding schedule order
+that has the minimum score
+116
+117 def rep ( tot : int , trials =100000 , num =3 , u_r =0.01 , b_r =4 , t_r =1 , exp \ _pct \ _b
+= 87) :
+118 col = np . ones (( tot +1 ,49) ) * 3 0 0 0 0 0 0 0 0 # c o l l e c t i o n of choices 1 st filter
+119 comp_c = np . zeros (( num +2 ,49) ) # second filter
+120 col_tcdv = np . zeros ( tot +1) # store the " score = total adjusted cost *
+std "
+121 for i in range (1 , tot +1) :
+122 nih ,a , b = process ( trials , u_r , b_r , t_r , exp \ _pct \ _b )
+123 print ( int ( i / tot *100) , ’% complete ’)
+124 col [i ,:]= b
+125 col_tcdv [ i ] = a
+126 bm = np . p e r c e n t i l e ( col_tcdv [ col_tcdv >0] , int (( num +1) / tot *100) )
+127 # be nc h ma rk bm : only return the top 3 funding s ch ed ul es
+128
+129 cn =1
+130 for i in range (1 , tot +1) :
+131 if col_tcdv [ i ] < bm : # minimal costs
+132 comp_c [ cn ]= col [ i ]. copy () # copy " order " for optimal a r r a n g e m e n t s
+133 comp_c [ cn ,0] , cn = col_tcdv [ i ] , cn +1 # copy tcdv
+134
+135 return col_tcdv , comp_c
+136
+137 # compare two projects e n d a n g e r e d coefficient - starting year - benefit
+138 def plot_pj ( idx1 , idx2 , L =150 , u_r =0.01 , b_r =4 , t_r =1) :
+139
+140 idx1 , idx2 = idx1 +1 , idx2 +1
+141 t_r , sim_o , ben1 , ben2 = np . zeros ( L ) , np . zeros ( L ) , np . zeros ( L ) , np . zeros ( L )
+142 cat1 , cat2 = [ ’ Project ’+ str ( idx1 -1) ,]* L , [ ’ Project ’+ str ( idx2 -1) ,]* L
+143 for i in range ( L ) : t_r [ i ] = random . uniform (0 ,0.05)
+144 for i in range ( L ) : sim_o [ i ] = random . uniform (1 ,30)
+145
+146 for i in range ( L ) :
+147 ben2 [ i ] = cur_b ( u [ idx2 ] , sim_o [ i ] , u_r , x [ idx2 ] , b_r , x [ idx2 ] , t_r [ i ] , f [ idx2
+] , leng [ idx2 ])
+148 ben1 [ i ] = cur_b ( u [ idx1 ] , sim_o [ i ] , u_r , x [ idx1 ] , b_r , x [ idx1 ] , t_r [ i ] , f [ idx1
+] , leng [ idx1 ])
+149 df2 = pd . Da ta Fr am e ({ ’ Project ID ’: cat2 , ’ E n d a n g e r e d C o e f f i c i e n t ’: t_r ,
+150 ’ Starting Year ’: sim_o , ’ Benefit ’: ben2 })
+151 df1 = pd . Da ta Fr am e ({ ’ Project ID ’: cat1 , ’ E n d a n g e r e d C o e f f i c i e n t ’: t_r ,
+152 ’ Starting Year ’: sim_o , ’ Benefit ’: ben1 })
+153 Df = pd . concat ([ df1 , df2 ] , axis =0)
+154 fig = px . s c a t t e r _ 3 d ( Df , x = ’ E n d a n g e r e d C o e f f i c i e n t ’ , y = ’ Starting Year ’ , z
+= ’ Benefit ’ ,
+155 size_max =5 , color = ’ Project ID ’ , opacity =0.6)
+156 fig . show ()
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 22 of 23
+157
+158 def g e t _ s c h e d u l e ( rep_tot =500 , r e p _ t r i a l s =100000 , num =3 , u_r =0.01 , b_r =4 ,
+t_r =1 , exp \ _pct \ _b = 87) :
+159 # a u t o m a t i c a l l y creates 3 optimal funding s ch ed ul es in the current
+di re ct or y
+160 best_tcdv , comp_c = rep ( rep_tot , rep_trials , num , u_r , b_r , t_r , exp \ _pct \ _b
+)
+161 writer = pd . E x c e l W r i t e r ( ’ Optimal Funding Sc he du le s . xlsx ’ , engine = ’
+x l s x w r i t e r ’)
+162
+163 for cnt in range (1 ,4) :
+164 dfi , sch = comp_c [ cnt ]. copy () , np . zeros (( L +1 ,45) )
+165 dic = details ( dfi )
+166 sch = dic [ ’ sch ’]
+167 dfi = pd . Da ta Fr am e ( sch , index = df . index [:49]. copy () )
+168 dfi . replace ( np . nan ,0 , inplace = True )
+169 dfi = dfi . astype ( int )
+170 dfi . drop (0 , axis =1 , inplace = True )
+171
+172 dfi . iloc [0 ,0] = " Standard De vi at io n of Expected A n n u a l F u n d i n g : "
+173 dfi . iloc [0 ,1] = dic [ ’ dev ’ ]. astype ( int )
+174 dfi . iloc [0 ,2] = " Total Cost Adjusted to F e a s i b i l i t y of Success : "
+175 dfi . iloc [0 ,3] = dic [ ’ tc ’ ]. astype ( int )
+176 dfi . iloc [0 ,4] = ’ P e r c e n t a g e of Initial Benefit Achieved ( ben / bt_i ) ’
+177 dfi . iloc [0 ,5] = str ( dic [ ’ pct ’ ]) + " % "
+178 colname = [ ’ ’ ,]* len ( dfi . columns )
+179 for i in range ( len ( dfi . columns ) ) : colname [ i ] = " Year " + str ( i +1)
+180
+181 dfi . columns = colname
+182 dfi . index = df . Plant [:49]. shift (1)
+183 dfi . drop ( columns = dfi . columns [ -4:] , inplace = True )
+184 dfi . rename ( index ={ dfi . index [0]: ’ Key Stats ’} , inplace = True )
+185 dfi . to_excel ( writer , ’ Sheet ’+ str ( cnt ) )
+186
+187 writer . save ()
+188 return comp_c . astype ( int )
+189
+190 g e t _ s c h e d u l e ()
+191 # Simply Shift + Enger , You get three optimal funding s ch ed ul es created in
+one excel file , without re qu ir in g any inputs . To get better funding
+schedules , increase the default rep_tot =500 to 5000 or more .
+192
+Listing 1: Python Code: Execute the code in Jupyter Notebook
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #10839 page 23 of 23
+8.2 Works Cited
+References
+[1] Conserving Habitat before It Is Too Late. Nov.17,2020, Conserving Habitat before It Is Too
+Late., https://scholarship.law.umt.edu/cgi/viewcontent.cgi?article=1424context=plrlr.
+[2] The Diﬃculties of Conservation and Development. Nov.17,2020, The Diﬃculties of Con-
+servation and Development.https://wwf.panda.org/?199416/The-diﬃculties-of-conservation-
+and-development.
+[3] Falk, Donald A., and Kent E. Holsinger. Conservation of Rare and Endangered
+Plants: Principles and Prospects. Nov.17,2020, Genetics and Conservation of Rare Plants ,
+https://pdfs.semanticscholar.org/77c8/8ae6ce5eae7bf623d5b1625472e5dcb8ae77.pdf.
+[4] Lai, Shu-Mei, Wei-Chung Liu, and Ferenc Jord´ an. Nov.17,2020, On the
+Centrality and Uniqueness of Species from the Network Perspective. ,
+https://doi.org/10.1098/rsbl.2011.1167.
+[5] What Makes a Species Endangered? Nov.17,2020, What Makes a Species Endangered? ,
+https://www.britannica.com/story/what-makes-a-species-endangered.
+[6] Zhang, Wenhui, Yuangang Zhu, and Guobin Liu. Nov.17,2020, Population Ecological Char-
+acteristics and Analysis on Endangered Cause of Ten Endangered Plant Species. , Europe
+PMC. http://europepmc.org/article/cba/389023.
+[7] Negron-Ortiz, V. Nov.17,2020, A Conservation Endowment for imperiled plants in Florida
+[Conference session]., Botany 2019 Conference: Sky Islands and Desert Seas, Tucson, Arizona.
+The Botanical Society of America.
+ᇿ Hi MCM
+ሧ࿟

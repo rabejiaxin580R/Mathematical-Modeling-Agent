@@ -1,0 +1,1080 @@
+ğ
+2020
+
+23rd Annual High School Mathematical Contest in Modeling (HiMCM) Summary Sheet
+
+Summary
+
+As global biodiversity continues to face an unprecedented crisis imposed by habitat loss and invasive
+
+species, endangered plant species conservation is crucial for restoring environmental equilibrium.
+
+Conservation managers nowadays are facing difficult decisions due to limited resources and numerous
+
+projects awaiting funding. In this problem, we are tasked with coming up with a priority order of funding for
+
+the given 48 plant conservation projects under the Florida Rare Plant Conservation Endowment (FRPCE)
+
+Board.
+
+Before developing our model, we first identify the relevant objectives that the Board would want to meet in
+
+deciding the fundraising schedule. Firstly, they would want to
+​
+maximize expected net benefit
+​
+, which is
+
+represented by a weighted score incorporating benefit, cost, taxonomic uniqueness and feasibility of the
+
+selected projects. Since we expect the Endowment to have a relatively constant annual revenue, they would
+
+also prefer schedules with
+​
+minimal fluctuations in yearly spending
+​
+. To meet these objectives, we identify
+
+the common characteristics of imperiled plant species and interpret the factors involved in their
+
+conservation.
+
+In our model development, we establish a feasibility decay function to model the increasing risk of
+
+extinction if conservation actions are not taken or delayed. This is accomplished by logistic population
+
+growth with Allee effect. Next, to determine which projects to prioritize, we assign a
+​
+Priority Index
+​
+to each
+
+project in each year, which takes into account the project’s benefit, taxonomic uniqueness, feasibility of
+
+success, total cost, and duration. Priority Index is determined using the Technique for Order of Preference
+
+by Similarity to Ideal Solution (TOPSIS) and Entropy Weight Method. Subsequently, we employ Dynamic
+
+Programming with Greedy Algorithm to obtain an initial schedule that maximizes the sum of Priority Index
+
+of selected projects. The schedule specifies the projects that the Board should prioritize to fund in each year,
+
+and displays the required yearly expenditure.
+
+Genetic Algorithm is then used to optimize our initial schedule. We use a comprehensive
+​
+total score
+​
+as our
+
+objective function, which incorporates both the expected net benefit as well as the standard deviation of our
+
+proposed annual funding schedule. The algorithm performs crossover, mutation, and tournament selection to
+
+reach a schedule with the best total score. After iterating 300 generations, we obtained our optimal schedule.
+
+For a schedule with a maximum funding cap of $500,000, the use of Genetic Algorithm can reduce standard
+
+deviation in yearly spending from 109443 to 39215.
+
+To suggest to the Board an optimal fundraising schedule that can minimize funds raised and achieve
+
+long-term and reliable funding, we choose
+​
+$500,000
+​
+as the funding cap. In case they want to complete all
+
+the projects, we also provide them with the schedule with a funding cap
+​
+$2,000,000
+​
+. Lastly, we present our
+
+priority order of funding
+​
+in a color-coded table which specifies the starting year of each project.
+
+Keywords:
+​
+Conservation of Endangered Plant Species, Logistic Model with Allee Effect, TOPSIS
+
+Enhanced by Entropy Weight Method, Dynamic Programming with Greedy Solution, Genetic Algorithm
+
+Team Control Number:
+
+10997
+
+Problem Chosen:
+
+B
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 1 of 24
+Contents
+1 Introduction 2
+1.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.2 Problem Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+2 Assumptions and Notations 3
+2.1 Assumptions and Justiﬁcation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2.2 Notations and Deﬁnitions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3 Model Development 4
+3.1 Model Objectives . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.2 Explanation of Factors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3.2.1 Common Characteristics of Imperiled Plants . . . . . . . . . . . . . . . . 5
+3.2.2 Protection Measures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3.2.3 Factors Interpretation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3.3 Evaluating individual projects . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+3.3.1 Population Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+3.3.2 Feasibility Decay . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+3.3.3 Priority Index . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3.4 Crafting Fundraising Schedule . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.4.1 Dynamic Programming . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.4.2 Greedy Algorithm . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+3.4.3 Evaluating Our Initial Schedule . . . . . . . . . . . . . . . . . . . . . . . 13
+3.5 Schedule Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.5.1 Genetic Algorithm (GA) . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.5.2 Result Comparison . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.5.3 Diﬀerent Initial Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+4 Results 18
+5 Sensitivity Analysis 19
+6 Strengths and Weaknesses 20
+6.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+6.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+7 Conclusion 21
+8 Memo 22
+References 23
+Appendix (Priority Index) 24
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 2 of 24
+1 Introduction
+1.1 Background
+Florida, a biodiversity hotspot, is home to 215 endemic plant species due to its unique geograph-
+ical location and environment. However, residential, agricultural and commercial development
+has contributed to habitat degradation and loss, while invasive plant species have competed
+with endemic species and formed single-species environments[1]. These factors caused the plant
+extinction rate in Florida to skyrocket with more than 60 plant species federally listed as en-
+dangered or threatened[2].
+In light of this, authorities have come up with protection measures to restore ecological balance.
+The US Endangered Species Act of 1973 requires that all threatened and endangered species to
+be covered by a speciﬁc recovery plan[3]. In Florida, the Fish & Wildlife Foundation of Florida
+garners more than $4 million annually for conservation actions[4] and has helped to conserve
+8,000 acres of critical wildlife habitat[5]. The Foundation has also initiated the Florida Rare
+Plant Conservation Endowment (FRPCE), a trust fund to support imperiled plant species
+conservation projects.
+Nevertheless, conserving imperiled species remains an uphill task. One reason is limited fund-
+ing, which poses a conundrum for conservation organisations: should they prioritize investment
+in species whose survival will beneﬁt the most or those facing impending extinction[6]? Given
+the complexity involved in resource allocation, species recovery requires strategic and forward-
+looking planning.
+1.2 Problem Restatement
+Because of the aforementioned diﬃculties in prioritizing conservation projects, we propose a
+solution for the FRPCE Board to make decisions on which projects to invest and how to pri-
+oritize funding eﬃciently.
+Firstly, we need to identify desirable goals for funding conservation projects and establish cri-
+teria to evaluate our generated fundraising schedule (i.e. plan of annual expenditure with time).
+Secondly, we are asked to do research on the common attributes of endangered plant species
+as well as conventional protection measures. We should relate the factors involved in the at-
+tributes and measures to the ones used in our model.
+Using our deﬁned objectives and factors, we should develop models and algorithms to obtain an
+optimal funding schedule which minimizes the ﬂuctuations in yearly budget but still achieves
+a high expected net beneﬁt score.
+Lastly, we need to translate our funding schedule into a priority plan that recommends the
+order of investment for the recovery projects, under diﬀerent annual funding restriction.
+Based on our analysis, we develop a mathematical model to schedule the 48 recovery projects
+provided in the question. Firstly, we consider the impact of time on the feasibility of success
+of projects. Afterwards, to evaluate each project based on the data given, we develop a Pri-
+ority Index, which is then used to generate an initial schedule using Dynamic Programming
+and Greedy Algorithm. Finally, we incorporate the Genetic Algorithm to obtain an optimal
+schedule which minimizes ﬂuctuations in yearly spending.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 3 of 24
+2 Assumptions and Notations
+2.1 Assumptions and Justiﬁcation
+Assumption: No other organizations are conserving the 48 endangered plant species in
+Florida.
+Justiﬁcation: According to the Federal and State Endangered and Threatened Species Ex-
+penditures[7], Fish and Wildlife Service(FWS) plays a major part in funding conservation and
+recovery of Florida’s endangered plant species. For instance, in 2017, Polygala smallii and
+Dicerandra christmanii only received funding from FWS. Since FWS conserves species by var-
+ious initiatives, it is justiﬁable to assume that FRPCE is the one providing funds for plant
+conservation.
+Assumption: Feasibility of success decreases with time if a project is delayed (i.e. does
+not start from Year 1 of the schedule).
+Justiﬁcation: When a project does not receive timely funding, the lack of conservation man-
+agement causes the species to continue to face crisis and thus to decline in population. By
+research[8], the more critically endangered a species is, the more likely a project will fail to
+save it from extinction. We will account for this trend in more detail in our model development.
+Assumption: Beneﬁt and taxonomic uniqueness do not vary with time.
+Justiﬁcation:
+1. As we have already accounted for the change in the risk of extinction in feasibility of success,
+and the diﬃculty level of performing conservation actions is unlikely to change for a planned
+project, for the ease of our model development, we assume the beneﬁt of a project to be con-
+stant.
+2. The taxonomic information of a species is not likely to change over the course of the sched-
+ule (about 30 to 40 years) due to the modern rigorous biological classiﬁcation system[9], so
+taxonomic uniqueness is also time-independent.
+Assumption: The FRPCE Board has a relatively constant annual budget for conservation
+projects and provides funds for them on a yearly basis.
+Justiﬁcation: The Endowment uses investment income to fund conservation projects. Since
+no information is given, we can assume they generate a stable revenue. Additionally, in the
+U.S, conservation funds are usually issued annually[10]. The costs incurred by each project
+are given by year, so we assume that the FRPCE Board grants funding annually to each project.
+Assumption: Some ﬂuctuations in the annual budget are acceptable.
+Justiﬁcation: It is unrealistic to cap the annual funding at a precise amount. Hence, there
+should be some extent of ﬂuctuation allowed when determining funding for each year.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 4 of 24
+2.2 Notations and Deﬁnitions
+Symbol Meaning Units
+bi Beneﬁt of project i -
+ui Taxonomic Uniqueness of project i -
+ci Total Cost of project i US dollar
+fi(t) Feasibility of Success of project i in year t -
+N Total number of years year
+ρi Population density of species i -
+ρ0 Critical population density -
+r Extinction rate coeﬃcient -
+PRI i(t) Priority Index of project i in year t -
+T (i)
+k Starting year1 of project i in schedule k year
+EB Expected net beneﬁt -
+TS k Total Score of schedule k -
+Table 1: Symbols used, their meaning and units
+3 Model Development
+3.1 Model Objectives
+In deciding its funding priorities, the FRPCE Board has multiple desired objectives. These
+objectives are related to (but not limited to) the conservation status of a species, the existing
+fund as well as the proposed projects. To help them make their decisions, we identiﬁed and
+shortlisted some of the most important objectives and chose to include them in our modelling
+process.
+1. Achieve maximum total beneﬁt. This is the utmost priority for the Board since the
+endowment is set up to support conservation projects for Florida imperiled plant species.
+This total beneﬁt should take into account beneﬁt, taxonomic uniqueness as well as the
+feasibility of success for each project.
+2. Minimize ﬂuctuations in yearly expenditure. Since we do not have information on
+the Board’s revenue each year, we assume them to be relatively constant. By minimizing
+ﬂuctuations and thus keeping the annual budget to be relatively stable, the Board could
+balance funds available with accumulated spending.
+3. Achieve high cost-eﬀectiveness. For the fundraising plan to be reliable, the Board
+should aim to complete a large number, if not all, of the projects. The best plan should
+also keep the annual budget reasonably low.
+4. Fund chosen projects continuously until completion. By providing long-term and
+reliable funding for conservation projects, the Board should ensure that each project
+receives adequate funds over the whole duration of the project.
+The measures used to evaluate our generated funding plan will be established later in our model
+development section.
+1In our model, we take Year 1 as the starting year of the schedule.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 5 of 24
+3.2 Explanation of Factors
+3.2.1 Common Characteristics of Imperiled Plants
+By research, endangered plant species have some common characteristics.
+They usually have speciﬁc requirements for the environment. For instance, Bonamia
+grandiﬂora, an endangered species in Florida, is dependent on the sunny cleared areas left by
+periodic ﬁres or physical disturbance. Fire suppression left their natural habitat overgrown and
+unsuitable for highly specialized scrub endemics that require open sunny patches. Thus, the
+loss of suitable habitat inevitably leads to the decline in the species’ population. Some other
+species have requirements for periodic disruptions to ﬂower or seed.
+Some plant species are naturally rare and hence prone to extinction. They may have ge-
+netic self-incompatibility which prevents them from self-fertilization. The germination rate,
+reproductive rate is relatively low for the endangered species, possibly a result of their limited
+habitat.
+Most of the listed species are endemic to Florida, which means that they are naturally present
+only in Florida. Most of them have a very small range size and are geographically concentrated.
+This causes the species to be more vulnerable to environmental or human disruptions, thus
+these species run a higher risk of extinction.
+3.2.2 Protection Measures
+From the South Florida Multi-species Recovery Plan [11], we identify key measures involved in
+these endangered species’ protection.
+On a species-level, to protect and enhance existing populations, research, monitoring, surveys
+are often needed, depending on the current availability of data.
+On a habitat-level, major recovery actions include securing habitat through acquisition, con-
+ducting prescribed burns, controlling and eliminating invasive plant species, controlling access
+to areas where endangered plants are growing and (re)introducing plants to protected sites.
+3.2.3 Factors Interpretation
+From an environmental viewpoint, conservation of plant species aids in restoring ecological
+equilibrium and improving pollination, climate regulation, nutrition recycling, and carbon
+sequestration[12, 13]. Conservation of plant species also carries economic ripple eﬀects like
+ecotourism. This is incorporated into the beneﬁt factor which indicates the expected relative
+conservation value of funding one species over another. Besides, beneﬁt of protection is directly
+related to the conservation status of each species, which speciﬁes the level of endangerment.
+The aforementioned measures to restore species’ natural habitat require diﬀerent amounts of
+money depending on the speciﬁc measures that need to be put in place. Speciﬁcally, some
+species’ recovery plans involve land acquisition, landowner agreements and some require ex-
+tensive research to be done. The total cost factor, c, takes this aspect of conservation into
+consideration.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 6 of 24
+Since there are uncertainties in plant species’ reproduction and their response to some manage-
+ment actions like prescribed ﬁres 2 is not studied thoroughly enough, the protection measures
+are not perfect solutions to save these species from extinction. The varying eﬀectiveness of
+conservation management[14] and species’ diﬀerent vulnerabilities to environmental disruption
+are taken into account by the feasibility of success factor, f(t).
+The duration of each conservation project diﬀers and is represented by the number of years
+factor, N.
+The taxonomic uniqueness factor, u, indicates the relative rareness in genetics of a spe-
+ciﬁc plant species and its phylogenetic diversity (evolutionary history stored in a species’ genes).
+3.3 Evaluating individual projects
+3.3.1 Population Model
+The logistic equation describes the growth rate of a population with limited resources. In order
+to predict the change in population size of the 48 imperiled plant species within the span of
+our schedule, we consider the logistic equation to describe population decrease. Typically, the
+logistic equation is:
+dρi
+dt =−rρi (1−ρi)
+whereρi represents the population density of theith species,t represents the time,r represents
+the growth coeﬃcient. Here, population density means the ratio of current population to the
+region’s carrying capacity, which refers to the maximum population size of a species that can
+be sustained in a speciﬁc environment, given constraints on available resources like food, water
+and habitat.
+However, there are two problems with the logistic model:
+1. The model cannot account for the eﬀect of the recovery project as the population size is
+constantly decreasing;
+2. The model is less applicable for imperiled plants with small populations.
+To improve our model, we incorporate Allee eﬀect which occurs in small or sparse popula-
+tion. Allee eﬀect describes a positive relationship between individual ﬁtness and population
+density[15]. In the case of imperiled plants, the larger the group population, the more likely
+an imperiled plant will survive extinction. We assume strong Allee eﬀect for most 48 imperiled
+plants. Strong Allee eﬀect can induce a critical population density below which the population
+growth rate is negative and extinction is likely to occur[16]. Thus, to protect an imperiled plant
+species from extinction, we only need to raise its population size above the critical population
+density to ensure positive population growth rate. This is aligned with our research that the
+goal of recovering endangered species is to increase their population to be self-sustaining. Our
+modiﬁed logistic equation is:
+dρi
+dt =−rρi (1−ρi) (ρi−ρ0)
+whereρ0 represents the critical population density. Settingr = 0.3,ρ0 = 0.5 and the maximum
+population density to be one unit, we plot a graph for two models:
+2A planned ﬁre applied to meet management objectives.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 7 of 24
+Figure 1: A comparison between unimproved logistic model (gray)
+and improved logistic model (red and green)
+3.3.2 Feasibility Decay
+According to our modiﬁed logistic model, population density of 48 imperiled species decreases
+with time if no actions are taken to protect them. To better protect imperiled species, actions
+should be taken as early as possible to ensure higher feasibility of success. However, it is im-
+possible to start all projects simultaneously in the ﬁrst year due to limited funding. Therefore,
+a discussion about how feasibility changes with time is important for us to better schedule the
+protection measures and come up with a long-term and reliable solution. In our model, the
+feasibility of a project will stop decreasing once the project starts, as recovery eﬀorts are made
+to avoid extinction.
+We assume that feasibility of a project at a particular year is directly proportional to the
+population density. This is justiﬁed since f = 0 when ρi = 0 (i.e. extinction) and f = 1 when
+ρi =ρ0 (i.e. self-sustaining, no protection measure is needed).
+fi(t)∝ρi(t)
+Thus, we solve the diﬀerential equation using Mathematica to get the feasibility with time
+function of a project with initial feasibility slightly below 1 (in this case f(0) = 0.998):
+f (t) = 1−
+√
+ert + 250000×e0.5rt
+e0.5rt + 250000
+Since feasibility is the only variable in the diﬀerential equation, the function is invariant under
+translation along the horizontal axis. Therefore, all feasibility decay functions can be obtained
+by translating the previous function along the horizontal axis.
+Figure 2: Feasibility decay for diﬀerent projects when r = 0.3
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 8 of 24
+In this model, the speed of decay can be adjusted by changing the extinction rate coeﬃcient,
+r, of the species. In order make the eﬀect of feasibility decay signiﬁcant in our model, we set
+r to 0.3.
+3.3.3 Priority Index
+Figure 3: Flowchart of Priority Index computation
+To evaluate which project the FRPCE board should prioritize, we use the Technique for Order
+of Preference by Similarity to Ideal Solution (TOPSIS) to construct the Priority Index, and the
+Entropy Weight Method to determine the weight of each factor. As feasibility decreases with
+time, the Priority Index will also vary with respect to time. In this section, we will compute
+the Priority Index of each project in each year using the ﬁve factors mentioned in the previous
+part: beneﬁt, taxonomic uniqueness, feasibility of success, total cost and total number of years .
+Firstly, we generate an n×m evaluation matrix X(t) of year t, where n is the number of
+projects, m is the number of factors, and xij is the value of the jth factor of the ith project.
+X(t) =
+
+
+x11 x12 ··· x1m
+x21 x22 ··· x2m
+... ... ... ...
+xn1 xn2 ··· xnm
+
+
+Next, we have to convert the factors into the same type. In this problem, beneﬁt and taxo-
+nomic uniqueness are beneﬁt factors[17], where greater values indicate greater priority. Total
+cost and total number of years are cost factors, where smaller values indicate greater priority.
+For feasibility of success, based on our decay function, it decreases the fastest at intermediate
+values and the slowest at extreme values. In our model, we want to prevent the feasibility
+from experiencing a rapid decay. Hence, we will prioritize projects whose current feasibility
+sits within an intermediate interval [lb,ub ] and we call feasibility of success an interval factor.
+To unify the factor type, we perform positivization to convert all factors into beneﬁt factors
+and transform matrix X(t) into ˜X(t), the positivized evaluation matrix.
+For beneﬁt factors, there is no need for factor type conversion, i.e. ˜xij =xij.
+For cost factors,
+˜xij = max{xij}− xij,i = 1,...,n
+For interval factors, we denote the maximum distance of the data to the interval as Mj, i.e.
+Mj = max{lb− min{xij}, max{xij}− ub},i = 1,...,n
+Performing positivization,
+˜xij =
+
+
+
+1− lb−xij
+Mj
+, xij <lb
+1, lb≤xij≤ub
+1− ub−xij
+Mj
+, xij >ub
+,i = 1,...,n
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 9 of 24
+Then, we perform normalization to transform the evaluation matrix from ˜X(t) to Z(t) to
+ensure all factors are on the same scale. We denote the normalized factor value as zij.
+zij = ˜xij√∑n
+i=1 ˜x2
+ij
+, i= 1,...,n, j = 1,...,m
+To determine the weight of each factor, subjective methods such as Analytic Hierarchy Process
+(AHP) are often used. However, the success of these methods depends on accurate judgement
+of factors’ relative importance[18]. This is hard to achieve as humans are often obscured by
+their emotions and prejudices. On the other hand, objective weighting methods are able to
+reﬂect the amount of useful information in the set of factors given and thus are better at
+preventing human prejudices[19]. Hence, we choose to use the Entropy Weight Method. In
+our model, we assume that the weight of each factor is ﬁxed (i.e. does not vary with time).
+We will use the data from the starting year (i.e. Z(1)) to compute the weights.
+Step 1: the standardized value of the jth factor of the ith project is given by pij =
+zij/∑n
+i=1zij
+Step 2: the entropy value of the jth factor is deﬁned as ej =−∑n
+i=1pij ln (pij)/lnn [20]
+Step 3: calculate the weight of the jth factor wj = (1−ej)/∑m
+j=1 (1−ej)
+From the data given, we obtain wi (i = 1− 5 represents the weight of beneﬁt, taxonomic
+uniqueness, feasibility of success, total cost and total number of years respectively):
+w1 w2 w3 w4 w5
+0.141 0.062 0.486 0.095 0.217
+Table 2: Weight of each factor given by Entropy Weight Method
+Now we proceed to calculate the Priority Index of the ith project in a particular year. Firstly
+we deﬁne Z +
+j and Z−
+j as the maximum and minimum value in the jth column of matrix Z.
+Z + =
+(
+Z +
+1,...,Z +
+m
+)
+= (max{z11,...,z n1},..., max{z1m,...,z nm})
+Z− =
+(
+Z−
+1,...,Z −
+m
+)
+= (min{z11,...,z n1},..., min{z1m,...,z nm})
+Then, we deﬁne D+
+i and D−
+i as the weighted Euclidean distance from the ith project to the
+best possible project and the worst possible project respectively.
+D+
+i =
+vuu√
+m∑
+j=1
+wj
+(
+Z +
+j −zij
+)2
+, D−
+i =
+vuu√
+m∑
+j=1
+wj
+(
+Z−
+j −zij
+)2
+Therefore, the Priority Index of the ith project in year t after normalization, PRI i(t), can be
+computed as follows:
+PRI i(t) = Si∑n
+i=1Si
+where Si = D−
+D+
+i +D−
+.
+The Priority Index we obtained can be found in Appendix. Due to space limit, we only
+display the Priority Index of every 5 years.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 10 of 24
+3.4 Crafting Fundraising Schedule
+Having obtained the Priority Index PRI i(t) of each project in each year, we can now use
+Dynamic Programming with Greedy Algorithm to determine a fairly eﬃcient schedule that
+demonstrates which projects should be prioritized to invest in each year amongst our 48 recovery
+projects.
+3.4.1 Dynamic Programming
+Firstly, we use Dynamic Programming (DP) to decide which projects to fund in each individual
+year. For now, we assume none of the projects has been selected.
+Analogous to 0-1 Knapsack Problem, our goal is to maximize the total Priority Index PRI i(t)
+of year t, while keeping the total funding that selected projects require in each year under a
+reasonable limit, MaxFund . In our case, each of the 48 projects has its value in terms of
+Priority IndexPRI i(t), and its costs in the ﬁrst year, Cost i (given in the database). The total
+costs of selected projects cannot exceed MaxFund . Each project is either chosen to be funded,
+or not selected in that year.
+We denote the state function DP (i,Fund ) as the maximum ∑PRI i(t) obtainable when we
+are to choose among the ﬁrst i (i≤ 48) projects, under the constraint that total yearly costs
+required do not exceed Fund (Fund≤ MaxFund ). Hence, for a particular i and Fund , we
+have two options:
+1. If the ith project is not selected, the maximum Priority Index obtainable in DP (i,Fund )
+is equivalent to DP (i− 1,Fund ).
+2. If the ith project is selected, we can gain additionalPRI i, on top of what can be obtained
+from DP (i− 1,Fund −Cost i).
+We should select the option that gives a higher total Priority Index obtainable. Hence, the
+recurrent equation can be written as:
+DP (i,Fund ) = max{DP (i− 1,Fund ),DP (i− 1,Fund −Cost i) +PRI i(t)}
+To visualize this concept, we design the following pseudocode. Note that in coding, function
+DP (i,Fund ) is represented by a 2-D array of i rows and Fund columns, so Fund must be an
+integer. Hence, during DP, we rounded up the costs of each project to integer. Rounding up
+also makes sure that total costs from selected projects will not exceed MaxFund .
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 11 of 24
+Algorithm 1 Dynamic Programming
+read MaxFund, Cost [1...48], PRI[1...48]
+declare DP : array [1...48, 1...MaxFund ] of ﬂoat
+for i← 1 to 48 do
+Fund ← MaxFund
+repeat
+DP [i][Fund ] = max(DP [i− 1][Fund ],DP [i− 1][Fund−Cost[i]] +PRI [i])
+Fund ← Fund− 1
+untilFund ≤ Cost[i]
+repeat
+DP [i][Fund ] ← DP [i− 1][Fund ]
+Fund ← Fund− 1
+untilFund ≤ 0
+end for
+Now that we have used DP (i,Fund ) as memoization of our results, we can backtrack the
+projects that were selected from DP (48,MaxFund ), which stores the highest Priority Index.
+The pseudocode is shown below.
+Algorithm 1 Dynamic Programming - Backtrack
+declare ProjectStatus : array [1...48] of boolean
+BackTrack(48, MaxFund)
+procedure BackTrack(i, w)
+if i = 0 then ⊿ Base case
+return
+else if DP [i][w]>DP [i− 1][w] then
+ProjectStatus [i]← 1 ⊿ Project i is selected
+BackTrack(i− 1, w−Cost[i])
+else
+ProjectStatus [i]← 0 ⊿ Project i is not selected
+BackTrack(i− 1, w)
+end if
+end procedure
+3.4.2 Greedy Algorithm
+As our schedule spans across N years, the main idea of Greedy Solution is that we use DP to
+select the optimal set of projects to fund in each year. By iterating this procedure N times,
+the total Priority Index ∑PRI i in each of the N years will also be maximized.
+Here we explain the structure of our Greedy Algorithm:
+Step 1: Before the start of year 1, we set a FundCap that restricts the maximum cost
+required in each year. We initialize the Cost and PRI for each project.
+Step 2: At the start of each iteration, we check for all projects that are already selected
+from previous years and are currently ongoing. As these projects have to continue
+to be funded this year (Model Objective 3), we deduct their costs fromFundCap
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 12 of 24
+and assign the remaining costs to MaxFund , which is the money limited for DP
+to choose among unselected projects.
+MaxFund =FundCap−
+∑
+Costs of ongoing projects
+Step 3: At the start of each iteration, we also refresh the PRI i(t) for each unselected
+projects, based on the Feasibility Decay function fi(t) (See section 3.3.2), where
+t here refers to the corresponding year.
+Step 4: Perform Dynamic Programming among unselected projects to choose the combi-
+nation that gives the highest ∑PRI i(t) of that year, using the updated values
+of MaxFund and PRI i(t).
+Step 5: Update the schedule for newly selected projects. Increase the year by 1.
+Step 6: Repeat Step 2 to Step 5 untilN iterations are completed. Display the schedule
+and evaluate its eﬀectiveness (See Section 3.4.3).
+However, we notice that if we set the total number of yearsN to be constant, afterN iterations,
+some projects which have been chosen are not completed because they started too late. To be
+more ﬂexible, we may adjust N at the end of Greedy Algorithm, by examining those ongoing
+yet incomplete projects:
+1. If a project requires only a few years left to complete and has relatively high Priority
+Index among the incomplete projects, we may extend the total number of years N until
+this project is complete.
+2. Otherwise, we may abandon this project entirely, remove its costs from our schedule, and
+repeat Greedy Algorithm to ﬁnd the best schedule among the remaining projects. Total
+number of years N will become the end year of the last completed project.
+This small modiﬁcation may increase the number of projects recovered, while saving costs from
+projects that are unrealistic to complete.
+Here, we present the complete ﬂowchart that illustrates the above process:
+Figure 4: Greedy Algorithm to determine initial schedule
+There are several reasons why we can apply Greedy Solution here:
+1. We want to achieve an overall high Priority Index since PRI i(t) takes the eﬀect of fea-
+sibility decay fi(t) into account. By maximizing sum of Priority Index, we can conserve
+plant species that need urgent actions ﬁrst.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 13 of 24
+2. We also observe that in the database provided, the funding required for most projects
+decreases over time (*). Hence, this ensures that the total costs from ongoing projects in
+subsequent years will not exceedFundCap , and hence there will be remainingMaxFund
+for DP in the subsequent years.
+(*) We notice that in the data given, the budget for 47 out of 48 projects decreases continually
+over the years, except for 1-Flowering Plants-486 whose budget falls to zero from year 4 but
+suddenly spikes in year 10. Here, we temporarily modify the budget plan of this project to be
+in descending order throughout the 10 years, by transferring its year 10 costs to the previous
+years. Hence, in the preceding years the project requires more funds than what it actually
+requires, so we treat these extra funds as savings for the 10th year.
+3.4.3 Evaluating Our Initial Schedule
+Using the above algorithms, we generate an initial schedule, setting the total number of years
+N = 35 and annual funding cap FundCap = $500, 000.
+Figure 5: Our proposed schedule obtained by DP and Greedy Algorithm
+Figure 6: Yearly funding required
+To evaluate the eﬀectiveness of a schedule, we ﬁrst calculate its expected net beneﬁt , EB,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 14 of 24
+using the formula below[21]:
+EB =
+∑
+i∈S
+(w′
+1bi +w′
+2ui)fi
+ci
+where S is the set of selected projects, w′
+1 = w1
+w1+w2
+and w′
+2 = w2
+w1+w2
+in which w1 and w2 are
+the weights assigns to beneﬁt bi and taxonomic uniqueness ui in Entropy Weight Method re-
+spectively. fi is the feasibility of the ith project when it starts, and ci is the total cost of the
+ith project. EB takes into account all factors except for the total number of years of projects
+since our schedule will span a signiﬁcantly longer period compared to the duration of individual
+projects. Hence duration of each project is not very relevant to the beneﬁts gained from its
+completion.
+It is noteworthy that we use PRI i to determine the priority order of project selection but not
+EB. This is because EB does not include the eﬀect of feasibility decay and the total number
+of years taken to ﬁnish each project. If we use EB to determine the priority order of each
+project, we are more likely to optimize yearly beneﬁt instead of long-term beneﬁt.
+Moreover, EB alone cannot comprehensively evaluate our initial schedule since it does not
+reﬂect the ﬂuctuation of yearly funding requirement. In order to take ﬂuctuation into account,
+we use total score TS ,
+TS = 1000×EB
+σ
+where σ represents the standard deviation of yearly funding and 1000 is a scaling factor.
+From our initial schedule, we obtain EB = 81.88, σ = 109443 and TS = 0.748. While our
+initial schedule can provide a reasonably good EB, it has a large ﬂuctuation towards the end
+of the schedule, leading to a poor TS . To maximize TS , we present an optimization algorithm
+in the next section.
+3.5 Schedule Optimization
+From the previous section, we can obtain a schedule using DP and the Greedy Algorithm.
+However, there are two limitations to the schedule. Firstly, it fails to account for our objective
+to minimize the ﬂuctuations of yearly funding. As shown in Figure 6, yearly funding falls
+sharply from year 27, which leads to a high σ and thus a low TS . Secondly, the use of greedy
+algorithm only ensures an optimal solution at each iteration. The schedule obtained may not
+be a global optimum. Therefore, to optimize our schedule, we use the Genetic Algorithm (GA).
+3.5.1 Genetic Algorithm (GA)
+First proposed by J. H. Holland[22] and L. J. Fogel et al.[23] based on Darwin’s Evolutionary
+Theory, GA starts from an initial population that represents admissible solutions to a problem
+through suitable coding. Leveraging on the principle of variation by crossover, mutation and
+selection of the ﬁttest, it iterates through generations and solves the problem satisfactorily[24].
+GA has multiple advantages. Firstly, it is able to deal with complex optimization problems
+with diﬀerent types of objective (ﬁtness) function, be it stationary or non-stationary (changes
+with time), linear or nonlinear, discrete or continuous. Secondly, it supports multi-objective
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 15 of 24
+optimization. Thirdly, since individuals in the population act like independent agents, they
+can explore the search space in many directions simultaneously, which signiﬁcantly reduces the
+possibility of being stuck in a local optimum[25].
+To implement GA, we abstract our schedulek into a chromosome. Each of the 48 projects rep-
+resents a distinct gene and the starting year of theith project,T (i)
+k , is the “genetic information”
+that will be modiﬁed. Here are the speciﬁc notations we will use for GA:
+Symbol Meaning
+Pc Probability of crossover
+Pm Probability of mutation
+a Maximal number changed to the starting year if mutated
+q Number of population (children produced) in each generation
+s Number of children selected in each generation
+M Total number of generations
+In the following part we will use 2 parents and 2 children to illustrate the algorithm. Firstly,
+after initializing the population, we apply 2-point crossover to the parents. To do this, we
+randomly select two positions on the chromosome, dividing the chromosome of each parent
+into three parts. Next, we switch the middle parts at probability Pc to obtain two children.
+Then, at probabilityPm, each gene in a child would mutate by adding a random integer rang-
+ing from−a to a. There are some restrictions to mutation. Firstly, the starting and ending
+year of each project after mutation must still be within [1 ,N ]. Secondly, while aiming to re-
+duce ﬂuctuation, a mutated solution must still possess at least 95% EB of our initial solution
+to prevent excessive decline inEB when certain projects are delayed. The process of crossover
+and mutation is illustrated in Figure 7.
+Figure 7: Crossover and mutation
+Next, according to the principle of “survival of the ﬁttest”, we apply tournament selection
+to select 2 out of theq children as the parents of the next generation. We carry out tournament
+selection twice: each time we randomly select 3
+4 of the population q, and pick the individual
+with the highest TS (ﬁtness level) to be one of the 2 parents next year. Note that we do not
+directly select the best 2 individuals out of the whole population, but allow for some “noise”
+– or probability – of selecting the “sub-best” solutions, so that our generations will be more
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 16 of 24
+diversiﬁed and will not be stuck in local optimum solution. After the 2 parents are selected,
+they will crossover and mutate again to produce the next generation of solutions. The whole
+process will iterate through M generations and we will keep track of the overall best solution.
+Figure 8: Flowchart of Generic Algorithm
+In our problem, we takea = 10,q = 100,s = 2,M = 300 . As the initial solution only consists
+of one individual (Figure 5, initial schedule obtained from DP), it will self mutate 100 separate
+times to produce the ﬁrst generation and the crossover process will only start from the second
+generation. We use tournament selection to select 2 children in each generation as parents
+of the next generation which will crossover and mutate to produce children for the next gen-
+eration. We obtain the following optimized schedule and we compare it with the initial schedule:
+Figure 9: Our improved schedule obtained by GA
+3.5.2 Result Comparison
+We plot the yearly funding of two schedules (Figure 10), and the improved one has two advan-
+tages: ﬁrstly, the unimproved schedule has a sharp decline from year 28 whereas our improved
+one achieves a relatively consistent funding throughout the duration, leading to a much lower
+ﬂuctuation; secondly, the improved schedule takes 3 years less to ﬁnish the same number of
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 17 of 24
+projects without exceeding the fund limit, indicating that the fund is used more eﬃciently.
+Figure 10: Comparison of two schedules
+Furthermore, another advantage of using GA is that we are able to deal with data of diﬀerent
+trends. In the data given in the question, funding requirement for 47 of 48 projects decreases
+continually as time goes on. In reality, yearly cost of a project can go up and down as time
+goes on. With GA, we can always minimize the yearly funding ﬂuctuation by rearranging the
+order of projects. Here we give an example where the funding required for each project is
+reversed (i.e. the funding required for projects in each year increases with time). As shown in
+Figure 11, the unimproved schedule has a huge spike in funding during the starting years and
+ﬂuctuates more violently than the improved schedule. This suggests signiﬁcant improvements
+using GA.
+Figure 11: Reversed data
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 18 of 24
+3.5.3 Diﬀerent Initial Conditions
+For GA, diﬀerent initial conditions may lead to diﬀerent optimized outcomes. If the initial
+solution is far oﬀ from the global maximum, solution is likely to converge to a local maximum
+instead. In our model, we choose the result obtained from greedy algorithm and DP as our
+initial condition. To show why this initial schedule is necessary, we further obtained the result
+of GA if the initial condition is set randomly.
+Figure 12: Convergence plot
+In Figure 12, the random initial condition has a lower ﬁtness value. Besides, it does not
+converge to the optimized ﬁtness value obtained by the one where the initial condition is given
+by DP. One possible reason may be the undetermined pool of projects chosen in the ﬁrst year.
+In order to minimize the yearly funding ﬂuctuation, GA may choose those projects which meet
+the funding requirement but are of low beneﬁt values. This ultimately restrains the optimized
+ﬁtness value.
+4 Results
+From DP, we obtained the relationship between the number of completed projects andFundCap .
+Figure 13: Relationship between the number of completed projects and yearly funding cap
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 19 of 24
+Figure 14: Color-coded
+priority order of recom-
+mended schedules
+For the FRPCE Board to achieve a “long-term and re-
+liable funding” where omission of certain projects is al-
+lowed, we recommend $500,000 as the minimum fundrais-
+ing required since it can complete a relatively high num-
+ber of projects (43 of 48) while keeping the cost low.
+On the other hand, completing all projects within a rea-
+sonable time period (40 years) requires a maximum yearly
+funding cap of at least $2,000,000. We also recommend
+this schedule to the Board if they insist on completing all
+projects.
+Subsequently, we use GA to optimize the initial schedule
+generated by DP and Greedy Algorithm. The priority or-
+der of projects in these two schedules are presented in Fig-
+ure 14. The value in each cell represents the starting
+year of the project and NC means the project is not cho-
+sen.
+FundCap EB σ TS
+$500, 000 77.801 39215 1.984
+$2, 000, 000 85.744 126002 0.681
+FundCap |S| Duration <yearly cost>
+$500, 000 43 32 $444, 437.25
+$2, 000, 000 48 40 $1, 274, 652.71
+Table 3 Results of the recommended schedules
+(S is the set of selected projects and |S| is number of completed
+projects; <yearly cost> is the annual yearly cost.)
+5 Sensitivity Analysis
+To test the sensitivity of our model, we use the schedule with
+yearly funding capped at $500 , 000 and increase the extinc-
+tion rate coeﬃcient r by 1% (0 .003) and 5% (0 .015) respec-
+tively. We observe that the initial schedule obtained after
+DP and Greedy Algorithm does not change when r varies.
+This attests to the robustness of our DP and Greedy solu-
+tion.
+However, one concern is that as the population of the species
+decreases faster, feasibility will decrease faster, resulting in a
+lower total expected net beneﬁt that can be potentially yielded.
+Hence, we will measure the change in EB, TS and yearly fund-
+ing.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 20 of 24
+r EB EB % change TS TS % change
+0.3 77.8 - 1.98 -
+0.303 (+1%) 77.4 −0.46% 1.93 −2.72%
+0.315 (+5%) 75.9 −2.42% 1.85 −6.75%
+Table 4: Change in EB and TS
+Figure 15: Change in annual funding when r is adjusted
+From Table 4, we can see that when r is set to increase, the decrease in both EB andTS falls
+within a reasonable range. Moreover, from Figure 15, our ﬁnal yearly cost does not change
+signiﬁcantly when we adjust r. This shows that our optimization methods are generally stable
+such that the change in r will not excessively aﬀect the optimal schedule found.
+6 Strengths and Weaknesses
+6.1 Strengths
+• Our model is realistic since we recognized that imperiled plant species without conser-
+vation will continue to decline in population size. Because of this increasing risk of
+extinction, the possibility of a conservation project saving the species from extinction
+will deﬁnitely decrease, which means the feasibility of the project will decrease.
+• We used two algorithms to generate the initial schedule and optimize it respectively. By
+doing so, we can obtain an optimal solution with both a relatively high total beneﬁt and
+a minimized ﬂuctuation in yearly expenditure.
+• Our model can keep annual funding relatively constant even if the projects’ yearly costs
+do not follow a decreasing trend. The use of Genetic Algorithm ensures that our initial
+schedule is optimized and the yearly budget will not be exceeded by an unreasonable
+amount.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 21 of 24
+• Our model is highly customizable since the FRPCE Board could enter their perceived
+relative importance of each factor in Priority Index.
+• We used impartial and objective methods to determine the Priority Index. TOPSIS
+can reﬂect the underlying diﬀerence between projects. The Entropy Weight Method
+ensures the objectivity in decision-making by computing weight based on the amount of
+information that can be derived from the data.
+6.2 Weaknesses
+• Feasibility decay function is idealized and may not describe the real life situation since the
+population of endangered plant species are inﬂuenced by many factors like environmental
+changes, individual species characteristics and other contingencies that cannot be easily
+quantiﬁed.
+• Projects with very high feasibility are treated the same as projects with very low feasibility
+when computing Priority Index. This may cause projects with low feasibility being chosen
+instead of those with high feasibility. This is not preferable for maximizing our expected
+net beneﬁt.
+• We did not eliminate projects when their feasibility decay close to 0. Other factors like
+a high beneﬁt score contribute to its Priority Index, which may lead to it being chosen,
+despite the fact that the project cannot contribute to total expected net beneﬁt.
+7 Conclusion
+In conclusion, we managed to address the problem requirement fully by identifying objectives
+and factors involved in the Board’s decision-making, and generating optimal schedules for dif-
+ferent funding caps. We successfully employed DP to select the most urgent and valuable
+projects and generated an initial schedule. Afterwards, we used Genetic Algorithm to optimize
+our schedule, in particular minimized ﬂuctuations in yearly expenditure. From our model, we
+recommended the schedule obtained using $500 , 000 as the yearly cap to the Board since it
+exhibits high cost-eﬀectiveness. The Board could also use $2 , 000, 000 as the yearly cap if they
+hope to complete all 48 recovery projects.
+In the future, the limitations of our feasibility model could be addressed by using data gathered
+by FWS to ﬁt the feasibility decay curve.
+While our model does provide a suggested priority order of funding for the 48 imperiled plant
+species, a realistic concern would be how to adapt to a scenario where annual budgets are
+changing and projecting future available funding based on given revenue in recent years. Nev-
+ertheless, our model is still holistic in solving the resource allocation problem and can be easily
+expanded to suit more complicated contexts.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 22 of 24
+8 Memo
+Date: 17/11/2020
+To: The Florida Rare Plant Conservation Endowment (FRPCE) Board
+From: HiMCM Team #10997
+Subject: Recommendation of funding schedule for 48 imperiled plant species conservation
+As a group of students passionate about mathematical modeling, we recently learnt about the
+Board’s consistent eﬀorts in funding imperiled plant species conservation projects in Florida.
+We are also aware of the diﬃculty you are facing in prioritizing the various recovery projects.
+Given the data set of 48 species’ conservation projects, we utilized mathematical models and
+computer algorithms to generate funding schedules that can maximize conservation beneﬁts,
+and at the same time, minimize ﬂuctuations in yearly expenditures.
+In quantifying an aggregate expected net beneﬁt score, we take into account the feasibility of
+success, beneﬁt, taxonomic uniqueness, and total costs of each project. A good funding plan
+should achieve a high project success rate, save species with the most conservation value. We
+also recognize that the Endowment would not like to spend too much or too little money on a
+speciﬁc year, wasting or straining its yearly budget. Hence, our proposed plan is optimized to
+have relatively stable yearly funding.
+Based on our algorithm, we suggest $500,000 as the annual funding cap since 43 out of 48
+projects can be completed and the schedule is the most cost-eﬀective. Meanwhile, we present
+$2,000,000 as the minimum yearly funding that could ﬁnish funding all projects in a reasonable
+time span. The priority order of funding we obtained are listed in Figure 14. Under the speciﬁc
+annual funding column, the number corresponding to a project indicates the start year of the
+project. For instance, 1-Flowering Plants-135 should be funded starting from Year 2 when the
+Board adopts the $500,000 funding cap. When the value is NC, this conservation project is
+not chosen, usually because the yearly cost greatly exceeds the annual budget or the expected
+net beneﬁt is too low.
+You can understand the rationale behind the schedule easily. In our model, we ﬁrst used a
+Priority Index to decide which projects to be funded ﬁrst. Projects with greater beneﬁt and
+uniqueness are prioritized since they yield more conservation value. We also prioritize shorter
+projects and those which require less funding to accommodate for more projects in the future.
+Feasibility of a project was modeled to be decreasing logistically with time, which means the
+feasibility of a project decreases the fastest near the median value. To achieve a high overall
+evaluation score, we prioritize these projects since an extremely high/low feasibility does not
+change appreciably with time. Based on our results, projects like 1-Flowering-Plants-502/481
+are done during the ﬁrst year as they have low total cost and short time span, fair beneﬁt
+and uniqueness as well as intermediate feasibility values. Projects with very high feasibility
+like 514/179 are funded later since they are less urgent. Our model was tested to have the
+maximum expected net beneﬁt and minimum ﬂuctuations in yearly expenditures.
+We hope that by selecting and implementing the appropriate funding schedule from our results
+table, your organization will be able to bring maximum welfare to Florida’s rare plants and
+their habitat. An optimal funding schedule is crucial to conservation eﬀorts in Florida given
+pressing extinction threats imposed by climate change, land use change and urban development.
+Species conservation still has a long way to go but we hope that our eﬀorts can contribute to
+your decision-making process to save endangered species.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 23 of 24
+References
+[1] Centre for Agriculture and Action on Invasives Bioscience International. Explore the impacts of
+invasive species. https://www.invasive-species.org/impacts/, Jun 2019.
+[2] Florida Department of Agriculture and Consumer Services. Endangered, Threatened and Com-
+mercially Exploited Plants of Florida. https://www.fdacs.gov/content/download/42665/
+file/FloraUpdates-November-2018.xlsx, November 2018.
+[3] The Endangered Species Act as amended by Public Law 97-304 (the Endangered Species Act
+amendments of 1982) . The United States Government Publishing Oﬃce, 1983.
+[4] Fish & Wildlife Foundation of Florida. Financial statements and supplementary information.
+Technical report, 2020.
+[5] Fish & Wildlife Foundation of Florida. With the Wild We Stand| 2019 Annual Report. Technical
+report, 2019.
+[6] Leah R Gerber, Michael C Runge, Richard F Maloney, et al. Endangered species recovery: A
+resource allocation problem. Science, 362(6412):284–286, 2018.
+[7] U.S. Fish, Wildlife Service, International Association of Fish, and Wildlife Agencies. Federal
+and State Endangered and Threatened Species Expenditures . U.S. Fish & Wildlife Service. URL
+https://www.fws.gov/endangered/esa-library/index.html.
+[8] Vernon H. Heywood. Plant conservation in the anthropocene – challenges and future prospects.
+Plant Diversity, 39(6):314 – 330, 2017. ISSN 2468-2659. doi: https://doi.org/10.1016/j.pld.2017.
+10.004. Plant Conservation and Botanic Gardens.
+[9] Kevin Thiele. Why names change: the new thinking in taxonomy. https://florabase.dpaw.
+wa.gov.au/articles/dryandra-banksia/why_names_change, May 2008.
+[10] American System of Conservation Funding :: Association of Fish amp; Wildlife Agencies. The
+american system of conservation funding. https://www.fishwildlife.org/afwa-informs/
+resources/american-system-conservation-funding.
+[11] US Fish & Wildlife Service South Florida Field Oﬃce. South ﬂorida multi-species recovery plan.
+Atlanta, Ga, 2172, 1999. URL https://ecos.fws.gov/docs/recovery_plan/140903.pdf.
+[12] Botanic Gardens Conservation International. About plant conservation. https://www.bgci.
+org/about/about-plant-conservation/.
+[13] Kani I¸ sik. Rare and endemic species: why are they prone to extinction? Turkish Journal of
+Botany, 35(4):411–417, 2011.
+[14] Southeast Region of the U.S. Fish and Wildlife Service. Recovering threatened and endangered
+species. https://www.fws.gov/southeast/endangered-species-act/recovery/.
+[15] John M. Drake and Andrew M. Kramer. Allee eﬀects. URL https://www.nature.com/
+scitable/knowledge/library/allee-effects-19699394/.
+[16] Gui-Quan Sun. Mathematical modeling of population dynamics with allee eﬀect. Nonlinear
+Dynamics, 85(1):1–12, 2016. doi: 10.1007/s11071-016-2671-y.
+[17] Milan Houska, L. D¨ omeov´ a, and Martina Houˇ skov´ a Ber´ ankov´ a. The conversion of cost and beneﬁt
+criteria in the topsis method. Int. J. of Applied Decision Sciences , 5:ied Decision Sciences, 10
+2012. doi: 10.1504/IJADS.2012.050021.
+[18] R Karthikeyan, Kgs Venkatesan, and A Chandrasekar. A comparison of strengths and weaknesses
+for analytical hierarchy process. Journal of Chemical and Pharmaceutical Sciences , 9:S–12 S, 07
+2019.
+[19] Yuxin Zhu, Dazuo Tian, and Feng Yan. Eﬀectiveness of entropy weight method in decision-
+making. Mathematical Problems in Engineering , 2020:1–5, 2020. doi: 10.1155/2020/3564835.
+[20] Vahab Amiri, Mohsen Rezaei, and Nassim Sohrabi. Groundwater quality assessment using en-
+tropy weighted water quality index (ewqi) in lenjanat, iran. Environmental earth sciences , 72:
+3479–3490, 04 2014. doi: 10.1007/s12665-014-3255-0.
+[21] Martin L Weitzman. The noah’s ark problem. Econometrica, pages 1279–1298, 1998.
+[22] John Henry Holland et al. Adaptation in natural and artiﬁcial systems: an introductory analysis
+with applications to biology, control, and artiﬁcial intelligence . MIT press, 1992.
+[23] L. J. Fogel, A. J. Owens, and M. J. Walsh. Artiﬁcial Intelligence through Simulated Evolution .
+Wiley, 1966.
+[24] Bastien Chopard and Marco Tomassini. An introduction to metaheuristics for optimization .
+Springer, 2018.
+[25] Xin-She Yang. Genetic algorithms. Nature-Inspired Optimization Algorithms, page 77–87, 2014.
+doi: 10.1016/b978-0-12-416743-8.00005-1.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 10997 HiMCM Page 24 of 24
+Appendix (Priority Index)
+unique id Y ear 1 Y ear 5 Y ear 10 Y ear 15 Y ear 20 Y ear 25 Y ear 30 Y ear 35
+Plants-502 0.024 0.025 0.028 0.028 0.023 0.019 0.018 0.017
+Plants-436 0.022 0.018 0.015 0.014 0.014 0.015 0.015 0.016
+Plants-536 0.018 0.021 0.027 0.035 0.044 0.055 0.058 0.042
+Plants-486 0.023 0.024 0.026 0.031 0.033 0.026 0.020 0.016
+Plants-183 0.016 0.014 0.013 0.013 0.014 0.015 0.015 0.016
+Plants-480 0.022 0.018 0.015 0.014 0.014 0.015 0.015 0.016
+Plants-135 0.024 0.025 0.021 0.018 0.016 0.016 0.016 0.016
+Plants-481 0.024 0.025 0.028 0.033 0.035 0.028 0.022 0.019
+Plants-176 0.024 0.024 0.019 0.016 0.015 0.015 0.015 0.016
+Plants-475 0.024 0.020 0.016 0.015 0.015 0.015 0.016 0.016
+Plants-546 0.024 0.025 0.025 0.020 0.017 0.016 0.016 0.016
+Plants-558 0.023 0.025 0.027 0.033 0.039 0.032 0.025 0.020
+Plants-553 0.024 0.025 0.027 0.031 0.026 0.021 0.018 0.017
+Plants-442 0.024 0.025 0.025 0.020 0.017 0.016 0.016 0.016
+Plants-537 0.023 0.025 0.028 0.033 0.038 0.031 0.024 0.020
+Plants-548 0.017 0.020 0.025 0.031 0.040 0.050 0.051 0.037
+Plants-426 0.023 0.020 0.016 0.014 0.014 0.014 0.014 0.015
+Plants-452 0.026 0.027 0.028 0.023 0.019 0.018 0.017 0.017
+Plants-173 0.014 0.012 0.010 0.010 0.010 0.011 0.011 0.011
+Plants-455 0.024 0.020 0.017 0.015 0.015 0.016 0.016 0.017
+Plants-133 0.022 0.023 0.025 0.026 0.022 0.019 0.018 0.017
+Plants-168 0.024 0.025 0.027 0.027 0.022 0.018 0.017 0.016
+Plants-476 0.024 0.025 0.027 0.032 0.029 0.023 0.019 0.017
+Plants-543 0.022 0.023 0.026 0.024 0.020 0.017 0.016 0.015
+Plants-137 0.012 0.013 0.014 0.016 0.022 0.035 0.052 0.073
+Plants-485 0.024 0.020 0.016 0.015 0.015 0.016 0.016 0.017
+Plants-528 0.026 0.027 0.029 0.026 0.021 0.019 0.018 0.018
+Plants-520 0.023 0.025 0.027 0.033 0.037 0.029 0.023 0.019
+Plants-514 0.013 0.013 0.014 0.014 0.016 0.019 0.026 0.038
+Plants-517 0.024 0.019 0.016 0.015 0.015 0.016 0.016 0.017
+Plants-529 0.022 0.023 0.024 0.022 0.018 0.017 0.016 0.016
+Plants-557 0.024 0.024 0.019 0.016 0.015 0.015 0.015 0.016
+Plants-492 0.023 0.020 0.015 0.013 0.013 0.013 0.013 0.014
+Plants-186 0.015 0.012 0.010 0.009 0.009 0.009 0.010 0.010
+Plants-179 0.013 0.013 0.014 0.016 0.022 0.036 0.056 0.077
+Plants-560 0.015 0.018 0.024 0.031 0.039 0.050 0.053 0.040
+Plants-530 0.019 0.022 0.027 0.032 0.041 0.050 0.041 0.029
+Plants-440 0.023 0.023 0.019 0.016 0.015 0.014 0.015 0.015
+Plants-513 0.021 0.019 0.015 0.014 0.013 0.014 0.014 0.015
+Plants-127 0.023 0.024 0.024 0.019 0.016 0.015 0.014 0.014
+Plants-524 0.023 0.024 0.025 0.022 0.018 0.016 0.015 0.015
+Plants-122 0.009 0.009 0.009 0.010 0.011 0.015 0.023 0.036
+Plants-508 0.015 0.013 0.012 0.012 0.013 0.014 0.014 0.015
+Lichens-567 0.016 0.014 0.013 0.013 0.013 0.014 0.014 0.015
+Plants-507 0.021 0.023 0.020 0.016 0.014 0.013 0.013 0.013
+Plants-519 0.023 0.024 0.025 0.021 0.017 0.015 0.014 0.014
+Plants-551 0.022 0.023 0.025 0.023 0.019 0.016 0.014 0.014
+Plants-415 0.017 0.018 0.020 0.022 0.018 0.013 0.009 0.007
+ᇿ Hi MCM
+ሧ࿟

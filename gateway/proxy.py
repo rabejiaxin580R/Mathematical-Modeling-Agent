@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 _TIMEOUT = httpx.Timeout(connect=10.0, read=300.0, write=30.0, pool=10.0)
 
 
-def _upstream_url(path: str = "/chat/completions") -> str:
-    return config.UPSTREAM_BASE_URL.rstrip("/") + path
+def _upstream_url(path: str = "/chat/completions", base_url: str = "") -> str:
+    return (base_url or config.UPSTREAM_BASE_URL).rstrip("/") + path
 
 
-def _upstream_headers() -> dict:
+def _upstream_headers(api_key: str = "") -> dict:
     return {
-        "Authorization": f"Bearer {config.UPSTREAM_API_KEY}",
+        "Authorization": f"Bearer {api_key or config.UPSTREAM_API_KEY}",
         "Content-Type": "application/json",
     }
 
@@ -37,18 +37,21 @@ def _extract_usage(usage: dict | None) -> tuple[int, int]:
     return int(usage.get("prompt_tokens", 0) or 0), int(usage.get("completion_tokens", 0) or 0)
 
 
-async def stream_chat(payload: dict, on_usage: Callable[[str, int, int], None]):
+async def stream_chat(payload: dict, on_usage: Callable[[str, int, int], None],
+                      api_key: str = "", base_url: str = ""):
     """流式转发：异步生成上游返回的 SSE 原始字节，结束时回调 on_usage 扣费。
 
     payload 已由调用方校验过模型白名单。on_usage(model, prompt_tokens, completion_tokens)
     在流结束（拿到 usage 或流断开）时调用一次。
+    api_key/base_url 非空时用它们覆盖全局上游（用户自配 Key 场景）。
     """
     body = {**payload, "stream": True, "stream_options": {"include_usage": True}}
     model = payload.get("model", "")
     prompt_tokens = completion_tokens = 0
 
     async with httpx.AsyncClient(timeout=_TIMEOUT) as client:
-        async with client.stream("POST", _upstream_url(), headers=_upstream_headers(),
+        async with client.stream("POST", _upstream_url(base_url=base_url),
+                                 headers=_upstream_headers(api_key),
                                  json=body) as resp:
             if resp.status_code != 200:
                 detail = (await resp.aread()).decode("utf-8", "replace")

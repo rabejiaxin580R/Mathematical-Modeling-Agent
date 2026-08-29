@@ -37,6 +37,16 @@
   <script src="/static/profile.js?v=anim1"></script>
   <script src="/static/render.js?v=anim1"></script>
   <script src="/static/stepflow.js?v=anim1"></script>
+  <script src="/static/keysetup.js?v=anim1"></script>
   <script src="/static/practice.js?v=anim1"></script>
+  <script>
+    // 缺 API Key 时主动弹配置向导（避免深链进入直接撞静默失败）
+    (function () {
+      if (!window.KeySetup) return;
+      const go = () => KeySetup.ensure();
+      if (window.Profile && Profile.require) Profile.require().then((p) => { if (p) go(); });
+      else go();
+    })();
+  </script>
 </body>
 </html>

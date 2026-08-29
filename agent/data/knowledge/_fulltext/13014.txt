@@ -1,0 +1,972 @@
+ğ
+
+Team Control Number
+13014
+Problem Chosen
+A
+2022
+HiMCM/MidMCM
+Summary Sheet
+
+(Your team's summary should be included as the first page of your electronic submission.)
+Type a summary of your results on this page. Do not include the name of your school, advisor, or team members on this page.
+Honeybees are crucial to the survival of humanity. These insects fertilize the crops that feed billions
+of people worldwide. Given the significance of these insects’ role and the recent decline of honeybee
+populations, it is critical to understand trends in bee population over time, determine which factors have the
+most significant impact on a honeybee colony’s population, and model the number of hives needed to
+pollinate a given field.
+To this end, we developed a bee population model that predicts the population of worker and drone
+bees in a colony at a given time. We constructed differential equations to model the change in worker and
+drone bee populations. To create these differential equations, we considered the following factors: the initial
+population of bees, ratio of total bees to drone bees, length of the active honeybee season, egg laying rate,
+average lifespan of bees, and gestational period of bees. Next, we utilized Euler's method to predict these
+trends over ten years. We determined that the population of a honeybee colony ranges from approximately
+19,046 bees at the end of the inactive season to approximately 60,759 bees at the end of the active season.
+The worker bee population ranges from 19,046 to 60,053 bees, and the drone bee population ranges from 0
+to 706 bees. These results are validated by online sources about typical bee populations (“Honey Bee
+Colony,” 2021). We observed that the cycle of bee population repeats sinusoidally on a yearly period, so we
+also performed a sinusoidal regression, allowing farmers to estimate bee populations in the future.
+When performing sensitivity analysis on the population model, we modified each factor considered
+by up to 40% in either direction. This analysis revealed that the egg-laying rate, worker bee lifespan during
+the active/inactive season, and length of the active season had the greatest impact on the population of bees
+over ten years. In contrast, modifying the initial population, the ratio of total bees to drone bees, drone
+lifespan, or any gestational period had little to no effect on the bee population.
+We also created a model that utilizes the bee population model to predict the number of hives needed
+to pollinate a 20-acre field. In the pollination model, we consider the field area, the area required by each
+flower, the number of flowers pollinated by each worker bee, and the maximum distance a bee travels from
+its hive (called “bee range”). By calculating the total number of flowers on the field and the number of
+flowers worker bees pollinate daily, we discovered that it would be best to use 22 hives to pollinate a 20-
+acre field. Since we discovered the placements of hives did not matter, these 22 hives are assumed to all be
+placed at the center of the 20-acre field. This result was also confirmed by the University of Georgia, which
+recommends using approximately one beehive for every acre that needs pollination (“Managing bees for
+pollination,” n.d.). However, using 21 or 20 can also have similar effects, and using one or two fewer hives
+results in less money spent on buying hives and maintenance for a minimal gain in pollination.
+To assess the robustness of our model, we performed a sensitivity analysis on all four factors
+considered. By modifying each factor up to 40% in either direction, we determined that changing the
+honeybee range had the most significant effect on the number of hives needed. A greater bee range resulted
+in more hives needed. Decreasing the flowers visited per day per bee and decreasing the area needed per
+flower also increased the number of hives required. In contrast, modifying the field size by up to 40% had
+no impact on the number of hives needed to pollinate the field. Since bees typically stay within 6,000 m of
+their hive, the 20-acre field is relatively tiny compared to the circle with a radius of 6,000 m pollinated by
+the hive. Thus, whenever the side length of the field is as small as 285 m, changing the field’s size by a
+relatively small amount has no impact on the number of hives needed to pollinate the field.
+Lastly, we created an infographic that outlines all of our findings and relevant information for the
+general public. We hope this will be a valuable resource for the general public and policymakers to better
+understand the populations of honeybee colonies and their ability to fertilize crops within a given area.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page2of25
+Table of Contents
+Table of Contents 2
+Modeling Honeybee Population 3
+Problem Restatement 3
+Assumptions 3
+Variables 4
+Model Development 5
+Simulating the Active Honeybee Season 6
+Simulating the Inactive Honeybee Season 7
+Results & Analysis 8
+Sinusoidal Regression 9
+Sensitivity Analysis 9
+Most Significant Effect 10
+Least Significant Effect 12
+Strengths and Weaknesses 12
+Pollination of a 20-Acre Field 13
+Problem Restatement 13
+Assumptions 13
+Variables 14
+Model Development 15
+Results & Analysis 17
+Sensitivity Analysis 19
+Most Significant Effect 19
+Least Significant Effect 20
+Strengths and Weaknesses 21
+Non-Technical Infographic 22
+Conclusion 23
+References 24
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page3of25
+Modeling Honeybee Population
+ProblemRestatement
+In the first problem, we are tasked with developing a model that accurately predicts the
+population of a honeybee colony over time. We were provided with basic information about a
+honeybee’s habits:
+1.Honeybees can travel up to 20 km but typically stay within 6 km of their hive.
+2.A typical honeybee hive contains between 20,000 and 80,000 honeybees.
+3.A single honeybee can visit approximately 2,000 flowers or more in a single day.
+4.Because of the high workload during summertime, most honeybees work themselves to
+death, resulting in a shorter lifespan.
+5.During autumn and wintertime, honeybees may live a bit longer (four to six months).
+6.A honeybee’s level of activity, pollen consumption, and protein abundance impact its
+lifespan.
+Assumptions
+Assumption 1.1:The ratio of total bees to drone beesstays relatively constant throughout the
+active season (April 1st → September 15th).
+-Justification: Without direct observation of bee populations in a hive, it is virtually
+impossible to identify the exact ratio of total bees to drone bees. However, many sources
+online (Grad, 2010) cite a consistent ratio between drone bees and total bees.
+Assumption 1.2:The length of the honeybee’s activeseason stays relatively constant every year.
+-Justification: While the actual honeybee season depends on the temperature and seasonal
+patterns of flowers, it is difficult to account for these inconsistencies ("When are bees
+most active?," 2022 ). Additionally, over long periods of time, the length of the
+honeybee’s active season will likely stay relatively constant.
+Assumption 1.3:A queen honeybee produces eggs ata relatively constant rate per day
+-Justification: It is impossible to account for the specific factors that influence the number
+of eggs laid by the queen bee per day. However, over long periods of time, the number of
+eggs laid by the queen bee per day is likely to stay relatively constant.
+Assumption 1.4:The average lifespan of bees (bothdrone and worker) stays relatively constant
+during the active season and is at a lower but still constant level during the inactive season.
+-Justification: It is virtually impossible to identify the exact lifespan of a bee, as the
+conditions in which honeybees die, day by day, are unpredictable. Thus, we assume that
+honeybees die at a constant rate per day. Additionally, honeybees are less active during
+autumn and wintertime, as stated in the problem, so we assume that the honeybees die at
+a lower constant rate per day during these seasons.
+Assumption 1.5:The average gestational periods ofboth drone and worker bees stay relatively
+constant throughout the year.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page4of25
+-Justification: Identifying the exact times when certain bees undergo gestation is
+challenging. However, most drone bees have similar gestational periods, and most worker
+bees have similar gestational periods.
+Assumption 1.6:The measurements are approximatelynormally distributed.
+-Justification: We assume the given measurements are average values. By the Central
+Limit Theorem, a series of averages follow a normal distribution.
+Variables
+VariableDefinition Default Value StdDevUnits
+𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙 (Factor) Initial population
+of bees in the honeybee
+colony
+40,000 Bees; Average
+population of honeybee hive
+(given from problem)
+N/A Bees
+𝑁 (Factor) Number of total
+bees for 1 drone bee to
+appear
+101 bees; 100 workers for 1
+drone bee, so 101 total bees
+for 1 drone bee (Grad, 2010)
+5 BeesBees
+λ Fertilization rate of eggs, or
+the chance of an egg
+developing into a worker
+bee. Calculated as:
+λ=1−1
+𝑁
+λ=1−1
+101=99% N/A N/A
+𝐿𝑠𝑒𝑎𝑠𝑜𝑛 (Factor) Length of the
+active honeybee season
+167 Days; Days from April 1
+→ September 15; length of
+honeybee active season
+(“When does Honey Bee
+Season Start?,” 2018), (“The
+Beekeepers Year,” n.d.)
+10 DaysDays
+𝐸𝑛𝑒𝑤 (Factor) Number of eggs
+laid per day by the queen
+honeybee
+1,500 Eggs (“The colony and
+its organization,” n.d.)
+300 EggsEggs
+𝐿𝑤𝑜𝑟𝑘𝑒𝑟 (Factor) Average lifespan of
+a worker bee during the
+active honeybee season
+(Summer)
+42 Days (“Honey Bee Life
+Span,” 2021)
+3 DaysDays
+𝐿𝑑𝑟𝑜𝑛𝑒 (Factor) Average lifespan of
+drone bees during the active
+honeybee season
+60 Days (Rueppell et al.,
+2005)
+3 DaysDays
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page5of25
+𝐼𝑤𝑜𝑟𝑘𝑒𝑟 (Factor) Average lifespan of
+a worker bee during the
+inactive honeybee season
+175 Days (Remolina &
+Hughes, 2008)
+5 DaysDays
+𝐼𝑑𝑟𝑜𝑛𝑒 (Factor) Average lifespan of
+a drone bee during the
+inactive honeybee season
+10 Days; Drone bees are
+“kicked out” of the hive when
+winter starts, so they die
+quickly (Linnell & Marski,
+2020)
+1 Day Days
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟 (Factor) Average gestational
+period of a worker bee
+21 Days; (“Information sheet
+3,” n.d.)
+3 DaysDays
+𝐺𝑑𝑟𝑜𝑛𝑒 (Factor) Average gestational
+period of a drone bee
+24 Days; (“Honey Bee Life
+Cycle,” 2021)
+3 DaysDays
+𝑡 Current Day Varies during simulationN/A Days
+𝑃(𝑡) Population of the beehive at
+time.𝑡
+Varies during simulationN/A Bees
+𝑊(𝑡) Population of worker bees
+at any given time ()𝑡
+Varies during simulationN/A Bees
+𝐷(𝑡) Population of drone bees at
+any given time ()𝑡
+Varies during simulationN/A Bees
+Table 1: Variables along with their respective definitions and units
+Model Development
+In modeling the population of a honeybee hive, we consider a honeybee colony located in a field
+with typical amounts of flowers, pollen, nectar, predators, and other factors. The population of a
+honeybee colony is divided into three types of bees: (1) queen bees, whose role is to lay eggs; (2)
+worker bees (majority of bees), whose role is to maintain the colony’s welfare; (3) drone bees,
+whose role is to fertilize the virgin queen (“The colony and its organization,” n.d.). Since there is
+only one queen bee in a honeybee colony, we only monitor the population of drone bees and
+worker bees in a honeybee colony over time.
+When developing our model, we consider the factors marked as “(Factor)” in Table 1. Each
+factor has a default value and its standard deviation. With each day that passes, we account for
+variations in the value of each factor by randomly choosing a value from a normal distribution
+that is based on the mean and standard deviation of the factor. Note that a different value for
+initial population is not modified, as that is only used once at the beginning of the simulation.
+The default value acts as the mean, while the value from the “StdDev” column is the value
+chosen that day. This is done to account for day-to-day errors in the default value.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page6of25
+Simulating the Active Honeybee Season
+The simulation begins at the start of the active honeybee season, typically April 1st, which we
+denote as. Since fertilized eggs will turn intoworker bees and unfertilized eggs will turn𝑡=0
+into drone bees, we can assume that the probability of any honeybee being a worker bee will beλ
+and the probability of any honeybee being a drone bee will be.  Thus, initially, there are1−λ
+number of bees, with a number of worker beesand𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙 𝑊=𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙·λ (𝑊)
+number of drone bees ().With each day that passes, we account for𝐷=𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙·(1−λ) 𝐷
+changes caused by five factors: the queen bee laying new eggs, worker bees dying, drone bees
+dying, worker bees gestating, and drone bees gestating. We constructed three differential
+equations to model these changes in eggs, development, and deaths during the active honeybee
+season.
+Suppose the number of eggs at time, whereis a day during the active season, is modeled by𝑡 𝑡
+the function. Using Euler’s method with a stepsize of , ,𝐸(𝑡) ∆𝑡=1𝐸(𝑡+1) = 𝐸(𝑡) + 𝑑𝐸
+𝑑𝑡
+where The differential equation, which represents the change in eggs per day𝐸(0) = 0. 𝑑𝐸
+𝑑𝑡
+(the step size), is modeled by: .𝑑𝐸
+𝑑𝑡 =𝐸𝑛𝑒𝑤−((𝐸1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+·λ)+(𝐸1
+𝐺𝑑𝑟𝑜𝑛𝑒
+·(1−λ)))
+Essentially, the change in eggs,, is thechange in the number of eggs laid by the queen (which𝑑𝐸
+𝑑𝑡
+become honeybees, represented by) minusthe number of eggs that finish gestation. The𝐸𝑛𝑒𝑤
+number of days it takes for worker and drone bees to gestate is represented byand𝐺𝑤𝑜𝑟𝑘𝑒𝑟 𝐺𝑑𝑟𝑜𝑛𝑒
+, respectively. Approximating over a long period of time, we expect that each day, ofthe1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+fertilized eggs (which become worker bees, represented by) and of the unfertilized𝐸·λ 1
+𝐺𝑑𝑟𝑜𝑛𝑒
+eggs (represented by ) finish gestation.Therefore, the change in eggs,, is𝐸·(1−λ) 𝑑𝐸
+𝑑𝑡 𝐸𝑛𝑒𝑤
+minus .𝐸1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+·λ+𝐸1
+𝐺𝑑𝑟𝑜𝑛𝑒
+·(1−λ)
+Next, suppose the population of a type of bee (, either a worker or drone bee) is given be.𝑏 𝐵(𝑡)
+Using Euler’s method, Using Euler’s method with a step size of,∆𝑡=1
+, where , whereis the probability that any given𝐵(𝑡+1)=𝐵(𝑡) + 𝑑𝐵
+𝑑𝑡 𝐵(0) =𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙·𝐶 𝐶
+bee is type. The differential equation, which represents the change in the number of bees𝑏 𝑑𝐵
+𝑑𝑡
+per day, is modeled by: , whereis the gestation period for𝑑𝐵
+𝑑𝑡= 1
+𝐺 ·𝐶·𝐸  −1
+𝐿𝑤𝑜𝑟𝑘𝑒𝑟
+·𝐵 𝐺
+that type of bee in days. Essentially, the change in the number of bees,, is the number ofeggs𝑑𝐵
+𝑑𝑡
+that finish gestation minus the number of bees that die that day. Approximating over a long
+period of time, we expect that each day,ofthe eggs of type(represented by) will1
+𝐺 𝑏 𝐶·𝐸
+gestate. Thus, on any given day, eggsof typefinish gestation. As we approximate1
+𝐺·𝐶·𝐸 𝑏
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page7of25
+over the long-term,of typebees can be expected die on any given day, whereis the1
+𝐿 𝑏 𝐿
+lifespan of the bee in days. Since there aretypebees,of them die on any given day.𝐵 𝑏 1
+𝐿𝐵
+Therefore, the change in worker bees, which have a gestation period of, lifespan of𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+, and probability of gestating from anegg of, is:𝐿𝑤𝑜𝑟𝑘𝑒𝑟 λ 𝑑𝑊
+𝑑𝑡= 1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+·λ·𝐸  −1
+𝐿𝑤𝑜𝑟𝑘𝑒𝑟
+·𝑊
+, asis the total population of worker bees ata given time. By the same logic, the change in𝑊
+drone bees, which have a gestation period of, lifespan of, and probability that any𝐺𝑑𝑟𝑜𝑛𝑒 𝐿𝑑𝑟𝑜𝑛𝑒
+bee is a drone bee of, is: , asis the total(1−λ) 𝑑𝐷
+𝑑𝑡= 1
+𝐺𝑑𝑟𝑜𝑛𝑒
+·(1−λ)·𝐸  −1
+𝐿𝑑𝑟𝑜𝑛𝑒
+·𝐷𝐷
+population of drone bees. These differential equations only apply for the length of the active
+season (167 days).
+Simulating the Inactive Honeybee Season
+During the inactive season, from September 16 to March 31, the queen lays no new eggs (Kiley,
+2017), and drone bees are kicked out of the hive and left to die (Linnell & Marski, 2020).
+Therefore, during the inactive season, the change in eggs is. The change in worker bees𝑑𝐸
+𝑑𝑡=0
+is . Essentially, the numberof worker bees that die per day is represented by𝑑𝑊
+𝑑𝑡=−1
+𝐼𝑤𝑜𝑟𝑘𝑒𝑟
+·𝑊
+the reciprocal of a worker bee’s winter lifespan, multiplied by the approximate number of total
+worker bees. The same logic is applied to the change in drone bees,, to obtain𝑑𝐷
+𝑑𝑡
+. These differential equationsonly apply for the non-active season, parts of the𝑑𝐷
+𝑑𝑡=−1
+𝐼𝑑𝑟𝑜𝑛𝑒
+·𝐷
+year other than the active season.
+These results can be summarized in Table 2.
+Equations Use When
+𝑑𝐸
+𝑑𝑡 =𝐸𝑛𝑒𝑤−((𝐸1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+·λ)+(𝐸1
+𝐺𝑑𝑟𝑜𝑛𝑒
+·(1−λ)))
+𝑑𝑊
+𝑑𝑡= 1
+𝐺𝑤𝑜𝑟𝑘𝑒𝑟
+·λ·𝐸  −1
+𝐿𝑤𝑜𝑟𝑘𝑒𝑟
+·𝑊
+𝑑𝐷
+𝑑𝑡= 1
+𝐺𝑑𝑟𝑜𝑛𝑒
+·(1−λ)·𝐸  −1
+𝐿𝑑𝑟𝑜𝑛𝑒
+·𝐷
+,0≤𝑡≤167
+where= mod() 365; while𝑡 𝑡
+𝑡>365
+𝑑𝐸
+𝑑𝑡=0
+𝑑𝑊
+𝑑𝑡=−1
+𝐼𝑤𝑜𝑟𝑘𝑒𝑟
+·𝑊
+𝑑𝐷
+𝑑𝑡=−1
+𝐼𝑑𝑟𝑜𝑛𝑒
+·𝐷
+All other times
+Table 2: Piecewise differential equations for our model. Note that, , andremain𝐸(𝑡)𝑊(𝑡) 𝐷(𝑡)
+the same year-round.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page8of25
+Results & Analysis
+Utilizing the default values from Table 1, and the methods described above, we modeled the
+population of a honeybee colony over a 10-year period, as shown in Figure 1.
+Figure 1: Population of honeybee hive over a
+10-year period.
+Figure 2: Peak and trough of honeybee
+population over a 10-year period.
+Figure 1 shows a honeybee colony’s population over a ten-year period. Additionally, Figure 1
+appears to be a periodic function, which intuitively makes sense, as the lifespan of bees and birth
+rate of eggs all vary on a yearly period. In order to quantify the bee population over this 10 year
+period, we extracted the peak—which occurs at the end of the active season—and
+trough—which occurs at the end of the inactive season—populations over the ten year period.
+The peak and troughs over 10 years can be seen in Figure 2.
+Since the peak and trough lines are relatively constant, we used the average of the peaks and
+troughs over the 10 year period for each year as a measure of bee population. The average trough
+population was 19,046 bees, and the average peak population was 60,759 bees. The problem
+statement, which states that the typical honeybee hive contains between 20,000 to 80,000
+honeybees, validates our result. The percent difference between the average trough bee count and
+20,000 is 4.9%, which may have been due to minor differences in our default values in Table 1
+and the real world.
+Additionally, we collected data on the populations of worker and drone bees individually over
+the 10 year period. The populations of workers and drones over 10 years can be seen in Figure 3.
+As expected, the population of worker bees is drastically higher than drones, because there is
+usually 1 drone bee for 100 worker bees (“The colony and its organization,” n.d.). Thus, worker
+bees are the major determining factor in the population of a honeybee colony. We also track the
+populations of workers and drones in their peaks and troughs, as shown in Figure 4. The average
+peak of workers was 60,053 bees, and the average peak of drones was 706 bees. The average
+trough of workers was 19,046 bees, and the average trough of drones was 0 bees (occurs during
+winter).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page9of25
+Figure 3: Population of workers and drones
+over a 10 year period.
+Figure 4: Peak and trough of workers and
+drones over a 10 year period.
+Sinusoidal Regression
+Due to the periodic repeating nature of the population in Figure 1, we also performed a
+sinusoidal regression. The best-fit parameters were a midpoint of 40,022, an amplitude of
+18,648, period of 366, and a displacement of 57 in the positive direction.
+Thus, the best fit sine curve is: , whereis𝑃(𝑡)=18648·𝑠𝑖𝑛(2π
+366·(𝑡−57))+40022 𝑃(𝑡)
+the beehive’s population at time(measured indays). This equation produced anvalue of𝑡 𝑅2
+0.951, which essentially means that the sinusoidal equation models the population of bees over
+time very well (Frost, 2022). The original data and the sinusoidal regression is shown in Figure
+5.
+Figure 5: Sinusoidal regression using scikit-learn on the total population data.
+Sensitivity Analysis
+In order to test the robustness of our model, we performed sensitivity analysis by varying all
+factors in Table 1 (initial bee population, ratio of total bees to drone bees, length of active season,
+number of eggs laid per day, lifespan of bees during active/inactive seasons, and gestational
+period of bees). Each factor in Table 1 was both increased and decreased by 10%, 20%, 30%, and
+40% for a total of 8 changes to each factor total. For each factor changed, all other factors stayed
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page10of25
+constant. To determine the effect of changing these factors, we measured the average peak and
+trough of drone and worker bee populations over 10 years.
+Most Significant Effect
+Changing the egg-laying rate () had the biggesteffect on the bee population. The effect of𝐸𝑛𝑒𝑤
+changingis shown in Figure 6. Since theaverage population varies slightly between runs,𝐸𝑛𝑒𝑤
+due to accounting for error with standard deviation, we ran each modification 10 times and
+averaged the values for each metric across the ten runs. For example, we increased the egg laying
+rate by 30%, and ran it 10 times with this modification, and averaged the metrics across each run
+for TroughTotal (average total bee population at troughs), TroughWorker (average worker bee
+population at troughs), TroughDrone (average drone bee population at troughs), PeakTotal
+(average total bee population at peaks), PeakWorker (average worker bee population at peaks),
+and PeakDrone (average drone bee population at peaks) to produce one data point for 30%
+increase in.𝐸𝑛𝑒𝑤
+In Figure 6, each data point’s color represents the amount by which the factor was changed by,
+with the green dot representing the original value. Each metric is on the x-axis, and
+bee-population is on the y-axis, so the greater the range of points on the y-axis for each metric,
+the greater the impact by the factor.
+Figure 6: Changing the queen’s egg laying rate () had the largest impact on bee population.𝐸𝑛𝑒𝑤
+The different colored dots represent how much egg laying rate was changed by and their
+respective values for each metric.
+The factor that had the largest effect on the populations was the egg laying rate. This makes
+sense as the egg laying rate is the main driver of population growth during the active season. As
+expected, the higher the egg laying rate, the higher the honeybee population.
+The factors with the second and third largest effects on bee populations were a worker bee’s
+average lifespan during the active season and a worker bee’s average lifespan during the inactive
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page11of25
+season, respectively. This also makes sense because the average lifespan of worker bees is the
+only factor that decreases population size. The effects of modifying these factors can be seen in
+Figure 7 and Figure 8.
+Figure 7: Changing worker lifespan during
+the active season () had the 2nd largest𝐿𝑤𝑜𝑟𝑘𝑒𝑟
+impact on bee population.
+Figure 8: Changing worker lifespan during
+the inactive season () had the 2nd𝐼𝑤𝑜𝑟𝑘𝑒𝑟
+largest impact on bee population.
+Additionally, changing the length of the active season () also had a large impact on the𝐿𝑠𝑒𝑎𝑠𝑜𝑛
+honeybee colony’s population. Increasing the length of the active season affects the worker
+population more than the drone population, as the drone population is relatively much smaller
+than the worker bee population. As such, the number of eggs produced affects the total number
+of worker bees more. Increasing the length of the active season results in an increase in the bee
+population, because the queen bee has more time to lay eggs before needing to stop for the
+winter. Effects of changing the length of the active season can be seen in Figure 9.
+Figure 9: Changing the length of the active season has a larger impact on bee population than
+changing the length of the bee’s lifespan during the inactive season.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page12of25
+Least Significant Effect
+While the egg laying rate, worker bee lifespan (active and inactive seasons), and length of the
+active season had the greatest impacts on a bee’s population, 6 factors had minimal or no effect
+on bee population. Among these are initial population (), the ratio of total bees to drone𝑃𝑖𝑛𝑖𝑡𝑖𝑎𝑙
+bees (), drone lifespan in the inactive season( ), drone lifespan in the active season(𝑁 𝐼𝑑𝑟𝑜𝑛𝑒 𝐿𝑑𝑟𝑜𝑛𝑒
+), gestational period of worker bees (), and gestational period of drone bees ().𝐺𝑤𝑜𝑟𝑘𝑒𝑟 𝐺𝑑𝑟𝑜𝑛𝑒
+For these factors, their impact was so minimal that it’s almost impossible to discern each data
+point within a metric, showing a smaller range of the points along the y-axis for each metric. An
+example of the initial bee population’s modifications can be seen in Figure 10.  Modifying initial
+population had little effect, which makes sense, because the bee’s population already periodically
+alternates between peak and troughs.
+When modifying a drone’s lifespan in both the inactive and active seasons, there was almost no
+effect on the bee population. This is because in comparison to the total bee population, the
+number of drones is so small that a quicker death has relatively no impact on the overall
+population. Modifying a drone’s lifespan during the active season in shown in Figure 11.
+Figure 10: Changing the initial population
+had minimal impact on the final bee
+population.
+Figure 11: Changing the drone lifespan (active
+season) has almost no impact on honeybee
+population.
+Additionally, the gestational period of both worker and drone bees had no impact, resulting in
+graphs similar to Figures 10 and 11. This is likely because since the egg laying rate stays the
+same, regardless of the gestational period, almost the same number of bees will eventually be
+produced.
+Strengths and Weaknesses
+Strengths
+●The model can easily be adjusted to
+simulate longer or shorter amounts of
+time.
+●The model accounts for errors in the
+Weaknesses
+●Our model assumes that many factors
+remain relatively constant throughout
+the active and inactive season, which
+may not be the case.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page13of25
+default values found from online using
+random values chosen from a normal
+distribution.
+●Our model’s results match up with the
+information given by the problem on
+how a honeybee hive typically
+contains between 20,000 to 80,000
+bees.
+●There were no reference values for
+each factor's standard deviation, so
+they were produced using inferences.
+Pollination of a 20-Acre Field
+ProblemRestatement
+In this problem, we are tasked with determining the number of honeybee hives needed to support
+pollination of a 20-acre parcel of land containing crops that benefit from pollination. We are
+provided with the same basic information about bees as in the “Modeling Honeybee Population”
+section.
+Assumptions
+Assumption 2.1:Crops are placed with even spacingin the horizontal and vertical directions on
+the 20-acre field.
+-Justification: Each crop requires a certain amount of land to grow. In order to maximize
+the number of crops on a 20-acre field, we space the crops with the same minimal vertical
+and horizontal spacing needed for each crop. Thus, any other field layout with more
+spacing could still use the same number of hives predicted by our model.
+Assumption 2.2:A given honeybee will not travel outsidea 6-kilometer radius from the hive.
+-Justification: The problem states that bees typically stay within 6 km of their hive. Since
+it is impossible to know how many bees travel farther than the 6 km, we assume that all
+bees stay within the 6 km.
+Assumption 2.3:The bees are evenly distributed throughoutthe 6 km circle around the hive,
+meaning that they evenly pollinate the crops within the 6 km radius.
+-Justification: Since we know that the bees will typically stay within 6 km of the hive, it is
+reasonable to assume that they are evenly distributed within this space. We have no data
+about the distribution of the bees within the possible 6 km they can travel from the hive.
+Assumption 2.4:Each honeybee hive in the field willhave the same population at a given time.
+-Justification: Since all of these honeybee hives contain the same species of honeybee and
+operate under similar environmental conditions, we will assume that all of the hives have
+the same population at a given time, as it is impossible to know each hive’s individual
+population.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page14of25
+Variables
+VariableDefinition Default Value Units
+𝐴𝑓𝑖𝑒𝑙𝑑 (Factor) Field Area 81,000 m2(given from problem)Square
+Meters ()𝑚2
+𝐴𝑓𝑙𝑜𝑤𝑒𝑟 (Factor) Flower Area 0.023 m2(sunflowers are spaced 6
+inches apart, so each flower takes up
+36 in2of space). 36 in2= 0.023 m2
+(“The Ultimate Guide to Growing
+Sunflowers,” 2020)
+Square
+Meters (
+)𝑚2
+𝐷 (Factor) Daily flowers
+pollinated by bee
+5,000 flowers (“How many flowers
+can a bee pollinate?,” n.d.)
+Flowers
+𝑅 (Factor) Bee range. Max
+distance a bee travels from
+its hive.
+6,000 m; given by problem Meters ()𝑚
+𝑃𝑤𝑜𝑟𝑘𝑒𝑟(𝑡)Function of worker bee
+population of one hive over
+time. Calculated by
+multiplying the total
+population by the
+fertilization rate.
+.𝑃𝑤𝑜𝑟𝑘𝑒𝑟(𝑡) =𝑃(𝑡)·λ
+Calculated from previous modelWorker bees
+𝑃𝑡𝑜𝑡𝑎𝑙(𝑡) Function of total number of
+worker bees at a given time.
+Calculated by multiplying
+the population of workers
+per hive by the number of
+hives.
+𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)=𝑃𝑤𝑜𝑟𝑘𝑒𝑟(𝑡)·𝐻
+Varies based on time Worker Bees
+𝐿𝑠𝑒𝑎𝑠𝑜𝑛 Length of the active
+honeybee season
+167 Days; Days from April 1 →
+September 15;  length of honeybee
+active season (“When does Honey Bee
+Season Start?,” 2018), (“The
+Beekeepers Year,” n.d.)
+Days
+H Number of hives N/A Hives
+𝑆 Scoring Metric N/A NA
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page15of25
+𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦 Number of flowers
+pollinated in one square
+meter of the field or hive
+N/A Flowers /
+square meter
+𝐹𝑡𝑜𝑡𝑎𝑙 Number of flowers
+pollinated per day by the
+hives.
+N/A Flowers
+𝐹𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑 Number of flowers that are
+pollinated in the field
+N/A Flowers
+γ Percent of flowers pollinated
+every day
+N/A Percent
+Table 3: Variables, definitions, their units, and default values used. Note that variables from
+Table 1 wil be used in this problem as well.
+Model Development
+When modeling the number of hives needed to pollinate a 20-acre field, we consider a square
+field with an area of 20-acres, or 81,000 m2. Sincethe field is a square, the side length of this
+field is . Additionally, fromthe problem description, we are given that81000 𝑚2=284.6 𝑚
+honeybees typically stay within 6,000 m of their hive. For simplicity, we assume that the bees are
+evenly pollinating the flowers within this 6,000 m. Figure 12 shows the area of one beehive
+compared to size of the field.
+Figure 12: Size of the field compared to the coverage of a beehive when bees typically stay
+within 6,000 m of the hive. All axis labels are in meters.
+From Figure 12, it is clear that the coverage of the beehive is far greater than the size of the field.
+However, it is important to note that this does not mean only one hive is enough to pollinate the
+entire field. Since bees will spread out evenly across the 6 km radius around the hive, many
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page16of25
+plants pollinated will be outside of the 20-acre field that needs to be pollinated. Thus, only a
+small fraction of the crops pollinated will be in the 20-acre field. Since the coverage of the hive
+is far greater than the size of the field, the placement of the hive within the field does not matter,
+as the hive will cover the entire field.
+When developing our model to determine the number of hives needed to pollinate a 20-acre
+field, we considered four main factors: field area (), the area needed by each flower (𝐴𝑓𝑖𝑒𝑙𝑑 𝐴𝑓𝑙𝑜𝑤𝑒𝑟
+), the number of flowers pollinated per bee each day (), and the typical max distance a bee𝐷
+travels from its hive (). These variables and theirdefault values are shown in Table 3.𝑅
+Additionally, our model is built off of the population model from the previous problem, so we
+also utilize the factors in Table 1.
+Our model builds off the bee population model and predicts the percentage of plants on the
+20-acre field that are pollinated on any given day. The number of hives that produces a result
+where the average number of plants pollinated per day is 100% is called the best model. Similar
+to the bee population model, the simulation begins at the start of the honeybee active season
+(April 1st), which we call. Recall from thebee population model thatrepresents the𝑡=0 𝑃(𝑡)
+population of a honeybee colony at time, whereis the number of days since the beginning of𝑡 𝑡
+the active honeybee season.
+Since we are assuming that all of the hives in the 20-acre field have the same population at a
+given point in time (), to get the total numberof worker bees that pollinate the field (),𝑡 𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)
+we multiply the number of worker bees per hive with the number of hives:
+.𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)=𝑃𝑤𝑜𝑟𝑘𝑒𝑟(𝑡) ·𝐻
+Additionally, we know that every bee visits approximatelyflowers every day, so the total𝐷
+number of flowers pollinated in a day by all worker bees () is .𝐹𝑡𝑜𝑡𝑎𝑙 𝐹𝑡𝑜𝑡𝑎𝑙= 𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)·𝐷
+Moreover, to determine the number of flowers pollinated in each square meter of the hive
+coverage (), we divide the total numberof flowers pollinated by the bees by the total𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦
+coverage of a hive: . Since the hive coverage encapsulates the entire field, the𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦=𝐹𝑡𝑜𝑡𝑎𝑙
+π𝑅2
+density of flowers on the field is also.𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦
+Since we know the density of flowers in the 20-acre field, we can calculate the total number of
+flowers pollinated within the field per day () by multiplyingby the area of the𝐹𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑 𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦
+field. Thus, we have: .𝐹𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑=𝐹𝑑𝑒𝑛𝑠𝑖𝑡𝑦·𝐴𝑓𝑖𝑒𝑙𝑑
+To find the percentage of flowers pollinated by the bees in the entire field, we also need to
+calculate the total number of flowers in the field. We assume all crops in the field are sunflowers,
+which take up the same amount of space each. Therefore, to calculate the total number of flowers
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page17of25
+in the field (), we divide the area of the 20-acre field () by the area used by each𝐹𝑓𝑖𝑒𝑙𝑑 𝐴𝑓𝑖𝑒𝑙𝑑
+flower (): .𝐴𝑓𝑙𝑜𝑤𝑒𝑟𝐹𝑓𝑖𝑒𝑙𝑑=𝐴𝑓𝑖𝑒𝑙𝑑
+𝐴𝑓𝑙𝑜𝑤𝑒𝑟
+Thus, to calculate the percentage of flowers pollinated for a given day (), we divide the𝑃𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑
+number of flowers pollinated by bees () by the total number of flowers in the field (𝐹𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑
+. Thus, . An important note is𝐹𝑓𝑖𝑒𝑙𝑑) γ=𝐹𝑝𝑜𝑙𝑙𝑖𝑛𝑎𝑡𝑒𝑑
+𝐹𝑓𝑖𝑒𝑙𝑑
+=𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)·𝐻·𝐷·𝐴𝑓𝑖𝑒𝑙𝑑
+π𝑅2 ·𝐴𝑓𝑙𝑜𝑤𝑒𝑟
+𝐴𝑓𝑖𝑒𝑙𝑑
+=𝑃𝑡𝑜𝑡𝑎𝑙(𝑡)·𝐻·𝐷·𝐴𝑓𝑙𝑜𝑤𝑒𝑟
+π𝑅2
+that the area of the field is canceled out and has no effect on the percent of the field pollinated by
+the hives. This makes sense because regardless of the field size, the amount of flowers the bees
+will pollinate per square meter in the field will remain the same as long as the field size is
+smaller than the maximum range of the bees. We realize that this assumption causes our model to
+break when the field size is larger than the maximum range.
+We utilize this model and iterate through the days up until 10 years, and record the percent of
+flowers pollinated per day (), as long asisduring the active season. This is because workerγ 𝑡
+bees do not pollinate flowers during the winter (“Do bees still make honey during the winter?,”
+2022). We calculate the average of the percents into determine the average percentage ofγ
+flowers pollinated per day (). Since sunflowersmust attract a pollinator in less than 2 days, weγ
+want the average percentage of flowers pollinated per day to be as close to 100% (represented by
+“1”) as possible (“Sunflowers and Bees,” 2018). Thus, we score the hive configurations using the
+following metric: . Choosing thenumber of hives that produces the lowest𝑆𝑐𝑜𝑟𝑒 = |γ − 1|
+is the most optimal number of hives.𝑆𝑐𝑜𝑟𝑒
+Results & Analysis
+By utilizing the methods in the above section, we determined that 22 bee hives performed the
+best for pollinating a 20-acre field. The spacing of these 22 hives can be seen in Figure
+SPACING. However, using 21 and 20 hives was also very effective at pollinating the field. These
+results are consistent with the University of Georgia’s recommendation for one beehive per acre
+for pollination (“Managing bees for pollination,” n.d.).
+Utilizing the scoring method outlined above, the values in Table 4 were produced, with lower
+scores representing a model that’s better at pollinating the 20-acre field.
+Number of Hives Score
+22 0.021
+21 0.026
+20 0.072
+19 0.118
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page18of25
+18 0.165
+Table 4: The most optimal number of hives to pollinate a 20-acre field.
+However, it is important to note that since each honeybee hive costs around $120-$200 (Harris,
+2019), it may be a better choice to proceed with using 21 or 20 hives, as the minimal
+improvement with score costs up to $400 more.
+In fact, when graphing the score achieved by the number of hives used, the graph in Figure 13 is
+produced.
+Figure 13: Score vs. Number of Hives when hives range from 0 to 100.
+The graph in Figure 13 resembles an absolute value function. When fitting an equation to this
+function, we see that . Thus, with every hive that’s𝑆𝑐𝑜𝑟𝑒=|0.0464(𝑥−22)+0.021|
+added, the score increases by 0.0464.
+Additionally, we measured the percentage of flowers pollinated on the field every day over a 10
+year period, as shown in Figure 14.
+Figure 14: Percent of flowers on the field pollinated over a 10-day period. Another way to think
+about this graph is the average number of bees that pollinate a single flower in a given day
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page19of25
+From Figure 14, we see that the percentage of flowers pollinated increases during a honeybee’s
+active season (because the population of workers are increasing), as expected, but drops to zero
+during the inactive season, which is when worker bees huddle around the queen to keep warm,
+instead of pollinating. We also see that at the end of a honeybee’s active season, the percentage
+of flowers on the field that’s pollinated reaches a peak of around 1.4%. This means that some
+crops are pollinated twice. Note that this is not extreme enough to cause over-pollination
+(“Flowers damaged by too many bee visits,” 2016).
+Sensitivity Analysis
+Additionally, we perform sensitivity analysis to determine the factors that have the greatest
+impact on the hives needed to pollinate 20 acres of a field filled with crops. We increase and
+decrease each factor considered by 10%, 20%, 30%, and 40%. We determined that the factors
+that had the largest impact on the number of hives needed to pollinate a 20-acre field were the
+distance a bee can travel from the hive, the number of flowers visited per day by a bee, and the
+area needed by each sunflower.
+Most Significant Effect
+When changing the range a honeybee typically stays in, more honeybee hives are needed, as the
+same number of bees are pollinating a larger area (which falls outside of the 20-acre field). This
+means fewer bees will be pollinating flowers in the 20-acre field, resulting in more hives needed
+to pollinate flowers within the field. Figure 15 shows the effect of changing the bee range on the
+number of hives needed to pollinate a 20-acre field. Note that the best, the 2nd best, and 3rd best
+number of hives to use are shown.
+Figure 15: Changing the distance a bee flies from the hive has the greatest impact on the optimal
+number of hives.
+Figure 15 clearly shows a smaller range of values for both the best, second best, and third best
+number of hives to use than when changing the typical distance a bee flies from the hive.
+Additionally, changing the number of flowers visited per bee each day and changing the area
+needed by each flower are shown in Figures 16 and 17.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page20of25
+Figure 16: Changing the daily flowers visited
+per bee drastically changed the number of
+hives needed.
+Figure 17: Changing the area needed by each
+flower drastically changed the number of
+hives needed.
+From Figure 16, we see that increasing the number of flowers visited by each bee daily decreases
+the number of beehives needed. Intuitively, this makes sense, as each bee visiting more flowers
+means more flowers can be pollinated with the same number of bees.
+From Figure 17, we see that increasing the area needed by each flower decreases the number of
+beehives needed. Intuitively, this also makes sense because there are fewer flowers to pollinate in
+the 20-acre field.
+Least Significant Effect
+In contrast, changing the field area seemed to have a minimal impact on the number of hives
+needed. Changing the field area and its impact on the number of hives needed to pollinate the
+field is shown in Figure 18.
+Figure 18: Effect of changing the field area on the number of hives needed to pollinate that field.
+This is a surprising result, as one would expect that increasing the field area results in more hives
+needed to pollinate the entire field. However, recall that our model does not depend on the area
+of the field (when the field is relatively much smaller than the hive’s coverage area), since the
+coverage area of each hive is so much larger than the 20-acre field’s area.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page21of25
+Strengths and Weaknesses
+Strengths
+●Our model’s result confirms online
+validation that approximately one
+honeybee hive is needed per acre of
+the field for pollination (“Managing
+bees for pollination,” n.d.).
+●It is easy to use our model to visualize
+all the different possibilities of hives
+and their scores, no matter the range of
+hive numbers to test.
+●Our model only utilizes the worker
+honeybee population when
+determining how many flowers get
+pollinated. This is accurate to the real
+world, where worker bees pollinate
+flowers.
+Weaknesses
+●Our model assumes that bees are
+evenly distributed across the 6 km
+radius coverage of a hive. However,
+this may not be true, because there is a
+20-acre field filled with flowers near
+the hive, so bees will tend to
+concentrate in the field more.
+●Using our model, the entire worker
+bee population is outside of the hive
+pollinating. However, this may not be
+the case in the real world, as a certain
+number of worker bees likely stay in
+the hive and carry out hive
+responsibilities without going out for
+pollination.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page22of25
+Non-Technical Infographic
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page23of25
+Conclusion
+To answer the given problem, we developed two models: one for simulating a honeybee
+colony’s population over time and another to determine how many honeybee hives are needed to
+pollinate a 20-acre field.
+In our honeybee population model, we created three differential equations to individually
+model important components contributing to changes in the bee population: number of eggs,
+worker bees, and drone bees. By considering the factors of the initial population, ratio of total
+bees to drone bees, length of the active honeybee season, number of eggs laid by the queen per
+day, average lifespan of bees, and average gestational period, we modeled the population of a
+honeybee colony over a 10-year period. To enhance the accuracy of our model, we analyzed the
+populations of worker and drone bees separately. The population of a honeybee colony seems to
+follow a sinusoidal pattern, with the population increasing through the active season and
+decreasing through the inactive season. The average peak population over 10 years was 60,759
+bees, while the average minimum population was 19,046 bees, which occurs during the winter.
+The strength of this population model lies in its flexibility in simulating various lengths of time
+and its ability to account for errors in the default values found through online research.
+Furthermore, the results from the model match up with the given population range in the
+problem. However, our model does have a few limitations as it does assume that several
+factors—such as the ratio of total bees to drone bees, gestational period, death rates, and
+egg-laying rates—remain constant throughout the active and inactive seasons. In addition, we
+had to infer the standard deviation for each factor due to a lack of data on the topic.
+Furthermore, we developed another model to determine the optimal number of honeybee
+hives needed to pollinate a 20-acre field. We consider the field area, the area needed by each
+flower, the number of flowers pollinated by each worker bee, and the max distance a bee travels
+from its hive. We determined that using 22 hives was the most optimal in pollinating the 20-acre
+field, but using 21 and 20 hives also provided acceptable results with potentially lower upkeep
+costs.
+We also conducted sensitivity analysis on both models. The egg-laying rate and worker
+bee lifespan significantly impacted the honeybee population model. The bee range, the number
+of flowers each bee visited per day, and the area occupied by each flower greatly impacted the
+number of hives needed to pollinate the 20-acre field. Interestingly, modifying the field size with
+relatively small changes did not affect the number of hives needed to pollinate the field.
+In the future, we would like to incorporate gradual changes in the average lifespan of
+bees to more realistically represent the changing nature of bee population across seasons than the
+sudden changes between active & inactive seasons in our current model. Moreover, we would
+also like to incorporate more factors into our model—such as adding nectar collection and
+reserves into our honeybee population model. Additionally, we would like to build onto the
+pollination model to allow inputs of a field’s length, width, bee density, and flower density to
+output the number of hives needed to pollinate that field. By deploying such a model as a website
+using HTML, CSS, and JavaScript, farmers could easily utilize our model in the real world.
+By pollinating the crops that feed the 7 billion people around the world, bees are an
+essential part of nature. With our model, farmers can estimate the population of a honeybee
+colony over time and determine the most optimal number of hives to pollinate a 20-acre field.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page24of25
+References
+Do bees still make honey during the winter?Terminix.(2022, November 4). Retrieved
+November 15, 2022, from
+https://www.terminix.com/blog/education/do-bees-make-honey-winter/
+Flowers damaged by too many bee visits. BeeSafe. (2016,January 15). Retrieved November 14,
+2022, from
+https://www.bee-safe.eu/articles/bee-thoughts/flowers-damaged-by-too-many-bee-visits/
+Frost, J. (2022, July 22). How to interpret R-squared in regression analysis. Statistics By Jim.
+Retrieved November 15, 2022, from
+https://statisticsbyjim.com/regression/interpret-r-squared-regression/
+Grad, P. (2010, May 19).Bee Hive hierarchy and activities.Big Island Bees. Retrieved
+November 14, 2022, from
+https://bigislandbees.com/blogs/bee-blog/14137353-bee-hive-hierarchy-and-activities
+Harris, J. (2019, February 13).How much does it costto start beekeeping?Queen & Colony.
+Retrieved November 14, 2022, from
+https://www.queenandcolony.com/blog/2019/2/12/how-much-does-it-cost-to-start-beekee
+ping
+Honey Bee Colony. Orkin. (2021, October 1). RetrievedNovember 14, 2022, from
+https://www.orkin.com/pests/stinging-pests/bees/honey-bees/honey-bee-colony
+Honey Bee Life Cycle. BuzzAboutBees.net. (2021, October28). Retrieved November 14, 2022,
+fromhttps://www.buzzaboutbees.net/honey-bee-life-cycle.html
+Honey Bee Life Span: Life cycle & phases of Honeybees.Orkin. (2021, October 1). Retrieved
+November 14, 2022, from
+https://www.orkin.com/pests/stinging-pests/bees/honey-bees/honey-bee-life-span
+How many flowers can a bee pollinate?Wonderopolis.(n.d.). Retrieved November 14, 2022,
+fromhttps://www.wonderopolis.org/wonder/how-many-flowers-can-a-bee-pollinate
+Kiley. (2017, December 15). Dickinson County Conservation Board. Retrieved November 14,
+2022, from
+https://dickinsoncountyconservationboard.com/2017/12/15/how-honeybees-survive-the-
+winter/
+Linnell, C., & Marski, D. (2020, November 24).Whatdo bees do in the winter?Forest Preserve
+District of DuPage County Original. Retrieved November 14, 2022, from
+https://www.dupageforest.org/blog/bees-in-winter
+Managing bees for pollination. Managing Bees for Pollination- Protecting Pollinators | Bee
+Program. (n.d.). Retrieved November 14, 2022, from
+https://bees.caes.uga.edu/bees-beekeeping-pollination/pollination/pollination-managing-b
+ees-for-pollination.html
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13014 Page25of25
+Remolina, S. C., & Hughes, K. A. (2008, September).Evolution and mechanisms of long life and
+high fertility in queen Honey Bees. Age (Dordrecht,Netherlands). Retrieved November
+14, 2022, fromhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC2527632/
+Rueppell, O., Fondrk, M. K., & Page, R. E. (2005, February).Biodemographic analysis of Male
+Honey Bee Mortality. Aging cell. Retrieved November14, 2022, from
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2441913/
+Sites at Penn State. (2018, April 4).Sunflowers andBees. The Worlds Best Pollinators. Retrieved
+November 15, 2022, fromhttps://sites.psu.edu/beeseverywhere/2018/04/04/post15/
+The Beekeepers Year. MDBKA. (n.d.). Retrieved November14, 2022, from
+https://www.mdbka.com/the-bee-keepers-year/
+The Ultimate Guide to Growing Sunflowers. Gilmour.(2020, December 2). Retrieved November
+14, 2022, fromhttps://gilmour.com/growing-sunflowers
+University of Arizona, College of Agricultural & Life Sciences. (n.d.).Information sheet 3.
+Information Sheet 3, Honey Bee Biology. Retrieved November 14, 2022, from
+https://cals.arizona.edu/pubs/insects/ahb/inf3.html
+University of Delaware. (n.d.).The colony and itsorganization. Mid-Atlantic Apiculture
+Research and Extension Consortium. Retrieved November 14, 2022, from
+https://canr.udel.edu/maarec/honey-bee-biology/the-colony-and-its-organization/
+What season do bees come out?: When is bee season?Orkin. (2022, September 6). Retrieved
+November 14, 2022, from
+https://www.orkin.com/pests/stinging-pests/bees/when-are-bees-most-active
+When does Honey Bee Season Start?The Bee Store. (2018,March 30). Retrieved November 14,
+2022, fromhttps://www.yourbeestore.com/when-does-honey-bee-season-start
+ᇿ Hi MCM
+ሧ࿟

@@ -5,6 +5,15 @@
   const AVATARS = ["fox", "panda", "owl", "cat", "rabbit", "penguin", "koala", "tiger"];
   let selected = "fox";
 
+  // 分工偏好：影响助教回答侧重。"" = 无偏好（按能力评级自适应）
+  const ROLES = [
+    { key: "", icon: "🎓", label: "无偏好", desc: "按评级自适应" },
+    { key: "coding", icon: "💻", label: "编程手", desc: "多代码与实现" },
+    { key: "writing", icon: "✍️", label: "写作手", desc: "多论文与表述" },
+    { key: "modeling", icon: "📐", label: "建模手", desc: "多模型与公式" },
+  ];
+  let selectedRole = "";
+
   function renderAvatars() {
     const grid = $("avatar-grid");
     grid.innerHTML = "";
@@ -22,6 +31,22 @@
     }
   }
 
+  function renderRoles() {
+    const grid = $("role-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+    for (const r of ROLES) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "role-opt" + (r.key === selectedRole ? " sel anim-pop" : "");
+      b.innerHTML = `<span class="role-icon">${r.icon}</span>` +
+        `<span class="role-label">${r.label}</span>` +
+        `<span class="role-desc">${r.desc}</span>`;
+      b.onclick = () => { selectedRole = r.key; renderRoles(); };
+      grid.appendChild(b);
+    }
+  }
+
   async function enter() {
     const nickname = $("nickname").value.trim() || "建模新手";
     const btn = $("btn-enter");
@@ -31,7 +56,7 @@
       const r = await fetch("/api/profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nickname, avatar: selected }),
+        body: JSON.stringify({ nickname, avatar: selected, role: selectedRole }),
       });
       if (!r.ok) throw new Error("创建失败");
       const profile = await r.json();
@@ -62,6 +87,7 @@
   }
 
   renderAvatars();
+  renderRoles();
   $("btn-enter").onclick = enter;
   $("nickname").addEventListener("keydown", (e) => {
     if (e.key === "Enter") enter();

@@ -1,0 +1,714 @@
+ğ
+
+Team Control Number
+12704
+Problem Chosen
+2022
+HiMCM/MidMCM
+Summary Sheet
+
+Summary
+A group of four friends has hired our team at the MidMCM Travel Agency to make sure each member
+has a great time during their one-day trip to Polygon Paradise Park. Our team is to develop a schedule
+to make the group’s day at the park the best possible.
+There are 17 different locations in this park, we call them as Xi. First, we assign these 17 locations
+coordinate values in pixels, and use the Euclidean distance to calculate the pixel distance between any
+two locations. Then, we convert the pixel distance to walking time , and find the center location is
+X13(Restroom, WC ). Third, we transform the problem into a TSP problem , and find the shortest
+traversal path. Fourth, on the basis of the shortest traversal path, we divide the park map into 4 parts .
+Before the partitioning, 37% of walk times were 5 minutes or more. After partitioning, the walking
+time of the farthest two points is 5 minutes.
+When develops the schedule, we arrange key locations first, and divide the 12 hours into four different
+sections, e ach section corresponds to a  part of the park. After completing the development of the
+schedule, we gave each member of the team corresponding notes.
+There are five highlights in our schedule.
+⚫ The average waiting time value for
+completing 10 rides only 7.5 minutes.
+⚫ The longest walking time not exceed 5
+minutes.
+⚫ The schedule includes enough free time.
+⚫ Fully meet everyone's different needs.
+⚫ All rides and shows will be completed.
+The time allocation arrangement in one day
+ᇿ Hi MCM
+ሧ࿟
+ğ
+
+Contents
+1. A letter to my friends ................................................................................................ 1
+2. Problem Restatement ................................................................................................ 3
+3. Problem Assumptions ............................................................................................... 4
+4. Variable Definitions .................................................................................................. 4
+5. Model Description ..................................................................................................... 5
+5.1 Establish coordinate system ............................................................................. 5
+5.2 Calculate distance .............................................................................................. 6
+5.3 Calculate walking time ..................................................................................... 7
+5.4 Find the center location .................................................................................... 7
+5.5 The travelling salesman problem ..................................................................... 8
+5.6 Divide the map into several parts .................................................................... 9
+6. Develop the Schedule .............................................................................................. 11
+6.1 Arrange key locations ..................................................................................... 11
+6.2 Allocate time for each part ............................................................................. 12
+6.3 Create the Schedule ......................................................................................... 12
+6.4 Notes for each one ........................................................................................... 12
+6.5 Schedule for ourself ......................................................................................... 13
+7. Analysis .................................................................................................................... 14
+7.1 Strengths .......................................................................................................... 14
+7.2 Weaknesses ...................................................................................................... 14
+8. Conclusion and Advice ........................................................................................... 15
+8.1 Our Conclusion ................................................................................................ 15
+8.2 Advice for the park ......................................................................................... 15
+8.3 Advice for tourists ........................................................................................... 15
+9. reference ................................................................................................................... 16
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  1 of 16
+
+1. A letter to my friends
+Dear Ming、Ishmael、Karine、Freya，
+Thanks for hiring our team at the MidMCM Travel Agency to develop a schedule for your one-day
+trip to the Polygon Paradise Park.  We will try our best to provide you an ideal day guide at the park.
+Let’s Familiarize with Polygon Paradise Park at first.
+Introduction to the Park
+Polygon Paradise Park is a small amusement park open from 9am to 9pm. The park has ten rides of
+different types and thrill levels. The Trapezoid Show, a location with several different performances
+throughout the day, offers a circus acrobatics show, a magic show, and evening fireworks. The
+Games building has both arcade and carnival games. Food options include the Triangle Restaurant,
+the hot dog stand, and the ice cream cart. The hot dog stand and the ice cream cart are “take away”
+options, while the Triangle Restaurant requires 30-60 minutes to sit at a table and enjoy a meal. The
+restrooms (WC) are centrally located in the park for easy access. Visitors can purchase souvenirs in
+the gift shop located near the park entrance.
+Ideal day guide at Polygon Paradise Park
+
+Map of the Park                                            Schedule of the one-day trip
+Now let's take a look at the schedule of this trip.
+⚫ First, this park will be divided into 4 parts and including 17 locations in our schedule. You will
+start the one-day trip at the location of Heptagon Coaster. Please arrive at this location at 9am on
+time. You will play in the park clockwise to minimize the waiting time and walking time.
+⚫ You will have lunch about 12:15, and you can buy hot dogs as snacks. Considering Karine
+doesn't like hot dogs very much, we suggest that she can bring her own snacks.
+⚫ After lunch, most of the queues in all attractions are already more than 30minutes. The afternoon
+and the late afternoon are the time for shows, games, mini-attraction, or some photo
+opportunities in the garden.
+Part Start
+Time Location Wait
+Time
+Time
+taken
+Next
+Location
+Walking
+Time
+End
+Time Time Tips
+9:00 X4 0:10 0:02 X7 0:02 9:14 09:00-10:00 Heptagon Coaster
+9:14 X7 0:00 0:15 X3 0:02 9:31 09:00-10:00 Pentagon Bumpers
+9:31 X3 0:00 0:04 X8 0:02 9:37 09:00-10:00 Dodecagon Rapids
+9:37 X8 0:05 0:03 X5 0:01 9:46 09:00-10:00 Rhombus Ride
+9:46 X5 0:00 0:05 X1 0:01 9:52 09:00-10:00 Hexa-Swings
+9:52 X1 0:05 0:03 X13 0:03 10:03 09:00-10:00 Concave Train
+10:03 X2 0:30 0:03 X15 0:03 10:39 10:00-11:00 Decagon Coaster
+10:39 X15 0:05 0:07 X13 0:03 10:54 10:00-11:00 Hot Dog
+10:54 X13 0:00 0:06 X9 0:02 11:02 10:00-11:00 WC
+11:02 X9 0:10 0:10 X16 0:01 11:23 11:00-12:00 Square Scramble
+11:23 X16 0:05 0:25 X6 0:02 11:55 11:00-12:00 Icecream
+11:55 X6 0:10 0:03 X17 0:01 12:09 11:00-12:00 Octagon Flume
+12:09 X17 0:30 1:00 X10 0:02 13:41 12:00-13:00 Lunch
+13:41 X10 0:05 0:05 X11 0:03 13:54 13:00-14:00 Star Burst Carousel
+13:54 X11 0:06 1:00 X12 0:03 15:03 14:00-15:00 Magic Show
+15:03 X12 0:00 0:54 X11 0:03 16:00 15:00-16:00 Games
+16:00 X11 0:00 1:00 X14 0:05 17:05 16:00-17:00 Circus Acrobatics
+17:05 X14 0:00 0:53 X17 0:02 18:00 17:00-18:00 Gift Shop
+18:00 X17 0:10 1:00 X13 0:04 19:14 18:00-19:00 Dinner
+19:14 X13 0:00 0:42 X11 0:04 20:00 19:00-20:00 WC
+20:00 X11 0:00 1:00 / 0:00 21:00 20:00-21:00 Firework Show
+Part I
+09:00
+-10:00
+Part II
+10:00
+-11:00
+Part III
+11:00
+-14:00
+Part IV
+14:00
+-21:00
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  2 of 16
+
+⚫ You will have dinner about 18:00, After your stomach is feeling good and you are feeling good,
+you can stick around and watch the fireworks show.
+⚫ After the fireworks show, it's time to say goodbye. We have completed the exploration of all
+projects. I hope you are satisfied with this schedule.
+Highlights of the Schedule
+There are five highlights in our schedule.
+⚫ Arrange the right project at the right time to reduce the waiting time. According to our schedule,
+the average waiting time for completing all 10 rides only 10 minutes.
+⚫ During this day's trip, time will not waste on walking. The total walking time will be less than 1
+hour. The longest walking time shall not exceed 5 minutes.
+⚫ The schedule includes enough leisure time, which can be used to have a meal, take a rest, play
+games or buy souvenirs.
+⚫ At the same time, we will also make targeted arrangements according to the different needs of
+everyone to make the collective satisfaction as high as possible.
+⚫ All rides and shows will be completed, and individual rides can be tried more than once.
+Four tips
+It is very important to know the following tips.
+⚫ Pack light and wear sneakers. Before you go, think about what you absolutely need to bring with
+you. There are lockers at every roller coaster to drop your bag, but it might slow you down. And
+don't wear flip flops. On rides like Decagon Coaster, you will have to take them off. Plus,
+sneakers will help you get from one location to the other as fast as possible.
+⚫ Follow the rules, not the other kids. The rules are to help you have fun, not spoil it.
+⚫ Pay attention to specific safety instructions. Watch out when the rules say things like "hang on to
+the handles," "slide only feet first," "stay seated," "don't rock the seat," "get rid of gum before
+you ride" or "no flipping." When they post those rules, it is because they know those actions can
+cause kids to get hurt.
+⚫ Read the signs and teach your parents some safety rules. Even adults get hurt when they put their
+hands in the air or don't ride properly.
+The final last, buy yourself a t-shirt to celebrate and a souvenir of your accomplishment! I hope
+you’ll have fun and make the best out of your time.
+
+Sincerely yours，
+Team #12704
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  3 of 16
+
+2. Problem Restatement
+A group of four friends has hired our team at the MidMCM Travel Agency to make sure each member
+has a great time during their one-day trip to Polygon Paradise Park. Our team is to develop a schedule
+to make the group’s day at the park the best possible. We have following information.
+About The Park
+Polygon Paradise Park is a small amusement park open from 9am to 9pm. The park has ten rides of
+different types and thrill levels. The Trapezoid Show, offers a circus acrobatics show, a magic show,
+and evening fireworks. The Games building has both arcade and carnival games. Food options
+include the Triangle Restaurant, the hot dog stand, and the ice cream cart. The hot dog stand and the
+ice cream cart are “take away” options, while the Triangle Restaurant requires 30-60 minutes to sit at
+a table and enjoy a meal. The restrooms (WC) are centrally located in the park for easy access.
+Visitors can purchase souvenirs in the gift shop located near the park entrance.
+About The Group
+Name Like Dislike
+Ming play games and win prizes fast moving rides (especially after eating)
+Ishmael roller coasters、magic show
+Karine circus acrobatics show waiting in long lines、hot dogs
+Freya water rides、with friends、souvenir
+About The Planning Resources
+Our planning resources from MidMCM Travel Agency include a show schedule for the Trapezoid
+Show location, tables containing ride categories and durations, expected ride wait times throughout
+the day, food options and wait times, and a map of the park. These resources are included at the end
+of the problem statement.
+What We Need to Do
+⚫ Get Started. Familiarize with Polygon Paradise Park and the group of friends.
+⚫ Create the Schedule. Create a detailed schedule for the group of friends to use as a guide for
+their day at Polygon Paradise Park.
+⚫ Share Our Schedule. Write a one- to two-page letter to the group of friends that describes the
+highlights of our recommended schedule and explains why it will offer the best possible day at
+Polygon Paradise Park.
+⚫ Reflect. Try to use the process we used to create the schedule for Ming, Ishmael, Karine, and
+Freya to create a schedule for our team, and briefly describe the process and what would be
+different!
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  4 of 16
+
+3. Problem Assumptions
+⚫ Assumption 1：The distance between any two points is a straight-line distance, and the round-
+trip distance is equal.
+⚫ Assumption 2：The playing time and waiting time of each ride are consistent with the data
+given in the table.
+⚫ Assumption 3：The play process of all rides is smooth, without considering unexpected
+situations.
+⚫ Assumption 4：The schedule can be executed correctly
+⚫ Assumption 5：Walking speed is calculated as 45 m/s
+
+4. Variable Definitions
+A table of variables used in the study is given below.
+Notation Definition
+( 1,2, ,17)iXi =
+Different location
+( ), ( 1,2, ,17)iix y i =
+coordinate of
+iX
+( , 1,2, ,17)ijD i j =
+Distance between location i and location j
+( , 1,2, ,17)ijTw i j =
+Time required to walk from location
+i  to location
+j
+( 1,2, 17)iTave i =
+Average time from each location to others
+
+Round up the value to the nearest integer
+( )
+17 17
+11min ij ijiiT Tw x ===
+The minimum value of the total distance function
+,1 1
+n
+iji j i x= =
+Only one point at a time
+,1 1
+n
+iji j j x= =
+Each point is passed once
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  5 of 16
+
+5. Model Description
+5.1 Establish coordinate system
+There are 17 different locations in this park, we call them as
+( 1,2, 17)iXi =
+. The corresponding
+notation is shown in Table 1.
+Table 1 Names of each location
+Type Location Notation Type Location Notation
+Rides
+Concave Train X1
+Others
+Trapezoid Show X11
+Decagon Coaster X2 Games X12
+Dodecagon Rapids X3 WC X13
+Heptagon Coaster X4 Gift Shop X14
+Hexa-Swings X5 Hot Dog Stand X15
+Octagon Flume X6 Ice Cream Cart X16
+Pentagon Bumpers X7 Triangle Restaurant X17
+Rhombus Ride X8
+Square Scramble X9
+Star Burst Carousel X10
+To facilitate the calculation of the direct distance between any two locations, we first establish a
+coordinate system based on the park map.  In our coordinate system, the upper left corner is the
+coordinate origin, the right direction is the X-axis, the downward direction is the Y-axis. The size of
+the whole park map is
+1172 1146  pixels, we take one pixel as a unit. So, we can get the coordinate
+value of each location by a free software which is called “GetCoordiante”. The corresponding table
+is shown in Table 2.
+Table 2 Coordinate value of each location
+Type Name ID x y Type Name ID x y
+Rides
+Concave Train X1 910 260
+Others
+Trapezoid Show X11 765 975
+Decagon Coaster X2 1045 390 Games X12 915 745
+Dodecagon Rapids X3 545 475 WC X13 1065 640
+Heptagon Coaster X4 660 810 Gift Shop X14 1190 1040
+Hexa-Swings X5 810 320 Hot Dog Stand X15 750 630
+Octagon Flume X6 1420 820 Ice Cream Cart X16 1295 725
+Pentagon Bumpers X7 560 665 Triangle Restaurant X17 1390 945
+Rhombus Ride X8 720 415
+Square Scramble X9 1240 655
+Star Burst Carousel X10 1140 840
+The park map including the coordinate system is shown in Figure 1.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  6 of 16
+
+Figure 1 Park map with coordinate system
+5.2 Calculate distance
+Because there are few obstacles between any two locations, we define the distance between two
+locations as Euclidean distance [6]. we call the distance between two locations as
+( , 1,2, 17)ijD i j =
+,
+Its calculation formula as follow.
+
+22( ) ( )ij i j i jD x x y y= − + −                                              (1)
+According to the Formula (1), we can calculate the distance between any two locations as shown in
+Table 3, all result is taken as an integer.
+Table 3 The distance between any two locations
+
+In the Table 3, The redder the color, the farther the distance, and the bluer the color, the closer the
+distance. The unit of Table 3 is pixel.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  7 of 16
+
+5.3 Calculate walking time
+Now we know the distance between any two locations by pixel coordinate, and 1 centimeter in the
+map equal 25 meters. Let's take X1 and X2 as an example. The distance between X1 and X2 is.
+12 187 pixel 2.74 68D centimeter meter= = =
+
+According to the Centers for Disease Control and Prevention [1], we find the average walking pace is
+2.5 to 4 mph, that is about 67 to 107 meter per minutes, the average value is 87 meter per minutes.
+Considering that our service group is students and walking in the amusement park, we take half of
+the average value, which is about 45 meter per minutes.
+45
+ij
+ij
+dTw =
+(2)
+In Formula (2),
+ijTw  means the time required to walk from location
+i  to location
+j .  The symbol of
+“
+ ” means round up the value to the nearest integer. we can calculate the walking time between
+any two locations as shown in Table 4.
+Table 4 The walking time between any two locations
+
+As the same, in the Table 4, The redder the color, the more time, and the bluer the color, the less
+time. The unit of Table 4 is minute.
+5.4 Find the center location
+By calculating the average time
+( , 1,2, 17)iTave i =
+from each location to all other locations, we find
+that the three least average: X12 (GAMES),
+12 2.88Tave = minutes,  X13 (restrooms, WC),
+13 2.94Tave =
+minutes, X15 (Hot dogs),
+15 3.24Tave = minutes. Obviously, the three values are very close, but X13 is
+more important than others. Calculation formula of average time as follow [7].
+( )
+17
+1
+1 ()16
+i ij jTave Tw i j == 
+(3)
+We choose the X13 as the center location, which are centrally located in the park for easy access.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  8 of 16
+
+5.5 The travelling salesman problem
+According to the description of Wikipedia [2][5], the Travelling Salesman Problem (also called TSP
+problem) asks the following question: "Given a list of cities and the distances between each pair of
+cities, what is the shortest possible route that visits each city exactly once and returns to the origin
+city?"
+The TSP can be formulated as an integer linear program.  Common to both these formulations is that
+one labels the cities with the numbers
+1,2, , n
+and takes
+0ijd   to be the distance from city i to city j.
+The main variables in the formulations are:
+1
+0
+ij
+the path gose from city i to jx otherwise
+=
+
+
+It is because these are 0/1 variables that the formulations become integer programs; all other
+constraints are purely linear. In particular, the objective in the program is to minimize the tour length
+1 , 1
+nn
+ij iji i j jz d x =  ==
+
+Without further constraints, the
+ ijx  will however effectively range over all subsets of the set of
+edges, which is very far from the sets of edges in a tour, and allows for a trivial minimum where
+all
+0ijx = . Therefore, both formulations also have the constraints that there at each vertex is exactly
+one incoming edge and one outgoing edge, which may be expressed as the 2n linear equations.
+,1 1
+n
+iji j i x= =
+and
+,1 1
+n
+iji j j x= =
+Our problem can also be classified as the Traveling Salesman Problem, we can use the above
+methods to our problems. The mathematical model is established as follows.
+( )
+17 17
+11min ij ijijT Tw x ===
+(4)
+17
+1 1iji x= =
+,
+17
+1 1ijj x= = ,
+01ijx or= ,
+, 1...17for i j =                                          (5)
+In the software of “Lingo/Lindo”, we can imitate the sample description in the user’s manual. By
+entering the data in Table 4, we can get the result as follow, and total walking time is 31 minutes.
+
+Figure 2 Shortest path scheme traversing all location
+However, some locations need to be repeated and are not suitable as intermediate locations, so we
+choose X4 as the starting point of the trip. We draw the basic route as shown in Figure 3.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  9 of 16
+
+Figure 3 The basic tour map
+5.6 Divide the map into several parts
+Considering the dining time, the characteristics of rides and shows, the crowding degree of queues
+and other factors, we think it is appropriate to divide the whole park map into four parts,  which are
+called Part I、Part II、Part III and Part IV.
+We have determined that X13 is the center of the part. Now, we will find the farthest point from X13 at
+the top right, top left, bottom right, bottom left. They are X2(top right), X3(top left), X6(bottom right)
+and X11(bottom left). Take these points as the cluster center of each part, and properly combined
+with manual adjustment. The locations contained in each part and the distance between them are
+shown in Table 5.
+Table 5 Member list of each part and the distance between them
+
+X 3 X 4 X 5 X 7 X 8 X 1 X 2 X 13 X 15
+X 3 0 3 3 2 2 X 1 0 2 3 3
+X 4 3 0 4 2 3 X 2 2 0 2 3
+X 5 3 4 0 4 1 X 13 3 2 0 3
+X 7 2 2 4 0 3 X 15 3 3 3 0
+X 8 2 3 1 3 0
+X 6 X 9 X 10 X 16 X 17 X 11 X 12 X 13 X 14 X 17
+X 6 0 2 3 2 1 X 11 0 3 4 4 5
+X 9 2 0 2 1 3 X 12 3 0 2 3 4
+X 10 3 2 0 2 2 X 13 4 2 0 4 4
+X 16 2 1 2 0 2 X 14 4 3 4 0 2
+X 17 1 3 2 2 0 X 17 5 4 4 2 0
+Part III
+Part I Part II
+Part IV
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  10 of 16
+
+In addition, we also counted the time-consuming distribution of partition and non-partition. As
+shown in Figure 4, before the partitioning, 37% of walk times were 5 minutes or more. After
+partitioning, the walking time of the farthest two points is 5 minutes, and only once.
+
+Figure 4 Walking time distribution between partitions or non-partitions
+Therefore, when we formulate follow-up plans, we try to ensure that activities within a fixed period
+of time are only within a fixed range, which can effectively reduce walking and waiting time.
+Figure 5 gives a schematic map of the 4 parts, which are distinguished by different colors. The entire
+play route starts from X4 and proceeds in a clockwise direction. Some locations that need to be
+visited repeatedly, such as X13, X17, X11, etc. The tour route will be adjusted appropriately according
+to the needs.
+
+Figure 5 Schematic map of the 4 parts
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  11 of 16
+
+6. Develop the Schedule
+6.1 Arrange key locations
+A total of 13 of the 17 locations have different waiting times. The heat map of the waiting time is
+shown in Table 6. We can easily find that there are four addresses with large waiting time peaks,
+which need to be dealt with first, they are X2 (Decagon Coaster), X4(Heptagon Coaster), X6(Octagon
+Flume), X17(Triangle Restaurant).
+Table 6 The heat map of the waiting time
+
+Follow the clockwise play route (Figure 2) and Figure 6, we decided to place the X4(Heptagon
+Coaster) in 09:00-10:00, X2 (Decagon Coaster) in 10:00-11:00, X6(Octagon Flume) in 11:00-12:00,
+X17(Triangle Restaurant) in 12:00-13:00 and 18:00-19:00. Total wait time for these key locations is
+80 minutes, which includes the wait time for two meals [3][4][5].
+
+Figure 6 Line graph of waiting times at 4 key locations
+Time X1 X2 X3 X4 X5 X6 X7 X8 X9 X10 X15 X16 X17
+09:00-10:00 5 15 0 10 0 10 0 5 0 10 0 / 5
+10:00-11:00 10 30 5 20 5 10 5 10 5 15 5 0 30
+11:00-12:00 15 45 10 30 10 10 5 15 10 15 10 5 60
+12:00-13:00 10 60 15 40 10 30 5 10 10 10 10 10 20
+13:00-14:00 10 75 20 40 15 60 10 10 10 5 5 15 0
+14:00-15:00 15 75 15 30 15 60 10 15 10 5 0 15 0
+15:00-16:00 15 60 10 30 10 60 10 10 10 5 5 10 10
+16:00-17:00 15 45 5 20 10 30 10 10 10 5 10 5 40
+17:00-18:00 5 30 0 20 5 10 5 5 5 5 10 5 60
+18:00-19:00 5 30 0 10 0 10 0 5 5 5 10 5 10
+19:00-20:00 5 15 0 10 0 0 0 5 5 5 5 0 0
+20:00-21:00 5 0 0 10 0 0 0 5 0 0 5 0 0
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  12 of 16
+
+6.2 Allocate time for each part
+Because X4 belongs to the first part, so the time for the Part I is 9:00-10:00. X2 belongs to part II,
+the scheduled time is 10:00-11:00, so the time for the Part II is 10:00-11:00. X6 and X17 belong to
+the part III, so the time for the Part III is 11:00-14:00. The remaining time is allocated to part IV.
+The time allocation and the location numbers included of each part are shown in Table 7.
+Table7 The time allocation and the location numbers included of each part
+
+6.3 Create the Schedule
+Table 8 Schedule of the one-day trip
+
+6.4 Notes for each one
+1.Notes to Ming
+⚫ The game time is scheduled at 15:00-16:00, about 1 hour of free time.
+⚫ All the extremely Thrill rides (X4, X8, X2) are arranged before lunch, you can decide whether to
+participate in these rides according to your own situation.
+X3 X6
+X4 X9
+X5 X10
+X7 X16
+X8 X17
+X1 X11
+X2 X12
+X13 X13
+X14
+X17
+Part I
+09:00-10:00
+Part III
+11:00-14:00
+Part IV
+14:00-21:00X15
+Part II
+10:00-11:00
+Part Start
+Time Location Wait
+Time
+Time
+taken
+Next
+Location
+Walking
+Time
+End
+Time Time Tips
+9:00 X4 0:10 0:02 X7 0:02 9:14 09:00-10:00 Heptagon Coaster
+9:14 X7 0:00 0:15 X3 0:02 9:31 09:00-10:00 Pentagon Bumpers
+9:31 X3 0:00 0:04 X8 0:02 9:37 09:00-10:00 Dodecagon Rapids
+9:37 X8 0:05 0:03 X5 0:01 9:46 09:00-10:00 Rhombus Ride
+9:46 X5 0:00 0:05 X1 0:01 9:52 09:00-10:00 Hexa-Swings
+9:52 X1 0:05 0:03 X13 0:03 10:03 09:00-10:00 Concave Train
+10:03 X2 0:30 0:03 X15 0:03 10:39 10:00-11:00 Decagon Coaster
+10:39 X15 0:05 0:07 X13 0:03 10:54 10:00-11:00 Hot Dog
+10:54 X13 0:00 0:06 X9 0:02 11:02 10:00-11:00 WC
+11:02 X9 0:10 0:10 X16 0:01 11:23 11:00-12:00 Square Scramble
+11:23 X16 0:05 0:25 X6 0:02 11:55 11:00-12:00 Icecream
+11:55 X6 0:10 0:03 X17 0:01 12:09 11:00-12:00 Octagon Flume
+12:09 X17 0:30 1:00 X10 0:02 13:41 12:00-13:00 Lunch
+13:41 X10 0:05 0:05 X11 0:03 13:54 13:00-14:00 Star Burst Carousel
+13:54 X11 0:06 1:00 X12 0:03 15:03 14:00-15:00 Magic Show
+15:03 X12 0:00 0:54 X11 0:03 16:00 15:00-16:00 Games
+16:00 X11 0:00 1:00 X14 0:05 17:05 16:00-17:00 Circus Acrobatics
+17:05 X14 0:00 0:53 X17 0:02 18:00 17:00-18:00 Gift Shop
+18:00 X17 0:10 1:00 X13 0:04 19:14 18:00-19:00 Dinner
+19:14 X13 0:00 0:42 X11 0:04 20:00 19:00-20:00 WC
+20:00 X11 0:00 1:00 / 0:00 21:00 20:00-21:00 Firework Show
+Part I
+09:00
+-10:00
+Part II
+10:00
+-11:00
+Part III
+11:00
+-14:00
+Part IV
+14:00
+-21:00
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  13 of 16
+
+⚫ The waiting time of X2 is relatively long, and the project is more exciting, you can go to Games
+instead. But be sure to wait by 10:39 at the hot dog stand, which is next door to the Games.
+2. Notes to Ishmael
+⚫ We had nearly the entire afternoon to watch the show and could see three different shows. The
+time of the magic show is scheduled for 14:00-15:00 in the afternoon.
+⚫ There are three extremely thrill roller coaster rides in the park, we’ve all got them on the
+schedule.
+⚫ If you want to participate in roller coasters repeatedly, you can invite the team to play them
+together during the break. Available time is 17:00-18:00 or 19:00-20:00, the wait times for
+those times are very short. But you must not miss the time to go to the next location with the
+team.
+3.Notes to Karine
+⚫ The good news for you is that most locations have relatively short wait times. All items except
+X2 and X17 will have a wait time of less than 10 minutes.
+⚫ The time of the circus acrobatics show is scheduled for 16:00-17:00 in the afternoon.
+⚫ The lunch time is 12:00-13:00, and the dinner lunch is 18:00-19:00. We suggest that you can
+bring yourself some snacks. Except for hot dogs, there are no other snacks that can be eaten in
+this park.
+4.Notes to Freya
+⚫ There are two water rides in the park, namely Dodecagon Rapids and Octagon Flume. Compared
+with other rides, their play time is relatively long, I hope you enjoy yourself.
+⚫ Our schedule allows the group to be together for most of the day. Even during free time, best
+friends can play some fun games into groups of two.
+⚫ The shopping time is scheduled at 17:00-18:00 at gift shop, about 1 hour of free time. Hope
+you find meaningful souvenirs then. In addition, bringing a camera and capturing some beautiful
+moments is also a good way to add meaning to the trip.
+6.5 Schedule for ourself
+⚫ First of all, our team's plan will not be much different from the schedule in the Table 8.
+⚫ We will bring more food and fruit, only eat one meal in the restaurant.
+⚫ Play individual fun items in both day and night to experience different feelings.
+⚫ Actual testing on necessary data in the park to make the next travel plan more perfect.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  14 of 16
+
+7. Analysis
+7.1 Strengths
+⚫ Arrange the right project at the right time to reduce the waiting time. According to our schedule,
+the average waiting time for completing all 10 rides only 7.5 minutes.
+⚫ During this day's trip, time will not waste on walking. The total walking time will be less than 1
+hour. The longest walking time shall not exceed 5 minutes.
+⚫ The schedule includes enough leisure time, which can be used to have a meal, take a rest, play
+games or buy souvenirs.
+⚫ At the same time, we will also make targeted arrangements according to the different needs of
+everyone to make the collective satisfaction as high as possible.
+⚫ All rides and shows will be completed, and individual rides can be tried more than once.
+The time allocation arrangement of 12 hours or 720 minutes in one day is shown in Figure 7.
+
+Figure 7 The time allocation arrangement in one day
+7.2 Weaknesses
+⚫ The schedule of some rides is too tight, and the actual situation may not be able to achieve the
+goal.
+⚫ The group are willing to split up into groups of two for up to 4 hours of the day if it will increase
+everyone’s enjoyment of the trip. However, the process we used to create the schedule has not
+been described in detail about this point.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  15 of 16
+
+8. Conclusion and Advice
+8.1 Our Conclusion
+⚫ Divide the whole park map into different parts is a good option.
+⚫ The optimization of the scheme can be realized through the computer-based calculation method
+supplemented by manual adjustment.
+⚫ Complementary issues should be considered when formulating plans for multiple teams.
+⚫
+8.2 Advice for the park
+⚫ The park should set up the restaurant in the center of the park, and increase seats to reduce
+waiting time.
+⚫ The overall play time of the amusement projects is too short, and the waiting time of some rides
+is too long, so it is necessary to properly divert and increase the number of seats for the rides.
+⚫ The ride’s name is weakly correlated with the ride’s content, and it is difficult to highlight the
+characteristics.
+8.3 Advice for tourists
+⚫ It is recommended to bring an appropriate amount of food and beverages to solve a lunch or
+dinner and save time.
+⚫ You can’t give top priority to a certain project because of the short waiting time. You can make
+and arrange play plans in different time periods, or ask experienced friends to help make it.
+⚫ It is very necessary to combine work and rest, and it is necessary to set aside sufficient leisure
+time.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #12704                                                                                                                                                            Page  16 of 16
+
+9. reference
+[1] The Physical Activity Guidelines for Americans
+Piercy K L, Troiano R P, Ballard R M, et al. The physical activity guidelines for Americans[J]. Jama,
+2018, 320(19): 2020-2028.
+[2] Source Program of Traveling Salesman Problem
+https://www.lindo.com/doc/online_help/lingo16_0/index.html?traveling_salesman_problem.htm
+[3] Best Hollywood Studios Itinerary for One Day
+https://www.themeparkhipster.com/best-hollywood-studios-itinerary-for-one-day/
+[4] How to do Disneyland Paris in Just 1 Day
+https://www.theorganisedexplorers.com/post/how-to-do-disneyland-paris-in-just-1-day
+[5] Travelling salesman problem
+https://en.wikipedia.org/wiki/Travelling_salesman_problem
+[6] Distance Matrix
+https://en.wikipedia.org/wiki/Distance_matrix
+[7] Cluster Analysis
+https://en.wikipedia.org/wiki/Cluster_analysis
+ᇿ Hi MCM
+ሧ࿟

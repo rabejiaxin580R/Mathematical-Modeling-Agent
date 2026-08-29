@@ -23,7 +23,7 @@
       const resp = await fetch(url, { ...opts, headers });
       if (resp.status === 401) {
         this.clearToken();
-        if (location.pathname !== "/") location.href = "/";
+        if (location.pathname !== "/login") location.href = "/login";
       }
       return resp;
     },

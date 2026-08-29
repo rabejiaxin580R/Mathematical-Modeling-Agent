@@ -1,0 +1,764 @@
+ğ
+
+Team Control Number
+10876
+Problem Chosen
+B
+2020
+Summary Sheet
+
+Limited Budget, Unlimited Future
+With rapid environment deterioration and biodiversity shrinkage, conservation of species has become a
+global issue in the 21 st century. However, since a large number of species require conservation and the
+capacity of fundraising is limited for institutions like FRPCE, it is impossible to start all projects
+simultaneously, and some must be postponed. Postponing projects cause a decrease in feasibility of success.
+In this paper, by optimizing the priority order of the projects and a producing a timetable of projects, we will
+advise the FRPCE Board of the minimum fundraising required each year.
+First, we analyzed some common characteristics of imperiled plants, of which we picked 5 that are closely
+related to our decision model: benefit, taxonomic uniqueness, feasibility of success of conservation, timespan,
+and total cost of a project. We also identified and discussed the objectives that the FRPCE Board should
+consider in their conservation efforts and budgeting decisions, including lowering the cost, saving more plants,
+and finishing the projects sooner.
+Second, we defined the concept of “cost effectiveness.” For an individual project, the cost effectiveness
+is determined by the benefit, the feasibility of success and the total funding required. The term is defined by
+the expected benefit brought by unit money. Cost effectiveness balances and quantifies the so mewhat
+contradictory objectives of FRPCE. The sum of the individual cost effectiveness is the integrated cost
+effectiveness, a criterion of the efficiency of capital allocation, which should be maximized.
+Third, we built two models. One was the Feasibility of Success Model, which was used to model how
+feasibility of success varies with time, and the other was the Optimization Model for Integrated Cost
+Effectiveness, whose constraint was the budget limit. To solve the optimization model, we designed an
+algorithm based on Monte Carlo Method and presented a demonstration.
+Forth, our model outputted a timetable, which showed which projects were ongoing in what year and
+how much they cost. Thus, we could obtain the priority order of the projects and the fundraisi ng schedule.
+When the budget limit is constant at $1.05M each year, we obtained a solution that has a timeline of 31 years.
+The projects with ID 528, 179, 455, 524, 543, 133, 513, 546, 442, 480, 536 and 532 started in the first year,
+and the budget require d in the first year was $1034015.58. Unfortunately, we were forced to give up
+“Flowering Plant -551” because the conservation cost far exceeded the annual budget limit. If the annual
+budget limit is linearly increasing each year rather than constant, the co nservation of “Flowering Plant-415”
+would be feasible. We also obtained an optimized solution for this case.
+Last, we carried out  sensitivity analysis  on the annual budget, the rate  at which annual budget is
+increasing, and the rate at which the populations of imperiled plants shrank. Our model reasonably reflected
+the influence of the variables while maintaining stability and applicability. According to the result of the
+sensitivity analysis for the annual budget, we further concluded that if FRPCE could raise 1.3 times the money
+it is currently raising annually, the cost effectiveness would increase substantially, and we provided a timetable
+of projects in this case as well.
+Keywords: Imperiled Plants, Cost Effectiveness, Objective Optimization, Monte Carlo Method
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 1 of 24
+
+Content
+1. Introduction ....................................................................................................................................................................... 2
+1.1. Background ............................................................................................................................................................ 2
+1.2. Question Restatement ............................................................................................................................................ 2
+1.3. Our Work ............................................................................................................................................................... 2
+2. Assumptions ...................................................................................................................................................................... 3
+2.1. Assumptions and Justifications ............................................................................................................................. 3
+2.2. Definitions ............................................................................................................................................................. 4
+2.3. Notations ................................................................................................................................................................ 4
+3. Question Analysis .............................................................................................................................................................. 5
+3.1. Characteristics of Imperiled Plants ........................................................................................................................ 5
+3.2. Objectives of FRPCE............................................................................................................................................. 5
+3.3. Fundraising Schedule and Priority Order .............................................................................................................. 6
+4. Optimization Model for Integrated Cost Effectiveness ..................................................................................................... 7
+4.1. Definitions of Expected Benefit and Cost Effectiveness ....................................................................................... 7
+4.2. Optimization Objective .......................................................................................................................................... 7
+4.3. Restraints ............................................................................................................................................................... 7
+4.4. Complete optimization model for determining schedule ....................................................................................... 8
+5. Feasibility of Success Model ............................................................................................................................................. 8
+5.1. Feasibility of Success as Function of Population Size for a species ...................................................................... 8
+5.2. Population Size as Function of Time ................................................................................................................... 10
+5.3. Population Size as Function of Time Delay......................................................................................................... 10
+6. Solving the Optimization Model ..................................................................................................................................... 10
+6.1. Model Solving Algorithm based on Monte Carlo Method .................................................................................. 10
+6.2. Demo of Algorithm .............................................................................................................................................. 11
+6.3. Model Solution .................................................................................................................................................... 12
+6.3.1. Model Solution Under Constant Budget Limit ........................................................................................ 13
+6.3.2. Model Solution Under Increasing Budget Limit ..................................................................................... 14
+7. Sensitivity Analysis ......................................................................................................................................................... 15
+7.1. Sensitivity Analysis of Population Growth Rate ................................................................................................. 15
+7.2. Sensitivity Analysis of Constant Budget Limit.................................................................................................... 16
+7.2.1. Sensitivity Analysis of Budget Limit ....................................................................................................... 16
+7.2.2. Optimized Constant Budget Limit ........................................................................................................... 16
+7.3. Sensitivity Analysis of Rate of Increase of Budget Limit.................................................................................... 17
+8. Strengths and Weaknesses ............................................................................................................................................... 18
+8.1. Strengths .............................................................................................................................................................. 18
+8.2. Weaknesses .......................................................................................................................................................... 18
+9. Conclusion ....................................................................................................................................................................... 18
+References ............................................................................................................................................................................... 20
+Appendix: Python Code for Solving the Model ...................................................................................................................... 21
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 2 of 24
+
+1. Introduction
+1.1. Background
+Whereas human society is developing at an unprecedented pa ce, plants and animals is left to face the
+disastrous environmental consequences. Legislations, as well as fund donations and public campaigns , help
+fighting plant and animal extinctions. Signed into law in 1973 by  President Richard Nixon , the Endangered
+Species Act (ESA) is credited with saving America’s national animal — as well as the California condor,
+grizzly bear, northern gray wolf,  and more. Today it protects more than 1,600 plant and animal species
+and 99% of the species placed on the endangered list have not gone extinct, says Jeremy Bruskotter,
+a professor at the School of Environment and Natural Resources at Ohio State Universit y. [1] Also,
+because existing plant conservation funding is inadequate to support research, protection, and management of
+imperiled plants, a group of conservation specialists representing seven institutions in Florida began
+conversations in 2015 to initia te the Florida Rare Plant Conservation Endowment (FRPCE). The FRPCE is
+being established as a mechanism to provide long -term and reliable funding to support conservation -related
+projects for Florida imperiled plant species and their ecosystems. [2]  Even so, the fund raised annually is far
+below the capital required to run all the protection projects of endangered plants.
+1.2. Question Restatement
+The general purpose of our work was to construct a model to give FRPCE Board an effective and reliable
+fundraising plan. Due to considerations of complexity of this decision-making problem, the scope of analysis
+was limited to only 48 imperiled species.
+
+ First, we should focus on the relevant objectives in our fundraising model. In the following work, we then
+should try to find a method to evaluate whether a proposed fundraising plan is efficient and reliable on
+the basis of these objectives.
+ Second, we should list and explain some general features of th e imperiled species. We then need to
+determine the factors involved in the imperiled species’ protection in fundraising decision model.
+ Third, we need to develop a model that optimizes the arrangement of projects and output the solution as
+a timetable and a fundraising schedule.
+ Last, we need to write a one -page non-technical memo, explain our results, and then give our
+recommendations on our model and analysis.
+1.3. Our Work
+We analyzed the characteristics of imperiled plants and the objectives of FRPCE, and incorporated and
+quantified them into the “integrated cost effectiveness.” Then we built an optimization model, which also took
+the variation of feasibility of success wit h time (Model of Feasibility) into consideration. Afterwards, the
+model was solved by Monte Carlo Method. Finally, the model outputted the schedule and priority order of
+projects, and a fundraising schedule as well. The process is shown in the flowchart in Fig. 1.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 3 of 24
+
+Fig. 1 Framework of This Paper
+
+We also varied the inputs of the model and produced results under different circumstances: a higher budget
+limit or a linearly increasing budget limit. We provided further suggestions based on the results.
+2. Assumptions
+2.1. Assumptions and Justifications
+• Assumption 1: FRPCE has a maximum capacity of fund raising each year. Also, FRPCE raises as much
+as the conservation projects that year cost, i.e., it cannot save money.
+Justification 1: FRPCE cannot make money by itself, and it relies on government and public donations.
+Its campaigns are unable to Donors and government officers would demand a financial report from
+FRPCE that demonstrates the use of the capital. The fund-raising must be completely need-based, and no
+excess capital is available to be passed on to the next year.
+
+• Assumption 2: The maximum capacity of fund raising of FRPCE does not allow all the projects to start
+immediately. Some must be postponed, until more funding arrives in the future.
+Justification 2: If all the projects start simultaneously, the cost is more than ten times the money FRPCE
+put into plant conservation in the past year. [3] It is, apparently, unrealistic.
+
+• Assumption 3: When a conservation project is postponed, the total cost and the benefit of successful
+conservation do not change, but the feasibility of success decreases. The rate of decrease is the same
+among all species.
+Justification 3: The total cost does not change because the approach of the  project remains roughly the
+same. Also, in a relatively short time span (about 30 years,) the  extent of uniqueness and  benefit of the
+existence of a species is almost unchanging. The feasibility of success decreases because the size of
+population of the species decreases constantly until it becomes extinct. A smaller population means less
+offspring and less generic variation to counter environmental challenges.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 4 of 24
+
+• Assumption 4: A project has to be funded continuously from the beginning to the end.
+Justification 4: If the project abruptly stops, the plants previously protected would be facing the threats
+again. The feasibility of success drops massively. For some conservation projects that involve
+domesticating plants, those plants have to be continuously loo ked after, or the consequence would
+probably be disastrous for them and for the species.
+
+• Assumption 5: Species are independent, i.e., the survival of one species does not affect the situations of
+the others.
+Justification 5:  The imperiled plants are relat ively small in number. Their populations are not large
+enough to significantly influence each other.
+2.2. Definitions
+• Fundraising Schedule
+• The fundraising schedule refers to the amount of funding required each year.
+
+• Timetable of Projects & Priority Order of Projects
+• The timetable of projects refers to the arrangement that shows which project starts or is ongoing in which
+year; the priority order of projects shows a linear order in which the projects are carried out, but it does
+not indicate when each project starts.
+
+• Arrangement of Projects
+• See Timetable of Projects.
+
+• Budget & Budget Limit
+• The budget is the funding required by the ongoing conservation projects that year (see Assumption 1;) the
+budget limit refers to the maximum feasible budget per year, determined by the capacity of fundraising
+of FRPCE.
+2.3. Notations
+Table 1 Notations
+Notation Definition
+𝑗 The 𝑗𝑡ℎ year
+𝐵𝑖 Benefit of the 𝑖𝑡ℎ project
+𝑇𝑖 Timespan of the 𝑖𝑡ℎ project
+𝑘𝑖 The 𝑖𝑡ℎ project starts in the 𝑘𝑖
+𝑡ℎ year
+𝑆𝑖(𝑘𝑖) The feasibility of success of the 𝑖𝑡ℎ project which starts in the 𝑘𝑖
+𝑡ℎ year
+𝑃𝑖 Total cost of the 𝑖𝑡ℎ project
+𝑓𝑖(𝑛) Funding required by the 𝑖𝑡ℎ project in its 𝑛𝑡ℎ year, 𝑛 ∈ 𝑁∗
+𝑢𝑗 Maximum capacity of fund raising of FRPCE in the 𝑗𝑡ℎ year
+𝑁 Total number of projects
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 5 of 24
+
+3. Question Analysis
+We analyzed the characteristics of the plants and the objectives of FRPCE and aimed at an optimization
+model incorporating them.
+
+Fig. 2 Incorporating Characteristics of Plants and Objectives of FRPCE
+3.1. Characteristics of Imperiled Plants
+(For question 1b)
+There are several characteristics that are indicative when deciding which species to recover:
+• Benefit of saving the plant: This index implies relatively how beneficial saving this plant is. Plants with
+higher benefit are prioritized in conservation.
+• Taxonomic uniqueness of the plant: The more unique a plant is, the more it contributes to biodiversity.
+Plants with high taxonomic uniqueness should be prioritized.
+• Feasibility of Success of Conservation: Imperiled plants are often in harsh situations. Their conservation
+and recovery are often challenging, and success cannot be guaranteed. If a project fails after being invested,
+the funding is all wasted. Projects with high feasibility of success are prioritized.
+• The timespan of protecting a species : Longer timespan lead s to higher uncertainties of capital chain
+break, which cause the project to fail, and usually more funding is required by these projects. Conservation
+projects with shorter timespan are favored.
+• The total cost of a protection project : Imperiled plants are delicat e, and the protection of them is
+intricate, sophisticated and therefore, expensive. In contrast, the institutions that carry out the conservation
+projects often relies heavily on donations, and their capital is limited. Therefore, the less costly projects
+should be prioritized.
+3.2. Objectives of FRPCE
+(For question 1a)
+We believe that the relevant objectives FRPCE Board need to consider in species protection and budgeting
+decision are the following.
+• To save more species.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 6 of 24
+
+• To lower the amount of annual fund raised to lighten the fundraising burden.
+• To shorten the time delay for conservation projects as much as possible: since the longer the time delay
+for a given project, the smaller the size of population and the lower the chance for that targeted species to
+survive.
+However, these objectives above are mutually contradictory. For instance, limiting the budget each year
+indicates that there are fewer available projects, less benefits obtained, more project being postponed, and
+lower the chance of success of protecting species from extinction.
+Thereout, we define a new index : integrated cost effectiveness , which evaluates the expected benefits
+obtained per unit capital per project and integrates benefits, feasibility of success and the cost for a single
+project together. Aiming at integrated cost effectiveness, we can plan a better fundraising schedule. This index
+will be elaborated into more details in section 4.2.
+3.3. Fundraising Schedule and Priority Order
+In order to determine the priority order of funding for the rec overy projects and the corresponding
+fundraising schedule, the data given need to be closely examined. We especially focused on the Uniqueness，
+benefit and the annual cost of each recovery project.
+• The upper-left part of Fig. 3 shows that there are only 3 types of Uniqueness: 1, 0.67 and 0.33. The major
+plants have uniqueness of 0.67. Only 2 are the most unique and 3 are least unique. We could first recover
+the most unique ones and then others later when solving the model.
+• The benefit of projects consists of 4 different values. More than half of the projects have benefit of 0.66.
+We protect the plants with higher benefit first because we want to have maximized benefits, and
+postponing will lead to decrease of overall benefit.
+• Also, “Flowering Plant-415” costs substantially more than the others as represented as the highest yellow
+line in right part of Fig. 3. Other than the outlier, the figure shows a trend of decline in cost for each
+project as time passes. So, we can imply that the cost needed will decrea se once some projects started.
+Thus, putting off some projects to later years and wait until there is enough fund should be a workable
+method. However, the feasibility of a project will decrease if it is put off. In other words, the cost
+effectiveness gets lower when it starts late—this is not desired.
+We will set up a model that maximizes the sum of the cost effectiveness of the conservation project of 48
+plants. The model will be solved under the constraint of annual budget. The budget for every year and the
+recovery projects that are needed to be started in each year will be presented in the solution.
+
+Fig. 3 Statistics of Taxonomic Uniqueness, Benefit and Cost
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 7 of 24
+
+4. Optimization Model for Integrated Cost Effectiveness
+The model aims at incorporating the characteristics of the imperiled plants and the objectives of FRPCE
+mentioned in Section 3 and producing an optimized solution. It gives a schedule of conservation projects, a
+priority order of projects, and a schedule of fundraising.
+4.1. Definitions of Expected Benefit and Cost Effectiveness
+The cost effectiveness for the 𝑖𝑡ℎ project, which starts in the 𝑘𝑡ℎ year, is the ratio of the expected benefit
+of a project to its cost. It can be expressed as equation (1).
+𝑅𝑖(𝑘𝑖) = 𝐵𝑖(𝑘𝑖)
+𝑃𝑖
+(1)
+Where 𝑅𝑖(𝑘𝑖) is the cost effectiveness, 𝑃𝑖 is the total cost of the project, and 𝐵𝑖(𝑘𝑖) is the expected benefit,
+which is given by equation (2).
+𝐵𝑖 = 𝑆𝑖(𝑘𝑖) ⋅ 𝐵𝑖 + (1 − 𝑆𝑖(𝑘𝑖)) ⋅ 0 (2)
+Where 𝑆𝑖(𝑘𝑖) is the feasibility of success and 𝐵 is the benefit  if the project succeeds. (The probability of
+failure of the project is (1 − 𝑆𝑖(𝑘𝑖)), and in this case the benefit is 0.) Thus, we can get equation (3).
+𝑅𝑖(𝑘𝑖) = 𝑆𝑖(𝑘𝑖) ⋅ 𝐵𝑖
+𝑃𝑖
+(3)
+The feasibility of success 𝑆𝑖(𝑘𝑖) decreases as time elapses (𝑘𝑖 increases,) and other variables remain the
+same. (The relationship between feasibility and time will be examined in details in Section 5.) Therefore, the
+cost effectiveness of a project decreases as the project is postponed.
+4.2. Optimization Objective
+We define the integrated cost effectiveness 𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑  as the sum of the cost effectiveness of each
+project in (4).
+𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑 = ∑ 𝑅𝑖(𝑘𝑖)
+𝑁
+𝑖=1
+(4)
+Where 𝑅𝑖 is the cost effectiveness of the 𝑖𝑡ℎ project. For the 𝑖𝑡ℎ project, suppose it starts in the 𝑘𝑖
+𝑡ℎ year,
+so it can be expressed as (5).
+𝑅𝑖(𝑘𝑖) = 𝐵𝑖 ⋅ 𝑆𝑖(𝑘𝑖)
+𝑃𝑖
+(5)
+The optimization model aims at maximizing 𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑, that is:
+𝑚𝑎𝑥  ∑ 𝐵𝑖 ⋅ 𝑆𝑖(𝑘𝑖)
+𝑃𝑖
+𝑁
+𝑖=1
+(6)
+4.3. Restraints
+The maximum capacity of fund raising restricts the annual budget is shown in (7).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 8 of 24
+
+∑ 𝑓𝑖(𝑗 − 𝑘𝑖 + 1)
+𝑁
+𝑖=1
+≤ 𝑢𝑗 (7)
+Where 𝑗 is the 𝑗𝑡ℎ year, 𝑘𝑖 is the year in which the 𝑖𝑡ℎ project starts, and 𝑓𝑖(𝑛) is the Funding required
+by the 𝑖𝑡ℎ project in its 𝑛𝑡ℎ year, 𝑛 = 𝑗 − 𝑘𝑖 + 1, 𝑛 ∈ 𝑁∗. If 𝑗 − 𝑘𝑖 + 1 ≤ 0 (the project has not started
+yet), 𝑓𝑖(𝑗 − 𝑘𝑖 + 1) = 0, i.e,
+∑ 𝑓𝑖 (𝑗 − 𝑘𝑖 + 1 + |𝑗 − 𝑘𝑖 + 1|
+2 )
+𝑁
+𝑡=1
+≤ 𝑢𝑗 (8)
+Also, the sum of the cost of a project in each year is the total cost of the project, as shown in equation (9).
+∑ 𝑓𝑖(𝑗 − 𝑘𝑖 + 1)
+𝑇𝑖
+𝑗=1
+= 𝑃𝑖, 𝑖 = 1, 2, … , 𝑁 (9)
+4.4. Complete optimization model for determining schedule
+Objective:  max   ∑ 𝐵𝑖 ⋅ 𝑆𝑖(𝑘𝑖)
+𝑃𝑖
+𝑁
+𝑡=1
+(10)
+𝑠. 𝑡.
+{
+
+∑ 𝑓𝑖 (𝑗 − 𝑘𝑖 + 1 + |𝑗 − 𝑘𝑖 + 1|
+2 )
+𝑁
+𝑡=1
+≤ 𝑢𝑗
+∑ 𝑓𝑖(𝑗 − 𝑘𝑖 + 1)
+𝑇𝑖
+𝑗=1
+= 𝑃𝑖
+(11)
+5. Feasibility of Success Model
+The feasibility of successful conservation will decrease as time elapses because the population of the
+imperiled species shrinks. Ideally, all projects should not be postponed. However, as there is a budget limit,
+such approach is unrealistic. As some projects must be delayed, determining their feasibility of success in the
+𝑘𝑡ℎ year is essential for evaluating an arrangement of projects.
+5.1. Feasibility of Success as Function of Population Size for a species
+The feasibility of successful conservation of a species is positively related to the size of its population ,
+which can be expressed as (12).
+
+𝑆 = 𝛼𝑙𝑛(𝑁) + 𝑏 (0 ≤ 𝑆 ≤ 1) (12)
+
+Where 𝑁 is the size of population and 𝑆 is the feasibility of survival. When the population size is small, an
+increase in it would result in a substantial increase in feasibility of survival; when the population size is large,
+S increases slowly to 1.
+We found an example in reality to validate (12). For a particular species, Scorzonera hispanica L.
+(Asteraceae), the data derived from simulation are recorded in Table 2. [4]
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 9 of 24
+
+Table 2 Survival Probability in Relation to Population Size for Scorzonera hispanica L. (Asteraceae)
+Population Size Survival Probability
+3 0.263
+5 0.608
+7 0.612
+10 0.993
+12 0.999
+
+However, as shown in Table 2, the MVP (minimum number of individuals that was sufficient to sustain
+99% probability of population persistence in 100 years) of this species is 12, a value vastly below the MVPs
+of most species. In biology, the “50/500” rule states that a minimum population size of 50 was necessary to
+combat inbreeding and a minimum of 500 individuals was needed to reduce genetic drift. [ 5] The MVP for
+most species (500) is 42 times the MVP for the species, Scorzonera hispanica L. (Asteraceae), in
+Münzbergová’s study. Thus, we proportionally increased the population sizes (See Table 3.)
+
+Table 3 Survival Probability in Relation to Population Size for Most Species
+Population Size Survival Probability
+125 0.263
+208 0.608
+292 0.612
+417 0.993
+500 0.999
+
+The data in Table 3 are fitted with (12) in Fig. 4. The coefficients are {𝛼 = 0.5582
+𝑏 = −2.4252.
+
+Fig. 4 Survival Probability in Relation to Population Size
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 10 of 24
+
+5.2. Population Size as Function of Time
+Suppose the birth rate and the death rate of the population is constant. The difference between them is the
+percentage rate of growth, 𝑟.
+Typically, for an endangered species, they will extinct if no conservation actions are taken. Therefore, the
+percentage population growth rate 𝑟 for an endangered species is negative. Since 𝑟 is a constant, the rate of
+growth of a population is proportional to the size of the population 𝑁.
+𝑑𝑁
+𝑑𝑡 = 𝑟𝑁 (13)
+
+Solving (13) results in
+𝑁 = 𝑁0𝑒𝑟𝑡 (14)
+Where 𝑁0 is the size of the population in the first year.
+We failed to find an existing and satisfactory model that predicts the growth rate 𝑟. Therefore, examples
+from reality were needed. A study showed that the population of Disanthus ceercidifolius var. longipipes, an
+endangered plant, in an area in China de creased from 2271 to 1882 in 10 years. Thus, the annual decrease is
+2%. [6]
+𝑟 = −0.02 (15)
+5.3. Population Size as Function of Time Delay
+Substitute (14) into (12),
+𝑆 = α𝑟(𝑘 − 1) + 𝑏 + α𝑙𝑛(𝑁0) (16)
+Thus,
+𝑆(𝑡) = 𝑆(0) + α ∙ 𝑟 ∙ 𝑡 = 𝑆(0) − 0.0112𝑡 (17)
+Where 𝑆(1)  is the initial feasibility of success given in the dataset.  In the 𝑗𝑡ℎ  year, the time elapsed is
+(𝑗 − 1) years. Therefore,
+𝑆(𝑗) = 𝑆(1) − 0.0112(𝑗 − 1) (18)
+For the 𝑖𝑡ℎ project that starts in the 𝑘𝑡ℎ year,
+𝑗 = 𝑘𝑖 (19)
+6. Solving the Optimization Model
+6.1. Model Solving Algorithm based on Monte Carlo Method
+We set a priority order of the conservation projects instead of directly arranging the conservation projects
+into the years.
+Each project starts as soon as the following two conditions are met: firstly, the projects prior to it are all
+started; secondly, starting the project would not exceed the budget limit. Given the two conditions, when the
+order of the conservation projects is determined, and the budget limit of each year is also determined, each
+priority order can only result in one arrangement of projects.
+However, which priority order and its corresponding arrangement is the optimum is implicit. We have to
+enumerate all permutations (priority orders), obtain their corresponding arrangements, and compare the
+integrated cost efficiency. The arrangement with the greatest integrated cost efficiency is the optimum.
+With the algorithm described above, theoretically, there are 48!  permutations, which is roughly
+1.2 × 1061. Our computer could only calculate 1.5 × 103 cases per second, which means it was impossible
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 11 of 24
+
+to enumerate all cases. Therefore, we chose to generate permutations randomly (by Monte Carlo Method.)
+The model would still reach a satisfactory solution (see 6.3).
+
+Fig. 5 Flowchart of Model Solving Algorithm through Monte Carlo Method
+
+6.2. Demo of Algorithm
+To show our algorithm more clearly, here is a small-scale demonstration in which 4 instead of 48 plants
+are involved, and the budgets, costs and time span of projects are simplified.
+
+Fig. 6 Order of Protection Generated Randomly
+
+In figure 6, the color blocks are the protection costs for various plants every year. The absolute order of
+protection mentioned is assigned as yellow-red-purple-green above—yellow must be protected first, and green
+must come last. Note that this order is only one of the 4! = 24 possible permutations to carry the projects
+out.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 12 of 24
+
+Fig. 7 & Fig. 8 Input and Output of the Demo
+
+The conservation projects of plant yellow and red start in year 1; The purple project cannot be fitted into
+the budget limit of year 1. So, extra budget in year 1 is not needed (passing extra budget to the succeeding
+year is prohibited.)
+Since plant yellow needs funding in years 1 -4, the corresponding money (blocks) is marked yellow in
+these years. The initiation of further conservation projects must take into account of the cost of ongoing
+projects.
+The final arrangement is thus given in Fig. 8.
+This arrangement can then be rated according to the cost, feasibility and benefits of each pla nt. After
+examining the 24 permutations, the model outputs the arrangement with highest 𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑.
+6.3. Model Solution
+The cost effectiveness of the current best solution is plotted in relation to the number of permutations
+generated in Fig. 9.
+
+Fig. 9 Approaching the Optimum Solution with Monte Carlo Method
+
+In the graph, the data is plotted once for each 50 experiments. Before 2200 experiments are taken, the
+best integrated cost effectiveness continually rises, indicating that better solutions c ontinually emerge.
+Afterwards, the best integrated cost efficiency is constant—no better solution is found because the current best
+solution is very close to the optimum solution. The solution is then outputted.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 13 of 24
+
+6.3.1.  Model Solution Under Constant Budget Limit
+According to the financial report on the official website of FRPCE, it receives a total amount of
+$1,316,040 of philanthropic giving in 2019. [3] The funding, however, cannot all be put into the conservation
+projects of these 48 plants because other species also need protection. Suppose no more than half of the money
+is put into the conservation projects. Thus, the budget limit is $1,052,800.
+The project with ID “Flowering Plant-415” is so expensive that its cost in the first year is two times the
+budget limit in reality. It is next to impossible to carry out this project, unless FRPCE raises fund for it
+separately. Therefore, we excluded it while arranging the rest 47 projects.
+We solved the model and produced a timetable of projects, as shown in Fig. 10. The heatmap shows the
+cost of each project. The 48 projects are listed on the y-axis (from the least expensive to the most expensive,)
+and the year is marked on the x-axis. Darker color represents more expenditure.
+
+Fig. 10 Timetable of Projects and Costs Under Current Budget Limit
+
+Because of the property of integrated cost efficiency, 𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑 , it not only maximize d the cost
+efficiency but also prioritized the less costly projects. The cost was distributed evenly and below the maximum
+budget each year, as Fig. 11 shows. The yellow asterisks mark the maximum budget line, while the blue line
+is the annual budget required by this arrangement of projects.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 14 of 24
+
+Fig. 11 Annual Budget Under Current Budget Limit
+
+This arrangement is our proposal to FRPCE. It may arrange the conservation projects and raise funds
+accordingly.
+6.3.2.  Model Solution Under Increasing Budget Limit
+If FRPCE continues to successfully protect species, it will become more influential, and fundraising will
+become easier each year. We generate a solution under a linearly increasing budget limit. Based on the 2018
+and 2019 data, we determined the budget limit as the following:
+𝑢𝑗 = 1052800 + 100800(𝑗 − 1) 𝐸𝑞. 20
+Where 𝑗 is the 𝑗𝑡ℎ year, and 𝑢𝑗 is the budget limit of the 𝑗𝑡ℎ year.
+With more budget, the projects can start earlier. Another benefit is that the previously impractical
+conservation project of “Flowering Plant -415” is now feasible. It starts in the 10 th year in our optimized
+solution.
+The annual budgets from the Year 1 to Year 30 are shown in Fig. 12.  The orange asterisks represent the
+budget limit, while the blue line represents the budget required.
+
+Fig. 12 Annual Budget Under Increasing Budget Limit
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 15 of 24
+
+And the timetable of the projects and their cost is shown in the heatmap in Fig. 13.
+
+Fig. 13 Timetable of Projects and Costs Under Increasing Budget Limit
+
+7. Sensitivity Analysis
+7.1. Sensitivity Analysis of Population Growth Rate
+The population growth rate 𝑟 refers to the annual percentage change in size of population of an imperiled
+species. The value currently inputted into the model is −0.02. When 𝑟 becomes more negative, 𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑
+decreases because the feasibility of success of the projects decreases faster. Also, the faster the decreasing rate
+is, the more the projects with higher benefit will be prioritized, as loss of postponing them becomes higher. In
+Fig. 14, the integrated cost efficiency is plotted in relation to 𝑟.
+
+Fig. 14 Integrated Cost Effectiveness as Function of Population Growth Rate (Constant Budget Limit)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 16 of 24
+
+𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑 increases as 𝑟 becomes less negative. The line fluctuates because the Monte Carlo Method
+includes random factors. Generally, our model can  reasonably reflect the influence of 𝑟 while preserving
+stability.
+7.2. Sensitivity Analysis of Constant Budget Limit
+7.2.1.  Sensitivity Analysis of Budget Limit
+The integrated cost effectiveness is related to the budget limit because if the budget becomes higher, the
+projects can start sooner. As illustrated before, the sooner a project starts, the more likely it is to succeed, and
+the more cost effective it is. T herefore, we expect ed a positive relationship between the integrated cost
+effectiveness and the annual budget limit. We tested our model with different budget limit, ranging from 0.658
+to 3.948 million dollars (0.5 to 3 times the current annual income of F RPCE.) Subsequently, the integrated
+cost effectiveness rose from 7.96 × 10−5 to 9.07 × 10−5. The model could reflect the influence of budget
+limit on integrated cost effectiveness reasonably.
+𝑅𝑖𝑛𝑡𝑒𝑔𝑟𝑎𝑡𝑒𝑑 is plotted in relation to annual budget limit in Fig. 15.
+
+Fig. 15 Integrated Cost Effectiveness as Function of Annual Budget Limit (Constant Budget Limit)
+7.2.2.  Optimized Constant Budget Limit
+As shown on the graph, the integrated cost efficiency rises quickly when annual budget limit is bellow
+1.5 million dollars . However, the slope becomes small when the budget limit exceeds  2 million dollars . A
+budget of 1.71 million dollars (marked by the or ange asterisk) is the most desirable. The optimum timetable
+when the budget limit is 1.71 million dollars, 1.3 times the current income, is shown in Fig. 16.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 17 of 24
+
+Fig. 16 Timetable of Projects and Costs Under Annual Budget Limit of $1.71M
+In conclusion, the integrated cost effectiveness increases as annual budget limit increases, and the rate of
+increasing decreases. We chose a point where the rate of increasing vastly decreases as the ideal amount of
+budget. Then we presented the optimum arrangement under such budget limit.
+7.3. Sensitivity Analysis of Rate of Increase of Budget Limit
+Suppose the annual budget limit is linearly increasing instead of constant. The annual increase now is
+$100,800. When the amount of annual increase becomes larger, the integrated cost effectiveness increases
+because more projects can be carried out earlier. Integrated cost effectiveness is plotted in relation to the
+amount of annual increase in budget limit in Fig. 17.
+
+Fig. 17 Integrated Cost Effectiveness as Function of Annual Increase of Budget Limit
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 18 of 24
+
+As the annual increase in budget limit becomes larger, the integrated cost effectiveness increases at an
+decreasing rate—when the annual increase in budget limit is so large that almost all projects can be started in
+the first few years, a further increase in the slope of budget limit will not bring as much benefit.
+The fluctuation is due to the random factors in the Monte Carlo Method. Generally, our model is capable
+of reasonably reflecting the effect of the annual increase in budget limit while maintaining stability.
+8. Strengths and Weaknesses
+8.1. Strengths
+• We took characters of imperiled plants into account and successfully constructed the cost effectiveness
+optimization model. It evaluates project arrangements objectively.
+• We regarded feasibility of success as a time-dependent variable. It decreases as the conservation project
+is postponed. Our model is thus closer to the real-world situation.
+• We solved the model by Monte Carlo method and the result was proved to be stable and satisfactory.
+• We presented the solution in the form of a timetable of projects. It is straightforward and user-friendly.
+• We considered project arrangements under different budget limits. We concluded that, the cost efficiency
+would be much higher if FRPCE can 1.3 times the money it is currently raising annually.
+8.2. Weaknesses
+• We had to use Monte Carlo Method while solving the model because our computers were uncapable of
+enumerating all possible solutions . The algorithm could potentially be improved, for example, pre -
+arranging the projects before running the model, in order to reach a better solution with the same amount
+of calculation.
+• We set the budget limit as an inelastic value—the budget cannot exceed it by one cent. However, in reality,
+the FRPCE Board can persuade the donors to add a little more funding when there is a little shortage, or
+even to fund a specific project. We could build a model to take the elasticity of budget limit into account.
+• We set the population growth rate 𝑟 as a constant. However, in reality, t he rate at which the size of
+population decreases is not the same among different species. It depends on the specific characteristics of
+each plant and the condition of its habitats. If more data were provided, we would be able to customize a
+value for each species.
+• We did not consider redoing the conservation project of a species if the first attempt fails. In reality, t he
+plant does not necessarily die out after the conservation project fails. The project can be carried out for
+the second time. We could take that possibility into account.
+9. Conclusion
+After noticing the trend of the data, we first established our goal of the model, that is to maximize the cost
+effectiveness. In order to describe the cost eff iciency more accurately, we then considered the change of
+feasibility. A linear decline is assigned to simulate the decreasing plant population when no action is taken in
+a time period, which corresponds to the put off in the priority order of protection.
+When solving the model, a sequence (order) of plants is first generated by Monte Carlo Method. We then
+assign the plants with beginning years according to the order. The year number is as small as possible, as long
+as the budget that year supports such arr angement. If the budget is not enough it is assigned to the next year
+or even later. The model then assesses the cost effectiveness of the determined schedule (arrangement). It
+records the best arrangement it has found. After a fixed number of rounds, we h ave proved that the best
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 19 of 24
+
+arrangement found will approach to a limit. The model will then output the arrangements and gives
+instructions on how much budget is needed every year.
+We also provided the FRPCE with arrangements under different budget limits—if they want to spend only
+part of the budget on protecting the plants, a satisfactory solution under a lower budget limit is also available.
+We determined the marginal benefit of spending more budget on these projects, which are instructive to
+FRPCE Board whe n the budget is quite limited. It helps them to get an idea of how much budget is the
+worthiest.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 20 of 24
+
+References
+[1]  https://time.com/5651168/trump-endangered-species-act/
+[2] Negron-Ortiz, V . (2019, July 27-31). A Conservation Endowment for imperiled plants in Florida
+[Conference session]. Botany 2019 Conference: Sky Islands and Desert Seas, Tucson, Arizona. The
+Botanical Society of America.
+[3] “2019 Annual Report.” 2020. Fish & Wildlife Foundation of Florida. http://wildlifeflorida.org/wp-
+content/uploads/2020/03/25674-2019-Annual-Report_8.5x8.5_FINAL_LOW-RES.pdf. Accessed Nov. 15,
+2020.
+[4] Münzbergová, Z. Effect of population size on the prospect of species survival. Folia Geobot 41, 137–150
+(2006). https://doi.org/10.1007/BF02806475
+[5] “Minimum Viable Population.” Scott K. Robinson and Carrie L. Vath. 2015. Encyclopædia Britannica.
+https://www.britannica.com/science/minimum-viable-population#ref1215147. Accessed Nov. 09, 2020.
+[6] “STUDY ON NUMERIC DYNAMICS OF NATURAL POPULATIONS OF THE ENDANGERED
+SPECIES DISANTHUS CERCIDIFOLIUS V AR.LONGIPES.”Yi’an Xiao et al. 2004. ACTA
+PHYTOECOLOGICA SINICA.
+http://www.wanfangdata.com.cn/details/detail.do?_type=perio&id=zwstxb200402017. Accessed Nov. 09,
+2020.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 21 of 24
+
+Appendix: Python Code for Solving the Model
+slope_now = 126000
+intercept_now = 1316000
+time_start = time.time()
+xval = [slope_now*(50+i*10)/100 for i in range(18)]
+ra = [0 for i in range(18)]
+coe = 20
+for coeff in range(20,200,10):
+ratehis = 0
+slope = slope_now * coeff/100
+intercept = intercept_now * 80/100
+for z in range(5000):
+list1 = [i for i in range(48)]
+list1.remove(22)
+list1.remove(37)
+listx = [22,37]
+year = 0
+arrange = [[]]
+budget_ann = []
+prevsum = 0
+budget = intercept
+rate = 0
+for i in range(46):
+chosen = list1[random.randint(0,46-i-1)]
+list1.remove(chosen)
+listx.append(chosen)
+for j in range(48):
+while sheet1.cell(listx[j],6).value>budget:
+budget_ann.append(intercept+slope*year-budget)
+year = year + 1
+arrange.append([])
+prevsum = 0
+budget = intercept+slope*year
+for i in range(len(arrange)):
+if arrange[i]!=[]:
+for k in arrange[i]:
+prevsum = prevsum + sheet1.cell(k,year-i+6).value
+budget = budget - prevsum
+arrange[year].append(listx[j])
+budget = budget - sheet1.cell(listx[j],6).value
+for years in arrange:
+if years != []:
+for plants in years:
+if sheet1.cell(plants,4).value + (
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 10876                                                                                         Page 22 of 24
+
+arrange.index(years)*0.5582*(coe/1000))>0:
+rate = rate + sheet1.cell(plants,2).value * (sheet1.cell(plants,4).value + ( -
+arrange.index(years)*0.5582*(coe/1000)))/sheet1.cell(plants,5).value*100000
+if rate>ratehis:
+ratehis = rate
+ra[int((coeff-20)/10)]=ratehis
+plt.plot(xval,ra)
+plt.show()
+
+ᇿ Hi MCM
+ሧ࿟

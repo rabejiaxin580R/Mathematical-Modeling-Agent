@@ -47,16 +47,18 @@ agent/
 
 > ⚠️ 所有资源经 `/static` 扁平挂载，HTML 内以 `/static/xxx` 平铺引用，**不要拆子目录**，否则引用断裂。
 
-- 页面：landing / home / learn / build / workspace / solve / practice / ide / assessment / index(旧聊天).html
+- 页面：landing / home / learn / build / workspace / solve / practice / ide / assessment.html
 - 逻辑：app.js、layout.js、render.js（Markdown+KaTeX）、stepflow.js、onboarding.js、profile.js 等
 - 样式：style.css、anim.css
+
+> 注：旧版纯聊天页 `index.html`（路由 `/chat`）已于 2026-07 架构整理中移除，其功能由 build/workspace 等新页面取代。
 
 ## data/（⭐⭐⭐ 运行时数据）
 
 | 路径 | 用途 | 级别 |
 |---|---|---|
 | knowledge/concepts/ | 方法百科页知识库（151 概念，新库，BM25 检索源） | ⭐⭐⭐ |
-| knowledge/{cases,_fulltext,_raw_extractions}/ | 构建中间产物 | ⭐ |
+| knowledge/{cases,_fulltext,_raw_extractions}/、_lecture_map.json、_unmapped.json | 构建中间产物（运行时不加载，由 build_knowledge.py 从 assets/ 重建；**打包时已排除**，不进发布包） | ⭐ |
 | settings.json | 运行时 LLM 配置（key/base_url/model 热改） | ⭐⭐⭐ |
 | problems / dynamic_problems / problem_assets / problem_papers | 真题库与附件 | ⭐⭐ |
 | conversations / solve_conversations / solve_sessions | 对话与做题会话存档 | ⭐⭐ |

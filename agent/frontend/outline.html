@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>论文大纲生成</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    /* 覆盖默认 body，全屏展示 */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* 主容器 */
+    .outline-app {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--paper);
+    }
+
+    /* ===== 阶段 1：欢迎输入页 ===== */
+    .stage {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 24px;
+    }
+    .stage.active {
+      display: flex;
+    }
+
+    /* 欢迎页内容可能超出一屏：改为可滚动 + 安全居中（内容短时居中，超长时从顶部可滚） */
+    #stage-welcome {
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+    #stage-welcome .welcome-box {
+      margin: auto 0;
+    }
+
+    .welcome-box {
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .welcome-icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      background: var(--rouge);
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      font-weight: 700;
+      font-size: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 0 var(--rouge-deep), inset 0 2px 0 rgba(255,255,255,0.25);
+    }
+
+    .welcome-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .welcome-subtitle {
+      font-size: 15px;
+      color: var(--ink-soft);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .input-label {
+      display: block;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      background: var(--paper);
+      color: var(--ink);
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--rouge);
+    }
+
+    .input-area {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      background: var(--paper);
+      color: var(--ink);
+      margin-bottom: 20px;
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.6;
+      transition: border-color 0.2s;
+    }
+    .input-area:focus {
+      outline: none;
+      border-color: var(--rouge);
+    }
+
+    /* 文件上传 */
+    .upload-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: var(--paper);
+      color: var(--ink);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .upload-btn:hover {
+      border-color: var(--rouge);
+      color: var(--rouge);
+    }
+    .upload-btn.uploading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .upload-status {
+      font-size: 12px;
+      color: var(--ink-soft);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .upload-status.ok {
+      color: #4a9e6d;
+    }
+    .upload-status.err {
+      color: var(--rouge);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--rouge);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 0 var(--rouge-deep);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(192,72,81,0.35);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 0 var(--rouge-deep);
+    }
+    .btn-primary:disabled {
+      background: var(--mist);
+      color: var(--ink-soft);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* ===== 阶段 2：加载动画 ===== */
+    .loading-box {
+      text-align: center;
+    }
+
+    .orb-container {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+
+    .orb {
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 40% 40%, var(--gold), var(--rouge));
+      border-radius: 50%;
+      box-shadow: 0 8px 32px rgba(192,72,81,0.4), inset 0 -4px 8px rgba(0,0,0,0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .orb.burst {
+      animation: burst 0.6s ease-out forwards;
+    }
+
+    @keyframes burst {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .loading-detail {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    /* ===== 阶段 3：大纲展示（垂直时间线） ===== */
+    .outline-view {
+      display: flex;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* 左侧：章节列表 */
+    .sections-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      background: var(--mist);
+      border-right: 1px solid var(--line);
+      overflow-y: auto;
+      padding: 20px 16px;
+    }
+
+    .sections-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .section-item {
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .section-item:hover {
+      background: var(--mist-deep);
+    }
+    .section-item.active {
+      background: var(--paper);
+      border-color: var(--rouge);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .section-num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: var(--gold);
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .section-item.active .section-num {
+      background: var(--rouge);
+    }
+
+    .section-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .section-badge {
+      float: right;
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--rouge);
+      background: rgba(178, 61, 61, 0.08);
+      border: 1px solid rgba(178, 61, 61, 0.25);
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .focus-data-note {
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      background: rgba(178, 61, 61, 0.05);
+      border: 1px solid rgba(178, 61, 61, 0.2);
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .focus-data-note strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--rouge);
+      font-size: 14px;
+    }
+
+    /* 右侧：焦点详情 */
+    .section-focus {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+    }
+
+    .focus-header {
+      margin-bottom: 32px;
+    }
+
+    .focus-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .focus-meta {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .focus-summary {
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--ink);
+      margin-bottom: 28px;
+      padding: 20px;
+      background: var(--mist);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .focus-formulas {
+      margin-bottom: 28px;
+    }
+
+    .formulas-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .formula-item {
+      padding: 16px 20px;
+      background: #fbfbfa;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .focus-citations {
+      margin-bottom: 32px;
+    }
+
+    .citation-item {
+      padding: 12px 16px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .citation-title {
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .citation-meta {
+      color: var(--ink-soft);
+    }
+
+    .focus-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-secondary {
+      padding: 12px 24px;
+      background: var(--paper);
+      color: var(--rouge);
+      border: 1px solid var(--rouge);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--rouge);
+      color: #fff;
+    }
+
+    .bottom-bar {
+      padding: 20px 60px;
+      border-top: 1px solid var(--line);
+      background: var(--mist);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-text {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .btn-generate {
+      padding: 14px 32px;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 0 #b89f0f;
+    }
+    .btn-generate:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(217,182,17,0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="outline-app">
+    <!-- 阶段 1：欢迎输入 -->
+    <div class="stage active" id="stage-welcome">
+      <div class="welcome-box">
+        <div class="welcome-icon">绣</div>
+        <h1 class="welcome-title">数学建模论文生成</h1>
+        <p class="welcome-subtitle">输入题目与思路，AI 将为你生成完整的论文大纲</p>
+
+        <label class="input-label">题目标题</label>
+        <input type="text" id="problemTitle" class="input-field" placeholder="例如：应急救护车选址优化" />
+
+        <label class="input-label">题目描述（可直接粘贴，或上传文件）</label>
+        <div class="upload-row">
+          <button class="upload-btn" id="btnUpload">
+            <span>📎</span> 上传题目文件
+          </button>
+          <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.md,.pptx,.ppt,.html,.htm,.csv,.xlsx,.xls,.json,.py" style="display:none;" />
+          <span class="upload-status" id="uploadStatus"></span>
+        </div>
+        <textarea id="problemDescription" class="input-area" placeholder="粘贴题目全文，或点击上方「上传题目文件」自动填充..."></textarea>
+
+        <label class="input-label">你的思路（口述即可）</label>
+        <textarea id="problemThought" class="input-area" placeholder="用自然语言描述你的想法，例如：&#10;&#10;我觉得可以用排队论建模，把每个站点看作服务台，救护车是服务员。需要考虑响应时间和覆盖范围，可能用整数规划来优化站点位置..."></textarea>
+
+        <label class="input-label">你的数据（可选，用于求解与结果分析）</label>
+        <textarea id="problemData" class="input-area" placeholder="粘贴你已有的真实数据或结果，例如需求点坐标、成本/距离、到达率、已算出的最优解等。&#10;&#10;不填则 AI 会生成标注为「占位」的示例数据，记得之后替换成你的真实结果。"></textarea>
+
+        <button class="btn-primary" id="btnStart">开始生成大纲</button>
+      </div>
+    </div>
+
+    <!-- 阶段 2：加载动画 -->
+    <div class="stage" id="stage-loading">
+      <div class="loading-box">
+        <div class="orb-container">
+          <div class="orb" id="orb"></div>
+        </div>
+        <div class="loading-text" id="loadingText">正在搜索学术文献...</div>
+        <div class="loading-detail" id="loadingDetail"></div>
+      </div>
+    </div>
+
+    <!-- 阶段 3：大纲展示 -->
+    <div class="stage" id="stage-outline">
+      <div class="outline-view">
+        <div class="sections-sidebar">
+          <h2 class="sections-title">论文章节</h2>
+          <div id="sectionsList"></div>
+        </div>
+
+        <div class="section-focus">
+          <div class="focus-header">
+            <h2 class="focus-title" id="focusTitle">选择一个章节查看详情</h2>
+            <p class="focus-meta" id="focusMeta"></p>
+          </div>
+
+          <div class="focus-data-note" id="focusDataNote" style="display:none;">
+            <strong>📊 需你的数据</strong>
+            <span id="dataChecklist"></span>
+          </div>
+
+          <div class="focus-summary" id="focusSummary" style="display:none;"></div>
+
+          <div class="focus-formulas" id="focusFormulas" style="display:none;">
+            <h3 class="formulas-title">关键公式</h3>
+            <div id="formulasList"></div>
+          </div>
+
+          <div class="focus-citations" id="focusCitations" style="display:none;">
+            <h3 class="formulas-title">参考文献</h3>
+            <div id="citationsList"></div>
+          </div>
+
+          <div class="focus-actions" id="focusActions" style="display:none;">
+            <button class="btn-secondary">✏️ 编辑提示词</button>
+            <button class="btn-secondary">🔄 重新生成此章节</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="stats-text" id="statsText">已搜索 0 篇文献，提取 0 个知识片段</div>
+        <button class="btn-generate" id="btnGenerate">生成完整论文</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="/static/render.js"></script>
+  <script>
+    let outlineData = null;
+    let currentSectionIndex = 0;
+
+    // 切换阶段
+    function showStage(stageName) {
+      document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+      document.getElementById(`stage-${stageName}`).classList.add('active');
+    }
+
+    // 文件上传：点击按钮触发文件选择
+    const btnUpload = document.getElementById('btnUpload');
+    const fileInput = document.getElementById('fileInput');
+    const uploadStatus = document.getElementById('uploadStatus');
+    const problemDescription = document.getElementById('problemDescription');
+    const problemThought = document.getElementById('problemThought');
+    const problemTitle = document.getElementById('problemTitle');
+
+    btnUpload.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      btnUpload.classList.add('uploading');
+      uploadStatus.textContent = `正在上传并解析「${file.name}」...`;
+      uploadStatus.className = 'upload-status';
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const resp = await fetch('/api/paper/upload-problem', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ detail: '上传失败' }));
+          throw new Error(err.detail || '上传失败');
+        }
+
+        const result = await resp.json();
+        uploadStatus.textContent = `✓ 已解析「${result.filename}」（${result.content.length} 字符）`;
+        uploadStatus.className = 'upload-status ok';
+
+        // 若标题为空，用文件名填充标题
+        if (!problemTitle.value.trim()) {
+          const base = result.filename.replace(/\.[^.]+$/, '');
+          problemTitle.value = base;
+        }
+
+        // 将提取内容填入「题目描述」框（覆盖，因为题目文件应完整替换题目描述）
+        problemDescription.value = result.content;
+      } catch (error) {
+        uploadStatus.textContent = `✗ ${error.message}`;
+        uploadStatus.className = 'upload-status err';
+      } finally {
+        btnUpload.classList.remove('uploading');
+        fileInput.value = '';
+      }
+    });
+
+    // 开始生成
+    document.getElementById('btnStart').addEventListener('click', async () => {
+      const title = document.getElementById('problemTitle').value.trim();
+      const description = document.getElementById('problemDescription').value.trim();
+      const thought = document.getElementById('problemThought').value.trim();
+      const userData = document.getElementById('problemData').value.trim();
+
+      if (!title || !description) {
+        alert('请填写题目标题和题目描述（描述可上传文件获取）');
+        return;
+      }
+
+      showStage('loading');
+
+      try {
+        await generateOutline(title, description, thought, userData);
+      } catch (error) {
+        alert('生成失败: ' + error.message);
+        showStage('welcome');
+      }
+    });
+
+    // 调用 API 生成大纲
+    async function generateOutline(title, description, thought, userData) {
+      const response = await fetch('/api/paper/outline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          problem_title: title,
+          problem_description: description,
+          search_query: extractKeywords(title, description),
+          user_thought: thought,
+          user_data: userData
+        })
+      });
+
+      if (!response.ok) throw new Error('请求失败');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // stream:true 避免多字节中文被分片截断成乱码
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        // 最后一行可能不完整（跨 chunk），留到下一次累积
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = JSON.parse(line.substring(6));
+
+          if (data.type === 'progress') {
+            handleProgress(data);
+          } else if (data.type === 'outline_ready') {
+            handleOutlineReady(data);
+            return;
+          } else if (data.type === 'error') {
+            throw new Error(data.message);
+          }
+        }
+      }
+    }
+
+    function handleProgress(data) {
+      const textEl = document.getElementById('loadingText');
+      const detailEl = document.getElementById('loadingDetail');
+
+      if (data.step === 'literature_found') {
+        textEl.textContent = `找到 ${data.count} 篇相关文献`;
+        detailEl.textContent = '正在提取关键内容...';
+      } else if (data.step === 'content_extracted') {
+        textEl.textContent = `提取了 ${data.chunks} 个知识片段`;
+        detailEl.textContent = '正在生成大纲...';
+      } else if (data.step === 'generate_outline') {
+        textEl.textContent = data.message;
+        // 爆裂动画
+        document.getElementById('orb').classList.add('burst');
+      }
+    }
+
+    function handleOutlineReady(data) {
+      outlineData = data;
+
+      // 显示大纲阶段
+      showStage('outline');
+
+      // 渲染章节列表
+      renderSectionsList(data.sections);
+
+      // 显示统计
+      document.getElementById('statsText').textContent =
+        `已搜索 ${data.literature_stats.papers} 篇文献，提取 ${data.literature_stats.chunks} 个知识片段`;
+
+      // 默认选中第一个章节
+      selectSection(0);
+    }
+
+    function renderSectionsList(sections) {
+      const list = document.getElementById('sectionsList');
+      list.innerHTML = sections.map((sec, i) => `
+        <div class="section-item ${i === 0 ? 'active' : ''}" data-index="${i}">
+          <span class="section-num">${i+1}</span>
+          <span class="section-name">${sec.title}</span>
+          ${sec.needs_user_data ? '<span class="section-badge">需数据</span>' : ''}
+        </div>
+      `).join('');
+
+      // 绑定点击事件
+      list.querySelectorAll('.section-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const index = parseInt(item.dataset.index);
+          selectSection(index);
+        });
+      });
+    }
+
+    function selectSection(index) {
+      currentSectionIndex = index;
+      const section = outlineData.sections[index];
+
+      // 更新激活状态
+      document.querySelectorAll('.section-item').forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+      });
+
+      // 更新焦点区域
+      document.getElementById('focusTitle').textContent = section.title;
+      document.getElementById('focusMeta').textContent = `第 ${index + 1} 章 · ${section.section_key}`;
+
+      // 需数据提示 + 待办清单
+      const dataNoteEl = document.getElementById('focusDataNote');
+      const checklistEl = document.getElementById('dataChecklist');
+      if (section.needs_user_data && section.data_checklist) {
+        checklistEl.textContent = section.data_checklist;
+        dataNoteEl.style.display = 'block';
+      } else {
+        dataNoteEl.style.display = 'none';
+      }
+
+      // 摘要
+      const summaryEl = document.getElementById('focusSummary');
+      summaryEl.textContent = section.summary;
+      summaryEl.style.display = 'block';
+
+      // 公式
+      const formulasEl = document.getElementById('focusFormulas');
+      const formulasList = document.getElementById('formulasList');
+      if (section.formulas && section.formulas.length > 0) {
+        formulasList.innerHTML = section.formulas.map(f => `
+          <div class="formula-item">${f}</div>
+        `).join('');
+        formulasEl.style.display = 'block';
+
+        // 渲染 KaTeX
+        formulasList.querySelectorAll('.formula-item').forEach(el => {
+          if (window.renderMathInElement) {
+            renderMathInElement(el, {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+              ],
+              throwOnError: false
+            });
+          }
+        });
+      } else {
+        formulasEl.style.display = 'none';
+      }
+
+      // 文献
+      const citationsEl = document.getElementById('focusCitations');
+      const citationsList = document.getElementById('citationsList');
+      if (section.citations && section.citations.length > 0) {
+        citationsList.innerHTML = section.citations.map(c => `
+          <div class="citation-item">
+            <div class="citation-title">${c.title || '未知文献'}</div>
+            <div class="citation-meta">${c.authors || '未知作者'} (${c.year || 'N/A'})</div>
+          </div>
+        `).join('');
+        citationsEl.style.display = 'block';
+      } else {
+        citationsEl.style.display = 'none';
+      }
+
+      // 操作按钮
+      document.getElementById('focusActions').style.display = 'flex';
+    }
+
+    // 生成完整论文
+    document.getElementById('btnGenerate').addEventListener('click', () => {
+      if (!outlineData || !outlineData.session_id) {
+        // 无会话回退（兼容旧后端）：裸跳转
+        window.location.href = '/paper';
+        return;
+      }
+      // 带上大纲会话，让完整论文复用已确认的符号/结果，而不是从头重跑
+      window.location.href = '/paper?session_id=' + encodeURIComponent(outlineData.session_id);
+    });
+
+    // 简单关键词提取
+    function extractKeywords(title, description) {
+      return (title + ' ' + description).substring(0, 200);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1747 @@
+ğ
+Problem Chosen
+A
+2023
+Summary Sheet
+Team Control Number
+14140
+Summary
+The dandelion is a common plant that can now be found worldwide. However, due to its intricate
+relationships with the environment and other organisms, it can be considered as an invasive species,
+which is an organism that is alien to a region and that disrupts the local ecosystem. Invasive species
+can have large impacts on the environment and human societies. As invasive species exhaust local
+resources, not only might they decrease local biodiversity, but could also decrease crop production
+and thus affect the economy. Different invasive species have varying effects on the world, sometimes
+mild, sometimes detrimental. With this in mind, we investigated the nature of invasive species like
+the dandelion, modeling its spread and constructing a mathematical model in determining an impact
+factor, which conveys the extent of negative impact they inflict.
+To begin with, we used a basic negative exponential model to predict how dandelions will spread.
+This model ensures that the majority of dandelion seeds would be dispersed closer to the original
+dandelion, however it fails to accurately simulate the trajectory of dispersal and does not take the
+potential of dead seeds into account. (It assumes that all the seeds dispersed would germinate and
+grow healthily) In order to reduce the limitations, we then incorporated the Lévy Flight Model, which
+is specifically used to simulate random walks and can more accurately model the paths of dispersal.
+Afterthis, togainamorerealisticview, weapplieda”density-basedmortality”usingalogisticmodel,
+andalsoconsideredclimaticfactorsthatmayaffectthespreadofthespecies. Combiningthesemodels
+together, we were able to simulate the dispersal of dandelions during a 12 month period.
+Next, weusedrankingmodelstodetermineanimpactfactorforinvasivespecies. Wefirstcameup
+with three main determinants of this factor: ecological, economical impact, and the dispersal ability
+of the organism. We then researched for variables that would affect each determinant. Overall, we
+included2levelsofhierarchyindeterminingtheimpactfactor. Sincedifferentfactorswouldaffectthe
+final outcome to a different extent, we combined the use of the Analytical Hierarchy Process (AHP)
+and Entropy Weight Method (EWM) to calculate the weights of each main determinant as well as the
+underlying variables in a more objective way. Then, we gave an impact score for each variable on
+a scale of 0 to 5, and with the use of the weights obtained previously, we were able to calculate the
+impact scores for each determinant and eventually, the general impact factor. We applied this model
+to the dandelion plant as well as two invasive species in four different climatic conditions.
+From these models, we gained interesting results worth discussing. Overall, the results show that
+dandelionshavelowerimpactfactorsineachclimatecomparedwiththeothertwospecies. Inaddition,
+a phenomenon worth noting is that in certain cases, the dispersal ability of the plant is a much more
+decisive factor in determining its population after a period of time. Our models suggest that invasive
+species are able to spread quicker than we imagine, and that they impact our world greatly in all
+different aspects.
+Ourmodelsstillneedtobemodifiedbeforebeingappliedtoreallifescenarios,whererelationships
+between variables are more complex. Overall, though, they are sufficiently accurate and do reflect
+realistic results.
+Keywords: Ecology, Dandelions, Invasive species, Lévy flight model, Density-based mortality, An-
+alytical Hierarchy Process, Entropy Weight Method
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 1 of 26
+Contents
+1 Introduction 2
+1.1 Problem Restatement and Section Overview . . . . . . . . . . . . . . . . . . . . . . 2
+1.2 Assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.3 Table of Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2 Modeling the Spread of Dandelions 4
+2.1 Negative Exponential Distribution Model - A Simple Model. . . . . . . . . . . . . 4
+2.2 Lévy Flight Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2.3 Death Rate . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3.1 Introduction of the Logistic Model . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3.2 Calculating Baseline Death Rate . . . . . . . . . . . . . . . . . . . . . . . . 8
+2.3.3 Adding Death Rate to the Lévy Flight Model. . . . . . . . . . . . . . . . . 10
+2.3.4 Taking Time Into Consideration . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.4 Question 1 Results Discussion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3 Measuring the Impact 14
+3.1 Problem Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.1.1 Species Chosen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.2 Multiple Hierarchies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.2.1 Abundance - Dispersal Impact . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.2.2 Ecological Impact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.2.3 Economical Impact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.3 Explanation of the AHP Model and Calculations. . . . . . . . . . . . . . . . . . . . 16
+3.4 Calculating the Impact Factor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+3.4.1 Dispersal Impact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+3.5 Entropy Weight Method . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+3.6 Combining AHP and EWM . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+3.7 Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.7.1 Impact Factor Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.7.2 Risk Assessment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.8 Strengths and Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+4 Conclusion 23
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 2 of 26
+1 Introduction
+Native to Eurasia, dandelions began their worldwide spread when they were first introduced to
+North American colonies in the17th century [1]. Since then, their numbers have multiplied rapidly.
+Nowadays, dandelions can be found at any part of the world. Despite having medical uses, the dan-
+delion plant’s invasive characteristics raises many concerns. Thus, in our paper, we will examine the
+spread of dandelions under different conditions and compute a factor showing the impact it has on the
+environment.
+According to the reference [2], there are five distinct growing stages of a Dandelion’s life:plant,
+plant flowering, seed head development, seed developmentand dispersal of seed through wind or
+other means. Specifically, when a dandelion is in its “puffball” stage, the seed is already developed
+and ready to be dispersed.
+In the real world, many factors can affect the spread of dandelions. These include but are not lim-
+ited to: wind speed, wind direction, climate, growth rate and death rate. The intricate relationships
+between these variables makes it difficult to replicate exactly what occurs in real life situations. How-
+ever, we can make certain assumptions and create a model that can accurately estimate the spread of
+dandelions.
+1.1 Problem Restatement and Section Overview
+Firstly, we are asked to formulate mathematical models to predict the spread of dandelions across
+an open one-hectare (10, 000m2) plot of land, over the course of 1, 2, 3, 6 and 12 months. The initial
+condition,asquotedfromtheproblem, is a single dandelion in its ’puffball’ stage,whichis adjacent to
+an open one-hectare plot of land. Therefore, if we were to plot a graph where thexy plane represents
+the one-hectare plot of land, the initial dandelion needs to be located on either axes. In order for
+the model to provide an accurate estimation, it is required that we incorporate the effects of various
+climatic conditions. As a result, we will examine the spread of dandelions in four climates:Tropical,
+Dry, Temperate, andContinental.
+Secondly, we are asked to create a model that computes an ”impact factor” for invasive species.
+This model should take a holistic approach, taking into account potential benefits of the species, as
+well as harms they inflict on the environment. The impact factor will be a number on a scale of 0 to
+5: the larger the factor is, the more negative impact the invasive plant would have. For this problem,
+we will first search for criteria that would influence an invasive species’ impact factor. Next, ranking
+models would be used to give each criteria a weight based on how big of a role it plays in negatively
+impacting the world, and to eventually give each invasive plant an ”impact factor” on a scale of 0 to 5.
+1.2 Assumptions
+Weliveinacomplexworldwheremanyfactorsinfluenceeachothertoformafinalresult. Inorder
+to answer the question, we must make rational, justified assumptions on certain variables.
+• Assumption 1: The environment does not undergo significant changes.
+Justification: Random variations occur in nature, and can be minor or major. We assume
+that there are no major changes in environmental factors, such as natural disasters, which has a
+relatively low probability of occurring.
+• Assumption 2: Basic characteristics of the dandelion plant remains the same.
+Justification: In nature, it is possible that traits of a species would change through evolution.
+However, this is a process that occurs over a long span of time, and a genetic variation that
+causes significant change in the species have a low chance of happening. For this problem, the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 3 of 26
+longest time span for a prediction is 12 months, which is not nearly enough for evolution to take
+place. Therefore, wecanreasonablyassumethatcharacteristicsofadandeliondoesnotchange.
+• Assumption 3: Once a seed germinates, it will continue growing and will not die.
+Justification: We have computed a death rate for dandelion seeds, based on many factors in-
+cluding temperature, precipitation and population density. These reflect the likelihood of a
+dandelion surviving in its current environment after germination.
+• Assumption 4: All the water a dandelion seed receives comes from precipitation.
+Justification: Our model takes place in a naturalistic setting, without human influence. There-
+fore, it is reasonable to assume that a dandelion only receives water from precipitation.
+• Assumption 5: All of the plants studied in this paper had a germination rate (or survival rate)
+of 90% under ideal condition.
+Justification: The main research object of this paper dandelion has an estimated germination
+rate (or survival rate) of 90% [3]. Actually, for most of the plant species, a germination rate
+of 90% or more is desired [4]. Therefore, we can use 90% as the germination rate for plants
+including the invasion species discussed in Section3.
+1.3 Table of Variables
+Variable Definition
+r Distance of the dispersed seed from the parent dandelion
+T Temperature of the environment
+P Amount of precipitation per week in the environment, measured in mm/week
+ρ Population density
+A Baseline Death Rate
+AT Base Death Rate affected by temperature
+AR Base Death Rate affected by temperature-precipitation ratio
+D Death Rate
+S Survival Rate
+M Cost of Management and Prevention of Dandelion Invasion
+E Environmental Impact Cost
+O Social Impact Cost
+B Potential Benefit
+C Coverage of a single plant
+H Relative height of a invasive plant to native plant
+N Number of individual
+MD Maximum density
+MS Maximum spread distance
+NP Impact to Native plants
+NA Impact to Native animals
+FEcon Economical Impact Factor
+FEco Ecological Impact Factor
+FD Dispersal Impact Factor
+I Impact Factor
+Table 1: Variables and Definitions
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 4 of 26
+2 Modeling the Spread of Dandelions
+2.1 Negative Exponential Distribution Model - A Simple Model
+To start off, we created a simple negative exponential model of the spread of dandelion seeds. In
+thismodel,limitedbytheamountofdataandfortheconvenienceofpresentation,onlythedispersalof
+oneflowerheadisconsidered. Itisassumedthatasingledandelionflowerheadcanproduce 200seeds
+[5]. In addition, no external factors such as climate and transport of seeds by animals, are considered.
+We assume that the distance of seed dispersal follows a negative exponential distribution, whose
+probability density function (PDF) is given by:
+P (r) = λe−λr,
+where r is the distance of the seed from the parent dandelion, andλ is a positive real number.
+The expected value of the negative exponential distribution is1/λ, which is the average seed dis-
+persal distance of the dandelion in our model. An increase inλ would result in adecrease in the
+average distance of the seeds from the dandelion. Simply put, there’s a higher probability of a seed
+landing near the parent dandelion.
+Usingthenegativeexponentialdistribution,weareabletosimulatethedispersalofeachindividual
+dandelion seed with the following steps:
+1. Randomly select a dispersal direction, uniformly within the range0 ≤ θ ≤ 2π.
+2. Sampleavaluefromthenegativeexponentialdistributionbasedontheprobabilitydensityfunc-
+tion. Use this as the distance travelled.
+3. Obtain the landing coordinates(x, y) by multiplying the distance with cos(θ) and sin(θ), re-
+spectively.
+4. If a seed does not land on the one-hectare plot of land, represented by thexy plane of the graph,
+then it is considered dead and would not be plotted on the graph.
+As a result, we are able to plot the following graph, where thex-axis represents the horizontal
+distance from the initial dandelion¹, and the y-axis represents the vertical distance from the initial
+dandelion(See Figure1).
+Wecantellfromthegraphthatthedispersedseedsaremoreconcentratedneartheinitialdandelion,
+and are spread out evenly in all directions.
+Limitations:
+• It only considers how the dandelion seeds might spread, but fails to consider whether the seeds
+would germinate or not.
+• It does not consider the effects of climate.
+• It does not show the spread of dandelions over a certain period of time.
+• It fails to consider the occasional long-distance dispersal (LDD) of the dandelion seeds.
+Despite the limitations, we can still gain a general idea of how dandelions seeds should spread
+from this model.
+¹The initial location is on middle of the land’s left edge
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 5 of 26
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Negative Exponential Dispersal
+Initial Dandelion
+10
+5
+0 5 1010
+5
+0
+5
+10
+Figure 1: Simple Model of Seed Dispersal
+0 1 2 3 4 5
+x
+0.0
+0.1
+0.2
+0.3
+0.4
+Probability
+Probability Density Function of Levy Distribution
+f(x) = 1
+2
+e 1
+2x
+x3
+2
+Figure 2: Lévy Distribution Curve
+2.2 Lévy Flight Model
+Inordertoobtainabettersimulationofthedispersalofdandelionseeds,weappliedtheLévyFlight
+Model. A Lévy flight is a type of random walk in which step sizes have a heavy-tailed² probability
+distribution.
+In our model, each of the 200 seeds on a dandelion goes through 100 random steps before landing
+on the ground. The direction of each step is an angle drawn randomly from 0 to2π; the step lengths
+are sampled from the Lévy distribution.
+Lévy distribution is a stable distribution. Its probability density function (PDF) is:
+f (x) =
+√ c
+2π
+e− c
+2(x−µ)
+(x − µ)
+3
+2
+, x ≥ µ
+where the location parameterµ is set to 0, and the scale parameterc is set to 1.
+The graph of the probability density function of the Lévy distribution, with parametersµ = 0 and
+c = 1, is illustrated in the following figure (refer to Figure2).
+The complete procedure of the model is shown in the flowchart below(See Figure5).
+We pick the result of a random simulation. Figure3 below stands for the complete path covered
+by the first dandelion seed that lands in the land plot, and Figure4 shows the final landing positions
+of seeds.
+Strength: The Lévy flight model effectively mirrors the wind-driven dispersal patterns of dan-
+delion seeds. This model captures the tendency of the seeds to cluster primarily around the parent
+plant, highlighting their central gathering trend. Additionally, it accounts for the occasional in-
+stances where seeds are carried over long distances. This aspect oflong-distance dispersal is crucial
+for understanding how dandelions spread and colonize new areas.
+Weakness: Similar to the negative exponential model, no external factors such as climate, natural
+resource limitation are considered. Additionally, the calculation time will be unacceptable, when the
+²(A distribution that is heavy-tailed goes to zero slower than one with exponential tails [6]
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 6 of 26
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Levy Flight Trajectories  for 4 Different Seeds
+Seeds (Lime dot: Final Position)
+Seed 0
+Seed 1
+Seed 2
+Seed 3
+Figure 3: Path of 4 Dandelion Seeds
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Final Landing Points of Dandelion Seeds
+Final Landing Points of Seeds Figure 4: Dispersal of 200 Seeds
+Start
+Parameter Initialization:
+location parameter μ = 0;
+scale parameter c = 1;
+Variable Initialization:
+step = 100;
+number_of_seeds = 200;
+first seed path for the first and second generation = None;
+final landing point for both generations = [];
+coordinate of the initial dandelion = (0,0);
+land plot: 0 ≤ x ≤ 100, -50 ≤ y ≤ 50
+For each of
+the 200 seeds
+Simulate the path of the seeds in the first
+generation, store the path and the final
+landing position of the seeds
+Is final landing
+position inside the
+land plot?
+Store the path as the
+first path for
+generation one
+YESFirst seed path
+for the first generation =
+None?
+YES
+Plot the complete path of the
+first seed in the first generation
+landed in the land plot
+successfully.
+NO
+Append the final
+position to the
+position list for
+generation one
+NO
+Simulate the path of the seeds in the second
+generation, store the path and the final
+landing position of the seeds
+Second seed path
+for the second generation
+= None?
+Is final landing
+position inside the
+land plot?
+For each of the 200
+seeds produced by the
+dandelion grown in the
+first generation
+YES
+NO
+Store the path as the
+first path for
+generation two
+YES
+Plot the complete path of the
+first seed in the first generation
+landed in the land plot
+successfully.
+Append the final
+position to the
+position list for
+generation two
+Count and output the number of seeds
+landed in different range of regions.
+After all the seeds
+have gone through the
+simulation
+Plot the final landing points of  dandelion
+seeds for the first and second generation
+respectively.
+End
+NO
+Calculate the death rate based on logistic
+model, and, using death rate, obtain the
+population function against time.
+For each of the 4 climates:
+tropical, dry, temperate
+and continental
+Based on the final position list for
+generation one and two respectively, use
+the death rate and the population function
+to remove dead seeds with respect to time.
+Plot the final landing points of surviving
+dandelion seeds for both generations when
+t = 1, 2, 3, 6 and 12 months respectively.
+Figure 5: Lévy Flight Model Process
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 7 of 26
+simulation step exceeds a certain amount³.
+2.3 Death Rate
+Afterdandelionseedsaredispersed,itisnotguaranteedthattheywillallsurviveandgrow. Hence,
+we decide to add a death rate for each seed to more accurately estimate the spread of dandelions. In
+the death rate, we take into consideration exogenous factors such as climatic conditions, as well as
+endogenous factors such as population density. The death rate simply decides which seeds germinate
+and which seeds don’t. We also assume that if a seed germinates, it is going to continue growing and
+would not die. For instance, in the context of our model, if a large number of seeds dispersed do not
+germinate, then the death rate will be high.
+Death rate can be affected by many factors. Specifically, for our model, we decide to account for
+these main factors:
+• Temperature (T )
+Dandelions have an optimal temperature range for growth. Extreme temperatures on either side
+of this range increase the death rate.
+• Precipitation per week ( P )
+Dandelions need water to survive. Insufficient water increases the death rate, while an optimal
+level maintains a standard death rate.
+• Population Density (ρ)
+Higher population density means each plant will have less nutrients to consume, so the death
+ratewillincrease. Itismeasuredinnumberofdandelionspersquaremeter. ρisagoodindicator
+of resource consumption that helps us make the model more realistic.
+• Baseline Death rate ( A)
+The death rate when population density is close to zero.
+What we want is a death rate function that varies within the range of(0, 1) with low death rate when
+density is low, then death rate increases rapidly as density increase, finally reaching a saturation stage
+when ρ is too high.
+According to the traits we need, a logistic model seems plausible.
+2.3.1 Introduction of the Logistic Model
+The logistic growth model is a mathematical model commonly used to describe how a population
+grows rapidly at first and then stabilizes asymptotically at a maximum population size over time. It is
+characterized by its S-shaped curve, known as the logistic curve, which represents the population size
+asafunctionoftime. Thismodelisparticularlyusefulinecologyandbiologyforstudyingpopulations
+limited by environmental factors and carrying capacity.
+To suit our needs, some modifications are required. As we have set a baseline death rate in our
+model, we need to make sure that when the densityρ − →0, D⁴ − →A⁵, which is the ideal death rate in
+an ideal environment.
+³In our simulation process, the maximum steps that our computers can calculate is 1000.
+⁴Death rate
+⁵Baseline death rate
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 8 of 26
+Additionally, the density must have a upper limit of 1. whenρ − → ∞, D − →1. Therefore, starting
+with these boundary conditions, we can derive a function.
+D(ρ) = L
+1 + e−k(ρ−ρ0)
+The upper limit ofD is 1, soL = 1
+D(ρ) = 1
+1 + e−k(ρ−ρ0)
+When ρ = 0, D = A.
+A = 1
+1 + ekρ0
+ekρ0 = 1 − A
+A
+Then we can get:
+D = 1
+1 + 1−A
+A · e−kρ (1)
+We choosek = 0.5 based on empirical data and for computational convenience. This choice strikes a
+balance between accurately reflecting real-world behavior and maintaining simplicity in the simula-
+tion.
+2.3.2 Calculating Baseline Death Rate
+The base death rateA is the death rate for dandelions when the population density is close to 0. For
+this constant, we take two factors into account :temperature T and precipitation P, since these
+are the two main affecting factors of a dandelion’s growth, according to sources. When the climate is
+at the optimal temperature and precipitation rate, the dandelions would have a death rate of10% [3].
+This would also be the lowest possible value for the death rate.
+As temperature and precipitation are often interrelated, it is improper to consider them separately.
+For instance, dandelions might thrive in moderate temperatures with sufficient rainfall, but the same
+temperature with too little rain could lead to drought stress, increasing their death rate. Similarly,
+optimal rainfall becomes less beneficial if temperatures are too low or high. Due to their interrelated
+traits, we decide to use a temperature-precipitation ratio for creating a more accurate and ecologically
+valid model.
+Therefore, We decide to determine the base death rate for temperature,AT, and temperature-
+precipitation ration,AR, separately.
+Firstly, we need to determine the base death rate for temperature. In general, frost can kill dan-
+delions when temperatures reach 0◦C or lower. This is the temperature at which water freezes and
+the cold air causes the cells of the dandelion to freeze and die. So we assume at temperature below
+0 ◦C, the death rate of dandelion is 100% [7]. Conversely, dandelions flourish the most at about 21
+◦C, which is the optimal temperature for the growth of dandelions, and would bring the lowest death
+rate [8]. For the temperature between 0◦C to 21 ◦C and the temperature above 21◦C, we estimate
+that the death rate will increase quadratically with the increase of absolute difference with the optimal
+temperature. We then plot the death rate against temperature(See Figure6).
+The equation forAT would be the equation for this graph, which is given by:
+AT =
+
+
+
+100, for T ≤ 0
+0.2(T − 21)2 + 10, for 0 < T < 42
+100, for T ≥ 42
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 9 of 26
+20
+10
+0 10 20 30 40 50
+Temperature (°C)
+20
+40
+60
+80
+100
+Death Rate (%)
+Optimal Temperature (21°C, 10.0%)
+Death Rate vs Temperature for Dandelion
+Death Rate (%)
+Figure 6: Death Rate vs Temperature Graph
+10
+0 10 20 30 40 50
+Temperature (°C)
+10
+15
+20
+25
+30
+35
+40
+Precipitation (mm per week)
+(21°C, 25.4mm/week)
+Temperature vs Precipitation
+Precipitation vs Temperature
+Optimal Point (21°C, 25.4mm/week) Figure 7: Precipitation VS Temperature Graph
+Secondly, we need to obtain the base death rate for precipitation. For optimal growth and health,
+dandelions should be watered at least once a week during the summer months. Dandelions need 1 to
+2 inches of water each week, which, in our model, all comes from the precipitation. During periods
+of dry or hot weather, they may need to be watered more often. In the winter, they typically need to be
+watered less frequently, only once every two weeks or so [9]. Thus, weekly precipitation requirement
+is related with the temperatures.
+For a dandelion, the optimal condition would be:
+• Temperature: 21 ◦C
+• Precipitation: 25.4mm per week (1 inch per week)
+• Temperature-Precipitation Ratio: 0.83
+Atthispoint,thedeathratereachesaminimumpointof10%. Forevery10 ◦C increaseintemperature,
+plantsrequireanadditional5mm/weekofprecipitation[ 10]. Thus,wecandeducethatthereisalinear
+correlation between temperature and precipitation, as demonstrated in Figure7
+P = 0.5T + 14.9
+The line passes through the point(21, 25.4), which is the optimum condition for dandelions.
+Since temperature and precipitation rate are related, it would be better to calculate the base death
+rate for a temperature-precipitation ratio. Here, the death rate would be 100% when the temperature-
+precipitation ratio is 0, and when it’s 1.66 or above. We could again estimate the base death rate for
+ratios between 0 to 1.66 by using a quadratic growth fit (See Figure8).
+AR = 1.2755 · (R − 0.83)2 + 0.1(R ̸= 0)
+where R is the temperature-precipitation ratio.After determining the two separate components,
+we could find the composite base death rate by taking the average of AT and AR. Hence, the
+composite base death rateA, which we will substitute into the death rate function, is given by:
+A = AT + AR
+2
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 10 of 26
+0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00
+Temperature-Precipitation Ratio
+20
+40
+60
+80
+100
+Death Rate (%)
+Optimal Ratio (0.83, 10%)
+Death Rate vs Temperature-Precipitation Ratio
+Death Rate
+Figure 8: Death Rate VS Temperature-Precipitation Ratio
+2.3.3 Adding Death Rate to the Lévy Flight Model
+Currently, the Lévy flight model still does not take external factors into account. Thus, the death rate
+function (Explained in Section2.2) is added to this model. The death rate would differ in different
+climates. We decide to consider these four climates, which are mentioned previously:Tropical, Dry,
+Temperate, and Continental.
+Next, researchisdoneontheaveragetemperatureandprecipitationineachclimate, astheyarethe
+keycomponentsinthedeathrateformuladefinedintheprevioussection. Wearealsoabletosubstitute
+the values of temperature and precipitation above into the function for base death rate, and then the
+functionfordeathrate. Specifically, Table 2listsallthedatawecollectedandthecorrespondingdeath
+rates we calculated based on these data using the models described above.
+Climate Average Temperature oC Precipitation mm/year Death Rate %
+Tropical 25 to 28 (Average 26.5) Average 2266 19.81
+Dry 18 Average 200 55.9
+Temperate -3 to 18 (Average 8) Average 1205 22.6
+Continental 10.5 Average 900 23.8
+Table 2: Average Temperature & Precipitation in different Climates [11]–[18]
+Hencenow, havingsimulatedthelandingpositionsforeachdandelionseedusingthe”LévyFlight
+Model”,thereneedstobeanadditionalstepofdecidingwhethertheseedwouldliveordie. Thiswould
+bedoneusingthedeathratecalculated. Forexample,inatropicalclimate,accordingtoourevaluation,
+a seed would have a 19.81% chance of dying and a 80.19% of surviving.
+In order to gain a more precise simulation of the seeds’ dispersal, we dynamically consider the
+death rate, as the density varies at each location, resulting in different death rates for each location
+(see Figure9). Density and mortality are considered locally. In our study, we approach the analysis
+of density and mortality through a grid-based method, as illustrated in Figure10. For visual clarity
+in the figure, each grid represents an area of 100m2. However, it’s important to note that in our
+actual calculations, we employ a much finer grid resolution, with each grid covering an area of just
+0.5 m2. This smaller grid size is crucial for ensuring the accuracy of our results, allowing for precise
+measurements of density and the subsequent determination of mortality rates within each grid. By
+adopting this method, we can accurately assess the number of seeds that die in each area, despite the
+randomness of their distribution.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 11 of 26
+0 20 40 60 80
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+0 20 40 60 80
+x
+0.00
+0.05
+Density
+0.00 0.05
+Density
+40
+20
+0
+20
+40
+y
+Seed Dispersal Density
+Figure 9: Dispersal Density
+0 20 40 60 80 100
+40
+20
+0
+20
+40
+Grid 1
+Grid 11
+Grid 21
+Grid 31
+Grid 41
+Grid 51
+Grid 61
+Grid 71
+Grid 81
+Grid 91
+Grid 2
+Grid 12
+Grid 22
+Grid 32
+Grid 42
+Grid 52
+Grid 62
+Grid 72
+Grid 82
+Grid 92
+Grid 3
+Grid 13
+Grid 23
+Grid 33
+Grid 43
+Grid 53
+Grid 63
+Grid 73
+Grid 83
+Grid 93
+Grid 4
+Grid 14
+Grid 24
+Grid 34
+Grid 44
+Grid 54
+Grid 64
+Grid 74
+Grid 84
+Grid 94
+Grid 5
+Grid 15
+Grid 25
+Grid 35
+Grid 45
+Grid 55
+Grid 65
+Grid 75
+Grid 85
+Grid 95
+Grid 6
+Grid 16
+Grid 26
+Grid 36
+Grid 46
+Grid 56
+Grid 66
+Grid 76
+Grid 86
+Grid 96
+Grid 7
+Grid 17
+Grid 27
+Grid 37
+Grid 47
+Grid 57
+Grid 67
+Grid 77
+Grid 87
+Grid 97
+Grid 8
+Grid 18
+Grid 28
+Grid 38
+Grid 48
+Grid 58
+Grid 68
+Grid 78
+Grid 88
+Grid 98
+Grid 9
+Grid 19
+Grid 29
+Grid 39
+Grid 49
+Grid 59
+Grid 69
+Grid 79
+Grid 89
+Grid 99
+Grid 10
+Grid 20
+Grid 30
+Grid 40
+Grid 50
+Grid 60
+Grid 70
+Grid 80
+Grid 90
+Grid 100
+Density Calculation Method Figure 10: Density Calculation Method
+2.3.4 Taking Time Into Consideration
+After determining the critical models for mortality and dispersal, we can now have a brief simulation
+of the dandelions’ dispersal throughout time. To consider time, we can use a dynamic model, which
+considers density dynamically, same for death rate as it is resulted from density. Let’s assume that
+some dandelion seeds will die out everyday; therefore, the death rate on the subsequent day will be
+based on the previous day. The figures below show the individual numbers of deaths during each time
+period. The cumulative deaths overtime for each climate is shown in Table3
+Climate Month 1 Month 2 Month 3 Month 6 Month 12
+Tropical 58 77 90 4754 5124
+Dry 91 107 113 1861 2007
+Temperate 50 72 85 5448 5796
+Continental 49 70 83 5709 6122
+Table 3: Cumulative Death Numbers
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 12 of 26
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 68 Dead Seeds: 58
+Dandelion Dispersal 1 Month - Tropical
+Survived Seeds
+Dead Seeds
+(a) 1 Month
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 49 Dead Seeds: 19
+Dandelion Dispersal 2 Month - Tropical
+Survived Seeds
+Dead Seeds (b) 2 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 36 Dead Seeds: 13
+Dandelion Dispersal 3 Month - Tropical
+Survived Seeds
+Dead Seeds (c) 3 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived seeds: 1082 Dead seeds: 4664
+Dandelion Dispersal 6 Month - Tropical
+Survived Seeds
+Dead Seeds
+(d) 6 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 712 Dead Seeds: 370
+Dandelion Dispersal 12 Month - Tropical
+Survived Seeds
+Dead Seeds (e) 12 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 712 Dead Seeds: 370
+Final Dandelion Dispersal 12 Month - Tropical
+Survived Seeds (f) 12 Months (Survived)
+Figure 11: Dandelion Dispersal Overtime in aTropical Climate
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 35 Dead Seeds: 91
+Dandelion Dispersal 1 Month - Dry
+Survived Seeds
+Dead Seeds
+(a) 1 Month
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 19 Dead Seeds: 16
+Dandelion Dispersal 2 Month - Dry
+Survived Seeds
+Dead Seeds (b) 2 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 13 Dead Seeds: 6
+Dandelion Dispersal 3 Month - Dry
+Survived Seeds
+Dead Seeds (c) 3 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived seeds: 188 Dead seeds: 1748
+Dandelion Dispersal 6 Month - Dry
+Survived Seeds
+Dead Seeds
+(d) 6 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 42 Dead Seeds: 146
+Dandelion Dispersal 12 Month - Dry
+Survived Seeds
+Dead Seeds (e) 12 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 42 Dead Seeds: 146
+Final Dandelion Dispersal 12 Month - Dry
+Survived Seeds (f) 12 Months (Survived)
+Figure 12: Dandelion Dispersal Overtime in aDry Climate
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 13 of 26
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 76 Dead Seeds: 50
+Dandelion Dispersal 1 Month - Temperate
+Survived Seeds
+Dead Seeds
+(a) 1 Month
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 54 Dead Seeds: 22
+Dandelion Dispersal 2 Month - Temperate
+Survived Seeds
+Dead Seeds (b) 2 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 41 Dead Seeds: 13
+Dandelion Dispersal 3 Month - Temperate
+Survived Seeds
+Dead Seeds (c) 3 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived seeds: 1052 Dead seeds: 5363
+Dandelion Dispersal 6 Month - Temperate
+Survived Seeds
+Dead Seeds
+(d) 6 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 704 Dead Seeds: 348
+Dandelion Dispersal 12 Month - Temperate
+Survived Seeds
+Dead Seeds (e) 12 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 704 Dead Seeds: 348
+Final Dandelion Dispersal 12 Month - Temperate
+Survived Seeds (f) 12 Months (Survived)
+Figure 13: Dandelion Dispersal Overtime in aTemperate Climate
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 77 Dead Seeds: 49
+Dandelion Dispersal 1 Month - Continental
+Survived Seeds
+Dead Seeds
+(a) 1 Month
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 56 Dead Seeds: 21
+Dandelion Dispersal 2 Month - Continental
+Survived Seeds
+Dead Seeds (b) 2 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 43 Dead Seeds: 13
+Dandelion Dispersal 3 Month - Continental
+Survived Seeds
+Dead Seeds (c) 3 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived seeds: 1193 Dead seeds: 5626
+Dandelion Dispersal 6 Month - Continental
+Survived Seeds
+Dead Seeds
+(d) 6 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 780 Dead Seeds: 413
+Dandelion Dispersal 12 Month - Continental
+Survived Seeds
+Dead Seeds (e) 12 Months
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 780 Dead Seeds: 413
+Final Dandelion Dispersal 12 Month - Continental
+Survived Seeds (f) 12 Months (Survived)
+Figure 14: Dandelion Dispersal Overtime in aContinental Climate
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 14 of 26
+2.4 Question 1 Results Discussion
+Inourstudy,accordingtofigs. 12ato12f,adryclimateconsistentlyexhibitedthehighestmortality
+rate over a 12-month period, resulting in the lowest number of surviving seeds at the end of the year
+(only 42 survived). Interestingly, the other three climates—tropical, continental, and temperate—
+showed similar patterns in seed survival(see figs.11f, 13f and 14f), despite having different base-
+line mortality rates. This raised a question regarding the continental climate, which, despite having
+the highest baseline mortality rate (among the three), ended up with themost surviving seeds at 12
+months.
+Toexplainthisanomaly,wehypothesizedthatseeddensitymightplayasignificantrole. Intropical
+climates, the lower initial mortality rate means fewer seeds die early (as can be inferred from figs.11a
+to 11c). However, this leads to higher density in central grids, which in turn increases the mortality
+rate over time. Thus, paradoxically, a more’suitable’climate could result inlowerseed survival due
+to density-induced mortality.
+Furthermore, we noticed that seed distribution in continental and temperate climates is more
+widespread compared to the tropical climate (see figs.11f, 13f and 14f). This dispersion could be
+a response to the high density and mortality in central grids. Seeds in continental and temperate
+climates might disperse more to seekadditional resources, while seeds in tropical climates remain
+concentrated in one area, possibly due to the land’s greater carrying capacity.
+3 Measuring the Impact
+In the second question, we are asked to determine anImpact Factor,I, for invasive species, tak-
+ing into consideration multiple variables. We decide to complete this using ranking models. First, we
+would obtain weights for each variable using the Analytical Hierarchy Process (AHP) and Entropy
+Weight Method (EWM), representing their importance in determining theimpact factor. Next, these
+weights would be used to calculate a score, conveying the extent of negative impact a particular in-
+vasive plant has. We decide to use a six level impact level grading system (See Table4); for each
+variable, we rank its impact based on the system.
+3.1 Problem Restatement
+We need to create a mathematical model that is able tocalculate an impact factor for invasive
+species, which reflects the extent of negative impact the organism has on the world. We then need to
+apply this model to determine the impact factors for the dandelion and two other invasive plants of
+our choice. In addition, we need to discuss the regions and crops each plant is invasive to.
+Impact level Impact description
+0 No data available, no impacts known, not detectable or not applicable
+1 Minor impacts
+3 Medium impacts
+5 Major large-scale impact with high damage and complete destruction
+2,4 Intermediate values
+Table 4: Impact Grading Table [19]
+3.1.1 Species Chosen
+• Miscanthus Sinensis: Miscanthus Sinensis, or Chinese silver grass, is a tall, perennial grass
+native to East Asia. While valued for ornamental use, it can become invasive outside its native
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 15 of 26
+range, aggressively spreading and outcompeting native plants due to its vigorous growth and
+high seed production.
+• Purple Loosestrife: Purple Loosestrife is a striking perennial plant native to Europe, Asia, and
+northwest Africa. It is recognized for its tall, vibrant purple flower spikes and ability to thrive
+in wetlands. Although it’s often used forornamental purposes, Purple Loosestrifeis considered
+invasive in North America and Australia.
+3.2 Multiple Hierarchies
+Since there are many variables considered when evaluating the impact of an invasive plant, we
+will apply multiple hierarchies. Firstly, we decide that the impact factor will be based onthree main
+categories: the ecological, economical impacts, as well asthe dispersal abilities of the invasive
+plant. Secondly, for each of the three categories, we came up with variables that would have an
+impact on the category it’s located in. For example, the ecological impact could be sub-divided into
+impact on native animals and plants. We would first calculate the impact factors of each of the main
+categories,then,usingthisinformation,wecalculatethefinalimpactfactorofaninvasiveplant. More
+specifically, below are the factors we will consider.
+3.2.1 Abundance - Dispersal Impact
+The concept of abundance plays a crucial role in understanding the impact of invasive species on
+ecosystems. Invasive species are organisms that are introduced to a new environment, where they
+oftenlacknaturalpredatorsorcontrols. Thiscanleadtotheirrapidproliferation,significantlyaltering
+the abundance dynamics within that ecosystem.
+There are five criteria considered in Dispersal impact :
+Coverage per plant (C) : The area covered by a single plant.
+Height comparison to local plant ( H = HInvasiveplant
+HLocalplant
+) :
+An invasive species will affect the local environment greatly when its height exceeds the local
+plants. This means that the invasive plant will have advantages in gaining more sunlight, thus getting
+more energy for reproduction, and this becomes a positive feedback.
+Number of individuals ( N ) : Number of individuals after a 12 month period.
+Maximum density (MD): Maximum density with a grid size of 0.5m2
+Maximum spread distance ( MS ) : The longest dispersal distance from the parent plant. We
+include this factor because, from Section2.4, we gained that distance is more important than amount.
+3.2.2 Ecological Impact
+Ecological impact is an important factor that should be considered in this case. The ecological impact
+mainly consists of two parts: impacts on native animals and impacts on native plants.
+Impacts on native animals (NA): Thisisestimatedbylookingathowmanynativeanimalspecies
+will be either positively or negatively affected by the invasive plant.
+Impacts on native plants ( NP ): This is estimated by looking at how many native plant species
+will be either positively or negatively affected by the invasive plant. The ability of hybridization with
+native plants is also considered in this case as the hybridization might increase the spread of invasive
+plants and enhance the invasiveness at the habitat.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 16 of 26
+3.2.3 Economical Impact
+Management and prevention cost (M ): Thisistheestimatedcostinpreventingthespreadofinvasive
+species.
+Environmental impact cost (E): This is the estimated cost in fixing the environmental damages
+done by the invasive species.
+Social impact cost ( O): This is the cost in helping citizens recover from invasion of the plants.
+Thiscanincludecompensatingfarmerswhosecropshavebeenovertakenbyinvasivespecies,medical
+costs for citizens who suffer health issues due to the invasive plant, etc.
+Reciprocal of Potential Benefit (B): When assessing the impact of an invasive plant species, it’s
+essential to consider its potential culinary or medicinal benefits. To accurately evaluate its negative
+impact through Analytical Hierarchy Process (AHP), we utilize the reciprocal of these benefits. This
+approach implies that a species offering greater benefits will be regarded as having a lesser negative
+impact.
+Each part is examined through the standards mentioned in Table4. The final economical impact
+factor should be a value between 0 and 5.
+The hierarchy in our model is demonstrated in Figure15.
+Determine whether a plant is invasive
+Economial Impact
+Abundance (Dispersal Impact)
+Ecological Impact
+E
+O
+B
+N
+MD
+MS
+NP
+NA
+Score of the plant
+Aim
+Criteria
+Sub-
+Criteria
+Score
+Figure 15: AHP Hierarchy
+For any one of the three categories, the impact factor would be calculated by multiplying each
+criteria with their corresponding weights. This is denoted in the equation below, whereC represents
+a criteria, andw represents the corresponding weights of the criterion:
+I =
+n∑
+i=1
+wiCi
+The weights would be calculated using the AHP model.
+3.3 Explanation of the AHP Model and Calculations
+The AHP (Analytical Hierarchy Process) model is used to rank different factors and to calculate
+specific weights for each of the criteria. The weights represent their significance in affecting the final
+impact factor, and should add up to one. For example, a weight of 0.8 may be allocated to one of the
+factors, which means that it would affect the final outcome of the calculation by a large extent.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 17 of 26
+The first step in the AHP model is to determine the relative importance of the criterion to each
+other. For example, if we believe that factora is a lot more important than factorb, then the relative
+importance ofa to b may be 7. This process is mainly based on personal opinions, therefore the AHP
+model is a subjective model.
+The relative importance is assigned based on Table5. We first picked one criterion and decided
+its relative importance with the other criteria. Then, a reciprocal matrix is constructed based on
+these decided importance ratios. In the matrix,Cij stands for the relative importance of criterioni
+to criterion j. To give an example, sayCij equals 7, thenCji, the relative importance of criterionj
+to criterion i, would be the reciprocal ofCij, which is 1/7. Using this principle, we would be able to
+construct the entire reciprocal matrix, denoted below:
+Relative
+importance Definition Explanation
+1 Equal importance Two activities contribute
+equally
+3 Weak importance Slight favor based on ex-
+perience and judgment
+5 Strong importance Strong favor based on ex-
+perience and judgment
+7 Demonstrated
+importance
+Strongly favored, demon-
+strated in practice
+9 Extreme
+importance
+Highest affirmation of fa-
+voring one activity
+2, 4, 6, 8 Intermediate
+values
+Compromise between two
+judgments
+Table 5: AHP Scale of Relative Importance [20]
+
+
+C11 C12 . . . C 1n
+C21 C22 . . . C 2n
+... ... ... ...
+Cn1 Cn2 . . . C nn
+
+
+After getting the weights, We need to check the consistency of the matrix. Letλmax be the largest
+eigenvalue. The consistency indexCI can be expressed by:
+CI = λmax − n
+n − 1
+.
+Then, we compare the consistency index to random index (RI), which can be looked up in a
+pre-calculated table, and we obtain consistency ratio (CR):
+CR = CI
+RI = 0.0748 < 0.1
+Since CR < 0.1, the weights are considered to be good enough. Using the weights, the impact
+factor for dispersal impact can be calculated.
+For dispersal impact: Fd = 0.28 · C + 0.06 · H + 0.10 · N + 0.14 · MD + 0.42 · MS
+Similarly, we can get the impact factor for economial impact and ecological impact respectively.
+For economical impact: Fecon = 0.52 · M + 0.26 · E + 0.09 · B + 0.13 · O
+For ecological impact: Feco = 0.83 · NP + 0.17 · NA
+As for the totalimpact factor (shown in Figure3.3):
+I = 0.58 · Fd + 0.11 · Fecon + 0.31 · Feco (2)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 18 of 26
+28%
+6%
+N
+10%
+MD 14%
+MS
+42%
+(a) Dispersal Impact
+NP
+83%
+NA
+17% (b) Ecological Impact
+52%
+E
+26%
+O
+13%
+B
+9% (c) Economical Impact
+/dollar-sign/dollar-sign/dollar-sign/dollar-sign/dollar-sign/dollar-sign/dollar-sign/dollar-sign
+/dollar-sign/dollar-sign/dollar-sign
+Weights of Criterion Determing Impact Factor
+/dollar-signEconomical
+Dispersal
+Ecological
+Economical: 11%
+Dispersa l: 58%
+Ec ologica l: 31%
+3.4 Calculating the Impact Factor
+We choose four regions with the climates we dis-
+cussed before (see Table6).
+3.4.1 Dispersal Impact
+WeappliedourmodelinQuestion1tosimulatethe
+dispersal of the three invasive species under four
+climates.
+First we calculated the base line death rate A using
+the same process as Section2.3.2.
+In both cases, the death rate in dry climate areas is
+high. This is mainly because the precipitation per
+week is really low, which causes a high tempera-
+ture precipitation ratio compared to optimal ratio.
+Thus, the death rate is high.
+Climate T ype Characteristic Region Local Plant Average Height (m)
+Tropical Central America and the Caribbean Tomato 2
+Temperate Northeastern North America Strawberry 0.2
+Dry Southwestern United States Prickly Pear 0.45
+Continental Central Europe Echinacea 1
+Table 6: Regions Chosen
+By using the same method stated in Section2.3.2, we could calculate the base death rate for both
+Miscanthus Sinensis and Purple Loosestrife. The tables below show the result:
+Climate Death Rate %
+Tropical 21.4
+Dry 56.2
+Temperate 40.4
+Continental 27.3
+Table 7: Base Death Rate for Miscanthus Sinensis
+Climate Death Rate %
+Tropical 31.1
+Dry 57.8
+Temperate 60.7
+Continental 42.4
+Table 8: Base Death Rate for Purple Loosestrife
+Additionally, the death rate in temperate climates is notably high. This primarily results from
+the average temperature in these areas being significantly lower than the optimal temperature for the
+two species. Moreover, the required precipitation at these lower temperatures is minimal, yet tem-
+perate regions typically experience higher annual precipitation. This imbalance in temperature and
+precipitation leads to an unfavorable ratio, ultimately contributing to a higher death rate.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 19 of 26
+Invasive Species Number of Seeds per Spread Number of Spreads per Year
+Dandelion 200 2
+Miscanthus sinensis 2000 (Stronger reproductive capacity than dandelions) 1
+Purple Loosestrife 4000 (Strongest reproductive capacity) 1
+Table 9: Assumption of Reproductive Capacity of Invasive Species
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 86
+Miscanthus sinensis Dispersal - Dry
+Survived Seeds
+(a) Dry
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 213
+Miscanthus sinensis Dispersal - Tropical
+Survived Seeds (b) Tropical
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 153
+Miscanthus sinensis Dispersal - Temperate
+Survived Seeds (c) Temperate
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 183
+Miscanthus sinensis Dispersal - Continental
+Survived Seeds (d) Continental
+Figure 17: Dispersal of Miscanthus Sinensis
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 121
+Purple Loosestrife Dispersal - Dry
+Survived Seeds
+(a) Dry
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 239
+Purple Loosestrife Dispersal - Tropical
+Survived Seeds (b) Tropical
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 101
+Purple Loosestrife Dispersal - Temperate
+Survived Seeds (c) Temperate
+0 20 40 60 80 100
+X(m)
+40
+20
+0
+20
+40
+Y(m)
+Survived Seeds: 169
+Purple Loosestrife Dispersal - Contiental
+Survived Seeds (d) Continental
+Figure 18: Dispersal of Purple Loosestrife
+3.5 Entropy Weight Method
+The AHP model provides a subjective analysis. In order to offer an more objective view on the
+weights, we adopted Entropy Weight Method (EWM). EWM measures the degree of dispersion for
+different factors. To be specific, as the degree of dispersion becomes greater, more information can
+be obtained, and, thus, greater weight should be assigned to the corresponding index. The process of
+the system includes calculating the information entropy of each variables and deducing the weight of
+each criterion.
+Since EWM cannot work based on the data of the dandelion alone, we add Purple Loosestrife
+and Miscanthus sinensis, two plant species that are often considered invasive, into consideration. In
+our model, there are 3 plants and 11 criteria. As the plant’s characteristics do not remain constant
+in the four climates (temperate, continental, tropical and dry), there are3 × 4 = 12 situations that
+we need to consider. The criteria, management and prevention cost (M), environmental impact cost
+(E), social impact cost (O), reciprocal of potential benefit (RB), coverage (C), height (H), number
+(N), density (MD), spread distance (MS), impact on native animals (NA) and impact on native plants
+(Np), are numbered from 1 to 11.Xij stands for the value of thejth criterion for theith plant (in the
+corresponding climate). Based on the data collected, we have the matrixX for evaluation:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 20 of 26
+X =
+
+
+x[1][1] x[1][2] . . . x [1][11]
+x[2][1] x[2][2] . . . x [2][11]
+... ... ... ...
+x[12][1] x[12][2] . . . x [12][11]
+
+
+Inordertocalculatetheentropy, thematrixisrequiredtogothroughtheprocessofnormalization.
+Let matrix Z be the matrix after normalization. Since all variables are increasing index (the greater
+the value of the variable, the more invasive the plant), the following formula is offered:
+zij = xij − min(x1j, x2j, . . . , x12j)
+max(x1j, x2j, . . . , x12j) − min(x1j, x2j, . . . , x12j)
+The matrixZ is, thus, obtained.
+Based on matrixZ, the weight p of theith option in columnj is calculated:
+pij = zij
+∑12
+i=1 zij
+(j = 1, 2, ..., 11)
+Then, we use the following equation to derive the entropy of index j:
+ej = − 1
+ln 12
+12∑
+i=1
+pij ln (pij) ( j = 1, 2, ..., 11)
+The redundancyd indicates the amount of information that can be obtained from a criterion: the
+greater the value ofd, the more information one can obtain from that criterion. It is calculated by:
+dj = 1 − ej
+Finally, we standardized and derive the weightwj of each criterion:
+wj = dj
+∑11
+j=1 dj
+(j = 1, 2, ..., 11)
+After applying the calculation process on all the data of the three plants, we get the final weights
+for the criteria:
+M E O B C H N M D MS NA NP
+0.086 0.108 0.093 0.093 0.086 0.082 0.100 0.071 0.040 0.131 0.108
+Table 10: EWM Final Weights
+3.6 Combining AHP and EWM
+Based on the final weights obtained from AHP and EWM, we need to combine these weights
+effectively into one final model. In other words, we need to find the appropriate proportion of AHP
+weights to EWM weights in the final model. Letθ1 and θ2 be the percentage of AHP weights and
+EWM weights respectively, thenθ1 + θ2 = 1. In order to minimize the deviation between the two
+models, we apply Euclidean distance formula during the combination:
+δ =
+11∑
+j=1
+(θ1WAHP [j] − θ2WEW M [j])2
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 21 of 26
+where WAHP [j] and WEW M [j] standfortheweightsforthe jth criterioninAHPandEWMrespectively.
+By substitutingθ2 with 1 − θ1, the derivative forδ can be obtained:
+dδ
+dθ1
+= 2θ1
+11∑
+j=1
+(WAHP [j] + WEW M [j])2 − 2
+11∑
+j=1
+WEW M [j] · (WAHP [j] + WEW M [j])
+When dδ
+dθ1
+= 0, the deviation reaches its minimum. At this point, we get the corresponding opti-
+mum value ofθ1 and θ2. θ1 has the following expression:
+θ1 =
+∑11
+j=1 WEW M [j] ·
+(
+WAHP [j] + WEW M [j]
+)
+∑11
+j=1(WAHP [j] + WEW M [j])2
+Substituting the weights into the expression, we getθ1 = 0 .414, and θ2 = 1 − θ1 = 0 .586. This
+means that the weights of AHP and EWM take up 41.4% and 58.6% of the final weight respectively.
+Then, we can get the final weight through the equationWf inal[j] = θ1WAHP [j] + θ2WEW M [j].
+M E O B C H N M D MS NA NP
+0.074 0.075 0.060 0.059 0.117 0.063 0.083 0.075 0.124 0.099 0.170
+Table 11: Final Weights after the Combination of AHP and EWM
+With the final weights, we can calculate the impact factor for different plant species:
+I = W1·M +W2·E+W3·O+W4·B+W5·C+W6·H+W7·N +W8·MD+W9·MS+W10·NA+W11·NP
+3.7 Results
+3.7.1 Impact Factor Analysis
+Region Climate Plant Impact factor
+Dandelion 2.11∗∗
+Northeastern North
+America Temperate Purple Loosestrife 3.91∗∗∗
+Miscanthus sinensis 2.89∗∗
+Dandelion 2.18∗∗
+Central Europe Continental Purple Loosestrife 3.82∗∗∗
+Miscanthus sinensis 2.70∗∗
+Dandelion 2.13∗∗
+Caribbean Tropical Purple Loosestrife 3.92∗∗∗
+Miscanthus sinensis 2.72∗∗
+Dandelion 1.26∗
+Southwestern
+United States Dry Purple Loosestrife 4.15∗∗∗
+Miscanthus sinensis 2.39∗∗
+I ∗ < 2, 2 ≤ I ∗∗ < 3.5, 3.5 ≤ I ∗∗∗
+Table 12: AHP Impact Factor
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 22 of 26
+In all four cases, the impact factor of dandelion is the lowest, followed by Miscanthus sinensis
+and Purple loosestrife. This is mainly because the invasion of dandelion might bring benefits to local
+economy. Dandelion has been used for health purposes since ancient times and its leaves are believed
+to have a positive effect on the cardiovascular system due to their high potassium content [21].
+For Purple Loosestrife, it has the highest impact factor among all four regions. This species pos-
+sesses an high reproductive capacity, enabling it to flourish and expand over a wide range of areas.
+Its dense growth out-competes native species, putting native species at risk and diminishing habitat
+for wildlife. Economically, it obstructs waterways, hampers agricultural productivity, and hinders
+recreational activities, leading to substantial control and restoration costs [22].
+3.7.2 Risk Assessment
+Considering the above results, we set up a risk assessment criteria for invasive plant species:
+Impact factor Risk Assessment
+I < 2 Not invasive
+2 ≤ I < 3.5 Not invasive but having moderate effect on the economy and environment
+I ≥ 3.5 Invasive
+In this assessment, the dandelion is characterized asNot invasive but has a moderate effect on
+the economy and environmentinTemperate,Continental,andTropicalclimates. Thiscategorization
+is justified because dandelions thrive in these climates, moderately outcompeting other plant species.
+However, inDryclimates, dandelionsareclassifiedas Not invasiveduetotheirlowsurvivalrate, thus
+having a minimal environmental impact.
+Miscanthus sinensis is also evaluated asNot invasive but has a moderate effect on the economy
+and environment across all four climatic conditions. This species tends to form substantial clumps
+in disturbed areas, moderately displacing native flora. Nonetheless, its use as an ornamental plant
+somewhat mitigates its impact.
+Purple Loosestrife is deemedInvasive in all climate conditions, attributed to its robust disper-
+sal capabilities and significant detrimental effects on local ecosystems and economies, according to
+Section 3.7.1.
+3.8 Strengths and Weaknesses
+Strengths: In our study, we have integrated the Analytical Hierarchy Process (AHP) with the
+Entropy Weight Method (EWM), resulting in a more objective approach to assigning weights in our
+analysis. To ensure a comprehensive understanding, we selected four distinct regions, each charac-
+terized by a unique climate. This diverse selection provides a thorough view of our research scope.
+Furthermore, this approach is closely aligned with the initial question posed in our paper, demonstrat-
+ing a consistent thread throughout our research and reinforcing the reliability of our findings.
+Weaknesses: Our analysis encounters certain limitations. Firstly, there is a lack of sufficient
+information to accurately establish the baseline death rate, which is crucial for our study. Secondly,
+even within the same climate region, temperature and precipitation can vary significantly from one
+location to another. By focusing only on four main climate types, our approach might not capture
+these nuances, leading to potential imprecision. Additionally, we acknowledge that our model doesn’t
+incorporate enough factors to fully represent the complexities of real-world scenarios, which could
+affect the accuracy of our assessment of the total impact factor.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 23 of 26
+4 Conclusion
+In Section 2, we provided our solution to problem 1. First, we created a simple model, simulating
+thespreadofdandelionsusingthenegativeexponentialdistribution. However,thisdoesnotaccurately
+model the path a dandelion seed takes during its dispersal, nor does it take into account any external
+factors. Thus, we then utilized the lévy flight model, which uses the lévy distribution curve instead.
+This model more accurately presents the path a dandelion seed takes during its dispersal. This model
+is still insufficient, though, as it still does not take into account external factors, nor does it model the
+spread of dandelions overtime. Therefore, we constructed a death rate that is influenced by factors
+such as temperature, precipitation or population density using the logistic growth model. With this
+death rate, we were then finally able to properly estimate the spread of dandelions overtime, using a
+dynamic model where the death rates in each condition are updated daily. Using this model, we were
+able to model the spread of dandelions over 1, 2, 3, 6, and 12 months in tropical, dry temperate and
+continental climates.
+In section 3, we provided our solution to problem 2. We first split the determination of the impact
+factor into different components due to there being many variables that should be considered. Next,
+since different variables have various extents in determining the final impact factor, we decided to
+assign weights to each of them using the Analytical Hierarchy Process (AHP) and the Entropy Weight
+Method (EWM) combined to obtain an objective result. It was decided that there would be three main
+determinantsofaninvasiveplant’simpactfactor: itseconomical, ecologicalimpacts, anditsdispersal
+ability. These were then further split into smaller criteria that would affect the three determinants. We
+used the weights obtained using the AHP and EWM models to calculate individual impact scores for
+each of the determinants. In the end, we combined these scores, yielding a final impact factor ranging
+from 0 to 5. On top of this, we determined that if a plant has an impact factor that is greater or equal
+to 3.5, it is considered invasive. Our results show that dandelions and Miscanthus sinensis are not
+considered invasive but have moderate effects on the economy and environment, whereas the Purple
+Loosestrife is considered invasive in all four climatic conditions.
+Even though our models are rather basic compared to those constructed in real world scenarios,
+there are still interesting phenomena worth noting. One major characteristic we observed is that even
+though the death rate in a tropical climate is lower compared to a continental climate, after 12 months
+thereweremoresurvivingseedsinthecontinentalclimate. Thisleadustotheconclusionthatperhaps
+when the death rate of two invasive plants are not significantly different, the distance of dispersal is a
+much more decisive factor in determining their eventual population.
+To conclude, invasive species can have significant impacts on the environment and our societies.
+Duringourmodelingprocess,wehavewitnessedthedestructivecapabilitiesofcertaininvasiveplants.
+Therefore, the issue of invasive organisms should not, and cannot be underestimated.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 24 of 26
+References
+[1] en-US. [Online]. Available:http : / / www . actforlibraries . org / plant - history - how - dandelions -
+came-to-north-america/.
+[2] [Online]. Available:https://turffinder.com/pests- diseases- and- weeds/weed/dandelion#:~:
+text=There%20are%20five%20distinct%20visible,to%20commence%20the%20cycle%20again.
+[3] [Online]. Available: https : / / www . gardenorganic . org . uk / expert - advice / garden - management /
+weeds/weed-datasheets/dandelion.
+[4] [Online]. Available: https : / / hortnews . extension . iastate . edu / how - store - seeds - and - test -
+germination-rates.
+[5] [Online]. Available:https://anpc.ab.ca/wp-content/uploads/2015/01/dandelion.pdf.
+[6] Stephanie, Heavy tailed distribution; light tailed distribution: Definition ; examples , Apr. 2023. [Online]. Avail-
+able: https://www.statisticshowto.com/heavy-tailed-distribution/.
+[7] [Online]. Available: https : / / shuncy . com / article / does - frost - kill - dandelions# : ~ : text = In %
+20general%2C%20frost%20can%20kill%20dandelions%20when%20temperatures,the%20dandelions%
+20will%20be%20killed%20by%20the%20frost..
+[8] Idris, Learn about the dandelion growing conditions,Jan.2022.[Online].Available: https://www.webgardner.
+com/vegetables/dandelion-growing-conditions/.
+[9] [Online]. Available:https://shuncy.com/article/how-long-do-dandelions-live.
+[10] [Online]. Available:https://www.bio.miami.edu/dana/330/330F19_9.html.
+[11] Tropics, https : / / education . nationalgeographic . org / resource / tropics/, Accessed: 2023-11-08,
+National Geographic.
+[12] Characteristics of humid tropical climate, https://sciencing.com/characteristics-humid-tropical-
+climate-8520547.html, Accessed: 2023-11-08, Sciencing.
+[13] Lecture 6: Climate zones and types, https://web.gps.caltech.edu/~xun/course/GEOL1350/Lecture6.
+pdf, Accessed: 2023-11-08, California Institute of Technology.
+[14] Tropical climates, https://encyclopedia.pub/entry/33424, Accessed: 2023-11-08, Encyclopedia.
+[15] Biomes of the world, https://php.radford.edu/~swoodwar/biomes/?page_id=100, Accessed: 2023-11-
+08, Radford University.
+[16] Tropical monsoon climate, https://www.earthonlinemedia.com/ebooks/tpe_3e/climate_systems/
+tropical_monsoon_1.html, Accessed: 2023-11-08, Earth Online Media.
+[17] All about climate, https://education.nationalgeographic.org/resource/all- about- climate/ ,
+Accessed: 2023-11-08, National Geographic.
+[18] Humid continental climate, https://www.sciencedirect.com/topics/agricultural-and-biological-
+sciences/humid-continental-climate, Accessed: 2023-11-08, ScienceDirect.
+[19] W. Nentwig, S. Bacher, P. Pyšek, M. Vilà, and S. Kumschick, “The generic impact scoring system (giss): A
+standardized tool to quantify the impacts of alien species,”Environmental monitoring and assessment, vol. 188,
+pp. 1–13, 2016.
+[20] D. Vanier, S. Tesfamariam, R. Sadiq, and Z. Lounis, “Decision models to prioritize maintenance and renewal
+alternatives,” Jan. 2006.
+[21] A. Name,The benefits of dandelion root, Accessed: 2023-11-13, Year of publication. [Online]. Available:https:
+//www.verywellhealth.com/the-benefits-of-dandelion-root-89103 .
+[22] I. S. Centre,Purple loosestrife – profile and resources | purple loosestrife . [Online]. Available:https://www.
+invasivespeciescentre.ca/invasive- species/meet- the- species/invasive- plants/purple-
+loosestrife/.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 25 of 26
+REPORT ON USE OF AI
+GPT3.5 Jan 2022 version
+Query1: do you know levy flight model ?
+Output1:Yes,I’mfamiliarwiththeLevyflightmodel. TheLevyflightisatypeofrandomwalkor
+stochastic process that describes a series of steps or jumps in which the step sizes follow a probability
+distribution with heavy tails, meaning that there is a small probability of very large steps. In other
+words, Levy flights are characterized by occasional long jumps or leaps, which can lead to a more
+efficient exploration of space compared to simple random walks.
+The Levy flight model is often used to describe various natural phenomena, including the move-
+mentpatternsofanimals,theforagingbehavioroforganisms,andthesearchstrategiesinoptimization
+algorithms, among other applications. It has been used in fields such as ecology, physics, and com-
+puter science to model and understand processes where intermittent long-range movements or events
+are significant.
+Query2:Can you use levy flight to help me simulate the dispersal of 1 seed , starting from (0,0).
+stimulating 100 steps for the seed, and draw out the final results with matplotlib.
+Output2:Certainly, I can help you simulate the dispersal of a seed using a Levy flight model and
+then visualize the results using Matplotlib in Python. Here’s a Python code example to achieve this:
+Listing 1: Seed Dispersal Simulation (Python)
+import numpy a s np
+import m a t p l o t l i b . p y p l o t a s p l t
+# Parameters f o r Levy f l i g h t
+n_steps = 100 # Number o f s t e p s
+a l p h a = 1 . 5 # Exponent f o r Levy d i s t r i b u t i o n ( a d j u s t a s needed )
+# I n i t i a l i z e t h e p o s i t i o n a t ( 0 , 0 )
+x , y = [ 0 ] , [ 0 ]
+# S i m u l a t e t h e Levy f l i g h t
+f o r _ i n r a n g e( n_steps ) :
+# Genera te random s t e p s i z e s from a Levy d i s t r i b u t i o n
+s t e p _ l e n g t h = np . random . p a r e t o ( a l p h a ) # Levy d i s t r i b u t i o n with exponent a l p h a
+s t e p _ a n g l e = np . random . u n i f o r m ( 0 , 2 ∗ np . p i ) # Random a n g l e between 0 and 2∗ p i
+# C a l c u l a t e t h e new p o s i t i o n based on t h e s t e p s i z e and a n g l e
+new_x = x [ −1] + s t e p _ l e n g t h ∗ np . c o s ( s t e p _ a n g l e )
+new_y = y [ −1] + s t e p _ l e n g t h ∗ np . s i n ( s t e p _ a n g l e )
+x . append ( new_x )
+y . append ( new_y )
+# P l o t t h e r e s u l t s
+p l t . f i g u r e ( f i g s i z e =(8 , 8 ) )
+p l t . p l o t ( x , y , marker= ’ o ’ , l i n e s t y l e= ’− ’ , m a r k e r s i z e =5)
+p l t . t i t l e ( f ’ Seed D i s p e r s a l S i m u l a t i o n( Levy F l i g h t, { n_steps } S t e p s) ’ )
+p l t . x l a b e l ( ’X−a x i s ’ )
+p l t . y l a b e l ( ’Y−a x i s ’ )
+p l t . g r i d ( True )
+p l t . show ( )
+In this code:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 14140 Page 26 of 26
+We specify the number of steps n steps and the exponent alpha for the Levy distribution. You can
+adjust these parameters to control the behavior of the Levy flight.
+We initialize the position of the seed at (0, 0).
+We simulate the Levy flight by generating random step sizes from a Pareto distribution (which is a
+common choice for Levy flights) with the specified exponent alpha. We also generate a random angle
+between 0 and 2π for each step.
+We calculate the new position of the seed based on the step size and angle and append it to the x
+and y lists.
+Finally, we use Matplotlib to plot the trajectory of the seed dispersal.
+You can run this code to simulate and visualize the dispersal of a seed using a Levy flight model
+with 100 steps. Adjust the parameters as needed for different simulations.
+ᇿ Hi MCM
+ሧ࿟

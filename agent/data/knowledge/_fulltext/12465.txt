@@ -1,0 +1,856 @@
+ğ
+Team # 12465, Page 1 of 23
+2022
+High School Mathematical Contest in Modeling (HiMCM)
+Summary Sheet
+Team Control Number: 12465
+Problem Chosen: B
+
+Prior to the Industrial Revolution, carbon dioxide (CO2) content in the atmosphere
+was almost constant at about 280 parts per million (ppm). After the Industrial Revolution,
+however, atmospheric CO2 level s increased dramatically. According to National
+Oceanographic and Atmospheric Administration (NOAA), the monthly mean CO2
+concentration peaked at 421 ppm in May 2022. The main possible consequence of the
+increase in CO2 concentration is the enhanced greenhouse effect  leading to rising air
+temperature. According to the 2022 report of Intergovernmental Panel on Climate Change
+(IPCC), air temperature will increase by  1.5ºC within the next two decades. B ased on the
+assumption that the statistical trend of change obtained from historical data also applies to
+future changes, in this work we created three  models based on historical data of CO2 and
+land-ocean temperature, projected their future changes,  and investigated the relationship
+between these two variables.
+Based on a trend analysis over the 10- year moving averages of CO2 by a modified
+Mann-Kendall test for autocorrelated data, we confirmed the claim that t he CO2 increase
+in 2004 is greater than the averages over  any previous 10- year period. Linear, quadratic
+and exponential models were fitted to describe CO2 changes over time. Among them, the
+quadratic model proves to be the most accurate through a 10-fold cross validation for time
+series. None of our models support  the claim that the CO2 concentration level will reach
+685 ppm by 2050. The highest CO2 level in 2050 is predicted to be around 497 ppm  and
+the quadratic model estimates CO2 concentration level of 685 ppm in 2097.
+As there is obvious increase trend, strong autocorrelation, but without periodicity in
+the land-ocean temperature anomaly time series , we innovatively propose a univariate
+forecasting model combining the seasonal -component-free Holt-Winters method and
+bootstrap-aggregated residuals, which reflects well the fluctuations present in the observed
+temperature time series  with a correlation coeffi cient of 0.971. The projection shows an
+increase in average land-ocean temperature of 1.25, 1.50, and 2°C will occur in 2032 [2027,
+2037], 2042 [2038, 2047], and 2063 [2058, 2067], respectively.
+We used a linear regression model and ARIMA errors to investigate the relationship
+between CO2 and temperature. Given limited data, we assessed the models’ forecast ability
+through multiple ways , including creating various training- testing scenarios . The
+relationship model with CO2 as input shows a more robust performance under any
+scenarios than the univariate model but it underrepresents the fluctuations in long- term
+forecast. Limited evidence show s the models perform better forecasts in the first 10-20
+years. While increased CO2 has been shown to be a major contributor to rising temperature,
+fluctuations of temperature are in fact related to  many intervening factors and complex
+interactions within the climate system.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 2 of 23
+
+Table of Contents
+1 Introduction ................................................................................................................. 3
+Background ........................................................................................................... 3
+Problem restatement.............................................................................................. 3
+2 Problem analysis ......................................................................................................... 4
+3 Assumptions ................................................................................................................ 5
+4 Methodology ............................................................................................................... 6
+Trend analysis for autocorrelated annual CO2 time series (Question 1a) ............ 6
+Models for predicting CO2 concentrations (Question 1b-d) ................................ 7
+Modeling changes of land-ocean temperatures (Question 2) ............................... 8
+Modeling the relationship betw een CO2 concentration and land -ocean
+temperature (Question 3a) ............................................................................................. 10
+Evaluating robustness of CO2 prediction models (Question 3b)........................ 10
+5 Results and analyses ..................................................................................................11
+Trends in historical CO2 concentrations ..............................................................11
+CO2 concentration forecast models and predictions .......................................... 12
+Forecast of land -ocean temperature changes using Holt -Winters model and
+bootstrap residuals model ............................................................................................. 13
+Relationships between CO2 concentration and land-ocean temperature ............ 15
+Robustness of the temperature forecasting models ............................................. 17
+6 Strengths and Limitations ......................................................................................... 20
+Strengths ............................................................................................................. 20
+Limitations .......................................................................................................... 20
+7 Conclusions ............................................................................................................... 21
+8 One-Page Non-Technical Article for Scientific Today .............................................. 22
+9 References ................................................................................................................. 23
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 3 of 23
+Solution for Problem B of HiMCM 2022
+1 Introduction
+Background
+For most of the time in earth’s history, the carbon dioxide (CO2) concentration in the
+atmosphere changed very slowly and nearly constantly, which is about 280 ppm (parts per
+million) prior to the Industrial Revolution in the 1760s [1]. Most  living things, including
+humans, animals, plants, require oxygen (O2) and produce carbon dioxide (CO2) when
+respirating. Most plants carry out photosynthesis under sunlight. In the chloroplasts in their
+leaves, CO2 and H2O turned into O2 and glucose. The rate of product ion of CO2 and the
+rate of conversion of CO2 into O2 were roughly equal, leading to a relatively equilibrium
+state of concentration level of CO2 in the atmosphere. However, after the Industrial
+Revolution, the atmospheric CO2 level rose  dramatically. Three types of fossil fuels, i.e.,
+coal, oil and natural gas, support  our industry and make our life better. Combustion of all
+sorts of fuels greatly increased as demands of human beings for energy soared [1]. Further,
+the total forest area decreased globally because a great deal of forests had been turned into
+cultivated or urban areas to sustain a rapidly increasing population [2]. Every year, large
+amounts of CO2 are emitted into the atmosphere beyond the converting ability of CO2.
+According to National Oceanographic and Atmospheric Administration (NOAA), the
+monthly mean CO2 concentration level peaked at 421 ppm in May 2022 [3].
+The most prominent consequence of CO2 concentrations is the enhanced greenhouse
+effect. Together with other greenhouse gases, CO2 in the atmosphere traps some of the heat
+that Earth might have otherwise radiated out into space, causing the air temperature to rise.
+According to the report of I ntergovernmental Panel on Climate Change (IPCC) in 2022,
+the air temperature rise will reach 1.5ºC within the next two decades [4]. Global warming
+is altering the earth’s climate system, leading to many disastrous consequences, such as
+more frequent and sever weather, higher sea level, more acidic oceans, higher death rates,
+dirtier air, and higher wildlife extinction rates. Only the most drastic cuts in carbon
+emissions from now would help decrease environmental disasters.
+The connections between CO2 and t emperature changes are very complex and the
+scientists simulated their responses and feedback through state-of-the-art climate models
+and earth system models. In this contest, we are to create empirical models based on
+historical data of CO2 and land- ocean temperature provided, investigate the relationship
+between these two variables, and predict future changes  in CO2 concentration and land-
+ocean temperature. The solution to this simplified task will help in understanding climate
+change and its causes.
+Problem restatement
+First of all, we would like to point out an error  in the original problem text. Based on
+the link provided to the source of the CO2 Data Set 1  [5], the values in the CO2 Data Set
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 4 of 23
+1 provided represent annual means of Mauna Loa CO2 concentrations, rather than monthly
+means. The value of 377.7 ppm  quoted in the text  is the annual mean of 2004, not  the
+monthly mean of March of 2004, and the correct value for March 2004 is 379.06 ppm. We
+split the problem into the following three questions.
+Question 1: How does CO2 level change over time? Analyze and model the changes
+of CO2 concentrations using the CO2 Data Set 1 provided.
+1a. Is the increase in  CO2 in 2004 (relative to pre- industrial levels) greater than the
+record over any previous 10-year period. Provide explanations.
+1b. Fit the changes of concentration levels of CO2 in the atmosphere  using various
+mathematical models in different forms.
+1c. Use each of the proposed models to predict the CO2 concentrations  in the year
+2100. Determine the CO2 concentration level by 2050 using the models. If the predicted
+level for 2050 is not equal to 685 ppm, determine when the 685 ppm threshold will be
+reached.
+1d. Evaluate the performance of those proposed models and determine which is most
+accurate. Provide a justification.
+Question 2: How is mean ocean-land temperature evolving over time? Analyze and
+model land-ocean temperatures changes using Temps Data Set 2.
+2a. Create a model that reflects  historical land-ocean temperatures changes  and
+predicts future changes.
+2b. Estimate when the increase of the average land -ocean temperature will  reach
+1.25°C, 1.50°C, and 2°C compared to the base period of 1951-1980, which is about 14°C.
+Question 3 : What’s the relationship between CO2 concentration and temperature
+change? Model and evaluate the relationship between CO2 concentrations and land-ocean
+temperatures.
+3a. Build a model to analyze the relationship between CO2 concentrations and land-
+ocean temperatures since 1959 and explain the possible relationship.
+3b. Evaluate the model’s ability to predict future changes and figure out what factors
+affect this model’s ability.
+2 Problem analysis
+Question 1a: The question is essentially about the trend of CO2 changes over time .
+We can perform a trend analysis over the 10-year running averages of CO2, which can be
+derived from the annual CO2 mean data provided. If the smoothed time series is indicated
+by a trend analysis method to be  monotonical increase through 2004, this answer to this
+question is yes. Compared to a th reshold approach, where the 2004 level is directly
+compared to any previous levels, this approach has an  advantage in solving the problem
+from a statistical point of view . We also note that  autocorrelation should be considered
+when performing trend analysis.
+Question 1 b-c: CO2 Data Set 1  contains only a time series of annual CO2
+concentration at Mauna Loa. Visual inspection shows changes continue to increase with
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 5 of 23
+what appears to be linear trend throughout the time period. However, the data points in the
+low value end and high value end appear to be above the linear trend line, suggesting it is
+not a prefect linear trend. We therefore  test quadratic and exponential models in addition
+to the linear fit. The abscissa is unified to the years to the beginning year (1959) to remove
+the potential effect of using the year as the x-value in regression models.
+Question 1d: The CO2 data provided is not very long (only 63 points). We prefer n-
+fold cross validation for time series to assess the model performance, in order to maximize
+the benefits of limited data.
+Question 2a-b: A quick look at the annual ocean -land temperature data indicates an
+obvious increase trend throughout the entire period. A common time series model breaks a
+non-stationary time series into trend , periodicity/seasonality and remainder components.
+Trend is obvious, but periodicity for yearly temperatures needs attention. Although some
+materials indicate some periods such as 11 years and 9.3 years in the global temperature
+data [6], they are based on much longer time series. We performed seasonality test and
+spectral analysis, as well as autocorrelation test, on the given temperature data. Based on
+the findings (no obvious periodicity and strong autocorrelation), we propose  a novel
+method, which is a combination of Holt -Winters method (exponential smoothing based)
+with no seasonality component and bootstrapping for residuals. The question 2b can be
+answered using this model.
+Question 3a: Given the finding in Question 1b that CO2  changes follow a  steadily
+increasing trend, we decompose the temperature time series into a linear trend component
+and the residuals component. Informed by  physics, w e can deduce that the linear
+component of temperature anomalies  can be regressed from  the log-transformed CO2
+changes, and the residuals are more related to past temperature anomalies  and can be
+estimated by an ARIMA approach.
+Question 3b: We use the historical data to evaluate the model’s ability in predicting
+future temperature changes. The whole historical data is  divided into a training  set and
+validation set. We create scenarios with different sizes of training set and validate using the
+validation set consisting of the remaining data . By this means, the impacts of training set
+size on the model ability and how the prediction accuracy changes over time into the future
+are quantified. The temperature prediction model developed in question 2 does not depend
+on external variables, while the relationship model in this question additionally includes
+CO2 concentration as an independent external variable. Therefore, we also investigate any
+benefits of using CO2 concentration in the model in terms of predicting future changes.
+3 Assumptions
+Assumption 1: A common disadvantage of empirical/statistical models is that in most
+cases they are applicable only for the conditions the data were collected, thus they are often
+not able to predict beyond this particular condition. In our case, we assume the statistical
+trend of change obtained from historical data applies to future changes. In other words, we
+simulate future changes under a business-as-usual scenario.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 6 of 23
+Justification: Since we don’t know how exactly CO2 levels will change in the future,
+a plausible solution is to simulate different  scenarios describing all kinds of possibilities.
+This approach is also taken by IPCC, in whose annual report many scenarios were created
+and simulated. One of the scenarios is a business-as-usual scenario where the current trend
+continues into the end of 21st century. However, we must avoid overfitting during the
+training stage. In addition, we validate model ability against the validation data set, which
+was specifically left out from historical data for validation purposes.
+Assumption 2: The link between temperature and CO2 is very complex. We assume
+a rise in CO2 precedes  a rise in temperature i n a short period and the trend of change in
+CO2 primarily affects a long-term trend of land-ocean temperature. However, temperature
+fluctuations between years can be caused by many factors and thus expressed as an
+autoregressive process.
+Justification: Considering physics behind the link, changes in temperature are roughly
+proportional to changes in radiative forcing as a function of changing concentration of CO2
+[7]. Strong correlations present between the trends of temperature anomalies and CO2
+levels also support this assumption.
+Assumption 3: The CO2 concentration data provided come from the Mauna Loa site
+and may differ from other CO2 sampling sites. We assume these data have sufficient
+representativeness for the global average condit ion in our attempts to investigate the
+relationship between CO2 levels and land-ocean temperatures.
+Justification: The team at Mauna Loa  has confidence that CO2 measurements made
+at the Mauna Loa Observatory reflect truth about global atmosphere [8]. The site is located
+3400 m high enough to represent very large areas. All measurements are rigorously
+calibrated with a very high accuracy.
+4 Methodology
+Trend analysis for autocorrelated annual CO2 time series
+(Question 1a)
+In response to Question 1a, we first computed 10-year running averages for the annual
+CO2 data sequence. We evaluated the exceedance of the considered threshold of CO2 level
+in 2004.
+Then, a modified Mann-Kendall (M-K) trend test [9] was conducted for monotonicity
+on the annual CO2 level data sequence. M-K test is a commonly used non-parametric trend
+analysis method based on rank correlation, but it s null hypotheses  is that the data are
+independent and randomly ordered so the effect of autocorrelation in the CO2 level data
+provided should be considered. The modified method is based on the modified variance of
+the data a nd shows robust in the presence of autocorrelation in the data. In absence of
+correlation in the data, the power of the modified M-K trend test is also comparable to that
+of the original M-K test.
+The M-K test computes the statistic S for observations X with a dimension of n in Eq.
+(1) where sgn() is a sign function:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 7 of 23
+𝑆𝑆 = ∑ 𝑎𝑎𝑖𝑖𝑖𝑖𝑖𝑖<𝑖𝑖 = ∑ 𝑠𝑠𝑠𝑠𝑠𝑠(𝑥𝑥𝑖𝑖 − 𝑥𝑥𝑖𝑖)𝑖𝑖<𝑖𝑖  (1)
+where
+𝑎𝑎𝑖𝑖𝑖𝑖 = 𝑠𝑠𝑠𝑠𝑠𝑠�𝑥𝑥𝑖𝑖 − 𝑥𝑥𝑖𝑖� = �
+1,       𝑥𝑥𝑖𝑖 < 𝑥𝑥𝑖𝑖
+0,       𝑥𝑥𝑖𝑖 = 𝑥𝑥𝑖𝑖
+−1,    𝑜𝑜𝑜𝑜ℎ𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑒𝑠𝑠𝑒𝑒
+(2)
+For a large n, the statistic S tends to normality with a mean of 0, and a variance given
+by:
+var(𝑆𝑆) = 𝑠𝑠(𝑠𝑠 − 1)(2𝑠𝑠 + 5)/18 (3)
+In the case of autocorrelation between the values of X, the mean is still zero while the
+variance can be computed by:
+var(𝑆𝑆) = 𝐸𝐸(𝑆𝑆2) = ∑ 𝐸𝐸(𝑎𝑎𝑖𝑖𝑖𝑖𝑎𝑎𝑘𝑘𝑘𝑘)𝑖𝑖<𝑖𝑖𝑘𝑘<𝑙𝑙 = ∑ 2
+𝜋𝜋 sin−1(𝑒𝑒𝑖𝑖𝑖𝑖𝑘𝑘𝑘𝑘)𝑖𝑖<𝑖𝑖𝑘𝑘<𝑙𝑙  (4)
+where
+𝑒𝑒𝑖𝑖𝑖𝑖𝑘𝑘𝑘𝑘 = 𝑐𝑐𝑜𝑜𝑒𝑒𝑒𝑒(𝑌𝑌, 𝑍𝑍) =
+𝜌𝜌(𝑖𝑖−𝑘𝑘)−𝜌𝜌(𝑖𝑖−𝑘𝑘)−𝜌𝜌(𝑖𝑖−𝑘𝑘)+𝜌𝜌(𝑖𝑖−𝑘𝑘)
+2�[1−𝜌𝜌(𝑖𝑖−𝑖𝑖)][1−𝜌𝜌(𝑘𝑘−𝑘𝑘)]  (5)
+and 𝑌𝑌 = 𝑥𝑥𝑖𝑖 − 𝑥𝑥𝑖𝑖 and 𝑍𝑍 = 𝑥𝑥𝑘𝑘 − 𝑥𝑥𝑘𝑘. i, j, l, k indicates the element index in X. ρ denotes a
+correlation function.
+M-K Z statistic is used to transform S to a normally distribution, as computed by:
+𝑍𝑍MK =
+⎩⎪⎨
+⎪⎧
+𝑆𝑆−1
+�VAR(S) (𝑆𝑆 > 0)
+0     (𝑆𝑆 = 0)
+𝑆𝑆+1
+�VAR(𝑆𝑆) (𝑆𝑆 < 0)
+(6)
+For an upward monotonic trend, the null hypothesis is rejected if |𝑍𝑍𝑚𝑚𝑘𝑘| ≥ 𝑍𝑍1−𝛼𝛼/2
+where α is confidence level. For more details about the modified M -K method and its
+derivation, refer to the literature [9]. We applied the modified M-K trend test to the annual
+CO2 level data by using R package modifiedmk.
+Models for predicting CO2 concentrations (Question 1b-d)
+Mathematical models are required to fit annual CO2 concentrations. We observed good
+increasing monotonicity, but with data points above the linear trend line in the low end and
+high end. Therefore, we fit linear, quadratic and exponential forms  (Equations 7- 9) of
+models to this time series, and compared their performances.
+Linear form: 𝑐𝑐𝑐𝑐 = 𝑎𝑎 × 𝑦𝑦 + 𝑏𝑏 (7)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 8 of 23
+Quadratic form: 𝑐𝑐𝑐𝑐 = 𝑎𝑎 × 𝑦𝑦2 + 𝑏𝑏 × 𝑦𝑦 + 𝑐𝑐 (8)
+Exponential form: 𝑐𝑐𝑐𝑐 = 𝑎𝑎 × 𝑒𝑒𝑏𝑏×𝑦𝑦 (9)
+where cc denotes CO2 concentration [ppm], y represents the number of years to the
+beginning year 1959. Coefficients a, b, and c were optimized by using observation data.
+To answer Question 1d, we performed n-fold cross validation for time series to
+evaluate the models’ skill in view of very limited data samples in the CO2 dataset. There
+is a temporal dependency between observations in a time series, the traditional n-fold
+cross validation must be modified to preserve that dependency during test. The procedure
+consists of the following steps.
+First, split the dataset into n equal-size subsets (in this work, n takes 10). Take the
+first subset as a training data set and the second subset as a testing data set. In the next
+iteration, take the first and second subsets as a training set, and the third sunset as a
+testing set, and so on to the end of the training set. In other words, the same forecasted
+subset is then included as part of the next training dataset and subsequent subset is
+forecasted. In this way temporal dependency is respected. At last, we summarize the skill
+of the model using the average of model evaluation scores, which in this work include
+coefficient of determination (R-squared), root mean square error (RMSE) and mean
+absolute error (MAE).
+Modeling changes of land-ocean temperatures (Question 2)
+The land-ocean temperature anomalies included in Temps Data Set 2 show fluctuation
+but have an increasing trend over time, with an evolving pattern that is much more complex
+than CO2 changes over the same period. We utilize the time series decomposition approach
+to model the changes. A time series can be decomposed to a trend component, a periodicity
+component and a remainder component. For our annual temperature data, we first test for
+the presence of a periodic component using STL (Seasonal and Trend decomposition using
+Loess) method and a spectral analysis.
+The STL has an advantage in that the seasonal component is allowed to change over
+time and provides facilities for  additive decompositions  [10]. It is implemented in R
+package known as stl() function. The seasonal() function returns the seasonal component.
+Our work indicates no obvious seasonal component present in the annual land- ocean
+temperature anomalies. On the other hand, spectral analysis involves the calculation of
+oscillations in a set of sequenced data  by breaking down a signal into its components at
+various frequencies. A previous material [6]  based on spectral analysis indicates annual
+global temperatures may exist frequencies of 60 years, 11 years and 9.3 years. Therefore,
+despite the failure of detecting seasonality by STL, we also performed spectral analysis on
+our temperature anomalies (1958- 2021) using R function spec.pgram(), which calculates
+the periodogram using a fast Fourier  transform. The resulting periodogram shows very
+weak spectrum (c. 0.050 for the largest) present in the data sequence considered.
+Next, we estimated the autocorrelation using R function acf(), which returns strong
+autocorrelation present in the temperature time series. Based on these findings (no obvious
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 9 of 23
+periodicity and strong autocorrelation), we modelled the temperature time series based on
+a decomposition framework  with autocorrelation considered. One option is a linear
+regression combined with an ARIMA (autoregressive integrated moving average ) model
+for residuals. However, this option relies on ARIMA to represent variability over the entire
+forecast period, and the performance tends to deteriorate  in the distant future due to
+ARIMA’s well-known poorer performance for long term forecasts . Bearing this in mind ,
+we turn to choose an exponential smoothing approach, which is more explainable than
+ARIMA, to decompose the temperature time series , with the residuals estimated by a
+bootstrap method. Our novel model is based on the Holt -Winters method (exponential
+smoothing based) with no seasonality component [11] and formulated as Equation 10.
+Δ𝑇𝑇′ = ℎ𝑒𝑒(Δ𝑇𝑇) + 𝜖𝜖′ (10)
+𝜖𝜖′ = 𝐸𝐸(𝑏𝑏𝑜𝑜𝑜𝑜𝑜𝑜𝑠𝑠𝑜𝑜𝑒𝑒𝑎𝑎𝑏𝑏(𝐸𝐸(𝜖𝜖), 𝑣𝑣𝑎𝑎𝑒𝑒(𝜖𝜖)) (11)
+where hw() is the Holt-Winters method with no seasonal component applied to temperature
+anomalies series (ΔT ); bootstrap() is a bootstrap function for the remainder series (𝜖𝜖) while
+maintaining expected value (𝐸𝐸(𝜖𝜖) and variance (𝑣𝑣𝑎𝑎𝑒𝑒(𝜖𝜖)) of the remainder component.
+Δ𝑇𝑇′ and 𝜖𝜖′ are the predicted temperature anomalies series and the remainder series.
+The Holt-Winters method has been implemented as an R function HoltWinters() in the
+stats package. It involves a forecast equation and two smoothing equations if no seasonality
+is considered:
+Forecast equation: 𝑦𝑦�𝑡𝑡+ℎ|𝑡𝑡 = ℓ𝑡𝑡 + ℎ𝑏𝑏𝑡𝑡 (12)
+Level equation: ℓ𝑡𝑡 = 𝛼𝛼𝑦𝑦𝑡𝑡 + (1 − 𝛼𝛼)(ℓ𝑡𝑡−1 + 𝑏𝑏𝑡𝑡−1) (13)
+Trend equation: 𝑏𝑏𝑡𝑡 = 𝛽𝛽(ℓ𝑡𝑡 − ℓ𝑡𝑡−1) + (1 − 𝛽𝛽)𝑏𝑏𝑡𝑡−1 (14)
+where ℓ𝑡𝑡  denotes an estimate of the level of the series at time t, a nd 𝑏𝑏𝑡𝑡  denotes an
+estimate of the trend of the series at time t. α, 𝛽𝛽 are smoothing parameters for the level
+(0 ≤ 𝛼𝛼 ≤ 1) and the trend (0 ≤ 𝛽𝛽 ≤ 1), respectively.
+Bootstrap is used to simulate the residual component from an estimated distribution of
+the residual component. The basic idea underlying the bootstrap is to estimate the residuals
+by operating a resampling with replacement from the sample at the disposal. To reduce the
+effect of autocorrelation in the residual, we applied  moving block bootstrap [12] to our
+work. Besides, bootstrap aggregating (bagging) consisting of 100 runs is used to overcome
+overfitting. The mathematical details and procedures can be found in the literature [12]. In
+this work, we used R function bld.mbb.bootstrap() in the forecast package  to implement
+our task.
+Once the model is determined by fitting observed temperature data, it is used for
+predicting the future changes of temperature an omaly. One merit of using this newly
+proposed model is the capability of quantifying uncertainty during the estimation.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 10 of 23
+Modeling the relationship between CO2 concentration and
+land-ocean temperature (Question 3a)
+The model proposed for solving Question 2 works only for univariate time series, so a
+new model needs to be created to represent the relationship between the two variables:
+CO2 concentration and land-ocean temperature. In physics, the primary effect of increased
+CO2 concentration is to raise the height to which the atmosphere is relatively opaque  to
+the infrared radiation from the earth’s surface [7]. Thus, changes in temperature are roughly
+proportional to changes in radiative forcing as a function of changing concentration of CO2.
+A logarithmic function of increased CO2 concentration is suggested to best fit the mean
+temperature anomaly. However, annual temperature anomalies exhibit strong fluctuations
+over time. We speculate CO2 changes may play an important role in affecting the change
+trend of temperature, rather than the detailed fluctuations  that are likely resulted from
+numerous exogenous factors and interactions within the climate system. To establish a link
+between CO2 concentrations and land- ocean temperatures, we decomposed the
+temperature time series into a linear trend component and a residual component in the hope
+that the first component would be estimated by the linear increase of CO2 concentrations
+and the residuals by an ARIMA model. This model is known as regression with ARIMA
+errors and can be solved by the R function Arima().
+Suppose that 𝑦𝑦𝑡𝑡  and 𝑥𝑥𝑡𝑡  are time series variables. A linear regression model with
+autoregressive errors can be written as:
+𝑦𝑦𝑡𝑡 = 𝛽𝛽0 + 𝛽𝛽1𝑥𝑥𝑡𝑡 + 𝜖𝜖𝑡𝑡 (15)
+If an autoregressive model Φ(𝐵𝐵) is defined, and let Φ(𝐵𝐵)𝜖𝜖𝑡𝑡 = 𝜔𝜔𝑡𝑡, then 𝜖𝜖𝑡𝑡 = Φ−1(𝐵𝐵)𝜔𝜔𝑡𝑡
+if the inverse operator, Φ−1(𝐵𝐵), exists. Then, the model of regression with ARIMA error
+can be written:
+𝑦𝑦𝑡𝑡 = 𝛽𝛽0 + 𝛽𝛽1𝑥𝑥𝑡𝑡 + Φ−1(𝐵𝐵)𝜔𝜔𝑡𝑡 (16)
+where 𝜔𝜔𝑡𝑡  is white noise series. In this work, 𝑥𝑥𝑡𝑡  represents log-transformed increased
+CO2 concentration at time t.
+Evaluating robustness of CO2 prediction models (Question 3b)
+We have established a univariate model combining the seasonal-component-free Holt-
+Winters method and bootstrap (HW+Bootstrap) and a bivariate model of linear regression
+with ARIMA errors (Trend+ARIMA) for predicting future CO2 level changes. To answer
+Question 3b, we assessed the model s’ forecast ability from two aspects  and figured out
+what factors may affect the ability.
+1) Quantify the model ability based on scenarios configured with different training
+dataset and test set created from historical data, as listed in Table 1.
+By c omparing S1, S3 and S5, we can investigate changes of  the performance  of
+HW+Bootstrap univariate model as the forecast moves forward . Likewise, comparison
+among S2, S4 and S6 helps investigate that of Trend+ARIMA model.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 11 of 23
+Alternatively, comparing S1 and S2, S3 and S4, and S5 and S6, allows us to look into
+the performance distinction between the two models with  the same configuration of
+training and test datasets.
+Model performance is measured by correlation coefficient (R) and RMSE.
+2) Comparing the forecast ability of the models for 2021-2100. Since no true data are
+present for 2021-2100, we examined predicted temperature changes estimated from both
+HW+Bootstrap and Trend+ARIMA models in terms of projected trend, evolution pattern
+over time and uncertainty propagation as time progresses.
+Table 1 Scenarios for evaluating models’ forecast ing ability. ‘HW+Bootstrap’ represents
+the method combining the seasonal -component-free Holt -Winters method and
+bootstrapped residuals and ‘ Trend+ARIMA’ represents the method combining the linear
+regression and ARIMA errors.
+# of scenario Training set Testing set Method
+S1 1959-1979 1980-2000 HW+Bootstrap
+S2 1959-1979 1980-2000 Trend+ARIMA
+S3 1959-1979 2001-2021 HW+Bootstrap
+S4 1959-1979 2001-2021 Trend+ARIMA
+S5 1980-2000 2001-2021 HW+Bootstrap
+S6 1980-2000 2001-2021 Trend+ARIMA
+5 Results and analyses
+Trends in historical CO2 concentrations
+Figure 1 shows decadal running averages of CO2 concentrations during 1959-2021 in
+a steadily increasing trend that starts from about 320 ppm in the 1960s to ca. 405 ppm in
+the 2010s. The CO2 concentration level in 2004 is 377.7 ppm, which intersects the running
+averages curve at almost 2008 (which indicates an average of the interval 1999 to 2008) ,
+and it seems to be higher than CO2 concentrations in any previous 10-years averages. The
+highest decadal average CO2 concentration before 2004 was at 367.24 ppm occurring in
+the period of 1994 to 2003.
+
+Figure 1 Decadal running averages of CO2 concentrations. The abscissa (Year*) indicates
+the last year of each 10-year window.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 12 of 23
+Since the running averages are highly autocorrelated, a modified M-K trend developed
+specially for autocorrelated time series [9] was applied to test monotonicity in the data
+sequence. The test showed a p -value close to zero and a z -score of 11.577, much greater
+than the threshold of 2.807 at 99% significant level, indicating a statistically significant
+monotonic increasing trend present in the time series. It thus confirms the claim in Question
+1a that the increase in CO2 in 2004 (relative to pre -industrial levels) is greater than the
+record over any previous 10-year period.
+CO2 concentration forecast models and predictions
+Based on the historical data provided, we fitted three models, i.e., linear, quadratic,
+and exponential models (Equations 17-18, respectively) for CO2 concentration changes
+over time:
+Linear form: 𝑐𝑐𝑐𝑐 = 1.614 𝑦𝑦 + 307.303 (17)
+Quadratic form: 𝑐𝑐𝑐𝑐 = 0.013 𝑦𝑦2 + 0.806 𝑦𝑦 + 315.522 (18)
+Exponential form: 𝑐𝑐𝑐𝑐 = 309.839 𝑒𝑒0.00449 𝑦𝑦 (19)
+where cc denotes CO 2 concentration in ppm and y denotes the years to 1959. Figure 2
+shows the fitted models together with the historical CO2 level data. The fits are all
+statistically significant with p- values lower than 0.001. All three models well capture the
+increasing trend in CO 2 concentration with very high R -square values. Among them, the
+quadratic model (Figure 2b) performs the best with an R-square of 0.999, showing perfect
+agreement with the observations . Both the linear (Figure 2a) and exponential (Figure 2c)
+models show some defects at the lower and upper ends of the x axis, where the fit values
+deviate downward from the observations.
+
+Figure 2. Three fitted models for CO2 changes over time. (a) linear model, (b) quadratic
+model, and (c) exponential model.
+
+We verified the performance of the models by performing a 10-fold cross validation
+for time series (Table 2). The overall high R-square values (>0.98) indicate that these
+models agree pretty well with the observations. However, the quadratic equation has tiny
+MAE and RMSE values (<0.08 ppm), which are much smaller than the values of the linear
+and exponential models . Therefore, the quadratic model (Equation 18) proves to be the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 13 of 23
+most accurate model, in prefect agreement with the available observations.
+Based on the fitted models , CO2 concentrations are projected to increase steadily in
+the future, hitting the levels of  535, 688, and 584 ppm, respectively, by 2100. However,
+compared to the Organization for Economic Co -Operations and Development (OECD)
+report, which predicts a CO2 concentration level of 685 ppm in 2050, our fitted models
+appear to be much more conservative. The highest C O2 concentration in 2050 predicted
+by the quadratic equation is around 497 ppm, well below 685 ppm . The linear and
+exponential models predicted that C O2 levels in 2050 at 454 and 466 ppm, respectively,
+which may somewhat underestimate the acceleration in CO2 concentration changes. Based
+on our fitted models, the years when the C O2 level reaches 685 ppm are much later than
+predicted in the OECD report. The quadratic model estimates CO2 concentration reaching
+685 ppm in 2097, close to the end of this century, while the estimates from the linear and
+exponential models are even later (by 2193 and 2134, respectively).
+
+Table 2. Averaged skill scores of fitted models measured by cross validation for time series
+Equations R-square MAE [ppm] RMSE [ppm]
+Linear 0.983 3.584 4.237
+Quadratic 0.999 0.681 0.777
+Exponential 0.991 2.541 3.078
+
+Table 3. Forecasts of CO2 concentration in 2050 and 2100, and the year predicted to reach
+a CO2 concentration of 685 ppm.
+Equations CO2 in 2100 [ppm] CO2 in 2050 [ppm] Year to reach 685 ppm
+Linear 534.9 454.2 2193
+Quadratic 687.6 496.5 2097
+Exponential 583.6 466.2 2134
+Forecast of land-ocean temperature changes using Holt-
+Winters model and bootstrap residuals model
+The level weight α and trend weight β  of the seasonal-component-free Holt-Winters
+method (HW) for land-ocean temperature anomalies were estimated to be 0.283 and 0.173,
+respectively. The results show t he fitted temperature anomal ies can well represent the
+variability trend of the observations (Figure 3a), while they do not  reproduce peaks and
+troughs in the time series. Figure 3b presents the residuals, which appear to conform to a
+normal distribution with a mean close to zero. No seasonality was observed in the residual
+series. We applied a bootstrap aggregation approach (also known as bagging) to reproduce
+the residuals as shown in Figure 4a. The resampled residuals by bagging can explain the
+upward and downward variabilities  present in the original residuals. Therefore, when the
+mean residuals from the 100 runs  were added to the fitted values of  the HW model, the
+additive result was found to reflect well the fluctuations present in the obs ervation time
+series (Figure 4b). The correlation coefficient between the observed time series and the
+HW estimates was 0.947, which increased to 0.971 with the HW+bootstrap model as a
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 14 of 23
+result of the addition of the bootstrapped residuals. Similarly, the RMSE value was reduced
+from 0.107 °C to 0.081 °C.
+
+Figure 3. Fits of the seasonal -component-free Holt-Winters method (HW)  to the annual
+mean land- ocean temperature anomalies. (a) shows the fitted anomalies and the
+observations; (b) shows the residuals.
+
+Figure 4. Fitted temperature anomalies by a seasonal -component-free Holt-Winters
+method (HW) with bootstrapped residuals  (HW+bootstrap). (a) Residuals computed by
+removing HW fits from the observations and the residuals reproduced by the bootstrap
+approach. The solid bl ue line represents the mean value of 100 times bootstrapped
+residuals, while t he blue shade represent s 10% to 90% quantiles of them.  (b) Observed
+temperature anomalies and forecasts by HW and HW+bootstrap.
+
+The HW-bootstrap model was used to project future changes of land- ocean
+temperature anomalies. The results are shown in Figure 5. According to our model, land -
+ocean temperature is projected to increase at a rate of about 0.24°C/decade in the future.
+The average land-ocean temperature will change by 1.25°C in 2032, 1.5°C in 2042, and 2°
+C in 2063 compared to the base period of 1951- 1980. If we take into account  the
+uncertainties arising from bootstrapping, an increase in average land-ocean temperature of
+1.25, 1.50, and 2°C  will occur successively in the intervals: [2027, 2037], [2038, 2047],
+and [2058, 2067], respectively.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 15 of 23
+
+Figure 5. Simulations of the proposed HW-bootstrap model for 1958 to 2100. Both
+observed land-ocean temperature anomalies  (labelled as Observed)  and the model
+estimates (labelled as Fitted) are shown for 1958-2021. Temperature anomalies for 2022-
+2100 were projected by HW -bootstrap (labelled as  Predicted). Levels of 1.25, 1.50 and
+2.00°C are marked.
+Relationships between CO2 concentration and land-ocean
+temperature
+The fit of annual la nd-ocean temperature anomalies and CO 2 concentrations yielded
+the equation:
+∆𝑇𝑇𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 = −21.835 + 3.776 𝑙𝑙𝑠𝑠(𝑐𝑐𝑐𝑐) (20)
+where ∆𝑇𝑇𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡  denotes the increas ed temperature anomaly , and cc denotes CO 2
+concentration. The R-square is 0.922 and the p-value < 0.001. If we eliminate the constant
+terms in Equation 20 by adding a divisor in the logarithm, the equation is transformed to:
+∆𝑇𝑇𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡𝑡 = 3.776 𝑙𝑙𝑠𝑠 �
+𝑐𝑐𝑐𝑐
+324.594� (21)
+where the value 324.594 can be considered as a reference concentration level. Equation 21
+implies a proportional relationship between increased temperature and CO2 concentration
+that has physical basis.
+The fit show n in Figure 6 indicates the logarithm model can well interpret the
+increasing trend in temperature anomaly time series. However, the fluctuations over time
+were missed, so an ARIMA model  was used  to reproduce the fluctuations. We first
+stationarized the fluctuation time series by first differencing ( Figure 7a). Then, we
+determined an ARIMA(6, 1, 0) model because the PACF  (Figure 7b) generally cut s off
+after six while the ACF (Figure 7b) varies sinusoidally. After running the ARIMA model,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 16 of 23
+the autocorrelation values are all within the confidence interval, indicating white noise ,
+while the p-value is greater than 0.1, which means that the null hypothesis is rejected, and
+we could regard this residual series as white noise. Figure 8a shows the fluctuations
+estimated by the ARIMA model  compared to the observed fluctuations  calculated by
+subtracting the trend component from the observed temperature anomalies, demonstrating
+acceptable skill of the model. Figure 8b exhibits the final results of combining ARIMA -
+simulated fluctuations with the trend component predicted by CO2 concentrations.
+Comparison of the simulation of the Trend-ARIMA model with the observed tempearutre
+anomalies show good agreement between them, with an R value of 0.965, which is slightly
+better than the value (r = 0.960) measured between the observations and the separate trend
+component. Adding the ARIMA -estimated fluctuations to the trend component  also
+resulted in a reduction of RMSE from 0.090 to 0.085.
+
+Figure 6. A proportional relationship between annual land-ocean temperature anomalies
+and log-transformed CO2 concentrations.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 17 of 23
+
+Figure 7. First-differenced fluctuations in annual temperature anomalies after subtracting
+the long-term trend  from the time series. (a) First -differenced fluctuations; (b)
+Autocorrelation Function (ACF) plot; and (c) Partial Autocorrelation Function (P ACF).
+
+Figure 8. Fluctuations estimated by an ARIMA model (a) and the estimates of temperature
+anomalies from the linear regression and ARIMA errors model (b). The observed
+fluctuations in (a) were computed by subtracting the linear trend component as a function
+of log-transformed CO2 concentrations  from the historical temperature anomalies. The
+observed time series  in (b) represents the historical land- ocean temperature anomalies.
+The Trend+ARIMA fitted anomaly time series is the result of adding ARIMA-estimated
+fluctuations to the trend component predicted by CO2 concentration.
+Robustness of the temperature forecasting models
+Until now, we have created a univariate model of HW+Bootstrap and a bivariate model
+of Trend+ARIMA, both having the capability of projecting future changes in temperature
+anomalies. Trend+ARIMA model relies on the changes of CO2 concentration to estimate
+future trend of temperature anomalies (Equation 21). We obtained future changes of CO2
+concentration through the best -performed quadratic model  (Equation 18) . By the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 18 of 23
+Trend+ARIMA model, global land- ocean temperature anomal ies are projected to
+continuously rise in the future and reach 2.5 °C at the end of this century (Figure 9).
+However, compared to the HW+Bootstrap projection (Figure 5), the fluctuations estimated
+by ARIMA fade away as time advances and only trend component remains. This is one of
+the known weaknesses of ARIMA, which perform s poorly for long term forecast s.
+Moreover, Trend+ARIMA shows much broacher uncertainty bands than HW+Bootstrap.
+Based on different scenarios configured with different training datasets  and test sets
+created from historical data, we could investigate the performance of HW+Bootstrap and
+Trend+ARIMA models (Table 4) in forecasting. Taking data from 1959 to 1979 as the
+training set, the two models achieved close performances no matter what the testing set is.
+However, t o our surprise , both two models per formed better when predicting the
+temperature anomalies in the distant period of 2001~2021 (S3 and S4) than that in the near
+period of 1980-2000 (S1 and S2). Therefore, we can hardly infer whether the performance
+of these models will degrade when the forecast period goes on, based on our limited
+evidence.
+The influence of the training set seems to override that of the  departure of the testing
+period. When taking data from 1980 to 2000 as the training set, though HW+Bootstrap
+achieved a higher r value than Trend+ARIMA, its RMSE value is much larger (S5), while
+Trend+ARIMA achieved close performance regardless of scenarios (S2, S4, S6). It can be
+partially interpreted that while  HW+Bootstrap depends  solely on its own history,
+Trend+ARIMA is governed by an exogenous variable  of CO2 concentration that can be
+reliably estimated. As a result, Trend+ARIMA shows a more robust performance under any
+train-test scenarios.
+Annual temperature anomal ies from 2022 to 2100 projected by the two models are
+shown in Figure 10. The contrast shows that the two trajectories evolve generally at a same
+rate, while the Trend+ARIMA trajectory is 0.1-0.2 °C lower than HW+Bootstrap and has
+less fluctuat ions due to the poor  performance of ARIMA for long- term forecasts. Both
+models tend to perform better forecasts in the first 10-20 years than the period after.
+It is difficult and irresponsible to determine how long into the future our models will
+lose its reliability, given the very limited information available and lack of comprehensive
+model validations. Though both models project a similar increasing trend in temperature,
+the fluctuations are often underrepresented. Trend+ARIMA uses CO2 concentration as an
+input, but CO2 concentration alone is far from sufficient to reproduce all details of the
+future time series of  temperature anomaly. The fluctuations, which appear  to be random
+and without apparent periodicity, are in fact controlled by many intervening factors  and
+complex interactions within the climate system.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 19 of 23
+
+Figure 9. Simulations of annual land-ocean temperature anomalies in 1958 to 2100 by the
+Trend+ARIMA model with CO2 concentrations as input. CO2 concentrations in 1959-2021
+are observed data while after 2021 they were predicted by the quadratic model (Equation
+18). For temperature anomalies in 1959-2021, both observed data (labelled as observed)
+and the estimates by the Trend+ARIMA model (labelled as fitted) are shown. Temperature
+anomaly time series after 2021 was predicted by the Trend+ARIMA model while the future
+trend was calculated based on future projections of CO2 concentrations.
+
+Table 4. Skill scores of two forecasting models  (HW+Bootstrap univariate model  and
+Trend+ARIMA bivariate model) under different train-test scenarios created from historical
+data.
+# of scenario Training set Testing set Approach R [°C] RMSE [°C]
+S1 1959-1979 1980-2000 HW+Bootstrap 0.639 0.096
+S2 1959-1979 1980-2000 Trend+ARIMA 0.633 0.097
+S3 1959-1979 2001-2021 HW+Bootstrap 0.834 0.093
+S4 1959-1979 2001-2021 Trend+ARIMA 0.848 0.082
+S5 1980-2000 2001-2021 HW+Bootstrap 0.835 0.234
+S6 1980-2000 2001-2021 Trend+ARIMA 0.793 0.097
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 20 of 23
+
+Figure 10. Projected annual temperature anomalies for the future period 2022 to 2100 by
+the HW+Bootstrap univariate model and the Trend+ARIMA bivariate model.
+6 Strengths and Limitations
+Strengths
+We innovatively propose a univariate forecast ing model (HW+bootstrap) combining
+the seasonal-component-free Holt-Winters model and bootstrap- aggregated residuals for
+forecasting annual land-ocean temperature variability. The results show that the model has
+high forecasting power that well preserves the trend of variability, prevents overfitting, and
+quantifies simulation uncertainties.
+We show multiple ways to assess the reliability of the models based on a very limited
+length of data. We evaluated the models for CO2 changes using n-fold cross validation for
+time series. We ran multiple scenarios based on historical data to evaluate two models for
+temperature prediction, which we believe is one of the innovative points in this wor k. We
+also compared the performance of both models in simulating future time periods  to
+determine the robustness of the models in extending into the future.
+In this work, we follow rigorous modeling procedures, in which the studied data were
+first examined for stationarity, autocorrelation and seasonality, etc., before model building.
+This prevents the models from avoiding the model assumptions and ensures that the models
+have an excellent fit and safe future forecasting ability.
+Limitations
+All three models created in this work are based on historical data. They may not
+correctly predict the occurrence of turning point s in the future . This is also a common
+problem of all the empirical/statistic models. Due to the nature of empirical/statistic models,
+our model can  only simulate a business-as-usual CO2 emission scenario . F or forecasts
+under other CO2 emission scenarios, physical models should be resorted to.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 21 of 23
+The data sets used in this work are not long enough, which may result in insufficient
+coverage of the patterns of the variables of interest. For example, some previous materials
+indicated the presence of periodicity in a long temperature data set that was more than a
+century long, but such periodicity was not tested in our data for the 1959-2021. This shows
+that consistent data sets are particu larly crucial for making consistent forecasts from
+statistical models.
+As noted in this work, our models are good at  capturing the trend of change in
+temperature anomaly with a single CO2 input, not  the detailed annual variations. Despite
+the better performance of  HW+Bootstrap in predicting future changes with a narrower
+uncertainty band, its ability to reproduce annual fluctuations weakens over time. Moreover,
+HW+Bootstrap is likely to underestimate  the uncertainty, especially in forecasts for the
+distant future.
+7 Conclusions
+In this work , we built three models based on historical data of CO2 and land- ocean
+temperature anomalies to describe past and future CO2 and temperature changes and to
+investigate the relationship between them . CO2 concentrations  have increased steadily
+over the past six decades. Linear, quadratic, and exponential forms of mathematical models
+can well represent the overall trend of CO2 changes. 10-fold cross validation for time series
+showed that the quadratic model had the highest predictive accuracy. It is predicted that
+CO2 concentration will reach 685 ppm by the end of 21st century.
+There is also a clear upward trend in the annual land-ocean temperature anomalies with
+evident fluctuations. The HW method can capture the increasing trend and levels in the
+time series, while a bootstrap approach can estimate the residual. Therefore, the combined
+HW+bootstrap model could provide a projection of future changes of temperature anomaly
+where the temperature will increase by 2°C and 3°C in around 2060 and 2100, respectively.
+A logarithmic relationship between the increased temperature and CO2 concentration
+was found and can be used to account for  long-term trends of changes  in temperature.
+While the fluctuated signal in the temperature time series can be fitted and predicted by the
+ARIMA model, we thus created a linear regression model and ARIMA errors to investigate
+the relationship between CO2 and temperature. We assessed the model reliability through
+multiple ways. The Trend+ARIMA model shows a more robust performance under any
+scenarios than the HW+bootstrap model. Though both models project a similar increasing
+trend in temperature, the fluctuations are often underrepresented. While increased CO2 has
+been shown to be a major contributor to rising temperature, fluctuations in temperature are
+related to many intervening factors and complex interactions within the climate system and
+hard to be reproduced by both models in long term.
+All questions concerned are answered in this work, and we highlight the development
+of the HW+bootstrap model for forecasting temperature variability and creati on of
+scenarios based on historical data to evaluate model performance.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 22 of 23
+8 One-Page Non-Technical Article for Scientific Today
+Act! Drastic temperature rise in response to massive carbon dioxide
+emissions
+
+Carbon dioxide concentrations have increased dramatically over the past 60 years, with
+the trend accelerating. Currently, carbon dioxide c oncentration has increased by 30%
+compared to 60 years ago. If this trend  continues in the future , the carbon dioxide
+concentration will be twice as high at the end of this century as it was 60 years ago.
+Global temperature has also shown a clear upward trend over the past six decades ,
+albeit with some fluctuations. If we do nothing, our modeling results indicate that global
+temperature will rise by 2 °C in the middle of this century and by 3°C  at the end of this
+century, compared to the baseline of the 1950s to the 1980s. This may lead to numerous
+environmental disasters in most regions of the world.
+We have found that there is
+close relationship between
+increased carbon dioxide
+concentration and temperature .
+The increasing carbon dioxide
+concentration may be one of the
+main contributors  to the
+temperature rising.
+Global warming is one of the
+biggest threats of the 21st
+century. It is high time that we do something to stop climate change. First and easiest, we
+should raise our voices, talk to our friends and family to inform them of the risks of global
+warming, and get our representatives to make good decisions for our future. In addition,
+we could use renewable energy in our daily lives, reduce the waste of water and food since
+pumping, heating, and treating these stuffs consumes a lot of energy, drive a fuel-efficient
+vehicle to reduce carbon emissions while saving fuel, and so on. We should also protect
+forests, plant more trees  and limit CO2 emission from factories. All in all, we must  be
+aware of the urgent mission to cut down the carbon footprint. Governments of all countries
+should work together to solve the problem  of global climate change.  Last but not leas t,
+humans, animals and plants react to the global temperature rise —scientific studies matter!
+Scientific studies document these responses . In this way, science provides  a basis for
+understanding how climate change affects our lives and what we can do to slow or reverse
+the changes.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 12465, Page 23 of 23
+
+9 References
+[1] United States Environmental Protection Agency. (2022, July) . Climate Change
+Indicators: Atmospheric Concentrations of Greenhouse Gases  [Internet].
+https://www.epa.gov/climate-indicators/climate-change-indicators-atmospheric-
+concentrations-greenhouse-gases.
+[2] Payn T, Carnus J, Freer -Smith P, Kimberley M, K ollert W, Liu S, Orazio C,
+Rodriguez L, Silva L N, Wingfield M J. (2015). Changes in planted forests and future
+global implications. Forest Ecology and Management. 352: 57- 67.
+doi:10.1016/j.foreco.2015.06.021.
+[3] National Oceanographic and Atmospheric Administration. NOAA Research News
+& Features. (2022, June 3). Carbon dioxide now more than 50% higher than pre-industrial
+levels [Internet].  https://www.noaa.gov/news-release/carbon-dioxide-now-more-than-50-
+higher-than-pre-industrial-levels.
+[4] Climate Consulting Selectra. (2022). IPCC climate report 2022 summary: The key
+findings [Internet]. https://climate.selectra.com/en/news/ipcc-report-2022.
+[5] National Oceanographic and Atmospheric Administration. NOAA Ear th System
+Research Laboratory. (2022, October). Trends in atmospheric carbon dioxide [Internet].
+https://gml.noaa.gov/ccgg/trends/data.html.
+[6] Clive Best. (2022) A fit to global temperature data [Internet]
+https://clivebest.com/blog/?p=2353.
+[7] Manabe S, Wetherald R T. (1967). Thermal Equilibrium of the Atmosphere with
+a Given Distribution of Relative Humidity. Journal of the atmospheric sciences. 24(3): 241-
+259. doi:10.1175/1520-0469(1967)024<0241:TEOTAW>2.0.CO;2.
+[8] Global Monitoring Laboratory, (2020). How we measure background CO2 levels
+on Mauna Loa? [Internet] https://gml.noaa.gov/ccgg/about/co2_measurements.html.
+[9] Hamed K H, Ramachandra Rao A. (1998). A modified Mann-Kendall trend te st
+for autocorrelated data. Journal of Hydrology. 204(1): 182- 196. doi: 10.1016/S0022-
+1694(97)00125-X.
+[10] Cleveland, R. B., Cleveland, W. S., McRae, J. E., & Terpenning, I. J. (1990). STL:
+A seasonal-trend decomposition procedure based on loess. Journal of Official Statistics,
+6(1), 3–33
+[11] Hyndman R J, Athanasopoulos G. (2018). Forecasting: Principles and Practice.
+2nd edition. OTexts: Melbourne, Australia. https://otexts.com/fpp2/.
+[12] Bühlmann P. Bootstraps for Time Series. (2002). Statistical science. 17(1): 52-
+72. doi:10.1214/ss/1023798998.
+
+ᇿ Hi MCM
+ሧ࿟

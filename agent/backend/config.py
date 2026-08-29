@@ -24,7 +24,7 @@ class Config:
     # ── 环境变量默认值（可被运行时设置覆盖） ──
     _ENV_LLM_API_KEY = _get("LLM_API_KEY", "")
     _ENV_LLM_BASE_URL = _get("LLM_BASE_URL", "https://api.deepseek.com/v1")
-    _ENV_LLM_MODEL = _get("LLM_MODEL", "deepseek-chat")
+    _ENV_LLM_MODEL = _get("LLM_MODEL", "deepseek-v4-pro")
 
     # 知识库
     KNOWLEDGE_DIR = (ROOT_DIR / _get("KNOWLEDGE_DIR", "../json_outputs")).resolve()

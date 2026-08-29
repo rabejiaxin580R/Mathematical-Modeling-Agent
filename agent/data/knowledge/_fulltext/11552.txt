@@ -1,0 +1,802 @@
+ğ
+Team Control Number
+11552
+Problem Chosen
+B
+2021
+HiMCM/MidMCM
+Summary Sheet
+Tackling the Drought
+The drought in the Lake Mead region has had a great impact on the Southwestern United
+States, which has been experiencing long-term water shortages. Given the circumstances, this
+report is mainly an investigation of the recent drought in the Lake Mead region.
+In order to evaluate the volume of Lake Mead, this survey first identified three factors that
+affect the volume of Lake Mead: inflow, outflow, and loss. These factors were then used to
+establish an IOL model. By analyzing the factors that affect the inflow, outflow, and loss,
+we established the Inflow, Outflow, and Loss Models, respectively. In addition, we used the
+micro-elementmethodtoinitiateamodelofthewatervolumeofLakeMead. Oneotherfactoid
+we need to solve the problem is the water level. We also used statistical methods such as
+unary and multiple linear regression models to estimate the volume of Lake Mead based on its
+real-time water elevation and area. Ordinary Least Squares (OLS) were applied to measure the
+coefficients in linear regression models. Then we found that theR2 of linear regression was
+relatively close to 1, indicating a strong regression impact.
+In order to assess the elevation of Lake Mead, we first visualized the data given in the
+attachmentandsummarizedthehistoricalwaterlevelpatternofLakeMead. ByusingBollinger
+Bands strategy to define the drought criteria, we found that the recent drought will be more
+serious and last longer. Time series analysis was applied to create two models for predicting
+water levels, namely the short-term time series model (STTS) and the long-term time series
+model (LTTS). STTS has only selected data for the past 3 years, and the predicted result is that
+the water level of Lake Mead will remain above 1080 feet in the future; LTTS has collected
+data for nearly 15 years, and its predicted result shows that the water level of Lake Mead will
+gradually decline.
+In order to assess the impact of wastewater recycling, this report first analyzes the five
+major ways that wastewater is recycled, and then proposes some policies and plans to solve
+the drought problem. The plan includes the development of wastewater discharge standards,
+cleaning strategies, efficiency monitoring, and other major parts. We defined a recovery rate
+(RR), a proportion of recycled water to total water consumption, to quantify the effect of waste
+water recycling.
+Finally, we conducted a sensitivity analysis on the Bollinger Bands strategy, and the results
+reflect what we expected. Some possible advantages and disadvantages of our model are
+described. We have also completed a non-technical news report, including the detailed key
+points of our team’s investigation and some suggestions.
+Keywords: Mead Lake, Linear Regression, Time Series, Bollinger Bands, Recovery Rate
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Contents
+1 News Report 1
+2 Introduction 2
+2.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+2.2 Problem Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+2.3 Our work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+3 Assumptions and Justifications 3
+4 Problem 1: Lake Mead Volume Factors and Survey 4
+4.1 Factors Influencing Lake Mead Volume . . . . . . . . . . . . . . . . . . . . . 4
+4.1.1 Inflow Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+4.1.2 Outflow Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+4.1.3 Loss Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+4.2 Lake Mead Volume Survey . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+5 Problem 2: Water Level Patterns and Prediction 12
+5.1 Overall Patterns of Lake Mead Water Levels . . . . . . . . . . . . . . . . . . . 13
+5.1.1 Overall Patterns . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+5.1.2 Criteria for Drought Periods . . . . . . . . . . . . . . . . . . . . . . . 13
+5.2 Water Level Prediction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+5.2.1 Short Term Time Series (STTS) Model . . . . . . . . . . . . . . . . . 15
+5.2.2 Long Term Time Series (LTTS) Model . . . . . . . . . . . . . . . . . 17
+6 Problem 3: Future Water Usage and Wastewater Recycling 19
+6.1 Factors in Recycling Wastewater . . . . . . . . . . . . . . . . . . . . . . . . . 19
+6.2 Measurement of Recycling plan’s Impact . . . . . . . . . . . . . . . . . . . . . 20
+7 Sensitivity Analysis 20
+8 Strengths and Weaknesses 22
+8.1 Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+8.2 Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 1 of 23
+1 News Report
+Lake Mead
+Drought Impact and Possible Response
+Our report generally describes the possible causes of a drought around the Southwestern
+region of America, specifically the Mead Lake area. The report also analyzes the basic factors
+needed to evaluate the volume, which was mostly used to describe the drought level. Previous
+data of water levels was used to build two time series prediction models for future water levels.
+In the response to the drought, a waste water recycling plan has been raised up as well.
+Figure 1.1: Comparison of the water volume of Lake Mead in 1984 and 2021. The picture on
+the left was taken in 1984, and the picture on the right was taken in 2021[1].
+The volume of a lake is mostly affected by inflow, outflow, and loss. The increasing rate
+of water loss is directly caused by the rise of temperature and inversely proportional to inflow,
+which results in a smaller volume over a long period of time. The report analyzes the factors
+that affect the volume of Lake Mead, and carefully analyzes the impact of these factors on the
+volume and the relationship between them. Taking account of the irregular shape and different
+depthsofLakeMead,ourteamusedthemicro-elementmethodtoobtainawaytocalculatethe
+volume, and used linear regression to verify the previous data. The results they obtained were
+accurate and robust.
+The report also analyzes the past water level of Lake Mead, summarizes several patterns,
+andusesBollingerBandsstrategytodefinedrought. Itthenillustratestwotimeseriesprediction
+models to predict future changes in the water level of Lake Mead. The first model is based on
+short-term data, and the predicted results are relatively optimistic; The second model is based
+on long-term data. The predicted results show that the water level of Lake Mead will continue
+to decline until 2050 meters. The water level of Lake Mead will be lower than 950 feet above
+sea level. In this case, we need to pay closer attention because of the drought. Our team also
+analyzed the impact of wastewater recycling. The report highlights the five major ways that
+wastewaterrecyclinghappensintoday’ssociety,andgivespracticalsuggestionstolocalleaders.
+So, everyone, no matter what occupation or age they are, shouldn’t argue that there is no
+need to worry about water. We should strive to make it through the drought and fight for out
+own future.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 2 of 23
+2 Introduction
+2.1 Background
+In today’s world, drought has become a new challenge facing mankind. Drought is a
+long-term dry period in the natural climate cycle. It can occur anywhere in the world. It
+is a slow-onset disaster characterized by insufficient precipitation, leading to water shortages.
+Droughtcanhaveseriouseffectsonhealth,agriculture,economy,energy,andtheenvironment.
+Itisestimatedthat55millionpeopleworldwideareaffectedbydroughteveryyear,anddrought
+is the most serious hazard to livestock and crops in almost every part of the world. Drought
+threatens people’s livelihoods, increases the risk of disease and death, and encourages mass
+migration. Waterscarcityaffects40%oftheworld’spopulation,andby2030,upto700million
+people will be at risk of being displaced by drought[2].
+According to the National Oceanic and Atmospheric Association, in the U.S., nearly half
+the mainland is currently afflicted. The situation is especially dire in the Northwest, which is
+facingsomeofitsdriestconditionsinoveracenturyfollowingaheatwavethatkilledhundreds
+of people[3]. Also, the Southwest part suffers from the drought. In the summer of 2021, Lake
+Meadreachesitslowestlevelonrecordsinceitsinitialfillinginthe1930s. OnAugust16,2021,
+theBureauofReclamationannouncedthefirst-everwatershortagedeclarationontheColorado
+River[4]. Drought—low precipitation leading to water shortage—has persisted for millennia.
+But scientists say that rising global temperatures and shifting precipitation patterns are leading
+to more frequent and serious droughts.
+In this case, It’s important to get well prepared to handle such drought impact and take the
+reality that it might be a long term situation for us to face drought impact. Among many of the
+solutions to drought impact, waste water recycling is one of the effective ones. And it’s been
+well researched and conducted by government for years[5].
+2.2 Problem Restatement
+Our team considers using Lake Mead to investigate and learn more about the impact of
+drought on the reservoir. We set up wastewater recycling as a solution to water shortages. In
+this project, we are provided with the volume, water level(elevation), and area of Lake Mead,
+along with two data sheets containing the time series data of Lake Mead’s water levels. The
+data sheets describe monthly elevation and the lowest and highest water level each year.
+Problem1 ThevolumeofwaterinLakeMeadisafunctionofinflow,outflowandloss. We
+first need to identify and describe the factors that affect these variables, and then discuss the
+relationship between these factors and their impact on the volume of water in Lake Mead and
+relative influence of water level. In addition, Lake Mead has a particularly irregular shape and
+varying depths throughout. We need to consider how to verify the relationship between water
+level, area and water volume.
+Problem 2Modeling the water level and elevation of Lake Mead. The data file provides
+informationaboutthewaterlevel. Wefirstneedtobrieflydiscusstheoverallpatternofhistorical
+dataonthewaterlevelofLakeMead. Thenweneedtodefinethecriteriaforthedroughtperiod
+and determine the beginning and end of it. Finally, we need to comment on how the recent
+drought period compares with the earlier drought period.
+Problem3 Modelingand planningof wastewaterrecycling. Basedon ourmodeland water
+level forecast in Problem 2, we need to focus on whether wastewater recycling can make up all
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 3 of 23
+or part of the future shortage. First, we need to identify and describe the factors that will be
+included in the wastewater recycling plan, and consider the decisions that local leaders need to
+make and the priorities they may set that will affect your plan. Then we need to elaborate our
+plan in detail and measure the impact of implementing the plan.
+Finally, our team needs to write a one-page non-technical news article reporting the key
+takeaways and recommendations of our investigation.
+2.3 Our work
+For problem 1, we first regarded the water volume of Lake Mead as a function of inflow,
+outflow, and loss, and then analyzed in detail the factors that affect these variables. We then
+established an IOL model. Secondly, in order to verify the relationship between the water
+volume of Lake Mead and the water level, altitude, and area, we established a VAE model,
+using the idea of the infinitesimal method to determine the relationship between them.
+For problem 2, we first visualized the attached data and summed up the overall pattern of
+the historical water level of Lake Mead from these data. Then we used the Bollinger Bands
+strategy to define the drought criteria, and summarized several drought periods in history, and
+found that the recent drought was a bit more serious. After that, we established short-term and
+long-term time series models STTS and LTTS to predict water level elevations in 2025, 2030,
+and 2050. The prediction effects of the two models were inconsistent, and we discussed them.
+Forproblem3,wefirstanalyzedthesourceofwastewatertofindthefactorsthataffectwaste
+water recycling, and then analyzed the policy measures that government decision makers may
+take for waste water recycling. We described our plan and evaluated the impact of wastewater
+recycling on future water resources.
+Finally, we wrote a non-technical news report detailing the results of our investigation and
+recommendations.
+3 Assumptions and Justifications
+1. Assume that the water volume of Lake Mead is only caused by inflow, outflow and loss.
+According to the given information description, these three parts are the main factors
+affecting the water volume of Lake Mead. Therefore, we can simplify the problem as
+mentioned above.
+2. Assumethattheinflowcausedbyprecipitationisaconstantvaluewithinthetime t. Since
+we often consider the changes in the volume of water in a lake on a scale of one year,
+although there are rainy and dry seasons in a year, the total annual precipitation is not
+much different and can be considered as a constant.
+3. Assume that the water consumed directly from the lake during the timet is a constant
+value. Since the water directly consumed in the lake may be taken by nearby residents,
+the uncertainty is large, so we considered it as a constant here.
+4. Assumed that the previous water level data of Lake Mead is accurate, and that the trend
+of the dry period will continue. From the data chart, we can see that entering the 21st
+century, the dry period has been continuing, and in the long run, the water volume of
+Lake Mead has shown a downward trend.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 4 of 23
+4 Problem 1: Lake Mead Volume Factors and Survey
+4.1 Factors Influencing Lake Mead Volume
+In this part we need to model the water volume of Lake Mead, which may be affected by
+many factors, including natural factors and unnatural factors.
+Figure 4.1: Natural Landscape and Water Volume of Lake Mead[6]
+Forsimplicity,weonlyconsiderwatervolumeasafunctionofinflow,outflow,andloss. The
+ColoradoRiverprovidesmorethan96%oftheinflowandadditionalwaterfromtheotherthree
+tributaries, as well as direct precipitation from the lake. Outflow occurs through the release of
+water(forexample,throughadam)anddirectlyfromtheconsumptionofthelake. Lossoccurs
+through evaporation.
+Regarding the water volume of Lake Mead asV. As mentioned in the assumptions, there
+are three main factors affecting the water volume: inflow, outflow and loss, which satisfy
+V = V0 + I − O − L (4.1)
+where V0 represents the initial water volume of Lake Mead,I represents inflow,O represents
+outflow, andL represents loss.
+Figure 4.2: Modeling and analysis of Lake Mead’s water volume.
+Next we model and analyze these aspects separately.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 5 of 23
+4.1.1 Inflow Model
+Now we analyze the factors that affect the inflow. According to the description, the inflow of
+Lake Mead is mainly composed of two parts: the inflow of other rivers (IR), and precipitation
+(IP), namely
+I = IR + IP (4.2)
+where IR represents the inflow of other rivers, andIP represents precipitation.
+Based on the known information, since more than 96% of the inflow flow in through other
+rivers, we ignore the changes in precipitation as a secondary factor and treat the precipitation
+as a constant.
+Then we analyze the factors that affect the inflow of other rivers, remember
+IR = IC + I1 + I2 + I3 (4.3)
+where, IC represents the inflow of the Colorado River, andI1, I2, I3 represent the inflow of the
+other three tributaries.
+The factors that affect the inflow of a river are the cross-sectional area of the river, the
+average flow rate, and time. The relationship is:
+IR = (SCvC + S1v1 + S2v2 + S3v3)t (4.4)
+Among them, SC, S1, S2, S3 represent the cross-sectional area of the intersection of the
+ColoradoRiverandtheotherthreetributaries. vC, v1, v2, v3 representtheaverageflowvelocity
+of Colorado River and the other three tributaries during the timet at the confluence of Lake
+Mead.
+Figure 4.3: The cross-section of the river confluence
+Now we consider how to obtain the water flow velocity. The speed of water is an important
+data in river hydrology. Studies have found that, due to the resistance of the mud at the bottom
+of the river, the water velocity at different locations on the same cross-section is different.
+• The velocity at the center of the river surface is greater than the velocity of the river near
+the bank.
+• The velocity of the river surface is greater than that at the bottom.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 6 of 23
+• Due to the difference in the river water velocity, the pressure at the center of the river
+surface is smaller, making the height of the river center higher than the sides.
+• Astheriverwaterismixedwithsand,thereisacontinuousaccumulationofsandsinking
+to the bottom of the river as the river flows, which will change the shape of the river
+bottom and affect its flow in turn.
+In the prior art, we can characterize the flow rate of river water by averaging at multiple
+points.
+v = 1
+n
+nX
+i=1
+vi
+Where {vi}n
+i=1 represents the flow velocity ofn points sampled in the river.
+Figure 4.4: Water flow velocity on a cross-section of a river
+As for the cross-sectional area of the confluence of the river and Lake Mead, we have the
+following steps[7].
+1. Establish an x − y coordinate system with x representing the width direction andy
+representing the height direction f the river channel;
+2. Measure the contour line of the water surface(fup(x)) at the measurement site;
+3. Measure the river bottom contour line (fdown(x)) at the measurement site;
+4. Depict fup(x) and fdown(x) on thex − y coordinate system. The resulting closed area is
+exactly the cross-section of the measurement site;
+5. Calculate the area of the closed area as the cross-sectional area through the formula 4.5.
+S =
+Z x2
+x1
+fup(x) − fdown(x)dx (4.5)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 7 of 23
+Figure 4.5: Cross-sectional Area Calculation.
+The rate of flowv here is given based on the mean of the velocity of each point in the field
+experiment. In fact, we can also get the flow through model test or simulation, which is more
+accurate than calculating the mean directly.
+For the simulation method, a 21mm wide and 1000mm long river model is first established
+inCFDcommercialsoftwareFLUENTforillustratingtheprincipleinsteadoftherealsize. The
+river bottom contour is a spline curve. For a formal survey, the depth at each point across the
+river can be measured to fit its bottom contour.
+Figure 4.6: Meshing
+Duetotheviscosityofthebottomwall,thevelocityatthebottomoftheriveris0. Asshown
+in Figure 4.6, the change of flow velocity along the river direction is not as sharp as that on the
+cross-section, so when conducting finite element simulation, a more compact mesh should be
+setonthecross-section,whichispartitionedbypatchgenerationmethod. Certainly,wecanuse
+some fluid mechanics knowledge, such as boundary layer theory and potential flow theory, to
+calculate the theoretical solution of the flow.
+Infact,webuildascaledmodelthroughexperimentalmapping,andthensettheappropriate
+pressure differential to simulate the driving force of the river. Then the flowQexp of this
+experimentismeasuredbytheflowmeter. Inordertoreducethepressuredifferencelosscaused
+bytheflowmeter,ultrasonicflowmeterisselected. Then,accordingtothesimilarityprinciple,
+the flowQf actwill be obtained.
+First,weselectfourindependentvariables ∆, A, Q, ρ,whosebasicdimensionsareL,M,T.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 8 of 23
+
+
+
+[∆P ] = M T−2L−1
+[A] = L2
+[Q] = M T−1
+[ρ] = M L−3
+In order to obtain infinite dimensional constantsΠ = ∆P aAbQcρ, we set out the equations
+(4.6).
+
+
+
+a + c + 1 = 0
+−2a − c = 0
+−a + 2b − 3 = 0
+(4.6)
+Solve the system of equations. The final solution isΠ = ∆ P A2Q−2ρ. As the density of
+experimental water flow is the same as that of the real one, the flow rate of the model can be
+calculated by controlling the pressure difference and area difference.
+Qf act
+Qexp
+=
+s
+∆Pf act
+∆Pexp
+Af act
+Aexp
+4.1.2 Outflow Model
+Nowweanalyzethefactorsthataffecttheoutflow. Giventheinformation,weknowtheoutflow
+is combined by released water (such as a dam) and direct consumption (consumption), so
+O = OR + OC (4.7)
+Among them,OR represents the water released from the lake, andOC represents the water
+directlyconsumedinthelake. Sinceitisdifficulttoestimatethewaterconsumeddirectlyfrom
+the lake, we believe that its annual change is not large, so it is regarded as a constant.
+Next, consider the water released from the lakeOR, which is mainly similar to the release
+of water for irrigation in a dam manner. Similar to the above analysis:
+OR = SRvRtR (4.8)
+where, SR represents the cross-sectional area of the pipe where the water is released (usually it
+can be directly measured), andtR represents the time the water is released.
+Figure 4.7: Water Releasing through a dam.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 9 of 23
+4.1.3 Loss Model
+NowweconsidertheamountofwaterevaporatedinLakeMead L,whichdependsonthesurface
+area of the lakeA and the evaporation rateE. In fact, the evaporation rateE is influenced by
+many factors, including dimensions, temperature, etc.
+Figure 4.8: Lake Evaporation.
+ThePenmanequation[8]describesevaporation Efromanopenwatersurface,whichrequires
+daily mean temperature, wind speed, air pressure, and solar radiation to predictE.
+Numerous variations of the Penman equation are used to estimate evaporation from water,
+and land. Specifically the Penman-Monteith equation refines weather based potential evapo-
+transpiration (PET) estimates of vegetated land areas. It is widely regarded as one of the most
+accurate models, in terms of estimates.
+The equation for evaporation given by Penman is:
+Emass = mRn + ρacp(δe)ga
+λv(m + γ) (4.9)
+where:
+m = Slope of the saturation vapor pressure curve
+ 
+PaK−1
+Rn = Net irradiance
+ 
+Wm−2
+ρa = density of air
+ 
+kgm−3
+cp = heat capacity of air
+ 
+Jkg−1 K−1
+δe = vapor pressure deficit(Pa)
+ga = momentum surface aerodynamic conductance
+ 
+ms−1
+λv = latent heat of vaporization
+ 
+Jkg−1
+γ = psychrometric constant
+ 
+PaK−1
+which (if the SI units in parentheses are used) will give the evaporationEmass in units of
+kg/ (m2 · s), kilograms of water evaporated every second for each square meter of area.
+This model considers more comprehensive factors, but it is also relatively complicated. In
+fact, as an estimate of the evaporation rate, there is a simpler model.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 10 of 23
+The Penman formula for the evaporation rate from a lake is simplified as[9]:
+E0 = 700Tm/(100 − La) + 15 (T − Td)
+(80 − T )
+ 
+mmday −1
+(4.10)
+where Tm = T + 0.006 h, his the elevation (metres),T is the mean temperature,La is the
+latitude (degrees) andTd is the mean dew-point. Values given by this formula typically differ
+from measured values by about0.3 mm day −1 for annual means,0.5 mm day −1 for monthly
+means, 0.9 mmday −1 for a week and1.7 mmday −1 for a day. The formula applies to a wide
+range of climates. Monthly mean values of the term(T − Td) can be obtained either from an
+empirical table or from the following empirical relationship, provided precipitation is at least 5
+mmmonth −1 and (T − Td) is at least4◦C :
+(T − Td) = 0.0023h + 0.37T + 0.53R + 0.35Rann − 10.9◦C (4.11)
+where R is the mean daily range of temperature andRann is the difference between the mean
+temperatures of the hottest and coldest months. Thus, the evaporation rate can be estimated
+simply from values for the elevation, latitude, and daily maximum and minimum temperatures.
+Through formulas (4.10) and (4.11), we can estimate the evaporation rateEM eadfrom the
+altitude, latitude and daily maximum and minimum temperature of Lake Mead to measure the
+area of Lake MeadAM ead, and then through equation 4.12 to get the amount of evaporated
+water in the time periodt.
+L = AM eadEM eadt (4.12)
+4.2 Lake Mead Volume Survey
+Now we consider the relationship between the water volume of Lake MeadV, the areaA,
+and the water levelE. If Lake Mead is a regular cuboid, the height from the bottom of the lake
+to the sea level is recorded asH0. Thus, the water volumeV can be calculated as
+V = A · H = A · (E − H0) = A · E − A · H0 (4.13)
+Figure4.9: Left: Thevolumeofthecuboid[10]. Right: howtocalculatethevolumeofthelake
+by the infinitesimal method[12].
+However, LakeMead’sshapeisveryirregular, anditsdepthvariesatdifferentsites. There-
+fore, equation (4.13) can not accurately estimate the water volumeV. we need to modify
+(4.13).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 11 of 23
+We can use the idea of calculus to get a new expression of volumeV. Find points on the
+lake surface with a boat, measure the depth of the lake, and obtain a topographic map of the
+lake bottom.
+Figure 4.10: Topography of the lake bottom[11].
+Since the bottom of the lake generally changes continuously, we can divide the entire lake
+into N slender cuboids, use (4.13) for each cuboid to calculate the amount of water, and then
+add them up:
+V =
+NX
+i=1
+Ai · Hi =
+NX
+i=1
+Ai · (E − ˆHi) = A · E −
+NX
+i=1
+Ai · ˆHi (4.14)
+Among them, Hi is the height of the cuboidi, which can be obtained by sampling and
+measuring on the lake surface.ˆHi = E − Hi is thei The distance from the bottom of a small
+lake cuboid to the height of sea level. This method is the same as the idea of binary integral.
+In fact, the information and data we need can be measured by hydrological methods. In
+1935, BOR and the Soil Protection Bureau conducted a mapping project[13] to calculate the
+water storage capacity of the almost formed Lake Mead. As the water behind the dam began to
+flow backwards, surveyors recorded measurements on the ground based on stereo aerial photos
+and water level detection (Brown 1941).
+Then we consider a data-driven approach to analyze the relationship between volume,
+elevation, and area from another perspective. We visualize the data given and find that the
+pointsareroughlydistributedinastraightline. Next,weuselinearregressionmodeltofitthem.
+We assume that the water volumeV and water levelE of Lake Mead and the lake areaA
+satisfy:
+V = β1 · A · E + β0 (4.15)
+Our goal is to find a combination of(β1, β0) that minimize the following expression:
+min
+β1,β0
+4X
+i=1
+(Vi − β1 · Ai · Ei − β0)2
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 12 of 23
+In fact, there is an analytical solution to this problem:
+ˆβ1 =
+P4
+i=1
+ 
+Ai · Ei · Vi − A · E · ¯V
+
+P4
+i=1
+
+(Ai · Ei)2 − A · E
+2
+ˆβ0 =Vi − aA · E
+(4.16)
+where
+V = 1
+4
+4X
+i=1
+Vi
+A · E = 1
+4
+4X
+i=1
+Ai · Ei
+Soweget a = 0.16, b= −1960044.94. Figure4.10showstheresults. Thereisasignificant
+linear relationship between volumeV and productA · E
+Figure 4.11: Left: Linear Regression V olume∼ Elevation · Area. Right: The Multiple
+Linear Regression.
+On the other hand, we can build a binary linear regression model with water volumeV as
+the dependent variable, water levelE and lake areaA as independent variables:
+V = β0 + β1 · A + β2 · E (4.17)
+And the simulation results are in the 3D map Figure 4.11.
+5 Problem 2: Water Level Patterns and Prediction
+Actually, the prediction of water level has been conducted for many times. They could use
+onlywaterleveltimeseries,orthecanusesnowlineorsomeothervariablestohelppredictthe
+waterlevel. Inthiscase,wewillapplythemonthlyrecordedwaterleveldatafrom1939tonow
+to do the prediction. Two result would be generated.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 13 of 23
+5.1 Overall Patterns of Lake Mead Water Levels
+Based on the data given, we plot the monthly Mead Lake’s water level and highest/lowest
+water elevation in Figure 5.1.
+Figure 5.1: Left: Monthly Water Elevation. Right: The Highest and Lowest Water Elevation.
+Considering the first few years of the reservoir conducted, the water level is much less than
+the average. To amplify the variation of water elevation after 1939, we exclude the data before
+1939 and get left Figure 5.2, which has already been subtracted by the monthly average water
+level. AlsowedrawrightFigure5.2forthefirstorderdifferenceofwaterleveltoseethechange
+of water level among years.
+Figure 5.2: Left: Water Level After 1939. Right: the Water Level After Difference.
+5.1.1 Overall Patterns
+1. Since 1935, the water level of Lake Mead began to rise sharply to 1150 feet.
+2. After the water level became stable, it fluctuated between 1100 feet and 1200 feet.
+3. The water level of Lake Mead fluctuates seasonally.
+4. After year 2000, the water level of Lake Mead declined in a fluctuation.
+5. The annual maximum water level and minimum water level of Lake Mead fluctuate
+synchronously.
+5.1.2 Criteria for Drought Periods
+Wecomeupwith threshold value strategyand Bollinger Bands strategyforthedroughtperiods
+prediction, which focus on the absolute value and the gradient of the water level respectively.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 14 of 23
+• Criterion 1: Threshold Value 0
+Based on left Figure 5.2, we have calculated the monthly mean of water level, and plot
+the water level minus average as in right Figure 5.2. In this case, the yellow line on0
+couldbeourthresholdvaluetojustifyifthereservoirisrunningthroughadroughtperiod.
+when water level is below average water level this period, Lake Mead is in the middle of
+a relatively dry period.
+– A drought period started/ended when (water level - average) broke through line0
+downwards/upwards and failed to recover back to average level soon enough.
+– A flood period started/ended when (water level - average) broke through line0
+upwards/downwards and failed to recover back to average level soon enough.
+Then we identify three periods as drought period in Table 5.1.
+Table 5.1: Drought Period
+Period 1 2 3
+Start Date 1953-02-01 1963-08-01 2002-07-01
+End Date 1957-06-01 1972-08-01 Present
+This criteria is relatively simple and focuses on macro data
+• Criterion 2: Bollinger Band
+Besides, we considered that drought does not completely depend on the absolute level
+of water level. According to formula 4.3, the decrease of water level is caused by the
+decreaseofinflowandtheincreaseofoutflow, whichcanbeidentifiedasdrought. When
+we extract dry periods according this idea, we should filter out micro changes in water
+levels,whichmaycausethedryperiodtobetoofragmentedandlosecontinuity. Inorder
+to solve this problem, we propose Bollinger bands strategy.
+Bollinger band is a term in stock trading, which is composed of an upper (pressure) line
+and a lower (support) line for price. We can calculate the upper and lower line by
+M A± β · std
+where M Aismovingaverageand stdisstandarderror,. Inthissection,wesettherolling
+window of the Bollinger Band as 4 years, and the standard deviation factorβ = 1. The
+results are shown in Figure 5.3.
+According to the Pauta Criterion, if random variableX ∼ N (µ, σ2), then
+P (X ∈ (µ − 3σ, µ+ 3σ)) ≈ 0.9973.
+For X ∈ (µ − σ, µ+ σ), the probability becomes 0.6826. So we claim that
+– A drought period started/ended whenM ovingAverage(M A) broke through the
+lower Bollinger Bands downwards/upwards with a high slope.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 15 of 23
+– Afloodperiodstarted/endedwhen M ovingAverage(M A)brokethroughtheupper
+Bollinger Bands upwards/downwards with a high slope.
+AsshowninFigure5.3,theredshadedareaarethedroughtperiods. Thismethodismore
+sensitive than Criterion 1, and some short term fluctuations below lower Bollinger Band
+are also taken into account.
+Figure 5.3: Bollinger Bands to Identify Drought/Flood Periods
+Basedontheresultsabove,wecanfindthatthemostrecentdroughtperiodsarelongermore
+frequent than earlier ones.
+5.2 Water Level Prediction
+Since the data given is chronological and auto-correlated, we can study these time series,
+discover its development rules, and predict its future trend through the time series model.
+5.2.1 Short Term Time Series (STTS) Model
+Consider data from only the most recent drought period and assume the most recent drought
+period’spatterncontinues,wecanbuildShortTermTimeSeries(STTS)Model. First,weonly
+take the data in recent three years into account, and draw the water level as follows.
+Figure 5.4: Water levels in recent 3 years
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 16 of 23
+FromFigure5.4,wecanseethatthewaterlevelinrecentthreeyearsislowerthan1100feet,
+which is in the drought period. It fluctuated between 1070 feet and 1100 feet, with an average
+of 1080 feet. If we assume that this trend will continue, it can be predicted that the water level
+in the next few decades will also remain near 1080 feet, which seems unreliable. We will use
+the long-term data from 2005 to 2020 later in the following LTTS model for verification.
+Now we adopt stationary time series model to predict the water level.m - step prediction
+of time series is to estimateXk+m(m >0) based on{Xk, Xk−1, · · · }, and the estimation is a
+linear combination of{Xk, Xk−1, · · · }.
+Suppose stationary time series {Xt, t= 0 , ±1, ±2, · · · }with expectation E(Xt) = µ,
+satisfies the following ARMA model:
+(Xt − µ) − ϕ1 (Xt−1 − µ) − · · · −ϕp (Xt−p − µ) = εt − θ1εt−1 − · · · −θqεt−i (5.1)
+where εt is a white noise with zero mean. Now we use (5.1) to predict water level in the
+following steps.
+1. Draw a line graph of the original data (see Figure 5.4), and identify whether it is a
+stationary time series through ADF-test.
+2. Calculate auto-correlation Function (ACF) and partial auto-correlation function (PACF)
+as Figure 5.5.
+Figure 5.5: ACF and PACF
+3. Based on AIC/BIC criteria and ACF/PACF, we choose ARMA(2,4) as our prediction
+model. The calculation results are shown in Figure 5.6.
+Figure 5.6: ARMA Model Results
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 17 of 23
+4. Check whether the residual is close to the normal distribution, for which we can adopt
+Ljung-Box test.
+Figure 5.7: Residuals’ Values and Distribution
+5. Use the model above to predict. The original data and its predicted values are shown in
+the Figure 5.8.
+Figure 5.8: Short Term Prediction
+Our STTS Model predicts that the annual average water level in 2025, 2030 and 2050 will
+be 1082.40, 1082.37, 1082.31 respectively, basically maintained near 1080, which meets our
+earlier expectation.
+5.2.2 Long Term Time Series (LTTS) Model
+In contrast to the short term model above, we build Long Term Time Series (LTTS) Model in
+this section with water level data from 2005 to 2021 in the following steps.
+1. Draw a line graph of the original data in Figure 5.9. We find this time seires isn’t
+stationary, with a significant descending trend.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 18 of 23
+Figure 5.9: Water Levels from 2005 to 2021
+2. Since the data shows a linear trend, we decide to do first order difference on the data and
+build ARIMA(p,q) model.
+3. Based on AIC/BIC criteria and ACF/PACF, we choose ARIMA(2,1,0) as our prediction
+model. The calculation results are shown in Figure 5.10.
+Figure 5.10: ARIMA Model Results
+4. Use the model above to predict. The original data and its predicted values are shown in
+the Figure 5.11.
+Figure 5.11: Long Term Prediction
+OurLTTSModelpredictsthattheannualaveragewaterlevelin2025,2030and2050willbe
+1050.84, 1029.09, 942.10 respectively, which shows a significant descending trend and meets
+ourearlierexpectation. ComparedtoSTTSModel,LTTSModelhasamoreaccurateprediction
+because more history data are used.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 19 of 23
+6 Problem3: FutureWaterUsageandWastewaterRecycling
+BasedonourmodelsandwaterlevelpredictionsinSection6,thewaterlevelofLakeMead
+will be less than 1000 feet in the long run. Thus, it is quite important to recycle wastewater.
+6.1 Factors in Recycling Wastewater
+Figure 6.1: Wastewater Recycle
+From Figure 6.1, we can see that the grey lines are ways of wastewater generation. There
+are five in total:
+W R= W RI + W RD + W RC + W RS + W RO (6.1)
+where
+W R= Wastewater Recycle
+W RI = Industrial Wastewater Recycle
+W RD = Domestic Wastewater Recycle
+W RC = Commercial Wastewater Recycle
+W RS = Surface Wastewater Recycle such as Rainstorm
+W RO = Oil and Other Wastewater Recycle
+For wastewater recycle, we need the help of local leaders to make the following decisions:
+1. Enterprisesarerequiredtocomplywithregulatoryrequirementssuchasadoptwastewater
+treatment facilities to meet strict pretreatment or direct discharge standards.
+2. Reduce or eliminate wastewater treatment surcharges. Industrial discharged wastewater
+shallbetreatedonsiteasfaraspossible,soastoreduce(oreveneliminate)thesurcharges
+related to the discharge of untreated wastewater to the local municipal treatment plant.
+3. Reusewater. Forthetreatedwaterthatcanbereused,thefactorywillrecoverhigh-quality
+effluent to reduce the operation cost of the factory.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 20 of 23
+4. Convertwastewaterintogreenenergy. Valuablebiogascanbeproducedfromwastewater
+through anaerobic digestion, which has become a cost-saving renewable energy.
+6.2 Measurement of Recycling plan’s Impact
+The Sustainable Development Goals[14] (SDGs) are the latest attempt by the international
+community to mobilize government, private and non-governmental actors at the national, re-
+gional and local levels to improve the quality of life of billions of people in developed and
+developingcountries. Thesegoalsaretheambitious,challengingandurgentlyneeded"Human-
+ity, Planet and Prosperity" action plan by 2030.
+Among the 17 Sustainable Development Goals, the sixth goal is to “ensure that all people
+have access to water and sanitation facilities and sustainably manage them”. In view of the
+importanceofcleanwatertooverallsocio-economicdevelopmentandqualityoflife(including
+health and environmental protection), even a partial realization of this goal will greatly benefit
+mankind.
+We are able to quantify the impact of our plan using wastewater recycling as a percentage
+of water demand.
+RR = W R
+W D
+where RRistheevaluationindexofwastewaterrecycling,representingthepercentageofwaste
+water recycling to the water supply demand,W Ris the reclaimed water obtained from waste
+water recycling, andW Dis the total water supply demand.
+If our plan can be implemented efficiently, it can be foreseen that wastewater recycling can
+effectively alleviate the water demand caused by drought. For example, in California, most
+of the state has a rapidly increasing population and a desert climate, so efficient water use is
+essential. Faced with such demand and limited supply, water recycling is becoming more and
+more common throughout California. Reclaimed water in parts of the state has already met
+approximately 7% of the water supply demand.
+7 Sensitivity Analysis
+Figure5.3usestwohyperparameters: Windows(movingaveragelength)andd(magnification
+factor). The result of Figure 5.3 has been relatively ideal after adjustment. In order to conduct
+sensitivity analysis on this part, we first keep the amplification factor d = 1 to unchanged and
+set the moving average length to 12, 24, 48 and 96 respectively, so as to make Figure 7.1.
+Figure7.1showsthatwhenthewindowlengthistoosmall,suchasfigure7.1a,theBollinger
+band will follow the moving average line of water level closely, and the moving average line
+will frequently cross the upper and lower limits. When the window length is too large, such as
+Figure 7.1d, in which the Windows length is 96, the period of the fluctuation is too long and
+too macro, so that some relatively micro rise and drop are easy to be ignored and cannot be
+captured.
+Otherwise,whenwesetmovingaveragelengthto48andmagnificationfactorDto0.5,1,2,
+3 respectively, figure 7.2 was obtained. We consider that d = 1 is relatively appropriate. When
+d is too large, it is difficult for the moving average line to break through the Bollinger Bands.
+whendistoosmall,themovingaveragelinewillhavefrequentcontactwiththeupperandlower
+boundaries.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 21 of 23
+To sum up, Windows=48 and D =1 are relatively reasonable values of hyperparameters.
+(a)
+(b)
+(c)
+(d)
+Figure 7.1: Bollinger Band at Different Moving Average Lengths
+(a)
+(b)
+(c)
+(d)
+Figure 7.2: Bollinger Bands at Different magnifications
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 22 of 23
+8 Strengths and Weaknesses
+8.1 Strengths
+• Multiple methods
+We propose multiple solutions to a single problem,such asthreshold value strategy and
+Bollinger Bands strategy to determine the drought period, experimental and simulation
+methods to measure the flow rate.A comprehensive application of multiple methods
+reflects the comprehensiveness of our consideration.
+• Reliable Robustness
+Accordingtosection7,whenwesetdifferenthyperparametersforBollingerbandstrategy,
+the extracted dry periods are roughly the same, and it is impossible to misjudge the wet
+period as the dry period.What’s more, STTS Model and LTTS Model also have strong
+robustness.
+• Objectivity
+The model we used does not have lots of subjective parameters such as those in Analytic
+Hierarchy Process(AHP), which are directly extracted from the data.
+8.2 Weaknesses
+• Some assumptions are too strong.
+In the process of modeling and analysis, we assumed that the annual precipitation is
+constant, and the amount of water directly consumed from the lake is also constant each
+year. Although these quantities are uncertain, they rely on more information in actual
+situations. It should be possible to portray them better.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team # 11552 Page 23 of 23
+References
+[1] Google search. https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX09
+ypWuGl67xJI0pKS72ci5Hi_lcosDWynA&usqp=CAU
+[2] World Health Organization. https://www.who.int/health-topics/drought#tab=tab_1
+[3] CelinaTebor."thecurrentdroughtisworldwide.".https://phys.org/news/2021-07-current-
+drought-worldwide.html. November 14, 2021.
+[4] Bureau of Reclamation. “Reclamation Announces 2022 Operating Con-
+ditions for Lake Powell and Lake Mead.” August 16, 2021. Found at:
+https://www.usbr.gov/newsroom/#/news-release/3950.
+[5] United States Environmental Protection Agency. “Basic Information about Water Reuse.”
+UpdatedJune4,2021.Foundathttps://www.epa.gov/waterreuse/basic-information-about-
+water-reuse.
+[6] NationalParkService.“StorageCapacityofLakeMead.”UpdatedAugust5,2019.Found
+at https://www.nps.gov/lake/learn/nature/storage-capacity-of-lake-mead.htm.
+[7] Google search. http://www.xjishu.com/zhuanli/52/202110413234.html
+[8] Google search. https://en.wikipedia.org/wiki/Penman equation
+[9] Linacre,EdwardT..“Asimpleformulaforestimatingevaporationratesinvariousclimates,
+using temperature data alone.” *Agricultural Meteorology* 18 (1977): 409-424.
+[10] Google search. https://www.onlinemathlearning.com/image-files/volume-cuboid.png
+[11] Googlesearch.https://mathinsight.org/media/image/image/double_integral_volume_under
+_surface_box.png
+[12] Google search. https://mathinsight.org/media/image/image/double-integralvolumeunder-
+surfacebox.png
+[13] Google search. https://www.nps.gov/lake/learn/nature/storagecapacityoflake-mead.htm
+[14] Tortajada, C. Contributions of recycled wastewater to clean water and sanitation Sustain-
+able Development Goals. npj Clean Water 3, 22 (2020). https://doi.org/10.1038/s41545-
+020-0069-3
+ᇿ Hi MCM
+ሧ࿟

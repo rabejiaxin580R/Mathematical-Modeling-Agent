@@ -113,6 +113,18 @@ foreach ($d in @("knowledge", "problems", "problem_assets", "problem_papers", "a
   }
 }
 
+# 知识库仅运行时加载 concepts/（BM25 检索源）。剔除构建中间产物，减小发布包约 9MB。
+# 这些产物由 scripts/build_knowledge.py 从 assets/ 重新生成，运行时不加载。
+$kbDst = Join-Path $dataDst "knowledge"
+foreach ($stale in @("_fulltext", "_raw_extractions", "cases")) {
+  $p = Join-Path $kbDst $stale
+  if (Test-Path $p) { Remove-Item $p -Recurse -Force -ErrorAction SilentlyContinue }
+}
+foreach ($staleFile in @("_lecture_map.json", "_unmapped.json", "_build.log")) {
+  $p = Join-Path $kbDst $staleFile
+  if (Test-Path $p) { Remove-Item $p -Force -ErrorAction SilentlyContinue }
+}
+
 # 清掉拷进来的 __pycache__，减小体积
 Get-ChildItem $AppDst -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 

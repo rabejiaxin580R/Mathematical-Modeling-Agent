@@ -1,0 +1,1115 @@
+ğ
+Team #13904 Page 1 of 25
+Team Control Number
+#13904
+Problem Chosen
+B
+2023
+Summary Sheet
+As environmental problems like climate change continued to thrive over the past decades, more consider-
+ations on potential policies have been raised in response. Specifically, the use of renewable energy in public
+bus transit systems has been a topic of interesting significance. In this problem, our group is tasked to estab-
+lish a model that replaces current bus systems in metropolitan areas with all-electric bus fleets and evaluate
+both the ecological and financial measures of our implementation model.
+An analysis of the ecological consequences of electric buses is acquired to serve as a basis for our imple-
+mentation model. We incorporated the Technique for Order of Preference by Similarity to Ideal Solution
+(TOPSIS) and Entropy Weight Method to compare the impacts of e-buses with other types of buses. Specifi-
+cally, we evaluated four different types of buses, which are traditional diesel buses, biodiesel buses, biogas
+buses
+, and electric buses, by considering their performance in the four main criteria of noise pollution,
+greenhouse gases, pollutants, and energy consumption. For the actual modeling and calculation process we
+narrowed this model down to the consideration of four specific ecological indexes - CO₂ emission of oper-
+ation
+, CO₂ emission of production, noise pollution, and energy consumption - in the specific case of the
+SL (Storstockholms Lokaltrafik) bus system based in Stockholm, Sweden. At the end of the day, the TOPSIS
+model indicated that electric buses are the type of bus that could be the most beneficial ecologically.
+With that statement found, we considered the implementation policy through a Zero-one Integer Pro-
+gramming model. Since the primary goal of this change is to bring as many ecological benefits as possible
+under limited funding, the goal of this model would thus be to maximize the distance covered by elec-
+tric bus lines and at the same time minimize the cost of our implementation process
+. Similarly, this
+model is also carried out in the case of Stockholm, Sweden. To approach the final optimization, we would
+narrow down the possible lines for replacement, organize an optimized plan for the locations of charging
+sites, and ensure that this process could be performed under the budget constraint of 50% of the total invest-
+ment needed that will be injected into our project in the form of external government funding. However, to
+optimize this policy and make it more realistic, we incorporated a 10-year timeframe and the consideration of
+generative income that will allow profit earned by the bus system itself to sustainably maintain the cost of
+our implementation process. After establishing a realistic simulation of a replacement process in Stockholm,
+Sweden, we would apply this model further to other metropolitans like Chicago, USA, and Shanghai, China.
+At the end of the day, our model will support us in carrying out a detailed plan of a proposal that incor-
+porates specific data on the bus lines replaced, the places where charging infrastructures should be imple-
+mented, and the distance covered by the implementation over our 10-year timeframe,to show a realistic sim-
+ulation of how transportation officials in metropolitan areas could take their steps to help all of us envision
+a better ecological environment.
+Keywords
+- Optimization, TOPSIS, Entropy Weight Method, Zero-one Integer Programming Mod-
+els, Temporal Planning, Stockholm, Chicago, Shanghai
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 2 of 25
+Contents
+I. Introduction .........................................................................................................................  3
+I.1. Background ......................................................................................................................................  3
+I.2. Problem Restatement ......................................................................................................................  3
+I.3. Literature Review ............................................................................................................................. 3
+I.4. Our Work & Model Overview ......................................................................................................... 4
+II. Assumptions and Justifications ......................................................................................... 4
+III. Notations ............................................................................................................................ 5
+IV. The Ecological Consequences of E-Bus Implementation ................................................ 5
+IV.1. Problem Objective ....................................................................................................................... 5
+IV.2. Ecological Consequences Analysis based on EWM-TOPSIS Evaluation Model ..................  6
+IV.2.a. Establishment of Evaluation Metric System ................................................................  6
+IV.2.b. Positivization and Normalization of Decision Matrix ................................................. 7
+IV.2.c. Entropy Weight Method for Weight Calculation .........................................................  8
+IV.2.d. TOPSIS Evaluation Model .............................................................................................. 8
+IV.3. Model Results ..............................................................................................................................  9
+IV.4. Conclusion ................................................................................................................................. 10
+V. Financial Impact Analysis of E-Bus Implementation ..................................................... 10
+V.1. Problem Objective ........................................................................................................................ 10
+V.2. Model Explanation ....................................................................................................................... 12
+V.2.a. Decision Variables .............................................................................................................  12
+V.2.b. Objective function .............................................................................................................  12
+V.2.c. Restraints ............................................................................................................................  13
+V.2.d. Zero-one Integer Programming Models .......................................................................... 13
+V.3. Model Data Specification ............................................................................................................  14
+V.4. Model Planning Results ..............................................................................................................  15
+V.5. Sensitivity Analysis ...................................................................................................................... 15
+VI. Generative Income Optimization and Timeline ............................................................ 16
+VI.1. Problem Objective ....................................................................................................................  16
+VI.2. Explanation of Model ..............................................................................................................  16
+VI.3. Model Data Specification ........................................................................................................  17
+VI.4. Model Planning Results ........................................................................................................... 17
+VI.4.a. Distribution of Bus Routes - Temporal Variation .....................................................  18
+VI.4.b. Overall Trend ................................................................................................................ 19
+VI.5. Application ...............................................................................................................................  19
+VII. Evaluation of Strengths and Weaknesses .....................................................................  23
+VII.1. Strengths ................................................................................................................................. 23
+VII.2. Weaknesses ............................................................................................................................  23
+VIII. Conclusion ..................................................................................................................... 23
+IX. One-Page Letter ................................................................................................................ 24
+References ..............................................................................................................................  25
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 3 of 25
+I. Introduction
+1. Background
+In recent decades, problems relating to climate change, such as global warming, have worsened, raising
+the public’s awareness and concerns on related issues. In the European Union, policies providing tax incen-
+tives for electric vehicles have been implemented since 2010 [1], replacing traditional types of vehicles with
+eco-friendly vehicles. As a country in the European Union, Sweden actively promotes the energy transition.
+By September 2018, all public transport in its capital, Stockholm, already operates with 100% fossil-free fuel.
+Compared to traditional diesel vehicles, the alternative, Biodiesel vehicles, is not only a fully renewable al-
+ternative but can also reduce CO₂ emissions by up to 90% [2].
+However, due to increased population growth and urbanization, the demand for public transportation is
+constantly rising. The optimization presented by current policies might need to be improved. Taking Stock-
+holm’s bus service as an example, the community’s long-term benefit might necessitate further changes.
+One potential change will be replacing the city’s current bus system, mainly comprising of biodiesel and
+biogas buses, with electric buses. Such actions can benefit the citizens through various ecological aspects
+such as sound and air pollution decreases. Data also demonstrates a significant decrease in the price of elec-
+tronic vehicle batteries in the last decade [3]. Therefore, in the long term, it could bring welfare to citizen’s
+everyday life and the country’s overall GDP. But drawbacks to such policies are apparent: the change requires
+lots of resources, is very expensive, could be limited by various elements, etc. Considering the pros and cons
+of such modifications, a plan that considers all aspects strategically and comprehensively must be provided
+before incorporating e-bus services in the city.
+2. Problem Restatement
+Our model focuses mainly on the ecological and economic concerns of replacing current buses in Stock-
+holm with e-buses. Analyzing the ecological and economic impacts of this bus-type conversion is our pri-
+mary objective. Then, we will provide a 10-year roadmap for transport authorities to plan their e-bus fleet
+updates. Therefore, our paper will contain these of the following:
+First, we need to construct an evaluation model that shows the ecological consequences of running an
+all-electric bus fleet in a metropolitan area.
+Second
+, we need to construct a financial model that analyzes the financial implications of conversing to
+e-buses if we have an external fund covering 50% of the total cost. The economic model will indicate different
+financial strategies that we will adopt to balance out the costs with the e-bus fleet’s profit.
+Third, we need to craft a 10-year blueprint for conversing all combustion engine buses to electric ones
+by 2033 for the metropolitan area we selected. Meanwhile, we should apply our models to two additional
+metropolitan areas. Combining the results of the two previous models, we should demonstrate how this can
+be achieved through policy management and cost control.
+Finally
+, we summarize and present our results in a one-page letter to the transportation officials of the
+metropolitan area we choose, through which we will demonstrate the feasibility of our 10-year plan and the
+cost management for the bus-type conversion.
+3. Literature Review
+The replacement of the traditional public transportation system with a new eco-friendly public transporta-
+tion system received extensive attention from the masses. Much research has already been conducted on this
+subject. Here, we provide a review of various articles that studied a similar topic.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 4 of 25
+• “Locating charging infrastructure for electric buses in Stockholm” by Maria Xylia et al.
+Within the article, a model is constructed and applied to optimize the distribution of charging infra-
+structure for electric buses within Stockholm. The model demonstrates that the highest concentrating
+locations for installing charging infrastructure are around major public bus transport hubs that are con-
+nected to other public transport systems. The cost of installation is within a reasonable range while
+reducing emissions and energy consumption. The model could be also applied to other urban contexts.
+• “Distributional effects of public transport subsidies” by Maria Börjessona et al.
+The authors of the article analyze the distribution of transit subsidies among citizens in Stockholm.
+Using a method, they calculated the subsidy per trip in the transit network and the distribution of the
+subsidies. The subsidy rate varies from 0 percent to 67 percent across the country and almost every in-
+come group has approximately the same average subsidy per person. Thus, the authors conclude that
+transit subsidies are ineffective as a redistribution policy in Stockholm.
+4. Our Work & Model Overview
+Our model is designed to simulate an implementation replacing current bus systems with all-electric bus
+fleets. It would first incorporate the Technique for Order of Preference by Similarity to Ideal Solution
+(TOPSIS) and Entropy Weight Method to evaluate the ecological consequences of electric buses com-
+pared to other types of buses in current public transit systems. Then, we would acquire zero-one integer
+programming method to simulate the actual implementation process and plan out a 10-year roadmap as
+a proposed replacement solution with an all-electric bus fleet under realistic financial considerations.
+II. Assumptions and Justifications
+Assumption 1. The implementation of electric buses would not notably influence the number of people
+traveling by bus.
+Justification 1.
+Whether the bus system is comprised of current types of buses (traditional diesel bus,
+biodiesel bus, biogas bus, etc.) or electric buses should not be a significant factor influencing a person’s choice
+to take a bus. In other words, this policy would not affect people’s choice to take a bus.
+Assumption 2. Governmental profit is gathered from the bus system should be fully used in furthering
+the e-bus replacement project until all bus lines are e-bus lines.
+Justification 2. To approach a massive project of change in a critical social system with limited external
+funding, city officials should have the incentives to use the profit generated by the bus system for implemen-
+tation. With only 50% of needed funding at most, implementing our plan would require more money from
+this system to fulfill our ultimate goal; thus, we exclude the possibility that governments may want to use
+these monetary profits in other sectors of the economy.
+Assumption 3. Extensions of our models would not adjust for all the minimal differences between dif-
+ferent cities.
+Justification 3. Since our model is designed for a more general situation (based on Stockholm, Sweden, to
+some extent), this model is not perfectly appropriate for the actual situation of all cities. This means that to
+maintain a sense of flexibility in generalizing our model to more places, we forbid this model from entirely
+binding with a single city or a single place, so adjustments for some of the unique features of certain cities
+are not required.
+Assumption 4. The features of electric buses are identical to traditional buses that are prevalent in cur-
+rent bus systems except for the main features that define their differences, including how they are fueled.
+Justification 4. This paper and the constructed models aim to determine the ecological consequences of
+a potential implementation of e-bus systems and how they could function in particular cities in our world.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 5 of 25
+This means that excluding the impacts of other distinctions between the different types of buses in factors
+like capacity, speed, or efficiency would allow us to focus on the more important interests of this paper.
+Assumption 5. There are no major technological developments, shifts in perception on the significance
+of environmental sustainability, or other massive events that could seriously impact the implementation of
+electric buses.
+Justification 5. In the status quo, the world is growing rapidly; it is also reasonable to claim that this world
+is not in a particularly stable order. However, we would have to assume the absence of significant incidents
+that could significantly change our world for this modeling to be feasible. With this assumption, our current
+statements will be meaningful.
+III. Notations
+Table
+3-1: Symbols and Units of Used Parameters (Partial)
+Parameter Symbol Units
+Coverage distance 𝑑𝑇,e-bus km
+Maximum Capacity 𝐸max kWh
+Energy Consumption Rate 𝑟consume kWh/km
+Government Funding 𝐺𝐹 SEK/USD/CNY
+Time Between Each Departure 𝑡depart h
+Speed of E-bus 𝑣 km/h
+The notations provided in Table 3-1 are only a section of our used parameters. A more detailed and complete
+set of parameters with their symbol and unit is provided in Table 5-1, Table 6-1, and Table 6-2.
+IV. The Ecological Consequences of E-Bus Implementation
+1. Problem Objective
+This problem aims to assess the ecological consequences of transitioning to an exclusively electric bus
+fleet within the urban public transportation network.
+To address this problem, we construct a model contrasting the ecological consequences of running a net-
+work of four bus types (biogas-fueled, biodiesel-fueled, or electric buses) in Stockholm
+. To be specific, we
+employ the Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS) to scruti-
+nize the performance of each bus type across various evaluation criteria, including the carbon dioxide (CO₂)
+emissions during production, Average Decibel Levels, and so on. Meanwhile, we utilize the Entropy Weight
+Method to assign weights to each evaluation criterion, thereby capturing their relative significance in the
+overall assessment. The flowchart of our method is shown in Figure 4-1.
+The core of our analysis lies in the TOPSIS model, which facilitates the computation of the ecological im-
+plications associated with each bus type. This evaluation allows for a nuanced understanding of elucidating
+the differential contributions of different bus types to the ecological footprint of the public transportation
+system. Hence, by building a model to analyze this problem, we contribute to the broader discourse on sus-
+tainable urban mobility and offer insights that can inform evidence-based decision-making in pursuing en-
+vironmentally responsible public transportation solutions.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 6 of 25
+Figure 4-1 : EWM+TOPSIS Evaluation Model
+2. Ecological Consequences Analysis based on EWM-TOPSIS Evaluation Model
+a. Establishment of Evaluation Metric System:
+Figure  4-2: Evaluation Metric System
+1. Noise Pollution
+Maximum Decibel Levels. Maximum decibel levels refer to the highest noise intensity emitted by
+buses. Excessively high decibel levels can contribute to noise-related health issues and disturbance of
+urban soundscapes.
+Average Decibel Levels. Average decibel levels measure the overall noise pollution generated by
+buses. This aids in understanding the day-to-day auditory experience of individuals in proximity to
+public transit routes.
+Minimum Decibel Levels. Minimum decibel levels represent the lowest observed noise emissions
+during idle or low-activity periods. This metric is valuable for understanding the baseline noise level
+when buses are inactive.
+2. Greenhouse Gases
+CO₂ Emissions of Operation. This metric encompasses the combustion-related emissions during
+regular service, providing insights into the contribution of each bus type to atmospheric CO₂ levels.
+CO₂ Emissions of Production. CO₂ emissions in bus production are the CO₂ released during the
+manufacturing process, encompassing raw material extraction, manufacturing, and assembly.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 7 of 25
+3. Pollutants
+Particulate Matter (PM) Emissions. Particulate matter emissions gauge the release of micro-par-
+ticles. It has potential health implications of PM exposure, making it crucial for assessing the buses’
+contribution to air quality and public well-being.
+Nitrogen Oxide (NOx) Emissions. NOx is a precursor to air pollution and has environmental and
+health consequences. They are pivotal for evaluating the buses’ impact on air quality.
+Volatile Organic Compounds (VOCs). VOCs contribute to air pollution, which leads to diverse
+environmental effects. It ensures a more comprehensive evaluation of the buses’ emissions profile.
+4. Energy Consumption
+Infrastructure. Infrastructure-related energy consumption measures the energy requirements for
+establishing bus facilities, such as charging stations. It evaluates the broader energy implications asso-
+ciated with the transition of bus types.
+Operational Energy Efficiency. Operational energy efficiency evaluates the energy consumption
+efficiency of buses during regular service. This metric is essential for understanding the practical via-
+bility of each bus type in terms of energy utilization.
+b.
+Positivization and Normalization of Decision Matrix:
+In the TOPSIS methodology, the first step involves positivizating and normalizing the raw data to elimi-
+nate scale-related biases.
+Table  4-1: Ecological Indexes of Different Bus Types
+Bus Type
+CO₂ Emission in
+Operation (gCO₂/
+km)
+CO₂ Emission in
+Production
+( kgCO₂/GGE
+of Energy) …
+Energy
+Consumption
+(kWh/km)
+Noise
+Pollution (dBA)
+Diesel Buses 1151.4[4] 8.88[5] … 4.13[6] 68[7]
+Biodiesel Buses 12.76[8] 3.40[9] … 4.50[8] 68[10]
+Biogas Buses 13.55[8] 2.53[11] … 6[8] 70[7]
+Electric Buses 0[8] 3.32[12] … 1.50[8] 63[7]
+Based on the raw data above, the decision matrix, denoted as 𝑋(𝑡) of type 𝑡, is generated; where n denotes
+the number of criteria, and m denotes the four different bus types.
+𝑋(𝑡) =
+⎝
+⎜⎜⎜⎜⎛
+𝑥11
+𝑥21
+⋮
+𝑥m1
+𝑥12
+𝑥22
+⋮
+𝑥m2
+…
+…
+⋱
+…
+𝑥1n
+𝑥2n
+⋮
+𝑥mn⎠
+⎟⎟⎟⎟⎞
+Next, it is necessary to carry out the positivization process of the data. The inconsistent dimensions of the
+criteria can lead to variations in data magnitudes, which can potentially influence the calculation results.
+In this problem, we categorize our criteria into benefit and cost criteria. Benefit criteria represent crite-
+ria where higher values are favorable, while cost criteria involve criteria where lower values are desirable.
+Within the scope of our evaluation criteria, criteria such as CO₂ Emissions are classified as cost criteria. Cri-
+teria such as Minimum Decibel Levels are identified as benefit criteria.
+For benefit criteria, no positivation is needed. ̃𝑥m1 = 𝑥m1.
+For cost criteria, ̃𝑥ij = max{𝑥ij} −𝑥ij, 𝑖 ∈ [1..n].
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 8 of 25
+Then, to render the set of criteria compatible for meaningful comparison, we employ the Vector Normal-
+ization technique as a pivotal step in the normalization process. We transform the 𝑋(𝑡) matrix to 𝑍(𝑡),
+denoting each normalized criterion as 𝑧ij.
+𝑧ij =
+̃𝑥ij
+√∑𝑚
+𝑖=1 ( ̃𝑥ij)
+2
+, 𝑖 ∈ [1..n], 𝑗 ∈ [1,m]
+Ultimately, the normalized decision matrix should be:
+𝑍(𝑡) =
+⎝
+⎜⎜
+⎜
+⎜⎛0
+.494797
+0.494797
+0.479938
+0.531944
+0.000131
+0.988919
+0.988233
+1.000000
+…
+…
+⋯
+…
+0.144914
+0.672669
+0.755906
+0.680469⎠
+⎟⎟
+⎟
+⎟⎞
+c.
+Entropy Weight Method for Weight Calculation:
+To determine the weights of the criteria, we employed the Entropy Weight Method (EWM) as a pivotal
+step in our analytical model. EWM is an objective weighting technique that employs information entropy
+calculations to compute the entropy weights for each criterion. In comparison to subjective methodologies
+like the Analytic Hierarchy Process (AHP), EWM can objectively determine the significance of each criterion
+by considering the information entropy inherent in the data.
+The entropy weight 𝑤𝑗 for each criterion is calculated through the following steps:
+Firstly, we need to construct a Probability Distribution Matrix 𝑃(𝑡) based on the previous normalized ma-
+trix
+𝑍(𝑡), where 𝑝ij represents the normalized score of the bus type 𝑖 for criterion 𝑗.
+Next, we need to calculate the Information Entropy 𝑒𝑗, where 𝑒𝑗 denotes the entropy value for criterion 𝑗:
+𝑒𝑗 = −∑
+𝑚
+𝑖=1
+𝑝ij
+ln(𝑝ij)
+ln(𝑚)
+Then, we need to calculate the Coefficient of Variation:
+𝑔𝑗 = 1 − 𝑒𝑗
+Hence, we are able to obtain 𝑤𝑗:
+𝑤𝑗 =
+𝑔𝑗
+∑𝑛
+𝑗=1
+𝑔𝑗
+In this case, the weights of our criteria are obtained, which reflect the relative importance of each criterion
+in contributing to the overall evaluation.
+d. TOPSIS Evaluation Model:
+Having established the weighted criteria through the Entropy Weight Method (EWM), we proceed to em-
+ploy TOPSIS model. This method facilitates a comprehensive ranking of alternative solutions(referring to
+different bus types in this context) based on their proximity to the ideal solution while considering both pos-
+itive and negative criteria.
+Firstly, we need to calculate the Weighted Normalized Decision Matrix 𝑊(
+𝑡). 𝑊(𝑡) is computed by ele-
+ment-wise multiplication of the normalized decision matrix 𝑍(𝑡) with corresponding weights 𝑤𝑗.
+𝑊(𝑡) = 𝑊𝑗 ⋅ 𝑍(𝑡)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 9 of 25
+Then, according to TOPSIS, the ideal and anti-ideal solutions should be determined. We denote 𝑊 +
+𝑗  as the
+maximum value in the 𝑗th column of 𝑊(𝑡), which is the ideal solution; and we denote 𝑊 -
+𝑗  as the minimum
+value in the 𝑗th column of 𝑊(𝑡), which is the anti-ideal solution.
+𝑊 +
+𝑗 = (𝑊+
+1 , 𝑊 +
+2 , …, 𝑊 +
+𝑚) = (max{𝑤11, 𝑤21, …,𝑤m1}, …, max{𝑤1n, …, 𝑤mn})
+𝑊 -
+𝑗 = (𝑊-
+1, 𝑊 -
+2, …, 𝑊 -
+𝑚) = (min{𝑤11, 𝑤21, …, 𝑤m1}, …, min{𝑤1n, …,𝑤mn})
+Next, we need to calculate distance of each bus type from 𝑊 +
+𝑗  and 𝑊 -
+𝑗 . 𝐷+
+𝑖  represents the distance of the
+𝑖th bus type from the ideal solution, and 𝐷-
+𝑖 represents the distance of the 𝑖th bus type from the anti-ideal
+solution. The Euclidean distance is used to calculate the distance.
+𝐷+
+𝑖 = √∑
+𝑛
+𝑗=1
+(𝑊 +
+𝑗 − 𝑊ij)
+2
+𝐷-
+𝑖 = √∑
+𝑛
+𝑗=1
+(𝑊 -𝑗 − 𝑊ij)
+2
+In this case, now we are able to calculate the approximate degree 𝐶𝑖 between each bus type and the opti-
+mal scheme. The range of 𝐶𝑖 is (0,1). The closer it is to 1, the better the evaluation object is. We denote 𝐶𝑖 as
+the TOPSIS score obtained for the 𝑖th bus type.
+𝐶𝑖 = 𝐷-
+𝑖
+𝐷+
+𝑖 + 𝐷-𝑖
+3. Model Results
+Ultimately, after calculating and ranking all the 𝐶𝑖, we obtain the following scores:
+Table  4-2: TOPSIS Score of Different Bus Types
+Bus Type Score
+Diesel Buses 0.041160
+Biogas Buses 0.904752
+Biodiesel Buses 0.926741
+Electric Buses 0.970086
+Diesel Buses: Score - 0.041160. Diesel buses exhibit the lowest TOPSIS score, implying comparatively
+lower proximity to the ideal solution regarding ecological consequences. This outcome aligns with expecta-
+tions, as diesel buses are often associated with more serious environmental impacts.
+Biogas Buses: Score - 0.904752. Biogas buses demonstrate a relatively high TOPSIS score, indicating a
+significant proximity to the ideal solution. This outcome suggests that biogas buses perform favorably in
+terms of the evaluated ecological criteria, potentially owing to their cleaner fuel source and reduced envi-
+ronmental footprint.
+Biodiesel Buses: Score - 0.926741. Biodiesel buses exhibit a high TOPSIS score, suggesting a notable
+proximity to the ideal solution. This result underscores the relatively positive ecological performance of
+biodiesel buses, potentially attributed to the use of biodiesel fuel.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 10 of 25
+Electric Buses: Score - 0.970086. Electric buses present the highest TOPSIS score among the evaluated
+bus types. This outcome underscores their exceptional proximity to the ideal solution in terms of ecological
+consequences. Electric buses emerge as the most environmentally friendly option in this assessment.
+We select four core evaluation criteria to display here so as to contribute to a holistic understanding of
+their respective environmental impacts.
+Figure 4-3: Ecological Indexes of Different Bus Types
+With electric buses showing the highest score, it would be safe to claim that transitioning from any of the
+other types of buses to an all-electric bus fleet would be ecologically advantageous.
+To further quantify the consequences, we hypothesize four transitions with the magnitude of Stockholm’s
+bus system. Annually, vehicle kilometers in operations of the SL bus lines is 1.23 million kilometers per
+inhabitant[13]. Applying it to Stockholm’s inhabitant population of 985 thousand [14], this means that there
+will be 122 billion kilometers traveled by the entire bus system annually. With this magnitude, we can now
+gather the quantifiable changes in a city’s environment under a hypothetical transition from an all-diesel
+bus fleet, an all-biodiesel bus fleet, or an all-biogas bus fleet to an all-electric bus fleet to show how electric
+buses influence the environment. Calculated results are shown in Table 4-3.
+Table
+4-3: Change of Ecological Indexes in Transitions
+Transition From
+(Bus Fleet)
+Transition To
+(Bus Fleet)
+Decrease in Total
+CO₂ Emission (billion
+tonnes of CO₂)
+Decrease in Energy
+Consumption (billion
+kWh)
+Decrease in Noise Pol-
+lution (dBA)
+All-Diesel All-Electric 255.82 503 5
+All-Biodiesel All-Electric 39.19 365 5
+All-Biogas All-Electric 38.85 548 7
+4. Conclusion
+In conclusion, the evaluation of the ecological consequences associated with different bus types through
+the lens of different criteria has yielded valuable insights into their relative performance. The TOPSIS scores,
+based on the weights obtained through EWM, reflecting the proximity of each bus type to the ideal solution,
+provide a nuanced perspective on their environmental impact.
+Electric buses emerge as the most environmentally friendly option, garnering the highest TOPSIS score.
+The commendable performance of electric buses positions them as a promising and sustainable solution for
+urban public transportation systems.
+V. Financial Impact Analysis of E-Bus Implementation
+1. Problem Objective
+As we have justified previously, the usage of e-bus in transport systems largely benefits Stockholm ecolog-
+ically. For the welfare of the citizens in the city, replacing diesel buses with e-buses is one of the primary
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 11 of 25
+goals the government attempts to accomplish. Yet this ideal city development is largely hindered by financial
+difficulties. Purchasing e-buses, along with the installation of charging infrastructures, is extremely costly.
+To make our project more realistic, our group established a 50% external funding restriction. In other words,
+the government will only cover up to 50% of the total cost for an entire replacement process.
+For the convenience of our calculations, we excluded bus routes that travel beyond the city of Stockholm.
+We also excluded routes of special buses (e.g. flygbussarna). The model provided afterward will be based on
+the remaining 253 bus lines and 2324 stations on these bus lines in Stockholm. Data is extracted from the
+official website of Sweden.
+Figure  5-1: Bus Line Map with Bus Stops
+Based on that, we provide an optimal plan for using the limited budget efficiently. The plan minimizes the
+cost of construction and maximizes the area covered by the e-bus routes. To achieve this goal, we constructed
+three zero-one integer programming models. The first model calculates the minimal number of charging in-
+frastructures required to complete the replacement process. The second model calculates the minimal num-
+ber of buses required. The third model calculates the maximum distance covered by the e-bus routes given
+the financial restraints. The process is demonstrated in the following flow chart.
+Figure  5-2: Finantial Impact Analysis Model Flow Chart
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 12 of 25
+2. Model Explanation
+a. Decision Variables:
+The ultimate objective of our model is to identify which of the bus routes will be translated into e-bus
+routes given only the initial government funding (50% total cost). Thus, our decision variable is whether a
+route is converted to an e-bus route or remains the traditional bus route. The expression is shown in Eq. (5-1).
+TUS𝑙{E-bus route = 1
+Fuel-bus route = 0 (5-1)
+TUS𝑙 represents the cities’ 𝑙’th route within the city. 1 means that this route is an e-bus route, and 0 means
+it is a traditional bus route.
+Not all stations need to install a charging infrastructure. Thus, a station can be categorized as either a
+charging site or a non-charging site. The expression is shown in Eq. (5-2).
+USl,s{E-bus station = 1
+Fuel-bus station = 0 (5-2)
+USl,s represents the 𝑠
+’th station in the 𝑙’th route. 1 means that this station has a charging infrastructure and 0
+means this station doesn’t. We assume that there is a base close to the starting station of each bus line where
+e-buses can charge. Infrastructure inside this base is also calculated, although it will not be displayed by the
+variable.
+b.
+Objective function:
+To maximize the utility of government funding, we consider two aspects: (i) to minimize the cost of con-
+struction and (ii) to maximize the coverage of bus routes. Hence, we identify three objective functions.
+The first objective function identifies the total number of charging infrastructures required in the trans-
+port system. The expression is shown in Eq. (5-3).
+𝑁infrastructure = ∑
+𝐿
+𝑙=1
+∑
+𝑆
+𝑠=1
+USl,s (5-3)
+𝑁infrastructure represents the number of charging infrastructures built.
+The second objective function identifies the total number of e-buses required in the transport system. The
+expression is shown in Eq. (5-4).
+𝑁𝑇,e-bus = ∑
+𝐿
+𝑙=1
+TUS𝑙 ⋅ 𝑁𝑙,bus (5-4)
+𝑁𝑇,e-bus  represents the total number of e-bus in Stockholm, 𝑁𝑙,bus represents the number of buses in the 𝑙’th
+bus route.
+The third objective function identifies the coverage of e-bus routes. The expression is shown in Eq. (5-5).
+𝑑𝑇,e-bus = ∑
+𝐿
+𝑙=1
+TUS𝑙 ⋅ 𝑑𝑙 (5-5)
+𝑑𝑇,e-bus  represents the total distance covered by the e-bus routes, 𝑑𝑙 represents the distance covered by the
+𝑙’th bus route.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 13 of 25
+c. Restraints:
+In our model, we consider the complete course traveled by the buses. This means that every bus has to
+travel to its destination and return to the starting station to be considered as a single journey. We assume
+that for every bus in a route, the starting station and destination are identical. And since electricity will be
+consumed within the journey, we have to make sure that the bus will always contain a sufficient amount
+of electricity to complete the remaining traveling distance to the next charging station. The calculation of
+energy stored in the battery is shown in Eq. (5-6).
+⎩{⎨
+{⎧𝐸input
+l,s + 𝐸charge = 𝐸output
+l,s
+𝐸input
+l,s = 𝐸output
+l,(s-1) + 𝑟consume ⋅ 𝑑𝑙
+(5-6)
+𝐸input
+l,s  represents the energy stored in the E-bus battery when entering the 𝑠th station of the 𝑙th bus route.
+𝐸output
+l,s  represents the energy stored in the battery when leaving the 𝑠
+th station of the 𝑙th bus route. 𝐸charge
+represents the energy supplied to the battery by the charging infrastructure within the station. 𝑟consume rep-
+resents the energy consumption rate of the e-bus.
+During the entire process of traveling, the energy stored in the battery will not exceed the maximum ca-
+pacity of the battery and must always be above a minimum value to promise safe driving. Thus, Eq. (5-7)
+must always hold true.
+⎩{⎨
+{⎧𝐸output
+l,s ≤ 𝐸max
+𝐸input
+l,s ≥ 𝐸min
+(5-7)
+Furthermore, for every bus line, we must make sure a certain number of buses are put into use. That is,
+the number of buses in a line should be able to fulfill the schedule for the departure of the buses. Specifically
+for e-bus lines, after every certain amount of time, an e-bus must be fully charged and ready to depart from
+the starting station. Eq. (5-8) must always hold true.
+𝑡depart − 2𝑑𝑙
+𝑣 + 𝑡depart ⋅ (𝑁𝑙,bus − 1) >
+2 ⋅𝑟consume ⋅ 𝑑𝑙 − ∑
+𝑆
+𝑠=1
+⋅ US𝑙,𝑠 ⋅ 𝑟charge ⋅ 𝑡charge
+𝑟charge
+(5-8)
+𝑡depart represents the elapsed time between departures. 𝑣 represents the average speed of e-buses.
+And most importantly, there are the budget restraints. The government funding will not exceed the total
+expenditures used for the transformation process.
+𝐹Gov ≥ ∑
+𝐿
+𝑙=1
+∑
+𝑆
+𝑠=1
+(USl,s ⋅ 𝐶infrastructure) +∑
+𝐿
+𝑙=1
+(TUS𝑙 ⋅ 𝑁𝑙,bus ⋅ 𝐶e-bus) (5-9)
+𝐹Gov represents the fund provided by the government. 𝐶infrastructure represents the cost of installing a charg-
+ing infrastructure and 𝐶bus represents the cost of purchasing a new e-bus for the system.
+d. Zero-one Integer Programming Models:
+The combination of the decision variables, objective functions, and restraints sets up our zero-one integer
+programming models. To reduce the financial burden on the investors of this project, which in this case is the
+government and the public transport company supervising the project, we aim to find the minimum number
+of buses and charging infrastructures required. Our model is the following:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 14 of 25
+min 𝑁infrastructure = ∑
+𝐿
+𝑙=1
+∑
+𝑆
+𝑠=1
+USl,s
+𝑠.𝑡.
+⎩{{{
+{{{
+{⎨
+{{{{
+{{{⎧𝐸input
+l,s + 𝐸charge = 𝐸output
+l,s
+𝐸input
+l,s = 𝐸output
+l,(s-1) + 𝑟consume ⋅ 𝑑𝑙
+𝐸charge = 𝑟charge ⋅ 𝑡charge
+𝐸output
+l,s ≤ 𝐸max
+𝐸input
+l,s ≥ 𝐸min
+USl,s{E-bus station =1
+Fuel-bus station =0
+(5-10)
+min 𝑁𝑇,
+e-bus = ∑
+𝐿
+𝑙=1
+TUS𝑙 ⋅ 𝑁𝑙,bus
+𝑠.𝑡.
+⎩{⎨
+{⎧
+𝐻 −2𝐷𝑙
+𝑣 + 𝐻 ⋅ (𝑁𝑙,bus − 1) >
+2⋅𝑟consume⋅𝑑𝑙− ∑
+𝑆
+𝑠=1
+⋅ US𝑙,𝑠 ⋅ 𝑟charge ⋅ 𝑡
+𝑟charge
+(5-11)
+Knowing the total number of charging infrastructures and e-buses required, we are able to calculate the
+total cost for the transformation, thereby knowing the amount of funds provided by the Government. The
+calculation is shown in Eq. (5-12).
+𝐹Gov =
+𝑁infrastructure ⋅ 𝐶infrastructure + ∑𝐿
+𝑙=1(𝑁𝑙, bus⋅ 𝐶bus)
+2
+(5-12)
+Thus, to increase the utilization rate of the provided funding, we aim to find the maximum distance cov-
+ered by the e-bus system. Our model is the following:
+max 𝑑𝑇 = ∑
+𝐿
+𝑙=1
+TUS𝑙 ⋅ 𝑑𝑙
+𝑠.𝑡.{∑
+𝐿
+𝑙=1
+∑
+𝑆
+𝑠=1
+(USl,s ⋅ 𝐶infrastructure) +∑
+𝐿
+𝑙=1
+(TUS𝑙 ⋅ 𝑁𝑙,bus ⋅ 𝐶e-bus) ≤𝐹Gov
+(5-13)
+3. Model Data Specification
+The data value of the variables in our model is demonstrated in Table 5-1. Most of our data is extracted
+from credible websites or articles. Yet, we also made assumptions for several values to make our model more
+realistic.
+To decrease the waiting time for the passengers, we assume that the time spent on charging in charging
+stations is 0.0833 hours, which is 5 minutes. We also assume that the time lapse between departures is 0.3333
+hours or 20 minutes. To promise safe traveling, we assume that the minimum battery capacity is 75 kWh and
+the average speed of the vehicle is 40 km/h.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 15 of 25
+Table 5-1: Static Parameters in Planning Model
+Parameter Symbol Stockholm's Data
+Maximum Battery Capacity (kWh) 𝐸max 250 [15]
+Minimum Battery Capacity (kWh) 𝐸min 160[15]
+Energy Consumption Rate (kWh/km) 𝑟consume 0.65 [15]
+Charging Speed (kW/h) 𝑟charge 60 [15]
+Cost per Electric Bus (SEK) 𝐶e-bus 4,196,602 [8]
+Cost per Charging Infrastructure 𝐶infrastructure 2,115,000 [8]
+Speed of Vehicle (km/h) 𝑣 40
+Time of Charging Layovers (h) 𝑡charge 0.0833
+Time Lapse between Departures (h) 𝑡depart 0.3333
+4. Model Planning Results
+The results of our first two models (Eq. (5-10) , Eq. (5-11) ) are 2259 charging sites and 2247 buses, respec-
+tively. This means that the overall transformation needs to install at least 2259 charging infrastructures and
+purchase at least 2247 e-buses. Using this data along with other data in Table 5-1, we calculate the total fund
+from the government using Eq. (5-12) . Then we use the final model (Eq. (5-13) ), resulting in 5860.18 km.
+This resembles the total distance of the 117 out of 253 bus lines that will be transformed into e-bus lines in
+the first year. To accomplish such a transformation, 1297 charging infrastructures must be installed and 1297
+buses must be purchased.
+Figure 5-3 represents the implementation.
+Figure  5-3: Year 1 Bus Line Map (Stockholm)
+5. Sensitivity Analysis
+To evaluate whether changing the capacity of the electric bus has an impact on the number of bus routes,
+number of e-buses, and number of chargers, we performed a series of sensitivity analyses. The electric bus
+capacity varies from 160 kWh to 250 kWh, so we stored the potential capacity in a matrice with increments
+of 10 kWh.
+𝐸scale = {160,170, 180…250} (5-14)
+𝐸scale represents the matrix of capacity values with the maximum and minimum capacity range.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 16 of 25
+For each capacity value, we perform optimization and store the results. Then, we plot the change in the
+number of stations, vehicles, and lines according to each capacity value. Below are the results of the analysis.
+Figure  5-4: Results of Sensitivity Analysis
+According to Figure 5-4, as the capacity of the bus increases, the number of vehicles and line numbers
+increase, but the number of stations decreases. Changing the bus capacity has a minor influence on these
+numbers because it affects the buses’ charging time and dwelling time, thereby changing the bus line sched-
+ules.
+VI. Generative Income Optimization and Timeline
+1. Problem Objective
+To further the significance of our planning model and apply it to a more sustainable application, we in-
+corporated consideration of the timeframe for our implementation. Specifically, the implementation process
+will be spread over a 10-year timeframe. However, considering the fact that external funding is presumably
+only 50% of the money for the implementation, we will develop our planning model by incorporating gen-
+erative income measures. Specific changes are shown in the following developed flowchart.
+Figure  6-1: Generative Income Optimization Model Flow Chart
+2. Explanation of Model
+Generative income refers to the amount of income generated by the bus system itself and the amount
+of operation cost that could be saved from this implementation process. Specifically, income generated by
+the bus system generally refers to the income coming from tickets, while operation cost saved from this im-
+plementation process mainly deals with profit that is gained due to the lower fuel price of electric buses
+compared to the fuel price of diesel buses.
+Specifically, annual ticket income could be represented by the product of the average ticket price and the
+total number of riderships in a year, while the profit gained from the difference in fuel price could be gath-
+ered by adding up the amount of distance traveled by e-buses that work on electric bus routes that would
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 17 of 25
+otherwise be using diesel buses if the project is not implemented. Thus, Eq. (6-1) would show the calculation
+for generative income.
+𝐼gen = 𝑃ticket ⋅ 𝑛ridership + ∑
+𝑙
+𝑙=1
+[(𝐶diesel − 𝐶elec) ⋅𝑑𝑙 ⋅ 𝑛𝑙,bus ⋅ 𝑛𝑙,shifts ⋅ TUS𝑙], (6-1)
+Generative income will be invested in next year’s implementation, providing next year’s “fund” that re-
+stricts the financial cost of next year’s implementation. However, there is one thing to consider: the operation
+cost of buses for maintenance, staff employment, etc. Therefore, part of the generative income would have
+to be used to bear the operation cost of the system, while the other part of the generative income would be
+invested into the project and counted as part of next year’s funding. Therefore, Eq. (6-2) could be established
+to include generative income in our planning model.
+𝐹disposable = 𝑃ticket ⋅ 𝑛ridership + ∑
+𝑙
+𝑙
+=1
+[(𝐶diesel − 𝐶elec) ⋅𝑑𝑙 ⋅ 𝑛𝑙,bus ⋅ 𝑛𝑙,shifts ⋅ TUS𝑙] −𝐶op (6-2)
+𝐹disposable represents the amount of funds invested in next year’s implementation process that could be di-
+rectly used.
+With the function of generative income and disposable funding for the next year established, we can now
+implement this implementation process over the 10-year timeframe. Specifically, 𝐹disposable would replace
+𝐹Gov in the restrictions of our planning model. Then, we will loop our planning model annually (10 times
+in total), concurrently refreshing the value of 𝐹disposable every time we start calculation for a new year and
+setting data setpoints at year 1, year 3, year 6, and year 10 to gather results. As a result, we would be able
+to model the entire implementation process with specific optimized electric bus routes and charging infra-
+structure data under realistic financial constraints.
+3. Model Data Specification
+In Eq. (6-2), some of the parameters are numbers that (we assume) stay constant over time, meaning that
+they are known numbers that would not shift according to the progress of our implementation. To quantify
+the amount of e-bus travel on one line, we assume the number of buses times the number of shifts to be
+19710. These static parameters are shown in the following table:
+Table 6-1
+: Additional Static Parameters in Developed Model
+Parameter Symbol Stockholm's Data
+Ticket Price (SEK) 𝑃ticket 30 (on average) [16]
+Annual Ridership (number of people) 𝑛ridership 237,000,000 [17]
+Cost of Oil (SEK/km) 𝐶diesel 5.714 [18]
+Cost of Electricity (SEK/km) 𝐶elec 0.172
+The Number of Buses times the Num-
+ber of Shifts (times)
+𝑛𝑙,bus ⋅ 𝑛𝑙,shifts 19,710
+Cost of Operation (billion SEK) 𝐶op 6.65 [19]
+4. Model Planning Results
+With our incorporation of Eq. (6-2) in the planning model, optimization under our new financial con-
+straint - generative income - could be found. The data gathered from our data setpoints will be able to provide
+a detailed roadmap of the implementation process according to our model.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 18 of 25
+a. Distribution of Bus Routes - Temporal Variation:
+Year 1. Since we assume there have been no electric routes implemented at the start of our implementa-
+tion process, both 𝐼ticket and 𝐼replace are not available sources of our income in the first year. There would be
+no additional income generated by the bus system itself to be added to our 𝐹Gov according to Eq. (6-1). Thus,
+the first year’s 𝐹Gov would be the same as the 𝐹Gov that we modeled as our restriction method in Eq. (6-13).
+This means that the result of our developed model at our Year 1 data setpoint will be the same as the result
+of our model in question 2, which could referred to in section V.4.
+Year 3. At year 3, 145 bus lines out of the 253 total are converted for electric buses. This means an increase
+of 28 more electric bus lines these two years that are merely funded by generative income from the bus sys-
+tem itself. Additionally, this will cover a total distance of 6959.49 km, an increase of 1099.32 km compared
+to our data from the last data setpoint. At the same time, 1547 charging sites have been constructed and the
+same number of e-buses are in operation, marking an increase of 250 charging sites and e-buses to further
+the implementation process.
+Figure 6-2 represents these changes.
+Figure  6-2: Year 3 Bus Line Map (Stockholm)
+Year 6. One year after half of the implementation plan, 197 bus lines out of the 253 total have become
+electric bus lines with charging infrastructures equipped on them, covering 8522.77 km of transit distance.
+Over the three years, 52 more electric bus lines were constructed and 1563.28 more km were replaced with
+eco-friendly transits. Just as expected, both the number of charging infrastructures built and the number of
+e-buses put into operation further increased by 372 to 1919 charging infrastructures. Figure 6-3 represents
+the map of year 6.
+Figure  6-3: Year 6 Bus Line Map (Stockholm)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 19 of 25
+Year 10. At the end of our implementation process, all 253 bus lines have become electric-based with 2259
+charging stations and 2247 e-buses in operation. The bus lines would cover a total distance of 9726.32 km.
+Figure 6-4 presents the end result of our implementation process.
+Figure  6-4: Year 10 Bus Line Map (Stockholm)
+b. Overall Trend:
+Overall, after we incorporated consideration of generative income, the number of electric bus lines, the
+number of charging infrastructure, and the distance covered by electric transit have all shown an increasing
+trend, which proves that the implementation process has successfully converted the bus system.
+Specifically, the gradual change in the number of electric bus lines, the number of charging sites, and the
+distance covered by our implementation are shown below.
+Figure 6-5: Number of E-
+Bus Lines (Stockholm)
+Figure 6-6: Number of
+Chargers (Stockholm)
+Figure  6-7: Distance
+Covered (Stockholm)
+Figure 6-8: Number of
+Vehicles (Stockholm)
+5. Application
+The situations and constraints faced by bus systems are mostly similar across cities. Thus, our models are
+also applicable to other metropolitans. For a sample, we use our model to simulate the transformation of bus
+systems in Chicago, Illinois, and Shanghai, China. We would maintain our assumption that the government
+will provide a fund that is 50% of the total transformation cost. The data collected and used are shown in
+Table 6-2 below.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 20 of 25
+Table 6-2: Static Parameters of Model in Chicago and Shanghai
+Parameter Symbol Chicago's Data Shanghai's Data
+Maximum Battery Capacity
+(kWh)
+𝐸max 220 [20] 355 [21]
+Minimum Battery Capacity
+(kWh)
+𝐸min 66 106.5
+Energy Consumption Rate
+(kWh/km)
+𝑟consume 1.25 [20] 1 [21]
+Charging Speed (kW) 𝑟charge 73 [20] 100 [21]
+Cost per Electric Bus 𝐶e-bus 752,000 (USD) [22] 2,500,000 (CNY) [21]
+Cost per Charging Infra-
+structure
+𝐶infrastructure 251,990 (USD) [8] 1,633,095 (CNY) [8]
+Speed of Vehicle (km/h) 𝑣 40 40
+Time of Charging Layovers
+(h)
+𝑡charge 0.0833 0.0833
+Time Lapse between Depar-
+tures (h)
+𝑡depart 0.3333 0.3333
+Ticket Price 𝑃ticket 2 (USD) [23] 2 (RMB) [24]
+Annual Ridership (number
+of people)
+𝑛ridership 237,280,000 [25] 868,080,000 [26]
+Cost of Oil 𝐶diesel 0.27 (USD/km) [27] 0.55 (CNY/km) [28]
+Cost of Electricity 𝐶elec 0.19 (USD/km)[29] 0.15 (CNY/km) [28]
+The Number of Buses times
+the Number of Shifts (times)
+𝑛𝑙,bus ⋅ 𝑛𝑙,shifts 19,710 19,710
+Ticket Income 𝐼ticket 293,900,000 (USD) [30] 1,736,160,000 (CNY)
+Cost of Operation 𝐶op 133,980,000 (USD) 957,000,000 (CNY)
+For Chicago, we applied our model to simulate 127 bus lines in the city. Bus lines extending out of the city
+and special bus lines are excluded from the data for the convenience of calculation. The results are shown
+below.
+Figure  6-9: Year 1 Bus Line Map (Chicago)
+Figure  6-10: Year 3 Bus Line Map (Chicago)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 21 of 25
+Figure  6-11: Year 6 Bus Line Map (Chicago)
+Figure  6-12: Year 10 Bus Line Map (Chicago)
+Figure 6-13: Number of
+E-Bus Lines (Chicago)
+Figure 6-14: Number of
+Chargers (Chicago)
+Figure  6-15: Distance
+Covered (Chicago)
+Figure 6-16: Number of
+Vehicles (Chicago)
+Within the ten-year period, the number of transformed bus lines gradually increases until the end of year
+nine, when every bus route is completely transformed. The total distance covered by the e-bus lines at the
+end of the day would be approximately 7117 km, with a total of 127 lines, 2765 infrastructures, and 2526 e-
+buses in the operation.
+We then applied our model to simulate 1240 bus lines in Shanghai. Again, bus lines extending out of the
+city and special bus lines are excluded for the convenience of calculation. The following figures present the
+modeled results.
+Figure  6-17: Year 1 Bus Line Map (Shanghai)
+Figure  6-18: Year 3 Bus Line Map (Shanghai)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 22 of 25
+Figure  6-19: Year 6 Bus Line Map (Shanghai)
+Figure  6-20: Year 10 Bus Line Map (Shanghai)
+Figure 6-21: Number of
+E-Bus Lines (Shanghai)
+Figure 6-22: Number of
+Chargers (Shanghai)
+Figure  6-23: Distance
+Covered (Shanghai)
+Figure 6-24: Number of
+Vehicles (Shanghai)
+Within ten years, the number of transformed bus lines nearly doubled with the incorporation of genera-
+tive income, reaching a total of 965 transformed bus lines that covered approximately 19479 km by the end
+of the period. 4493 charging infrastructures are installed and 4493 e-buses are purchased to operate these
+965 bus lines.
+While both Stockholm and Chicago completed the transformation by the end of the ten years, Shanghai
+only finished 77.82% of the entire transformation. One possible explanation is that there are too many bus
+lines in Shanghai, numbering up to five times the total number of bus lines modeled in Stockholm and ten
+times the total number of bus lines modeled in Chicago. At the same time, Shanghai’s bus system raises rel-
+atively low ticket prices, minimizing the profit generated by the bus system throughout the implementation
+process. But overall, the change in the number of bus-line covered each year after the first year is increasing
+in all three cities. And since this change varies directly with the profit of the bus system, we concluded that
+the transformation profits the bus system in the long term. Furthermore, replacing the traditional diesel bus
+with e-buses has ecological benefits. Hence, the transformation will ultimately boost the general welfare in
+all urbanized cities.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 23 of 25
+VII. Evaluation of Strengths and Weaknesses
+1. Strengths
+Our first model evaluates the ecological consequences of bus fleets using different fuels using the TOPSIS
+and Entropy Weight Method. While the TOPSIS method reflects underlying variables’ influences on the local
+ecology, the Entropy Weight method guarantees our objectivity while assessing the variables.
+Using the integer programming method, our second model evaluates the economic consequences for the
+local transportation department to convert to an all-electric fleet. This programming method allows us to
+specify our model for each route and bus to estimate the precise number of bus lines, e-buses, and charging
+stations the department needs to implement.
+Furthermore, we added a dynamic calculation of income and costs for multiple cities to construct an E-
+Bus system by crafting a 10-year roadmap. We replicated this model in Shanghai, Stockholm, and Chicago
+to demonstrate our roadmap’s quality and feasibility, proving our models’ robustness and consistency.
+2. Weaknesses
+There might be some inaccuracies in our data samples due to estimations. For instance, our model did
+not consider the actual daily schedule of the buses. Instead, we calculated the frequency for a bus to arrive
+ourselves. Some of our data samples might need to be updated in other maps and schedules.
+Furthermore, our justified assumptions might add slight inaccuracies to our models. For instance, we gen-
+eralized that only quantifiable ecological variables are included in the three models. However, different cities
+have different geographical environments that subtly affect the bus systems. Hence, it is hard to quantify
+their influences on the operation of the bus systems and might create some inaccuracies.
+VIII. Conclusion
+In conclusion, our models, rooted in both ecological and economic perspectives, advocate for the wide-
+spread adoption of all-electric bus fleets in metropolitan areas. The TOPSIS associated with the Entropy
+Weight Method employed in the ecological assessment underscored the superior environmental perfor-
+mance of electric buses. The Zero-one Integer Programming model, considering budget constraints and gen-
+erative income, strategically maximized ecological benefits while minimizing costs in the implementation
+process.
+Furthermore, our models extend beyond Stockholm to global metropolitans like Chicago, USA, and Shang-
+hai, China. Our future endeavors involve refining data accuracy by incorporating actual daily bus schedules,
+addressing city-specific variables, and so on to improve our model. Continuous updates to variables, data
+samples, and refining assumptions will enhance the robustness of our models, contributing to a sustainable
+and ecologically conscious future in public transportation.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 24 of 25
+IX. One-Page Letter
+HIMCM Team #13904
+November 14th, 2023
+To,
+Lena Erixon
+Director General of Trafikverket
+Borlänge, Sweden
+Dear Ms. Erixon,
+I am writing on behalf of a group of passionate students who are using mathematical models to simulate
+environment-friendly policies’ real-life consequences. We would like to raise your awareness of an important
+initiative that could substantially benefit the well-being of Stockholm’s community and environment: con-
+verting city buses to an all-electric fleet.
+The increasing severity of urban air pollution lately has been alarming worldwide. Sweden, a leader in
+many fields of environmental policies and an active participant in the EU’s works to reduce air pollution,
+has a cooperative government and innovative technologies in addressing ecological issues. A conversion to
+electric buses presents an opportunity for Stockholm to reduce carbon emissions, improve air quality, reduce
+noise pollution, and act as a role model of energy source transformation for all other EU member states.
+The adoption of this proposal is imperative from all perspectives. Ecologically speaking, driving electric
+buses reduces the city’s carbon emission and noise pollution than driving gasoline or biofuel-fueled buses.
+Economy-wise, electricity is a cheap and efficient resource that could be an excellent substitute for fuel in the
+public transportation system. From these two perspectives, our team has thoroughly analyzed the feasibility
+and benefits of converting to electric buses. Below are our results.
+First, we adopted the TOPSIS analysis and Entropy Weight Method to compare the ecological influences of
+adopting an all-gasoline, all-biodiesel, all-biogas, or all-electric bus fleet in Stockholm. After comparing these
+four types of buses’ CO₂ emissions during drives, CO₂ emissions when producing energy, noise pollution,
+and net energy consumption, we found an electric fleet to be the most ecologically friendly, substantially
+decreasing the pollution levels.
+Then, we construct a model focusing on the financial implications of a conversion to e-buses. It factors in
+an external fund that covers up to 50% of the transition costs by rebuilding the city bus system with a lim-
+ited budget. Using integer programming, we present you two ways to approach this proposal that can either
+economically minimize the electric bus costs or strategically maximize the number of bus routes covered by
+E-buses.
+Finally, if you are interested in our simulations, our article includes a 10-year roadmap for Stockholm’s
+gradual transition to a fully electric bus fleet by 2033. This blueprint considers the dynamic costs of convert-
+ing the bus type over a period of 10 years, and it can help you to supervise and schedule the implementation
+and construction of E-bus lines and stations by time.
+It will be a great honor if you will adopt our roadmap in the future. The benefits of this conversion ex-
+tend beyond environmental advantages, for adopting an all-electric fleet can significantly decrease ecological
+damages done by the prior public transportation system and help establish Sweden’s role model figure in
+front of all other European nations.
+Sincerely,
+HIMCM Team #13904
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team #13904 Page 25 of 25
+References
+[1] ACEA, Available: https://web.archive.org/web/20111202165928/http://www.acea.be/images/uploads/files/20100421_PR.
+pdf
+[2] L. Norberg, “Stockholm is the world’s first capital with 100% fossil free bus services”, Biofuel Express, Available: https://www.
+biofuel-express.com/en/stockholm-is-the-worlds-first-capital-with-100-fossil-free-bus-services/
+[3] M&M, Available: https://www.marketsandmarkets.com/Market-Reports/electric-vehicle-market-209371461.html
+[4] G. Esposito, “The Low Emission Bus Guide”, Low Carbon Vehicle Partnership, Available: https://info.ballard.com/hubfs/
+FCEB/LowCVP-Europe-Low-Emission-Bus-Guide-2016.pdf
+[5] US EPA, Available: https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle
+[6] G. et al., “Public bus energy consumption investigation for transition to electric power and semi-dynamic charging”, Avail-
+able: https://www.tf.lbtu.lv/conference/proceedings2015/Papers/060_Graurs.pdf
+[7] S. Borén, “Electric Buses’ sustainability effects, noise, energy use, and costs”, International Journal of Sustainable Transporta-
+tion, Available: https://www.sciencedirect.com/org/science/article/pii/S1556831822003446
+[8] M. Xylia, S. Leduc, P. Patrizio, F. Kraxner, and S. Silveira, “Locating charging infrastructure for electric buses in Stockholm”,
+Transportation Research Part C: Emerging Technologies, 2017.
+[9] Roozbeh and J. et al., “Comparison of multiple cases from Sweden”, Journal of Cleaner Production, Available: https://www.
+sciencedirect.com/science/article/pii/S0959652622041087
+[10] CIVITAS, Available: https://civitas.eu/sites/default/files/Results%20and%20Publications/civ_pol-08_m_web.pdf
+[11] G. Kilgore, “Carbon footprint of Electric Cars Vs gasoline”, 8 Billion Trees: Carbon Offset Projects &amp; Ecological Footprint
+Calculators, Available: https://8billiontrees.com/carbon-offsets-credits/carbon-footprint-of-electric-cars-vs-gasoline/
+[12] IRENA, “Measuring small-scale biogas capacity and production”, Available: https://www.irena.org/-/media/Files/IRENA/
+Agency/Publication/2016/IRENA_Statistics_Measuring_small-scale_biogas_2016.pdf
+[13] UITP, Available: https://citytransit.uitp.org/stockholm/vehicle-kilometres-in-operations/bus
+[14] “Statistik om Stockholm”, Available: https://start.stockholm/om-stockholms-stad/utredningar-statistik-och-fakta/statistik/
+[15] 101Media, “EBUSCO 3.0 - Electric Bus”, Ebusco®, Available: https://www.ebusco.com/electric-buses/ebusco-3-0/
+[16] S. Lokaltrafik, “Fares & Tickets”, SL, Available: https://sl.se/en/in-english/fares--tickets/
+[17] CityTransit Data, Available: https://citytransit.uitp.org/stockholm/public-transport-ridership/bus
+[18] OlegS, “Fuel prices in Europe in November 2023”, Available: https://autotraveler.ru/en/spravka/fuel-price-in-europe.html
+[19] J. M. et al., “Operational cost and user performance analysis of on-demand bus and taxi systems”, The International Journal
+of Transportation Research, Available: https://www.tandfonline.com/doi/full/10.1080/19427867.2020.1861507
+[20] Proterra, Available: https://www.proterra.com/wp-content/uploads/2020/09/Proterra-ZX5-Spec-Sheet-35-Foot-Bus-U.S..pdf
+[21] B10, Available: https://cv.byd.com/cv/carShow.html-param=B10
+[22] Motowheeler, Available: https://motowheeler.com/us/electric-buses/proterra-zx5-35-foot-bus-304
+[23] C. T. Authority, “Fare information”, CTA, Available: https://www.transitchicago.com/fares/
+[24] V. Au, “Shanghai travel guide”, Available: https://lansonplace.com/shanghai-travel-guide-getting-around-shanghai/
+[25] Statista, Available: https://www.statista.com/statistics/1274300/chicago-annual-bus-ridership/
+[26] PengPai news, Available: https://www.thepaper.cn/newsDetail_forward_23491123
+[27] GlobalPetrolPrices, Available: https://www.globalpetrolprices.com/USA/Chicago/diesel_prices/
+[28] S. News, “A rise up to 87%”, tencent news, Available: https://new.qq.com/rain/a/20230819A06XDE00
+[29] EnergySage, Available: https://www.energysage.com/local-data/electricity-cost/il/cook-county/chicago/
+[30] Civic Federation, Available: https://www.civicfed.org/blog/chicago-transit-authority-approves-1-point-7-billion-budget-
+faces-uncertain-fiscal-future
+ᇿ Hi MCM
+ሧ࿟

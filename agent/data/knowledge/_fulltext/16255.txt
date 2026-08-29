@@ -1,0 +1,737 @@
+ğ
+1
+
+Team Control Number
+16255
+Problem Chosen
+2024
+HiMCM/MidMCM
+Summary Sheet
+
+In this report, we explore how to create an optimal music tour plan for Taylor Swift, a pop musical
+performer very well known by young people all ove r the world. First, we collected relevant
+information about her past tours including cities visited, tour duration, number of shows, venues,
+ticket prices, and popularity in the regions visited. Acknowledging the complexity of the planning
+problem, a series of assumptions are required to be made. After listing our assumptions based on
+our analysis of the past tours, we defined the factors that shoul d be considered to measure the
+success of a tour. We found a Performance Index ( PI) that took into acc ount the total profit,
+attendance, and types of cities covered by the tour, and can serve this purpose.
+During our planning, we emphasized choosing cities by creating a candidate list that included cities
+from different continents. We included many cities that Taylor Swift has visited before, and cities
+that she is currently popular in, based on the heat map in [7]. By using our model, we evaluated 6
+example plans, each of which picked a different co mbination of cities from the candidate list. In
+addition, we calculated the PI of the Reputation Stadium Tour as a comparison to our 6 plans.
+The results indicate that by optimizing factors such as city diversification, ticket prices, and venue
+capacities, our example plans are more successful compared to the Reputation Stadium Tour. Plan
+1 and Plan 2 focused on English-speaking countr ies only, and with optimized ticket prices and
+greater venue capacities, they can generate a higher revenue, and thus a larger PI value. Plan 3 to
+Plan 6, on the contrary, include various non-English speaking cities (Nc_em) and new cities (Nc_new).
+Depending on the values of Nc_em and Nc_new, Plan 3 to Plan 6 get a certain amount of reward,
+according to our model of PI, thus these plans are deemed more  successful than Plan 1, Plan 2,
+and the Reputation Stadium Tour. Because Plan 6 has the greatest number of Nc_em, our model
+appreciates Plan 6 the most, ev en though it has a 5% revenue reduc tion compared to the highest
+amount.
+Next, we discussed the strengths and weaknesses of our model and wrote a letter to Taylor Swift
+presenting our plan to her. Our letter demonstrates our model and persuades her to use our model
+for her next tour planning to have higher profit and gain more popularity in diversified areas.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+2
+
+Table of Contents
+
+1. Problem Restatement .................................................................................................................. 3
+2. Problem Assumptions & Justifications ....................................................................................... 3
+3. Variable Definitions .................................................................................................................... 7
+4. Presentation of Model and Solution ............................................................................................ 8
+4.1 Model Development ........................................................................................................ 8
+4.2 Develop the Schedule/Design and Planning ................................................................... 9
+4.3 Solution of the Model .................................................................................................... 14
+5. Analysis and Discussion of Our Work ...................................................................................... 16
+5.1 Strengths of Our Model and Solution ........................................................................... 16
+5.2 Limitations of Our Model and Solution ........................................................................ 16
+5.3 Reflection ...................................................................................................................... 17
+6. Letter to Musical Performer ...................................................................................................... 18
+References ..................................................................................................................................... 20
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+3
+
+1. Problem Restatement
+A musical performer has approached our team at the MidMCM Music Agency to ensure that with
+our help planning, they can set up the best tour possible to meet their goals. We need to analyze
+the performer’s past tours and develop a model to  plan their next one. The model should reflect
+the goals of the musical performer and include th e factors that should go  into planning a single
+show and multiple shows in a tour. First, we ha ve to do some specific research on one of the
+musical performer’s past tours and answer some important questions such as why they went on
+tour, how long a tour is, how many shows there are in a tour, and where they went on tour. This
+research can help us determine key factors that will play a role in our planning process for the
+performer’s next tour. These include their goals  for the tour, making the duration of the tour
+comparable to the durations of pa st tours, and potentially adding  new cities to the list of ones
+they’ve already visited. We have to figure out what to maximize to  make the “best” plan for the
+performer to meet their goals and create a model that will optimize these factors. Such factors
+include venues, ticket prices, and the number of fans attending each show. After creating the model,
+we need to apply it to plan the performer’s next tour, and share our process and results with them
+in a one- to two-page letter.
+2. Problem Assumptions & Justifications
+Figure 1 shows all the six concer t tours from Taylor Swift, na mely, the Fearless Tour (04/2009-
+07/2010), the Speak Now World Tour (02/2011- 03/2012), the Red Tour (03/2013-06/2014), the
+1989 World Tour (05/2015-12/2015), the Reputatio n Stadium Tour (05/2018-11/2018), and the
+Eras Tour (03/2023-12/2024).
+
+Figure 1: Posters of past/current tours from Taylor Swift [1][2][3][4][5][6]
+We have analyzed all Taylor Swift’s past tours, including the Fearless Tour, the Speak Now Tour,
+the Red Tour, the 1989 Tour, and the Reputation Stadium Tour. As the most recent tour, the Eras
+Tour provides lots of data for analysis but is excluded from our planning compare since it is still
+ongoing, so we don’t consider it a “past tour”.
+Table 1 gives a brief summary of the past tours, including the number of days, number of shows,
+number of cities, days per show, total revenue , etc. and the modeling will be done using the
+information from past tours.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+4
+
+Table 1: Summary of past tours [8][9][10][11][12]
+Tours Fearless
+(2009 - 2010)
+Speak Now
+(2011-2012)
+The Red
+(2013-2014)
+1989
+(2015)
+ReputaƟon
+(2018)
+Number of days 443 403 487 221 197
+Number of Shows 111 110 86 85 53
+Number of CiƟes 93 82 60 55 36
+Number of Emerging
+CiƟes
+(ciƟes in non-English speaking
+countries)
+1 1 4 1 0
+Days per Show
+(Total Days Divided by Number
+of Shows)
+3.99 3.66 5.66 2.60 3.72
+Total Revenue $60.0M $123.7M $141.8M $250.7M $345.5M
+Average Ticket Price in
+2024 USD
+(the average of average Ɵcket
+price of each show in the tour,
+calculated in 2024 USD)[13]
+$81 $102 $123 $149 $152
+Average show aƩendance
+(the average of aƩendance of
+each show in the tour)
+13,185 15,233 20,273 27,454 54,113
+
+From the table and other online resources, we have the following quick observations, and they help
+us understand Taylor Swift’s goals for touring and interacting with fans.
+Observations:
+1. The purposes of past tours in clude promoting her new album release, meeting with fans
+and commercial profit [8][9][11].
+2. All the tours have a time span between 197 days to 443 days, the number of cities in each
+tour ranges from 36 to 93, and the number of shows ranges fro m 53 to 111 in the past 15
+years. The trend is clear that the duration of the tours, the number of stops, and the number
+of shows are all decreasing.
+3. There is an obvious trend that the total re venue (adjusted to 2024 USD) is increasing,
+together with the average ticket price, and attendance for each show.
+4. Some tours included more emerging cities at  non-English-speaking countries than others,
+and almost all her tours visited cities with more vibrant economies, both in and out of US.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+5
+
+5. The average number of days between shows ra nges from 2.66 to 3.99 days, reflecting a
+very tight schedule.
+Based on the careful review of the past 5 tours,  we will carry out the m odeling process with the
+Assumptions below:
+1. Assumption: Taylor Swift’s goals for this tour include maximizing profit and public
+figure/popularity.
+Justification: Our model assumes that the optimization goal of this tour is to maximize
+profit and Taylor Swift’s public figure. Based on her explanations for starting past tours,
+we know Taylor Swift usually starts tours to  increase her popularity and meet with fans
+around the world. The trend we observed also clearly supports this assumption.
+2. Assumption: The number of tickets sold in each  concert will be a constant percentage of
+the venue capacity, and the constant we used is 78.41%.
+Justification: Concert tickets are sold out very early once available to the public, and there
+are certain numbers of seats reserved not for sale. The average attendance of each concert
+in the Reputation tour is 78.41% [8][9][10][11][12][14].
+3. Assumption: Slightly adjusting the ticket price won’t influence the attendance.
+Justification: Many Taylor Swift fans try extr emely hard to get tickets for her concerts
+before they sell out, as she is  really popular, and the tickets sell out quickly. Therefore, a
+fan wouldn’t not purchase the ticket just because of a slight increase in the price. In addition,
+even if some fans decide not to purchase a ticket because of changes in the price, Taylor
+Swift’s concerts have waitlists of up  to 2 Million peopl e waiting for tickets  [15] , so we
+assume that her concerts will always be full and adjusting the ticket price slightly won’t
+change the attendance.
+4. Assumption: Lodging and transportation costs ca n be ignored, and crew costs and venue
+costs don’t have fixed prices, but rather cut off a percentage of the total revenue, so the cost
+doesn’t impact the final optimization result when different models are compared.
+Justification: When Taylor Swift performs a show, she has to pay for many different things.
+Renting a venue and paying her crew make up a large portion of this total cost, which may
+be contracted as a percentage of the total revenue, whereas lodging and transportation costs
+are very little in comparison. Using The Eras Tour as an example, the total transportation
+cost of production equipment, stage, lighting, costumes, instruments and everything else is
+around $15M USD, which is 1.5% of the total revenue [16].
+5. Assumption: Taylor Swift wants to include as many cities as possible in one tour.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+6
+
+Justification: Including more geographic regions in a tour can increase Taylor Swift’s
+popularity around the world because she is intro ducing herself to other cultures that may
+not be as familiar with Western music.
+6. Assumption: Taylor Swift would still want to go to countries where she is very popular and
+where her past shows have been successful. Such areas include, bu t are not limited to,
+North America, Europe, and Oceania.
+Justification: If Taylor Swift has been very successful in these ar eas, she should go there
+again not only to maximize the amount of profit she could earn, but also to ensure that her
+biggest fan bases in English-speaking/Western culture countries are included in her tour.
+7. Assumption: Including new cities in her t our helps promote Taylor Swift’s public
+figure/popularity.
+Justification: Online information demonstrat es she has a lot of fans among non-English-
+Speaking countries. Reference [17] shows that Taylor Swift is the most translated artist in
+the world.
+8. Assumption: If we divide the tour length by th e number of shows, we get the number of
+days between two separate shows.
+Justification: Taylor Swift needs a couple of days between shows to rest and set up for the
+next show, so this amount affects the quality of her shows. Therefore, we don’t want this
+number to be too low.
+9. Assumption: The planned tour will be no longer than 200 days.
+Justification: we are trying to use our mode l to compare it with the Reputation Stadium
+Tour, so we must make the durations similar, so they are comparable.
+10. Assumption: We calculate the total revenue us ing the average ticket prices of shows and
+still get accurate results.
+Justification: A concert could have a very wi de range of ticket pr ices, ranging from less
+than $100 to $10,000+ [18] and it would be too complicated  to calculate all the different
+ticket prices and wouldn’t give us extra benefits in calculating the revenue of each show.
+11. Assumption: We will use the historically highest  average ticket price to predict the total
+revenue for the tour we are planning, at the cities she has visited before. For new cities she
+had never toured before, we estimate the tic ket price referencing cities in the same
+continent.
+Justification: According to Assumption 3, a pr ice estimation is reasonable if tickets had
+been sold at the same price before. (Ave rage ticket prices are calculated based on
+information in [8][9][10][11][12].)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+7
+
+12. Assumption: In each city on the tour, there will be a venue with large capacity available to
+maximize the total revenue.
+Justification: Taylor Swift has global influence and with planning ahead early enough, the
+major venue will be accessible to such impactful events.
+
+3. Variable Definitions
+We have included the following va riables in alphabetical order in  the model developed in this
+project, and the definitions.
+Table 2: List of variables and definitions
+Notation Definition
+D Average number of days between shows in a tour
+D   Average number of days between shows across all the tours
+F Adjustment Factor in the PI
+Fc Adjustment Factor for total number of cities in a tour
+Fc_new Adjustment Factor for total number of new cities in a tour
+Fc_em Adjustment Factor for total number of emerging cities in a tour
+Fs Adjustment Factor for average attendance per show in a tour
+Fd Adjustment Factor for the average days between two shows in a tour
+Ni Total attendance of each show in the i-th city
+Nc Number of cities in a tour
+Nc_new  Number of cities in the tour that have not been included in the previous 4 tours
+(excluding Reputation), which are considered as “new cities”
+Nc_em Number of cities in the tour from non- English-speaking countries, which are
+considered as “emerging cities”
+ᇿ Hi MCM
+ሧ࿟
+ğ
+8
+
+PI Performance Index – Measurement of the success of a concert tour
+ip  Average ticket price across all seats for the shows in the i-th city
+R Revenue of the entire tour
+is
+Number of days performing in the i-th city, which is also the number of shows in this
+city
+
+4. Presentation of Model and Solution
+4.1 Model Development
+To maximize the tour revenue as well as the popularity of Taylor Swift, we defined a Performance
+Index (PI) as the product of total revenue of the tour, and several adjustment terms.
+At a high level, the PI is defined as cAdjusReve mnue Fa t te n t o rPI R F   , and
+8
+1
+1
+51 0
+cN
+R Np s
+
+    reflects the total revenue of a tour, with Nc cities. At the i-th city, Ni is
+the venue capacity, pi is the average ticket price, and si is the number of show s at this city. The
+total revenue is divided by a factor of 5×108 in the expression of R, to make the PI a more readable
+number.
+
+The Adjustment Factor in the PI definition is __cc n e wc e msdFF F F F F   , in which each term has
+the following meanings and definitions:
+1 1000
+c
+c
+NF  ,   meaning that more cities are encouraged in the tour;
+_
+_
+cn e w c
+cn e w
+c
+NNF N
+ ,  meaning that more new cities  are encouraged in the tour;
+_
+_
+ce m c
+ce m
+c
+NNF N
+ ,  meaning that more cities from  non-English-speaking countries are
+encouraged in the tour;
+ᇿ Hi MCM
+ሧ࿟
+ğ
+9
+
+1
+1
+50000
+c
+c
+N
+s N
+Ns
+F
+s
+
+
+
+
+
+
+,  reflects the average attendance per show di vided by the factor 50000,
+which is a typical number  of attendance seen at a Taylor Swift’s show.
+Higher Fs is rewarded in the PI;
+d
+DF D ,  is the average number of  days between two shows, compared to other tours.
+Larger Fd means a better quality of the shows on average.
+
+Therefore, the PI model we derived is:
+
+__ 1
+13
+1
+1
+1 12.5 10 1000
+c
+c
+c
+N
+N ii
+cn e w c ce m cci
+ii i N
+i cc
+NsNN N NN DPI N p s NN D s
+
+
+
+
+                   
+
+
+
+
+We will then use the developed model to plan the best schedule for our musical performer, Taylor
+Swift. We are assuming her goal for this tour is maximizing profit and pub lic figures, which are
+measured by the PI. In the later part of this report, each term in the PI will be studied and optimized,
+so that we can optimize PI, and therefore make the tour as successful as possible.
+In our assumptions, we stated that we wanted to visit as many cities as possible. This includes the
+cities Taylor Swift has performed in before, cities she hasn’t, and cities in emerging areas. We also
+want to include a reasonable number of new citie s and cities in emerging areas. So, adding more
+new cities and emerging cities should increase the tour’s PI. For the term of the average attendance
+at each show Taylor Swift will perform in this tour, maximizing fan attendance at her concerts is
+really important because that not only increases profit, but also increases her public figures because
+many people attended her concerts. We are also including the relative length of the break time in
+between shows – which is the total tour time di vided by the number of shows then compared to
+the average time between shows D . This Fd rewards the longer time between shows, indicating
+more gap/rest time and better performance quality, both for the singer and the crew.
+
+4.2 Develop the Schedule/Design and Planning
+We want to compare this tour with the Reputation Stadium Tour so we can have a specific example,
+and better idea on how well the model works, so we decided the duration of the planned tour to be
+200 days. We are emphasizing choosing cities rather than focusing on  tour duration, show dates,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+10
+
+and city order, so these factor s are not included in our model. While satisfying other parameters,
+we want the days per show D for this tour to be as large as  possible to generate the maximum
+revenue. Based on Taylor Swift’s past tours, she has a show about every 3.93 days, so we plan to
+have her perform every 4 days in this project. Considering the total tour  time is 200 days, there
+will be 50 shows total in this tour. Since we have a lot of major cities in our lists for cities to
+consider visiting, we plan for her to have 2 show s in each city, which amounts to 25 cities in this
+tour.
+When we picked cities, we included the English- speaking countries which are considered Taylor
+Swift’s fundamental fan bases such as North America, England, Ireland, Australia, and New
+Zealand. We also considered going to non-English speaking countries where a lot of her fans also
+live, such as India, China, Japan, Singapore, and Taiwan [7]. The following considerations are not
+included in our planning process due to reasons su ch as relatively low po pularity, political risks,
+and policy uncertainty towards Pop Music concerts : South America, Middle East region, Russia,
+Central Asia, and Africa.
+Figure 2 is Taylor Swift’s heatmap in terms of the ranking at different countries. The greener a
+country is, the better Swift performs relative to other artists on the scale. In yellow countries, her
+performance is on par with the average. Orange countries represent weaker performances, with the
+redder the country, the greater the underperformance. Countries in white don’t appear in her Top
+100 Markets on YouTube, due to lack of data.
+
+Figure 2: Heat map of Taylor Swift’s influence in different countries [7]
+
+The heat map in Figure 2 defines the strength of each market for artists. To determine which cities
+we should choose from non-English speaking countries in this project, we first refer to past tours
+ᇿ Hi MCM
+ሧ࿟
+ğ
+11
+
+and see where Taylor Swift went for multiple times, which is a strong indicator of successfulness,
+and the availability of big venue capacity. T okyo, Shanghai and Singapore are chosen by this
+standard. Secondly, we choose ne w cities with dense population and vibrant local economies to
+predict the popularity of the show [20][21][22][23]. Beijing, Sapporo and Mumbai are chosen as the
+result.
+Not only did we pick cities in our planning proce ss, but we also picked a venue to go with each
+city that we plan for Taylor Swift to visit.  We have two main considerations: Venue capacity  [19]
+and whether Taylor Swift has chosen the venue befo re. Table 3 on the next pa ge lists all the city
+candidates we come up with.
+
+To determine the predicted average ticket price for cities, we use Assumption 11 described in
+Section 2. We want to pick different combinations  of 25 cities (as mentioned earlier) to see how
+PI changes and pick the best comb ination that we created. We have the following considerations
+for choosing cities:
+ Include major English-speaking cities, so we will have these cities in all our plans.
+ Because in our formula, we value the non-E nglish speaking cities (emerging cities, new
+cities), so all our plan s have different numbers of emerging  cities. We want to do this so
+we can compare their impact on our PI.
+So, we decided to try the 6 combinations of cities to find the best plan as detailed in Table 4.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+12
+
+Table 3: City candidates’ information
+City/Country Region Venue Venue
+Capacity
+Predicted Average
+Ticket Price
+Arlington, TX North America AT&T Stadium 80,000 $180
+Atlanta, GA North America Mercedes-Benz Stadium 75,000 $195
+Chicago, IL North America Soldier Field 61,500 $175
+Lincoln, NE North America Memorial Stadium 90,000 $175
+Los Angeles, CA North America Rose Bowl 89,702 $173
+Miami, FL North America Hard Rock Stadium 67,518 $186
+Columbus, OH North America Ohio Stadium 102,780 $157
+New York City, NY North America MetLife Stadium 82,500 $168
+Philadelphia, PA North America Lincoln Financial Field 69,328 $158
+Santa Clara, CA North America Levi’s Stadium 70,909 $170
+Houston, TX North America NRG Stadium 72,220 $279
+Foxborough, MA North America GilleƩe Stadium 64,628 $157
+Nashville, TN North America Nissan Stadium 69,143 $202
+Kansas City, MO North America Arrowhead Stadium 76,640 $145
+New Orleans, LA North America Caesars Superdome  73,208 $154
+Washington, D.C. North America NaƟonals Park 41,888 $152
+Phoenix, AZ North America State Farm Stadium 63,400 $154
+Tampa, FL North America Raymond James Stadium 65,847 $163
+Cleveland, OH North America Cleveland Browns Stadium 73,200 $126
+Denver, CO North America Empower Field at Mile High 76,125 $175
+Landover, MD North America Commanders Field 62,000 $150
+Las Vegas, NV North America Allegiant Stadium 65,000 $143
+Vancouver, Canada North America BC Place 54,320 $131
+Toronto, Canada North America Rogers Centre 39,150 $141
+London, UK Europe Wembley Stadium 90,000 $107
+Dublin, Ireland Europe Croke Park 82,300 $104
+Melbourne, Australia Oceania Melbourne Cricket Ground 100,024 $168
+Sydney, Australia Oceania Stadium Australia 82,500 $168
+Auckland, New Zealand Oceania  Mount Smart Stadium 25,000 $136
+Tokyo, Japan East Asia Japan NaƟonal Stadium 80,016 $187
+Singapore Southeast Asia Singapore NaƟonal Stadium 55,000 $241
+Beijing, China East Asia Beijing NaƟonal Stadium 80,000 $208
+Sapporo, Japan East Asia Sapporo Dome 42,831 $187
+Taipei, Taiwan East Asia Taipei Dome 40,575 $188
+Shanghai, China East Asia Shanghai Stadium 72,000 $208
+Hong Kong, China East Asia Hong Kong Stadium 40,000 $115
+Mumbai, India South Asia Brabourne Stadium 50,000 $188
+ᇿ Hi MCM
+ሧ࿟
+ğ
+13
+
+Table 4: Tour stops in different plans
+City/Country Region Plan 1 Plan 2 Plan 3 Plan 4 Plan 5 Plan 6
+Arlington, TX North America ✔ ✔ ✔ ✔ ✔ ✔
+Atlanta, GA North America ✔ ✔ ✔ ✔ ✔ ✔
+Chicago, IL North America ✔ ✔ ✔ ✔ ✔ ✔
+Lincoln, NE North America ✔ ✔ ✔ ✔ ✔ ✔
+Los Angeles, CA North America ✔ ✔ ✔ ✔ ✔ ✔
+Miami, FL North America ✔ ✔ ✔ ✔ ✔ ✔
+Columbus, OH North America ✔ ✔ ✔ ✔ ✔ ✔
+New York City, NY North America ✔ ✔ ✔ ✔ ✔ ✔
+Philadelphia, PA North America ✔ ✔ ✔ ✔ ✔ ✔
+Santa Clara, CA North America ✔ ✔ ✔ ✔ ✔ ✔
+Houston, TX North America ✔ ✔ ✔ ✔ ✔
+Foxborough, MA North America ✔ ✔ ✔ ✔
+Nashville, TN North America ✔ ✔ ✔ ✔
+Kansas City, MO North America ✔ ✔ ✔
+New Orleans, LA North America ✔ ✔ ✔
+Washington, D.C. North America ✔ ✔ ✔
+Phoenix, AZ North America ✔ ✔
+Tampa, FL North America ✔ ✔
+Cleveland, OH North America ✔
+Denver, CO North America ✔
+Landover, MD North America ✔
+Las Vegas, NV North America ✔
+Vancouver, Canada North America ✔ ✔ ✔ ✔ ✔ ✔
+Toronto, Canada North America  ✔ ✔ ✔ ✔ ✔
+London, UK Europe ✔ ✔ ✔ ✔ ✔ ✔
+Dublin, Ireland Europe  ✔ ✔ ✔ ✔ ✔
+Melbourne, Australia Oceania ✔ ✔ ✔ ✔ ✔ ✔
+Sydney, Australia Oceania  ✔ ✔ ✔ ✔ ✔
+Auckland, New Zealand Oceania   ✔ ✔ ✔ ✔ ✔
+Tokyo, Japan East Asia   ✔ ✔ ✔ ✔
+Singapore Southeast Asia   ✔ ✔ ✔ ✔
+Beijing, China East Asia    ✔ ✔ ✔
+Sapporo, Japan East Asia    ✔ ✔ ✔
+Taipei, Taiwan East Asia    ✔ ✔ ✔
+Shanghai, China East Asia     ✔ ✔
+Hong Kong, China East Asia     ✔ ✔
+Mumbai, India South Asia      ✔
+ᇿ Hi MCM
+ሧ࿟
+ğ
+14
+
+Figure 3 shows the geographic locations for each plan , in the order from Plan 1 to Plan 6. Green
+cities are added from the previous plan, while gray cities are removed. It’s clear that from Plan 1
+to Plan 6, location diversity increases.
+
+Figure 3: Locations of all the selected cities in 6 different tour plans
+
+4.3 Solution of the Model
+Based on the city combinations for each pl an, we can calculate the variable and PI values we
+defined in Section 3, and the results are shown in Table 5.
+
+Plan 1 Plan 2
+Plan 3 Plan 4
+Plan 5 Plan 6
+ᇿ Hi MCM
+ሧ࿟
+ğ
+15
+
+Table 5: Variable calculations for Plans 1-6 and Reputation Stadium Tour
+Variables Plan 1 Plan 2 Plan 3 Plan 4 Plan 5 Plan 6
+ReputaƟon
+Stadium
+Tour
+PI 152.24   143.55   159.60   196.94   204.41   207.62   99.90
+Average
+Ticket Price $166 $164 $168 $174 $172 $168 $152
+Average days
+between
+shows
+4 4 4 4 4 4 3.72
+# of shows 50 50 50 50 50 50 53
+Revenue $609.6M $590.0M $605.5M $612.5M $603.5M $582.0M $345.5M
+Nc 25 25 25 25 25 25 36
+Nc_new  1 1 1 4 4 5 3
+Nc_em 0 0 2 5 7 8 0
+Average
+AƩendance
+of the Tour
+57,612 56,126 56,307 55,419 54,736 54,039 54,113
+Total days of
+the Tour 200 200 200 200 200 200 197
+D  3.93 3.93 3.93 3.93 3.93 3.93 3.93
+
+We have the following observations:
+ Plan 6 has the highest PI because it enjoys the most non -English speaking cities and new
+cities, and a very good amount of total revenue.
+ Plan 4 has the highest total revenue, as a result of the highest average ticket price and very
+good average attendance.
+  All of our example plans have higher PI compared to Reputation Stadium Tour because of
+higher ticket prices and gene rally higher attendance. Even though attendance is similar,
+Plan 5 and Plan 6 have more cities with rewarding factors and thus outperform Reputation
+Stadium Tour in terms of PI. Plan 1 and Plan 2 focus mo re on English speaking regions,
+but with higher ticket prices and higher attendance, they obtain higher PI as well.
+ Even with 5% revenue reduction compared to th e highest revenue of Plan 4, Plan 6 is the
+most recommended since it gives the best ba lance between financial benefit, attendance
+and location diversification, which is the goal this model is trying to optimize.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+16
+
+5. Analysis and Discussion of Our Work
+In this section, we will discuss the strengths and limitations of the model and apply the model to a
+more general context.
+5.1 Strengths of Our Model and Solution
+ Given the fact that planning a worldwide musical tour is a task with very high complexity,
+the model developed in this work has a clear optimization goal, with the consideration of
+the factors that not only significantly affect the goal, but also are straightforward to
+understand and easily accessible.
+ We can generate a decent amount of revenue compared to the Reputation Stadium Tour’s
+revenue, which is a strength because maximizing revenue is a very important factor in our
+goals.
+ Under the condition of similar revenue, our Performance Index (PI) clearly favors the plan
+with more emerging ci ties and new cities a nd achieves higher popularity in diversified
+regions for the musical performer.
+ The parameters used in this model are based on either extensive information of past tours
+or data including large number of cities and venues. This makes the result of our work
+stable and reliable.
+ The model is also high ly flexible. In this report we onl y considered tours with a fixed
+number of days, and created 6 example plan s based on 37 city candidates. With more
+computational resources, this model is capable  to compare more tour plans with greater
+variety, such as different total number of da ys, different number of shows per each city,
+different number of days between shows, and more diversified city selections.
+5.2 Limitations of Our Model and Solution
+ We assume the tour cost is a fixed percentage of revenue. In reality, some cost factors are
+related to geographical locations and distances of the cities, such as transportation, venue
+rentals; while others are related to the numb er of days and number of shows, such as
+lodging and crew cost. One of the possible enhancements of the work is to estimate various
+cost factors in a more realistic way.
+ For calculating average ticket prices in the new cities, we simply used the average price of
+the geographic region, whereas a more accura te approach would take wages and/or
+spending power into consideration.
+ Besides concert tickets, there are other cont ributors towards the total revenue, such as
+merchandise, outfits, concert vi deo streaming, etc. Some of these factors are related to
+cities and venues, while others are inde pendent. This could be another possible
+enhancement of the model.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+17
+
+ This specific solution might not work for all musical performers, especially ones who may
+not be as popular and don’t n eed to visit new or emerging ci ties. This plan selected the
+biggest venues in a given city, whereas the assumption about the attendance rate is not
+suitable for other musicians.
+
+5.3 Reflection
+As mentioned in our strengths, the model is straightforward, reliable and flexible. Nothing prevents
+us from using it to evaluate a set of existing to urs or applying to another musical performer. To
+demonstrate that, we calculated the Performance Index (PI) of Taylor Swift’s 5 past tours and show
+the result in Figure 4. The bar chart clearly show s that her tours have become more and more
+successful over the years. Note that the 1989 Tour has a slightly lower PI than the Red Tour due
+to the lower numbers of both total cities and emerging cities, and also lower days per show,
+according to the data presented in Table 1.
+
+Figure 4: Applying model to all other Taylor Swift’s tours and the evaluation of PI
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+18
+
+6. Letter to Musical Performer
+
+Dear Taylor Swift,
+This is your team at the MidMCM Music Agency . Thank you so much for hiring us, as we are
+delighted to be given the opportunity to help you plan out your next tour. Based on your past tours,
+we have developed a model and utilized the model to create a concert tour plan, which we think
+will work best for you. We took many things into consideration, such as venue prices, ticket prices,
+and countries that you are thought of as the most popular. From l ooking at some research about
+reasons you started tours in the past (these include meeting with  fans, promoting your albums,
+spreading popularity, and having the tour be profitable), we’ve made an assumption that your goals
+for this tour include maximizing the profit made and increasing your popularity around the world.
+After conducting the necessary research abou t your past tours—primarily focusing on your
+Reputation Stadium Tour to compare it to our plans—we developed a list of 38 city candidates that
+we would consider adding to our plans. These cities include new cities that you have never visited
+before, cities in emerging areas, and large cities  in regions you have vi sited. Visiting new cities
+and cities in emerging areas is important for our plans because it helps increase your popularity in
+regions that you might not have ever toured in.
+We are trying to set up a tour th at is comparable to your latest past tour, the Reputation Stadium
+Tour (we are not counting the Eras Tour as a “past tour”, as it is still ongoing), which was held for
+197 days, so we have set your next tour as 200 days. We want to stay in each of our cities for 2
+different shows since we picked relatively large cities and their biggest venues. Our research shows
+us that the average number of days between each one of your shows in a tour is 3.93, so we round
+this up and give 4 days between shows for rest time, travel time, leisur e time, and set-up time.
+Finally, after doing the math, we know that we are visiting 25 di fferent cities, holding 50 shows
+total (2 shows at each city), and having 4 days between each show, which amounts to 200 days
+total for this show, as desired.
+Next, we made 6 different combinations of 25 cities from our city candidate list and named them
+Plan 1 through Plan 6. The reason we created 6 different plans was that we wanted to see if the
+tour outcome is more dependent on the total revenue, or popularity. For each plan, we calculated
+the total revenue and counted the total amount of  new and emerging cities  visited. Using these
+values, we developed a Performance Index ( PI) for each plan and compared them, the higher the
+value, the better. So, changing the amounts of ne w and emerging cities in each plan can help us
+see if popularity or revenue plays a bigger role in our PI calculation. This is because a city in an
+emerging area might require smal ler venue sizes, whic h lowers the total revenue. On the other
+hand, including an emerging city will undoubtedly boost your popularity.
+In our 6 plans, from Plan 1 to Plan 6, we are gradually including more new and emerging cities in
+our list of 25 cities visited. For example, in our Plan 1, we have 1 new city and no emerging cities,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+19
+
+whereas in Plan 6, we have 5 new cities and 8 emerging cities. Next, we calculated the PI for each
+of these plans and found that the PI for Plan 6 was higher than any of the other plans which
+included less new and emerging ci ties. We also compared these PI values with the PI value for
+your Reputation Stadium Tour, and found that ours were larger, most likely because we included
+more cities in emerging areas and used bigger venues as often as possible.
+In conclusion, Plan 6 had the be st results, and it would be reco mmended that you visit the cities
+included in Plan 6 for your next tour.
+
+We hope you will consider using our plan,
+Team #16255
+ᇿ Hi MCM
+ሧ࿟
+ğ
+20
+
+References
+[1]. https://upload.wikimedia.org/wikipedia/en/d/df/Fearless_Tour_2009.png
+[2]. https://theswiftagency.com/wp-content/uploads/2010/11/taylor-swift-speak-now-tour-
+poster.jpg
+[3]. https://preview.redd.it/km7yios6j5391.jpg?width=640&crop=smart&auto=webp&s=84ca2
+fabf0d20d199e39a130dcfccd10c12dd124
+[4]. https://www.acmodasi.in/amdb/images/movie/u/1/taylor-swift-the-1989-world-tour-live-
+2015-152082.jpg
+[5]. https://upload.wikimedia.org/wikipedia/en/b/b3/Taylor_Swift%27s_Reputation_Stadium_t
+our.png
+[6]. https://i.etsystatic.com/44360901/r/il/740d8a/4995019176/il_1140xN.4995019176_7m17.j
+pg
+[7]. https://chartmasters.org/taylor-swifts-global-heatmap/
+[8]. https://en.wikipedia.org/wiki/Fearless_Tour
+[9]. https://en.wikipedia.org/wiki/Speak_Now_World_Tour
+[10]. https://en.wikipedia.org/wiki/The_Red_Tour
+[11]. https://en.wikipedia.org/wiki/The_1989_World_Tour
+[12]. https://en.wikipedia.org/wiki/Reputation_Stadium_Tour
+[13]. https://www.usinflationcalculator.com/
+[14]. https://en.wikipedia.org/wiki/Taylor_Swift%E2%80%93Ticketmaster_controversy
+[15]. https://blog.ticketmaster.com/taylor-swift-the-eras-tour-2024/
+[16]. https://www.lifeandstylemag.com/posts/breaking-down-the-cost-and-numbers-for-taylor-
+swifts-eras-tour/
+[17]. https://www.nme.com/news/music/taylor-swift-is-the-most-translated-artist-in-the-world-
+study-finds-3528154
+[18]. https://www.miamiherald.com/news/local/community/miami-dade/miami-
+gardens/article289795724.html
+[19]. https://en.wikipedia.org/wiki/List_of_stadiums_by_capacity
+[20]. https://worldpopulationreview.com/cities/china
+[21]. https://worldpopulationreview.com/cities/taiwan
+[22]. https://worldpopulationreview.com/cities/india
+[23]. https://worldpopulationreview.com/cities/japan
+
+ᇿ Hi MCM
+ሧ࿟

@@ -1,0 +1,742 @@
+ğ
+Problem Chosen
+A
+2024
+HiMCM/MidMCM
+Summary Sheet
+Team Control Number
+16159
+Olympic Makeover: Modeling the Future of the Games
+Every year, more than 3 billion people around the world tune in to the Olympic games. They watch
+events ranging from breakdancing to table tennis to triathlons, and for weeks and weeks, the Games
+are the only topic people bring up. For athletes, participating in the Olympics is the achievement of
+a lifetime, and it is regarded as the highest level of competition in the world. At times, the Olympics
+loom so large that it seems to include every sport imaginable. But when we look closer, there are
+several notable sports missing from the Games, and deciding what sports to include each year is no
+easy task.
+For many years, it was very rare to see new sports gain access to participation in the Olympics.
+However, in the 2020 Tokyo Olympics, skateboarding, surfing, sport climbing, and several more sports
+were added to the roster, and this trend has continued since. The IOC’s shift towards modernizing the
+selection of events makes it more important than ever to create an organized way to determine which
+sports to include. Thus, our team of HiMCM Olympic Consultants is here to provide an objective
+model which facilitates sport inclusion processes for the IOC.
+Our model has three main parts: quantifying factors, normalizing variables, and creating entropy
+weights. The first step was to quantify the the different factors for each sport in order to provide an
+objective input on how well they satisfy the IOC’s values.
+After quantifying the factors, we applied the process of min-max normalization. This expressed all
+of our variables as indices in the range [0,1]. With the values now in the same interval, we checked for
+correlation in order to ensure that no variables were prioritized unfairly in our model.
+Then, we used the entropy weight model to create an objective weighting for the variables that
+limited the effects of dispersion and uncertainty in our data. We used these weights on our normalized
+sample data to calculate scores for each sport. From there, we used the score for each sport to create
+a ranking of which ones suited Olympic values best, and used this list to suggest recommendations for
+sports to be included at the 2032 Summer Olympics.
+Finally, we performed sensitivity analysis on our model to evaluate how it holds up against change.
+We analyzed our results and established several strengths and weaknesses of our model. These findings
+allowed us to conclude that our model is robust and objective, so we present our rankings to the IOC
+with confidence.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159
+Contents
+1 Introduction 1
+2 Assumptions and Justifications 1
+3 Factors of our Model 3
+3.1 Defining our Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+3.2 Popularity and Accessibility . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+3.3 Gender Equity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.4 Sustainability . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.5 Inclusivity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3.6 Relevance and Innovation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3.7 Safety . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+3.8 Fair Play . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+4 Min-Max Normalization 7
+5 Correlation Analysis 7
+6 Entropy Weight Model 8
+6.1 Priming the Data Matrix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+6.2 Computing Entropy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+6.3 Calculating Weights . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+7 Results 11
+7.1 Score Report . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+7.2 Existing Sports . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+7.3 Potential New Sports . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+8 Analysis of our Model 13
+8.1 Sensitivity Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+8.2 Strengths of our Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+8.3 Weaknesses of our Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+9 IOC Letter 17
+10 References 18
+11 Appendix 20
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 1
+1 Introduction
+In 1900, the first and only occurrence of pigeon shooting as an Olympic sport was won by a Belgian
+man, marking his place in the throne room of Olympic medalists with 21 pigeon kills. The runner-ups
+followed closely, with the fourth-place winner killing 18 pigeons.
+It is to no one’s surprise that this sport never again participated in the Olympics; the IOC deemed
+it too cruel (the fowl may have a few foul words regarding this). A number of factors pointed to the
+removal of this sport (and subsequently the IOC deemed it to be a demonstration sport rather than an
+official Olympic sport at the time), and while it is easy to point to the litter of pigeon carcasses and
+suggest it was too difficult for the crowd to process, or even too much work for the janitors to clean up,
+it was also a result of the times: the rise of animal activism at the time guaranteed that this sport would
+not return to the Olympics.
+In 1908, the French decided to reinstate their monarchy in a rather unexplored area: the Olympics.
+The first and only instance of Jeu de paume, also known as royal tennis in less monarchical languages,
+seemed like a brilliant idea for a new Olympic addition: the origins of tennis as its own sport, elevated
+to a golden podium. Every point that a player received was a promising sight; no birds falling out of the
+sky, at the very least. However, its inevitable declining popularity (partially due to its complex scoring
+system) led to it being removed and never returning to the Olympics.
+Perhaps it was at this time, with the International Olympics only a few years old, where the IOC
+came to an epiphany: some restrictions on sports would be beneficial. They developed six major
+categories that a sport must fall under to even be considered for the Olympics: the popularity and
+accessibility of the sport, its gender equity, sustainability, relevance and innovation, and safety and fair
+play.
+Most sports that were removed and never returned to the Olympics had been added in the early 1900s,
+shortly after the establishment of the International Olympics and before any strict IOC guidelines. The
+IOC generally has high standards for the sports it accepts as Olympic sports, or even demonstration
+sports. But, in an ever-diversifying world, this can lead to problems: it is easier than ever for sports to
+be spread worldwide and fulfill the conditions set by the IOC.
+Our model, designed to address these issues, takes into account all the aforementioned qualifica-
+tions expected by the IOC. Normalizing the data to get rid of units, finding correlation between indices,
+and finally using an entropy weight model gave us scores for every sport that can be used to determine
+whether a sport should be considered for the Olympics.
+2 Assumptions and Justifications
+Assumption 1: We assume that characteristics of sports in practice for athletes are representative of
+characteristics of sports at the Olympics.
+Justification: Since Olympic sports are a reflection of how sports are practiced in general, this is a
+fair assumption to make. This assumption is also necessary because there is no data on certain aspects
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 2
+of sports at the Olympics, so we must supplement with data from general studies on sports.
+Assumption 2: We split up the IOC’s Fair Play and Safety criteria up into two separate factors
+of Fair Play and Safety.
+Justification: We used different data to quantify the two parts of this IOC criteria, which made it
+difficult to treat the criteria as a single index. While analyzing the two data sets, we also discovered
+that the numbers we used to quantify Safety and Fair Play shared very little correlation (see Figure 4).
+Assumption 3: We assume that all national/territorial member federations of the Union Cycliste
+Internationale participate in all of its disciplines, including E-Cycling.
+Justification: This assumption was necessary because we were unable to find separate data on national
+federations of E-Cycling.
+Assumption 4: We assume that the annual carbon footprint of a tug of war athlete is 514 kg
+CO2-e.
+Justification: According to Figure 1, carbon emissions for team sports derive mostly from travel for
+regular practice, competitions, league, and vacation. Since tug of war has a competition league, all
+of these factors will contribute to its carbon footprint as well. We were unable to find any additional
+information about emissions of a tug of war athlete in these categories, so we assumed that they would
+have the same carbon footprint as the average team/racket sport athlete. Figure 1 tells us that this value
+is 514 kg CO2-e, so we used this for our data calculations.
+Assumption 5: We assumed that data taken from a small number of countries is representative
+of global data.
+Justification: Since the Olympics is a global event, we did our best to acquire data that included all
+countries when evaluating the impacts of our sports. However, there were multiple instances where
+we were unable to do this. Instead, we were only able to find relevant data from a single country
+(usually the US) or a few countries, so we worked under the assumption that distributions of a subset
+of countries would reflect the global distribution. For example, we considered Google trends while
+evaluating the Relevance/Innovation index for various sports, but many countries do not use Google.
+Although different countries have different norms and values that impact the factors we consider, this
+difference should not have a huge impact on our data.
+Assumption 6: We assume that factors aside from Relevance/Innovation do not experience sta-
+tistically significant changes over a few years.
+Justification: There is no reason for a factor to change significantly for any sport over a couple of
+years, unless it is a factor like Relevance/Innovation that is specifically about recent changes. It is not
+unlikely that changes will accumulate over time, however, so we sourced data from recent years as
+much as possible.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 3
+3 Factors of our Model
+3.1 Defining our Variables
+Factor Input Normalized Index Entropy Weight
+Popularity and Accessibility 𝑝𝑖 𝑃𝑖 𝐸1 𝑊1
+Gender Equity 𝑔𝑖 𝐺𝑖 𝐸2 𝑊2
+Sustainability 𝑠𝑖 𝑆𝑖 𝐸3 𝑊3
+Inclusivity 𝑛𝑖 𝑁𝑖 𝐸4 𝑊4
+Relevance and Innovation 𝑟𝑖 𝑅𝑖 𝐸5 𝑊5
+Safety 𝑎𝑖 𝐴𝑖 𝐸6 𝑊6
+Fair Play 𝑓𝑖 𝐹𝑖 𝐸7 𝑊7
+The above table includes all of the variables for sport number 𝑖. For each of the seven factors, the
+lowercase input denotes whatever data value our model takes in for the𝑖𝑡ℎ sport. This gets converted
+into our uppercase index after being normalized.
+Our normalized indices range from 0 to 1 and represent how close the sport is to meeting the IOC’s
+standards. In other words, an index of 0 means a sport performs terribly in a certain category while a
+1 means the sport does well.
+Finally, we calculate entropy for each factor’s indices, which we then use to determine how much
+weight each factor gets in consideration of our final score. These variables are the same for all sports,
+so the index subscript denotes which factor it applies to.
+3.2 Popularity and Accessibility
+The first factor the IOC considers for Olympic selection is how popular a potential sport is. Sports that
+get included in the Olympics should increase global interest in the Games and attract higher viewership.
+Thus, The sport should be widely played and easily accessible to people across the globe. This ensures
+that the sport is available to many people and not just played by a small group or region.
+To find out whether a sport is popular and accessible or not, we assembled data on how much of
+the world participates in the sport. Thus, 𝑝𝑖 is equal to the percentage of the world population that
+plays sport number𝑖.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 4
+Figure 1: People in the world who play each sport
+3.3 Gender Equity
+The IOC also wants to ensure that the Olympics are inclusive of both genders. Thus, the sports added
+should be somewhat equally played among men and women.
+To quantify gender equity, we found data regarding the percentage of female and male athletes in
+each sport. Let 𝜇𝑖 be the percentage of sport𝑖 players who identify as male and let𝛾𝑖 be the percentage
+who identify as female. We want to minimize|𝜇𝑖−𝛾𝑖|, which is the difference between the percentages
+of males and females. However, since this calculation rewards large disparities, we let𝑔𝑖 =−|𝜇𝑖−𝛾𝑖|.
+This way, a large disparity between male and female participation will result in a lower index rather
+than a higher one.
+3.4 Sustainability
+The environmental impacts of hosting the Olympic games are at the forefront of the IOC’s concerns. In
+order for a sport to be added to the Olympics, it is important to first evaluate what further environmental
+impacts for the host city it will cause.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 5
+Figure 2: Carbon Footprint of Various Sports
+We found that the most quantitative and objective way to judge a sport’s sustainability is through its
+carbon footprint. Thus, 𝑠𝑖 is equal to the negative of the carbon footprint (kg CO2-e) of a single player
+of the𝑖𝑡ℎ sport per year.
+3.5 Inclusivity
+In order for a sport to be included in the Olympics, it must involve participation from countries across
+the globe. To calculate our inclusivity scores, we used the number of national federations of a sport.
+According to the Olympics website, any included sport must be practiced in at least 75 countries
+across 4 continents. Thus, if a sport does not satisfy this requirement (has less than 75 national feder-
+ations or covers less than 4 continents), our model returns that it cannot be an Olympic sport and it is
+removed from any further data pool calculations. Otherwise, 𝑛𝑖 is the number of national federations
+of a sport.
+3.6 Relevance and Innovation
+According to the IOC’s Olympic values, this factor should take into account 3 qualities: a sport’s
+appeal to younger audiences, its reflection of modern trends, and its incorporated innovations (such as
+physical virtual sports). We claim that there is a correlation between each value and the trend of the
+number of Google searches the sport receives.
+First, younger audiences are more likely to search up information about the sport because they use
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 6
+Google more compared to older fans. Additionally, Google search trends clearly reflect how modern
+trends relate to a sport, and new innovations in a sport will lead to a spike in searches due to press
+releases and other media. Thus, we used Google search trends of various sport names to quantify their
+Relevance and Innovation factors. Google also allowed us to isolate searches for the sport instead of
+all searches of the word, so our data is limited to the scope we prefer.
+Taking a look at the data, we notice that there are spikes for every sport once a year. This can be
+attributed to the fact that most sports are seasonal, making them most popular during one point in the
+year. After locating the yearly maximum, we perform linear regression on the points to establish the
+slope of the best-fit line. This gives us an approximate figure for the rate at which a sport grows, so
+this is the value we use for𝑟𝑖.
+Figure 3: Relevance and Innovation Graph for Athletics
+3.7 Safety
+This Olympic value emphasizes the importance of protecting the safety of athletes and preventing
+injuries. To quantify this value, we researched the number of injuries an athlete of each sport receives.
+However, the larger this value is, the lower of a score the sport should receive, so we flip the sign. Thus,
+𝑎𝑖 equals−1 times the average number of injuries acquired per year by 100, 000 athletes playing sport
+𝑖.
+3.8 Fair Play
+Finally, it is important for all sports included in the Olympics to promote fair play among competitors.
+Practically, this means that sports should have a low number of annual doping cases. However, we
+needed to account for the fact that sports with more players will naturally have higher amounts of
+doping cases. Additionally, we need to negate the number of doping cases so that our model will give
+a higher score to sports with low doping rates.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 7
+To deal with this, we let 𝑓𝑖 be−1 times the number of reported doping cases of the sport in 2020
+divided by𝑝𝑖, which is the percentage of the world that plays sport𝑖. This accounts for the correlation
+between the number of doping cases and popularity, thus giving us a𝑓𝑖 that is affected solely by doping
+counts.
+4 Min-Max Normalization
+Now that we have all of our variables, we need need to apply a normalization process to produce indices
+that we can work with. This is necessary because all of our variables currently have different units of
+measure and orders of magnitude. In order to standardize all of them and highlight the relationship
+between data values, we will apply a min-max normalizaton method to all of our variables.
+For example, consider all of our 𝑝𝑖. We want to normalize all of our values into 𝑃𝑖 indices, which
+should be distributed from 0 to 1. To do this, we let
+𝑃𝑖 = 𝑝𝑖−𝑚𝑖𝑛(𝑝𝑖)
+𝑚𝑎𝑥(𝑝𝑖)− 𝑚𝑖𝑛(𝑝𝑖)
+We apply the above min-max normalization method to all 𝑝𝑖,𝑔𝑖,𝑠𝑖,𝑛𝑖,𝑟𝑖,𝑎𝑖, and 𝑓𝑖 to achieve a
+normalized index for each sport in each category. This preserves the distribution of our data while
+scaling it to fit the interval [0, 1], which is important because it lets us work with values of varying
+units.
+5 Correlation Analysis
+Next, we performed correlation analysis on our normalized indices to see if any factors are correlated
+with each other. The heatmap below displays the correlation coefficient between every pair of factors
+and the highest ones are colored red.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 8
+Figure 4: Correlation Matrix
+We can see that the highest correlation between two different factors is 0.62, which is not statistically
+significant enough to consider accessibility and inclusivity correlated. Thus, since none of our factors
+are correlated, there is no uneven weighting present in our model so we do not need to remove any
+factors.
+6 Entropy Weight Model
+With these indices in mind, we aim to calculate a total score representing a sport’s overall suitability
+for being included in the Olympics. To achieve this, we must weigh the various factors involved in this
+calculating this score. After considering various models, we decided to employ the Entropy Weight
+Model. This model uses the dispersion of values to determine their reliability in decision making.
+6.1 Priming the Data Matrix
+We begin with a matrix of index values, with each row containing the data of a sport and each column
+containing the data of one of the 7 factors, as displayed using our sample data in figure 5.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 9
+Figure 5: Preliminary Index Matrix
+Let the terms of this matrix be denoted as𝑎𝑖𝑗 where
+𝐴 =
+
+𝑎1,1 𝑎1,2 ··· 𝑎1,7
+𝑎2,1 𝑎2,2 ··· 𝑎2,7
+... ... ... ...
+𝑎𝑚,1 𝑎𝑚,2 ··· 𝑎𝑚,7
+
+We first normalize the terms by dividing each value by the sum of its column. This transforms terms
+in the𝑚× 7 matrix A into terms in matrix B, 𝑏𝑖,𝑗 for which
+𝑏𝑖𝑗 = 𝑎𝑖𝑗
+Í𝑚
+𝑖=1𝑎𝑖𝑗
+.
+For our example matrix, the new normalized matrix looks as follows:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 10
+Figure 6: Normalized Matrix
+6.2 Computing Entropy
+Put simply, statistical entropy is the measure of uncertainty or ”surprise” in the data. It tells us how
+”random” or dispersed the data for each factor is, which we can use as a metric for the reliability. We
+calculate the entropy of each decision-making factor:
+𝐸𝑗 =− 1
+ln𝑚
+𝑚∑︁
+𝑖=1
+𝑏𝑖𝑗 ln𝑏𝑖𝑗,𝑗 = 1, 2,..., 7
+This gives us the values of entropy for each factor
+Figure 7: Entropy Matrix
+6.3 Calculating Weights
+Now, using the entropies of each factor, we can determine how much each factor should be weighted
+in our final score. We calculate the weights𝑊𝑗 as:
+𝑊𝑗 = 1−𝐸𝑗
+Í7
+𝑗=1(1−𝐸𝑗)
+,𝑗 = 1, 2,..., 7.
+This formula provides a higher weighting to factors with more concentrated data (low entropy) and a
+lower weighting to factors that have highly dispersed data (high entropy.)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 11
+Figure 8: Weighting Matrix
+The result is a set of weights 𝑊𝑗,𝑗 = 1, 2,...,𝑚 that satisfy Í7
+𝑗=1𝑊𝑗 = 1. We can now use these
+weights to calculate a final score for each sport. This score,𝑄𝑖 is calculated by
+𝑄𝑖 =𝑊1𝑃𝑖+𝑊2𝐺𝑖+···+ 𝑊7𝐹𝑖,𝑖 = 1, 2,...,𝑚
+7 Results
+7.1 Score Report
+To test our model, we gathered data on 16 sports, some established, some recently added or removed,
+and some never done before. For our example data, this leaves us with a final weighting as shown
+below. Calculating all the indices and using the entropy model, we get the following result for scores:
+Figure 9: Sample sport ranking
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 12
+At a glance, this ranking makes sense. All of the established sports, which have been included in the
+Olympics for decades, ranked in the top 10 and received a final score above 0.5.
+7.2 Existing Sports
+To confirm the accuracy of our model, we check the scores of some established sports in the Olympics.
+Below, we include indices for the established SDEs athletics, tennis, and swimming, all three of which
+have been around since the 1800s.
+Figure 10: Indices of Established Sports
+We notice that all three SDEs have very high indices. This makes sense because these are the sports
+the Olympic values are structured around, so they should score very well against their requirements.
+Since these sports do so well, it makes sense for the Olympics to keep them around year after year, and
+confirms the reliability of our model.
+We will next investigate the results of our model when applied to the current status of some re-
+cently added or removed SDEs. Three examples are climbing, skateboarding, and surfing, all of which
+were first introduced in the 2020 Olympics.
+Figure 11: Indices of Newly Introduced Sports
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 13
+While their values are not as high as established sports, they still have relatively large score values.
+Specifically, all 3 sports have very low accessibility values, which makes sense because newly estab-
+lished Olympic sports are likely not as widespread globally as ones that have been around for years.
+However, these sports score well in their other categories, which is likely why they were approved to
+join the Olympics.
+7.3 Potential New Sports
+Three SDEs that the IOC should consider adding to the 2032 Summer Olympics in order of highest
+priority are E-cycling, Karate, and Tug of War, respectively.
+Figure 12: Proposed SDE indices
+E-cycling had a relative high score of roughly 0 .7923. It ranked higher in our model than many
+currently established SDEs, making it a clear choice for an addition to the 2032 Olympics. Karate ran
+for only one year in 2020, but our model suggests that it has the potential to be a very safe, sustainable,
+and cost-efficient sport. Tug of War was removed in 1920, but has the potential to be reintroduced with
+its relatively high relevance score and decently high score value.
+Analyzing future trends for our sample sports, we predict roller skating could become a viable Olympic
+sport by 2036 or later. While accessibility is currently low, other factors (Figure 5) score relatively
+high, and the relevance/innovation factor of linear regression slope is 1.58 indicating growing interest.
+This growth is likely to improve accessibility and overall scores over time.
+8 Analysis of our Model
+8.1 Sensitivity Analysis
+Now that we have our model and its results, we need to assess how robust our model is.
+First, we decided to do testing on 𝑊4 first because that was the largest weight, so we wanted to
+see how much impact a change would have on the overall rankings. We scaled weight𝑊4 by 120% and
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 14
+modified other𝑊𝑗 equally in order to preserve a weight sum of 1. Then, we ran our model again with
+our new weights and obtained a new ranking for our 16 sports. The comparison is shown below:
+Figure 13: Original vs. Post-𝑊4 Change
+Next, we scaled𝑊1, our smallest weight, by 120% as well and scaled other weights to match. The new
+rankings are compared to the original ones below:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 15
+Figure 14: Original vs. Post-𝑊1 Change
+Even though our scores were changed slightly, the overall ranking remained largely the same. A ranking
+that is very sensitive to weighting changes would be volatile and unreliable for decision-making. Since
+our results are consistent even under different weightings, our model withstands change well and is
+shown to be robust, so it can be applied for use in Olympics decision-making.
+8.2 Strengths of our Model
+1. Our model is objective. We avoided subjective processes wherever possible, quantifying all of our
+factors using data that we sourced rather than basing it off of any personal judgments. Our entropy
+model then allows us to have objective weights for each factor, which keeps our model unbiased.
+2. Our model is not overly swayed by outliers. Through the Entropy Weight Model, we can de-
+termine the reliability and weighting of the factors based on the dispersion of the data. This allows
+our model to mitigate the effects of inconsistencies in input data, which makes for a more reliable result.
+3. Our model makes it easy for sports to understand what they are missing from fitting the Olympic
+values. Since our model involves creating normalized indices for each factor, creating a web graph (see
+Figures 10, 11, 12) is very easy. These types of charts help sports federations quickly see what areas
+they do well in and what areas need improvement, which can be helpful if they hope to one day enter
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 16
+the Olympics.
+8.3 Weaknesses of our Model
+1. A weakness of max-min normalization is that outliers can heavily impact the indices of other sports.
+if an extreme outlier is added to a dataset, it can make distinctions in the non-outliers less visible in the
+indices. This may seem like a critical flaw, but the effects of this are mitigated by the entropy weight
+model.
+2. Another weakness of our model is the fact that it can only determine the suitability of a sport
+relative to other sports, and not independently. The only way for us to determine whether or not a sport
+is ”good” is by comparing it with other sports. So if a limited dataset is inputted, it may be difficult
+to draw conclusions from the ranking, since we have no definitive threshold for what is considered a
+”good” or ”bad” score.
+3. A concern we have about our model is that the results are not entirely consistent with the pre-
+vious decisions of the IOC. Specifically, karate was included once in the 2020 Olympics and then
+removed from 2024 and 2028. We were surprised to see that karate was ranked so highly in our
+model’s results, with a score higher than football/soccer and basketball. We are unsure why karate was
+removed, but this discrepancy could imply that the IOC has a different way of evaluating sports than
+our model does.
+4. One more flaw is that this model cannot make long-term predictions. Since it’s heavily de-
+pendent on current data, it is unable to project which sports will be suitable far into the future, or how
+the factors affecting sports will change over time.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 17
+9 IOC Letter
+Dear International Olympic Committee,
+We want to start off by expressing admiration for your work towards expanding and modernizing
+the events included in the Olympic Games. The new sports added in recent events, such as skateboard-
+ing and surfing, include some of our personal favorites to watch. In this process, we recognize how
+important adding and removing sports from the Games is, since it allows the Committee to determine
+whether or not a sport fits with the current program. However, we think it would be more efficient to
+apply an objective mathematical model with a more precise rating on how much a sport aligns with the
+values of your committee. For this reason, our team has created such a model, and we would like to
+present you with our findings.
+It would be best to first introduce our model and explain its usage. Our model assigns a score to
+each sport using data about accessibility, gender distribution, sustainability, inclusivity, relevance and
+innovation, fair play, and safety. We designed it to determine how well a sport would fit into the IOC’s
+guidelines and initiatives. Using these scores, we can then rank various sports, determining which
+ones are suitable to remove and which to keep. Additionally, we can apply our model to non-Olympic
+sports to decide if they are suitable to add to the roster.
+We write to you with a proposal for the addition of 3 Olympic sports to the current roster: E-Cycling,
+Karate, and Tug of War, with priority in that order. We determined these priorities by applying our model
+using data gathered on a slate of 16 sports, which allowed us to compare potential new sports to exist-
+ing ones. We explain each of our choices below, and hope you reciprocate with sufficient consideration.
+E-Cycling, by our model, would be the best new addition as an Olympic Sport. With the abundant
+rise of new technology and the creation of an E-Sports division of the Olympics, it seems appropriate
+to start considering how physical-virtual sports can be integrated into the Games. Compared to normal
+biking, it is incredibly safe–it is not possible to fall off the bicycle (perhaps it is, but that would certainly
+be impressive), riders cannot ride into each other–and many other risks associated with biking are
+mitigated. It historically has lower doping rates than classic biking, and its sustainability is similar to
+that of biking: while more heavy equipment is required, contestants do not have to travel anywhere
+to practice, thus minimizing carbon emissions in this sense. Overall, E-Cycling is an excellent choice
+for inclusion in the upcoming Olympics Game, and it scores better in our model than several Olympic
+events that have been around since the start
+Karate and Tug of War were both once Olympic Sports, but were eventually removed. Both sports
+are relatively safe and historically experience few doping cases. We found that these sports align well
+with many of your objectives and think they would be suitable additions as well.
+Overall, we hope that these suggestions provide you with meaningful insights into our analysis.
+We look forward to seeing how these suggestions will support your efforts to modernize the Olympics
+through the inclusion of new and inclusive sports.
+With kind regards,
+HiMCM Olympic Consultant Team
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 18
+10 References
+[1]. Cardiff University Press. (n.d.). Gender and participation in sports [PDF]. Retrieved from
+https://mas.cardiffuniversitypress.org/articles/56/files/submission/proof/56-1-202-2-10-20190121.pdf
+[2]. OnePX. (n.d.). Sports Sociology Journal article. Retrieved from https://www.onepx.com/10.1123/ssj.
+2016-0044
+[3]. Fan Nation. (n.d.). Surfing more diverse in America than ever. Sports Illustrated. Retrieved from
+https://www.si.com/fannation/surfing/news/surfing-more-diverse-america-than-ever
+[4]. Statista. (2020). Gender distribution of climbers and boulderers worldwide. Retrieved from
+https://www.statista.com/statistics/1311405/distribution-climbers-boulderers-gender/
+[5]. National Golf Foundation. (n.d.). Women and girls fueling golfs growth. Retrieved from
+https://www.ngf.org/women-girls-fueling-golfs-growth/
+[6]. European Handball Federation. (n.d.). Demographic report on handball players [PDF]. Retrieved
+from https://members.ehf.eu/community/activities/download.ashx?reason=ehfcanFile&id=1018
+[7]. National Center for Biotechnology Information. (n.d.). Review of sports-related medical practices.
+Retrieved from https://pmc.ncbi.nlm.nih.gov/articles/PMC8764368/
+[8]. Statista. (n.d.). Gender distribution of tennis players worldwide. Retrieved from
+https://www.statista.com/
+statistics/1125182/share-tennis-players-gender/
+[9]. MDPI. (n.d.). Trends in global sports registration. Retrieved from https://www.mdpi.com/2227-
+7099/10/12/315
+[10]. NCAA. (2018). Sports sponsorship and participation rates database. Retrieved from
+https://www.ncaa.org/sports/2018/10/10/ncaa-sports-sponsorship-and-participation-rates-database.aspx
+[11]. Zippia. (n.d.). Demographics of professional basketball players. Retrieved from
+https://www.zippia.com/professional-basketball-player-jobs/demographics/
+[12]. Zippia. (n.d.). Demographics of swimmers. Retrieved from
+https://www.zippia.com/swimmer-jobs/demographics/
+[13]. Zippia. (n.d.). Demographics of football players. Retrieved from https://www.zippia.com/football-
+player-jobs/demographics/
+[14]. RollerCon. (n.d.). About RollerCon demographics. Retrieved from
+https://rollercon.com/about/demographics/
+[15]. GymDesk. (n.d.). Martial arts industry statistics. Retrieved from https://gymdesk.com/blog/martial-
+arts-industry-statistics/
+[16]. Scandinavian Journal of Medicine & Science in Sports. (2002). Research article on sports
+medicine. Retrieved from https://onlinelibrary.wiley.com/doi/abs/10.1034/j.1600-0838.2002.120209
+.x?sid=nlm[17]. PeloBuddy. (n.d.). Peloton demographics and popularity. Retrieved from https://www.pelobuddy.com/
+peloton-demographics-popular/
+[18]. World Skate. (n.d.). National federations directory. Retrieved from https://www.worldskate.org/about/
+organisation/national-federations.html
+[19]. International Surfing Association. (n.d.). Member directory. Retrieved from https://isasurf.org/become-
+a-member/member-directory/
+[20]. International Federation of Sport Climbing. (n.d.). National federations index. Retrieved
+from https://www.ifsc-climbing.org/national-federations/index
+[21]. International Gymnastics Federation. (n.d.). National members directory. Retrieved from
+https://igfdigital.com/national-members
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 19
+[22]. International Handball Federation. (n.d.). Federations directory. Retrieved from https://www.ihf.info/
+federations
+[23]. World Athletics. (n.d.). Member federations. Retrieved from https://worldathletics.org/about-
+iaaf/structure/member-federations
+[24]. International Tennis Federation. (n.d.). Member associations. Retrieved from https://www.itftennis.com
+/en/about-us/organisation/member-associations/
+[25]. FIFA. (n.d.). Member associations. Retrieved from https://inside.fifa.com/about-fifa/associations
+[26]. International Hockey Federation. (n.d.). Our members. Retrieved from https://www.fih.hockey/about-
+fih/ourmembers
+[27]. FIBA. (n.d.). National federations. Retrieved from https://about.fiba.basketball/en/national-
+federations
+[28]. World Aquatics. (n.d.). National federations. Retrieved from https://www.worldaquatics.com/members/
+national-federations?region=all&country=
+[29]. International Federation of American Football. (n.d.). Member federations. Retrieved from
+https://www.americanfootball.sport/member-federations/24/556
+[30]. World Skate. (n.d.). National federations. Retrieved from https://www.worldskate.org/about/organisation
+/national-federations.html
+[31]. World Karate Federation. (n.d.). Structure and federations. Retrieved from https://www.wkf.net/structure-
+federations
+[32]. Tug of War International Federation. (n.d.). Member associations. Retrieved from https://tugofwar-
+twif.org/member-associations/
+[33]. Union Cycliste Internationale. (n.d.). Continental confederations and national federations.
+Retrieved from https://www.uci.org/continental-confederations-and-national-federations-information-
+main-page/6AutcpFCy486Rae3Gs5cKP
+[34]. Bonafide Research. (2023). Global skateboard market overview 202328. Retrieved from
+https://www.linkedin.com/pulse/global-skateboard-market-overview-2023-28-bonafide-research/6Aut
+cpFCy486Rae3Gs5cKP
+[35]. Wave Pool Mag. (n.d.). Numbers nerd: How many surfers per wave pool per country? Retrieved
+from https://wavepoolmag.com/numbers-nerd-how-many-surfers-per-wave-pool-per-country/6AutcpF
+Cy486Rae3Gs5cKP
+[36]. Statista. (n.d.). Participants in climbing in the U.S. since 2006. Retrieved from https://www.statista.com/
+statistics/191233/participants-in-climbing-in-the-us-since-2006/6AutcpFCy486Rae3Gs5cKP
+[37]. Golf Monthly. (n.d.). How many golfers are there in the world? Retrieved from https://www.golfmonthly
+.com/features/how-many-golfers-are-there-in-the-world6AutcpFCy486Rae3Gs5cKP
+[38]. Team Handball News. (n.d.). Handballs popularity FAQs. Retrieved from
+https://teamhandballnews.com/?faq-group=handballs-popularity6AutcpFCy486Rae3Gs5cKP
+[39]. ScienceDirect. (n.d.). Examining physical activity interventions in adolescents: A review. Re-
+trieved from https://www.sciencedirect.com/science/article/abs/pii/S0091743516303838?fr=RR-2&ref
+=pdf download&rr=8e448e066f4f17606AutcpFCy486Rae3Gs5cKP
+[40]. USA Field Hockey. (2024). Olympic Games quick facts. Retrieved from https://www.usafieldhockey.com
+/news/2024/may/01/og-quick-facts6AutcpFCy486Rae3Gs5cKP
+[41]. Statista. (n.d.). Participants in tackle football in the U.S. since 2006. Retrieved from
+https://www.statista.com/statistics/191658/participants-in-tackle-football-in-the-us-since
+-2006/6AutcpFCy486Rae3Gs5cKP
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 20
+[42]. Ubuy. (2023). Global rollerblading statistics: Facts and figures for 2023. Retrieved from
+https://www.ubuy.co.in/research/global-rollerblading-statistics-facts-and-figures-for-2023?srsltid=Afm
+BOoq8cFYdYa0Ra BLeC8L Dcx3CD3W5HzbMMWA7dLlCBCRHrQOW6i6AutcpFCy486Rae3Gs5cKP
+[43]. Government of Japan. (2020). The evolution of traditional Japanese sports. Retrieved from
+https://www.gov-online.go.jp/eng/publicity/book/hlj/html/202006/202006 05 en.html6AutcpFCy486
+Rae3Gs5cKP
+[44]. Tug of War International Federation. (n.d.). TWIF member associations. Retrieved from
+https://tugofwar-twif.org/6AutcpFCy486Rae3Gs5cKP
+[45]. Business of Apps. (n.d.). Peloton statistics and user demographics. Retrieved from
+https://www.businessofapps.com/data/peloton-statistics/6AutcpFCy486Rae3Gs5cKP
+[46]. Grand View Research. (n.d.). E-bikes market report. Retrieved from
+https://www.grandviewresearch.com/industry-analysis/e-bikes-market-report6AutcpFCy486Rae3Gs5cKP
+[47]. World Population Review. (n.d.). Continents by population 2023. Retrieved from
+https://worldpopulationreview.com/continents
+[48]. World Anti-Doping Agency. (2023). 2020 anti-doping rule violation report. Retrieved from
+https://www.wada-ama.org/sites/default/files/2023-05/2020 adrv report.pdf
+[49]. Google Trends. (n.d.). Retrieved from https://trends.google.com/trends
+[50]. Wicker, P. (2018). The carbon footprint of active sport participants. Sport Management
+Review, 21(2), 276-288. https://doi.org/10.1016/j.smr.2018.07.001
+[51]. National Safety Council. (n.d.). Sports and recreational injuries. Retrieved from https://injuryfacts.nsc.org
+/home-and-community/safety-topics/sports-and-recreational-injuries/
+[52]. Manson, J., White, K., & Williams, H. (2023). Trends in stationary cycling injuries before and
+after 2019. Journal of Sports Medicine. Retrieved from https://pubmed.ncbi.nlm.nih.gov/37555271/
+11 Appendix
+Here is the code we used to generate indexes for our model:
+import pandas as pd
+import matplotlib as mpl
+import numpy as np
+import math
+import statistics as stats
+normalizedValues = [[" Skateboarding ( recently added )", " Surf ( recently added )", "
+Sport Climbing ( recently added )", " Golf
+( recently added )", " Handball (
+established )", " Athletics ( established )"
+, " Tennis ( established )", " Football /
+Soccer ( established )", " Field Hockey (
+established )", " Basketball ( established )
+", " Swimming ( established )", " American
+football ( never done )", " Roller skating
+( never done )", " Karate ( Recently removed
+)", "Tug of War ( while back )", "E-
+cycling (new)"]]
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 21
+def dataList ( file ):
+with open (file , ’r’, encoding =" utf8 ") as data :
+dataList = []
+for line in data . read (). split (’\n’):
+row = []
+for term in line . split (’,’):
+row. append ( term )
+dataList . append (row)
+return dataList
+def meanCol (lst , column ):
+mySum = 0
+for row in lst:
+mySum += float (row[ column ])
+return mySum /len(lst)
+def stdDevCol (lst , column ):
+row = []
+for n in lst:
+row. append ( float (n[ column ]))
+return stats . stdev (row)
+def maxCol (lst , column ):
+row = []
+for term in lst:
+row. append ( float ( term [ column ]))
+return max(row)
+def minCol (lst , column ):
+row = []
+for term in lst:
+row. append ( float ( term [ column ]))
+return min(row)
+# POPULARITY & ACCESSIBILITY
+accData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Accessibility .csv")
+accScores = [( float (n[1])- minCol ( accData [1:], 1))/( maxCol ( accData [1:], 1)- minCol (
+accData [1:], 1)) for n in accData [1:]]
+normalizedValues . append ( accScores )
+# GENDER
+genderData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Gender .csv")
+genderGaps = [-abs( float (n[1])- float (n[2])) for n in genderData [1:]]
+genderScores = [(n-min( genderGaps ))/(max( genderGaps )-min( genderGaps )) for n in
+genderGaps ]
+normalizedValues . append ( genderScores )
+# SUSTAINABILITY
+susData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Sustainability .csv")
+susNegated = [- float (n[1]) for n in susData [1:]]
+susScores = [(m-min( susNegated ))/(max( susNegated )-min( susNegated )) for m in
+susNegated ]
+normalizedValues . append ( susScores )
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 22
+# INCLUSIVITY
+incData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Inclusivity .csv")
+filterData = [ float (n[1]) for n in incData [1:] if float (n[1])>=75]
+incMin = min( filterData )
+incMax = max( filterData )
+incScores = [( float (n[1]) - incMin )/( incMax - incMin ) for n in incData [1:]]
+normalizedValues . append ( incScores )
+# RELEVANCE & INNOVATION
+relInnoData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Relevance & Innovation .
+csv")
+def convertFloat (lst):
+newLst = []
+for term in lst:
+newLst . append ( float ( term ))
+return newLst
+def findPeaks (lst):
+peaks = []
+for i in range (12):
+peaks . append (max(lst[i*12:(i*12+11)]))
+return peaks
+def linearRegSlope (lst):
+xAxis = range (0, len(lst))
+m,b = np. polyfit (xAxis , lst , 1)
+return m
+slopes = [ linearRegSlope ( findPeaks ( convertFloat (n[1:]))) for n in relInnoData [1:]
+]
+relInnoScores = [(m-min( slopes ))/(max( slopes )-min( slopes )) for m in slopes ]
+normalizedValues . append ( relInnoScores )
+# FAIR - PLAY
+dopeData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Fair Play .csv")
+dopeRatios = [- float ( dopeData [1:][i][1])/ float ( accData [1:][i][1]) for i in range (
+len( dopeData [1:]))]
+dopeScores = [(m-min( dopeRatios ))/(max( dopeRatios )-min( dopeRatios )) for m in
+dopeRatios ]
+normalizedValues . append ( dopeScores )
+# SAFETY
+safetyData = dataList ("../ PACK - HiMCM / PACK HIMCM DATA - Safety .csv")
+safetyNegated = [- float (n[1]) for n in safetyData [1:]]
+safetyScores = [(m-min( safetyNegated ))/(max( safetyNegated )-min( safetyNegated ))
+for m in safetyNegated ]
+normalizedValues . append ( safetyScores )
+# For any sports with less than 75 countries / territories in their international
+federation , change all scores to -1.
+for i in range (len( normalizedValues [0])):
+if normalizedValues [4][i] < 0:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 16159 Page 23
+print ( normalizedValues [4][i])
+for factor in normalizedValues [1:]:
+factor [i] = -1
+print ( normalizedValues )
+results_df = pd. DataFrame ( normalizedValues )
+results_df . to_csv (’../ PACK - HiMCM / FinalData .csv ’, index = False )
+ᇿ Hi MCM
+ሧ࿟

@@ -1,0 +1,1051 @@
+ğ
+Team 11462
+
+1
+Team Control Number
+11462
+Problem Chosen
+A
+2021
+HiMCM/MidMCM
+Summary Sheet
+
+The emergence of sustainable forms of energy, such as wind or solar power, has
+increased the viability of living ‘off the grid’ for many homeowners. When removing oneself
+from traditional power infrastructure is an option, why not go further and live fully
+independently? However, with solar power, in particular, the issue of energy storage is a
+stubborn one. Solar power production ceases at night, leaving any renewable energy-powered
+house stranded until sunrise. To circumvent this issue, many off-the-grid homeowners default to
+battery storage systems; arrays of batteries that permit the long-term storage of electrical energy,
+making the hurdle of nighttime null. As an added redundancy, many of these systems are not
+only capable of powering through the night, but through cloudy days as well. Our task is to
+generate a model which evaluates a sufficient and realistic battery storage system for any remote
+house powered fully by solar energy. Our battery system should be capable of meeting nighttime
+power needs as well as having cloudy day redundancy.
+
+Our model outputs an amount of a specific battery that meets our house’s requirements.
+Any battery can be tiled to be sufficient, but some batteries will do this more efficiently than
+others. Thus, our output must consist not only of the batteries themselves but also incorporate
+cost, as cost is the best metric in our case to compare the relative efficacy of different batteries.
+With this in consideration, our model must be able to compare a variety of batteries on the
+market and produce an easily-interpretable cost value for each so the superior battery system
+may be chosen. Our model considers the appliance usage within the home in respect to time and
+occupants, the constant background energy usage of appliances such as HVAC, and even factors
+in the exact length of a night. It combines these factors over a comprehensible and easily-
+expandable platform, and finally utilizes realistic electrical principles to calculate the needed
+quantity and cost of our considered batteries.
+
+For a base 1600ft2 house, our model deemed 4 Tesla Powerwall+ batteries, for
+$34000USD, to be acceptable. Checking this value against readily available battery storage
+systems, which generally cost ~$35000, our output is right on the nose. Furthermore, our
+generalized model almost always outputs Tesla’s battery as the superior choice, granting solid
+mathematical insight on the state of the battery market and guidance on the correct battery to
+choose for solar energy storage. The exact quantity of batteries required is also specified in our
+output. While the output may be imperfect (and this is difficult to check due to limited online
+data), we have a strong base structure that could easily be altered to generate extremely accurate
+results if needed.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+2
+Table of Contents
+1. Introduction   3
+1. Background     3
+2. Restatement of Problem   3
+2. Preliminary Information  3
+1. Assumptions     3
+2. Notes and Definitions   4
+3. Variables     5
+3. Formulating a Model   6
+1. Initial Considerations    6
+2. Research     6
+3. Interpretation     6
+4. Equations and Calculations   7
+1. Capacity    7
+2. CPR     8
+5. Final Evaluations    9
+4. Generalization   11
+1. Light     11
+2. Night     12
+3. HVAC     13
+4. Appliances    15
+5. Implementation   16
+5. Conclusion    17
+1. Results     17
+2. Sensitivity Analysis   17
+3. Strengths and Weaknesses  18
+6. Supplemental Writings  19
+1. Concrete    19
+2. News Article    20
+7. Appendix    21
+8. Works Cited    24
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+3
+1 – Introduction
+
+1.1 – Background
+
+With the development of sustainable energy sources as alternatives to fossil fuels comes
+an increasingly important question: How can sustainable energy, such as solar or wind power, be
+effectively stored? An expanding number of homeowners must solve this dilemma as they begin
+to utilize sustainable energy sources such as solar panels to power their homes. Currently, the
+prevailing solution is electrical batteries, which store energy in the form of electricity for later
+use. There are many different batteries on the market, with a large variation between the design
+and application of each. Every home has different electrical needs and therefore requires a
+unique energy storage solution, posing a major challenge to many homeowners seeking to run
+their homes off sustainable energy. Aiding homeowners in this undertaking is the basis of our
+task.
+
+1.2 – Restatement of Problem
+
+We must develop a model which determines the best battery storage system for a 1600ft2
+house powered fully by solar panels. Our chosen battery system must support the house through
+the night as well as through a cloudy day. In generating this model, a multitude of factors must
+be considered: the total energy needed to support the house over a cloudy day, the ‘flow’
+required to run all the appliances in the house, and the differing capabilities of batteries already
+on the market. The model must then take these considerations and output an adequate power
+system, likely an array of multiple batteries. Afterward, our model must be adapted to output an
+adequate battery storage system for any home, and the viability of cement batteries
+must be explored.
+
+2 – Preliminary Information
+
+2.1 – Assumptions
+
+1. During light hours, our house’s solar array is capable of fully supporting the
+house’s power needs while also charging the battery storage system to its full capacity.
+Justification: The task assumed by our team was only to determine the battery storage system of
+the house. Our battery system is only required to support the house at night and on a cloudy day,
+so the solar panels must be able to support the house during the day itself. Furthermore, we must
+assume that the batteries can be reliably charged to their full capacity during a non-
+cloudy day since the specifications of the battery system are otherwise negated.
+
+2. No energy is generated during night hours, where night is sunset to sunrise.
+Justification: Solar panels produce a negligible electrical output when the sun is not in the sky;
+for the sake of simplicity, this production will be disregarded. Therefore, the home’s electrical
+demands must be fully met by the battery storage system during the night.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+4
+
+3. No energy is produced during a cloudy day.
+Justification: Calculating the amount of energy produced during a cloudy day would require
+knowledge of the house’s solar grid and its regular output, which is beyond the scope of our
+task. Cloudy days also vary in severity, meaning that it is not possible to assign a simple
+coefficient of energy production to every cloudy day. Consequently, our model must default to
+the assumption of no energy production during a cloudy day. This assumption also gives our
+system redundancy.
+
+4. The length of a cloudy day is 24 hours plus one night.
+Justification: In the event of a cloudy day, the batteries will have to power the house until the
+solar panels can become productive again. The batteries will have to last the night before the
+cloudy day and the cloudy day itself, totaling 24 hours plus one night.
+
+5. A day is split into 2 periods, 16 productive hours and 8 rest hours. Only constant power is
+drawn during rest hours, and rest hours only occur at night.
+Justification: The habits of the house’s inhabitants will have a direct effect on the power
+necessities of the house; therefore, it must be assumed that they have a
+regular period over which they use nonconstant appliances. This regularity allows our model
+to be concise and simpler to figure.
+
+6. Appliances can be used at any time during productive hours.
+Justification: while it is reasonable to assume rigid periods of sleep and productivity, appliance
+usage is much more variable. For the sake of versatility, we assumed that
+appliance usage does not follow a strict guideline and can occur at any time throughout the
+productive period.
+
+7. Power consumption not listed does not exist.
+Justification: To calculate every object and device that requires power within a house is
+extremely complex and variable; to do so would overburden our model. Additionally, unlisted
+power consumption would be inconsequential to our output.
+
+8. All listed batteries can be combined in series and/or parallel.
+Justification: Running batteries in series and/or parallel increases their capacity or continuous
+power rating respectively, permitting flexibility in our battery system. While some batteries
+cannot be connected in such a manner, for sake of simplicity in calculation, this is not a
+limitation our model must consider.
+
+2.2 – Notes and Definitions
+
+Throughout our paper, we repeatedly utilize terms some may be unfamiliar with. For sake
+of convenience, their definitions can be referenced here:
+
+Capacity: A straightforward measure, the amount of energy required to run our house (kWh).
+Regarding batteries, it represents the quantity of usable energy they can store (kWh).
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+5
+CPR: The sustained current or power draw of our house (kW). Regarding batteries, it represents
+their maximum sustained output adjusted for efficiency (kW).
+Series/Parallel Running: An electrical grouping of batteries in which their CPR ratings or
+capacity ratings are summed respectively.
+We also use a variety of reputable sources in generating our model. These will be marked with a
+flag in the form [x] which refers to a source in the works cited (pages 24-25) under the same flag.
+
+2.3 – Variables
+Table 2a – A collection of the equation-centric variables used throughout our paper.
+Variable Purpose Units
+En The house’s energy consumption during the night. kWh
+Ed The house’s energy consumption during light hours. kWh
+ECloudy The house’s energy consumption over a cloudy day. kWh
+Ebatt The capacity rating of a given battery. kWh
+eApp Energy consumption of a given appliance over 24hrs. kWh
+eHVAC Energy consumption of HVAC over 24hrs. kWh
+WApp The power draw of a given appliance. kW
+WHVAC The power draw of HVAC kW
+cpr The maximum power draw used by the house. kW
+cprmin The base power draw required to run the house. kW
+cprbatt The CPR rating of a given battery. kW
+p The number of inhabitants of the house. People
+Hf The square footage of the house. ft2
+n The length of a night. hrs
+ha The hour angle of the sun. Radians
+Ax The surface area of individual sections of the house. ft2
+lat The latitude of the house’s location. Degrees
+t The internal temperature of the house. Fahrenheit
+c External temperature. Fahrenheit
+lenseries The maximum length of a series grouping. Batteries
+lenparallel The length of a parallel grouping. Batteries
+lenmin The minimum length of a series grouping. Batteries
+Qseries The quantity of maximum series groupings. Batteries
+battTot The total amount of needed batteries. Batteries
+cost The cost of the battery storage system. USD
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+6
+
+3 – Formulating a Model
+3.1 – Initial Considerations
+
+The first step in formulating our model was brainstorming what factors we wanted to
+consider. Currently available batteries have 3 major statistics: Their capacity, their continuous
+power rating (CPR), and their instantaneous power rating (IPR). Capacity is straightforward,
+being the quantity of energy (in kWh) that the battery can store, it defines how long the house
+can be run. CPR is effectively the maximum sustainable current of the battery, it defines how
+much of the house the battery will be able to run at once. Finally, IPR defines the maximum
+instantaneous current of the battery, it defines how ‘powerful’ an appliance can be and still
+receive adequate power (E.g., a blender). We decided upon capacity and CPR as the most
+important of the two, as they largely determine the performance of the battery in powering a
+home. IPR, being by nature only important for small bursts of time, was deemed less important.
+
+3.2 – Research
+
+With these considerations in mind, we may begin preliminary research, focusing on the
+cornerstone appliances of any home. The table that follows is the fruit of our research, and it will
+be the basis for appliance calculations in the future:
+Appliances Power Use Per Day: Power Draw:
+Lighting [9] 3.862 kWh/day 0.455 kW
+Water Heater [17] 9.674 kWh/day 4.5 kW
+Fridge/Freezer Combo [14] 1.932 kWh/day 0.610 kW
+HVAC [18] 8.096 kWh/day 1.642 kW
+Microwave [10] 0.567 kWh/day 1.700 kW
+Laundry Machine [11] 0.433 kWh/day 1.320 kW
+Dishwasher [13] 0.655 kWh/day 1.800 kW
+Oven [25] 2.6 kWh/day 2.800 kW
+Stove [26] 1.267 kWh/day 4.800 kW
+TV [12] 0.318 kWh/day 0.106 kW
+Table 3a – A collection of the appliances used in our house with energy use and power draw.
+
+Appliance data turned out to be less available than initially assumed, so many of these values had
+to be approximated or found using yearly averages.
+
+3.3 – Interpretation
+
+With this newfound data, we can begin interpretation. Our appliances first must be split
+into 2: constant and nonconstant. Our appliances first must be split into 2 periods: constant and
+nonconstant. Nonconstant appliances are straightforward, drawing a given amount of power only
+when a user activates them. They are also only used during productive hours, as defined in
+assumption 5. However, constant appliances operate at all hours, requiring a base amount of
+power at any time (including sleep hours. This disparity in power usage and timing needed to be
+considered in our model, and the table following defines how we split our appliances.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+7
+
+Constant Appliances Nonconstant Appliances
+Water Heater Lights
+HVAC Microwave
+Fridge/Freezer Combo Laundry Machine
+Dishwasher
+Oven
+Stove
+TV
+Table 3b – The appliances defined in 3a sorted by energy usage type.
+
+3.4.1 – Equations and Calculations: Capacity
+
+With these considerations made, we can begin to define the capacity and cpr
+requirements of our house.
+Capacity was the first of the two problems to tackle. While it may be ideal to assume all
+of our appliances run on a schedule that minimizes power usage per day, this is simply not the
+case in real life, as explained in assumption 6. Chances are all appliances would eventually need
+usage on the same day, and our batteries must be prepared for such an event, lest the house be
+stranded powerless until light. As such, we set eApp (the energy usage of nonconstant appliances
+over 24hrs, in kWh), equal to:
+
+While this does not account for multiple uses of an appliance per day, it is robust enough
+for our purposes. ec (the energy usage of constant appliances over 24hrs, in kWh) must be
+calculated separate due to assumption 5, but it follows the same format:
+
+With energy usage solved, we can formulate our model. As a reminder, our battery
+storage system needs to power the house through the night as well as through a cloudy day.
+Using our definition for a cloudy day from assumption 4, we can produce a basic equation for
+ECloudy (the house’s energy consumption over a cloudy day):
+
+In solving ECloudy, we must define its components En and Ed (Energy usage of the home
+over night and day). Both these variables rely heavily on a single variable, n, the length of a
+night. Due to the changing nature of nighttime on Earth, however, finding a suitable value for n
+is a very involved process.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+8
+n changes according to 2 factors, the time of year and latitude[4], but we can make some
+concessions to simplify our solution. First, we set the latitude of our home to 45°, an arbitrary,
+but suitably remote value taken for simplicity’s sake. Addressing the time of year requires some
+extra logic: Solving for n as a function of the year would be a valid approach, but our battery
+system must operate on a daily cycle. Thus, we only need to solve for a single n, specifically the
+maximum. It is known that this maximum occurs on the winter solstice (December 21st) for
+latitudes >0. Thus, our value of n will be solved for a latitude of 45° and on the 21st of
+December. Using data amassed by the NOAA[3], solving for n with these inputs evaluates to:
+
+With this value for n, the equations for En and Ed can both be formulated quite trivially.
+First, constant power will always be on, so we can easily split its power draw into day and night
+portions:
+
+Our last step is including eApp. By assumptions 5 & 6, eApp is relevant during all
+productive hours, but ‘dormant’ 8 hours per night. Factoring this into our equations, we can
+evaluate them as follows:
+
+Thus, ECloudy is equal to:
+
+This defines the required capacity of the battery storage system for our 1600ft2 home.
+
+3.4.2 - Equations and Calculations: CPR
+
+With capacity evaluated, we must formulate cpr. This calculation follows the same logic
+as capacity, but we must make a small modification. As we would later come to find, having
+every appliance on in the house at once results in our output almost completely hinging on cpr;
+capacity has little impact. Therefore, we decided to limit our simultaneous appliance power
+usage to ½ its full sum, limiting the maximum quantity of appliances turned on at once for sake
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+9
+of flexibility (except for constant appliances which by nature are always on). With this in mind,
+our equation for cpr (the maximum power draw required to run the house)
+came to be:
+
+Since cpr is time-independent, constant appliance power draw can be included in this
+general calculation.
+
+3.5 – Final Evaluations
+
+The following section requires an understanding of 2 basic electrical principles: when
+batteries are run in parallel, their capacity ratings are summed but their cpr rating remains the
+same. The opposite is true for running in series. With this knowledge, we can generate the
+formulas which will define the needed quantity of individual batteries for our battery storage
+system. In the following equations, lenparallel represents the number of batteries in a parallel
+grouping needed to meet capacity, while lenseries represents the same for series and cpr:
+
+Where “ceil” is the ceiling function.
+
+This solution is adequate upon first look, but there is a crippling issue, especially with
+small batteries. This results in a near-useless battery storage system, as the parallel grouping
+would have the CPR rating of a single battery while the series grouping would have the capacity
+rating of a single battery, both of which are unsatisfactory. To rectify these limitations, we must
+have 2 additional constraints: the number of series groupings needed to sustainably run the
+house, Qseries, and a minimum series grouping size, lenmin.
+
+Qseries requires a quantity of time we want to run at cpr, which we have arbitrarily decided
+to be 1/10th of the day. lenmin requires a cprmin, which is simply the cpr equation with a different
+constant multiple of nonconstant appliance power draw. This constant we decided upon was 1/8,
+implying that our home will be able to have at least 1/8th of its appliances on at any given
+productive time. The following are our solutions for Qseries and lenmin:
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+10
+
+Ultimately, our battery storage system will be a matrix consisting of series groupings run in
+parallel. Within this matrix will be 2 sizes of series groupings, defined above by lenseries and
+lenmin, for the number of maximum and minimum batteries in a parallel grouping respectively.
+The quantity of these series within our complete battery storage system is further defined by
+Qseries. With these variables defined, we can solve for the exact number of batteries our house
+requires as follows, and use that value to solve for cost:
+
+With this, we have successfully generated a model to evaluate a sufficient battery storage
+system for our house, and also generate its cost. The only remaining step is to plug in specific
+batteries and their specifications. We used the following table of batteries to complete this
+process:
+Table 3c – A collection of the batteries we considered and their statistics. If a source is not cited
+next to a battery, it came directly from COMAP.
+
+Evaluating the formulas in 3.4-3.6 utilizing the variables defined in table grants us the final result
+for our standard 1600ft2 house: To power the house through an entire cloudy day solely off
+stored battery energy you need 4 Tesla Powerwall+ batteries, totaling a cost of $34000USD.
+Based on the market-priced 40kWh home backup battery sold by Solar Electric[24], which costs
+$35,177USD, our value is accurate and representative of current market cost and capacity for
+solar battery storage systems.
+
+Battery
+
+Cost
+(USD)
+
+Battery
+Type
+
+CPR
+Usable
+Capacity
+(KWH)
+
+Weight
+Round-
+Trip
+Efficiency
+(%)
+Variable N/A N/A cprbatt capbatt N/A N/A
+Deka Solar 8GCC2
+6V 198
+$368 SGLA 0.049 kW
+
+1.18 kWh 68 80-85%
+Trojan L-16 -SPRE
+6V 415
+$492 FLA 0.19 kW
+
+2.5 kWh 118 80-85%
+Discover AES 7.4
+kWh
+$6,478 LFP 6.65 kW 7.4 kWh 192 >95%
+Electriq PowerPod
+2
+$13,000 LFP 7.6 kW 10 kWh 346 96.60%
+Tesla Powerwall+ $8,500 NMC 7 kW 13.5 kWh 343.9 90.00%
+ENCHARGE-10-
+1P-NA[19]
+$8,955 LFP 3.84 kW 9.7 kWh 346 96%
+Fortress Power
+48[20]
+$3,850 LFP 5.04 kW 5.26 kWh 108 98%
+LFPGC2-12175
+LiFePO4[21]
+$1,099 LFP 1.28 kW 2.2 kWh 38.5 >98%
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+11
+4 – Generalization
+
+Following the generation of our basic model (Addressing Question 1), we must now generalize
+our model to encompass any home. From our pool of variables, we chose 6 to generalize: n
+(night length), eL/WLight (Energy use/power draw of lighting), eHVAC/WHVAC (Energy use/power
+draw of HVAC), and eApp (Energy use of appliances). While this list could include more, these
+variables were simplest to generalize, and thus fit for our timeline.
+
+4.1 – Light
+
+As per assumption 5, lighting will be used during all productive time, which includes
+some night hours. Because productive night hours pull from the battery array, lighting power will
+impact our capacity and CPR, and it must be calculated as a function. To accomplish this, we
+must understand a few factors: how well lit the home is, how much of the home must be lit, the
+efficiency of our lights, and the impact of people.
+
+Much of this data required research. We found the most efficient LED bulbs on the
+market can output 116 lumens per watt[1]. Additionally, using consumer guidelines[2], we
+reasoned that 35lum/ft2 would be an appropriate level of lighting. This exact light density would
+vary in a real space, but solving such is beyond our scope. Finally, we arbitrarily chose 150ft2 as
+a realistic amount of area 1 person would have lit. With these values, we can create a rough
+function for light energy usage in kW (Wlight) with respect to p:
+
+However, this formula has an issue- as p increases, the area that must be lit also increases
+with no bound, even though the home has a finite hf (square footage). Thus, we must create a
+piecewise function bounded by hf as follows:
+
+eL, the energy consumption of light over 24 hours in kWh, is Wlight multiplied by 24hrs:
+
+These functions for light will henceforth be used in our calculations.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+12
+4.2 – Night
+
+Due to assumption 2, the length of night (n) directly impacts how long our home must
+work solely off stored energy. In our base model, this length was set, assuming a latitude of 45°.
+For our full model, however, n must be generalized. To achieve this, we must solve for sunrise
+and sunset times, find the duration of the day, and subtract that value from 24. This process will
+grant us the length of any night.
+
+According to the NOAA[4], solving for sunrise and sunset times requires 2 distinct
+variables: The hour angle of the sun at sunrise/set (ha in figure 2), and the degradation angle of
+the Earth (da in figure 1). da changes slowly throughout the year and ha changes based on
+latitude, however, we only need to consider ha as discussed in X.X. It is known that the winter
+solstice, December 21, (July 21 for the southern hemisphere), has the longest night of any year-
+when da is equal to ±23.45, the tilt of the Earth’s axis with relation to the sun. These are the
+values we will use for da.
+Figure 1 – da is defined as the angle between
+the equatorial line and a line drawn from O, the center of the earth, to the center of the sun, or
+the declination angle.
+Figure 2 – given p is a point on the surface of the earth and O is the center of the earth, ha is the
+angle of the line PO, and O to the center of the sun.
+Image credit to Geogebra[23].
+
+With da found, we only have to solve for ha; this can be done trivially. While it is beyond
+our abilities to generate an equation for ourselves, the NOAA provides a general equation[3] that
+we can simplify to meet our needs:
+
+Where hemi is -1 for the northern hemisphere and 1 for the southern hemisphere.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+13
+Using this definition for ha, we can now solve sunrise/set times. Hour angle is simply the
+angle of the sun against a vertical line on the Earth’s surface (as in figure 1), meaning an hour
+represents 15° (360°/24hrs). Thus, the time of n (in hours) can be calculated as:
+
+This function for n will henceforth be used in our equations.
+
+4.3 – HVAC
+
+Another appliance that factored heavily into our equations was the energy use of HVAC.
+To make our model more ideal, we decided to account for its usage of power and energy as a
+function of temperature and square footage. Through preliminary research, we generated the
+following basic function for energy use:
+
+Where A is the surface area of the house, t and c are the indoor and outdoor temperatures
+respectively, and r is the thermal conductivity of the house. This function calculates the energy
+consumption of the HVAC system by finding how much heat needs to be replaced in BTUs
+(British Thermal Units) over a day.
+
+However, different parts of the house have varying values of thermal conductivity, which
+we considered a large factor in calculating the energy consumption of HVAC. To make our data
+more accurate, we incorporated these different parts into our model with respect to Hf, the square
+footage of the house. To do this we inserted the surface area of each part Ax into the equation as
+A, and the thermal conductivity of said parts rx into r. For simplicity, we only considered the
+surface area of the walls, windows, and roof:
+
+With these parts inputted, we can accurately calculate the energy consumption of HVAC by
+repeating this equation for all parts of the house and adding those equations together.
+
+Now that we have an equation that finds the heat needed to be replaced, we must convert
+it into energy consumption. We did this by incorporating the ratings designated by the
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+14
+manufacturer for their HVAC units, which are measured in BTUs per watt. Thus, we divided our
+equation by these ratings multiplied by 1000 to output a value in kWh:
+
+Where R represents the manufacturer rating. There is a difference in the capability of the HVAC
+system to heat and cool a house, as shown in the different ratings assigned by the manufacturers
+denoted as SEER (cooling) and HSPF (heating). To account for this, we used a piecewise
+function incorporating our previous equation:
+
+This piecewise function allows us to differentiate between when we need to heat or cool, based
+on if the indoor temperature is warmer or colder than the outdoor temperature.
+
+For the sake of our model, we assigned values to these parts based on research regarding
+the layout of housing, the thermal conductivity of materials used, our designated heater, and the
+1600ft2 house provided by the initial prompt:
+
+Our equation at this point determines the energy consumption of a HVAC system running
+at maximum output. However, it is fair to assume that a HVAC will not always run at maximum
+output. Because of this, we incorporated a function that calculates the wattage required based on
+the area of the house using the heater we used as a baseline:
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+15
+Where 1.642 is the wattage of the heater used in our model.
+
+These functions for HVAC will henceforth be used in our calculations.
+
+4.4 – Appliances
+
+Electrical appliance usage is a significant element of power consumption in a home,
+creating much of the electricity demand. To create an accurate model, it is a necessity to consider
+this consumption. Due to the extreme variability between appliance usage in homes, we first
+estimated the average appliance usage of a four-person family in the United States, the number
+of occupants whom we assumed would be living in our 1600 square foot home, and then we
+defined the usage of appliances in homes with a variable occupancy relative to that baseline. As
+per the design of our model, we need to find the combined power draw of the home’s appliances
+(in kW) and the total amount of energy used throughout a day (in kWh). These values will be
+represented by the variables WApp and eApp respectively.
+
+We reasoned that the combined power draw of appliances would be equal to the total
+wattage of all appliances being run regularly (in kW), divided by two. It was then assumed that
+no household, especially one supported by solar energy, would have more than one-half of all
+appliances running at once. Based on our research referenced on pg. 6, our equation for WApp for
+a four-person household is:
+
+After the creation of this model, we further reasoned that the power draw of appliances
+did not scale directly as the number of people in a household did, as the number of appliances in
+a household does not have a strong relation to the number of inhabitants in the household.
+Therefore, the maximum power drawn from those appliances would stay the same. This means
+that the above equation can be plugged directly into our general model.
+After tackling the power draw of a home’s appliances, we must move on to the total
+amount of power used by said appliances. Adding together the daily energy consumption of each
+appliance we researched yields eApp for our four-person house. This value is 5.84 kWh. To adapt
+our definition of eApp, we determined that the power is by appliances is proportionate to the
+number of people in a household. After converting eApp into a function of p, our equation
+becomes:
+
+This equation sets a minimum for the energy consumption of appliances at 5.84 kWh, as
+even in a household of fewer than four people, there is a minimum usage of appliances,
+appliances cannot be run a partial number of times. Thus, for any input of p less than four, the
+output will be equivalent to a four-person home. For inputs of p greater than 4, the base value of
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+16
+5.84 kWh is multiplied by p divided by 4, the ratio of the inputted household size compared to
+the standard we used.
+
+4.5 – Implementation
+
+With all our variables generalized, we can commence their implementation into our prior
+model (see section 3, page 5). Substituting in our variable solutions, we get the general equation:
+
+Where eC is adapted to not include HVAC.
+
+While this equation is still possible to evaluate manually, due to
+the quantity of values and batteries we are dealing with (see Table 3c), it
+is much simpler to automate our solution through Python code. The flow
+chart for the code can be seen here to the left, but in effect, it is a
+streamlined calculator which outputs batttot and price for each of our
+batteries. The full code can be seen under the appendix on page 22. With
+our generalized model implemented, we can continue our full analysis
+and conclusion.
+
+Figure 3 – The ‘flow’ of our evaluating code.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+17
+5 – Conclusion
+
+5.1 – Results
+
+With our model fully generalized, we can commence making our final remarks, beginning with
+our results. While the exact quantity of batteries need varies wildly depending on inputs (as
+addressed in 5.2), the chosen battery type stays almost constant, overwhelmingly being the Tesla
+Powerwall+ (from Table 3c). While this consistency may seem a boring result, it makes sense in
+the context of the problem. This battery data is based on real life, it is not hypothetical. As such,
+you would expect the efficacy of available batteries to fluctuate, with one superior contender
+among the mix. In our case, this contender happened to be Tesla’s entry, but as the battery
+industry develops that will very likely change. Overall, addressing this issue is an outstanding
+strength of our model: if we choose to add a battery into our consideration in the future, we
+simply need to add it to a list (in code under appendix, pg.22), and it will be considered.
+
+5.2 – Sensitivity Analysis
+
+The sheer amount of data our model encompasses means some variables will ultimately
+be buried and have little impact, while others are magnified beyond belief. In this rudimentary
+analysis, we will examine such variances in importance, the ‘sensitivity’ of our model.
+
+The “base” inputs for our model are:
+
+• 45° Latitude (lat)
+• 72°F Internal Temperature (t)
+• 1600ft2 Square Footage (Hf)
+• 4 People (p)
+
+If a change in these inputs is not specifically mentioned, they were held constant.
+
+Varying temperature (t), we find that the larger the value of |𝑡 − 32| and Hf, the more Tesla
+batteries required. Specifically, a change of ~15° constitutes a change in 1 battery, with a
+minimum of 3. Considering that HVAC (the appliance impacted by temperature) is a constant,
+very power-hungry appliance, these drastic changes relative to small differences in temperature
+make sense.
+
+Varying people (p), we find that every increase of 4 brings a change of 1 Tesla battery.
+Following the logic used in our lighting and appliance generalizations, this is expected. While it
+is very difficult to find data online which reflects and supports these battery requirements, it
+would be simple to change the leading coefficients or bounds of our equations to reflect real life.
+Overall, these changes make sense according to the considerations we made, but they could be
+fine-tuned should more secure data become available.
+
+Varying latitude (lat), we find a somewhat disappointing result: a variance of ±60°
+constitutes a change of only 1 Tesla battery, with a minimum of 4 at the equator. Considering the
+effort we put into generalizing n, this is unsatisfactory- however, it may have some logic. n only
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+18
+impacts our required capacity after the other calculations have been made. Thus, if our ECloudy has
+a low base value, n will have little impact. While still somewhat disappointing, it is reassuring
+that our model’s output with relation to n follows some logic.
+
+Varying square footage (Hf), we find the very nice linear relationship of 1 Tesla battery
+added per every 1000ft2. This requires little analysis- Hf impacts both light usage and HVAC
+usage, and thus it must have a drastic impact. Our model reflects this impact.
+
+Overall, our model could be improved with new thorough data on house power usage, but the
+values it outputs have a good basis in reality according to our assumptions and equations.
+
+5.3 – Strengths and Weaknesses
+
+Considering our limited timeframe, our model has some very apparent strengths and
+weaknesses. Among our strengths is robustness/room for expansion, built-in redundancy, a basis
+in true data. The first strength we believe is quite apparent. Our model considers a fair amount of
+realistic data to generate its output, and the amount of data it considers can very easily be altered.
+For example, if we were to make our model more robust by calculating TV energy usage with
+some variable, all that would be required is to put that equation under productive power in the
+solution for ECloudy. This is true for effectively any appliance. Furthermore, our model has built-in
+redundancy. By accounting for the worst-case scenario, we ensure that our battery system can
+last through just about anything.
+
+We now must address our assumptions, the basis of most our weaknesses. We had to
+assume quite a bit- while our base assumptions (see 2.1) were acceptable due to the limits of our
+knowledge and time, we had to make various little assumptions for coefficients throughout our
+model, and these were pretty shaky. If we had more time, it would have been beneficial to
+research  more, increasing the strength of our model as a whole. Considering the output of our
+model itself, we only considered 1 battery at a time, a possible weakness. Instead of rounding up
+on our equation for total batteries, we could have rounded down and used smaller batteries to
+meet the remaining needed CPR or capacity, making our battery storage system cheaper. These
+two weaknesses were the most apparent throughout our paper, but they were certainly not alone.
+However, considering the short amount of time we had to generate our model, we believe it is
+nonetheless quite strong.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+19
+
+6 – Supplemental Writings
+
+6.1 – Cement
+Cement barrerites are a recently developed technology permitting the implementation of
+electrical storage within cement, a widely used construction material. While still a very young
+concept, the batteries show promise, and could eventually be a cornerstone of any city’s
+infrastructure. As such, we decided to make a brief consideration over their application, and
+discussed the possibility of their induction to our model.
+
+We began our consideration by exploring the inherent advantages and disadvantages of
+cement batteries. These batteries provide versatility in many use-cases (houses, buildings,
+sidewalks, etc.), only require modifications to pre-existing and widely used materials, and are
+easily rechargeable and cost-effective. However, there are some trade-offs, the biggest of which
+is the low capacity relative to volume (the technology is only able to store 7 Wh/ft2[7].
+
+We explored the possibility of integrating these batteries into our house, it could be
+constructed of the batteries themselves, creating a “structural battery”. The batteries’ usage as
+structural components for the house means that no extra space needs to be dedicated to batteries,
+compensating for their poor energy to area ratio. However, several more considerations and
+developments are yet required to model and compare cement batteries to ones currently
+available on the market. Even with this incredible space efficiency, the cost or efficiency of the
+batteries may ultimately be their downfall, making their implementation unjustifiable. For now,
+traditional batteries are superior due to their greater development, but cement batteries are surely
+a development to follow.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+20
+6.2 – News Article
+
+When you panic over a dead T.V. remote or try to power your latest Christmas gift, what
+do you need? You need batteries! Batteries are a mainstay in electronics, providing a way for
+energy to be stored and accessed later. Batteries power many household objects and quality of
+life items for your daily enjoyment. However, did you know that batteries can be used for so
+much more? Large, block-shaped batteries are used to power equipment and store energy on a
+much larger scale, such as in a car or, better yet, to store renewable energy.
+
+Imagine you are living off the grid and your only method to harness electricity is through
+solar panels. These panels may be sufficient for your electrical needs during the day, but what
+happens during the nighttime? Solar panels cannot generate energy without sunlight, meaning
+that you would have to somehow store your energy from the day to last through the night. Enter:
+Batteries. Solar batteries are rechargeable batteries that are perfectly suited to absorb the energy
+provided by solar panels, and then provide large amounts of energy for extended periods of time;
+in this case to power a house.
+
+But how do you know what batteries to use? With so many solar batteries on the market,
+choosing one can prove to be a tiresome ordeal. We rigorously tested 8 different batteries on the
+market, making sure to validate the cost and quality of each. How much energy do people use?
+How long does the night last? These were all questions in our test to pick the best battery.
+Through our research, we concluded that out of the 8 batteries we tested, the Tesla Powerwall+
+was the best choice. At $8,500 per unit, the Tesla Powerwall+ provided the largest amount of
+storage and efficiency per dollar. It simply out-performs all other batteries we tested at a cheaper
+cost, making sustainable energy accessible to all.
+
+So how is this applicable to you? Solar energy may seem financially daunting at first,
+with such a high initial cost, but over time its benefits become more apparent. Taking energy
+from the grid cost an exorbitant amount of money over time, upwards of $140 a month! With
+solar panels, once you pay the initial fees you essentially get energy for free. The cost of solar
+panels and batteries may seem too steep as of now, however, as technology advances so too will
+solar technology, leading to cheaper prices. Even now people are developing new and affordable
+ways to obtain and store solar energy.
+
+One example of new technologies is the development of cement batteries by scientist in
+Sweden. These cement batteries work like normal batteries, storing energy within them through a
+combination of battery like material embedded into the concrete. Although, as of now, these
+batteries store very little energy and are not completely developed. However, with its potential in
+storing energy, rechargeability, and availability, we can expect this technology to become useful
+and applicable development. In the future, we could utilize these batteries where normal cement
+would be used such as in cities, roads, buildings, and houses, improving the electrical market and
+allowing for affordable energy storage for all consumers.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+21
+7 – Appendix
+
+Code (referenced on pg.15):
+import math
+Battdict = {
+"0": [10, 7.6, .9660, 13000, "Electriq"],
+"1": [13.5, 7, .90, 8500, "Tesla"],
+"2": [1.18, 0.049, .8, 368, "Deca"],
+"3": [7.4, 6.65, 0.95, 6478, "Discover"],
+"4": [10.1, 3.84, 0.95, 8955, "ENCHARGE-10-1P-NA"],
+"5": [5.374, 5.04, 0.98, 3850, "Fortress Power 48"],
+"6": [2.24, 1.28, 0.98, 1099, "LFPGC2-12175 LiFePO4"]
+}
+'''Dictionary of battery data stored in the following format:
+[Capacity, CPR, Efficiency, Cost, Name]'''
+
+'''Solving for night duration'''
+def dtor(x):
+'''Degrees to Radians'''
+rad = (math.pi)*(x/180)
+return rad
+lat = math.floor(int(input("What is your latitude? ")))
+if lat > 0:
+hemi = 1
+else:
+hemi = -1
+# changing solstice based on hemisphere (through dec angle)
+ha = math.acos(math.cos(dtor(90.833))/math.cos(dtor(lat))*math.cos(dtor(hemi*-23.45))-
+math.tan(dtor(lat))*math.tan(dtor(hemi*-23.45)))
+degha = ha*(180/math.pi)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+22
+n = 24 - 2*(degha/15)
+
+'''HVAC energy based on internal temperature'''
+t = int(input("What temperature do you keep the house at (F)? "))
+c = 32 # outdoor temp
+sqft = int(input("What is the square footage of the house? "))
+Awin = 96
+Awall = math.sqrt(sqft)*9 - 96
+if t > c:
+eneHVAC = 24*(((t-c)*(Awall/20+Awin/2+sqft/30))/10000)
+else:
+eneHVAC = 24*(((c-t)*(Awall/20+Awin/2+sqft/30))/20000)
+Whvac = 1.642/sqft
+
+'''Lighting Energy w/ respect to people & sqft'''
+p = int(input("How many people live in the home? "))
+if 0 < p <= sqft/200-1:
+Wlight = 35*(200*p)/116000
+eneL = 24*Wlight
+else:
+Wlight = 35*(sqft)/116000
+eneL = 24*Wlight
+
+'''Appliance Energy w/ respect to people'''
+Wapp = 5.84
+if 0 < p <= 4:
+eneApp = Wapp
+else:
+eneApp = (p/4)*Wapp
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+23
+'''Variable bank'''
+constantP = eneHVAC + 11.606 # constant power per day, in kWh
+productiveP = eneL + eneApp # productive power per day, in kWh
+Wconst = Whvac + 4.5 + 0.61
+
+En = n/24*(constantP)+(n-8)/24*(productiveP)
+Ed = (24-n)/24*(constantP + productiveP)
+Ecloud = Ed + (2*En)
+# capacity equations
+cpr = (Wapp+Wconst)/2+Wlight
+mincpr = Wconst+Wlight
+# Solving for needed CPR using equation with set calculated values
+Variables = [Ecloud, cpr]
+# Data list for easy access
+
+'''Final calculations of h, k, and j'''
+for batt in range(0, len(Battdict)):
+k = math.ceil(Variables[0]/((Battdict["{}".format(batt)][2])*(Battdict["{}".format(batt)][0])))
+h = math.ceil(Variables[1]/Battdict["{}".format(batt)][1])
+j = math.ceil(Ecloud/(8*(Battdict["{}".format(batt)][2]*Battdict["{}".format(batt)][0])))
+g = math.ceil(mincpr/Battdict["{}".format(batt)][1])
+totalbatt = g*(k-j) + (h*j)
+totalcost = totalbatt * Battdict["{}".format(batt)][3]
+costlist.append(totalcost)
+print("You will need {0} {2} batteries, at a cost of $ {1}".format(totalbatt, totalcost,
+Battdict["{}".format(batt)][4]))
+batt =+ 1
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+24
+Works Cited:
+
+[1]Environmental and Energy Study Institute (EESI). Fact Sheet | Energy Efficiency Standards
+for Appliances, Lighting and Equipment (2017) | White Papers |
+EESI. www.eesi.org/papers/view/fact-sheet-energy-efficiency-standards-for-appliances-
+lighting-and-equipmen. Accessed 3 Nov. 2021.
+
+[2]Electricity Use in Homes - U.S. Energy Information Administration
+(EIA). www.eia.gov/energyexplained/use-of-energy/electricity-use-in-homes.php.
+Accessed 3 Nov. 2021.
+
+[3]ESRL Global Monitoring Laboratory - Global Radiation and Aerosols.
+gml.noaa.gov/grad/solcalc/calcdetails.html. Accessed 3 Nov. 2021.
+
+[4]General Solar Position Calculations. NOAA Global Monitoring Division,
+gml.noaa.gov/grad/solcalc/solareqns.PDF. Accessed 3 Nov. 2021.
+
+[5]“Types of Insulation.” The Home Depot, 2019, www.homedepot.com/c/ab/types-of-
+insulation/9ba683603be9fa5395fab902f82532f.
+
+[6]“Calculating Wall Heat Loss | EGEE 102: Energy Conservation and Environmental
+Protection.” Www.e-Education.psu.edu, www.e-education.psu.edu/egee102/node/2070.
+Accessed 3 Nov. 2021.
+
+[7]“World First Concept for Rechargeable Cement Based
+Batteries.” EurekAlert!, www.eurekalert.org/news-releases/868155. Accessed 3 Nov.
+2021.
+[8]“GE Appliances 5 Cu. Ft. Front Load Washer and 7.8 Cu. Ft. Electric Dryer Laundry Pair in
+Sapphire Blue | NFM.” Www.nfm.com, www.nfm.com/ge-appliances-5-cu-ft-front-load-
+washer-and-7-8-cu-ft-electric-dryer-laundry-pair-in-sapphire-
+blue/56912173.html?sgused=true. Accessed 3 Nov. 2021.
+
+[9]“Philips 50-Watt/100-Watt/150-Watt Equivalent A21 Energy Saving 3-Way LED Light Bulb
+in Soft White (2700K) (1-Bulb)-556936.” The Home
+Depot, www.homedepot.com/p/Philips-50-Watt-100-Watt-150-Watt-Equivalent-A21-
+Energy-Saving-3-Way-LED-Light-Bulb-in-Soft-White-2700K-1-Bulb-
+556936/312050825. Accessed 3 Nov. 2021.
+
+[10]“GE Profile 2.2 Cu. Ft. Built-in Sensor Microwave Oven in Dark Gray |
+NFM.” Www.nfm.com, www.nfm.com/ge-profile-2-2-cu-ft-built-in-sensor-microwave-
+oven-in-dark-gray/55007058.html. Accessed 3 Nov. 2021.
+
+[11]“Energy Guide for Washer.” Nfm.com, Energy Star, www.nfm.com/on/demandware.static/-
+/Library-Sites-NFMSharedLibrary/default/dwf6d9fdb8/product-pdfs//056/91/56912173-
+energy-guide.pdf. Accessed 3 Nov. 2021.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 11462
+
+25
+[12]“LG 65" Class - C1 Series - 4K OLED Smart TV with AI ThinQ |
+NFM.” Www.nfm.com, www.nfm.com/lg-65-class-c1-series-4k-oled-smart-tv-with-ai-
+thinq/60107497.html. Accessed 3 Nov. 2021.
+
+[13]“Energy Guide Dishwasher.” Nfm.com, Energy Star, www.nfm.com/on/demandware.static/-
+/Library-Sites-NFMSharedLibrary/default/dw1eda510f/product-pdfs//054/61/54614151-
+energy-guide.pdf. Accessed 3 Nov. 2021.
+
+[14]“Energy Guide-Refrigerator Freezer.” Nfm.com, Energy
+Star, www.nfm.com/on/demandware.static/-/Library-Sites-
+NFMSharedLibrary/default/dw90ab68d7/product-pdfs//057/79/57799975-energy-
+guide.pdf. Accessed 3 Nov. 2021.
+
+[17]“Reduce Hot Water for Energy Savings.” Energy.gov, www.energy.gov/energysaver/reduce-
+hot-water-use-energy-savings.
+
+[18]“Energy Required for Water Heating | EGEE 102: Energy Conservation and Environmental
+Protection.” Www.e-Education.psu.edu, www.e-education.psu.edu/egee102/node/2003.
+Accessed 7 Nov. 2021.
+
+[19]“4SHP20LX.” Www.armstrongair.com, www.armstrongair.com/products/heat-
+pumps/4shp20lx/. Accessed 13 Nov. 2021.
+
+[20]“Enphase ENCHARGE-10-1P-NA 10.08 KWh & 3.84 KVA All-In-One Energy Storage
+System.” Www.solar-Electric.com, www.solar-electric.com/enphase-energy-encharge-
+10-1p-na.html. Accessed 13 Nov. 2021.
+
+[21]S3.amazonaws.com. 2021. Technical Datasheet. [online] Available at:
+<https://s3.amazonaws.com/ecodirect_docs/Fortress-Power/eFlex-5-4-Technical-
+Datasheet-2020-Rev-1-0.pdf> [Accessed 13 November 2021].
+
+[22]“LFPGC2-12175 LiFePO4 Li-Iron 12V 175AH Deep Cycle Battery -L.” VMAXTANKS,
+www.vmaxtanks.com/LFPGC2-12175-LiFePO4-Li-Iron-12V-175AH-Deep-Cycle-
+Battery-_p_233.html. Accessed 13 Nov. 2021.
+
+[23] “Geometry - GeoGebra.” Geogebra.org, 2019, www.geogebra.org/geometry.
+
+[24] Solar-electric.com. 2021. Enphase Encharge 40kWh Base Kit energy Storage System for
+Whole Home Backup. [online] Available at: <https://www.solar-electric.com/enphase-
+encharge-40kwh-backup-base-kit.html> [Accessed 13 November 2021].
+
+[25]nfm.com. 2021. [online] Available at: <https://www.nfm.com/whirlpool-30-single-electric-
+wall-oven-in-stainless-steel/52685054.html +> [Accessed 15 November 2021].
+
+[26]2021. [online] Available at: <https://www.nfm.com/samsung-30-electric-cooktop-in-
+stainless-steel/47258736.html> [Accessed 13 November 2021].
+ᇿ Hi MCM
+ሧ࿟

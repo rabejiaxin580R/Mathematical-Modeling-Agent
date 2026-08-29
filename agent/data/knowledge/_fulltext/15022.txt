@@ -1,0 +1,859 @@
+ğ
+Team Control Number
+15022
+Problem Chosen
+B
+2024
+Summary Sheet
+SUMMARY SHEET
+High-Powered Computing (HPC) is essential for scientific research, technology development, and data
+analysis. As organizations use HPC for complex tasks like climate modeling, molecular simulations,
+AI, and big data analytics, significant energy consumption, primarily from fossil fuels, and the resulting
+carbon emissions have become a major global concern.
+As the problem mentioned, other than carbon emission, many ecosystem-related concerns are associated
+with the utilization and construction of HPC facilities. However, according to the UN’s Advisory Board
+onAI(2024),environmentalimpactsfromtrainingAImodelsviaHPCmakeupaminorpartofAI-related
+issues. Nonetheless, the ecological effects of HPC energy consumption remain significant. This paper
+willusemathematicalmodelingtoexploretheglobalenvironmentalandeconomicimpactsofrisingHPC
+facility usage.
+The first requirement involved analyzing the annual energy consumption of HPC capabilities globally,
+consideringbothfullcapacityandaverageutilizationrates. Toaddressthis, ourteamexaminedadecade’s
+worth of data on HPC energy consumption and developed a function linking increased computing power
+to rising energy demands. We discovered that as HPC computing power grows, its escalating energy
+requirements are a significant concern.
+The second requirement was to develop a comprehensive model to assess the environmental impact of
+carbon emissions from HPC energy consumption, considering different energy mixes. To address this
+problem, we created a Multi-factor Dynamic Prediction Model for HPC Carbon Emissions. By dividing
+the energy consumed into two main parts—fossil fuel and renewable energy, we quantified the carbon
+emissions from HPC energy consumption and constructed the simple function used for rough prediction.
+In the third requirement, we were asked to improve and apply our model. After considering the impact
+of various factors on the model, including the growth of HPC, the increasing demand for energy in other
+sectors, and the potential for different energy sources and mixes, our model became more precise. Ac-
+cording to our prediction, by the year 2030, the total carbon emission of HPCs will rise to 2342483383.33
+tCO2, taking up 5.21% of global total emissions.
+The fourth requirement was to refine our model to include an additional environmental factor and the
+increasing proportion of renewable energy. To take the growth of the proportion of renewable energy into
+account, we added some additional variables to our model and considered the use of cooling water as an
+additional environmental impact.
+Finally, we recommended some actionable improvements to reduce the environmental impact of HPCs
+and included one in our model to show the results of the improvements.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Contents
+1. Introduction 2
+1.1. Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.2. Problem Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+2. Assumptions 3
+3. Notations 4
+4. Requirement 1 : HPC Annual Energy Consumption Model 4
+4.1. Model establishment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+4.1.1. Quantifying the proportion of total global data center energy consumption asso-
+ciated with HPC tasks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+4.1.2. Quantifying the global HPC energy consumption and function fitting. . . . . . 5
+4.2. Qualitative and quantitative analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+5. Requirement 2 & 3 : Multi-factor Dynamic Prediction Model for HPC Carbon Emissions 7
+5.1. Quantifying the carbon emissions from HPC energy consumption. . . . . . . . . . . . 7
+5.2. Constructing a function for global HPC carbon emissions over time. . . . . . . . . . . . 9
+5.2.1. Exploring the relationship between the HPC growth rater and timet . . . . . . 9
+5.2.2. Exploring the relationship between the proportion of renewable energyρ and timet 10
+5.2.3. Constructing a Multi-factor dynamic prediction function for HPC carbon emissions10
+5.2.4. Environmental impact of global HPC carbon emissions model. . . . . . . . . . 11
+5.3. Model sensitivity analysis : Exploring the Impact of Various Factors on the Model. . . . 12
+5.3.1. Exploring the impact of HPC growth on the model. . . . . . . . . . . . . . . . 12
+5.3.2. Exploring the impact of competition from other industries for energy on the model13
+5.3.3. Exploring the impact of different energy sources and mixes on the model. . . . 13
+5.4. Model prediction : Insights into HPC carbon emissions in 2030. . . . . . . . . . . . . . 14
+6. Requirement 4 : Expand the MFD-HPC Model and Conduct Further Analysis 16
+6.1. Comprehensive exploration of renewable energy. . . . . . . . . . . . . . . . . . . . . . 16
+6.1.1. Quantitative analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+6.1.2. Qualitative analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+6.2. Expanding the original model into a comprehensive environmental model. . . . . . . . 18
+6.2.1. Key environmental challenges of HPC: Water usage and e-waste. . . . . . . . . 18
+6.2.2. Model extension and improvement. . . . . . . . . . . . . . . . . . . . . . . . . 19
+7. Requirement 5 : Share the Model and its Results 20
+7.1. Actionable recommendations for reducing the environmental impact of HPC. . . . . . . 20
+7.2. Incorporating recommended solutions into the mode . . . . . . . . . . . . . . . . . . . 21
+7.3. A letter to the United Nations Advisory Board. . . . . . . . . . . . . . . . . . . . . . . 23
+8. Strengths and Weaknesses 24
+8.1. Strengths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+8.2. Weaknesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+1
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 2 of 25
+1. Introduction
+1.1. Background
+The rapid advancement of high-performance computing (HPC) has spurred unprecedented growth in sec-
+tors such as artificial intelligence (AI), data science, and cryptocurrency mining. This surge in computa-
+tional demand has led to the widespread development of HPC facilities and massive data centers, which
+provide the necessary infrastructure for handling large-scale computations at high speeds. However, this
+increase in computational capability comes with significant environmental costs. Among these, energy
+consumptionstandsoutas oneofthemostpressingconcerns, asit directlycorrelateswithgreenhouse gas
+emissions and other environmental impacts. The energy-intensive nature of HPC facilities places sub-
+stantial pressure on power grids, often requiring vast quantities of electricity, much of which is generated
+from fossil fuels. This dependency results in a substantial carbon footprint, which contributes to climate
+changeandposeschallengesforregionswithlimitedrenewableenergyoptions. Beyondenergyconsump-
+tion, HPC facilities impact the environment in several other ways, including substantial water usage for
+cooling, the generation of electronic waste, resource depletion due to the extraction of rare materials, and
+localized land use that can affect ecosystems and communities. Given the growing role of HPC in global
+industries and its associated environmental impacts, it is critical to develop a comprehensive model that
+can quantify and project these effects.
+1.2. Problem Restatement
+The model developed in this study aims to address the core environmental issues posed by the rising
+energy demands of high-performance computing (HPC) and its associated carbon footprint. Below is a
+precise restatement of the primary questions, each specifying a key objective within the model:
+Annual Energy Consumption of Global HPC:ToassesstheglobalannualenergyconsumptionofHPC
+facilities by evaluating both the maximum (full-capacity) energy usage and the actual energy used based
+on average utilization rates. This analysis will quantify the energy demands of HPC systems and establish
+a baseline for assessing their environmental impact.
+Constructing a Carbon Emission Model : To develop a model that quantifies the carbon emissions
+resulting from HPC energy consumption. This model must account for the varying sources of energy
+(e.g., fossil fuels, renewables) and allow for the estimation of carbon output based on different energy
+mixes. The flexibility of this model to accommodate diverse energy sources is essential for evaluating
+potential scenarios for emissions reduction.
+Future Growth of HPC Demand and Environmental Impact: ToprojectHPCenergydemandsthrough
+2030 and analyze the associated environmental impacts. This task includes estimating how increased
+energy needs in other sectors and potential changes in energy sources will influence future HPC-related
+emissions and overall environmental footprint.
+Impact of Increasing Renewable Energy Share on Carbon Emissions : To integrate a rising share of
+renewable energy into the model and calculate the corresponding reductions in carbon emissions. This
+involves investigating scenarios where renewable energy fully replaces non-renewables and assessing the
+feasibility and challenges of transitioning to a 100% renewable energy infrastructure for HPC.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 3 of 25
+Expanding the Model to Include Additional Environmental Factors : To expand the model to address
+other environmental impacts of HPC, such as water usage, e-waste, and resource depletion, allowing for a
+more comprehensive understanding of HPC’s environmental effects. The chosen additional factor should
+demonstrate relevance to both energy consumption and broader ecological and societal impacts.
+2. Assumptions
+Assumption 1 : It is assumed that the annual energy consumption of HPC is primarily composed of
+the energy consumption of global data centers dedicated to HPC tasks and the energy consumption of
+cryptocurrency mining. Since AI computations rely on the infrastructure of data centers, the energy
+consumption attributed to AI usage is not additionally included in the statistics.
+Assumption 2: The energy consumption of data centers can be divided into three categories: traditional,
+cloud(non-hyper scale), and hyper-scale. We assume that hyperscale is associated with HPC tasks.
+Assumption 3 : Given that global HPC facilities are primarily concentrated in the United States, China,
+Japan, Germany, France, the United Kingdom, Italy, Switzerland, Russia, India, South Korea, Brazil,
+Canada, Australia, Saudi Arabia, Spain, the Netherlands, Sweden, Norway, and Finland, we assume, for
+computational simplicity, that the total HPC energy consumption in these countries is equivalent to the
+global total for HPC energy consumption.
+Assumption 4 : The energy consumption structure of HPC facilities is difficult to quantify. To simplify
+the model, we assume that the energy structure of HPC facilities mirrors the energy mix of the region or
+country in which they are located, recognizing that energy structures vary across regions and countries.
+Unless otherwise specified, we do not account for the emergence of alternative energy sources or the
+depletion of specific energy types.
+Assumption 5 : It is assumed that each country’s energy mix consists of three main components: fossil
+fuels, renewable energy, and nuclear power. Fossil fuels include coal, coke, oil, and natural gas, while
+renewable energy encompasses hydropower, wind, and solar energy.
+Assumption 6 : Based on relevant data, it is assumed that by 2090, the proportion of renewable energy
+in countries with HPC facilities will approximate 100%. Given that nuclear energy development relies on
+the extraction of rare minerals, we anticipate that renewable energy will gradually replace nuclear energy
+in the future.
+Assumption 7 : When discussing the functional relationship between global HPC carbon emissions and
+time, we use the proportion of renewable energy to represent the impact of the energy mix on carbon
+emissions. Thisapproachisjustifiedbytherelativelystableproportionofnuclearenergyacrosscountries.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 4 of 25
+3. Notations
+Symbol Definition
+EHP C Annual energy consumption of the HPC
+EDC Annual energy consumption of data centers
+ECrypto Annual energy consumption of cryptocurrency mining
+P Global computing power
+C Carbon emissions from global HPC energy consumption
+Ci Carbon emissions from HPC energy consumption in countryi
+xi Energy consumption of HPC in countryi
+r HPC growth rate
+ρ The proportion of renewable energy
+θ The competition coefficient from other industries for energy
+I The environmental impact of global carbon emissions
+Wt Impact on the environment from Water usage
+We Impact on the environment from E-Waste
+4. Requirement 1 : HPC Annual Energy Consumption Model
+4.1. Model establishment
+HPC is utilized for AI, data science, and cryptocurrency mining, relying primarily on infrastructure like
+data centers. Given the difficulty in directly quantifying global HPC energy consumption, we estimate it
+indirectly by equating the energy consumption of data centers used for HPC tasks plus that of cryptocur-
+rency mining to the global HPC energy footprint. This relationship can be described as follows:
+EHPC = ECrypto + k · EDC (1)
+Here, k represents the proportion of total global data center energy consumption associated with HPC
+tasks.
+4.1.1. Quantifying the proportion of total global data center energy consumption associated with HPC
+tasks
+As shown in Fig.1 and 2, the data is sourced from the IEA (International Energy Agency) [1] and the
+Cambridge Centre for Alternative Finance [2].
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 5 of 25
+Figure1: Theproportionoftotalglobaldatacenter
+energy consumption associated with HPC tasksk
+from 2010 to 2023.
+Figure 2:Annual energy consumption of data cen-
+ters EDC andAnnualenergyconsumptionofcryp-
+tocurrency miningECrypto from 2010 to 2023.
+FromFig.1and2,weobservetheproportionoftotalglobaldatacenterenergyconsumptionrelatedtoHPC
+tasks from 2010 to 2023, alongside the annual energy consumption of data centers and cryptocurrency
+mining. BasedonEquation(1), theannualHPCenergyconsumptionfrom2010to2023canbecalculated
+by summing the yearly data, as shown in Fig.3. Based on data provided by global computing power
+statistical agency [3], the trend of global computing power over time is shown in Fig.4.
+Figure 3:Annual energy consumption of the HPC
+EHP C from 2010 to 2023.
+Figure 4:Annual global computing powerP from
+2010 to 2023.
+4.1.2. Quantifying the global HPC energy consumption and function fitting
+According to relevant literature[4], the relationship between HPC energy consumption and global com-
+puting power is characterized by the following correlation.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 6 of 25
+E′
+HP C = a · ln (u · P ) + b (2)
+Here, a and b are parameters to be fitted from the data, andu represents the utilization rate, reflecting the
+average utilization rate of global HPC infrastructure.
+Duetotherapidgrowthinglobalcomputingpowerafter2018,wehaveenteredaneraofcomputingpower
+saturation. Consequently, the utilization rateu has decreased compared to the pre-2018 period. Based on
+available data[5], we set the utilization rate at 60% before 2018 and 50% thereafter. Using the data from
+Fig.3 and 4, along with the relationship between HPC energy consumption and global computing power
+describedinEquation(2), weperformedafunctionfittinganalysis. Theresultingfunctiongraphisshown
+in Fig.5.
+Figure 5:Fitted function graph of HPC energy consumptionEHP C and global computing powerP.
+The function fitting results are as follows:
+
+
+
+EHP C = 22.29ln (0.6P ) − 68.42 2010 ≪ T < 2018
+EHP C = 84.32ln (0.5P ) − 412.23 2018 ≪ T < 2024
+(3)
+Using the HPC Annual Energy Consumption Model and Equation (3), with the global computing power
+in 2024 estimated at 8200 PFlop/s, the projected HPC energy consumptionEHP C for 2024 is 289.21
+TWh. This aligns with the IEA’s estimate in the World Energy Outlook 2024[6], which places global
+HPC energy consumption in the range of 240 to 340 TWh, thereby validating the accuracy and feasibility
+of the model.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 7 of 25
+4.2. Qualitative and quantitative analysis
+With the increasing demand for high-performance computing (HPC) in AI, data science, and cryptocur-
+rencymining, theannual energyconsumption ofHPC systemsisdrawingattentionto itsimpact on global
+energy resources and carbon emissions.
+From a qualitative analysis perspective, the rise in HPC system energy consumption not only reflects
+the accelerating global demand for computation but also reveals how varying energy structures and load
+patterns impact overall consumption. HPC systems and data centers have become significant components
+ofenergyuse,withtheirshareintotalelectricitydemandsteadilyincreasing. Additionally,cryptocurrency
+mining has intensified energy demand further, highlighting the distinctive energy consumption profile of
+this emerging sector and its pressure on global energy resources.
+From a quantitative analysis perspective , the energy consumption of global HPC is related to global
+computing power by the following relationship: Meanwhile, according to the IEA[1], global data cen-
+ter energy consumption reached approximately 240-340 TWh in 2023, accounting for about 1%-1.3% of
+global electricity demand, excluding cryptocurrency mining. The Cambridge Centre for Alternative Fi-
+nance reported that the Bitcoin network consumed 110 TWh in 2022, representing about 0.4% of global
+demand, which highlights the increasing energy impact of mining. HPC energy consumption depends
+on both the full-load power requirements and the average utilization rate. Due to the complexity and
+variability of HPC tasks, actual consumption is typically well below the theoretical maximum. Thus, an
+accurate assessment of HPC energy usage requires consideration of both full-load power needs and actual
+utilization rates.
+5. Requirement 2 & 3 : Multi-factor Dynamic Prediction Model for
+HPC Carbon Emissions
+5.1. Quantifying the carbon emissions from HPC energy consumption
+TomoreaccuratelyquantifythecarbonemissionsfromHPCenergyconsumption, weconsidertheenergy
+consumptionandenergymixofHPCfacilitiesindifferentcountriesorregionsandestablishthefollowing
+model:
+C =
+∑
+Ci =
+∑
+x1 · αixi + c2 · βixi + c3 · γixi (4)
+Here, c1 is the average carbon emission factor for fossil fuels,c2 is the average carbon emission factor
+for renewable energy, andc3 is the carbon emission factor for nuclear energy. These factors quantify the
+impactofeachenergytypeontotalcarbonemissions. Thevariables αi, βi,and γirepresenttheproportions
+of fossil fuels, renewable energy, and nuclear energy in the energy mix of countryi, respectively, and they
+satisfy the conditionαi + βi + γi = 1.
+Basedondataprovidedintheliterature[ 3],wecanobtainthetotalcomputingpowerforeachcountryfrom
+2010 to 2023, as shown in Fig.6.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 8 of 25
+Figure 6:Total computing power of each countryP from 2010 to 2023.
+Combining this with the data from Fig.5, we can estimate each country’s total HPC energy consumption
+EHP C from 2010 to 2023, as illustrated in Fig.7.
+To reduce computational complexity, we focus on the average carbon emission factors for different types
+ofenergy. Forthecarbonemissionfactor c1 offossilfuels,weusereportedvaluesforcoal,oil,andnatural
+gas at820gCO 2/kW h, 650gCO 2/kW h, and450gCO 2/kW h, respectively[7]. We define the fossil fuel
+carbonemissionfactoras c1 = 0.4×820+0.3×650+0.3×450 = 658 gCO 2/kW h = 658000tCO 2/T W h.
+Similarly, the carbon emission factor for renewable energy isc2 = 26000 tCO 2/T W h, and for nuclear
+energy, c3 = 12000 tCO 2/T W h. It is worth noting that the lower carbon emission factor for nuclear
+energy primarily reflects emissions associated with fuel extraction and facility construction stages.
+AccordingtodatafromtheU.S.EnergyInformationAdministration, weobtainedtheenergymixofcoun-
+tries including the United States, China, Japan, Germany, and France from 2010 to 2023. Selected data
+are shown in Table1.
+Country Year Fossil Fuels (%) Renewable Energy (%) Nuclear (%)
+United States 2010 83.0 8.0 9.0
+United States 2023 70.0 21.0 9.0
+China 2010 90.0 8.0 2.0
+China 2023 83.5 14.5 2.0
+Table 1:Energy Structure of the United States and China in 2010 and 2023
+Based on Equation (4), Fig.7, and the energy mix of each country from 2010 to 2023, we can calculate
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 9 of 25
+Figure 7:Energy consumption of HPC in each countryEHP C from 2010 to 2023.
+the total global carbon emissions from HPC for the same period, as shown in Fig.8.
+In summary, we obtained a graph showing the change in total HPC carbon emissions over time. Next,
+we need to construct a new function to describe this relationship, taking into account several critical
+influencing factors. The purpose of quantifying the carbon emissions from HPC energy consumption
+is to determine the optimal parameter values for this function, allowing the model to accurately predict
+future global HPC carbon emissions.
+5.2. Constructing a function for global HPC carbon emissions over time
+To construct a function for global HPC carbon emissions over time, we need to consider the influence
+of multiple factors, such as the growth rate of HPC, changes in the proportion of renewable energy, and
+competition from other energy-intensive industries. Therefore, it is essential to individually examine the
+relationshipbetweeneachfactorandtimetoidentifytheparametersthatarevariableandthosethatremain
+constant.
+5.2.1. Exploring the relationship between the HPC growth rate r and time t
+Assuming a global HPC growth rate ofr, relevant literature[8] indicates that this growth rate remains
+relatively stable, with an almost constant annual rate. Therefore, to quantify the global HPC growth rate
+r, we only need to analyze the relevant data[3]. The results of this analysis are shown in Fig.9.
+Based on the data fitting results, we find that the global HPC growth rater is 49.46%, which aligns with
+the range provided in the relevant literature. Due to the widespread adoption of artificial intelligence,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 10 of 25
+Figure 8:Total global HPC Carbon EmissionsC from 2010 to 2023.
+high-performance computing remains a strategic resource for many countries. Over the coming decades,
+theglobalHPCcapacityisexpectedtocontinuegrowingatarateof49.46%. Thisrelativelystablegrowth
+rate is primarily maintained because, although there is substantial national investment, further increases
+in computing power require breakthroughs and innovations in technology[9].
+5.2.2. Exploring the relationship between the proportion of renewable energy ρ and time t
+Basedontheenergymixofeachcountryfrom2010to2023[ 7],wefoundthattheproportionofnuclearen-
+ergy within the mix of fossil fuels, renewable energy, and nuclear power has remained largely unchanged.
+This is due to the long construction timelines and high costs associated with nuclear infrastructure. In
+contrast, the proportions of fossil fuels and renewable energy have shown more significant changes over
+time. Additionally, since the carbon emission factorc1 for fossil fuels andc2 for renewable energy dif-
+fer substantially, we focus primarily on the variation in the proportion of renewable energyrho in our
+analysis.
+BasedonFig. 10, whichillustratestherelationshipbetweentheproportionofrenewableenergy ρandtime
+t, we can derive the following relationship:ρ = 0.9192·(t−2010)+26.45
+100 .
+5.2.3. Constructing a Multi-factor dynamic prediction function for HPC carbon emissions
+In addition to considering the growth rate of HPC and the changes in the proportion of renewable energy,
+we also need to account for competition from other energy-intensive industries for energy resources. To
+quantifythiscompetition, weintroduceafactor θ. Alargervalueof θ indicatesthatHPCsecuresagreater
+share of energy in the competition. Since the competition from other industries is unpredictable and does
+not change over time, we assume, based on relevant literature[10], that θ = 1, reflects the current state
+of energy surplus. Based on these premises and assumptions, we define the total global HPC carbon
+emissions over timet with the following equation (5):
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 11 of 25
+Figure 9:The relationship between the global HPC growth rater and timet.
+Ct = θ[m · (1 + r)t−2010 + n · (1 − ρ) + s] (5)
+Here, m, n and s are parameters with no specific physical meaning. Based on the global HPC carbon
+emissionsovertime, asshowninFigure8, weperformacurvefittingofEquation(5)toobtainthespecific
+function for global HPC carbon emissions over time,Ct, as represented by Fig.11 and Equation (6).
+Ct = θ[750293.04(1 + r)t−2010 + 6567.91(1 − ( 0.9192 · (t − 2010) + 26.45
+100 )) + 21184010.47] (6)
+5.2.4. Environmental impact of global HPC carbon emissions model
+According to relevant literature[11], the impact of global carbon emissions on the environment can be
+defined by the following equation:
+I = ω1 · (a · lnC + b) +
+∑
+g(ωi · yi) (7)
+Here, ωi represents the weight of multiple factors generated by HPC that impact the environment, which
+may include water usage, e-waste, resource depletion, land use, chemical use, and so on. Also∑ ωi = 1
+holds. yi represents the various environmental impact factors generated by HPC.
+Sincetheproblemdoesnotrequireconsideringotherenvironmentalfactors,weset ω1 = 1. Bycombining
+the data from Fig.7, we can plot the following Fig.12.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 12 of 25
+Figure 10:The relationship between the proportion of renewable energyrho and timet.
+5.3. Model sensitivity analysis : Exploring the Impact of Various Factors on the
+Model
+To investigate the impact of the growth of HPC, the increasing energy demand in other sectors, and the
+potential influence of different energy sources and mixes on the model, we will employ the method of
+controlling for variables to explore the effects of these factors.
+5.3.1. Exploring the impact of HPC growth on the model
+To explore the impact of HPC growth on the model, we can differentiate Equation (6) with respect tor,
+yielding the equation (8) :
+∂C
+∂r = 750293.04(r + 1)(t−2010)(t − 2010)
+(r + 1) (8)
+Clearly, the partial derivative ofC with respect tor is greater than 0, meaning that as the growth rate of
+HPC increases, global HPC carbon emissions also increase. Through a review of the literature[12], we
+understand that the global HPC growth rate is expected to increase over time. However, by the middle of
+this century, the growth rate may peak and then begin to decrease as time progresses. This could be due
+to limitations in computing power development and the saturation of computing resources.
+AsshowninFig. 13, thebluelinerepresentstheoriginalHPCcarbonemissionsovertime, whilethegreen
+line illustrates the change in HPC carbon emissions over time after a 40% change in the HPC growth rate
+post-2030. The red line shows the change in HPC carbon emissions over time after a 60% change in the
+HPC growth rate post-2030. It is evident that a sudden shift in the HPC growth rate does not lead to
+significant changes in carbon emissions in the short term. However, from a long-term perspective, carbon
+emissions will increase almost exponentially. A sudden decrease in the HPC growth rate may be due to
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 13 of 25
+Figure 11:The relationship between carbon emissions from HPC energy consumptionC and timet.
+computing resource saturation or reduced demand, while an increase could be driven by technological
+breakthroughs or changes in national policies.
+5.3.2. Exploring the impact of competition from other industries for energy on the model
+To investigate the impact of competition from other industries for energy on the model, the partial deriva-
+tive of Equation (6) with respect toθ is calculated as follows :
+∂C
+∂θ = 750293.04(1 + r)t−2010 + 6567.91(1 − ( 0.9192 · (t − 2010) + 26.45
+100 )) + 21184010.46 (9)
+Clearly,Equation(6)isamonotonicallyincreasingfunctionwithrespecttotheimpactofcompetitionfrom
+other industries,θ. According to relevant studies, HPC is considered a critical strategic resource for many
+nations, and its development heavily relies on substantial energy inputs. Currently, there is no evidence of
+significant energy competition among countries. Meanwhile, HPC facilities and organizations worldwide
+are striving for higher energy efficiency and more sustainable energy sources, which collectively reduce
+the likelihood of energy competition to the greatest extent possible.
+5.3.3. Exploring the impact of different energy sources and mixes on the model
+Toexploretheimpactofthepotentialfordifferentenergysourcesandmixesonthemodel, weassumethat
+theemergenceofalternativeenergysourceswouldsharesimilaritieswithrenewableenergy. Suchsources
+arelikelytohavelowcarbonemissionfactorsandbereadilyaccessibleandstorable. Forsimplicityinthis
+discussion, we consider the potential for different energy sources and mixes as equivalent to an increase
+in the proportion of renewable energy. Taking the partial derivative ofC) with respect toρ yields the
+following:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 14 of 25
+Figure12: Therelationshipbetweenenvironmentalimpactofglobalcarbonemissions I andcarbonemis-
+sions from HPC energy consumptionC.
+∂C
+∂ρ = −6567.91θ (10)
+Clearly, global HPC carbon emissions are a monotonically decreasing function of the proportion of re-
+newable energy ρ. As the proportion of renewable energy increases, the relative consumption of fossil
+fuels decreases. Given the lower carbon emission factor of renewable energy, this shift can effectively
+reduce the total global HPC carbon emissions.
+5.4. Model prediction : Insights into HPC carbon emissions in 2030
+According to Equation (6), by settingt to 2030, the total global HPC carbon emissions for that year can
+be calculated as follows :
+C2030 = 750293.04(1 + 0.4946)2030−2010 + 6567.91(1 − ( 0.9192 · (t − 2010) + 26.45
+100 )
++ 21184010.46 = 2342483383 .33
+(11)
+Using Equation (6), we can plot the relationship between the total global HPC carbon emissions and time
+from 2025 to 2035, as shown in Fig.14.
+From the perspective of the proportion of HPC carbon emissions to global total carbon emissions ,
+the known data shows that in 2023, global HPC carbon emissions were 160521583.33 tCO2, while the
+total global carbon emissions were approximately40.5 × 109tCO 2[14][15]. This indicates that HPC
+accounted for 3.51% of total carbon emissions in 2023.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 15 of 25
+Figure 13:Exploring the Impact of HPC Growthr on Model Variations.
+According to projections, global HPC carbon emissions will increase to 2342483383.33 tCO2 by 2030,
+while the total global carbon emissions are expected to reach45 × 109tCO 2[16][17]. This means that
+by 2030, the proportion of HPC emissions will rise to 5.21% of global total emissions. This nearly 2%
+increase over a few years highlights the growing role of HPC facilities in global carbon emissions.
+This trend suggests that HPC is rapidly becoming a major source of carbon emissions. With the rapid
+growthindemandforartificialintelligence,bigdata,andhigh-performancecomputing,HPCdevelopment
+is inevitably driving up carbon emissions globally. If this trend continues, countries will face increasing
+pressure to reduce emissions from the HPC sector.
+From the perspective of the renewable energy proportion , analyzing HPC carbon emissions reveals
+that changes in the energy mix significantly impact carbon emission intensity. According to the equation
+ρ = 0 .9192 · (t − 2010) + 26.45. There are notable regional differences in the proportion of renewable
+energy worldwide. For example, Nordic countries such as Norway and Sweden have renewable energy
+proportionsexceeding80%[ 18], resultinginsignificantlylowerHPCcarbonemissionintensitycompared
+totheglobalaverage. Incontrast,developingcountrieswithslowerenergytransitionprocesseshavemuch
+lower renewable energy proportions. Prioritizing the deployment of HPC facilities in regions with higher
+clean energy proportions can effectively reduce total carbon emissions.
+To better leverage the increasing proportion of renewable energy, countries can adopt various measures.
+For instance, encouraging HPC data centers to directly utilize clean energy sources such as solar or wind
+power, and promoting energy allocation systems that prioritize renewable energy for HPC facilities. Tax
+incentives or subsidies can also support the construction of local distributed energy systems, such as solar
+power installations, for HPC facilities. Additionally, establishing an international Green HPC Alliance
+to focus on deploying HPC projects in regions with higher renewable energy proportions is an effective
+strategy.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 16 of 25
+Figure 14:Predicted values for global HPC carbon emissionsC from 2025 to 2035.
+6. Requirement 4 : Expand the MFD-HPC Model and Conduct Fur-
+ther Analysis
+6.1. Comprehensive exploration of renewable energy
+6.1.1. Quantitative analysis
+TosimulatetheimpactofincreasingtheproportionofrenewableenergyonglobalHPCcarbonemissions,
+we need to plot the function of global HPC carbon emissions (C) with respect to the proportion of renew-
+able energy (ρ). We assignρ values of 40%, 60%, and 80% to observe the rate of change in the function.
+When the proportion of renewable energy is relatively low, meaning fossil fuels still dominate the energy
+mix, global HPC carbon emissions remain relatively stable around a value of 1 despite changes inρ. To
+emphasize the impact of increasing renewable energy proportions, we applied a simple adjustment to the
+graph, as shown in Fig.15.
+From Fig.15, it can be observed that by 2035, as the proportion of renewable energy (ρ) increases from
+its original value of 26% to 40%, 60%, and 80%, the total global HPC carbon emissions undergo corre-
+sponding changes. As ρ rises, carbon emissions decrease relatively; however, the overall trend remains
+upward, driven primarily by the growth of HPC.
+Incorporating our proposed MFD-HPC Model, we have derived the following information:
+Initial value :ρ(2010) = 0.9192·(2010−2010)+26.45
+100 = 0.2645.
+Annual growth rate :△ρ = 0.9192
+When t = 2030, ρ(2030) = 0.9192(2030−2010)+26.45
+100
+The proportion of renewable energy will reach 100% in yearT : ρ(T ) = 0, T = 2090
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 17 of 25
+Figure 15: Ct Curves for Differentρ Values (2025-2050).
+Furthermore, when the proportion of renewable energy (ρ) reaches 100% and reliance on fossil fuels
+and nuclear energy is eliminated, competition from other industries for energy can be disregarded due to
+energysaturation. Inthiscase,globalHPCcarbonemissionswilldependsolelyonthegrowthofHPC.As
+a result, the previously defined functional relationship between global HPC carbon emissions and time,
+expressed in Equation (5), will be simplified to the following Equation (12):
+Ct = m · (1 + r)t−2010 + s (12)
+In conclusion, from a quantitative analysis perspective, the proportion of renewable energy has increased
+from 26.45% in 2010 at an annual growth rate of 0.9192%, projected to reach 44.83% by 2030 and 100%
+by2090. Duringthisprocess, carbonemissionsassociatedwithfossilfuelsgraduallydecreaseandwillbe
+entirelyeliminatedby2090. By2035,whentheproportionofrenewableenergyisapproximately76.43%,
+global HPC carbon emissions are primarily driven by the exponential growth of HPC, with the terms in
+the carbon emission formula related to fossil fuel proportions approaching zero.
+Whenthe proportion of renewableenergyreaches100%, the carbon emission formula simplifiesto:Ct =
+m · (1 +r)t−2010 + s. Where carbon emissions are solely controlled by the HPC growth rate (r = 0.4946).
+Althoughemissionscontinuetorise,thegrowthratedecreasessignificantly. Thisindicatesthatincreasing
+the proportion of renewable energy has a clear mitigating effect on carbon emissions, but the growing
+demand for HPC remains the primary driver of future emissions.
+6.1.2. Qualitative analysis
+Transitioning to 100% renewable energy is a critical goal for reducing carbon emissions and addressing
+climate change. From a modeling perspective, the fossil fuel-related components of the carbon emission
+function will disappear entirely, leaving future emissions dependent solely on the growth rate of HPC and
+baseline emission levels. This shift can significantly reduce carbon emissions, making them more reliant
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 18 of 25
+ontheexponentialgrowthtrendofHPC.However, evenwithacompletetransition, therapiddevelopment
+of HPC may still lead to a slow increase in total emissions.
+Despite the significant benefits of transitioning to 100% renewable energy, the process faces numerous
+challenges. The first is technical. The intermittent nature of renewable energy poses a major obstacle
+to power stability. HPC data centers require highly reliable power supply, necessitating the large-scale
+deployment of energy storage systems to handle fluctuations. Additionally, existing power grids need to
+be upgraded to accommodate distributed energy integration and transmission. These technical demands
+are not only complex but also require substantial investment in research and engineering.
+The economic cost is another critical challenge. Transitioning to 100% renewable energy involves build-
+ingextensivesolarpowerplants,windfarms,andenergystorageinfrastructure,requiringsignificantinitial
+investment. Furthermore, the long-term maintenance costs and replacement cycles of these facilities may
+increase overall expenditures, particularly in regions where technology is not yet fully mature. For devel-
+oping countries, the high financial requirements could become a major barrier, exacerbating the global
+imbalance in the energy transition.
+Social and policy issues also arise during the transition. The uneven distribution of renewable energy
+resources means that some regions may find it easier to achieve energy transition, while others face both
+technical and resource constraints. This disparity could lead to inequities in energy use, with developing
+countries relying more heavily on traditional energy sources. Additionally, policy uncertainty may slow
+the pace of the transition. While many countries have introduced subsidies and tax incentives, long-term
+stable policy support is essential for achieving this goal.
+Finally, from an environmental and resource perspective, the renewable energy transition is not entirely
+”green.” The production of solar panels and wind turbines requires rare metals, the extraction and pro-
+cessingof whichmaycause newenvironmentalproblems. Furthermore, as thesedeviceseventuallyreach
+the end of their life cycle, managing their waste will become a significant challenge.
+Nevertheless, transitioning fully to 100% renewable energy remains a necessary path to achieving a low-
+carbonfuture. Byimplementingthetransitioninphases, startingwithgraduallyincreasingtheproportion
+of renewable energy and investing in storage technologies and smart grid upgrades, technical and eco-
+nomic bottlenecks can be mitigated. Additionally, international cooperation and support from developed
+countries in terms of funding and technology can help developing countries overcome resource and eco-
+nomic challenges. Policymakers must ensure long-term, stable incentive mechanisms to give businesses
+and society the confidence needed to collectively advance this historic energy transition.
+6.2. Expanding the original model into a comprehensive environmental model
+6.2.1. Key environmental challenges of HPC: Water usage and e-waste
+Basedonrelevantdata,wefoundthattheenvironmentalimpactofHPC,beyondcarbonemissions,primar-
+ily stems from water usage and e-waste. Therefore, our model extension focuses on these two aspects. To
+better understand the environmental impact of HPC’s water usage and e-waste, we reviewed the literature
+and summarized the key points as follows.
+First, HPC data centers consume large amounts of water for cooling, particularly in high-temperature
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 19 of 25
+regions or during periods of intensive electricity use. This high water demand can exacerbate local water
+shortages, threatening ecosystems and human access to safe water. Second, the rapid upgrade cycles of
+HPChardwareproducesubstantialquantitiesofelectronicwaste. Thesediscardedmaterialscontaintoxic
+substances, suchasleadandmercury,aswellasraremetalslikecobaltandnickel. Improperrecyclingcan
+leadtosoilcontamination,waterpollution,andresourcedepletion,posinglong-termthreatstoecosystems
+and human health. Thus, HPC’s issues with water usage and electronic waste not only affect the natural
+environment but also touch upon the broader aspects of social and economic sustainability.
+We have chosen water usage and electronic waste as the focus of our analysis because these two areas
+are closely tied to energy consumption and reflect the multidimensional environmental impact of HPC.
+Water usage directly depends on the energy consumption of HPC data centers, as cooling system water
+requirements are proportional to energy use. The higher the energy consumption, the greater the cooling
+demand, intensifying water resource pressures. Meanwhile, electronic waste is linked to hardware man-
+ufacturing and replacement cycles, which themselves require significant energy. Additionally, improper
+handling of discarded hardware can result in rare metal waste and environmental pollution.
+These two aspects illustrate the broader environmental implications of HPC and their strong correlation
+with other critical areas, such as resource depletion and land use. For instance, high water consumption
+may conflict with local land development, while the efficiency of electronic waste recycling determines
+the degree of rare resource reutilization. Therefore, water usage and electronic waste serve as key entry
+points for comprehensively understanding HPC’s environmental impact and provide critical insights for
+energy management and policymaking.
+6.2.2. Model extension and improvement
+Basedonrelevantdataandliterature,wedefinethewaterusagemodel( Wt)andtheelectronicwastemodel
+(We) as shown in Equations (13) and (14):
+Wt = w · EHP C + v (13)
+Here, w represents the conversion factor between water usage and energy consumption (liters per MWh),
+and v denotes the baseline water usage, which remains constant regardless of energy consumption.
+We =
+∑ eiMi
+Li
+(14)
+Here, ei represents the environmental pollution coefficient of different HPC hardware,Mi is the mass of
+various HPC hardware components (e.g., servers, storage devices), andLi is the average lifecycle of the
+respective hardware.
+Based on Equation (7)(11)(13)(14), the functional relationship between HPC’s environmental impact and
+the plotted function is as follows:
+I = ω1 · (a · lnC + b) + ω2 · Wt + ω · We (15)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 20 of 25
+I = ω1 · (a · lnC + b) + ω2 · (w · EHP C + v) + ω3 · (
+∑ eiMi
+Li
+)) (16)
+Figure 16:Environmental ImpactI Over Time (2010-2035).
+7. Requirement 5 : Share the Model and its Results
+7.1. Actionable recommendations for reducing the environmental impact of HPC
+In order to reduce the environmental impact of HPC facilities, our team developed a set of practical and
+actionable solutions:
+1. First, the most apparent solution is to simply transit the energy used by HPC facilities from a mix
+of unrenewable and renewable energy to 100% renewable energy or lower the component of unre-
+newable resources as much as possible. This will be sure to decrease the environmental impact of
+HPC facilities and also corresponds to the environment-friendly theme of the government.
+2. Second,wecanupgradethehardwareofHPCfacilitiestoincreasetheenergy-consumingefficiency
+of HPCs. The government can encourage HPC facilities to apply more energy-efficient technolo-
+gies, for example, more advanced water-cooling systems and more advanced servers. In this way,
+the same amount of energy can be used to sustain the facilities for more time, which saves energy
+in the other way, protecting the environment.
+3. Third,requirenewenvironmentalimpactassessmentsforfutureHPCfacilitiesordatacenterprojects.
+When applying stricter environmental impact assessments to planned HPC facilities, the govern-
+ment can force companies to consider environment-friendly energy mixes and technologies, which
+can mitigate potential environmental consequences.
+4. Last, we can recycle the electronic wastes and non-electronic wastes of HPC facilities, like old,
+outdated server components or used cooling water. By recycling electronic waste, we can save
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 21 of 25
+materials while constructing new data centers or other HPC facilities, and by using cooling water,
+we can reduce water consumption in HPC facilities.
+In conclusion, the environmental impact of HPC facilities can be reduced by applying the following rec-
+ommendations: transition to renewable resources, energy-efficient hardware upgrade, new environment
+impact assessment, and the recycling of wastes.
+7.2. Incorporating recommended solutions into the mode
+Forourproposed suggestion1, optimizing theenergystructure toreducethe proportionof non-renewable
+energy, the transformation of our model Equation (5) is expressed as follows:
+Ct = θ[m · (1 + r)t−2010 + n · (1 − ρ(t)) + s] (17)
+In our established model, the energy structure has already been incorporated, with the proportion of re-
+newable energy varying over time. However, we simplified this variation using a linear relationship. In
+reality, changes in the energy structure are influenced by factors such as national policies and techno-
+logical advancements, and they do not necessarily follow a straightforward linear trend. To accurately
+describe the relationship between energy structure and time, it is essential to consider a combination of
+local circumstances, geographical factors, and other relevant conditions.
+Based on our suggestion 2, upgrading hardware to improve energy efficiency, and the enhancement of
+HPC efficiency through more advanced hardware will impact Equations (2), (14), and (16). The revised
+model is as follows:
+E′
+HP C = η · EHP C (18)
+W ′
+e =
+∑ eiMi
+L′
+(19)
+I = ω1 · (a · lnC + b) + ω2 · (w · EHP C + v) + ω3 · (
+∑ eiMi
+L′
+)) (20)
+Here, η represents the proportion of improvement in energy efficiency, andL′
+i denotes the extended hard-
+ware lifespan resulting from technological advancements.
+Based on our third recommendation, the introduction of the Environmental Impact Assessment (EIA)
+aims to improve energy structures and technological choices through mandatory mechanisms. By imple-
+menting dynamic constraints, such as carbon emission limits, energy consumption caps, water resource
+usage restrictions, and electronic waste management standards tailored to specific countries or regions,
+the impact can be effectively quantified. The revised model is as follows:
+I = ω1 · (a · ln C + b) + ω2 · Wt + ω · We
+subject to: C ≤ CMAX, E HPC ≤ EMAX, W t ≤ WMAX,
+∑ eiMi
+Li
+≤ EWMAX
+(21)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 22 of 25
+Buildingonourfourthrecommendation, whichinvolvesrecyclingtheelectronicandnon-electronicwaste
+generated by HPC facilities, the model undergoes the following modifications due to the recycling and
+reuse of electronic waste and cooling water:
+Wt = w · EHP C − δt + v (22)
+We =
+∑ eiMi
+Li
+− δe
+δe = ϕ · Mi
+(23)
+Here, δt represents the reduction in water consumption achieved by recycling cooling water,δe denotes
+the reduction in electronic waste through recycling and reuse, which is proportional to the total mass of
+discarded hardware, andϕ indicates the recycling rate.
+In conclusion, incorporating our proposed recommendations and the modifications to the carbon emis-
+sion, water usage, and electronic waste components of the model, the final environmental impact model
+equation is as follows.
+The total environmental impact model is given by:
+I ′ = ω1 · ln
+[
+m · (1 + r)t−2010 + n · (1 − ρt) + s
+]
++ ω2 · [w · (EHP C · η) − ϕw · (w · EHP C ) + v]
++ ω3 ·
+( ∑ eiMi
+L′
+− ϕe · Mi
+)
+(24)
+subject to: C ≤ CM AX, E HP C ≤ EM AX, W t ≤ WM AX,
+∑ eiMi
+Li
+≤ EWM AX (25)
+According to the EIA,CM AX represents the maximum allowable carbon emissions, as defined by envi-
+ronmental policies or regulatory limits. Similarly,EM AX denotes the maximum allowable energy con-
+sumption, reflectingtheenergycapforHPCfacilitiesin alignmentwithsustainableenergytargets. WMAX
+represents the maximum allowable water usage, determined by local water resource availability and sus-
+tainability goals. EwMAX refers to the maximum allowable electronic waste.
+Here, w: Water usage per energy unit (liters per MWh).E′
+HP C = EHP C · η: Energy consumption after
+efficiency improvements. ϕw: Cooling water recycling rate (0 ≤ ϕw ≤ 1). v: Baseline water usage.Mi:
+Mass of each hardware component (kg).Li: Lifetime of the hardware (years).ei: Environmental impact
+factor for each hardware component.ϕe: Electronic waste recycling rate (0 ≤ ϕe ≤ 1). ω1: Importance
+of carbon emissions.ω2: Importance of water usage.ω3: Importance of electronic waste.
+Theabovefunctionfor I ′ representstheadjustedenvironmentalimpactmodel,incorporatingourproposed
+recommendations and modifications.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 23 of 25
+7.3. A letter to the United Nations Advisory Board
+Dear United Nations Advisory Board,
+We, Team15022, arewriting tourgeyoutoinclude acomprehensivesectionon theenvironmentalimpact
+of HPC facilities in your scheduled developmental goals for 2030. With the accelerating development
+of AI and other data-processing technology, the position of HPC facilities continues to rise every day
+for their advanced data-processing abilities. However, we are concerned about the energy consumption
+and environmental impact of the growing HPC facilities. Our team has developed a model to predict and
+evaluatetheenergyconsumptionandenvironmentalimpactofHPCfacilities. Accordingtotheprediction
+of our model, the situation is quite concerning.
+According to reliable data sources, we divided the energy consumption of HPC facilities into two parts:
+energy consumed by data centers and energy consumed by data encryption. By projecting the graph after
+fitting the growth of energy consumption by the two portions above with the rising computing power, we
+found that the energy consumption of HPCs grows at an unignorable rate. After research, we discovered
+that most of this energy comes from carbon-emitting and non-renewable energy sources, causing a sig-
+nificant impact on the environment. Later, we created a model to calculate and predict the total carbon
+emission of HPCs globally. For example, by the year 2030, the carbon emitted by HPC facilities will rise
+to 2,342,483,383.33 tons, which is 5.21% of global total emissions. This nearly 2% increase over a few
+yearshighlightsthegrowingroleofHPCfacilitiesinglobalcarbonemissions. Wepredictthetotalcarbon
+emissions from now to 2030. To learn about specific data in 10 years, please read the table below:
+Table 2:Total Carbon Emissions from 2021 to 2030 (in million tonnes)
+Year 2021 2022 2023 2024 2025 2026 2027 2028 2029 2030
+Emissions 83.6 114.4 160.5 229.4 332.4 486.4 716.5 1060.3 1574.3 1574.3
+Moreover, our model also includes environmental impacts beyond carbon emissions. Issues such as e-
+waste, water usage, and noise pollution also constitute part of the environmental impact, and our model
+shows that these problems are yet undetermined. Addressing these problems requires support from both
+companies and official organizations like you.
+Our team has developed some recommended solutions to address the challenges above. When urging
+companies to upgrade their HPC facilities’ hardware, it is determined by our model that energy efficiency
+will increase. Upgrading other HPC-related systems like water-cooling systems and recycling electronic
+waste can also contribute to the reserve of resources and help achieve the goal of environment-friendly
+development.
+In conclusion, according to the 17 SDGs of the United Nations, we strongly recommend you include a
+more detailed section on the environmental impacts of HPC in the scheduled developmental goals for
+2030 to lower the environmental impact and energy consumption of HPC facilities globally.
+Sincerely,
+Team #15022
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 24 of 25
+8. Strengths and Weaknesses
+8.1. Strengths
+Firstly, our model takes multiple factors into account, including the growth of HPC facilities, changes in
+energy mixes, and additional environmental consequences, meaning that we considered as many real-life
+aspects of carbon emissions as possible.
+Secondly, our model is relatively accurate as we investigated and analyzed carbon emission data from
+countries all around the world. Moreover, our model is highly adaptable as it calculates the carbon emis-
+sion globally, so we can expand our model without changing the majority of our model.
+Thirdly, our model uses sensitivity analysis to do impact exploration. By examining factors like HPC
+growth rates, energy demand from other sectors, and different energy mixes, the model assesses how
+sensitive outcomes are to various variables, highlighting potential areas of uncertainty or volatility.
+8.2. Weaknesses
+Firstly, our model is a rough global overview of the carbon emissions and environmental impacts of HPC
+facilities,thesituationmaychangewhenspecifyingtoaparticularcountry. Forexample,Norway’senergy
+mixture is basically formed by 99 percent renewable energy, which can impact the prediction’s result.
+Secondly,ourmodeldoesnottakethecarbonemittedwhenconstructingHPCfacilitiesorwhenexploiting
+resources into account. This may lead to a slight error when predicting the total carbon emitted by the
+year 2030.
+Thirdly, our model requires extensive research to acquire variables related to energy consumption, car-
+bon emissions, renewable energy integration, and other environmental indicators across different regions.
+Many of these data points rely on assumptions derived from previous studies and existing literature, re-
+sulting in a potential risk of incorporating inaccuracies.
+References
+[1] International Energy Agency (IEA), Data Centres and Data Transmission Net-
+works. Available at: https://www.iea.org/energy-system/buildings/
+data-centres-and-data-transmission-networks.
+[2] Cambridge Centre for Alternative Finance (CCAF),Cambridge Bitcoin Power Consumption Index.
+Available at:https://ccaf.io/cbeci/index.
+[3] Lawrence Berkeley National Laboratory,TOP500 The List. Available at:https://www.top500.
+org.
+[4] Laros III, J. H., Pedretti, K., Kelly, S. M., et al. (2012). Energy-efficient high-performance comput-
+ing: measurement and tuning.Springer Science & Business Media.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 15022 Page 25 of 25
+[5] Patel, T., Wagenhäuser, A., Eibel, C., Hönig, T., Zeiser, T., & Tiwari, D. (2020). What does the
+power consumption behavior of HPC jobs reveal? Demystifying, quantifying, and predicting power
+consumptioncharacteristics.In Proceedings of the 2020 IEEE International Parallel and Distributed
+Processing Symposium (IPDPS) (pp. 799-809). New Orleans, LA, USA.https://doi.org/10.
+1109/IPDPS47924.2020.00087.
+[6] InternationalEnergyAgency(IEA), World Energy Outlook 2024.Availableat: https://www.iea.
+org/reports/world-energy-outlook-2024.
+[7] International Energy Agency (IEA),Energy Technology Perspectives. Available at:https://www.
+iea.org/reports/Energy-technology-perspectives.
+[8] Xu, Z., Chi, X., & Xiao, N. (2016). High-performance computing environment: A review of twenty
+years of experiments in China.National Science Review, 3(1), 36-48.
+[9] Reed,D.,Gannon,D.,&Dongarra,J.(2022).Reinventinghigh-performancecomputing: challenges
+and opportunities.arXiv preprint arXiv:2203.02544.
+[10] Roser, M. (2024). The world’s energy problem.Our World in Data.
+[11] Sharma, G., & Soni, P. (2013). Energy efficiency in data centers and cloud computing: A survey.
+Journal of Cloud Computing: Advances, Systems and Applications, 2(1), 1-14.https://doi.org/
+10.1186/2192-113X-2-1.
+[12] Kindratenko, V., & Trancoso, P. (2011). Trends in high-performance computing.Computing in Sci-
+ence & Engineering, 13(3), 92-95.
+[13] Caglar, A. E., & Askin, B. E. (2023). A path towards green revolution: How do competitive indus-
+trial performance and renewable energy consumption influence environmental quality indicators?
+Renewable Energy, 205, 273-280.
+[14] International Energy Agency (IEA),CO₂ Emissions in 2023, 2023. Available:https://www.iea.
+org/reports/co2-emissions-in-2023 [Accessed: 16-Nov-2024].
+[15] United Nations Framework Convention on Climate Change (UNFCCC), 2023 Emissions Gap
+Report, 2023. Available: https://www.unep.org/interactives/emissions-gap-report/
+2023/zh/ [Accessed: 16-Nov-2024].
+[16] Intergovernmental Panel on Climate Change (IPCC),Special Report on Global Warming of 1.5°C ,
+2018. Available:https://www.ipcc.ch/sr15/ [Accessed: 16-Nov-2024].
+[17] BP, Statistical Review of World Energy 2023 , 2023. Available:https://www.bp.com [Accessed:
+16-Nov-2024].
+[18] World Bank, Global Greenhouse Gas Emissions Data . Available: https://ourworldindata.
+org/co2-emissions [Accessed: 16-Nov-2024].
+ᇿ Hi MCM
+ሧ࿟

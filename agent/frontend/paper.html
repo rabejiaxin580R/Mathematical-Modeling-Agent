@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论文生成</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .paper-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #2196F3;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .problem-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .problem-preview {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #666;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 12px 16px;
+            margin-top: 16px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .status-box.success {
+            background: #E8F5E9;
+            border-left-color: #4CAF50;
+        }
+
+        .status-box.error {
+            background: #FFEBEE;
+            border-left-color: #F44336;
+        }
+
+        .status-text {
+            font-size: 14px;
+            color: #333;
+            margin: 0;
+        }
+
+        .progress-steps {
+            margin-top: 16px;
+        }
+
+        .progress-step {
+            padding: 8px 0;
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-step .icon {
+            width: 20px;
+            margin-right: 8px;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #2196F3;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2196F3;
+            border: 1px solid #2196F3;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: #E3F2FD;
+        }
+    </style>
+</head>
+<body>
+    <div class="paper-container">
+        <h1 style="text-align: center; margin-bottom: 40px;">📚 论文生成系统</h1>
+
+        <!-- Step 1: 选择题目 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">选择建模问题</div>
+            </div>
+
+            <select class="problem-select" id="problemSelect">
+                <option value="">-- 请选择一个问题 --</option>
+                <option value="2023A">2023 Problem A: 应急救护车选址优化</option>
+                <option value="2022C">2022 Problem C: 社交网络影响力传播</option>
+                <option value="2020A">2020 Problem A: 高中生暑期工作选择</option>
+            </select>
+
+            <div class="problem-preview" id="problemPreview"></div>
+        </div>
+
+        <!-- Step 2: 生成论文 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">生成论文</div>
+            </div>
+
+            <button class="btn-primary" id="generateBtn" disabled>
+                🚀 开始生成论文
+            </button>
+
+            <div class="status-box" id="statusBox">
+                <p class="status-text" id="statusText">准备中...</p>
+                <div class="progress-steps" id="progressSteps"></div>
+            </div>
+        </div>
+
+        <!-- Step 3: 查看结果 -->
+        <div class="result-box" id="resultBox">
+            <h3 style="margin-top: 0;">✅ 论文生成完成！</h3>
+
+            <div class="result-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="statSections">-</div>
+                    <div class="stat-label">章节数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statPapers">-</div>
+                    <div class="stat-label">引用文献</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statChunks">-</div>
+                    <div class="stat-label">知识片段</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statWords">-</div>
+                    <div class="stat-label">字数</div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn-primary" id="downloadDocx">📄 下载 Word 文档</button>
+                <button class="btn-secondary" id="viewMarkdown">📝 查看 Markdown</button>
+                <button class="btn-secondary" id="resetBtn">🔄 生成新论文</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        const PROBLEMS = {
+            '2023A': {
+                problem_id: '2023A',
+                title: '2023 Problem A: 应急救护车选址优化',
+                description: `在城市中为应急救护车选择最优站点位置。需要考虑：
+• 覆盖所有区域
+• 响应时间最小化
+• 站点数量和成本
+• 交通拥堵情况
+
+目标：建立数学模型，优化站点布局，确保8分钟内到达任意地点。`,
+                query: 'emergency ambulance facility location optimization queueing theory'
+            },
+            '2022C': {
+                problem_id: '2022C',
+                title: '2022 Problem C: 社交网络影响力传播',
+                description: `研究社交网络中信息传播的动力学模型。需要考虑：
+• 网络拓扑结构
+• 用户影响力差异
+• 信息传播速度
+• 关键节点识别
+
+目标：建立传播模型，识别最具影响力的用户节点。`,
+                query: 'social network influence propagation graph theory dynamics'
+            },
+            '2020A': {
+                problem_id: '2020A',
+                title: '2020 Problem A: 高中生暑期工作选择',
+                description: `为高中生选择最合适的暑期工作。需要考虑：
+• 收入、学习、地点、工作时长
+• 个人偏好权重
+• 约束条件（最低收入、最大时长）
+• 多目标决策
+
+目标：建立评分模型，为不同学生推荐最优工作。`,
+                query: 'multi-criteria decision making optimization preference aggregation'
+            }
+        };
+
+        let currentSessionId = null;
+
+        // 元素引用
+        const problemSelect = document.getElementById('problemSelect');
+        const problemPreview = document.getElementById('problemPreview');
+        const generateBtn = document.getElementById('generateBtn');
+        const statusBox = document.getElementById('statusBox');
+        const statusText = document.getElementById('statusText');
+        const progressSteps = document.getElementById('progressSteps');
+        const resultBox = document.getElementById('resultBox');
+        const resetBtn = document.getElementById('resetBtn');
+        const downloadDocx = document.getElementById('downloadDocx');
+        const viewMarkdown = document.getElementById('viewMarkdown');
+
+        // 支持从大纲页跳转而来：?session_id=xxx（复用大纲会话，标题/描述由后端从会话读取）
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromSessionId = urlParams.get('session_id');
+
+        if (fromSessionId) {
+            // 复用大纲会话：隐藏题目选择与按钮，直接开始生成
+            problemSelect.closest('.step-card').style.display = 'none';
+            generateBtn.style.display = 'none';
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-box';
+            statusText.innerHTML = '<span class="spinner"></span> 复用大纲会话，正在生成完整论文...';
+            generatePaper({}, fromSessionId).catch(function (error) {
+                showError('生成失败: ' + error.message);
+            });
+        }
+
+        // 选择题目
+        problemSelect.addEventListener('change', function() {
+            const problemId = this.value;
+            if (problemId && PROBLEMS[problemId]) {
+                const problem = PROBLEMS[problemId];
+                problemPreview.textContent = problem.description;
+                problemPreview.style.display = 'block';
+                generateBtn.disabled = false;
+            } else {
+                problemPreview.style.display = 'none';
+                generateBtn.disabled = true;
+            }
+        });
+
+        // 开始生成
+        generateBtn.addEventListener('click', async function() {
+            const problemId = problemSelect.value;
+            if (!problemId) return;
+
+            const problem = PROBLEMS[problemId];
+
+            // 禁用按钮
+            generateBtn.disabled = true;
+            problemSelect.disabled = true;
+
+            // 显示状态
+            statusBox.style.display = 'block';
+            statusBox.className = 'status-box';
+            resultBox.style.display = 'none';
+
+            try {
+                await generatePaper(problem, null);
+            } catch (error) {
+                showError('生成失败: ' + error.message);
+                generateBtn.disabled = false;
+                problemSelect.disabled = false;
+            }
+        });
+
+        // 生成论文流程
+        async function generatePaper(problem, sessionId) {
+            const response = await fetch('/api/paper/generate-full', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    problem_id: problem.problem_id || '',
+                    problem_title: problem.title || '',
+                    problem_description: problem.description || '',
+                    search_query: problem.query || '',
+                    session_id: sessionId || ''
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('请求失败');
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            let progressState = {
+                literatureCount: 0,
+                chunksCount: 0,
+                sectionsTotal: 0,
+                sectionsCurrent: 0
+            };
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                // stream:true 避免多字节中文被分片截断
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop();  // 最后一行可能不完整，留到下次累积
+
+                for (const line of lines) {
+                    if (!line.startsWith('data: ')) continue;
+
+                    const data = JSON.parse(line.substring(6));
+
+                    if (data.type === 'progress') {
+                        handleProgress(data, progressState);
+                    } else if (data.type === 'section_done') {
+                        progressState.sectionsCurrent++;
+                    } else if (data.type === 'complete') {
+                        currentSessionId = data.session_id;
+                        handleComplete(data);
+                        return;
+                    } else if (data.type === 'error') {
+                        throw new Error(data.message);
+                    }
+                }
+            }
+        }
+
+        function handleProgress(data, state) {
+            if (data.step === 'literature_found') {
+                state.literatureCount = data.count;
+                updateStatus(`找到 ${data.count} 篇相关文献`, [
+                    { text: '✓ 搜索学术文献', done: true }
+                ]);
+            } else if (data.step === 'content_extracted') {
+                state.chunksCount = data.chunks;
+                updateStatus(`提取了 ${data.chunks} 个知识片段`, [
+                    { text: '✓ 搜索学术文献', done: true },
+                    { text: '✓ 提取文献内容', done: true }
+                ]);
+            } else if (data.step === 'generate_section') {
+                state.sectionsTotal = data.total;
+                state.sectionsCurrent = data.current;
+                updateStatus(`生成章节: ${data.section} (${data.current}/${data.total})`, [
+                    { text: '✓ 搜索学术文献', done: true },
+                    { text: '✓ 提取文献内容', done: true },
+                    { text: `正在生成第 ${data.current} 个章节`, done: false }
+                ]);
+            } else if (data.step === 'assemble') {
+                updateStatus('拼装完整论文...', [
+                    { text: '✓ 搜索学术文献', done: true },
+                    { text: '✓ 提取文献内容', done: true },
+                    { text: '✓ 生成所有章节', done: true },
+                    { text: '正在拼装论文', done: false }
+                ]);
+            } else if (data.message) {
+                updateStatus(data.message, []);
+            }
+        }
+
+        function handleComplete(data) {
+            statusBox.className = 'status-box success';
+            statusText.textContent = '✅ 论文生成成功！';
+            progressSteps.innerHTML = `
+                <div class="progress-step">✓ 搜索文献: ${data.stats.papers} 篇</div>
+                <div class="progress-step">✓ 提取片段: ${data.stats.chunks} 个</div>
+                <div class="progress-step">✓ 生成章节: ${data.stats.sections} 个</div>
+                <div class="progress-step">✓ 引用文献: ${data.stats.citations} 次</div>
+            `;
+
+            showResult(data.stats);
+        }
+
+        function updateStatus(message, steps) {
+            statusText.innerHTML = `<span class="spinner"></span> ${message}`;
+
+            if (steps.length > 0) {
+                progressSteps.innerHTML = steps.map(step => `
+                    <div class="progress-step">
+                        <span class="icon">${step.done ? '✓' : '○'}</span>
+                        <span>${step.text}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showError(message) {
+            statusBox.className = 'status-box error';
+            statusText.textContent = '❌ ' + message;
+            progressSteps.innerHTML = '';
+        }
+
+        function showResult(stats) {
+            resultBox.style.display = 'block';
+            document.getElementById('statSections').textContent = stats.sections;
+            document.getElementById('statPapers').textContent = stats.papers;
+            document.getElementById('statChunks').textContent = stats.chunks;
+            document.getElementById('statWords').textContent = stats.words.toLocaleString();
+
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 下载 Word
+        downloadDocx.addEventListener('click', function() {
+            if (!currentSessionId) return;
+            window.location.href = `/api/paper/download/${currentSessionId}.docx`;
+        });
+
+        // 查看 Markdown
+        viewMarkdown.addEventListener('click', function() {
+            if (!currentSessionId) return;
+            window.open(`/api/paper/view/${currentSessionId}`, '_blank');
+        });
+
+        // 重置
+        resetBtn.addEventListener('click', function() {
+            location.reload();
+        });
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>

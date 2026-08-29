@@ -78,6 +78,11 @@
     chat.className = "pstep-chat";
     const log = document.createElement("div");
     log.className = "chat-log";
+    // 粘底策略：用户上滚阅读时不再被流式增量拽下去
+    log._s_sticky = true;
+    log.addEventListener("scroll", () => {
+      log._s_sticky = log.scrollHeight - log.scrollTop - log.clientHeight < 80;
+    });
     chat.appendChild(log);
 
     addBubble(log, "assistant",
@@ -263,6 +268,7 @@
       if (!q) return;
       if (forced === undefined) ta.value = "";
       send.disabled = true;
+      log._s_sticky = true;
       addBubble(log, "user", q);
       messages.push({ role: "user", content: q });
       let body = null;
@@ -305,7 +311,7 @@
               if (!body) body = addBubble(log, "assistant", "");
               acc += ev.text;
               MMRender.renderMarkdown(body, acc);
-              log.scrollTop = log.scrollHeight;
+              if (log._s_sticky !== false) log.scrollTop = log.scrollHeight;
             } else if (ev.type === "tool_call") {
               clearThinking();
               addToolLine(log, "🔧 " + toolLabel(ev.name, ev.arguments));
@@ -322,6 +328,24 @@
               if (!body) body = addBubble(log, "assistant", "");
               acc += `\n\n_（出错：${ev.message}）_`;
               MMRender.renderMarkdown(body, acc);
+            }
+          }
+        }
+        // 流结束：flush decoder 待决字节，补处理残留完整事件（防截断丢失）
+        buf += decoder.decode();
+        if (buf.trim()) {
+          for (const part of buf.split("\n\n")) {
+            const line = part.trim();
+            if (!line.startsWith("data:")) continue;
+            let ev; try { ev = JSON.parse(line.slice(5).trim()); } catch { continue; }
+            if (ev.type === "token") {
+              if (!body) body = addBubble(log, "assistant", "");
+              acc += ev.text; MMRender.renderMarkdown(body, acc);
+            } else if (ev.type === "done") {
+              if (ev.content) { if (!body) body = addBubble(log, "assistant", ""); acc = ev.content; MMRender.renderMarkdown(body, acc); }
+            } else if (ev.type === "error") {
+              if (!body) body = addBubble(log, "assistant", "");
+              acc += `\n\n_（出错：${ev.message}）_`; MMRender.renderMarkdown(body, acc);
             }
           }
         }
@@ -381,7 +405,7 @@
     MMRender.renderMarkdown(body, text);
     m.appendChild(body);
     log.appendChild(m);
-    log.scrollTop = log.scrollHeight;
+    if (log._s_sticky !== false) log.scrollTop = log.scrollHeight;
     return body;
   }
 

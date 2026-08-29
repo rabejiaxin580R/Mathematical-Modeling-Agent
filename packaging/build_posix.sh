@@ -82,6 +82,14 @@ mkdir -p "$APP_DST/data"
 for d in knowledge problems problem_assets problem_papers assessment; do
   if [ -d "$APP_SRC/data/$d" ]; then cp -R "$APP_SRC/data/$d" "$APP_DST/data/$d"; echo "      + data/$d"; fi
 done
+
+# 知识库仅运行时加载 concepts/（BM25 检索源）。剔除构建中间产物，减小发布包约 9MB。
+# 这些产物由 scripts/build_knowledge.py 从 assets/ 重新生成，运行时不加载。
+KB_DST="$APP_DST/data/knowledge"
+if [ -d "$KB_DST" ]; then
+  rm -rf "$KB_DST/_fulltext" "$KB_DST/_raw_extractions" "$KB_DST/cases" 2>/dev/null || true
+  rm -f "$KB_DST/_lecture_map.json" "$KB_DST/_unmapped.json" "$KB_DST/_build.log" 2>/dev/null || true
+fi
 find "$APP_DST" -name '__pycache__' -type d -prune -exec rm -rf {} + 2>/dev/null || true
 
 # ── 4. PyInstaller 编译启动器 ──

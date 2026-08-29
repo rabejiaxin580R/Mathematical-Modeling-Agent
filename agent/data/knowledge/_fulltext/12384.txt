@@ -1,0 +1,929 @@
+ğ
+Team Control Number
+12384
+Problem Chosen
+B
+2021
+Summary Sheet
+As the United States Southwest continues to face an unprecedented water crisis imposed by the
+significant impact of droughts on water reservoirs such as Lake Mead, the reclamation and reuse of
+wastewater is crucial for alleviating shortages in usable water. Wastewater recycling has become vitally
+important in establishing a permanent source of water for states during unprecedented times of drought. In
+this problem, we are tasked with coming up with a water reclamation plan for Lake Mead after rigorous
+research of Lake Mead’s hydrological cycle, its patterns in water elevation, and the surrounding
+circumstances of the states which depend on Lake Mead as a source of water.
+Before developing our plan, we first identified the relevant factors involved in the fluctuations of
+Lake Mead’s long term water levels. Firstly, weverifiedthe methodologyinvolved in the calculation of
+Lake Mead’s relationships in water elevation, surface area, and volume. By determining water elevations
+using on field bathymetric data, surface area can be determined using an application of the Riemann
+integral, and volume relationships can be determined through the sum of consecutive fustrums inherent in
+the lake’s geometry. These confirmations would lead toan analysis of the inflow, outflow, and loss
+factors for Lake Mead’s hydrological cycle, and throughrigorous research, we identify common factors
+in Lake Mead’s water fluctuations and condensed these parameters in a comprehensive equation for
+changes in water capacity for the reservoir.
+In our model development, we used the previously created comprehensive equation for Lake
+Mead’s water capacity to develop a water elevation which to model Mead’s future water levels using
+recently acquired water elevation data. This is accomplished byan exploration of the available data
+where we observed that recent water elevation patterns showed a tendency for high intensity droughts
+with low variability. Thus, we employed a sinusoidal model on the residuals formed by the linear
+regression model of a transformed representation of Lake Mead’s monthly changes in water elevations to
+predict annual water elevation levels. Subsequently, we applied our model to water elevation levels during
+both the recent drought period and water elevation data for the last fifteen years to predict future annual
+water levels in 2025, 2030, and 2050. Our models concluded thatLake Mead would face startling losses
+of waterregardless of previous circumstance. Thus,we identified and described key factors in water
+reclamation initiatives to prepare for a comprehensive water reclamation plan that can utilize current
+wastewater recycling technology to alleviate the current water crisis.
+We propose a federal, large-scale water reclamation project based on a two-pronged approach of
+direct federalconstruction of water treatment facilitiesthrough federal and local resources and
+outsourcing funds to pre-established agencies and local companies in the construction of practical water
+treatment technology. Finally, through long-term analysis using predetermined statistical measures, the
+impact of our water reclamation plan can be measured.
+Keywords: Hydrological Cycle, Bathymetric Data, RiemannIntegral, Inflow, Outflow, Loss, Linear
+Regression, Sinusoidal Model, Water Treatment Facilities
+ᇿ Hi MCM
+ሧ࿟
+ğ
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page i of 22
+Contents
+1 Lake Mead W ater Dynamics 1
+1.1 Question Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.2 Assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+1.3 The Importance of Bathymetric Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.4 Conﬁrming Surface Area Data. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.5 Conﬁrming Volume Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.6 Factors of Inﬂow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+1.7 Factors of Outﬂow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+1.8 Factors of Loss . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+1.9 Comprehensive Model On Water Dynamics . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+2 Modelling of Lake Mead’s Water Levels 6
+2.1 Question Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.2 Assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.3 Exploratory Data Analysis of Lake Mead’s Water Levels . . . . . . . . . . . . . . . . . . . . . 7
+2.4 Drought Criteria . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+2.5 Analysis of the Most Recent Drought Period . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+2.5.1 Previous Wet Seasons and Droughts . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+2.5.2 Inciting Elevation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.6 The Water Elevation Model for the Most Recent Drought Period . . . . . . . . . . . . . . . . 10
+2.6.1 Making Predictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.7 The Water Elevation Model for the 2005-2020 period . . . . . . . . . . . . . . . . . . . . . . . 12
+2.7.1 Making Predictions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+2.8 Strengths of Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+2.9 Weaknesses of Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+3 The W astewater Recycling Plan 14
+3.1 Question Restatement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.2 Assumptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+3.3 Important Factors to Consider in a Wastewater Recycling Plan . . . . . . . . . . . . . . . . . 15
+3.3.1 Treatment Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.3.2 Resource Management . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.3.3 Public Conﬁdence . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.4 The Wastewater Recycling Plan . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.4.1 Constructing Treatment Facilities . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+3.4.2 Resource Management . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+3.4.3 Communication . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+4 Plan Analysis 19
+4.0.1 Quality and Quantity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+4.0.2 Breadth of Application . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+4.0.3 Customer and Public Support . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+5 Conclusion 21
+6 References 21
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 1 of 22
+1 Lake Mead Water Dynamics
+1.1 Question Restatement
+The general purpose of this section was to construct an equation that gives us an e ↵ective
+and reliable representation of lake water dynamics through the analysis of changes in lake
+water storage.
+• First, we should focus on the veracity of the elevation, area, and volume relationships
+given by the Bureau of Reclamation in 2010. In the following work, we showcase the
+information and methodology required to verify the data provided.
+• Second, we should identify and explain factors of inﬂow, outﬂow, and loss in Lake
+Mead. We then need to create an equation that models the annual change in lake
+storage from selected factors involved in Mead’s current capacity
+1.2 Assumptions
+• Assumption 1 : The geometric shape of a lake can be deﬁned as a series of unique
+frustums stacked against each other.
+Justiﬁcation 1 : The nature of the data collection from a bathymetric survey leads
+to the creation of conical levels within a lake separated by determinant elevations.
+Thus, these levels create frustums with irregularities accounting for itself due to the
+stochastic nature of lake generation creating structures that both increase and reduce
+the ﬁnal capacity of a lake.
+• Assumption 2 : Contours from subsequent elevations in Lake Mead should carry a
+consistently similar geometric shape in terms of surface area.
+Justiﬁcation 2 : The formation of Lake Mead was from a vertical perspective where
+lower elevations carried smaller contours, Thus, the gradual deepening of the Lake
+would lead to a similarly gradual reduction of the lake’s maximum contour. Thus, the
+contours of Lake Mead follow a similar shape throughout its depth.
+• Assumption 3 : The combination of echo-sounding and GPS tracking provides accu-
+rate positional and depth-wise information on Lake Mead
+Justiﬁcation 3 : A standard in the industry, echo-sounding and GPS tracking is used
+by the US Geological Survey for its bathymetric surveys. Thus, the elevation data
+determined by such methodology could be considered accurate.
+• Assumption 4 : A discussion about the volume of Lake Mead about the relationships
+between hydrological factors can be applied to a discussion about the water level of
+Lake Mead with little change.
+Justiﬁcation 4 : Both the volume and water level of Lake Mead refer to the basic core
+of the reservoir’s current capacity. Thus, discussions about the two is interchangeable
+with the only notable di ↵erence between the two being the unit discussed.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 2 of 22
+1.3 The Importance of Bathymetric Data
+Bathymetric data is information about the depths and shapes of underwater terrain. Bathy-
+metric data is obtained through the combined usage of a GPS receiver and a multi-beam
+depth sounder. The multi-beam depth sounder uses a method of underwater mapping called
+echo sounding where sound pulses are emitted from below a survey ship, reﬂects o ↵ the ocean
+bottom, and then returns to the surface where it is detected [1, 2].
+Figure 1: The geometry of echo sounding for mapping ocean bottom contours. [3]
+The depth is then calculated using the speed of sound in water and measuring the time it
+takes the sound to travel to the bottom and return. While the multi-beam depth sounder
+collects depth information, a GPS receiver collects the ship’s positional arguments, and
+together, the data creates a detailed survey of a water reservoir’s positional data. Using the
+bathymetric data for Lake Mead, the reservoir’s irregular shape and varying depths can be
+captured, and the relationship between elevation, area, and volume of Lake Mead can be
+determined with this positional information alone.
+1.4 Conﬁrming Surface Area Data.
+The bathymetric data obtained from 1.3 could be superimposed over an outline of the lake
+created from an aerial photo or satellite image. The result is a bathymetric map which
+visualizes the bathymetric data along with a shape of Lake Mead [2].
+From the bathymetric map, various methods are possible to determine the surface area of
+Lake Mead for each elevation measured by the Bureau of Reclamation. One such method to
+determine the surface area involves applying the underlying principles behind 2-dimensional
+Riemann sums:
+XX
+A
+s @f (x, y)
+@x
+ 2
+ @f (x, y)
+@y
+ 2
++1  A (1)
+Where f (x, y)d e s c r i b e st h e” h e i g h t ”o ft h es u r f a c ea tac o o r d i n a t e ,t h es u r f a c eA is divided
+into small ”cells” (area elements)  A [and we’re summing those small cells over the whole
+region, multiplied by a ”scale factor”], and the ”scale factor” describes the way that the area
+changes over a small distance.
+Although the formula itself may be complex, the underlying principle is merely to divide
+ar e g i o ni n t os m a l l e r ,s i m p l e r” c e l l s ” ,a n dt h e nt ou s et h o s e( m u l t i p l i e db yt h ea p p r o p r i a t e
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 3 of 22
+Figure 2: A simple bathymetric map of a reference lake. [4]
+scale factor) to calculate the ﬁnal surface area. In the case of the irregular shape of a lake,
+the individual pixels of a high-quality bathymetric map act as ”cells” to calculate the surface
+area of any elevation within Lake Mead. By calculating the number of pixels under a given
+elevation’s area in Lake Mead, and multiplying it by the image’s appropriate scale factor, the
+surface area can be determined. Indeed, because the surface of the lake is more or less ﬂat,
+the ”scale factor” reduces to a constant, dependant on merely the scale of the map.
+1.5 Conﬁrming Volume Data
+Using the surface-area calculations in 1.4, and the acquired elevation data from bathymetric
+analysis, Lake Mead’s volume can be calculated from the following basic equation: [5]
+V = 1
+3 H
+⇣
+A0 + A1 +
+p
+A0 ⇥ A1
+⌘
+(2)
+Where:
+• V =t h ev o l u m eo ft h ew a t e r ;
+• H =t h ed i↵erence in depth between 2 successive depth contours:
+• A0=t h ea r e ao ft h el a k ew i t h i nt h eouter depth contour being considered;
+• A1=t h ea r e ao ft h el a k ew i t h i nt h einner depth contour being considered
+The equation rests on the two assumptions that a lake’s geometric shape can be deﬁned as a
+series of frustums where the contours are of similar shape (Assumption 1, 2). Thus, through
+the above equation, the volume between two successive elevations of Lake Mead could be
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 4 of 22
+calculated as the volume of a frustum, and any elevation’s volume could be calculated through
+the summation of it’s successive depths. For contour surface areas from A0 to Ak:
+Vtotal =
+kX
+i=1
+1
+3 H
+⇣
+Ai + Ai 1 +
+p
+Ai ⇥ Ai 1
+⌘
+(3)
+Where the volume of A0 to Ak where the ﬁnal A is the desired elevation’s surface area and
+A0 is the surface area at the bottom of the lake.
+1.6 Factors of Inﬂow
+There are several characteristics that are indicative for the amount of water entering Lake
+Mead as inﬂow:
+• Direct inﬂow from tributaries : Lake Mead receives water from four tributaries:
+the Colorado River, the Las Vegas Wash, and the Virgin and Muddy Rivers. These
+tributaries are also a ↵ected by factors of inﬂow, outﬂow, and loss. [6]
+• Precipitation: The portion of the hydrological cycle in which atmospheric water vapor
+is condensed, falling to earth. Along with direct inﬂow from tributaries, precipitation
+is a key factor of inﬂow as other factors of inﬂow rely on precipitation. [7]
+• Runo↵ : A direct consequence of precipitation, leftover water is pulled by gravity
+across the surface of land into river’s, streams, or lakes. [8]
+• Groundwater Recharge: As water from precipitation experiences runo ↵,s o m ew a t e r
+seeps into the earth. Eventually, the water could be reintroduced into the hydrological
+cycle by moving through pores down to a water basin. [9]
+• Drainage: Similar to runo ↵, water is pulled by gravity across the surface of land into
+water basins. However, the origin of this water arrives from melted snow or ice above
+the beneﬁciary water basin. [10]
+1.7 Factors of Outﬂow
+There are several characteristics that are indicative for the amount of water leaving Lake
+Mead as outﬂow:
+• Supplying the American Southwest and Mexico : As a closed water reservoir,
+Lake Mead acts as an important source of water for multiple states in the American
+Southwest including Nevada, Arizona, and California, and the reservoir also serves as
+as o u r c eo fw a t e rf o rM e x i c o . [ 1 1 ]
+1.8 Factors of Loss
+There are several characteristics that are indicative for the amount of water lost in the
+hydrological cycle of Lake Mead:
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 5 of 22
+• Evaporation: After su  cient heat, water at the surface turns into water vapor, and
+evaporation rates have greatly increased as a result of climate change induced droughts.
+[12]
+• Inﬁltration: As water undergoes runo ↵,s o m ew a t e rd r o p l e t si n ﬁ l t r a t ei n t os u b s u r f a c e
+soil and rock where it will gradually move vertical and horizontally into the water
+reservoir to be discharged. [13]
+• Depression Storage : As groundwater undergoes inﬁltration, some water is lost
+because it becomes trapped in small depressions within the ground, preventing the
+possibility for escape into a water reservoir.[14]
+1.9 Comprehensive Model On Water Dynamics
+Using Guinaldo et al.’s model [15] as a framework, the equation of the annual change in the
+lake storage of Lake Mead as a function of time can be calculated as such:
+dVlake
+dt = Pol   Eol + R + D + Qin   Qout   Qgwd + Qgwr (4)
+Where:
+Symbol Deﬁnition
+dVlake
+dt The change in volume of Lake Mead with respect to
+time.
+Pol The volume of water Lake Mead gains as a result of
+precipitation over the lake.
+R The volume of water ﬂowing into Lake Mead from runo↵.
+D The volume of water ﬂowing into Lake Mead from
+drainage.
+Qin The volume of water ﬂowing into Lake Mead from its
+four tributaries.
+Qout The volume of water ﬂowing out of Lake Mead due to
+use by either Nevada, Arizona, California, or Mexico.
+Qgwd The volume of water withheld from Lake Mead as a
+result of various sources of ground water discharge such
+as inﬁltration and depression storage.
+Qgwr The volume of water ﬂowing into Lake Mead as a result
+of ground water recharge
+From our equation on the annual annual change of the amount of water stored in Lake
+Mead, several relationships between parameters involved in Lake Mead’s water capacity
+become apparent:
+• Outﬂow for Lake Mead is dependent on solely intake from the American Southwest
+and Mexico as the artiﬁcial lake’s purpose is to act as a water reservoir for municipal,
+agricultural, and industrial use.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 6 of 22
+• Many factors of inﬂow such as runo ↵, drainage, and groundwater recharge are based
+upon precipitation, and many factors of loss such as inﬁltration and depression are
+based upon evaporation.
+• The importance of evaporation and precipitation for inﬂow, outﬂow, and loss leads
+to the conclusion that important factors for evaporation and precipitation become
+naturally important for changes in water elevation. Thus, the impact of droughts and
+wet seasons are crucial in Lake Mead’s hydrological cycle.
+2 Modelling of Lake Mead’s Water Levels
+2.1 Question Restatement
+The general purpose of this section was to construct a model that gives an e ↵ective and
+reliable estimate of Lake Mead’s future water levels.
+• First, we should analyze the data provided about Lake Mead water levels on a monthly
+and annual high-low basis. In the following work, we highlight important characteristics
+of the data that are crucial for the later modelling.
+• Second, we should deﬁne a set of criteria for drought periods and identify the beginnings
+and ends of periods of drought. Then, using this information, we then need to analyze
+and discern notable di ↵erences between the current drought period and earlier periods.
+• Finally, we need to develop two models that predict Lake Mead’s water level in the
+year 2025, 2030, and 2050; one model will use data from only the most recent drought
+period and the another model will use water level data from 2005 - 2020.
+2.2 Assumptions
+• Assumption 1 : The hydrological cycle can be deﬁned as a series of dry seasons and
+wet seasons.
+Justiﬁcation 1 : As a natural consequence of the hydrological cycle, the process of
+evaporation increases the capacity of water available for precipitation which deposits
+this capacity of water to undergo evaporation. This cyclical process of evaporation
+and precipitation leads to the broader hydrological cycle being deﬁned by dry season
+followed by wet seasons.
+• Assumption 2 : The monthly water elevations for the years 1952-1959 are model
+representations of a baseline hydrological cycle of a dry season and a wet season.
+Justiﬁcation 2 : A model representation of a baseline hydrological cycle of a dry
+season and wet season should be a stark decrease in water levels followed by a stark
+increase in water levels in a 5-10 year period. The duration is meant to prevent the
+inclusion of any unusual conditions of hydrological cycles due to abnormal duration.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 7 of 22
+• Assumption 3 : Lake Mead has a baseline change in monthly water level where any
+change below it signiﬁes a dry season and any change above it signiﬁes a wet season.
+Justiﬁcation 3 : Following Assumption 1, the lack of any middle ground between the
+wet season and the dry season would signify a level of change in monthly water level
+that determines the strict binary designation of a wet season or a dry season.
+• Assumption 4 : The mentions of droughts in this analysis will only focus on hydro-
+logical droughts as a form of drought. [16]
+Justiﬁcation 4 : The four major deﬁnitions of droughts are meteorological, agricul-
+tural, hydrological, and socioeconomic. The only droughts that could be adequately
+described with water elevation data are hydrological droughts. Thus, any mention of
+the term drought would be referring to hydrological droughts.
+2.3 Exploratory Data Analysis of Lake Mead’s Water Levels
+The provided data on Lake Mead comes in two parts:
+• The Low-High Elevation dataset provides the annual lowest and highest water eleva-
+tions at Lake Mead from 1935 - 2020. Additional information includes speciﬁc date
+and time of data collection.
+• The Monthly Elevation dataset provides the elevation of water at Lake Mead at the
+end of each month from January 1935 to September 2021.
+We decided to analyze and compare the general trend of monthly water elevation, annual
+low water elevation, and annual high water elevation. However, a summarial purview of the
+data’s line plot leads to our inference that the general trend of annual high water elevation
+would su  ce due to the data’s similarity in shape.
+Figure 3: (A) Annual high, annual low, annual mean (B) All months collected with annual mean (C) Annual
+standard deviation vs di ↵erence between year high and low
+Thus, we chose to focus the brunt of our analysis on the Monthly Elevation dataset, as the
+dataset contains a larger amount of elevation data — an important factor in generating a
+precise model. Furthermore, the patterns within the di ↵erence between the annual high
+water elevation and the annual water low elevation could also be mirrored within the annual
+standard deviation of monthly water levels. This similarity is shown in Figure 3. Conclusions
+we make with the annual standard deviation of monthly water levels could be cross applied to
+conclusions with the annual di ↵erence between the highest and lowest water elevations.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 8 of 22
+Within the annual standard deviation of monthly water levels, a Mann-Kendall Trend Test
+reveals an alternate hypothesis of a decreasing trend in the data with the standard deviation
+of annual water levels decreasing as time passes ( p= 0.0163). As time progresses annu-
+ally, monthly water elevations in a given year seem to concentrate themselves to a greater
+extent.
+A Mann-Kendall Trend test for the monthly water levels for Lake Mead reveals similar
+results with an alternate hypothesis of a decreasing trend in the data ( p =0.0338) . The
+decreasing trend in water levels also leads to the conclusion that either there exists a higher
+proportion of droughts as time increases or the severity of droughts has increased over time.
+As droughts become either more severe or more prominent, water levels decrease as wet
+seasons lose statistical signiﬁcance.
+Figure 4: (A) Downward trend annual mean water elevations (B) Downward trend of annual standard
+deviations of monthly water levels
+From the Exploratory Data Analysis we can conclude a number of observations:
+• The patterns shown in the monthly elevation of water levels for Lake Mead can be
+cross-applied to annual low-high water elevations for Lake Mead.
+• As time progresses, the range of possible water levels for a given year shrinks as the
+standard deviation of annual water levels decreases.
+• The monthly water levels for Lake Mead shows no apparent trend for either an upward
+or downward trend in the dataset.
+2.4 Drought Criteria
+As deﬁned by the US National Oceanic and Atmospheric association, a drought is deﬁned
+as “a deﬁciency of precipitation over an extended period of time (usually a season or more),
+resulting in a water shortage.” We simplify this deﬁnition to have droughts be an extended
+period of time where water level growth is subpar (Assumption 4).
+Our criteria for a drought is based on the previously made assumption that the hydrological
+cycle is made of dry-seasons and wet-seasons (Assumption 1). Thus, the lack of a middle
+ground between the two seasons means that we can assert a baseline change in water elevation
+for Lake Mead (Assumption 3). Any monthly changes in water level below this baseline
+would classify the corresponding month as a dry season, and any monthly changes in water
+level above this baseline would classify the corresponding month as a wet season. This
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 9 of 22
+binary classiﬁcation helps create a database of dry and wet seasons to be later classiﬁed into
+droughts.
+We identiﬁed the baseline change in water elevation by taking the 50th percentile change in
+water elevation for our framework hydrological cycle of the years 1952 to 1959 (Assumption
+2). Then, our binary classiﬁcation of dry-seasons and wet-seasons was used to ﬁlter out
+months with a monthly change in water elevation that was below the baseline.
+However, this deﬁnition of baseline change in water elevation could result in short, anomalous
+decreases in water elevation being deﬁned as drought. To combat this, we deﬁne a change in
+water elevation as the percentage change between the target month’s water elevation and the
+water elevation of the month one year prior. This new deﬁnition of water elevation change
+eliminates the stochastic existence of outlier water elevations, and though this deﬁnition
+does include weak droughts with minimal severity, our deﬁnition of a drought seeks to deﬁne
+possible dry seasons that, over an extended period, would lead to a water shortage. The
+existence of minimal droughts only represent cases where wet seasons were closely available
+to prevent a large water shortage. Furthermore, to remove the existence of long dry seasons
+with little impact on water elevations, we set the minimum length of a drought to be 9 months
+based on historical conditions of the length of a dry season and the climatic conditions of
+Lake Mead.
+The resulting complete deﬁnition of a drought is as follows:
+• A drought consists of a period of dry-seasons which are deﬁned as months with a
+change in monthly water level that falls below a predetermined baseline.
+• Change in monthly water elevation is deﬁned as the percentage change between the
+target month’s water elevation and the water elevation of the month one year prior.
+• The period of dry season which makes up a drought must last longer than 9 months.
+• The beginning of a drought would be classiﬁed as the inciting month that reaches below
+the baseline change in water elevation.
+• The end of a drought would be classiﬁed as the inciting month that reaches above the
+baseline change in water elevation.
+2.5 Analysis of the Most Recent Drought Period
+From our complete deﬁnition of a drought, the most recent drought period could be deﬁned
+as the period of time between May 2020 and September 2021. Due to its status as a current
+drought and its correlation with Lake Mead’s current water level crisis, this drought period
+was analyzed with close scrutiny to evaluate its di ↵erentiating qualities compared to previous
+drought periods.
+2.5.1 Previous Wet Seasons and Droughts
+Preceding the current drought was a series of wet seasons and droughts which contained a
+heavy bias towards droughts. This disparity can be seen in the Mann-Kendall Trend test
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 10 of 22
+performed in the data analysis earlier which shows a downward trend of water elevation
+caused by more droughts and less wet seasons. The current drought of sixteen months
+continues this pattern.
+2.5.2 Inciting Elevation
+The inciting elevation of the current drought period is unusually low with an inciting drought
+elevation of 1091.32 feet above sea level. The inciting elevation is 1.73 standard deviations
+below the 50th percentile which makes it the bottom 4% of inciting drought elevations.
+The low inciting elevation continues to illustrate the lack of wet seasons before the current
+drought period.
+2.6 The Water Elevation Model for the Most Recent Drought
+Period
+In order to achieve a summarial understanding of the mathematical patterns hidden within
+the water elevations of the recent drought period, we used a naive linear regression model to
+understand the possible model’s greater complexities.
+A preliminary linear regression model of monthly water elevation with respect to time
+does yield a model with some resemblance of following Lake Mead’s monthly water ele-
+vations.
+yi|{z}
+dependent variable
+=  0 +  1 ·
+independent variable
+z}|{xi (5)
+However, analysis of the residuals led us to conclude that the current representation of Lake
+Mead’s water elevation was unsuitable for modeling. The monthly water elevation carries
+stochastic elements that makes modeling either inaccurate or impossibly complex. To resolve
+this issue, we transformed the data into an iterative function which calculates a running net
+sum of the percent changes in monthly water level between the current month and the
+previous year:
+N (t)=
+tX
+i=1
+C(i)( 6 )
+Where C(t)= M (t)
+M (t 12) 1 and C(1) to C(12) is 0 to prevent errors in calculating the percent
+change between two months.
+An alternative equation for N(t) is a recursive deﬁnition of:
+N (t)= N (t   1) + C(t)( 7 )
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 11 of 22
+with N (t   1) being the net sum of percentage changes in monthly water levels for the
+previous month.
+This deﬁnition of net change in monthly water level accounts for the stochastic nature of the
+dataset; the result is a more discriminate series of data which facilitates modelling.
+A preliminary linear regression model for this recursive dataset shows signiﬁcant signs of a
+sinusoidal model for the residuals between the ﬁtted linear regression model and the genuine
+recursive data.
+Figure 5: (A) Comparison between linear regression predictions and transformed dataset (B) Residuals plot
+of linear regression predictions and transformed dataset
+Combining the linear regression model with the sinusoidal model leads to a ﬁnal model which
+predicts the net percent change in monthly water levels:
+N (t)=( B0 + B1t)+ B1 · Bt
+1 · sin (B3 · (t + B4)) + B5 (8)
+Figure 6: Comparison of combined model’s predictions with net water change
+In order to get the monthly percent changes in water levels, we can use our alternative
+deﬁnition of N(t) to create the following equation:
+N (t)   N (t   1) = C(t)( 9 )
+Keeping in mind the deﬁnition of C(t), we can ﬁnd the monthly water level in one year for
+any month t months away from May 2020 using the following regressive model:
+(C(t)+1 ) (M (t)) = M (t +1 2 ) ( 1 0 )
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 12 of 22
+To convert the monthly water levels to an annual prediction, we used our mo del to determine
+the water levels for all months in the target year, and then, we calculated the mean of the
+water levels to achieve an annual prediction of water elevation in Lake Mead, where t is years
+from 2021 and t must be greater than or equal to zero:
+Y (t)= 1
+12
+7+12t+11X
+i=7+12t
+M (i)( 1 1 )
+2.6.1 Making Predictions
+Figure 7: (A) All predictions from 2020 through 2054 using data from the recent drought period (the red line
+indicates available data) (B) The 2025 plot, the prediction is 1040.122 feet (C) The 2030 plot, the prediction
+is 994.032 feet (D) The 2050 plot, the prediction is 840.207 feet.
+2.7 The Water Elevation Model for the 2005-2020 period
+A similar methodology was applied to water levels from 2005-2020. We applied a linear
+regression model to the net cumulative water level change dataset and identiﬁed a sinusoidal
+pattern within the residuals. After acquiring the sinusoidal model, we converted the net-
+change into monthly water levels to be averaged and transformed into an annual water level
+prediction model.
+2.7.1 Making Predictions
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 13 of 22
+Figure 8: (A) All predictions from 2005 through 2072 (the red line indicates available data) (B) The 2025
+plot, the prediction is 1074.482 feet (C) The 2030 plot, the prediction is 1037.302 feet (D) The 2050 plot,
+the prediction is 973.278 feet.
+2.8 Strengths of Model
+Our model is easy to implement and understand. The general architecture of a sinusoidal
+representation of residuals from a naive linear regression model can be applied to a large
+majority of timeframes. Regardless of the existence of wet seasons in the dataset, the model is
+still able to competently assess future water elevations by treating wet seasons and droughts
+as cyclical occurrences.
+Due to the breadth of data fed to our model by adapting monthly water elevations to
+an annual prediction, the model is able to accurately predict variation in the data as the
+model accounts for monthly maximums and minimums that may impact ﬁnal monthly water
+elevations. This makes our model very robust against interyear water level variation.
+Furthermore, when the model acquires a complete cycle of droughts and wet seasons within
+its dataset, the model is able to accurately calculate the timings of droughts and wet seasons.
+This makes the model capable of predicting future water elevations with little deviation from
+the actual water level.
+2.9 Weaknesses of Model
+Our model tends to overestimate the loss in water elevations for future timeframes if it’s
+given an incomplete picture of the lake’s hydrological cycle. This lack of information can
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 14 of 22
+arise from the dataset only capturing a drought or a wet season, and thus, the model assumes
+that the lake can only be in a wet season or a drought. Due to this issue, the model does
+need a complete and comprehensive dataset which details a complete hydrological cycle of a
+drought and wet seasons.
+Our model tends to require a large amount of data to accurately represent future water levels
+as it requires the monthly water levels of a completely hydrological cycle of a drought and
+wet season within a year before the target cycle to accurately predict the change parameter
+needed to ﬁt the model. The model requires substantive water elevation data across a
+maximum of multiple years to achieve an accurate, long-term analysis of the lake’s water
+levels.
+3 The Wastewater Recycling Plan
+3.1 Question Restatement
+The general purpose of this section was to create a feasible plan for wastewater recycling
+to alleviate the burden held by water reservoirs like Lake Mead through an alternative
+methodology in obtaining clean water.
+• First, we should identify and describe important factors to consider in a plan to recycle
+wastewater. These factors should address the multiple complexities within a plan for
+water-recycling such as important ﬁnancial and logistical points of interest.
+• Second, we should create a comprehensive federal plan for recycling wastewater in
+states heavily a ↵ected by droughts. We then need to create statistical measures which
+record the impact of implementing our plan.
+3.2 Assumptions
+• Assumption 1 : A wastewater recycling plan for Lake Mead must be implemented
+for all states which actively use Lake Mead.
+• Justiﬁcation 1 : Lake Mead acts as a water reservoir for several states, and any
+wastewater recycling plan which disregards a state using Lake Mead would hamper
+impact recognition and contradict the primary purpose of alleviating the burdens of
+Lake Mead.
+• Assumption 2 : A wastewater recycling plan for Lake Mead does not need to be
+implemented for Mexico.
+• Justiﬁcation 2 : As a country which uses Lake Mead as a reservoir, the case of
+Mexico is di  cult to account for due to the added complexity of international politics.
+• Assumption 3 : As long as the proposed wastewater recycling plan is feasible and has
+the probability of creating clean water, the plan will pass through lawmaking barriers
+that may hinder its feasibility.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 15 of 22
+• Justiﬁcation 3 : The willingness of US citizens to accept water conservation as a key
+concern and the potential costs of importing water means that lawmakers would not
+be concerned about the idea of a wastewater recycling plan as long as the plan appears
+feasible and impactful. However, if the plan appears lackluster during application, the
+plan’s reduction or removal may be a concern to review. [17]
+3.3 Important Factors to Consider in a Wastewater Recycling
+Plan
+The factors to be considered in a wastewater recycling plan can be broken into three cat-
+egories: treatment design, resource management, and public conﬁdence. Factors related
+to treatment design deal with issues directly responsible for the design of the wastewater
+recycling plan. Treatment design factors are determined before practical application and
+act as the foundation behind the wastewater recycling plan. Resource management fac-
+tors are factors dealing with the allocation and management of limited resources needed for
+the plan. Limited assets such as energy, manpower, and chemical resources are important
+factors to consider within a wastewater recycling plan. Finally, public conﬁdence factors
+pertain to any factor which deals with public perception of the plan; if public conﬁdence is
+stiﬂed for a wastewater recycling plan, the resulting backlash can negatively inﬂuence the
+implementation for our plan.
+3.3.1 Treatment Design
+There are several important factors pertaining to treatment design in a water recycling plan
+for Lake Mead.
+• Type of Water Reuse Application: Depending on treatment needs, the type of wa-
+ter treatment application may di ↵er. For large operations, E ✏uent Treatment Plants
+are useful for cleaning large amounts of industrial wastewater, and for small busi-
+nesses, common and combined e ✏uent treatment plants are more a ↵ordable methods
+for smaller companies and operations. [18]
+• Reclaimed Water Quality Objectives: The objectives of the reclaimed water are
+important to consider in designing a wastewater recycling program. Whether the
+program focuses on agricultural, municipal, or industrial use is vital for allocation of
+resources in treating wastewater. [19]
+• Compatibility with Existing Conditions: A water treatment program should
+be harmonious with pre-existing government structures and inherent socioeconomic
+characteristics of target regions. Government agencies with similar goals as our water
+recycling plan should assist in the program, and large water treatment facilities should
+use permits for unused, available land.
+• Processing Flexibility: The water reclamation plan should be ﬂexible in its process-
+ing capabilities to prevent large scale removal and reconstruction. Flexible design such
+as diversity in water treatment facility types makes the program robust against future
+modiﬁcations.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 16 of 22
+3.3.2 Resource Management
+There are several important factors pertaining to resource management in a water recycling
+plan for Lake Mead.
+• Operating and Maintenance Requirements: Applications in recycled water re-
+quired active maintenance and operation. Factors such as the personnel required, the
+degree of human intervention needed for water treatment, and the necessary resources
+for maintaining supply of clean water are important to consider for water reclamation.
+• Energy and Chemical Requirements: Water treatment facilities need to account
+of energy and chemical requirements, and any plan surrounding water recycling must
+account for the costs of energy and chemical consumption, logistics of energy and
+chemical requirements, and e  ciency in energy and chemical usage. [20]
+• Personnel and Sta  ng Requirements: Aside from the personnel and sta  ng
+requirements for operating water treatment, personnel for other facets of the water re-
+cycling plan such as communicating with the public or survey the impact of wastewater
+recycling should be accounted for in the logistical features of water recycling.
+3.3.3 Public Conﬁdence
+There are several important factors pertaining to public conﬁdence in a water recycling plan
+for Lake Mead.
+• Public Support: In order to have a long-lasting water reclamation project, public
+support is needed to keep the project funded. The water reclamation plan must keep
+the public in mind through active communication and avoidance of dividing issues
+between the project and citizens.
+3.4 The Wastewater Recycling Plan
+With the complex of the issue in mind, our Wastewater recycling plan focuses on the following
+primary objectives for the states of Nevada, Arizona, and California:
+1. Allocate resources for a preliminary survey of available land, possible applications for
+wastewater treatment in the region, and other important information vital for plan
+enactment.
+2. Build and maintain treatment plants for irrigation, municipal plants, and environmen-
+tal conservation using federal, local, and business resources.
+3. Create new infrastructure to move wastewater for treatment and to move treated
+wastewater along to target locations.
+4. Focus irrigation water recycling e ↵orts on agricultural regions that are either most
+a↵ected by the drought or are losing their traditional sources of water.
+5. Focus municipal, commercial, and industrial water recycling e ↵orts on densely popu-
+lated regions such as urban centers to maximize gains made by treated wastewater.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 17 of 22
+6. Create a reserve of ﬁnancial resources to either loan or o ↵er to businesses as payment
+for water treatment facilities for business use.
+7. Create a communications department to communicate with the community to register
+and resolve criticism.
+8. Throughout the application of our water reclamation project, allocate resources to
+analyze the project’s impacts for future study.
+The fundamental concept of the wastewater recycling project is to conserve and use as
+much water as possible to alleviate the burden of Lake Mead in its outﬂow to the states
+of Arizona, Nevada, and California. The burden of Lake Mead must be alleviated due to
+Mead’s lowering water elevations; independence must be established from Lake Mead both
+to prevent a water crisis and to generate the opportunity of augmenting the Lake’s water
+levels artiﬁcially. In the ﬁrst stage of the project, a preliminary survey of a ↵ected states
+would be conducted to acquire information on the region’s relationship with water in areas
+like industry, agriculture, and the environment. Information like the availability of land for
+water reclamation facilities, the number of farms which use Lake Mead’s water for irrigation,
+and the type of industries which use Lake Mead’s water are crucial in determining the types
+of water quality to distribute from treated wastewater and in determining the logistical
+movement of treated wastewater. After the preliminary survey, enough information would
+be acquired for the main component of the water reclamation project built on three major
+uses: municipal, agricultural, and business-related. For each of these three major uses, the
+source of wastewater would coincide with one another with a large portion of wastewater
+being from domestic and industrial waste which will be transported to water treatment
+facilities designed for either standard or industrial treatment. The treated wastewater will
+be then moved to their required locations for either municipal, agricultural, or business-
+related pursuits. In anticipation of leftover treated wastewater, the unused water would be
+placed in the Lake Mead water reservoir after undergoing extensive water treatment similar
+to the one in industrial use. Overall, the plan seeks to increase inﬂow and decrease outﬂow to
+Lake Mead to alleviate Mead’s rapidly declining water levels. The plan should at a minimum
+eliminate Lake Mead’s outﬂows to the states, and the plan should hope to eliminate deﬁcits
+in water levels during droughts with our models predictions serving as accurate predictors
+for future needs in water levels during predicted droughts.
+3.4.1 Constructing Treatment Facilities
+The primary method of treating wastewater is through the construction of large scale water
+treatment facilities through direct government involvement. For municipal and commercial
+wastewater, the primary wastewater treatment facility needed would be standard Sewage
+Treatment Plants (STPs). These treatment facilities remove contaminants from wastewater
+in a three-step process which completely cleans wastewater with a combination of physical,
+chemical, and biological treatment before discharging it for municipal use. On the other
+hand, the primary wastewater treatment facility required for industrial wastewater would
+be E ✏uent Treatment Plants (ETPs) which are used to clean industrial wastewater. They
+treat the unique form of wastewater e ✏uent which ﬂows out as a byproduct of industrial
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 18 of 22
+use. Their usefulness in sectors with high likelihoods of extensive chemical contamination
+such as the pharmaceutical industry or the textile industry make them the ideal candidate
+for industrial waste water treatment. Together, large scale STPs and ETPs should serve to
+facilitate a large majority of water needs in the a ↵ected areas. However, additional water
+treatment facilities may be needed to completely alleviate the stark decreases in water level
+for Lake Mead.
+Figure 9: A decision tree highlighting the transfer of resources in our reclamation program.
+3.4.2 Resource Management
+In the event that government resources in managing the construction of water treatment facil-
+ities are shorthanded, the government could instead outsource the construction of wastewater
+treatment facilities and infrastructure to external companies specialized in the creation of
+water treatment facilities.
+Financing could also facilitate the creation of small water treatment facilities such as Com-
+mon and Combined E ✏uent Treatment Plants (CEPTs) which pools waste in a centralized
+plant for treatment. This decreases the costs of wastewater treatment by reducing the in-
+dividual burden in maintaining a wastewater treatment facility. Outsourcing as a whole is
+important in our wastewater reclamation project as any lack of resources which are unavail-
+able for the government could be sourced from local businesses or other water conservation
+organizations. Agencies like the United States Environmental Protection Agency and the
+American Water Works Association could lend expertise and local construction companies
+could lend ﬁeld workers to create wastewater treatment facilities. Outsourcing also serves
+to give the water reclamation project ﬂexibility in its processing as individual companies,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 19 of 22
+industries, or farms could choose various types of water treatment facilities to be outsourced
+from the government for individual construction and adaptation, and outsourcing helps make
+the program compatible with current companies and government agencies by being inclusive
+of pre-existing resources and entities.
+3.4.3 Communication
+An important component of our water reclamation project is communication with the pub-
+lic and consumers. Active progress must be made towards connecting with the public to
+receive criticism and feedback on the project. If criticism is not taken into consideration
+during the project, the credibility and success of the project would deteriorate — irrepara-
+bly damaging e ↵orts in alleviating Lake Mead’s water levels. Thus, funds must be allocated
+to communicating with the public to ﬁnetune the project’s capabilities during the years of
+its application.
+4 Plan Analysis
+The overall impact of a project of this scale is determined by three major factors: the quality
+and quantity of the recycled wastewater, the breadth of available outsources to apply the
+recycled water, and the support of the recycled water program from customers and citizens
+alike. These factors can only be apparent after continued study of the wastewater recycling
+program. To address this issue, funds were allocated to the long term analysis of our program
+based on metrics from Arias et. al.’s [21] research on recycled water programs.
+4.0.1 Quality and Quantity
+The statistics metrics we used for determining the quality and quantity of recycled water
+were based on the U.S. Bureau of Reclamation statement that recycled water must meet the
+needs of the end user in terms of quality and quantity.
+Water Quality: The US commonly uses three water quality parameters: total suspended
+solids (TSS), biochemical oxygen demand (BOD), and fecal coliform (FC). For each met-
+ric, the average annual measurement r is compared to the state standards. Water quality
+is deemed acceptable if the average annual measurements met or exceeded the state stan-
+dard.
+• Test sta tement: Annual average total suspended solid (TSS) concentrations for pro-
+gram meets or exceeds state standards for most restrictive use.
+[TSS (mg/L)]program  [TSS (mg/L)]state std
+• Test sta tement: Annual average biological oxygen demand/chemical biological oxy-
+gen demand meets or exceed state standards for most restrictive use.
+[BOD or CBOD (mg/L)]program  [BOD or CBOD (mg/L)]state std
+• Test sta tement: Annual average fecal coliform concentrations for program meets or
+exceed state standards for most restrictive use.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 20 of 22
+[FC (cf u/100ml)]program  [FC (cf u/100ml)]state std ]
+Recycled Water Portfolio Contribution: The metric measures the contribution recycled
+water makes to the overall water supply of a ↵ected regions.
+Recycled W ater consumed in a given year (ac ft )
+To t a l w a t e r c o n s u m e d i n a g i v e n y e a r(ac ft )
+Recycled Water Growth Rate: The metric measures the change in the demand for
+recycled water by comparing the year over year volume of recycled water provided annually
+for a period of ﬁve years or more.
+Vo l u m eo f R W s o l d(current year, ac  ft )
+Vo l u m eo f R W s o l d(previous year, ac  ft )
+4.0.2 Breadth of Application
+There are several important statistical metrics pertaining to the variety of recycled water
+quality available in our water recycling plan.
+Product Diversiﬁcation: In meeting the speciﬁc needs of the public, recycled water should
+be tailored to match water treatment levels needed by the user’ applications. The metric
+for product diversiﬁcation is a binary classiﬁcation for recycled water applications. If the
+application’s water quality needs are met, the product is considered to be included in the
+program’s capabilities to subsidize. Otherwise, the program is considered unable to meet the
+application’s water quality needs. The product diversiﬁcation metric would be the proportion
+of application’s whose water quality needs are met.
+Recycled Water Application Range: Based on the water demand for each application
+of recycled water, the metric measures the extent to which the program’s water can be used
+for all possible recycled water applications.
+Sum of all RW applications in service area
+To t a l n u m b e r o f p o s s i b l e R W a p p l i c a t i o n s i n s e r v i c e a r e a
+4.0.3 Customer and Public Support
+The need for recycled water programs to understand the needs of customers and citizens is
+vital for program longevity. Metrics in determining customer and public support help suit
+the program’s design to the needs of the public.
+Customer Satisfaction: The metric measures the degree to which recycled water users
+are satisﬁed with the treated water from our program.
+Nu m b e r o f c u s t o m e rs s a t i s fi e d
+To t a l n u m b e r o f c o s t u m e r s
+Customer Complaints: The metric measures the total number of customer complaints in
+ag i v e ny e a r .
+Nu m b e r o f c u s t o m e r c o m p l a i n t s
+year
+Voter Support: The metric measures the level of public support in elections for the nu-
+merous factors involved in a water recycling project such as construction, ﬁnancing, or ﬁnal
+product.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 21 of 22
+Nu m b e r o f vo t e rs i n s u p p o rt
+To t a l n u m b e r o f v o t e r s(%)
+5 Conclusion
+Before developing our plan, veriﬁed the methodology involved in the calculation of Lake
+Mead’s relationships in water elevation, surface area, and volume. By determining water
+elevations using on ﬁeld bathymetric data, surface area can be determined using an appli-
+cation of the Riemann integral, and volume relationships can be determined through the
+sum of consecutive frustums inherent in the lake’s geometry. These conﬁrmations led to
+our analysis of inﬂow, outﬂow, and loss factors for Lake Mead’s hydrological cycle which
+was later condensed into a comprehensive equation for changes in water capacity for the
+reservoir.
+In our model development, we used the previously created comprehensive equation to model
+Mead’s future water levels using recently acquired water elevation data. Exploration of
+the available data revealed that recent water elevation patterns showed a tendency for high
+intensity droughts with low variability. Thus, we employed a sinusoidal model on the resid-
+uals formed by the linear regression model of a transformed representation of Lake Mead’s
+monthly changes in water elevations. Subsequently, we applied our model to water elevation
+levels during both the recent drought period and water elevation data for the last ﬁfteen
+years to predict future annual water levels in 2025, 2030, and 2050. Our models concluded
+that Lake Mead would face startling losses of water regardless of previous circumstance.
+In recognition of the need for water reclamation, we identiﬁed factors in the creation of a
+water recycling initiative in areas of treatment design, resource management, and public
+conﬁdence.
+We propose a federal, large-scale water reclamation project based on a two-pronged approach
+of direct federal construction of water treatment facilities through federal and local resources
+and outsourcing funds to pre-established agencies and local companies in the construction
+of practical water treatment technology. Finally, through long-term analysis using prede-
+termined statistical measures, the impact of our water reclamation plan in treated water
+quality and quantity, breadth of application, and public support can be measured.
+6 References
+References
+1. Game, N. & Commission, P. How Bathymetric Maps are Made http://outdoornebraska.gov/bathy
+metricmaps/.
+2. Service, N. O. How is bathymetric data used? National Oceanic and Atmospheric Administration —
+Department of Commerce. https://oceanservice.noaa.gov/facts/bathyuses.html%5C#: ~:text
+=Bathymetric%5C%20data%5C%2C%5C%20which%5C%20includes%5C%20information,way%5C%20road
+%5C%20maps%5C%20guide%5C%20drivers..
+3. Oceanic Imaging Consultants. Echosounder https://www.oicinc.com/history_sonars.html.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+Team 12384 Page 22 of 22
+4. Mario Ernesto Jij´ on Palma. Reference Bathymetric Map https://www.spiedigitallibrary.org/jou
+rnals/journal-of-applied-remote-sensing/volume-14/issue-3/034523/Multitemporal-image
+-encoding-for-monitoring-spatiotemporal-variations-of-water-bodies/10.1117/1.JRS.14
+.034523.short?SSO=1.
+5. Taube, C. M. Three Methods for Computing the Volume of a Lake Manual of Fisheries Survey Methods.
+Jan. 2000. https://www2.dnr.state.mi.us/publications/pdfs/ifr/manual/SMII%5C%20Chapter
+12.pdf.
+6. National Park Service. Overview of Lake Mead Sept. 2020. https://www.nps.gov/lake/learn/natur
+e/overview-of-lake-mead.htm .
+7. U.S. Department of the Interior. Precipitation and the Water Cycle https://www.usgs.gov/special
+-topic/water-science-school/science/precipitation-and-water-cycle?qt-science_center
+_objects=0%5C#qt-science_center_objects.
+8. U.S. Department of the Interior. Surface Runo↵ and the Water Cycle https://www.usgs.gov/specia
+l-topic/water-science-school/science/surface-runoff-and-water-cycle?qt-science_cente
+r_objects=0%5C#qt-science_center_objects.
+9. U.S. Department of the Interior. Artiﬁcial Groundwater Recharge https://www.usgs.gov/mission-a
+reas/water-resources/science/artificial-groundwater-recharge?qt-science_center_objec
+ts=0%5C#qt-science_center_objects.
+10. CT ECO. Drainage Basins Connecticut Department of Energy and Environmental Protection. https
+://cteco.uconn.edu/guides/Basin.htm#: ~:text=A%5C%20drainage%5C%20basin%5C%20is%5C%20
+an,water%5C%20drains%5C%20into%5C%20those%5C%20channels.
+11. Plumer B. Lake Mead helps supply water to 25 million people. And it just hit a record low https://w
+ww.vox.com/2016/5/23/11736340/lake-mead-water-drought-southwest .
+12. InTeGrate. Evaporation and Climate Science Education Resource Center at Carleton College. https:
+//serc.carleton.edu/integrate/teaching_materials/food_supply/student_materials/905.
+13. U.S. Department of the Interior. Inﬁltration and the Water Cycle https://www.usgs.gov/special-t
+opic/water-science-school/science/infiltration-and-water-cycle?qt-science_center_obj
+ects=0%5C#qt-science_center_objects.
+14. Chatterjee, C. & Singh, R. Interception and Depression Storage Mar. 2014. http://ecoursesonline
+.iasri.res.in/course/view.php?id=56.
+15. Guinaldo, T. et al. Parametrization of a lake water dynamics model MLake in the ISBA-CTRIP land
+surface system (SURFEX v8.1). 14, 1309–1344. https://doi.org/10.5194/gmd- 14- 1309- 2021
+(Mar. 2021).
+16. Center, N. D. M. Types of Drought University of Nebraska-Lincoln. https://drought.unl.edu/Educ
+ation/DroughtIn-depth/TypesofDrought.aspx%5C#: ~:text=Wilhite%5C%20and%5C%20Glantz1%5
+C%20categorized,hydrological%5C%2C%5C%20agricultural%5C%2C%5C%20and%5C%20socioeconom
+ic.aspx.
+17. Rulseh, T. Americans Were Asked for Their Views on Water Recycling. Here’s What They Said Treat-
+ment Plant Operator. Aug. 2020. https://www.tpomag.com/editorial/2020/08/americans-were-
+asked-for-their-views-on-water-recycling-heres-what-they-said%5C#: ~:text=The%5C%20s
+urvey%5C%20found%5C%20widespread%5C%20acceptance,recycled%5C%20water%5C%20for%5C%20a
+ny%5C%20purpose..
+18. Environmental Recovery Corporation. Di↵erent Types of Wastewater Treatment https://www.ercof
+usa.com/blog/types-of-wastewater-treatment/ .
+19. U.S. Environmental Protection Agency. Basic Information about Water Reuse https://www.epa.gov
+/waterreuse/basic-information-about-water-reuse .
+20. Lemar, P. & de-Fontaine, A. Energy Data Management Manual for the Wastewater Treatment Sector
+U.S. Department of Energy. Dec. 2017. https://www.energy.gov/sites/prod/files/2018/01/f46
+/WastewaterTreatmentDataGuide_Final_0118.pdf.
+21. Arias, M. Developing Criteria and Metrics for Assessing Recycled Water Program E ↵ectiveness PhD
+thesis (2011). https://doi.org/10.31979/etd.4bgm-herd.
+ᇿ Hi MCM
+ሧ࿟

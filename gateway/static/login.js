@@ -10,11 +10,15 @@
     codeSent = false;
     clearInterval(countdownTimer);
     $("title").textContent = reg ? "注册" : "登录";
-    $("submit").textContent = reg ? "发送验证码" : "登录";
+    // 注册模式下：主按钮固定为「完成注册」，验证码由独立的「发送验证码」按钮负责
+    $("submit").textContent = reg ? "完成注册" : "登录";
     $("nickname-field").style.display = reg ? "" : "none";
     $("code-section").style.display = reg ? "" : "none";
-    $("send-code").style.display = "none";
-    $("vcode").style.display = "none";
+    // 验证码输入框与发送按钮在注册模式下始终可见，保证能重发
+    $("send-code").style.display = reg ? "" : "none";
+    $("send-code").disabled = false;
+    $("send-code").textContent = "发送验证码";
+    $("vcode").style.display = reg ? "" : "none";
     $("toggle-text").textContent = reg ? "已有账号？" : "还没有账号？";
     $("toggle").textContent = reg ? "去登录" : "注册一个";
     $("msg").textContent = "";
@@ -61,12 +65,9 @@
         phone: email, password, nickname: $("nickname").value.trim(),
       });
       codeSent = true;
-      showMsg("验证码已发送，请查收邮箱", true);
-      $("submit").textContent = "完成注册";
+      showMsg("验证码已发送，请查收邮箱（没收到可 60s 后重发）", true);
       $("submit").disabled = false;
-      // 显示验证码输入框，隐藏发送按钮
-      $("send-code").style.display = "none";
-      $("vcode").style.display = "";
+      // 验证码输入框与发送按钮保持可见；按钮进入倒计时，倒计时结束可重发
       $("vcode").focus();
       startCountdown(60);
     } catch (e) {
@@ -124,6 +125,7 @@
   async function submit() {
     if (isRegister) {
       if (!codeSent) {
+        // 还没发过验证码：主按钮先帮用户发一次，避免卡住
         await requestCode();
       } else {
         await doRegister();

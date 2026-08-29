@@ -1,0 +1,917 @@
+ğ
+
+2020
+23rd Annual High School Mathematical Contest in Modeling (HiMCM)
+Summary Sheet
+
+Team Control Number: 10550
+Problem Chosen: A
+
+Many high school students want to seek appropriate summer  jobs during summer
+vacations. Doing summer jobs can benefit the students from many aspects. Not only the
+students can earn money from summer jobs, they can learn skills and new knowledge, gain
+work experience and know new friends. High school students have already had certain
+skills and can do suitable jobs. While many summer jobs and positions prevail on online job
+websites, many high school students find themselves hard to find suitable jobs.
+We developed an analytic network process  (ANP) model to solve best summer job
+selection problem. This problem in nature is a multiple criteria decision making problem.
+It involves many de cision factors and cannot be settled unless the  factors, job properties,
+and applicant situation and preferences  are comprehensively considered. In our solution,
+summer jobs are evaluated from total 15 criteria in four aspects: salar y, benefit, work
+conditions, and job suitability. Salary is the most important factor affecting job choice .
+Benefit refers to the improvement of students' soft power , such as  technical ability,
+communication ability, leadership and friendship. Working conditions include working
+place and environment, working hours, flexibility of work policy. Suitability refers to the
+degree of matching between job requirement s and students' skills and interests. Both job
+properties and user situation/preferences are fully considered in the model. Therefore, this
+model can recommend best jobs in alignment with users’ situation/preferences.
+The model is validated using ten jobs and ten fictional people and works as expected.
+Not only the best job, which has a highest score of priority, can be recommended, but all
+candidate jobs are ranked according to their comp uted priorities, providing more job
+options for users. A mobile App can be developed to present this solution to high school
+students as potential users. With this App, high school student users are required to provide
+a few information and let us know the ir preferences on choosing job, and the established
+solution can do the rest and return the ranked jobs to the users.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+2
+
+Table of Contents for Problem A of HiMCM 2020
+1 Introduction ................................................................................................................. 3
+1.1 Background .......................................................................................................... 3
+1.2 Problem Restatement ............................................................................................ 3
+2 Problem analysis ......................................................................................................... 4
+3 Assumptions ................................................................................................................ 5
+4 Methodology ............................................................................................................... 5
+4.1 Overall work flow ................................................................................................ 5
+4.2 Job and user data collection and preprocessing ................................................... 6
+4.3 Mathematical model ............................................................................................. 7
+4.3.1 Analytic network process .............................................................................. 7
+4.3.2 Criteria for evaluating candidate jobs ........................................................... 8
+4.3.3 ANP super matrix and weight determination .............................................. 10
+4.3.4 Consistency check ....................................................................................... 13
+4.3.5 Cluster weights and weighted super matrix ................................................ 13
+4.3.6 Limiting matrix and ranked priorities of jobs ............................................. 15
+4.4 Experimental data ............................................................................................... 15
+5 Results ....................................................................................................................... 15
+6 Sensitivity Analysis ................................................................................................... 17
+6.1 The influence of the cluster weights matrix ....................................................... 17
+6.2 The influence of nodes in supermatrix ............................................................... 19
+7 Presentation ............................................................................................................... 19
+8 Strengths and Limitations ......................................................................................... 20
+8.1 Strengths ............................................................................................................. 20
+8.2 Limitations ......................................................................................................... 21
+9 Conclusion ................................................................................................................ 21
+10 Citations and References ........................................................................................... 22
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+3
+
+Solution for Problem A of HiMCM 2020
+1 Introduction
+1.1 Background
+In summer vacations, many high school students want to seek appropriate summer jobs.
+Having a job in high school can not only be a great experience, it can also set you up to get
+even better jobs in college and beyond. There are many benefits to getting summer jobs for
+high school students. The students can earn some money, learn extra skills and knowledge,
+and gain work experience that would be helpful for major choice in university in the future.
+By doing summer jobs, the students may learn more about what kind of career they want
+in future. There are usually many summer jobs available around the students ’ residence.
+Some involve physical activit ies, such as cashier at a store, lifeguard in swimming pool,
+waiter at a restaurant and so on, w hile others are mostly sedentary and need some
+professional skills . Those office jobs suitable for high school students may include
+programmer, data analyst, office administrator, research assistant, zoo assistan t, and
+writing tutors. Different students have different situation and preferences. Some may have
+excellent technical skills, while others may possess excellent soft skills (e.g.
+communication skills, leadership). Some may expect good salary, while others may just
+want to improve themselves even if no salary is paid. While many summer jobs and
+positions overwhelm on online job website s, it is hard for students to find best jobs. We
+mean a best job for high school students as a job offering great gains, matching students’
+preferences, able to be completed by high school students, and of course, having great
+chance for the student to own it.
+In this article, we aim to develop a mathematical model to help high school students
+get their best jobs, by considering students' own capabilities, preferences and expectations,
+as well as salaries the jobs can offer and job suitability.
+
+1.2 Problem Restatement
+Question 1: What factors should be considered when high school students are looking
+for a summer job? What benefits can students get by doing the summer job? At the same
+time, what skill requirements are needed for the summer job ? These factors may be
+quantitative or qualitative, constant or variable, and deterministic or probabilistic.
+Question 2: Develop a model to evaluate the summer job options and give a rank. The
+factors, the properties of summer jobs, and the  situation and preferences of high school
+student should both be considered as the basis of evaluation. The high students can use the
+model results to choose their “best job”.
+Question 3: Create at least ten fictional persons with reasonable data. What data do
+you choose to create these persons and why ? Test the mod el developed in the second
+question and analyze the results of the application of the model on these persons.
+Question 4: How would you present your model for a person to understand and use ?
+ᇿ Hi MCM
+ሧ࿟
+ğ
+4
+
+A webpage, an app or a school newspaper article? Describe and provide the layout of your
+proposed presentation.
+2 Problem analysis
+Question 1: We define a best summer job for high school students as a job the student
+can have most gains (financial, intellectual, and mental, etc.), most likes (mostly match his/her
+preferences), and has great opportunity to own it. The benefits should not be limited to high
+pay, but also benefits of all aspects.  We will develop criteria including salary, the benefits in
+terms of improvements in  technical ski lls, communication skills, leadership /teamwork, and
+skills related to future university major or career, and knowing new friends. Thus , the factors
+to determine whether it is a best summer job should include not only the gains from the job,
+but also the chance of getting this job and how the work conditions are. To make a full
+evaluation, job characteristics/properties and user situation/preferences should be incl uded as
+evaluating factors. The skill requirements depend on the jobs to be applied. Different jobs have
+different skill requirements. To simplify this situation, we identify some common job types
+with which the skill requirements can be pre- identified. We can collect common summer
+jobs from major job websites, and then develop the factors and identify most common skill
+requirements. Students’ situation/preferences can be collected via interactive forms and
+questionnaire. Combining these two aspects, a set of comprehensive and reasonable factors
+that influence the job selection can be developed.
+Question 2: The best job selection  problem in nature is a multiple criteria decision
+making (MCMD) problems. We need to establish a decision -making model, which can
+take the "influencing factors" obtained in question 1 as the evaluation criteria . The model
+can determine if the job is best  for the users by considering all cr iteria including gains,
+users’ situation and preferences. The better the matching degree, the higher the score, the
+better the job. As this is a very complex problem  involving multiple decision factors that
+might interrelated with each other and many alternative jobs, the model should be selected
+appropriately and be able to deal with this complex problem.
+Question 3: We need to set up ten fictional  persons representative of some aspects .
+Each person should have his /her own characteristics, which are associated with  the
+influencing factors mentioned in questions 1 and 2. As we cannot collect real persons’
+information, we can use some random approach to generate fictional persons  with
+randomly assigned profiling information . Students’ situation and preferences are then
+created and input to the model for solving best jobs. The resulting best jobs can be analyzed
+by referring to person’s information.
+Question 4: We can design a mobile App. The job database and the model can install
+over cloud, and the App offers the interfaces to receive user information and transfers them
+to the model running remotely. The App provide s functions such user information
+collection, start or stop the model running and display the results. The screenshots of the
+App will present in this article.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+5
+
+3 Assumptions
+Assumption 1: A best summer job for high school students is  defined as a job the
+student can have most gains (financial , intellectual, and mental, etc.) , most likes (mostly
+match his/her preferences), and has great opportunity to own it.
+Justification: A job with very high salary may be someone ’s best job, but not all ’s.
+Especially for high school students, pursuing high pay is not unique purpose in looking for
+a job. Sometimes a student prefers learning knowledge or improving skills from a job and
+the money earned is second. Therefore, matching the students ’ preferences are very
+important to define a best job. The chance for a student to get this job is another important
+criterion to define a best job. In this sense, a best job is also a most suitable job considering
+the student own’s situation.
+Assumption 2: Many direct or indirectly costs incurred during seeking a summer job
+are ignored and the jobs can be characterized by a limited number of factors.
+Justification: Model is a simplified representation. In the model, we can only pay
+attention to major points and ignore minor ones. As summer jobs are usually temporal jobs,
+the costs relating to seeking summer jobs are not big and thus ignored. Although they are
+both called camp counselor, counselor jobs for elementary and junior school students
+require different skills and offer different salaries. In our testing job data, they are
+simplified. All counselor jobs are considered the same. In theory our model supports very
+detailed profiling of jobs and users.
+Assumption 3: Randomly generated person information can represent real people
+situation and preferences, and data necessary for the model can be obtained.
+Justification: Each person has his/her own preferences and opinions on doing
+something. To represent real user cases, a better way is to collect  a large number of  real
+person’s data. However, we are unable to use real person’s data and turns to create fictional
+persons as requested whose basic information and preferences are randomly generated. We
+use very limited person data to test our model . Job data can be collected from online job
+website all over the world. To collect and process those data involve many techniques and
+some data might be copyrighted. We assume those data can be obtained because of our
+main purpose is to develop a model. The model is then tested with a small number of real
+job records acquired from a job website and fictional people.
+4 Methodology
+4.1 Overall work flow
+Our method consists of three steps  (Figure 1): Job data collection and preprocessing,
+user information collection, and analytic network process (ANP) solver.
+• Job data collection and preprocessing: job data are obtained from online job
+websites. After certain quality control, some filters are applied to exclude jobs that are
+obviously unsuitable for high school students. The raw unstructured data are processed into
+structured data to provide support for ANP computation.
+• User information collection: user situation and preference s are collected through
+ᇿ Hi MCM
+ሧ࿟
+ğ
+6
+
+interactive forms and questionnaire respectively. Student situation/profile includes his/her
+location, skills, interests, personality types, expected salary and recreation hours.
+Preference i nformation includes the user's preferences towards established evaluation
+criteria and jobs types.
+• ANP Solver: We established 4 clusters and 15 criteria to form the ANP super
+matrix to solve job’s priority considering users’ preferences. Job data and user information
+are needed to estimate weight sub -matrices. Consistency are then checked and limiting
+matrix is reached after repeatedly multiplying the weighted super-matrix with itself. Jobs'
+priorities are then given.
+
+Figure 1 Methodological flowchart
+4.2 Job and user data collection and preprocessing
+Job data is obtained from online job websites. Many job websites are available in
+various countries, such as in UK, studentjob.co.uk provides many summer jobs for students;
+in China, the data of summer jobs can be obtained from 58.com. In addition, goodwall.io,
+summerjobs.com and indeed.com all provide a lot of jobs. Considering the particularity of
+high school students, we limit candidate jobs to the same city where students are located.
+We use Web crawlers (such as well-known scrapy, pyspider, etc.) to grab job data from
+these online work websites, but the captured data is unstructured. Before entering our
+model, we need to preprocess and structure these raw  data. The preprocessing includes
+removal of duplicate records, and preliminary data quality control, etc. An example of
+structured job data is shown in Appendix A . Those job data are from
+https://www.studentjob.co.uk. Each job has a specif ic workplace. If a job has multiple
+workplaces, multiple jobs are created in line with every workplace. This is because we need
+to calculate the distance between the user and the workplace to determine commuting cost,
+which will affect final job selection.
+User situation and preferences data are obtained through interactive forms and
+ᇿ Hi MCM
+ሧ࿟
+ğ
+7
+
+questionnaires. According to the obtained user data, further filtering is applied  to exclude
+obviously unsuitable jobs. For example, excluded are jobs with salary that is far lower than
+expected salary or requir ing skills that the student  does not have. The jobs that enter our
+model are therefore limited to a subset of jobs that satisfy the basic conditions. The
+questionnaire is used to obtain the user's opinions  and preference s for evaluating jobs,
+which are necessary to calculate the weights  of evaluation criteria. For example, students
+are prompted to answer these questions to determine their opinions towards the importance
+of the four ANP clusters in evaluating goodness of a job:
+Please score the importance (0 -100) of the following items when you are going to
+choose a summer job, with the most important one having a score of 100:
+a) payment____;
+b) technical and social skills improvement____;
+c) work conditions____;
+d) degree of interest and skill matches____.
+4.3 Mathematical model
+4.3.1 Analytic network process
+ANP is a complex tool to deal with multi-objective decision-making problems. It uses
+a network structure to consider the dependence between models and the interaction and
+feedback between evaluation criteria (Saaty, 1990). Therefore, ANP has the advantages that
+other decision-making methods, such as AHP and decision tree, do not have. Moreover, in
+making decision for best jobs, we need to consider that the various criteria may affect each
+other, and user situation/preferences and job information jointly affect jobs priorities. The
+mathematical model based on ANP can meet these needs.
+ANP network is expressed as nodes and arcs. Nodes can express criteria or alternatives
+and arcs can express the relationship between nodes. Arc may have two directions, meaning
+“depend on” and “has influences on”  respectively. Nodes in ANP can be classified as
+multiple clusters, including goal, criteria and alternative clusters. C riteria and alternative
+clusters can include many nodes representing specific criteria and alternatives respectively.
+In our problem, alternatives are different jobs. When one or more nodes  in a cluster are
+associated with one or more nodes in another cluster, a connection is established between
+the two clusters.
+Our problem is constructed as an ANP network as shown in Figure 2. The Best Summer
+Job node represents a goal cluster, which only includes one node and is associated with
+four criteria clusters, namely salary, benefit, work conditions, and sustainability . Each
+criteria cluster includes a different number of criteria nodes, such as salary cluster only
+includes one salary node while benefit cluster includes 5 nodes. There are many nodes in
+the alternatives cluster, which represent different jobs respectively.
+The blue arcs in Figure 2 indicate cluster level associations, and the black lines indicate
+node level associations. Each arc has at most two directions of association. For example,
+the associations from Job1 to work conditions criteria indicate relative weights  of work
+ᇿ Hi MCM
+ሧ࿟
+ğ
+8
+
+conditions criteria influencing J ob1; the associations  from the workplace environment
+criteria to all candidate  jobs represent relative weights  of job s on this criterion. These
+weights are calculated by establishing a comparison matrix. The bidirectional associations
+between jobs and criteria indicate the roles and feedbacks of job characteristics on criteria.
+4.3.2 Criteria for evaluating candidate jobs
+We measure whether a job is best for the user from four aspects:
+• Salary indicates the money we have made. A job with high salary will attract a lot
+of people. Considering that some people attach great importance to salary, we
+separate it from other benefits.
+• Benefit refers to the improvement of one's own ability by completing the work,
+including the improvement of technical and social skills. A job with low salary but
+a lot of self -improvement can also attract many high school students, especially
+when the working experience can enrich the resume, or help apply universities in
+the future.
+• Work conditions  indicates the working conditions of the job, including work
+environment, working hours, job flexibility, and the convenience of commuting
+etc. These factors will affect the user's judgment of whether a job is good or bad.
+• Suitability indicates the fitness between individual user and candidate jobs. If a job
+is consistent with our interests or our personality, we may lower our expectations
+in other aspects. At the same time, a job may also have skill requirements. The
+more students meet these requirements, the higher the probability of being hired.
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+9
+
+Figure 2 Network structure in the ANP model
+The four first level criteria are represented as clusters in the ANP, and the second level
+criteria as shown in Figure 2, include 15 criteria in total. The criteria in blue indicate that
+their weights only depend on the job itself, while the weights of yellow -colored criteria
+also depend on students’ situation/preferences. Meanwhile, for different student users, the
+four clusters are also given different weights to reflect their distinguished preferences. The
+criteria clusters and criteria are shown in Table 1.
+Table 1 Established criteria for best job selection. Codes are included within parentheses.
+1st criteria 2nd criteria
+Salary (S) Salary (S)
+Benefit (B) Technical skills (B1)
+Communication skills (B2)
+Skills related to interests (B3)
+Leadership/teamwork (B4)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+10
+
+4.3.3  ANP super matrix and weight determination
+Based on goal node, criteria nodes and job nodes, we establish the ANP super matrix
+(Table 2). Wmn represents how the m-th cluster (row) affects the n-th cluster (column). The
+salary cluster has only one node, so the elements of W21 and W26 are all taken as 1.0. The
+values of the column where the goal cluster is located does not affect the limiting matrix
+(Kadoić, 2018), so Wi1(i=3,4,5) is set to zero. The remaining 16 sub- matrices need to be
+determined by paired comparison on node level. Each sub-matrix has a sum of each column
+of 1. Therefore, the resulting super matrix is unweighted and needed to be normalized prior
+to computing for the limiting matrix.
+The codes of criteria in the table are consistent with Table 1. “Best job” stands for the
+goal cluster as numbered 1; “ Jobs” represents the alternatives cluster as numbered 6. We
+need to determine 21 weight sub-matrices (denoted as W in Table 2).
+The sixteen sub -matrices with unknown weights to be solved can be divided into
+several categories according to the association:
+• W
+i6 and W 6j(i=3,4; j=2,3,4) reflect the associations and feedbacks between
+individual jobs and criteria, and they are calculated with job information as input.
+The exceptions are the weights related to the commuting criterion, which require
+more information such as location of user and commuting means to the workplace
+in addition to job information;
+• W
+56 and W 65 are weight matrices representing the joint influences of user
+situation/preferences and job characteristics. both user and job information are
+needed in the calculation;
+• The remaining weights sub- matrices (W42, W52, W33, W43, W53, W44, W54, W45,
+and W55) reflect the interactions and feedbacks between and within the criteria
+clusters, and these weights reflect general understanding of those evaluation
+criteria, independent of individual user and independent of job. In our calculations
+it is determined by our experience.
+Friendship (B5)
+Work conditions (W) Workplace environment (W1)
+Working hours/recreation time (W2)
+Flexibility (W3)
+Safety (W4)
+Commuting (W5)
+Suitability (U) Interest match (U1)
+Skill match (U2)
+Personality match (U3)
+Experience match (U4)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+11
+
+Table 2 The ANP supermatrix for best job selection
+
+We use the fundamental scale of absolute numbers (Saaty,2008) which are established
+to make paired comparisons . The scale has nine different intensities: 1 means that two
+elements in a pair are equally important with respect to the higher level element; 9 means
+extreme importance of one element over another. Values of the elements in the comparison
+matrix usually indicate relative importance between two criteria . In our problem, the
+criteria variables include both qualitative and quantitative types. For example, we can only
+rank relative importance of each criterion  in the Benefit cluster with respect to  a certain
+job. But salary as a criterion can be calculated according to each job, and in many cases,
+the commuting cost can be calculated according to the locations of students and jobs they
+are applying . When these cases appear, the absolute value s of the rates between these
+criteria can be used to determine the importance.
+When the weights are determined by the comparison matrix, job- related weights are
+derived from structured job data, and user-related weights are obtained from the collected
+user data via interactive forms and specially designed questionnaire. In order to reduce the
+computational costs , we identify some  commonly used types of jobs, such as Camp
+Counselor, Store Cashier and so on. Thus, many job-related weights can be derived from
+job types instead of using individual job details. For example, Camp Counselor type jobs
+benefit the students more in social skill development and building leadership than any Store
+Cashier job. The working  location of Camp counselor i s usually outside, while Store
+Cashier’s working place is in the interior. Job-related information is thus stratified into two
+layers, one based on the j ob type and the other  related to i ndividual job details. Those
+details should be carefully collected. For example, the same type of "Store cahier" jobs can
+differ in salary they can offer.
+Because the calculation of sub-matrices is complicated, we developed the following
+strategies. When jobs are updated, we only need to recalculate the sub -matrices related to
+individual job details; when new user uses our model, we only need to recalculate sub-
+matrices related to user. The rest of the weights do not need to be updated. Appendix B
+ᇿ Hi MCM
+ሧ࿟
+ğ
+12
+
+demonstrates an unweighted s upermatrix including 10 jobs as listed in Appendix A that
+takes into account a fictional student’s situation and preferences.
+Let's take W65, which considers both user and job, as an example to introduce a general
+procedure to determine a weight sub-matrix. In the user data collection stage, we collected
+the user's basic information , including the student’s location, skills, interests and
+personality types, etc. These information in combination with the structured job data are
+used to evaluate the importance of relevant criteria through a paired comparison method.
+After the comparison matrix gets constructed, the eigenvector is calculated to obtain
+weights.
+In a supermatrix built for a student user, the column in the W 65 sub-matrix related to
+the criteria of interest match is solved as follows: f irstly, as per  the user's profile
+information, he/she pays more attention to the improvement of his/her own skills and
+abilities; he/she is outgoing and enthusiastic with some teamwork skill and leadership; and
+he/she has some experience in student work. Those user information are then compared to
+the relevant information stored in the  structured job dataset (Appendix A) to evaluate the
+degrees of interest match between the user and 10 jobs. As the user is warm -hearted and
+has good teamwork skills and leadership, and hopes to further improve his /her ability, the
+jobs such as Languages Teachers (online), Student Brand Ambassador, and Summer
+Resident Camp Counselor have high interest match, followed by Library Technical
+Assistant and part -time Copywriter. The rest jobs do not match the user's interest well.
+Therefore, comparison matrix can be established, as shown in Table 3. The eigenvector is
+then calculated and normalized. Each element in the obtained vector represents an element
+value of the column of interest match (U1) in W
+65 (Table 4).
+Table 3 A pairwise comparison matrix to estimate the weights of jobs with respect to
+interest match
+Jobs 1 2 3 4 5 6 7 8 9 10
+1 Athletic Fitness Model for Photo Shoot  1.00  1.00  0.33  0.50  0.50  0.33  0.33  1.00  1.00  1.00
+2 Data research Internship 1.00  1.00  0.33  0.50  0.50  0.33  0.33  1.00  1.00  1.00
+3 Languages Teachers (online) 3.00  3.00  1.00  1.50  1.50  1.00  1.00  3.00  3.00  3.00
+4 Library Technical Assistant 2.00  2.00  0.67  1.00  1.00  0.67  0.67  2.00  2.00  2.00
+5 Part-time Copywriter 2.00  2.00  0.67  1.00  1.00  0.67  0.67  2.00  2.00  2.00
+6 Student Brand Ambassador 3.00  3.00  1.00  1.50  1.50  1.00  1.00  3.00  3.00  3.00
+7 Summer Resident Camp Counselor 3.00  3.00  1.00  1.50  1.50  1.00  1.00  3.00  3.00  3.00
+8 Telephone Survey Advisor 1.00  1.00  0.33  0.50  0.50  0.33  0.33  1.00  1.00  1.00
+9 Temp Retail 1.00  1.00  0.33  0.50  0.50  0.33  0.33  1.00  1.00  1.00
+10 Warehouse Operatives 1.00  1.00  0.33  0.50  0.50  0.33  0.33  1.00  1.00  1.00
+Table 4 Normalized weights of jobs with respect to interest match by considering user ’s
+situation/preferences
+Jobs eigenvector weights (normalized)
+ᇿ Hi MCM
+ሧ࿟
+ğ
+13
+
+Athletic Fitness Model for Photo Shoot  -0.16 0.06
+Data research Internship -0.16 0.06
+Languages Teachers (online) -0.48 0.17
+Library Technical Assistant -0.32 0.11
+Part-time Copywriter -0.32 0.11
+Student Brand Ambassador -0.48 0.17
+Summer Resident Camp Counselor -0.48 0.17
+Telephone Survey Advisor -0.16 0.06
+Temp Retail -0.16 0.06
+Warehouse Operatives -0.16 0.06
+
+4.3.4 Consistency check
+Since the comparison matrix is generated by pairwise comparisons, inconsistencies
+may arise between the weights (Alonso & Lamata, 2006) . Consistency ratio (CR) is
+calculated to check the consistency:
+𝐶𝐶𝐶𝐶 = 𝐶𝐶𝐶𝐶
+𝐶𝐶𝐶𝐶
+where 𝐶𝐶𝐶𝐶  is the  consistency index, and 𝐶𝐶𝐶𝐶  is the average value of 𝐶𝐶𝐶𝐶  for ran dom
+matrices using the Saaty scale (Saaty, 1990). 𝐶𝐶𝐶𝐶 is given as:
+𝐶𝐶𝐶𝐶 = 𝜆𝜆𝑚𝑚𝑚𝑚𝑚𝑚 − 𝑛𝑛
+𝑛𝑛 − 1
+where 𝜆𝜆𝑚𝑚𝑚𝑚𝑚𝑚 is the maximum eigenvalue of the comparison matrix and n is the number of
+the rows and columns of the comparison matrix. The 𝐶𝐶𝐶𝐶 values (Table 5) related to n is
+given by Saaty (2005).
+Table 5 Random Index values (Saaty, 2005)
+n 1 2 3 4 5 6 7 8 9 10
+𝐶𝐶𝐶𝐶 0 0 0.52 0.89 1.11 1.25 1.35 1.40 1.45 1.49
+If the comparison matrix  is completely consistent , 𝐶𝐶𝐶𝐶 = 𝜆𝜆𝑚𝑚𝑚𝑚𝑚𝑚 − 𝑛𝑛 = 0 . As the
+inconsistency becomes larger the 𝐶𝐶𝐶𝐶  increases. It is recommended that 𝐶𝐶𝐶𝐶  should be
+less than or equal to 0.10. Inconsistency may be thought of as an indicator for further
+adjustment. But the adjustment should not be too  large, nor too small. Small adjustments
+would have no consequence.
+4.3.5 Cluster weights and weighted super matrix
+If all the clusters are equally important it is not necessary to make cluster comparisons,
+and the cluster weights are set to 1/n in the cluster matrix. The value of n is equal to the
+number of clusters. However, the clusters in a network may not be equally important  and
+nodes in one cluster may be connected to other nodes in another cluster. So, it needs to be
+compared for how important its influence is on itself compared to the other clusters it links
+to. To compare clusters, we take each cluster in turn as the parent and pairwise compare all
+the clusters it connects to for importance with respect to their influence on it. After this
+ᇿ Hi MCM
+ሧ࿟
+ğ
+14
+
+process, the cluster weights matrix is generated (Table 6).
+Taking the first column in Table 6 for instance, it indicates that salary and benefit won’t
+influence s alary, while salary depends on work conditions, suitability and jobs, and
+suitability and jobs are about twice times more important for salary than work conditions.
+The last column of w1-w4 represent users’ preferences on the cluster weights. For example,
+if a user prefers high salary and does not care what he/her can learn from the job, w1 might
+be much higher than others. We determine w1-w4 by using questionnaire to each student
+user. Thus, each user can have distinct w1-w4.
+The values in the cluster weights matrix are used to weight the unweighted supermatrix
+by multiplying the value in the ( cluster X, cluster Y) cell of the cluster weighted matrix
+with the value in each cell in the ( cluster X, cluster Y ) component of the unweighted
+supermatrix to produce the weighted supermatrix.
+For an unweighted supermatrix 𝑊𝑊𝑢𝑢𝑢𝑢 with n rows and n columns. There are n clusters
+in the network, and 𝑊𝑊𝑖𝑖𝑖𝑖 is a sub-matrix in 𝑊𝑊𝑢𝑢𝑢𝑢 which represents the influence of cluster
+i on cluster j (i=1, 2, …, n; j= 1, 2, …, n). If 𝑊𝑊𝑖𝑖𝑖𝑖 is not zero matrix, each column in 𝑊𝑊𝑖𝑖𝑖𝑖
+has a sum of 1, which means the columns in 𝑊𝑊𝑢𝑢𝑢𝑢 may have a sum greater than 1.
+The cluster weights matrix 𝑊𝑊𝑐𝑐𝑢𝑢 corresponding to 𝑊𝑊𝑢𝑢𝑢𝑢 can be expressed as:
+𝑊𝑊𝑐𝑐𝑢𝑢 = �
+𝑣𝑣11 𝑣𝑣12
+𝑣𝑣21 𝑣𝑣22
+⋯ 𝑣𝑣1𝑛𝑛
+⋯ 𝑣𝑣2𝑛𝑛
+⋮ ⋮
+𝑣𝑣𝑛𝑛1 𝑣𝑣𝑛𝑛2
+⋱ ⋮
+… 𝑣𝑣𝑛𝑛𝑛𝑛
+�
+where 𝑣𝑣𝑖𝑖𝑖𝑖 is the weight of the ith cluster  among the n clusters that influence on cluster j,
+so each column in 𝑊𝑊𝑐𝑐𝑢𝑢 has a sum of 1.
+The weighted supermatrix 𝑊𝑊𝑢𝑢 can be calculated by:
+𝑊𝑊𝑢𝑢 = �
+𝑣𝑣11 ∙ 𝑊𝑊11 𝑣𝑣12 ∙ 𝑊𝑊12
+𝑣𝑣21 ∙ 𝑊𝑊21 𝑣𝑣22 ∙ 𝑊𝑊22
+⋯ 𝑣𝑣1𝑛𝑛 ∙ 𝑊𝑊1𝑛𝑛
+⋯ 𝑣𝑣2𝑛𝑛 ∙ 𝑊𝑊2𝑛𝑛
+⋮ ⋮
+𝑣𝑣𝑛𝑛1 ∙ 𝑊𝑊𝑛𝑛1 𝑣𝑣𝑛𝑛2 ∙ 𝑊𝑊𝑛𝑛2
+⋱ ⋮
+… 𝑣𝑣𝑛𝑛𝑛𝑛 ∙ 𝑊𝑊𝑛𝑛𝑛𝑛
+�
+where each column in 𝑊𝑊𝑢𝑢 has a sum of 1.
+For example, the value 0.20 (cluster W, cluster S) in Table 6 is used to multiply each
+of the five values in the block (cluster W, cluster S) in the unweighted supermatrix shown
+in Appendix A. Each column in the weighted supermatrix has a sum of 1.
+Table 6 cluster weights matrix
+S B W U Jobs
+S 0  0  0  0  w1
+B 0  0.20 0  0  w2
+W 0.20  0.10 0.20  0.30  w3
+U 0.40  0.30  0.40  0.30  w4
+Jobs 0.40  0.40  0.40  0.40  0
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+15
+
+4.3.6 Limiting matrix and ranked priorities of jobs
+In the ANP we look for steady state priorities from a limit super matrix. To obtain the
+limit we must raise the weighted supermatrix to (k+1) power. After enough iterations, the
+limiting matrix can be obtained. In the limiting matrix, each column of the matrix has same
+values. The priorities of the candidate jobs are obtained by locally normalizing the
+corresponding values in the appropriate columns of the limit matrix. They can be found in
+the areas of P in the limiting matrix (Table 2).
+4.4 Experimental data
+To test our mathematical model, we collected and structured 10 representative jobs
+from studentjob.co.uk (Appendix A). According to the requirements of our problem, we
+have generated 10 fictional people with different situations and preferences. Each fictional
+student includes t he information of gender, age, living place, expected salary, expected
+recreation hours, interests, personality, skills, and past experiences. We define the set of
+possible options for these factors and use Monte Carlo method to generate random values
+for these factors and assigned them to the ten  students. For example, personality options
+consist of 16 types (such as the Counselor, the Nurturer) ( Myers and Myers, 1990). We
+generate random numbers from 1-16 and assign each student a value. The communication
+skill options, however, are simply divided into groups of low, medium and high and we
+will still use Monte Carlo to assign  the generated option to each student. We follow the
+same approach to generate other factors that make up a student’s profile. It is also worthy
+to note that we need to have consistency check in order to eliminate possible disagreements.
+It is possible that the random method will generate some contradictory data. For example,
+communication skill may be set to low while interest is set to, say, a sale job that requires
+high communication skill. For those data, we need to fix them manually.
+Theoretically, we can also generate a random living place for each student and use
+some software such as geo graphic information system  to calculate the distance between
+living place and job’s workplace. We can also estimate possible commuting methods and
+overall commuting costs. It is feasible but complex to implement, therefore, in our
+experiment for simplicity we have directly derived commuting cost s for student users in
+relation to 10 jobs working sites.
+5 Results
+Table 7 shows a fictional student A’s opinion about the importance of criteria clusters
+influencing selection of a best job.  According to this student's profile, we filled out
+questionnaire and then converted it to comparison matrix to get cluster weights (w1-w4 in
+Table 6) which together with between -cluster weights are used for the normalization of
+unweighted super matrix. Those cluster weights reflecting user’s preferences thus  affect
+the student's ranking of priorities for candidate jobs. We can see that Student A attaches
+great importance to improving his/her own skills from summer job. According to his/her
+situation/preferences, we obtain the weights of the 10 jobs with respect to six criteria (Table
+8). Complete unweighted and weighted supermatrix normalized by cluster weights matrix
+ᇿ Hi MCM
+ሧ࿟
+ğ
+16
+
+are attached to Appendix B.
+Combining Table 7 and Table 8, we can conclude that Student A has the following
+characters:
+• He pays more attention to the improvement of his own skills and abilities (a higher
+weight of benefit);
+• He is outgoing and enthusiastic with some teamwork skill and leadership (a high
+weight of teamwork jobs); and
+• He has some experience in student work.
+Table 7 Student A’s opinion on the importance of criteria clusters with respect to best job
+selection
+Cluster Salary Benefit Work conditions Suitability
+Weight 0.200 0.400 0.200 0.200
+
+Table 8 Weights of job criteria considering Student A’s preferences
+Jobs
+skills related
+to interests
+Commuting
+interest
+match
+skill
+match
+personality
+match
+experience
+match
+Athletic Fitness Model for Photo Shoot 0.167 0.045 0.056 0.143 0.083 0.105
+Data research Internship 0.056 0.136 0.056 0.048 0.125 0.158
+Languages Teachers (online) 0.111 0.136 0.167 0.143 0.083 0.158
+Library Technical Assistant 0.056 0.045 0.111 0.143 0.083 0.105
+Part-time Copywriter 0.111 0.136 0.111 0.048 0.083 0.105
+Student Brand Ambassador 0.167 0.136 0.167 0.095 0.125 0.105
+Summer Resident Camp Counselor 0.167 0.091 0.167 0.143 0.125 0.158
+Telephone Survey Advisor 0.056 0.136 0.056 0.095 0.125 0.053
+Temp Retail 0.056 0.045 0.056 0.143 0.125 0.053
+Warehouse Operatives 0.056 0.091 0.056 0.000 0.042 0.000
+
+After consistency check and 80-100 iterations, we can get Student A's limiting matrix
+(Appendix C), all columns of super matrix reach the same point. In this case, the weights
+in the P region (Table 2) of supermatrix is the final job priorities. The results after local
+normalization are shown in the column P1 of Table 9. The higher priority a job scores, the
+better it is for Student A. The best job for this student is Brand Ambassador with a rate of
+0.127. Languages Teachers (online) and Summer Resident Camp Counselor are also good
+choices for Student A due to computed high priorities. Considering Student A's personality,
+hobbies and past experience, the best job found by the model meets our expectation.
+We follow the same procedure to solve job priorities  for the other nine students . The
+results are listed in Table 9. According to the randomly generated person attributes, the
+following profiles can be summarized for the total 10 fictional students (Pn represents
+Student n）：
+ᇿ Hi MCM
+ሧ࿟
+ğ
+17
+
+P1 is Student A, outgoing, emulous and with past experience in teaching student . P2
+is athletic and has good physical fitness but poor  academic performance, wants to earn
+money through summer job. P3 is introverted, careful with good computer technology and
+hopes to work remotely at home and have more free time in the summer vacation.  P4 has
+a little teaching experience, wants to improve leadership and communication skills through
+summer job and values work safety and working environment. P5 is outgoing, enthusiastic,
+and fond of  outdoor activities with strong leadership , hope s to get improved through
+summer job. P6 has relatively  poor technical skills and physical fitness, but good
+communication skills and sales experience, and pays more attention to salary. P7  is
+introverted but careful with some teaching assistant work experience and  cares about the
+working environment, hope s to improve study ability. P8 has good physical fitness, but
+lacks of professional skills, hopes to improve leadership, and gain some friendship. P9 is
+patient and  careful, hope s to find work related to the school  with teachers and fellow
+students, and pays more attention to the suitability of work than benefit . P10 is outgoing
+and good at communication, he/she pays more attention to salary.
+Rows in Table 9 correspond to 10 jobs, and columns correspond to 10 fictional persons.
+The grids in red indicate high priority jobs for the persons corresponding the columns. The
+best jobs solved by the model agree well with the users’ situation/preferences. By contrast,
+green grids indicate lowest priority jobs that should be never accepted by the users
+considered. Those jobs are in obvious contradiction with the personality and interests of
+the users.
+Table 9 Normalized priorities of candidate jobs for ten fictional people. Color spectrum
+from red to green indicates high to low priorities.
+Jobs P1 P2 P3 P4 P5 P6 P7 P8 P9 P10
+Athletic Fitness Model for Photo Shoot 0.098  0.142  0.077  0.069  0.104  0.086  0.077  0.094  0.085  0.106
+Data research Internship 0.093  0.072  0.153  0.124  0.087  0.077  0.092  0.084  0.098  0.068
+Languages Teachers (online) 0.126  0.099  0.116  0.145  0.113  0.102  0.128  0.111  0.118  0.096
+Library Technical Assistant 0.107  0.107  0.126  0.115  0.092  0.107  0.124  0.091  0.132  0.110
+Part-time Copywriter 0.088  0.083  0.133  0.132  0.068  0.079  0.149  0.095  0.134  0.086
+Student Brand Ambassador 0.127  0.093  0.089  0.099  0.136  0.122  0.099  0.118  0.109  0.109
+Summer Resident Camp Counselor  0.119  0.078  0.067  0.081  0.163  0.086  0.076  0.120  0.078  0.104
+Telephone Survey Advisor 0.098  0.104  0.085  0.081  0.072  0.138  0.090  0.095  0.092  0.126
+Temp Retail 0.090  0.111  0.086  0.087  0.075  0.139  0.090  0.094  0.081  0.105
+Warehouse Operatives 0.055  0.111  0.070  0.067  0.089  0.064  0.074  0.099  0.072  0.090
+
+6 Sensitivity Analysis
+6.1 The influence of the cluster weights matrix
+Cluster weights matrix comprises inter-cluster weights as well as weights (w1-w4 in
+Table 6) in relation to user’ s preferences. The cluster weights , w1-w4, are obtained by
+ᇿ Hi MCM
+ሧ࿟
+ğ
+18
+
+questionnaire so they are usually quite arbitrarily determined.  We try to explore the
+sensitivity of cluster weights with an example of Student B (fictional person 2). Student B
+is athletic and has good physical fitness. The reason for looking for a summer job is to raise
+money, so in the cluster weights matrix, we set th e weights that the Jobs cluster depends
+on others are 0.5 for salary (w1), 0.1 for benefit  (w2), 0.2 for both work conditions  (w3)
+and suitability (w4). Thus, there is no doubt that the best job for him/her is Athletic Fitness
+Model for Photo Shoot (Table 10), which offers a relative high salary and s uitable for his
+physical condition. Now, let’s assume that he/she has modified the goal . He/she wants to
+improve the leadership and teamwork skill rather than make money. The weights of salary
+and benefit should be switched (0.1 for salary and 0.5 for benefit). Then the job priorities
+(the 3rd column in Table 10) are totally different  from the previous job priorities  by
+pursuing high paid jobs. The best job for he/she is found to be Student Brand Ambassador
+and Summer Resident Camp Counselor is also a good choice. These two jobs meet the goal
+of improving leadership and teamwork skills. It’s worth mentioning that with the adjusted
+pursuit the priorities of the jobs that are related to self-improvement have all increased.
+The Cluster Weights matrix not only reflects the influence among clusters, but also
+exerts the influence of user preferences on the result normalization through W1-W4 (Table
+5). W1-W4 is the most arbitrary weight in the whole super matrix, which is obtained by
+the user's survey questions. And we take Student B (Fictional person 2) best Job selection
+as an example, and discuss the influence of cluster weights on the decision results.
+Table 10 Impacts of modified cluster weights on the job priorities for Students B and C
+Jobs
+Student B
+Original
+Student B
+modified
+Student C
+Original
+Student C
+modified
+Athletic Fitness Model for Photo Shoot 0.142 0.085 0.094  0.117
+Data research Internship 0.072 0.088 0.084  0.082
+Languages Teachers (online) 0.099 0.105 0.111  0.097
+Library Technical Assistant 0.107 0.087 0.091  0.091
+Part-time Copywriter 0.083 0.092 0.095  0.097
+Student Brand Ambassador 0.093 0.129 0.118  0.106
+Summer Resident Camp Counselor  0.078 0.120 0.120  0.104
+Telephone Survey Advisor 0.104 0.105 0.095  0.103
+Temp Retail 0.111 0.093 0.094  0.098
+Warehouse Operatives 0.111 0.096 0.099  0.105
+
+Besides, changes in between-cluster weights in the cluster weights matrix may also
+lead to different results. The 4th and 5th columns in Table 10 show the changes in resulting
+job priorities f or the fictional person 8 (Student C)  if the between -cluster weights are
+altered. This student has  good physical fitness and hope s to improve leadership and gain
+some friendship, but lacks of professional skills . The best job for him/her is Summer
+Resident Camp Counselor , which meets his/her preference of impr oving leadership and
+ᇿ Hi MCM
+ሧ࿟
+ğ
+19
+
+gaining friendship. This result is under the condition  that the influences of benefit, work
+conditions, suitability, and jobs cluster s on the benefit cluster are 0.2, 0.1, 0.3, and 0.4,
+respectively (Table 6). If we assume that the influence of suitability  on benefit is  much
+greater than other clusters, which means the benefit we get from the job depends on whether
+we are suitable for the job. We set 0.1, 0.1, 0.6, and 0.2 as the weights to reflect this
+assumption. The resulting job priorities are changed as shown in the rightmost column of
+Table 10. The best job now turns to be Athletic Fitness Model for Photo Shoot , which is
+suitable for his/her good physical fitness . The jobs that may match his/her preference of
+improving leadership and gaining friendships are not the best choices because the student
+does not have professional skills  given the new assumption that the suitab ility cluster
+mainly decides the benefit.
+
+6.2 The influence of nodes in supermatrix
+The nodes in Wi6 and W6j (i=2, 3, 4; j=2, 3, 4) reflect the associations and feedbacks
+between individual jobs and criteria nodes. The nodes in W56 and W65, however, take into
+account both in dividual user information and job situation. In Table 9, each row
+corresponds to a unique job, the priorities in the same row  for different students
+considerably differ from each other, suggesting user s’ distinct situations exert large
+influences on the resulting job ranking. It implies that the proposed model is relatively
+sensitive to user situation and preferences. Persons 2 (P2) and 10 (P10) share same
+personality (outgoing) and purpose (earning money). The sole difference is that P2 has
+good physical fitness and P10 is good at communication. The prioritized jobs for them are
+different. P2’s best summer job is Athletic Fitness Model for Photo Shoot and P10’s is
+Telephone Survey Advice. Other nodes in sub -matrices (W42, W52, W33, W43,  W53,
+W44, W54, W45, and W55) represent the inter-criteria relationship. They are basically
+independent of individual users and jobs, and reflect general understanding of the criteria.
+Making change on those nodes will also impact the results  but we recommend keeping
+them unchanged throughout the process.
+The nodes in Wi6 and W6j (I =2, 3, 4; J =2, 3, 4) reflects the contact and feedback
+between individual jobs and criteria nodes. The nodes in W56 and W65 took individual
+user and individual job into consideration. Each row in Table 9 shows that for the same job,
+different user situations have a significant impact on the priorities of jobs.
+7 Presentation
+There are 14 billion mobile devices worldwide in 20201. There are millions of apps on
+the Apples store and Google Play. Many young people have mobile phones. Developing a
+mobile App capable of running this proposed solution will be very helpful for high school
+students who want to seek appropriate summer jobs . Figure 3 show some screenshots of
+this App. We need to install database over cloud for storing job data collected from online
+
+1 https://www.statista.com/statistics/245501/multiple-mobile-device-ownership-worldwide/
+ᇿ Hi MCM
+ሧ࿟
+ğ
+20
+
+job websites and reprocessed for use in the ANP model. Necessary scripts should be
+developed to automatically grab and process raw job data. The App can access the remote
+job database. The model is also programmed and deployed over cloud. The App is
+responsible for providing interface to receive user information and running the remote
+model which requires job data and user data.
+Figure 3a is a greeting page showing the name of this App. Then comes with Figure
+3b and c, which are wizard pages guiding the user to enter necessary information that
+required by the model. The user is asked to provide age, gender, personalities , sk ills,
+expected salary , location, interests, and working experience. User ’s location can be
+obtained by GPS on the mobile. The location  information is required to compute
+commuting cost criteria in the model. After that, the user is le d to a questionnaire page
+(Figure 3d) where the user’s opinion is requested on the importance of four criteria clusters
+(salary, other benefits, work conditions and job suitability) when choosing a favorable job.
+When data collection is completed, the App can run to find best job for the user. The user
+also has the option to start or cancel running the model. There is also option for users to
+browse all candidate jobs. If the model finishes running, a page as shown in Figure 3e
+appear where the most appropriate jobs are displayed. By clicking those best jobs, the user
+can move to view the details of the jobs. If it is the right job, the user should pick up phone
+right now to call the numbers appearing on the job detail page.
+
+Figure 3 Screenshots of mobile Best Summer Job App. a)-e) from left to right, top down. a)
+Greeting page; b) and c) User information collection; d) Questionnaire; e) Resulting job
+ranks.
+8 Strengths and Limitations
+8.1 Strengths
+1) We develop ANP model to solve best job selection problem. I n our model, four
+criteria clusters: salary, skill and social benefits, work conditions, and suitability ,
+ᇿ Hi MCM
+ሧ࿟
+ğ
+21
+
+containing total 15 criteria are considered. The best job is scored highest. Not only do we
+get the best Job, we can actually get all jobs sorted by priorities, thus giving users more
+jobs options.
+2) The best job selection is made by fully considering job characteristics. Some jobs
+(like internship) offer little salary, but students can benefit a lot from knowledge and skills.
+Some jobs may offer  more salary but need more physical activities.  Those kind of job
+characteristics impact the ranking through connecting alternative nodes  (job nodes) with
+criteria nodes in ANP.
+3) Student's Situation/Preferences have been fully considered. This is realized  in
+three aspects. First, the four criteria clusters can have different weights (w1-w4 in Table 6),
+which reflects users' opinion on evaluating the goodness of a job. Some users may concern
+about higher pay, while others may care about improvement of technical and social skill .
+Second, user's situation affects relative weight s of some criteria . For example, the
+commuting weights of different jobs vary with the users' residence. Third, the skills, their
+personalities, and interests  that students possess will affect the suitability of a job for
+themselves, as represented  in the super matrix where job and user information jointly
+determine.
+4) The established model has full extendibility. We can add more criteria as criteria
+nodes in ANP if we need, since ANP provides such capability. It is theoretically possible
+to support decisions on unlimited jobs if computing resources allow. Also, unlimited users
+are supported. Each user can create an ANP supermatrix to find the best and most suitable
+job from candidate jobs.
+8.2
+Limitations
+1) When there are too many criteria implemented in the model, the supermatrix will
+become very large. Because the solution requires tens of iterations, it may require large
+computing resources to complete the computation.
+2) As inter-criteria weights are computed through comparison matrix with relative
+importance measured by S aaty’s scale, they are subject to objectiveness. Therefore, for
+some criteria being able to be determined quantitatively such as salary  for each job, we
+prefer to using their quantities to solve jobs’ relative importance with respect to salary.
+9 Conclusion
+We established an analytic network process model to solve best summer job selection
+problem. In our solution, summer jobs are evaluated from total 15 criteria in four aspects:
+salaries the jobs can offer, technical and social skills the students can learn fro m the jobs,
+work conditions, and job suitability. Both job characteristics and user situation/preferences
+are fully considered  in the model . Therefore, this model can recommend best jobs in
+highest agreement with the users’ situation/preferences.
+The high school student users are required to provide a few information and let us
+know their preferences on choosing job, and the established solution can do the rest,
+including creating ANP supermatrix, computing weight  matrices and solving all jobs’
+ᇿ Hi MCM
+ሧ࿟
+ğ
+22
+
+priorities. Not only the best job, which has a highest score of priority, is recommended, but
+all candidate jobs are ranked according to their computed priorities , providing more job
+options for users. A mobile App can be developed to present  this solution to high school
+students as potential users. We present some screenshots of such App and briefly introduce
+its functionality.
+10 Citations and References
+Alonso J A, Lamata M T. CONSISTENCY IN THE ANALYTIC HIERARCHY
+PROCESS: A NEW APPROACH. International Journal of Uncertainty, Fuzziness and
+Knowledge-Based Systems. 2006, 14(4): 445-459.
+E.H. Forman, Random indices for Incomplete Pairwise Comparison Matrices.
+European Journal of Operational Research 48, (1990) 153-155
+Kadoić N. Characteristics of the Analytic Network Process, a Multi-Criteria Decision-
+Making Method. Croatian operational research review. 2018, 9(2): 235-244.
+Myers, I., Myers, P. Gifts differing. Palo Alto: Consulting Psychologists Press, 1990.
+Saaty T. L., The Analytic Hierarchy Process, RWS  Publications, Pittsburg, 1990, pp.
+184-192.
+Saaty, T. L., & Ozdemir, M. (2005). The encyclicon. Pittsburgh (PA): RWS
+Publications.
+Saaty T. L., Decision making with the analytic hierarchy process, Int. J. Services
+Sciences, vol. 1, no. 1, pp. 83-98, 2008.
+ᇿ Hi MCM
+ሧ࿟
+ğ
+23
+
+Appendices
+
+Appendix A Structured job data
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+24
+
+Appendix B Unweighted supermatrix of best job selection by using ANP
+
+ᇿ Hi MCM
+ሧ࿟
+ğ
+25
+
+Appendix C Limiting supermatrix of best job selection by using ANP
+
+ᇿ Hi MCM
+ሧ࿟
