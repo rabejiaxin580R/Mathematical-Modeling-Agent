@@ -24,6 +24,28 @@ plt.rcParams['axes.unicode_minus'] = False
 plt.style.use('seaborn-v0_8-darkgrid')
 
 
+def _to_float(s):
+    """把单元格字符串解析为 float；失败返回 None。
+
+    只把「数字开头」的单元格当数值（如 "0.58"、"$5000"、"45 km/h"），
+    避免把 "J7"、"Case 1"、"R3" 这类含数字的标签/编号误判成数值列。
+    """
+    if not isinstance(s, str):
+        return None
+    t = s.strip().replace(",", "").strip()
+    if not t:
+        return None
+    t = t.replace("$", "").replace("%", "").replace("£", "").replace("¥", "").strip()
+    if not t:
+        return None
+    try:
+        return float(t)
+    except ValueError:
+        # 数字开头的单元格（如 "45 km/h" → 45），其余视为非数值
+        m = re.match(r'-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?', t)
+        return float(m.group(0)) if m else None
+
+
 class PaperVisualizer:
     """论文可视化生成器"""
 
@@ -50,6 +72,83 @@ class PaperVisualizer:
             md += f"**Figure**: {caption}\n\n"
 
         return md
+
+    def chart_table(self, headers, rows, caption: str = "") -> str:
+        """从 Markdown 表格数据生成通用图表（自动选横向柱状 / 分组柱状 / 折线）。
+
+        headers: 表头字符串列表；rows: 数据行（每个 cell 为字符串）。
+        数据不足或无法成图时返回 ""；成图返回 Markdown 图片字符串（alt 当图注，
+        交给 export_docx 的 ![alt](data:...) 约定直接嵌入）。
+        """
+        if not headers or len(rows) < 2:
+            return ""
+
+        ncol = len(headers)
+        # 逐列判定是否数值列（至少 2 个数值点，且覆盖一半以上行）
+        numeric_cols = []
+        for c in range(ncol):
+            vals = [_to_float(r[c]) for r in rows if c < len(r)]
+            vals = [v for v in vals if v is not None]
+            if len(vals) >= 2 and len(vals) >= max(1, len(rows) * 0.5):
+                numeric_cols.append(c)
+        if not numeric_cols:
+            return ""
+
+        # 找一个非数值列当标签列（优先第一列）
+        label_col = next((c for c in range(ncol) if c not in numeric_cols), None)
+        labels = [
+            (r[label_col] if (label_col is not None and label_col < len(r)) else f"#{i+1}")
+            for i, r in enumerate(rows)
+        ]
+
+        if not caption:
+            caption = self._auto_caption(headers, label_col, numeric_cols)
+
+        fig, ax = plt.subplots(figsize=self.figsize)
+
+        if label_col is not None and len(numeric_cols) == 1:
+            c = numeric_cols[0]
+            values = [_to_float(r[c]) or 0.0 for r in rows]
+            ypos = list(range(len(labels)))[::-1]
+            ax.barh(ypos, values, color="#4c78a8", edgecolor="black", linewidth=0.5)
+            ax.set_yticks(ypos)
+            ax.set_yticklabels(labels, fontsize=9)
+            ax.set_xlabel(headers[c], fontsize=10)
+            for yi, v in zip(ypos, values):
+                ax.text(v, yi, f"{v:g}", va="center", ha="left", fontsize=8)
+        elif label_col is not None and len(numeric_cols) >= 2:
+            series = [[_to_float(r[c]) or 0.0 for r in rows] for c in numeric_cols]
+            x = np.arange(len(labels))
+            width = 0.8 / len(series)
+            for si, s in enumerate(series):
+                off = (si - (len(series) - 1) / 2) * width
+                ax.bar(x + off, s, width, label=headers[numeric_cols[si]],
+                       edgecolor="black", linewidth=0.5)
+            ax.set_xticks(x)
+            ax.set_xticklabels(labels, rotation=30, ha="right", fontsize=8)
+            ax.legend(fontsize=8)
+        elif len(numeric_cols) >= 2:
+            xs = [_to_float(r[numeric_cols[0]]) or 0.0 for r in rows]
+            for c in numeric_cols[1:]:
+                ys = [_to_float(r[c]) or 0.0 for r in rows]
+                ax.plot(xs, ys, marker="o", label=headers[c], linewidth=1.5)
+            ax.set_xlabel(headers[numeric_cols[0]], fontsize=10)
+            ax.legend(fontsize=8)
+        else:
+            plt.close(fig)
+            return ""
+
+        ax.grid(True, alpha=0.3)
+        ax.set_title(caption, fontsize=12, fontweight="bold")
+        plt.tight_layout()
+        img_base64 = self._fig_to_base64(fig)
+        return f"\n![{caption}](data:image/png;base64,{img_base64})\n"
+
+    @staticmethod
+    def _auto_caption(headers, label_col, numeric_cols) -> str:
+        label = headers[label_col] if label_col is not None else "case"
+        vals = ", ".join(headers[c] for c in numeric_cols[:2])
+        return f"{vals} by {label}"
 
     # ========== Sensitivity Analysis 可视化 ==========
 

@@ -38,127 +38,227 @@
       display: flex;
     }
 
-    /* 欢迎页内容可能超出一屏：改为可滚动 + 安全居中（内容短时居中，超长时从顶部可滚） */
+    /* ===== 阶段 1：欢迎输入页 — 顶栏 + 侧边栏 + 主操作区 ===== */
+    /* 欢迎页自成布局：撑满、不居中、内部各区独立滚动 */
     #stage-welcome {
+      padding: 0;
+      align-items: stretch;
       justify-content: flex-start;
-      overflow-y: auto;
-    }
-    #stage-welcome .welcome-box {
-      margin: auto 0;
+      overflow: hidden;
     }
 
-    .welcome-box {
-      max-width: 680px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .welcome-icon {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 20px;
-      background: var(--rouge);
+    /* ── 顶部导航栏：弱化品牌，强化工具属性 ── */
+    .topbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+      background: var(--ink);
       color: #fff;
-      font-family: "Noto Serif SC", serif;
+    }
+    .topbar-brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+    .topbar-name { font-size: 14px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+    .topbar-tag {
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .topbar-nav { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .topbar-nav a {
+      font-size: 12px;
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .topbar-nav a:hover { color: #fff; }
+    .topbar-nav .sep { color: rgba(255,255,255,.25); font-size: 12px; }
+
+    /* ── 主体：左历史 + 右表单 ── */
+    .welcome-body { flex: 1; display: flex; min-height: 0; }
+
+    /* ── 左侧历史记录栏 ── */
+    .history-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: #f1f0ee;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .history-head {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 16px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    .history-head h3 {
+      margin: 0;
+      font-size: 12px;
       font-weight: 700;
-      font-size: 36px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      box-shadow: 0 4px 0 var(--rouge-deep), inset 0 2px 0 rgba(255,255,255,0.25);
-    }
-
-    .welcome-title {
-      font-family: "Noto Serif SC", serif;
-      font-size: 32px;
-      margin-bottom: 12px;
       color: var(--ink);
+      letter-spacing: .04em;
     }
-
-    .welcome-subtitle {
-      font-size: 15px;
+    .history-toggle {
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 12px;
       color: var(--ink-soft);
-      margin-bottom: 40px;
-      line-height: 1.6;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background .15s, color .15s;
+    }
+    .history-toggle:hover { background: var(--mist-deep); color: var(--ink); }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .history-sidebar.collapsed .history-list { display: none; }
+
+    .history-item {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background .15s;
+    }
+    .history-item:hover { background: rgba(43,45,48,.055); }
+    .history-topic {
+      display: block;
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .history-line { display: flex; align-items: center; gap: 6px; }
+    .history-badge {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: #3d6b8f;
+      background: rgba(61,107,143,.1);
+    }
+    .history-badge.full { color: #3f7d5c; background: rgba(63,125,92,.12); }
+    .history-count {
+      flex-shrink: 0;
+      font-size: 10px;
+      color: var(--ink-soft);
+      background: var(--mist-deep);
+      padding: 3px 5px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+    .history-time { margin-left: auto; flex-shrink: 0; font-size: 11px; color: #8b8d93; }
+    .history-empty { padding: 14px 12px; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── 右侧主操作区 ── */
+    .welcome-main { flex: 1; overflow-y: auto; min-width: 0; }
+    .welcome-box {
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 44px 32px 64px;
+      text-align: left;
     }
 
-    .input-label {
+    .page-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 8px;
+      line-height: 1.3;
+    }
+    .page-sub {
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin: 0 0 36px;
+    }
+
+    /* 卡片式分组：无外框，靠间距与字重分层 */
+    .field { margin-bottom: 28px; }
+    .field-label {
       display: block;
-      text-align: left;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--ink);
       margin-bottom: 8px;
     }
+    .field-label .opt { font-weight: 400; font-size: 12px; color: var(--ink-soft); margin-left: 6px; }
+    .field-hint { font-size: 12px; color: #8b8d93; line-height: 1.6; margin-top: 6px; }
 
-    .input-field {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 14px;
-      background: var(--paper);
-      color: var(--ink);
-      margin-bottom: 20px;
-      transition: border-color 0.2s;
-    }
-    .input-field:focus {
-      outline: none;
-      border-color: var(--rouge);
-    }
-
+    /* 输入框：极细边框 + 聚焦主色轻外发光 */
+    .input-field,
     .input-area {
       width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 11px 13px;
+      border: 1px solid #e0ded8;
+      border-radius: 4px;
       font-family: inherit;
       font-size: 14px;
-      background: var(--paper);
+      background: #fff;
       color: var(--ink);
-      margin-bottom: 20px;
-      min-height: 180px;
-      resize: vertical;
-      line-height: 1.6;
-      transition: border-color 0.2s;
+      transition: border-color .15s, box-shadow .15s;
     }
+    .input-field::placeholder,
+    .input-area::placeholder { color: #a9abb0; }
+    .input-field:focus,
     .input-area:focus {
       outline: none;
-      border-color: var(--rouge);
+      border-color: #8B2635;
+      box-shadow: 0 0 0 3px rgba(139,38,53,.09);
+    }
+    .input-area {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.65;
     }
 
-    /* 文件上传 */
+    /* 上传：轻量次要按钮，贴在描述框上方 */
     .upload-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
     }
-
     .upload-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      background: var(--paper);
-      color: var(--ink);
-      border: 1px dashed var(--line);
-      border-radius: 8px;
+      gap: 6px;
+      padding: 5px 11px;
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid #e0ded8;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all .15s;
       flex-shrink: 0;
     }
-    .upload-btn:hover {
-      border-color: var(--rouge);
-      color: var(--rouge);
-    }
-    .upload-btn.uploading {
-      opacity: 0.6;
-      pointer-events: none;
-    }
+    .upload-btn:hover { border-color: #8B2635; color: #8B2635; background: rgba(139,38,53,.04); }
+    .upload-btn.uploading { opacity: .6; pointer-events: none; }
 
     .upload-status {
       font-size: 12px;
@@ -167,37 +267,28 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .upload-status.ok {
-      color: #4a9e6d;
-    }
-    .upload-status.err {
-      color: var(--rouge);
-    }
+    .upload-status.ok { color: #3f7d5c; }
+    .upload-status.err { color: #8B2635; }
 
+    /* 提交按钮：中等宽度居中，低饱和深酒红 */
+    .submit-row { display: flex; justify-content: center; margin-top: 36px; }
     .btn-primary {
-      width: 100%;
-      padding: 14px 24px;
-      background: var(--rouge);
+      min-width: 200px;
+      padding: 12px 32px;
+      background: #8B2635;
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 0 var(--rouge-deep);
+      transition: background .15s, box-shadow .15s;
     }
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(192,72,81,0.35);
-    }
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 1px 0 var(--rouge-deep);
-    }
+    .btn-primary:hover { background: #75202c; box-shadow: 0 2px 8px rgba(139,38,53,.25); }
+    .btn-primary:active { background: #661b26; box-shadow: none; }
     .btn-primary:disabled {
-      background: var(--mist);
+      background: var(--mist-deep);
       color: var(--ink-soft);
       cursor: not-allowed;
       box-shadow: none;
@@ -208,46 +299,9 @@
       text-align: center;
     }
 
-    .orb-container {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 32px;
-      position: relative;
-    }
-
-    .orb {
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(circle at 40% 40%, var(--gold), var(--rouge));
-      border-radius: 50%;
-      box-shadow: 0 8px 32px rgba(192,72,81,0.4), inset 0 -4px 8px rgba(0,0,0,0.2);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .orb.burst {
-      animation: burst 0.6s ease-out forwards;
-    }
-
-    @keyframes burst {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.6; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-
-    .loading-text {
-      font-size: 16px;
-      color: var(--ink);
-      margin-bottom: 12px;
-    }
-
-    .loading-detail {
-      font-size: 13px;
-      color: var(--ink-soft);
+    #genlogMount {
+      width: min(560px, 90vw);
+      margin: 0 auto;
     }
 
     /* ===== 阶段 3：大纲展示（垂直时间线） ===== */
@@ -368,15 +422,108 @@
       color: var(--ink-soft);
     }
 
+    /* 正文改白底：只有重点结论/公式/验证块才上底色，避免整段灰底压抑 */
     .focus-summary {
       font-size: 15px;
       line-height: 1.85;
       color: var(--ink);
       margin-bottom: 28px;
-      padding: 20px;
-      background: var(--mist);
-      border-left: 4px solid var(--gold);
-      border-radius: 0 8px 8px 0;
+    }
+
+    /* ── 逻辑块：小标题 + 细分割线，块与块之间留白 ── */
+    .sum-block { padding: 0 0 18px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+    .sum-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .sum-block-label {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .sum-block-label .lbl-zh { color: var(--rouge); letter-spacing: .02em; }
+    .sum-block-label .lbl-en {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      opacity: .75;
+      font-family: "Noto Serif SC", serif;
+    }
+    .sum-block-label .lbl-zh:empty, .sum-block-label .lbl-en:empty { display: none; }
+
+    /* 英文正文与中文译文：译文弱化，用左侧细线区分 */
+    .sum-en > *:first-child, .sum-zh > *:first-child { margin-top: 0; }
+    .sum-en > *:last-child, .sum-zh > *:last-child { margin-bottom: 0; }
+    .sum-en p { margin: 0 0 10px; }
+    .sum-zh {
+      margin-top: 12px;
+      padding-left: 12px;
+      border-left: 2px solid var(--mist);
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink-soft);
+    }
+    .sum-zh p { margin: 0 0 8px; }
+
+    /* 关键结论/排名/数值：加粗处用主题色强调 */
+    .sum-en strong, .sum-zh strong {
+      color: var(--rouge);
+      font-weight: 600;
+      background: rgba(192, 72, 81, 0.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* 验证计算 / 案例：卡片化，与主论述分离 */
+    .sum-en blockquote, .sum-zh blockquote {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: #fcfbf7;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--gold);
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--ink-soft);
+    }
+    .sum-en blockquote p, .sum-zh blockquote p { margin: 0 0 6px; }
+    .sum-en blockquote p:last-child, .sum-zh blockquote p:last-child { margin-bottom: 0; }
+
+    .sum-en ul, .sum-en ol, .sum-zh ul, .sum-zh ol { margin: 0 0 10px; padding-left: 22px; }
+    .sum-en li, .sum-zh li { margin-bottom: 4px; }
+    .sum-en table, .sum-zh table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 14px; }
+    .sum-en th, .sum-en td, .sum-zh th, .sum-zh td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+    .sum-en th, .sum-zh th { background: #faf9f6; font-weight: 600; }
+
+    /* 行内公式与自然语言拉开视觉差 */
+    .sum-en .katex, .sum-zh .katex { font-size: 1.02em; }
+    .sum-en :not(.katex-display) > .katex, .sum-zh :not(.katex-display) > .katex {
+      background: rgba(43, 45, 48, 0.035);
+      padding: 0 3px;
+      border-radius: 3px;
+    }
+
+    /* 语言切换 */
+    .focus-head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .lang-toggle { display: flex; flex-shrink: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .lang-toggle button {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-family: inherit;
+      border: none;
+      background: var(--paper);
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .lang-toggle button + button { border-left: 1px solid var(--line); }
+    .lang-toggle button:hover { background: #f3f1ec; }
+    .lang-toggle button.active { background: var(--rouge); color: #fff; }
+    .focus-summary.lang-en .sum-zh, .focus-summary.lang-en .lbl-zh { display: none; }
+    .focus-summary.lang-zh .sum-en, .focus-summary.lang-zh .lbl-en { display: none; }
+    .focus-summary.lang-zh .sum-zh {
+      margin-top: 0; padding-left: 0; border-left: none;
+      font-size: 15px; color: var(--ink);
     }
 
     .focus-formulas {
@@ -390,14 +537,38 @@
       margin-bottom: 12px;
     }
 
+    /* 公式：居中独立陈列 + 右侧编号 + 变量表紧跟其下 */
     .formula-item {
-      padding: 16px 20px;
+      position: relative;
+      margin: 0 0 12px;
+      padding: 18px 44px 14px 20px;
       background: #fbfbfa;
       border: 1px solid var(--line);
       border-radius: 8px;
-      margin-bottom: 10px;
-      font-size: 15px;
     }
+    .formula-body { text-align: center; overflow-x: auto; overflow-y: hidden; }
+    .formula-body .katex-display { margin: 0; }
+    .formula-no {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--ink-soft);
+      opacity: .8;
+    }
+    .formula-where {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      font-size: 13px;
+    }
+    .formula-where dt { text-align: right; color: var(--ink); }
+    .formula-where dd { margin: 0; color: var(--ink-soft); }
+    .formula-where-title { font-size: 12px; color: var(--ink-soft); margin-bottom: 2px; }
 
     .focus-citations {
       margin-bottom: 32px;
@@ -423,26 +594,280 @@
       color: var(--ink-soft);
     }
 
+    /* ── 章节操作区：微调 + 重写 + 版本回溯 ── */
+    .focus-actions-wrap { position: relative; margin-top: 28px; }
     .focus-actions {
       display: flex;
+      justify-content: flex-end;
       gap: 12px;
+      align-items: flex-end;
     }
 
+    /* 次要按钮：描边（微调，轻量操作） */
     .btn-secondary {
-      padding: 12px 24px;
+      padding: 11px 20px;
       background: var(--paper);
-      color: var(--rouge);
-      border: 1px solid var(--rouge);
-      border-radius: 8px;
+      color: var(--ink-soft);
+      border: 1px solid #d8d6d0;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
-    .btn-secondary:hover {
-      background: var(--rouge);
+    .btn-secondary:hover { border-color: #8B2635; color: #8B2635; }
+
+    /* 主按钮：实心（重写，整体操作） */
+    .btn-primary-sm {
+      padding: 11px 20px;
+      background: #8B2635;
       color: #fff;
+      border: 1px solid #8B2635;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary-sm:hover { background: #75202c; box-shadow: 0 2px 8px rgba(139,38,53,.25); }
+    .btn-primary-sm:disabled,
+    .btn-secondary:disabled,
+    .btn-mini:disabled { opacity: .55; cursor: not-allowed; }
+
+    .btn-mini {
+      padding: 7px 14px;
+      background: var(--paper);
+      color: var(--ink-soft);
+      border: 1px solid #d8d6d0;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-mini:hover { border-color: #8B2635; color: #8B2635; }
+    .btn-mini.primary { background: #8B2635; border-color: #8B2635; color: #fff; }
+    .btn-mini.primary:hover { background: #75202c; }
+
+    /* 整章级微调面板：平滑展开 */
+    .refine-panel {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+      margin-bottom: 0;
+      background: #fbfaf7;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .refine-panel.open { max-height: 440px; opacity: 1; margin-bottom: 14px; }
+    .refine-panel-inner { padding: 16px; }
+    .refine-guide { font-size: 13px; font-weight: 600; color: var(--ink); margin: 0 0 12px; }
+
+    .quick-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .quick-tag {
+      padding: 5px 12px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: #fff;
+      border: 1px solid #e0ded8;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .quick-tag:hover { border-color: #8B2635; color: #8B2635; background: rgba(139,38,53,.04); }
+
+    .refine-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid #e0ded8;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 70px;
+      line-height: 1.6;
+    }
+    .refine-input:focus {
+      outline: none;
+      border-color: #8B2635;
+      box-shadow: 0 0 0 3px rgba(139,38,53,.09);
+    }
+
+    /* 板块编辑按钮：悬停显现 */
+    .block-edit {
+      margin-left: auto;
+      flex-shrink: 0;
+      padding: 2px 8px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .15s, color .15s, border-color .15s;
+    }
+    .sum-block:hover .block-edit { opacity: 1; }
+    .block-edit:hover { color: #8B2635; border-color: #e0ded8; background: rgba(139,38,53,.04); }
+
+    /* 板块内联编辑器 */
+    .block-editor {
+      background: #fbfaf7;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .be-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .be-instruction {
+      flex: 1;
+      box-sizing: border-box;
+      padding: 7px 10px;
+      border: 1px solid #e0ded8;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 12px;
+      background: #fff;
+      color: var(--ink);
+    }
+    .be-instruction:focus { outline: none; border-color: #8B2635; }
+    .be-label { font-size: 11px; font-weight: 600; color: var(--ink-soft); margin: 8px 0 4px; }
+    .be-ta {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border: 1px solid #e0ded8;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.6;
+      background: #fff;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 70px;
+    }
+    .be-ta:focus { outline: none; border-color: #8B2635; box-shadow: 0 0 0 3px rgba(139,38,53,.09); }
+    .be-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+
+    /* 影响警告横幅 */
+    .impact-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      background: rgba(217,182,17,.1);
+      border: 1px solid rgba(217,182,17,.4);
+      border-radius: 8px;
+    }
+    .impact-text { flex: 1; font-size: 13px; line-height: 1.6; color: var(--ink); }
+    .impact-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+
+    /* 断点续传提示：固定悬浮于顶部 */
+    .resume-banner {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 720px;
+      width: calc(100% - 48px);
+      padding: 12px 16px;
+      background: #fff;
+      border: 1px solid rgba(61,107,143,.35);
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(43,45,48,.18);
+    }
+    .resume-text { flex: 1; font-size: 13px; line-height: 1.6; color: var(--ink); }
+
+    /* 重写气泡内的补充要求输入框 */
+    .rewrite-extra {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid #e0ded8;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 52px;
+      line-height: 1.6;
+    }
+    .rewrite-extra:focus {
+      outline: none;
+      border-color: #8B2635;
+      box-shadow: 0 0 0 3px rgba(139,38,53,.09);
+    }
+    .refine-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+    /* 重写气泡面板 */
+    .rewrite-pop {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      width: 320px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(43,45,48,.16);
+      padding: 14px;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 20;
+    }
+    .rewrite-pop.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .rewrite-modes { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .mode-opt {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      padding: 8px 10px;
+      border: 1px solid #e0ded8;
+      border-radius: 6px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .mode-opt .mode-desc { font-size: 11px; font-weight: 400; color: var(--ink-soft); line-height: 1.5; }
+    .mode-opt:hover { border-color: #8B2635; }
+    .mode-opt.active { border-color: #8B2635; background: rgba(139,38,53,.05); box-shadow: 0 0 0 3px rgba(139,38,53,.08); }
+    .rewrite-extra { min-height: 52px; }
+
+    /* 版本回溯 */
+    .version-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .version-hint { color: var(--ink-soft); margin-right: auto; }
+
+    /* 内容变更高亮 */
+    .flash { animation: flashBg 1.4s ease; }
+    @keyframes flashBg {
+      0% { background: rgba(217,182,17,.18); border-radius: 8px; }
+      100% { background: transparent; }
     }
 
     .bottom-bar {
@@ -482,47 +907,89 @@
   <div class="outline-app">
     <!-- 阶段 1：欢迎输入 -->
     <div class="stage active" id="stage-welcome">
-      <div class="welcome-box">
-        <div class="welcome-icon">绣</div>
-        <h1 class="welcome-title">数学建模论文生成</h1>
-        <p class="welcome-subtitle">输入题目与思路，AI 将为你生成完整的论文大纲</p>
-
-        <label class="input-label">题目标题</label>
-        <input type="text" id="problemTitle" class="input-field" placeholder="例如：应急救护车选址优化" />
-
-        <label class="input-label">题目描述（可直接粘贴，或上传文件）</label>
-        <div class="upload-row">
-          <button class="upload-btn" id="btnUpload">
-            <span>📎</span> 上传题目文件
-          </button>
-          <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.md,.pptx,.ppt,.html,.htm,.csv,.xlsx,.xls,.json,.py" style="display:none;" />
-          <span class="upload-status" id="uploadStatus"></span>
+      <!-- 顶部导航栏 -->
+      <header class="topbar">
+        <div class="topbar-brand">
+          <span class="topbar-name">📝 数模论文生成</span>
+          <span class="topbar-tag">一键生成专业论文大纲</span>
         </div>
-        <textarea id="problemDescription" class="input-area" placeholder="粘贴题目全文，或点击上方「上传题目文件」自动填充..."></textarea>
+        <nav class="topbar-nav">
+          <a href="/learn">帮助</a>
+          <span class="sep">|</span>
+          <a href="/home">我的</a>
+        </nav>
+      </header>
 
-        <label class="input-label">你的思路（口述即可）</label>
-        <textarea id="problemThought" class="input-area" placeholder="用自然语言描述你的想法，例如：&#10;&#10;我觉得可以用排队论建模，把每个站点看作服务台，救护车是服务员。需要考虑响应时间和覆盖范围，可能用整数规划来优化站点位置..."></textarea>
+      <div class="welcome-body">
+        <!-- 左侧：历史记录 -->
+        <aside class="history-sidebar" id="historySidebar">
+          <div class="history-head">
+            <h3>最近文档</h3>
+            <button type="button" class="history-toggle" id="historyToggle" title="折叠/展开">−</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty">还没有生成过论文</div>
+          </div>
+        </aside>
 
-        <label class="input-label">你的数据（可选，用于求解与结果分析）</label>
-        <textarea id="problemData" class="input-area" placeholder="粘贴你已有的真实数据或结果，例如需求点坐标、成本/距离、到达率、已算出的最优解等。&#10;&#10;不填则 AI 会生成标注为「占位」的示例数据，记得之后替换成你的真实结果。"></textarea>
+        <!-- 右侧：核心操作区 -->
+        <main class="welcome-main">
+          <div class="welcome-box">
+            <h1 class="page-title">生成你的数模论文大纲</h1>
+            <p class="page-sub">填写题目与思路，AI 将输出结构完整、逻辑严谨的标准论文大纲</p>
 
-        <button class="btn-primary" id="btnStart">开始生成大纲</button>
+            <div class="field">
+              <label class="field-label" for="problemTitle">题目标题</label>
+              <input type="text" id="problemTitle" class="input-field" placeholder="例如：应急救护车选址优化" />
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="problemDescription">题目描述</label>
+              <div class="upload-row">
+                <button class="upload-btn" id="btnUpload">
+                  <span>📎</span> 上传题目文件
+                </button>
+                <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.md,.pptx,.ppt,.html,.htm,.csv,.xlsx,.xls,.json,.py" style="display:none;" />
+                <span class="upload-status" id="uploadStatus"></span>
+              </div>
+              <textarea id="problemDescription" class="input-area" placeholder="粘贴题目全文…"></textarea>
+              <div class="field-hint">支持 PDF / Word / txt 等格式，上传后自动填充此处。</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="problemThought">你的思路</label>
+              <textarea id="problemThought" class="input-area" placeholder="用自然语言描述你的想法…"></textarea>
+              <div class="field-hint">例如：用排队论建模，把每个站点看作服务台；再用整数规划优化站点位置，兼顾响应时间与覆盖范围。</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="problemData">你的数据<span class="opt">可选</span></label>
+              <textarea id="problemData" class="input-area" placeholder="粘贴已有的真实数据或结果，例如需求点坐标、成本 / 距离、到达率、已算出的最优解…"></textarea>
+              <div class="field-hint">不填将使用标注为「占位」的示例数据，记得之后替换成你的真实结果。</div>
+            </div>
+
+            <div class="submit-row">
+              <button class="btn-primary" id="btnStart">开始生成大纲</button>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
 
     <!-- 阶段 2：加载动画 -->
     <div class="stage" id="stage-loading">
       <div class="loading-box">
-        <div class="orb-container">
-          <div class="orb" id="orb"></div>
-        </div>
-        <div class="loading-text" id="loadingText">正在搜索学术文献...</div>
-        <div class="loading-detail" id="loadingDetail"></div>
+        <div id="genlogMount"></div>
       </div>
     </div>
 
     <!-- 阶段 3：大纲展示 -->
     <div class="stage" id="stage-outline">
+      <div class="resume-banner" id="resumeBanner" style="display:none;">
+        <span class="resume-text" id="resumeText"></span>
+        <button type="button" class="btn-mini primary" id="btnResume">继续生成</button>
+        <button type="button" class="btn-mini" id="btnResumeDismiss">忽略</button>
+      </div>
       <div class="outline-view">
         <div class="sections-sidebar">
           <h2 class="sections-title">论文章节</h2>
@@ -531,13 +998,30 @@
 
         <div class="section-focus">
           <div class="focus-header">
-            <h2 class="focus-title" id="focusTitle">选择一个章节查看详情</h2>
-            <p class="focus-meta" id="focusMeta"></p>
+            <div class="focus-head-row">
+              <div>
+                <h2 class="focus-title" id="focusTitle">选择一个章节查看详情</h2>
+                <p class="focus-meta" id="focusMeta"></p>
+              </div>
+              <div class="lang-toggle" id="langToggle" style="display:none;">
+                <button type="button" data-lang="both" class="active">双语</button>
+                <button type="button" data-lang="en">EN</button>
+                <button type="button" data-lang="zh">中文</button>
+              </div>
+            </div>
           </div>
 
           <div class="focus-data-note" id="focusDataNote" style="display:none;">
             <strong>📊 需你的数据</strong>
             <span id="dataChecklist"></span>
+          </div>
+
+          <div class="impact-banner" id="impactBanner" style="display:none;">
+            <span class="impact-text" id="impactText"></span>
+            <div class="impact-actions">
+              <button type="button" class="btn-mini" id="btnImpactDismiss">知道了</button>
+              <button type="button" class="btn-mini primary" id="btnRegenAll">重新生成整个大纲</button>
+            </div>
           </div>
 
           <div class="focus-summary" id="focusSummary" style="display:none;"></div>
@@ -552,9 +1036,47 @@
             <div id="citationsList"></div>
           </div>
 
-          <div class="focus-actions" id="focusActions" style="display:none;">
-            <button class="btn-secondary">✏️ 编辑提示词</button>
-            <button class="btn-secondary">🔄 重新生成此章节</button>
+          <div class="focus-actions-wrap" id="focusActions" style="display:none;">
+            <!-- 定向微调：内嵌展开（整章级，按指令微调） -->
+            <div class="refine-panel" id="refinePanel">
+              <div class="refine-panel-inner">
+                <p class="refine-guide">告诉我你想怎么修改本章内容</p>
+                <div class="quick-tags" id="quickTags"></div>
+                <textarea class="refine-input" id="refineInput" placeholder="例如：补充一个算例验证 / 简化公式推导过程 / 增加对假设合理性的说明"></textarea>
+                <div class="refine-actions">
+                  <button type="button" class="btn-mini" id="btnRefineCancel">取消</button>
+                  <button type="button" class="btn-mini primary" id="btnRefineConfirm">确认修改</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 一键重写：气泡面板 -->
+            <div class="rewrite-pop" id="rewritePop">
+              <div class="rewrite-modes" id="rewriteModes">
+                <button type="button" class="mode-opt active" data-mode="standard">📝 标准重写<span class="mode-desc">保持原有详略和结构，换全新表述</span></button>
+                <button type="button" class="mode-opt" data-mode="concise">✂️ 精简压缩<span class="mode-desc">只保留核心结论、公式和关键数据，压缩一半篇幅</span></button>
+                <button type="button" class="mode-opt" data-mode="detailed">📚 详细展开<span class="mode-desc">补充推导过程、解释说明和案例，内容更详实</span></button>
+                <button type="button" class="mode-opt" data-mode="academic">🎓 学术加强<span class="mode-desc">提升专业表述，增加术语严谨性，更符合论文风格</span></button>
+              </div>
+              <textarea class="rewrite-extra" id="rewriteExtra" placeholder="补充特殊要求（可选）"></textarea>
+              <div class="refine-actions">
+                <button type="button" class="btn-mini" id="btnRewriteCancel">取消</button>
+                <button type="button" class="btn-mini primary" id="btnRewriteConfirm">开始重写</button>
+              </div>
+            </div>
+
+            <!-- 版本回溯 -->
+            <div class="version-bar" id="versionBar" style="display:none;">
+              <span class="version-hint" id="versionHint"></span>
+              <button type="button" class="btn-mini" id="btnViewPrev">↩ 查看上一版</button>
+              <button type="button" class="btn-mini primary" id="btnUsePrev" style="display:none;">使用此版本</button>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="focus-actions">
+              <button type="button" class="btn-secondary" id="btnRefine" title="局部修改内容，不改变整体结构">✏️ 微调内容</button>
+              <button type="button" class="btn-primary-sm" id="btnRewrite" title="整体重新生成本章内容">🔄 重写本章</button>
+            </div>
           </div>
         </div>
       </div>
@@ -570,9 +1092,19 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script src="/static/render.js"></script>
+  <script src="/static/progress-log.js"></script>
   <script>
     let outlineData = null;
     let currentSectionIndex = 0;
+    let isGenerating = false;
+
+    // 生成进行中刷新/关闭时提示，避免误打断（后端断点续传兜底）
+    window.addEventListener('beforeunload', (e) => {
+      if (isGenerating) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
 
     // 切换阶段
     function showStage(stageName) {
@@ -657,69 +1189,68 @@
 
     // 调用 API 生成大纲
     async function generateOutline(title, description, thought, userData) {
-      const response = await fetch('/api/paper/outline', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          problem_title: title,
-          problem_description: description,
-          search_query: extractKeywords(title, description),
-          user_thought: thought,
-          user_data: userData
-        })
-      });
+      isGenerating = true;
+      const ctl = GenLog.mount(document.getElementById('genlogMount'), { total: 9, kind: 'outline' });
+      try {
+        const response = await fetch('/api/paper/outline', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            problem_title: title,
+            problem_description: description,
+            search_query: extractKeywords(title, description),
+            user_thought: thought,
+            user_data: userData
+          })
+        });
 
-      if (!response.ok) throw new Error('请求失败');
+        if (!response.ok) throw new Error('请求失败');
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-        // stream:true 避免多字节中文被分片截断成乱码
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        // 最后一行可能不完整（跨 chunk），留到下一次累积
-        buffer = lines.pop();
+          // stream:true 避免多字节中文被分片截断成乱码
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          // 最后一行可能不完整（跨 chunk），留到下一次累积
+          buffer = lines.pop();
 
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const data = JSON.parse(line.substring(6));
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = JSON.parse(line.substring(6));
 
-          if (data.type === 'progress') {
-            handleProgress(data);
-          } else if (data.type === 'outline_ready') {
-            handleOutlineReady(data);
-            return;
-          } else if (data.type === 'error') {
-            throw new Error(data.message);
+            if (data.type === 'progress') {
+              ctl.push(data);
+            } else if (data.type === 'session_created') {
+              // 尽早把 session_id 写进 URL：刷新后据此断点续传
+              history.replaceState(null, '', '/outline?session_id=' + encodeURIComponent(data.session_id));
+            } else if (data.type === 'outline_ready') {
+              ctl.finish(data);
+              handleOutlineReady(data);
+              return;
+            } else if (data.type === 'error') {
+              ctl.fail(data.message);
+              throw new Error(data.message);
+            }
           }
         }
-      }
-    }
-
-    function handleProgress(data) {
-      const textEl = document.getElementById('loadingText');
-      const detailEl = document.getElementById('loadingDetail');
-
-      if (data.step === 'literature_found') {
-        textEl.textContent = `找到 ${data.count} 篇相关文献`;
-        detailEl.textContent = '正在提取关键内容...';
-      } else if (data.step === 'content_extracted') {
-        textEl.textContent = `提取了 ${data.chunks} 个知识片段`;
-        detailEl.textContent = '正在生成大纲...';
-      } else if (data.step === 'generate_outline') {
-        textEl.textContent = data.message;
-        // 爆裂动画
-        document.getElementById('orb').classList.add('burst');
+      } finally {
+        isGenerating = false;
       }
     }
 
     function handleOutlineReady(data) {
       outlineData = data;
+
+      // 把 session_id 写进 URL，刷新（F5）后据此重载同一份大纲
+      if (data && data.session_id) {
+        history.replaceState(null, '', '/outline?session_id=' + encodeURIComponent(data.session_id));
+      }
 
       // 显示大纲阶段
       showStage('outline');
@@ -754,6 +1285,162 @@
       });
     }
 
+    // 英文块名 → 中文标签。中文标签只存在于预览，不进正文、不进 Word。
+    const BLOCK_LABELS_ZH = {
+      'Core Question': '核心问题', 'Key Constraints': '关键约束', 'Objectives': '研究目标',
+      'Assumptions': '模型假设', 'Justification': '假设依据', 'Limitations': '模型局限',
+      'Symbol Table': '符号表', 'Parameter Values': '参数取值',
+      'Modeling Idea': '建模思路', 'Key Equations': '核心方程', 'Model Structure': '模型结构',
+      'Solution Method': '求解方法', 'Key Results': '关键结果', 'Verification': '验证计算',
+      'Data Source': '数据来源', 'Main Findings': '主要发现', 'Interpretation': '结果解读',
+      'Method': '分析方法', 'Findings': '分析发现', 'Robustness': '稳健性',
+      'Key Conclusion': '核心结论', 'Strengths': '模型优势',
+      'Suggested Improvements': '改进建议',
+      'Extensions': '推广方向', 'Conclusion': '总结', 'Summary': '概述',
+    };
+
+    let langMode = 'both';   // both | en | zh
+
+    // 按 `### ` 把 Markdown 切成逻辑块
+    function splitBlocks(md) {
+      if (!md || !md.trim()) return [];
+      const parts = md.split(/^###\s+/m);
+      const out = [];
+      if (parts[0] && parts[0].trim()) out.push({ heading: '', body: parts[0].trim() });
+      for (let i = 1; i < parts.length; i++) {
+        const seg = parts[i];
+        const nl = seg.indexOf('\n');
+        if (nl === -1) out.push({ heading: seg.trim(), body: '' });
+        else out.push({ heading: seg.slice(0, nl).trim(), body: seg.slice(nl + 1).trim() });
+      }
+      return out;
+    }
+
+    function applyLangMode() {
+      const wrap = document.getElementById('focusSummary');
+      wrap.classList.remove('lang-both', 'lang-en', 'lang-zh');
+      wrap.classList.add('lang-' + langMode);
+      document.querySelectorAll('#langToggle button').forEach(b => {
+        b.classList.toggle('active', b.dataset.lang === langMode);
+      });
+    }
+
+    // 英文块 + 中文译文按序配对渲染（Markdown + KaTeX 走共享的 MMRender）
+    function renderSummary(section) {
+      const wrap = document.getElementById('focusSummary');
+      const en = splitBlocks(section.summary);
+      const zh = splitBlocks(section.summary_zh);
+      if (!en.length && !zh.length) {
+        wrap.style.display = 'none';
+        document.getElementById('langToggle').style.display = 'none';
+        return;
+      }
+
+      wrap.innerHTML = '';
+      const n = Math.max(en.length, zh.length);
+      for (let i = 0; i < n; i++) {
+        const e = en[i] || { heading: '', body: '' };
+        const z = zh[i] || { heading: '', body: '' };
+        const block = document.createElement('section');
+        block.className = 'sum-block';
+
+        // 固定字典优先，保证同一块在各章、各次生成里标签一致；LLM 译名作兜底
+        const zhLabel = BLOCK_LABELS_ZH[e.heading] || z.heading || '';
+        if (zhLabel || e.heading) {
+          const h = document.createElement('h4');
+          h.className = 'sum-block-label';
+          const sZh = document.createElement('span');
+          sZh.className = 'lbl-zh';
+          sZh.textContent = zhLabel;
+          const sEn = document.createElement('span');
+          sEn.className = 'lbl-en';
+          sEn.textContent = e.heading;
+          h.append(sZh, sEn);
+          if (e.heading) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'block-edit';
+            btn.title = '微调这个板块';
+            btn.textContent = '✏️';
+            btn.addEventListener('click', () => startBlockEdit(i, e.heading));
+            h.appendChild(btn);
+          }
+          block.appendChild(h);
+        }
+
+        if (editingBlock && editingBlock.index === i) {
+          block.appendChild(buildBlockEditor(i, e, z));
+        } else {
+          if (e.body) {
+            const d = document.createElement('div');
+            d.className = 'sum-en';
+            MMRender.renderMarkdown(d, e.body);
+            block.appendChild(d);
+          }
+          if (z.body) {
+            const d = document.createElement('div');
+            d.className = 'sum-zh';
+            MMRender.renderMarkdown(d, z.body);
+            block.appendChild(d);
+          }
+        }
+        wrap.appendChild(block);
+      }
+      wrap.style.display = 'block';
+      // 有中文译文时才给切换按钮
+      document.getElementById('langToggle').style.display = zh.length ? 'flex' : 'none';
+      applyLangMode();
+    }
+
+    // 公式：居中 + 自动编号 + 变量表紧跟其下
+    function renderFormulas(section) {
+      const box = document.getElementById('focusFormulas');
+      const list = document.getElementById('formulasList');
+      const fs = section.formulas || [];
+      if (!fs.length) { box.style.display = 'none'; return; }
+
+      list.innerHTML = fs.map((f, i) => {
+        // 兼容旧后端：formulas 可能仍是字符串数组
+        const latex = (typeof f === 'string' ? f : (f.latex || ''))
+          .replace(/^\$\$([\s\S]*)\$\$$/, '$1').replace(/^\$([\s\S]*)\$$/, '$1').trim();
+        const where = (f && typeof f === 'object' && Array.isArray(f.where)) ? f.where : [];
+        const whereHtml = where.length ? `
+          <div class="formula-where-title">其中：</div>
+          <dl class="formula-where">
+            ${where.map(w => `<dt data-tex="${MMRender.escapeHtml(w.sym || '')}"></dt>`
+              + `<dd>${MMRender.escapeHtml(w.zh || '')}</dd>`).join('')}
+          </dl>` : '';
+        return `<figure class="formula-item">
+            <div class="formula-body" data-tex="${MMRender.escapeHtml(latex)}"></div>
+            <span class="formula-no">(${i + 1})</span>
+            ${whereHtml}
+          </figure>`;
+      }).join('');
+
+      // 裸 LaTeX 直接交给 katex.render（公式体 display，变量符号 inline）
+      list.querySelectorAll('[data-tex]').forEach(el => {
+        const tex = el.getAttribute('data-tex') || '';
+        if (!tex) return;
+        if (!window.katex) { el.textContent = tex; return; }
+        try {
+          katex.render(tex, el, {
+            throwOnError: false,
+            displayMode: el.classList.contains('formula-body'),
+          });
+        } catch (_) {
+          el.textContent = tex;
+        }
+      });
+      box.style.display = 'block';
+    }
+
+    document.getElementById('langToggle').addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button[data-lang]');
+      if (!btn) return;
+      langMode = btn.dataset.lang;
+      applyLangMode();
+    });
+
     function selectSection(index) {
       currentSectionIndex = index;
       const section = outlineData.sections[index];
@@ -777,54 +1464,401 @@
         dataNoteEl.style.display = 'none';
       }
 
-      // 摘要
-      const summaryEl = document.getElementById('focusSummary');
-      summaryEl.textContent = section.summary;
-      summaryEl.style.display = 'block';
+      renderSectionBody(section);
 
-      // 公式
-      const formulasEl = document.getElementById('focusFormulas');
-      const formulasList = document.getElementById('formulasList');
-      if (section.formulas && section.formulas.length > 0) {
-        formulasList.innerHTML = section.formulas.map(f => `
-          <div class="formula-item">${f}</div>
-        `).join('');
-        formulasEl.style.display = 'block';
+      // 操作按钮
+      document.getElementById('focusActions').style.display = 'block';
+      resetSectionTools();
+    }
 
-        // 渲染 KaTeX
-        formulasList.querySelectorAll('.formula-item').forEach(el => {
-          if (window.renderMathInElement) {
-            renderMathInElement(el, {
-              delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false }
-              ],
-              throwOnError: false
-            });
-          }
-        });
-      } else {
-        formulasEl.style.display = 'none';
-      }
+    // 渲染一章的正文 + 公式 + 文献（selectSection 与版本回溯共用）
+    function renderSectionBody(section) {
+      renderSummary(section);
+      renderFormulas(section);
 
-      // 文献
       const citationsEl = document.getElementById('focusCitations');
       const citationsList = document.getElementById('citationsList');
       if (section.citations && section.citations.length > 0) {
         citationsList.innerHTML = section.citations.map(c => `
           <div class="citation-item">
-            <div class="citation-title">${c.title || '未知文献'}</div>
-            <div class="citation-meta">${c.authors || '未知作者'} (${c.year || 'N/A'})</div>
+            <div class="citation-title">${esc(c.title || '未知文献')}</div>
+            <div class="citation-meta">${esc(c.authors || '未知作者')} (${esc(c.year || 'N/A')})</div>
           </div>
         `).join('');
         citationsEl.style.display = 'block';
       } else {
         citationsEl.style.display = 'none';
       }
-
-      // 操作按钮
-      document.getElementById('focusActions').style.display = 'flex';
     }
+
+    // ── 微调（整章 + 板块级）/ 一键重写 / 版本回溯 ──────────────────────
+    const QUICK_TAGS = {
+      restate: ['精简表述', '补充背景意义', '突出核心问题'],
+      assume: ['补充假设依据', '增加符号说明', '分点排版'],
+      notation: ['增加符号说明', '补充量纲单位', '精简表述'],
+      build: ['补充变量定义', '增加公式推导', '补充建模思路说明'],
+      solve: ['补充算法步骤', '增加代码说明', '补充算例验证'],
+      analyze: ['补充数据来源说明', '增加结果解读', '补充图表说明'],
+      sensitivity: ['补充灵敏度分析', '增加参数范围说明', '强化稳健性结论'],
+      evaluate: ['增加优缺点对比', '补充改进方向', '强化结论'],
+      extend: ['补充推广方向', '精简表述', '强化总结'],
+    };
+
+    let editingBlock = null;     // { index, heading } — 正在编辑的逻辑块
+    let currentVersion = null;   // { section, version_no } — 上一次重写前的版本
+    let viewingPrev = false;
+
+    function currentSection() { return outlineData.sections[currentSectionIndex]; }
+
+    function resetSectionTools() {
+      closeRefinePanel();
+      closeRewritePop();
+      editingBlock = null;
+      currentVersion = null;
+      viewingPrev = false;
+      updateVersionBar();
+      hideImpact();
+    }
+
+    function openRefinePanel() {
+      const panel = document.getElementById('refinePanel');
+      const already = panel.classList.contains('open');
+      closeRewritePop();
+      if (already) { closeRefinePanel(); return; }
+      const sk = currentSection().section_key;
+      const tags = QUICK_TAGS[sk] || ['精简表述', '补充说明'];
+      document.getElementById('quickTags').innerHTML = tags.map(t =>
+        `<button type="button" class="quick-tag" data-tag="${esc(t)}">${esc(t)}</button>`).join('');
+      document.getElementById('refineInput').value = '';
+      panel.classList.add('open');
+      document.getElementById('refineInput').focus();
+    }
+    function closeRefinePanel() { document.getElementById('refinePanel').classList.remove('open'); }
+
+    function openRewritePop() {
+      const pop = document.getElementById('rewritePop');
+      const already = pop.classList.contains('open');
+      closeRefinePanel();
+      if (already) { closeRewritePop(); return; }
+      pop.classList.add('open');
+    }
+    function closeRewritePop() { document.getElementById('rewritePop').classList.remove('open'); }
+
+    function joinBlocks(blocks) {
+      return blocks.map(b => (b.heading ? `### ${b.heading}\n${b.body}` : b.body)).join('\n\n').trim();
+    }
+
+    function startBlockEdit(i, heading) {
+      editingBlock = { index: i, heading };
+      renderSectionBody(currentSection());
+    }
+    function cancelBlockEdit() {
+      editingBlock = null;
+      renderSectionBody(currentSection());
+    }
+
+    function buildBlockEditor(i, e, z) {
+      const div = document.createElement('div');
+      div.className = 'block-editor';
+      div.innerHTML = `
+        <div class="be-row">
+          <input type="text" class="be-instruction" placeholder="想让 AI 怎么改这块？（可选）" />
+          <button type="button" class="btn-mini" data-act="ai">AI 重写这块</button>
+        </div>
+        <div class="be-label">英文描述</div>
+        <textarea class="be-ta" data-lang="en">${esc(e.body)}</textarea>
+        <div class="be-label">中文翻译</div>
+        <textarea class="be-ta" data-lang="zh">${esc(z.body)}</textarea>
+        <div class="be-actions">
+          <button type="button" class="btn-mini" data-act="cancel">取消</button>
+          <button type="button" class="btn-mini primary" data-act="save">保存</button>
+        </div>
+      `;
+      div.querySelector('[data-act="cancel"]').addEventListener('click', cancelBlockEdit);
+      div.querySelector('[data-act="save"]').addEventListener('click', () => saveBlockEdit(div));
+      div.querySelector('[data-act="ai"]').addEventListener('click', () => aiRewriteBlock(div));
+      return div;
+    }
+
+    async function saveBlockEdit(editorEl) {
+      const enText = editorEl.querySelector('.be-ta[data-lang="en"]').value.trim();
+      const zhText = editorEl.querySelector('.be-ta[data-lang="zh"]').value.trim();
+      if (!enText) { alert('英文内容不能为空'); return; }
+      const heading = editingBlock.heading;
+      const section = currentSection();
+      const enBlocks = splitBlocks(section.summary);
+      const zhBlocks = splitBlocks(section.summary_zh);
+      const idx = editingBlock.index;
+      if (enBlocks[idx]) enBlocks[idx].body = enText;
+      if (zhBlocks[idx]) zhBlocks[idx].body = zhText;
+      try {
+        const updated = await postSection('save', {
+          summary: joinBlocks(enBlocks), summary_zh: joinBlocks(zhBlocks),
+        });
+        outlineData.sections[currentSectionIndex] = updated;
+        editingBlock = null;
+        renderSectionBody(updated);
+        flashChanged();
+        checkImpactAfterSave(heading, enText);
+      } catch (e) {
+        alert('保存失败：' + e.message);
+      }
+    }
+
+    async function aiRewriteBlock(editorEl) {
+      const instruction = editorEl.querySelector('.be-instruction').value.trim();
+      const btn = editorEl.querySelector('[data-act="ai"]');
+      btn.disabled = true;
+      btn.textContent = '重写中…';
+      try {
+        const result = await postSection('regenerate-block', { heading: editingBlock.heading, instruction });
+        const affects = result.affects_later;
+        const reason = result.impact_reason;
+        delete result.affects_later;
+        delete result.impact_reason;
+        outlineData.sections[currentSectionIndex] = result;
+        editingBlock = null;
+        renderSectionBody(result);
+        flashChanged();
+        if (affects) showImpact(reason);
+      } catch (e) {
+        alert('重写失败：' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'AI 重写这块';
+      }
+    }
+
+    function checkImpactAfterSave(heading, bodyEn) {
+      postSection('check-impact', { heading, new_body_en: bodyEn })
+        .then(res => { if (res.affects_later) showImpact(res.impact_reason); })
+        .catch(() => {});
+    }
+
+    function showImpact(reason) {
+      const banner = document.getElementById('impactBanner');
+      document.getElementById('impactText').textContent =
+        '⚠️ 此改动可能影响后续章节' + (reason ? '：' + reason : '。建议列出所有改动后重新生成大纲，否则前后内容可能不一致。');
+      banner.style.display = 'flex';
+    }
+    function hideImpact() { document.getElementById('impactBanner').style.display = 'none'; }
+
+    async function regenerateAllOutline() {
+      if (!outlineData || !outlineData.session_id) return;
+      hideImpact();
+      showStage('loading');
+      const ctl = GenLog.mount(document.getElementById('genlogMount'), { total: 9, kind: 'outline' });
+      isGenerating = true;
+      try {
+        const response = await fetch('/api/paper/outline/' + encodeURIComponent(outlineData.session_id) + '/regenerate-all', { method: 'POST' });
+        if (!response.ok) throw new Error('请求失败');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = JSON.parse(line.substring(6));
+            if (data.type === 'progress') {
+              ctl.push(data);
+            } else if (data.type === 'outline_ready') {
+              ctl.finish(data);
+              handleOutlineReady(data);
+              return;
+            } else if (data.type === 'error') {
+              ctl.fail(data.message);
+              throw new Error(data.message);
+            }
+          }
+        }
+      } catch (e) {
+        alert('重新生成失败：' + e.message);
+        showStage('outline');
+      } finally {
+        isGenerating = false;
+      }
+    }
+
+    async function resumeOutline() {
+      if (!outlineData || !outlineData.session_id) return;
+      hideResumeBanner();
+      showStage('loading');
+      const ctl = GenLog.mount(document.getElementById('genlogMount'), { total: 9, kind: 'outline' });
+      isGenerating = true;
+      try {
+        const response = await fetch('/api/paper/outline/' + encodeURIComponent(outlineData.session_id) + '/resume', { method: 'POST' });
+        if (!response.ok) throw new Error('请求失败');
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop();
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const data = JSON.parse(line.substring(6));
+            if (data.type === 'progress') {
+              ctl.push(data);
+            } else if (data.type === 'outline_ready') {
+              ctl.finish(data);
+              handleOutlineReady(data);
+              return;
+            } else if (data.type === 'error') {
+              ctl.fail(data.message);
+              throw new Error(data.message);
+            }
+          }
+        }
+      } catch (e) {
+        alert('续传失败：' + e.message);
+        showStage('outline');
+      } finally {
+        isGenerating = false;
+      }
+    }
+
+    function showResumeBanner(done, total) {
+      document.getElementById('resumeText').textContent =
+        `检测到未完成的生成（已生成 ${done}/${total} 章），是否继续？`;
+      document.getElementById('resumeBanner').style.display = 'flex';
+    }
+    function hideResumeBanner() { document.getElementById('resumeBanner').style.display = 'none'; }
+
+    function updateVersionBar() {
+      const bar = document.getElementById('versionBar');
+      const hint = document.getElementById('versionHint');
+      const viewBtn = document.getElementById('btnViewPrev');
+      const useBtn = document.getElementById('btnUsePrev');
+      if (!currentVersion) { bar.style.display = 'none'; return; }
+      bar.style.display = 'flex';
+      hint.textContent = viewingPrev ? '正在查看上一版' : '已重写，可查看上一版对比';
+      viewBtn.textContent = viewingPrev ? '查看当前版' : '↩ 查看上一版';
+      useBtn.style.display = viewingPrev ? 'inline-block' : 'none';
+    }
+
+    function flashChanged() {
+      const el = document.getElementById('focusSummary');
+      el.classList.remove('flash');
+      void el.offsetWidth;  // 强制重排，重启动画
+      el.classList.add('flash');
+    }
+
+    async function postSection(action, payload) {
+      const s = currentSection();
+      const resp = await fetch(
+        `/api/paper/outline/${encodeURIComponent(outlineData.session_id)}/${encodeURIComponent(s.section_key)}/${action}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.detail || '请求失败');
+      }
+      return resp.json();
+    }
+
+    // 事件绑定
+    document.getElementById('btnRefine').addEventListener('click', openRefinePanel);
+    document.getElementById('btnRefineCancel').addEventListener('click', closeRefinePanel);
+    document.getElementById('btnRewrite').addEventListener('click', openRewritePop);
+    document.getElementById('btnRewriteCancel').addEventListener('click', closeRewritePop);
+    document.getElementById('btnImpactDismiss').addEventListener('click', hideImpact);
+    document.getElementById('btnRegenAll').addEventListener('click', regenerateAllOutline);
+    document.getElementById('btnResume').addEventListener('click', resumeOutline);
+    document.getElementById('btnResumeDismiss').addEventListener('click', hideResumeBanner);
+
+    document.getElementById('quickTags').addEventListener('click', (ev) => {
+      const tag = ev.target.closest('.quick-tag');
+      if (!tag) return;
+      document.getElementById('refineInput').value = tag.dataset.tag;
+    });
+
+    document.getElementById('rewriteModes').addEventListener('click', (ev) => {
+      const opt = ev.target.closest('.mode-opt');
+      if (!opt) return;
+      document.querySelectorAll('.mode-opt').forEach(o => o.classList.toggle('active', o === opt));
+    });
+
+    document.getElementById('btnRefineConfirm').addEventListener('click', async () => {
+      const instruction = document.getElementById('refineInput').value.trim();
+      if (!instruction) { alert('请填写修改要求，或点上方快捷标签'); return; }
+      const btn = document.getElementById('btnRefineConfirm');
+      btn.disabled = true;
+      btn.textContent = '修改中…';
+      try {
+        const updated = await postSection('refine', { instruction });
+        outlineData.sections[currentSectionIndex] = updated;
+        closeRefinePanel();
+        renderSectionBody(updated);
+        flashChanged();
+      } catch (e) {
+        alert('微调失败：' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '确认修改';
+      }
+    });
+
+    document.getElementById('btnRewriteConfirm').addEventListener('click', async () => {
+      const active = document.querySelector('.mode-opt.active');
+      const mode = active ? active.dataset.mode : 'standard';
+      const extra = document.getElementById('rewriteExtra').value.trim();
+      const btn = document.getElementById('btnRewriteConfirm');
+      btn.disabled = true;
+      btn.textContent = '重写中…';
+      try {
+        const result = await postSection('rewrite', { mode, extra });
+        currentVersion = (result.previous && result.previous_version_no != null)
+          ? { section: result.previous, version_no: result.previous_version_no }
+          : null;
+        viewingPrev = false;
+        delete result.previous;
+        delete result.previous_version_no;
+        outlineData.sections[currentSectionIndex] = result;
+        closeRewritePop();
+        renderSectionBody(result);
+        updateVersionBar();
+        flashChanged();
+      } catch (e) {
+        alert('重写失败：' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '开始重写';
+      }
+    });
+
+    document.getElementById('btnViewPrev').addEventListener('click', () => {
+      if (!currentVersion) return;
+      viewingPrev = !viewingPrev;
+      renderSectionBody(viewingPrev ? currentVersion.section : currentSection());
+      updateVersionBar();
+    });
+
+    document.getElementById('btnUsePrev').addEventListener('click', async () => {
+      if (!currentVersion) return;
+      try {
+        const restored = await postSection('restore', { version_no: currentVersion.version_no });
+        outlineData.sections[currentSectionIndex] = restored;
+        currentVersion = null;
+        viewingPrev = false;
+        renderSectionBody(restored);
+        updateVersionBar();
+        flashChanged();
+      } catch (e) {
+        alert('恢复失败：' + e.message);
+      }
+    });
 
     // 生成完整论文
     document.getElementById('btnGenerate').addEventListener('click', () => {
@@ -839,8 +1873,90 @@
 
     // 简单关键词提取
     function extractKeywords(title, description) {
-      return (title + ' ' + description).substring(0, 200);
+      // 上传的题目文件可能是 JSON：解析出 title/tags/background，别把整段 JSON 当检索词发出去
+      try {
+        const obj = JSON.parse(description);
+        if (obj && typeof obj === 'object') {
+          const parts = [];
+          if (obj.title) parts.push(String(obj.title));
+          if (Array.isArray(obj.tags)) parts.push(...obj.tags.map(String));
+          // background 是英文题面，比中文标题更适合 arXiv / Semantic Scholar 检索
+          if (typeof obj.background === 'string') parts.push(obj.background.replace(/\s+/g, ' ').slice(0, 150));
+          const q = parts.filter(Boolean).join(' ').trim();
+          if (q) return q.slice(0, 200);
+        }
+      } catch (_) { /* 非 JSON，走下面 */ }
+      return (title + ' ' + description).replace(/\s+/g, ' ').trim().slice(0, 200);
     }
+
+    // ── 历史论文列表（同标题自动合并，只留最近一条 + 次数） ─────────────
+    function renderHistory() {
+      const wrap = document.getElementById('historyList');
+      fetch('/api/paper/sessions')
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(data => {
+          const list = data.sessions || [];
+          if (!list.length) return;
+
+          // 后端已按 updated_at 倒序：首次出现的即该标题最新的一条
+          const merged = [];
+          const seen = new Map();
+          list.forEach(s => {
+            const key = (s.topic || '').trim().replace(/^["']|["',]+$/g, '') || '未命名';
+            if (seen.has(key)) { seen.get(key).count++; return; }
+            const row = { ...s, cleanTopic: key, count: 1 };
+            seen.set(key, row);
+            merged.push(row);
+          });
+
+          wrap.innerHTML = merged.map(s => {
+            const isFull = s.kind === 'full';
+            const href = (isFull ? '/paper?session_id=' : '/outline?session_id=')
+              + encodeURIComponent(s.session_id);
+            const badge = isFull
+              ? '<span class="history-badge full">完整论文</span>'
+              : '<span class="history-badge">大纲</span>';
+            const count = s.count > 1 ? `<span class="history-count">${s.count} 次</span>` : '';
+            const time = (s.updated_at || '').slice(0, 10);
+            return `<a class="history-item" href="${href}" title="${esc(s.cleanTopic)}">
+              <span class="history-topic">${esc(s.cleanTopic)}</span>
+              <span class="history-line">${badge}${count}<span class="history-time">${time}</span></span>
+            </a>`;
+          }).join('');
+        })
+        .catch(() => { /* 历史列表失败不阻塞主流程 */ });
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+      ));
+    }
+
+    document.getElementById('historyToggle').addEventListener('click', () => {
+      const bar = document.getElementById('historySidebar');
+      const collapsed = bar.classList.toggle('collapsed');
+      document.getElementById('historyToggle').textContent = collapsed ? '+' : '−';
+    });
+
+    renderHistory();
+
+    // ── 刷新/重开恢复：URL 带 session_id 时直接加载已生成的大纲 ──────────
+    (function restoreOutline() {
+      const sid = new URLSearchParams(window.location.search).get('session_id');
+      if (!sid) return;
+      fetch('/api/paper/outline/' + encodeURIComponent(sid))
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(data => {
+          if (!data || !data.sections || !data.sections.length) return;
+          const total = data.sections.length;
+          const done = data.sections.filter(s => (s.summary || '').trim()).length;
+          handleOutlineReady(data);
+          // 部分生成（刷新/断网打断）：提示续传
+          if (done > 0 && done < total) showResumeBanner(done, total);
+        })
+        .catch(() => { /* 会话已删除或数据不全，停留在欢迎页 */ });
+    })();
   </script>
 </body>
 </html>

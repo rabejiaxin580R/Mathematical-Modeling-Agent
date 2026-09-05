@@ -161,6 +161,31 @@ CREATE TABLE IF NOT EXISTS dataset_rows (
     FOREIGN KEY (session_id, dataset_id)
         REFERENCES session_datasets(session_id, dataset_id) ON DELETE CASCADE
 );
+
+-- ⑨ 大纲元数据：大纲预览的中文翻译 + 结构化公式/文献（供刷新后重载）
+-- 英文 summary 仍存 section_state.content_md；这里只存预览专属数据，不进正文/不进 Word。
+CREATE TABLE IF NOT EXISTS outline_meta (
+    session_id     TEXT NOT NULL REFERENCES paper_sessions(session_id) ON DELETE CASCADE,
+    section_key    TEXT NOT NULL,
+    summary_zh     TEXT,              -- 中文忠实翻译（块结构一一对应）
+    formulas_json  TEXT,              -- [{"latex":"...","where":[{"sym","zh"}]}]
+    citations_json TEXT,              -- [{"title","authors","year"}]
+    updated_at     TEXT NOT NULL CHECK(updated_at GLOB '????-??-??T??:??:??*'),
+    PRIMARY KEY (session_id, section_key)
+);
+
+-- ⑩ 章节历史版本：重写/微调前把当前版存档，支持「查看上一版」与「切回」。
+CREATE TABLE IF NOT EXISTS section_versions (
+    session_id     TEXT NOT NULL REFERENCES paper_sessions(session_id) ON DELETE CASCADE,
+    section_key    TEXT NOT NULL,
+    version_no     INTEGER NOT NULL CHECK(version_no >= 1),
+    content_md     TEXT,              -- 英文 summary
+    summary_zh     TEXT,
+    formulas_json  TEXT,
+    citations_json TEXT,
+    created_at     TEXT NOT NULL CHECK(created_at GLOB '????-??-??T??:??:??*'),
+    PRIMARY KEY (session_id, section_key, version_no)
+);
 """
 
 # 给 LLM 看的紧凑摘要（不含注释，只留约束关键词）—— 用于两阶段检索的 index 层
@@ -195,14 +220,17 @@ def get_db_path() -> Path:
     return config.DATA_DIR / "paper_sessions.db"
 
 
-def get_conn(db_path: Path | None = None) -> sqlite3.Connection:
+def get_conn(db_path: Path | None = None, check_same_thread: bool = True) -> sqlite3.Connection:
     """打开（或创建）数据库，应用 DDL，返回连接。
 
     调用方负责关闭：建议用 `with get_conn() as conn:` 或 try/finally。
     row_factory 设为 sqlite3.Row，结果可按列名访问。
+
+    check_same_thread：SSE 流式端点（生成器跨线程被 close）传 False，
+    让连接可被创建线程之外的线程安全关闭，避免 sqlite3.ProgrammingError。
     """
     path = db_path or get_db_path()
-    conn = sqlite3.connect(str(path))
+    conn = sqlite3.connect(str(path), check_same_thread=check_same_thread)
     conn.row_factory = sqlite3.Row
     conn.executescript(PAPER_DDL)
     return conn
@@ -424,6 +452,101 @@ def load_approved_sections(conn: sqlite3.Connection, session_id: str) -> list[di
     ).fetchall()
     return [dict(r) for r in rows]
 
+
+def mark_complete(conn: sqlite3.Connection, session_id: str) -> None:
+    """把会话状态置为 complete（完整论文已拼装导出）。"""
+    import datetime
+    now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    conn.execute(
+        "UPDATE paper_sessions SET status='complete', updated_at=? WHERE session_id=?",
+        (now, session_id),
+    )
+    conn.commit()
+
+
+def upsert_outline_meta(
+    conn: sqlite3.Connection,
+    session_id: str,
+    section_key: str,
+    summary_zh: str,
+    formulas: list,
+    citations: list,
+) -> None:
+    """写入/更新一节的「大纲元数据」（中文翻译 + 结构化公式/文献）。
+
+    中文翻译只存这里、不进 content_md、不进 Word 导出。
+    """
+    import json
+    import datetime
+    now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    conn.execute(
+        "INSERT OR REPLACE INTO outline_meta"
+        " (session_id, section_key, summary_zh, formulas_json, citations_json, updated_at)"
+        " VALUES (?,?,?,?,?,?)",
+        (session_id, section_key, summary_zh or "",
+         json.dumps(formulas or []), json.dumps(citations or []), now),
+    )
+    conn.commit()
+
+
+def load_outline_meta(conn: sqlite3.Connection,
+                      session_id: str, section_key: str) -> dict | None:
+    row = conn.execute(
+        "SELECT * FROM outline_meta WHERE session_id=? AND section_key=?",
+        (session_id, section_key),
+    ).fetchone()
+    return dict(row) if row else None
+
+
+def save_section_version(
+    conn: sqlite3.Connection,
+    session_id: str,
+    section_key: str,
+    content_md: str,
+    summary_zh: str,
+    formulas: list,
+    citations: list,
+) -> int:
+    """把当前内容存档为一个历史版本，返回 version_no。"""
+    import json
+    import datetime
+    now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    row = conn.execute(
+        "SELECT COALESCE(MAX(version_no), 0) + 1 FROM section_versions"
+        " WHERE session_id=? AND section_key=?",
+        (session_id, section_key),
+    ).fetchone()
+    version_no = row[0]
+    conn.execute(
+        "INSERT INTO section_versions"
+        " (session_id, section_key, version_no, content_md, summary_zh,"
+        "  formulas_json, citations_json, created_at)"
+        " VALUES (?,?,?,?,?,?,?,?)",
+        (session_id, section_key, version_no, content_md or "", summary_zh or "",
+         json.dumps(formulas or []), json.dumps(citations or []), now),
+    )
+    conn.commit()
+    return version_no
+
+
+def load_section_versions(conn: sqlite3.Connection,
+                          session_id: str, section_key: str) -> list[dict]:
+    rows = conn.execute(
+        "SELECT * FROM section_versions WHERE session_id=? AND section_key=?"
+        " ORDER BY version_no DESC",
+        (session_id, section_key),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def load_section_version(conn: sqlite3.Connection,
+                         session_id: str, section_key: str, version_no: int) -> dict | None:
+    row = conn.execute(
+        "SELECT * FROM section_versions"
+        " WHERE session_id=? AND section_key=? AND version_no=?",
+        (session_id, section_key, version_no),
+    ).fetchone()
+    return dict(row) if row else None
 
 
 # ── 数据集管理 ────────────────────────────────────────────────────────────────

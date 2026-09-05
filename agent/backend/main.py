@@ -1197,6 +1197,8 @@ def paper_get_session(session_id: str):
                 "created_at": ps["created_at"],
             },
             "sections": sections,
+            "has_docx": (config.DATA_DIR / f"paper_{session_id}.docx").exists(),
+            "complete": ps["status"] == "complete",
         }
     finally:
         conn.close()
@@ -1382,6 +1384,34 @@ class PaperGenerateRequest(BaseModel):
     session_id: str = ""  # 复用已有大纲会话（可选；提供则跳过新建会话，沿用已确认的符号/结果）
 
 
+class RefineOutlineRequest(BaseModel):
+    instruction: str
+
+
+class RewriteOutlineRequest(BaseModel):
+    mode: str = "standard"  # standard | concise | detailed | academic
+    extra: str = ""
+
+
+class RestoreOutlineRequest(BaseModel):
+    version_no: int
+
+
+class SaveOutlineRequest(BaseModel):
+    summary: str
+    summary_zh: str = ""
+
+
+class RegenerateBlockRequest(BaseModel):
+    heading: str
+    instruction: str = ""
+
+
+class CheckImpactRequest(BaseModel):
+    heading: str
+    new_body_en: str = ""
+
+
 @app.post("/api/paper/upload-problem")
 async def upload_problem_file(file: UploadFile = File(...)):
     """上传题目文件（PDF / Word / txt 等），提取文本内容返回，供大纲生成使用。
@@ -1445,7 +1475,7 @@ def generate_paper_outline(req: PaperGenerateRequest):
         try:
             # Step 1: 创建 paper_db 会话（复用逐节流水线，符号/模型/结果可闭环）
             yield _sse({"type": "progress", "step": "create_session", "message": "创建论文会话..."})
-            paper_conn = paper_db.get_conn()
+            paper_conn = paper_db.get_conn(check_same_thread=False)
             session_id = paper_db.create_paper_session(
                 paper_conn,
                 topic=req.problem_title,
@@ -1453,6 +1483,8 @@ def generate_paper_outline(req: PaperGenerateRequest):
                 contest="HiMCM",
             )
             paper_conn.commit()
+            # 尽早下发 session_id：前端立即写进 URL，刷新后能据此断点续传
+            yield _sse({"type": "session_created", "session_id": session_id})
 
             # Step 2: 搜索文献
             yield _sse({"type": "progress", "step": "search_literature", "message": "搜索学术文献..."})
@@ -1498,6 +1530,8 @@ def generate_paper_outline(req: PaperGenerateRequest):
                             "section_key": ev["section_key"],
                             "title": ev["title"],
                             "summary": ev["summary"],
+                            "summary_zh": ev.get("summary_zh", ""),
+                            "blocks": ev.get("blocks", []),
                             "formulas": ev["formulas"],
                             "citations": ev["citations"],
                             "needs_user_data": ev.get("needs_user_data", False),
@@ -1510,6 +1544,8 @@ def generate_paper_outline(req: PaperGenerateRequest):
                             "section_key": section_key,
                             "title": paper_gen.section_heading(section_key),
                             "summary": "",
+                            "summary_zh": "",
+                            "blocks": [],
                             "formulas": [],
                             "citations": [],
                             "needs_user_data": section_key in paper_gen._DATA_CHECKLIST,
@@ -1552,7 +1588,7 @@ def generate_full_paper(req: PaperGenerateRequest):
 
         try:
             # Step 1: 复用或创建 paper_db 会话
-            paper_conn = paper_db.get_conn()
+            paper_conn = paper_db.get_conn(check_same_thread=False)
             existing = paper_db.load_session(paper_conn, req.session_id) if req.session_id else None
             reused = existing is not None
 
@@ -1625,8 +1661,13 @@ def generate_full_paper(req: PaperGenerateRequest):
                     "message": f"提取了 {total_chunks} 个知识片段",
                 })
 
-            # Step 4: 逐节生成全部 10 个章节
+            # Step 4: 逐节生成全部 10 个章节（断点续传：跳过已 approved 的节）
             sections = paper_db.SECTION_ORDER  # 全部 10 节
+            done = {
+                s["section_key"]
+                for s in paper_db.load_approved_sections(paper_conn, session_id)
+                if s.get("status") == "approved"
+            }
             for i, section_key in enumerate(sections):
                 yield _sse({
                     "type": "progress",
@@ -1636,6 +1677,16 @@ def generate_full_paper(req: PaperGenerateRequest):
                     "total": len(sections),
                     "message": f"生成章节 {i+1}/{len(sections)}: {section_key}",
                 })
+
+                if section_key in done:
+                    yield _sse({
+                        "type": "section_done",
+                        "section": section_key,
+                        "heading": paper_gen.section_heading(section_key),
+                        "chars": 0,
+                        "skipped": True,
+                    })
+                    continue
 
                 for ev in paper_gen.generate_section(paper_conn, session_id, section_key):
                     if ev.get("type") == "result":
@@ -1662,6 +1713,9 @@ def generate_full_paper(req: PaperGenerateRequest):
             docx_bytes = export_docx.to_docx(paper_md)
             docx_path = config.DATA_DIR / f"paper_{session_id}.docx"
             docx_path.write_bytes(docx_bytes)
+
+            # 标记会话完成，供历史列表 / 刷新后直接展示结果判断
+            paper_db.mark_complete(paper_conn, session_id)
 
             # 统计
             lit_papers = 0
@@ -1693,10 +1747,269 @@ def generate_full_paper(req: PaperGenerateRequest):
             logger.exception("论文生成失败")
             yield _sse({"type": "error", "message": str(e)})
         finally:
+            # close 可能跨线程（SSE 生成器被取消时在别的线程 finalize），加 try/except 防掩盖真实错误
             if lit_conn:
-                lit_conn.close()
+                try:
+                    lit_conn.close()
+                except Exception:
+                    pass
             if paper_conn:
-                paper_conn.close()
+                try:
+                    paper_conn.close()
+                except Exception:
+                    pass
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.get("/api/paper/sessions")
+def paper_list_sessions():
+    """历史列表数据源：列出所有论文会话 + 进度 + 完成态。"""
+    conn = paper_db.get_conn()
+    try:
+        sessions = paper_db.list_sessions(conn)
+        out = []
+        for s in sessions:
+            sid = s["session_id"]
+            sections = paper_db.load_approved_sections(conn, sid)
+            done = sum(1 for x in sections if x.get("status") == "approved")
+            has_docx = (config.DATA_DIR / f"paper_{sid}.docx").exists()
+            has_meta = paper_db.load_outline_meta(conn, sid, "restate") is not None
+            restate_sec = paper_db.load_section(conn, sid, "restate")
+            has_content = (restate_sec is not None
+                           and (restate_sec.get("content_md") or "").strip() != "")
+            if has_docx or done > 0:
+                kind = "full"
+            elif has_meta or has_content:
+                kind = "outline"
+            else:
+                continue  # 空会话（从未生成过任何内容）不展示
+            out.append({
+                "session_id": sid,
+                "topic": s["topic"],
+                "contest": s["contest"],
+                "status": s["status"],
+                "created_at": s["created_at"],
+                "updated_at": s["updated_at"],
+                "sections_done": done,
+                "sections_total": len(paper_db.SECTION_ORDER),
+                "has_docx": has_docx,
+                "kind": kind,
+            })
+        return {"sessions": out}
+    finally:
+        conn.close()
+
+
+@app.get("/api/paper/outline/{session_id}")
+def paper_get_outline(session_id: str):
+    """重载一份已生成的大纲（刷新后恢复）。"""
+    conn = paper_db.get_conn()
+    try:
+        outline = paper_gen.load_outline(conn, session_id)
+        if outline is None or not any(s["summary"] for s in outline["sections"]):
+            raise HTTPException(404, "大纲不存在或尚未生成")
+        return outline
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/refine")
+def paper_refine_outline(session_id: str, section_key: str, req: RefineOutlineRequest):
+    """局部微调一章大纲（不改结构，只按指令调整细节）。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.refine_outline_section(conn, session_id, section_key, req.instruction)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/rewrite")
+def paper_rewrite_outline(session_id: str, section_key: str, req: RewriteOutlineRequest):
+    """按模式重写一章大纲（standard/concise/detailed/academic）。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.rewrite_outline_section(
+            conn, session_id, section_key, req.mode, req.extra,
+        )
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/restore")
+def paper_restore_outline(session_id: str, section_key: str, req: RestoreOutlineRequest):
+    """把某历史版本恢复为当前（版本回溯）。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.restore_outline_section(conn, session_id, section_key, req.version_no)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/save")
+def paper_save_outline(session_id: str, section_key: str, req: SaveOutlineRequest):
+    """直接保存用户手工编辑后的整章 summary（不触发 LLM）。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.save_outline_section(conn, session_id, section_key, req.summary, req.summary_zh)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/regenerate-block")
+def paper_regenerate_block(session_id: str, section_key: str, req: RegenerateBlockRequest):
+    """AI 只重写一个 `### ` 逻辑块，并评估是否影响后续。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.regenerate_outline_block(
+            conn, session_id, section_key, req.heading, req.instruction,
+        )
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/{section_key}/check-impact")
+def paper_check_impact(session_id: str, section_key: str, req: CheckImpactRequest):
+    """AI 评估某个板块的改动是否影响后续内容。"""
+    if section_key not in paper_db.SECTION_ORDER:
+        raise HTTPException(400, f"无效的 section_key：{section_key}")
+    conn = paper_db.get_conn()
+    try:
+        return paper_gen.check_block_impact(
+            conn, session_id, section_key, req.heading, req.new_body_en,
+        )
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    finally:
+        conn.close()
+
+
+@app.post("/api/paper/outline/{session_id}/regenerate-all")
+def paper_regenerate_all_outline(session_id: str):
+    """整份大纲就地重生成（保持同一会话，覆盖 9 章），用于影响较大的改动后重建一致性。"""
+    def event_stream():
+        conn = paper_db.get_conn(check_same_thread=False)
+        try:
+            ps = paper_db.load_session(conn, session_id)
+            if ps is None:
+                yield _sse({"type": "error", "message": f"论文会话 {session_id} 不存在"})
+                return
+
+            sections = paper_db.SECTION_ORDER[:9]
+            outline_sections = []
+            for i, section_key in enumerate(sections):
+                yield _sse({
+                    "type": "progress",
+                    "step": "generate_outline",
+                    "current": i + 1,
+                    "total": len(sections),
+                    "message": f"正在生成「{paper_gen.section_heading(section_key)}」大纲（{i+1}/{len(sections)}）…",
+                })
+                for ev in paper_gen.generate_outline_section(conn, session_id, section_key):
+                    if ev.get("type") == "outline_section":
+                        outline_sections.append({
+                            "section_key": ev["section_key"],
+                            "title": ev["title"],
+                            "summary": ev["summary"],
+                            "summary_zh": ev.get("summary_zh", ""),
+                            "blocks": ev.get("blocks", []),
+                            "formulas": ev["formulas"],
+                            "citations": ev["citations"],
+                            "needs_user_data": ev.get("needs_user_data", False),
+                            "data_checklist": ev.get("data_checklist", ""),
+                        })
+                    elif ev.get("type") == "error":
+                        logger.warning(f"章节 {section_key} 大纲失败：{ev.get('message')}")
+
+            yield _sse({
+                "type": "outline_ready",
+                "session_id": session_id,
+                "sections": outline_sections,
+                "literature_stats": {"papers": 0, "chunks": 0},
+            })
+        except Exception as e:
+            logger.exception("大纲重生成失败")
+            yield _sse({"type": "error", "message": str(e)})
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@app.post("/api/paper/outline/{session_id}/resume")
+def paper_resume_outline(session_id: str):
+    """断点续传：只生成尚未生成的章节，跳过已生成的，最后返回完整大纲。"""
+    def event_stream():
+        conn = paper_db.get_conn(check_same_thread=False)
+        try:
+            ps = paper_db.load_session(conn, session_id)
+            if ps is None:
+                yield _sse({"type": "error", "message": f"论文会话 {session_id} 不存在"})
+                return
+
+            sections = paper_db.SECTION_ORDER[:9]
+            done = {
+                s["section_key"]
+                for s in paper_db.load_approved_sections(conn, session_id)
+                if (s.get("content_md") or "").strip()
+            }
+            for i, section_key in enumerate(sections):
+                heading = paper_gen.section_heading(section_key)
+                if section_key in done:
+                    yield _sse({
+                        "type": "progress", "step": "generate_outline",
+                        "current": i + 1, "total": len(sections),
+                        "message": f"「{heading}」已生成，跳过（{i+1}/{len(sections)}）",
+                    })
+                    continue
+                yield _sse({
+                    "type": "progress", "step": "generate_outline",
+                    "current": i + 1, "total": len(sections),
+                    "message": f"正在生成「{heading}」大纲（{i+1}/{len(sections)}）…",
+                })
+                for ev in paper_gen.generate_outline_section(conn, session_id, section_key):
+                    if ev.get("type") == "error":
+                        logger.warning(f"章节 {section_key} 大纲失败：{ev.get('message')}")
+
+            # 返回完整大纲（含跳过的已生成章节）
+            full = paper_gen.load_outline(conn, session_id)
+            yield _sse({
+                "type": "outline_ready",
+                "session_id": session_id,
+                "sections": full["sections"] if full else [],
+                "literature_stats": {"papers": 0, "chunks": 0},
+            })
+        except Exception as e:
+            logger.exception("大纲续传失败")
+            yield _sse({"type": "error", "message": str(e)})
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 

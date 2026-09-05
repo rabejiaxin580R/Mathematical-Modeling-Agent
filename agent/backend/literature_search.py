@@ -29,8 +29,10 @@ SEMANTIC_SCHOLAR_API = "https://api.semanticscholar.org/graph/v1"
 # 用于国内访问 arXiv / Semantic Scholar 时挂代理。无需额外代码。
 
 # 搜索失败时的重试次数与退避基数（处理 429 限流 / 瞬时 SSL 抖动）
-_SEARCH_RETRIES = 3
-_RETRY_BASE_DELAY = 1.5  # 秒，指数退避：1.5s, 3s, 6s
+# 直连 arXiv/Semantic Scholar 在无代理时极易超时/429，重试太多会拖慢整条生成链路。
+# 降到 1 次重试：宁可快点失败返回 0 篇，也别让「搜索文献」挂 1 分多钟。
+_SEARCH_RETRIES = 1
+_RETRY_BASE_DELAY = 1.5  # 秒，指数退避：1.5s
 
 
 def _semantic_headers() -> Dict[str, str]:
@@ -240,25 +242,34 @@ def search_literature(
     """聚合搜索多个学术数据源。
 
     优先走网关服务端（无需本地代理/key）；网关不可用或未配置时回退直连 arXiv/Semantic Scholar。
+    直连搜索用线程 + 硬超时兜底：无代理时 arXiv 直连会挂很久，别让「搜索文献」阻塞整条生成链路。
     """
     gateway_papers = _search_via_gateway(query, sources, max_per_source)
     if gateway_papers is not None:
         logger.info(f"网关文献检索 '{query}': {len(gateway_papers)} 篇")
         return gateway_papers
 
-    all_papers = []
+    def _direct_search():
+        all_papers = []
+        if "arxiv" in sources:
+            all_papers.extend(search_arxiv(query, max_per_source))
+        if "semantic_scholar" in sources:
+            all_papers.extend(search_semantic_scholar(query, max_per_source))
+        return _deduplicate_papers(all_papers)
 
-    if "arxiv" in sources:
-        all_papers.extend(search_arxiv(query, max_per_source))
-
-    if "semantic_scholar" in sources:
-        all_papers.extend(search_semantic_scholar(query, max_per_source))
-
-    # 去重（基于标题相似度）
-    unique_papers = _deduplicate_papers(all_papers)
-
-    logger.info(f"聚合搜索 '{query}': 总共 {len(unique_papers)} 篇论文（去重后）")
-    return unique_papers
+    import concurrent.futures
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(_direct_search)
+    try:
+        papers = future.result(timeout=20)
+        logger.info(f"聚合搜索 '{query}': 总共 {len(papers)} 篇论文（去重后）")
+        return papers
+    except concurrent.futures.TimeoutError:
+        logger.warning(f"文献搜索超时（>20s），返回 0 篇，不阻塞生成")
+        return []
+    finally:
+        # 不等待仍在跑的超时线程（本地单用户，孤儿线程会自行结束）
+        executor.shutdown(wait=False)
 
 
 def _deduplicate_papers(papers: List[Dict]) -> List[Dict]:

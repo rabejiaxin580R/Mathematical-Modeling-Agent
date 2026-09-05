@@ -15,6 +15,7 @@
 import datetime
 import json
 import logging
+import re
 from typing import Generator
 
 from openai import OpenAI
@@ -1131,8 +1132,20 @@ def generate_section(
         yield {"type": "progress", "step": "verify_warning",
                "message": f"⚠️ 「{heading}」可能不完整（{reason}），但已保存"}
 
-    # 6. 写入 section_state
-    paper_db.upsert_section(conn, session_id, section_key, content_md, status="draft")
+    # 5.6. 数据驱动图表注入（非致命：失败不阻断生成）
+    #     从本节的 Markdown 表格里解析数值，自动成图并插回正文，让 Results/Sensitivity
+    #     等章节带上真实图表（走 export_docx 的 ![alt](data:...) 图片约定）。
+    try:
+        from . import paper_viz_integration
+        content_md = paper_viz_integration.add_visualizations_to_section(
+            section_key, content_md, heading=heading,
+        )
+    except Exception:
+        logger.exception("图表注入失败（非致命）")
+
+    # 6. 写入 section_state（完整论文已成节用 approved，与大纲摘要的 draft 区分，
+    #    断点续传据此跳过已完成的节）
+    paper_db.upsert_section(conn, session_id, section_key, content_md, status="approved")
 
     # 7. 特殊阶段：提取结构化数据
     if section_key == "notation":
@@ -1167,18 +1180,46 @@ def generate_section(
 
 _OUTLINE_PERSONA = """You are an academic paper OUTLINE generator for the HiMCM (High School Mathematical Contest in Modeling). You produce a concise, high-quality section OUTLINE — not the full paper text.
 
-For the section you are asked about, output ONLY a JSON object with three fields:
-1. "summary" — a concise but COMPLETE, conclusion-oriented summary: state what this section will CONCLUDE (its key insight, model, method, or result), not a to-do list. Write in formal academic English. Size the length to the section's content — aim for roughly 150-600 words; short structural sections (notation, assumptions) can be brief, while results-heavy sections (solution, analysis) should carry the key numerical findings and may run longer. Never pad to fill space, but never truncate a critical number, symbol, or conclusion just to hit a word count.
-2. "formulas" — 1-2 key LaTeX formulas as an array of strings, each $...$ inline or $$...$$ display.
-3. "citations" — 1-2 papers from the provided literature that inform this section, as an array of {"title","authors","year"}. Use [] if none match.
+For the section you are asked about, output ONLY a JSON object with four fields:
+1. "summary" — the section outline in English, written as STRUCTURED Markdown broken into the exact logical blocks listed under "Required blocks" below. Size the length to the section's content — aim for roughly 150-600 words total across all blocks. Never pad to fill space, but never truncate a critical number, symbol, or conclusion just to hit a word count.
+2. "summary_zh" — a faithful Chinese translation of "summary", using the SAME block structure and the SAME number of blocks, in the same order.
+3. "formulas" — 1-2 key formulas, each an object {"latex": "...", "where": [{"sym": "...", "zh": "..."}]}. "latex" is the bare formula body WITHOUT delimiters. "where" defines every symbol appearing in it, "zh" being the Chinese meaning (include units).
+4. "citations" — 1-2 papers from the provided literature that inform this section, as an array of {"title","authors","year"}. Use [] if none match.
+
+STRUCTURE RULES for "summary" (and mirrored in "summary_zh"):
+- Split the content into the Required blocks using Markdown `### ` headings. Copy each English block name VERBATIM as the heading. In "summary_zh", translate the heading text but keep the same order and count.
+- Keep each paragraph short (2-3 sentences). One idea per paragraph.
+- Put the core conclusion, final ranking, and key numeric values in **bold** — e.g. **B > D > A > E > C**, **alpha=0.5, beta=0.3, gamma=0.2**, **S_B=0.743**.
+- Put any worked verification calculation or illustrative case example in a `> ` blockquote so it reads as a separate exhibit, never inline in the main argument.
+
+MATH RULES (STRICT — violating these breaks rendering and Word export):
+- Inline math: $...$ . Display math: $$...$$ . NEVER use \\( \\) or \\[ \\].
+- NEVER use $ for currency (write "225 USD/week", not "$225").
+- Do NOT use \\begin{aligned}, \\begin{cases}, or any multiline LaTeX environment.
+- In "summary_zh", keep every symbol, number, and formula EXACTLY as in "summary" — translate only the prose.
 
 IMPERATIVES:
-- SYMBOL CONSISTENCY: every symbol in your formulas MUST match the symbols already defined in the Notation context (provided as "Previously written sections / defined symbols"). Never introduce an undefined symbol.
+- SYMBOL CONSISTENCY: every symbol MUST match the symbols already defined in the Notation context (provided as "Previously written sections / defined symbols"). Never introduce an undefined symbol.
 - PARAMETER AUTHORITY: if the context gives an authoritative value (e.g., v = 45 km/h), use it verbatim.
-- Conclusion-oriented summaries, not process descriptions.
-- LaTeX only for math; NEVER use $ for currency (write "4.7M USD", not "$4.7M").
+- Conclusion-oriented blocks, not process descriptions: state what the section CONCLUDES.
 - Output ONLY valid JSON — no markdown fences, no explanations.
 """
+
+
+# 每章固定的英文逻辑块：LLM 按此分块，前端据此配对中文标签（中文标签只存在于预览，不进 Word）
+_OUTLINE_BLOCKS = {
+    "restate":     ["Core Question", "Key Constraints", "Objectives"],
+    "assume":      ["Assumptions", "Justification", "Limitations"],
+    "notation":    ["Symbol Table", "Parameter Values"],
+    "build":       ["Modeling Idea", "Key Equations", "Model Structure"],
+    "solve":       ["Solution Method", "Key Results", "Verification"],
+    "analyze":     ["Data Source", "Main Findings", "Interpretation"],
+    "sensitivity": ["Method", "Findings", "Robustness"],
+    "evaluate":    ["Key Conclusion", "Strengths", "Limitations", "Suggested Improvements"],
+    "extend":      ["Extensions", "Conclusion"],
+    "abstract":    ["Summary"],
+}
+
 
 
 # 需要用户真实数据的章节 → 前端展示「需你的数据」徽标与待办清单
@@ -1269,19 +1310,50 @@ def _build_outline_prompt(
     if section_key in outline_notes:
         parts.extend(["", outline_notes[section_key]])
 
+    blocks = _OUTLINE_BLOCKS.get(section_key, ["Summary"])
     parts.extend([
+        "",
+        "## Required blocks (use these EXACT names as `### ` headings, in this order)",
+        "\n".join(f"- {b}" for b in blocks),
         "",
         "## Output format",
         "Return ONLY a JSON object (no markdown fences, no explanations):",
-        '{"summary": "...", "formulas": ["$...$"], "citations": [{"title":"...","authors":"...","year":2023}]}',
+        '{"summary": "### %s\\n...", "summary_zh": "### <中文块名>\\n...", '
+        '"formulas": [{"latex": "...", "where": [{"sym": "...", "zh": "..."}]}], '
+        '"citations": [{"title":"...","authors":"...","year":2023}]}' % blocks[0],
         "",
         "Requirements:",
-        "- summary: concise but COMPLETE and conclusion-oriented (what this section CONCLUDES, not what it will do). "
-        "Let length follow content — roughly 150-600 words; include critical numbers/symbols, do NOT truncate them.",
-        "- formulas: 1-2 key LaTeX formulas; symbols MUST match the Notation above.",
+        f"- summary: English, split into exactly these {len(blocks)} `### ` blocks: "
+        + ", ".join(blocks) + ". Conclusion-oriented (what the section CONCLUDES). "
+        "Roughly 150-600 words total; include critical numbers/symbols, do NOT truncate them. "
+        "Bold the key conclusion/ranking/values; put worked verification in a `> ` blockquote.",
+        "- summary_zh: faithful Chinese translation with the SAME block structure and order; "
+        "symbols, numbers and formulas stay identical (untranslated).",
+        "- Math: $...$ inline, $$...$$ display. NEVER \\\\( \\\\) or \\\\[ \\\\]. Never $ for currency.",
+        "- formulas: 1-2 objects; `latex` has NO delimiters; `where` defines every symbol in it "
+        "with its Chinese meaning and unit. Symbols MUST match the Notation above.",
         "- citations: 1-2 papers from the literature above; empty [] if none match.",
     ])
     return "\n".join(parts)
+
+
+def _normalize_latex(text: str) -> str:
+    """归一化 LLM 解码后的 LaTeX，修两个实测缺陷。
+
+    1. 过度转义：LLM 在 JSON 里把 \\alpha 写成 \\\\alpha，解码后仍残留双反斜杠，
+       KaTeX 认不出。_OUTLINE_PERSONA 已禁用 aligned/cases 等多行环境，
+       故合法的 LaTeX 换行 \\\\ 不会出现，可安全折叠成单反斜杠。
+    2. 分隔符：大纲正文常用 \\(...\\)，而 export_docx 只认 $...$/$$...$$，
+       导出 Word 会静默丢公式。统一归一到 $ 系。
+    """
+    if not text:
+        return text
+    # 1. 折叠过度转义：\\x → \x（x 为字母或 LaTeX 常见定界/分组符）
+    s = re.sub(r"\\\\(?=[A-Za-z()\[\]{}])", r"\\", text)
+    # 2. 分隔符归一：先处理块级 \[ \]，再处理行内 \( \)
+    s = s.replace("\\[", "$$").replace("\\]", "$$")
+    s = s.replace("\\(", "$").replace("\\)", "$")
+    return s
 
 
 def _repair_latex_backslashes(text: str) -> str:
@@ -1310,6 +1382,40 @@ def _repair_latex_backslashes(text: str) -> str:
     return "".join(out)
 
 
+def _coerce_formulas(raw) -> list:
+    """把 formulas 统一成 [{"latex": str, "where": [{"sym","zh"}]}]。
+
+    兼容两种形态：旧版是字符串数组（可能带 $ / $$ 包裹），新版是对象数组。
+    """
+    out = []
+    for item in raw or []:
+        if isinstance(item, str):
+            latex, where = item, []
+        elif isinstance(item, dict):
+            latex = str(item.get("latex") or item.get("formula") or "")
+            where = item.get("where") or []
+        else:
+            continue
+        latex = _normalize_latex(latex).strip()
+        # 去掉包裹的分隔符：前端统一按 display 公式渲染
+        if latex.startswith("$$") and latex.endswith("$$"):
+            latex = latex[2:-2].strip()
+        elif latex.startswith("$") and latex.endswith("$"):
+            latex = latex[1:-1].strip()
+        if not latex:
+            continue
+        clean_where = []
+        for w in where:
+            if not isinstance(w, dict):
+                continue
+            sym = _normalize_latex(str(w.get("sym") or "")).strip()
+            zh = str(w.get("zh") or w.get("desc") or "").strip()
+            if sym:
+                clean_where.append({"sym": sym, "zh": zh})
+        out.append({"latex": latex, "where": clean_where})
+    return out
+
+
 def _parse_outline_json(raw: str, heading: str) -> dict:
     """从 LLM 返回中容错解析大纲 JSON 对象。失败时降级为纯文本 summary。"""
     text = (raw or "").strip()
@@ -1321,7 +1427,8 @@ def _parse_outline_json(raw: str, heading: str) -> dict:
     l, r = text.find("{"), text.rfind("}")
     if l == -1 or r == -1:
         logger.warning(f"大纲 JSON 无法定位花括号（{heading}）：{raw[:200]}")
-        return {"summary": raw[:300], "formulas": [], "citations": []}
+        return {"summary": _normalize_latex(raw[:300]), "summary_zh": "",
+                "formulas": [], "citations": []}
     candidate = text[l:r + 1]
 
     data = None
@@ -1335,10 +1442,12 @@ def _parse_outline_json(raw: str, heading: str) -> dict:
             logger.warning(f"大纲 JSON 解析失败（{heading}）：{raw[:200]}")
 
     if not isinstance(data, dict):
-        return {"summary": raw[:300], "formulas": [], "citations": []}
+        return {"summary": _normalize_latex(raw[:300]), "summary_zh": "",
+                "formulas": [], "citations": []}
     return {
-        "summary": str(data.get("summary") or "").strip(),
-        "formulas": data.get("formulas") or [],
+        "summary": _normalize_latex(str(data.get("summary") or "").strip()),
+        "summary_zh": _normalize_latex(str(data.get("summary_zh") or "").strip()),
+        "formulas": _coerce_formulas(data.get("formulas")),
         "citations": data.get("citations") or [],
     }
 
@@ -1399,13 +1508,19 @@ def generate_outline_section(
     # 4. 写回 section_state（供后续章节 _build_structured_context 引用，形成符号/数值闭环）
     # 注意：status 必须落在 CHECK 约束的合法集合内（无 "outline"），故用 "draft"。
     # 大纲会话是独立新建的，不会与完整论文的 draft 内容混淆。
+    # 只落英文 summary：中文翻译仅供预览，不进正文、不进 Word 导出。
     if summary:
         paper_db.upsert_section(conn, session_id, section_key, summary, status="draft")
+
+    # 大纲元数据（中文翻译 + 结构化公式/文献）单独落库，供刷新后重载
+    paper_db.upsert_outline_meta(conn, session_id, section_key,
+                                 data["summary_zh"], data["formulas"], data["citations"])
 
     # 5. 结构化提取写回 DB（符号/模型/结果闭环）
     if section_key == "notation":
         try:
-            _extract_symbols(conn, session_id, summary + "\n\n" + "\n".join(data["formulas"]))
+            formula_text = "\n".join(f.get("latex", "") for f in data["formulas"])
+            _extract_symbols(conn, session_id, summary + "\n\n" + formula_text)
         except Exception:
             logger.exception("大纲符号提取失败（非致命）")
     elif section_key == "build":
@@ -1424,12 +1539,529 @@ def generate_outline_section(
         "section_key": section_key,
         "title": heading,
         "summary": summary,
+        "summary_zh": data["summary_zh"],
+        "blocks": _OUTLINE_BLOCKS.get(section_key, ["Summary"]),
         "formulas": data["formulas"],
         "citations": data["citations"],
         "needs_user_data": section_key in _DATA_CHECKLIST,
         "data_checklist": _DATA_CHECKLIST.get(section_key, ""),
     }
     yield {"type": "done"}
+
+
+def load_outline(conn, session_id: str) -> dict | None:
+    """重建完整大纲（与 outline_ready 事件同构），供刷新后重载。
+
+    从 section_state（英文 summary）+ outline_meta（中文翻译/公式/文献）拼回。
+    旧会话无 outline_meta 时降级为 summary_zh=""、formulas/citations=[]（前端已有降级渲染）。
+    """
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        return None
+
+    sections = []
+    for sk in paper_db.SECTION_ORDER[:9]:
+        sec = paper_db.load_section(conn, session_id, sk)
+        meta = paper_db.load_outline_meta(conn, session_id, sk)
+
+        summary = (sec.get("content_md") or "") if sec else ""
+        summary_zh = ""
+        formulas = []
+        citations = []
+        if meta:
+            summary_zh = meta.get("summary_zh") or ""
+            try:
+                formulas = json.loads(meta.get("formulas_json") or "[]")
+            except Exception:
+                formulas = []
+            try:
+                citations = json.loads(meta.get("citations_json") or "[]")
+            except Exception:
+                citations = []
+
+        sections.append({
+            "section_key": sk,
+            "title": section_heading(sk),
+            "summary": summary,
+            "summary_zh": summary_zh,
+            "blocks": _OUTLINE_BLOCKS.get(sk, ["Summary"]),
+            "formulas": formulas,
+            "citations": citations,
+            "needs_user_data": sk in _DATA_CHECKLIST,
+            "data_checklist": _DATA_CHECKLIST.get(sk, ""),
+        })
+
+    return {
+        "session_id": session_id,
+        "topic": ps.get("topic", ""),
+        "sections": sections,
+        "literature_stats": {"papers": 0, "chunks": 0},
+    }
+
+
+# ── 大纲微调 / 重写 / 版本回溯 ────────────────────────────────────────────────
+
+_OUTLINE_REFINE_PERSONA = """You are an academic paper outline EDITOR for HiMCM. You receive an existing section outline (English + its Chinese translation) and a specific revision request. You produce a REVISED outline that satisfies the request.
+
+Rules:
+- Preserve the EXACT `### ` block headings, block count, and order of the existing outline — the request is a LOCAL tweak, not a restructure.
+- Only change what the request asks for; keep everything else (symbols, values, conclusions, formulas) identical.
+- Keep symbols/values consistent with the existing outline and the provided context. Never introduce an undefined symbol.
+- Math: $...$ inline, $$...$$ display. NEVER \\( \\) or \\[ \\]. Never $ for currency.
+- Output ONLY a JSON object (no fences): {"summary": "...", "summary_zh": "...", "formulas": [{"latex":"...","where":[{"sym":"...","zh":"..."}]}], "citations": [{"title":"...","authors":"...","year":2023}]}.
+- summary_zh is a faithful Chinese translation of the revised summary (same blocks/order; symbols, numbers and formulas unchanged).
+- formulas/citations: carry over the existing ones unchanged unless the request explicitly changes them.
+"""
+
+# 重写模式 → 明确指令
+_OUTLINE_REWRITE_MODES = {
+    "standard": "Standard rewrite: keep the same level of detail, structure, and block count, but produce an entirely fresh phrasing and wording.",
+    "concise": "Concise compression: cut the length to about half. Keep only the core conclusion, key formulas, and critical numbers/data; drop elaboration and examples.",
+    "detailed": "Detailed expansion: add more derivation, explanation, and illustrative cases; make the section noticeably more thorough without changing its conclusion.",
+    "academic": "Academic upgrade: elevate the register to rigorous academic English, use precise terminology, and tighten the argument; keep the same content and length.",
+}
+
+
+def _load_current_outline_section(conn, session_id, section_key):
+    """读当前一章的大纲内容（summary + summary_zh + formulas + citations）。"""
+    sec = paper_db.load_section(conn, session_id, section_key)
+    om = paper_db.load_outline_meta(conn, session_id, section_key)
+    summary = (sec.get("content_md") or "") if sec else ""
+    summary_zh = (om.get("summary_zh") or "") if om else ""
+    try:
+        formulas = json.loads(om.get("formulas_json") or "[]") if om else []
+    except Exception:
+        formulas = []
+    try:
+        citations = json.loads(om.get("citations_json") or "[]") if om else []
+    except Exception:
+        citations = []
+    return summary, summary_zh, formulas, citations
+
+
+def _outline_section_dict(section_key, summary, summary_zh, formulas, citations):
+    return {
+        "section_key": section_key,
+        "title": section_heading(section_key),
+        "summary": summary,
+        "summary_zh": summary_zh,
+        "blocks": _OUTLINE_BLOCKS.get(section_key, ["Summary"]),
+        "formulas": formulas,
+        "citations": citations,
+        "needs_user_data": section_key in _DATA_CHECKLIST,
+        "data_checklist": _DATA_CHECKLIST.get(section_key, ""),
+    }
+
+
+def _persist_outline_section(conn, session_id, section_key,
+                             summary, summary_zh, formulas, citations):
+    """写回 section_state + outline_meta，并做结构化提取（符号/模型/结果闭环）。"""
+    if summary:
+        paper_db.upsert_section(conn, session_id, section_key, summary, status="draft")
+    paper_db.upsert_outline_meta(conn, session_id, section_key, summary_zh, formulas, citations)
+
+    if section_key == "notation":
+        try:
+            formula_text = "\n".join(f.get("latex", "") for f in formulas)
+            _extract_symbols(conn, session_id, summary + "\n\n" + formula_text)
+        except Exception:
+            logger.exception("大纲符号提取失败（非致命）")
+    elif section_key == "build":
+        try:
+            _extract_models(conn, session_id, summary)
+        except Exception:
+            logger.exception("大纲模型提取失败（非致命）")
+    elif section_key in ("solve", "analyze"):
+        try:
+            _extract_results(conn, session_id, section_key, summary)
+        except Exception:
+            logger.exception("大纲结果提取失败（非致命）")
+
+
+def _build_refine_prompt(section_key, heading, problem_md, current_summary,
+                         current_zh, instruction, blocks, previous_context, kb_ctx):
+    parts = [
+        f"# Task: Revise the **{heading}** section outline according to a specific request.",
+        "",
+        "## The problem",
+        problem_md,
+        "",
+        "## Current outline (English)",
+        current_summary,
+        "",
+        "## Current outline (Chinese translation)",
+        current_zh,
+        "",
+        "## Revision request (do ONLY this; leave everything else unchanged)",
+        instruction,
+    ]
+    if previous_context.strip():
+        parts.extend([
+            "",
+            "## Previously defined symbols / models / results (keep consistent)",
+            previous_context,
+        ])
+    if kb_ctx.strip():
+        parts.extend(["", "## Knowledge base references", kb_ctx])
+    parts.extend([
+        "",
+        "## Required blocks (keep these EXACT `### ` headings, in this order)",
+        "\n".join(f"- {b}" for b in blocks),
+        "",
+        "## Output format",
+        "Return ONLY a JSON object:",
+        '{"summary": "...", "summary_zh": "...", '
+        '"formulas": [{"latex":"...","where":[{"sym":"...","zh":"..."}]}], '
+        '"citations": [{"title":"...","authors":"...","year":2023}]}',
+        "",
+        "Requirements:",
+        "- Preserve the block headings, count, and order; only modify what the request asks.",
+        "- summary_zh is a faithful Chinese translation of the revised summary (same blocks/order).",
+        "- Keep symbols/values/formulas identical unless the request changes them. Math: $...$ / $$...$$ only.",
+        "- formulas/citations: carry over the existing ones unchanged unless the request changes them.",
+    ])
+    return "\n".join(parts)
+
+
+def _build_rewrite_prompt(section_key, heading, problem_md, current_summary,
+                          mode, extra, previous_context, kb_ctx):
+    base = _build_outline_prompt(
+        section_key, heading, problem_md, "", "", previous_context, kb_ctx, "",
+    )
+    mode_instruction = _OUTLINE_REWRITE_MODES.get(mode, _OUTLINE_REWRITE_MODES["standard"])
+    extra_parts = ["", "## Rewrite mode", mode_instruction]
+    if extra and extra.strip():
+        extra_parts += ["", "## Extra requirements (from the user)", extra.strip()]
+    extra_parts += [
+        "",
+        "## Current version (keep the SAME symbols, values and conclusions; rewrite the prose)",
+        current_summary,
+    ]
+    return base + "\n" + "\n".join(extra_parts)
+
+
+def refine_outline_section(conn, session_id: str, section_key: str, instruction: str) -> dict:
+    """局部微调一章大纲，返回新章节 dict。失败抛 ValueError。"""
+    meta = _SECTION_META.get(section_key, {})
+    heading = meta.get("heading", section_key)
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        raise ValueError(f"论文会话 {session_id} 不存在")
+    summary, summary_zh, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
+    if not summary.strip():
+        raise ValueError(f"「{heading}」还没有内容，无法微调")
+    if not (instruction or "").strip():
+        raise ValueError("请填写修改要求")
+
+    previous_context = _build_structured_context(conn, session_id, section_key)
+    kb_ctx = _kb_for_stage(section_key, "")
+    blocks = _OUTLINE_BLOCKS.get(section_key, ["Summary"])
+
+    user_prompt = _build_refine_prompt(
+        section_key, heading, ps.get("problem_md", ""), summary, summary_zh,
+        instruction, blocks, previous_context, kb_ctx,
+    )
+    raw = _call_writer(_OUTLINE_REFINE_PERSONA, user_prompt)
+    if raw is None:
+        raise ValueError(f"「{heading}」微调失败（LLM 调用错误）")
+    data = _parse_outline_json(raw, heading)
+    if not data["summary"].strip():
+        raise ValueError(f"「{heading}」微调结果为空")
+
+    _persist_outline_section(conn, session_id, section_key,
+                             data["summary"], data["summary_zh"],
+                             data["formulas"], data["citations"])
+    return _outline_section_dict(section_key, data["summary"], data["summary_zh"],
+                                 data["formulas"], data["citations"])
+
+
+def rewrite_outline_section(conn, session_id: str, section_key: str,
+                            mode: str, extra: str = "") -> dict:
+    """按模式重写一章大纲。返回新章节 dict + previous_version_no + previous。失败抛 ValueError。"""
+    meta = _SECTION_META.get(section_key, {})
+    heading = meta.get("heading", section_key)
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        raise ValueError(f"论文会话 {session_id} 不存在")
+    if mode not in _OUTLINE_REWRITE_MODES:
+        mode = "standard"
+
+    summary, summary_zh, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
+    previous = _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
+    version_no = None
+    if summary.strip():
+        version_no = paper_db.save_section_version(
+            conn, session_id, section_key, summary, summary_zh, formulas, citations,
+        )
+
+    previous_context = _build_structured_context(conn, session_id, section_key)
+    kb_ctx = _kb_for_stage(section_key, "")
+
+    user_prompt = _build_rewrite_prompt(
+        section_key, heading, ps.get("problem_md", ""), summary, mode, extra,
+        previous_context, kb_ctx,
+    )
+    raw = _call_writer(_OUTLINE_PERSONA, user_prompt)
+    if raw is None:
+        raise ValueError(f"「{heading}」重写失败（LLM 调用错误）")
+    data = _parse_outline_json(raw, heading)
+    if not data["summary"].strip():
+        raise ValueError(f"「{heading}」重写结果为空")
+
+    _persist_outline_section(conn, session_id, section_key,
+                             data["summary"], data["summary_zh"],
+                             data["formulas"], data["citations"])
+    result = _outline_section_dict(section_key, data["summary"], data["summary_zh"],
+                                   data["formulas"], data["citations"])
+    result["previous_version_no"] = version_no
+    result["previous"] = previous
+    return result
+
+
+def restore_outline_section(conn, session_id: str, section_key: str, version_no: int) -> dict:
+    """把某历史版本恢复为当前。失败抛 ValueError。"""
+    v = paper_db.load_section_version(conn, session_id, section_key, version_no)
+    if v is None:
+        raise ValueError(f"版本 {version_no} 不存在")
+    try:
+        formulas = json.loads(v.get("formulas_json") or "[]")
+    except Exception:
+        formulas = []
+    try:
+        citations = json.loads(v.get("citations_json") or "[]")
+    except Exception:
+        citations = []
+    summary = v.get("content_md") or ""
+    summary_zh = v.get("summary_zh") or ""
+    _persist_outline_section(conn, session_id, section_key,
+                             summary, summary_zh, formulas, citations)
+    return _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
+
+
+# ── 板块级编辑：按 `### ` 逻辑块直接改 / AI 重写一块 / 影响评估 ───────────────
+
+def _split_md_blocks(md: str) -> list[dict]:
+    """按 `### ` 切分 markdown 为 [{heading, body}]，与前端 splitBlocks 对齐。"""
+    if not md or not md.strip():
+        return []
+    parts = re.split(r"^###\s+", md, flags=re.M)
+    out = []
+    if parts[0] and parts[0].strip():
+        out.append({"heading": "", "body": parts[0].strip()})
+    for seg in parts[1:]:
+        nl = seg.find("\n")
+        if nl == -1:
+            out.append({"heading": seg.strip(), "body": ""})
+        else:
+            out.append({"heading": seg[:nl].strip(), "body": seg[nl + 1:].strip()})
+    return out
+
+
+def _join_md_blocks(blocks: list[dict]) -> str:
+    return "\n\n".join(
+        (f"### {b['heading']}\n{b['body']}" if b.get("heading") else b["body"])
+        for b in blocks
+    ).strip()
+
+
+def _parse_block_json(raw: str, heading: str) -> dict:
+    """容错解析 LLM 返回的 {block_en, block_zh, affects_later, impact_reason}。"""
+    text = (raw or "").strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:]
+        text = text.strip()
+    l, r = text.find("{"), text.rfind("}")
+    data = None
+    if l != -1 and r != -1:
+        candidate = text[l:r + 1]
+        try:
+            data = json.loads(candidate)
+        except json.JSONDecodeError:
+            try:
+                data = json.loads(_repair_latex_backslashes(candidate))
+            except json.JSONDecodeError:
+                data = None
+    if not isinstance(data, dict):
+        logger.warning(f"板块 JSON 解析失败（{heading}）：{raw[:200]}")
+        return {}
+    return {
+        "block_en": _normalize_latex(str(data.get("block_en") or "").strip()),
+        "block_zh": _normalize_latex(str(data.get("block_zh") or "").strip()),
+        "affects_later": bool(data.get("affects_later", False)),
+        "impact_reason": str(data.get("impact_reason") or "").strip(),
+    }
+
+
+_OUTLINE_BLOCK_PERSONA = """You revise ONE logical block of a HiMCM paper outline. You receive the full section outline (English + Chinese), the target block heading, and an optional instruction. You produce a NEW version of ONLY that block.
+
+Rules:
+- Change ONLY the block with the given heading. Every other block must stay EXACTLY as-is.
+- Keep the block's heading verbatim; only rewrite its body (the text under the heading).
+- Keep symbols, values, and formulas consistent with the rest of the section and the provided context. Never introduce an undefined symbol.
+- Math: $...$ inline, $$...$$ display. NEVER \\( \\) or \\[ \\]. Never $ for currency.
+- Assess ripple: affects_later = true ONLY if this change could make later blocks/sections inconsistent (e.g., a changed symbol meaning, a changed value, a changed model, or a changed conclusion that later content references). Otherwise false.
+- Output ONLY JSON (no fences): {"block_en": "...", "block_zh": "...", "affects_later": false, "impact_reason": "..."} .
+- block_en is the new English body (WITHOUT the `### ` heading). block_zh is its faithful Chinese translation (same symbols/numbers/formulas unchanged).
+"""
+
+
+_OUTLINE_IMPACT_PERSONA = """You assess whether a change to one block of a HiMCM paper outline could affect downstream content. You receive the section's current outline (English + Chinese), the changed block heading, the new block body, and the symbols/models/results already defined. You judge whether this block introduces an inconsistency that later sections are likely to reference.
+
+Output ONLY JSON (no fences): {"affects_later": false, "impact_reason": "..."} .
+affects_later = true only if the changed symbols/values/models/conclusions would conflict with what later sections or other blocks already assume.
+"""
+
+
+def _build_block_regenerate_prompt(section_key, heading, problem_md, full_summary,
+                                   full_zh, target_en, target_zh, instruction,
+                                   previous_context):
+    parts = [
+        f"# Task: Rewrite ONLY the **{heading}** block of the **{section_heading(section_key)}** section.",
+        "",
+        "## The problem",
+        problem_md,
+        "",
+        "## Full section outline (English) — context only, do NOT change other blocks",
+        full_summary,
+        "",
+        "## Full section outline (Chinese translation)",
+        full_zh,
+        "",
+        f"## Target block to rewrite: `### {heading}`",
+        "Current English body:",
+        target_en or "(empty)",
+        "Current Chinese body:",
+        target_zh or "(empty)",
+    ]
+    if instruction and instruction.strip():
+        parts.extend(["", "## User's instruction for this block", instruction.strip()])
+    if previous_context.strip():
+        parts.extend([
+            "",
+            "## Previously defined symbols / models / results (keep consistent)",
+            previous_context,
+        ])
+    parts.extend([
+        "",
+        "## Output format",
+        "Return ONLY a JSON object:",
+        '{"block_en": "...", "block_zh": "...", "affects_later": false, "impact_reason": "..."}',
+        "",
+        "block_en = the rewritten English body (no heading). block_zh = its Chinese translation.",
+    ])
+    return "\n".join(parts)
+
+
+def _build_impact_prompt(section_key, heading, problem_md, full_summary,
+                         full_zh, new_body_en, previous_context):
+    parts = [
+        f"# Task: Assess whether this change to the **{heading}** block affects downstream content.",
+        "",
+        "## The problem",
+        problem_md,
+        "",
+        "## Full section outline (English)",
+        full_summary,
+        "",
+        "## Full section outline (Chinese translation)",
+        full_zh,
+        "",
+        f"## The block `### {heading}` was changed to:",
+        new_body_en,
+    ]
+    if previous_context.strip():
+        parts.extend([
+            "",
+            "## Symbols / models / results already defined (downstream may reference these)",
+            previous_context,
+        ])
+    parts.extend([
+        "",
+        "## Output format",
+        "Return ONLY a JSON object:",
+        '{"affects_later": false, "impact_reason": "..."}',
+        "",
+        "affects_later = true ONLY if the change makes later blocks/sections inconsistent.",
+    ])
+    return "\n".join(parts)
+
+
+def save_outline_section(conn, session_id: str, section_key: str,
+                         summary: str, summary_zh: str) -> dict:
+    """直接保存用户手工编辑后的整章 summary（不触发 LLM），保留原公式/文献。失败抛 ValueError。"""
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        raise ValueError(f"论文会话 {session_id} 不存在")
+    if not (summary or "").strip():
+        raise ValueError("内容不能为空")
+    _, _, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
+    _persist_outline_section(conn, session_id, section_key, summary, summary_zh, formulas, citations)
+    return _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
+
+
+def regenerate_outline_block(conn, session_id: str, section_key: str,
+                             heading: str, instruction: str = "") -> dict:
+    """AI 只重写一个 `### ` 逻辑块（英文 + 中文），并评估是否影响后续。失败抛 ValueError。"""
+    meta = _SECTION_META.get(section_key, {})
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        raise ValueError(f"论文会话 {session_id} 不存在")
+    summary, summary_zh, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
+    en_blocks = _split_md_blocks(summary)
+    zh_blocks = _split_md_blocks(summary_zh)
+    idx = next((i for i, b in enumerate(en_blocks) if b["heading"] == heading), None)
+    if idx is None:
+        raise ValueError(f"未找到板块「{heading}」")
+    target_en = en_blocks[idx]
+    target_zh = zh_blocks[idx] if idx < len(zh_blocks) else {"heading": "", "body": ""}
+
+    previous_context = _build_structured_context(conn, session_id, section_key)
+    user_prompt = _build_block_regenerate_prompt(
+        section_key, heading, ps.get("problem_md", ""), summary, summary_zh,
+        target_en["body"], target_zh["body"], instruction, previous_context,
+    )
+    raw = _call_writer(_OUTLINE_BLOCK_PERSONA, user_prompt)
+    if raw is None:
+        raise ValueError(f"「{heading}」重写失败（LLM 调用错误）")
+    data = _parse_block_json(raw, heading)
+    if not data.get("block_en"):
+        raise ValueError(f"「{heading}」重写结果为空")
+
+    en_blocks[idx]["body"] = data["block_en"]
+    if idx < len(zh_blocks) and data.get("block_zh"):
+        zh_blocks[idx]["body"] = data["block_zh"]
+    new_summary = _join_md_blocks(en_blocks)
+    new_zh = _join_md_blocks(zh_blocks)
+
+    _persist_outline_section(conn, session_id, section_key, new_summary, new_zh, formulas, citations)
+    result = _outline_section_dict(section_key, new_summary, new_zh, formulas, citations)
+    result["affects_later"] = data.get("affects_later", False)
+    result["impact_reason"] = data.get("impact_reason", "")
+    return result
+
+
+def check_block_impact(conn, session_id: str, section_key: str,
+                       heading: str, new_body_en: str) -> dict:
+    """AI 评估某个板块的改动是否影响后续内容。失败抛 ValueError。"""
+    ps = paper_db.load_session(conn, session_id)
+    if ps is None:
+        raise ValueError(f"论文会话 {session_id} 不存在")
+    summary, summary_zh, _, _ = _load_current_outline_section(conn, session_id, section_key)
+    previous_context = _build_structured_context(conn, session_id, section_key)
+    user_prompt = _build_impact_prompt(
+        section_key, heading, ps.get("problem_md", ""), summary, summary_zh,
+        new_body_en or "", previous_context,
+    )
+    raw = _call_writer(_OUTLINE_IMPACT_PERSONA, user_prompt)
+    if raw is None:
+        return {"affects_later": False, "impact_reason": ""}
+    data = _parse_block_json(raw, heading)
+    return {
+        "affects_later": bool(data.get("affects_later", False)),
+        "impact_reason": str(data.get("impact_reason") or "").strip(),
+    }
 
 
 # ── 拼装 ─────────────────────────────────────────────────────────────────────
