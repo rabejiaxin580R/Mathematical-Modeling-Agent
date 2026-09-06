@@ -122,37 +122,28 @@
     card.innerHTML = `
       <div class="clog-close" title="关闭">×</div>
       <div class="clog-title">🆕 更新日志</div>
-      <div class="clog-ver">v2.1.0 · 2026-07-07</div>
+      <div class="clog-ver">v2.2.0 · 2026-09-06</div>
       <div class="clog-body">
         <div class="clog-section">
-          <div class="clog-h">🐛 修复：AI 回答被"吞掉"的严重 Bug</div>
-          <p>流式回答有时会在眼前消失——深入排查 6 个独立根因并全部修复：</p>
+          <div class="clog-h">📝 新功能：一键生成建模论文</div>
+          <p>从大纲到全文，自动配图 + 文献溯源：</p>
           <ul>
-            <li>SSE 缓冲区未 flush 导致最后的事件丢失</li>
-            <li>网络错误时覆盖而非追加已有内容</li>
-            <li>收尾阶段清空 DOM 重建导致闪白/丢失（核心修复）</li>
-            <li>LLM 流中断时异常处理缺失</li>
-            <li>渲染错误导致整个 SSE 流崩溃</li>
-            <li>空 done 事件覆盖 token 增量渲染结果</li>
+            <li><b>大纲 → 全文</b>：先确认大纲，再逐章生成，支持续传 / 重生成</li>
+            <li><b>在线文献检索</b>：迁到网关服务端，鉴权不计费、结果缓存 7 天</li>
+            <li><b>自动配图</b>：从数据表格自动选型成图（柱状 / 折线），直接注入正文</li>
+            <li><b>导出 Word</b>：生成结果一键导出 .docx</li>
           </ul>
         </div>
         <div class="clog-section">
-          <div class="clog-h">✨ 知识库按评级分层展示</div>
-          <p>检索结果根据你的 L1~L5 评级自动调整：</p>
-          <ul>
-            <li><b>L1/L2 萌新/入门</b>：优先展示「一句话总结」+「举个例子」</li>
-            <li><b>L4/L5 熟练/高手</b>：优先展示数学公式 + 推导 + 代码</li>
-          </ul>
-        </div>
-        <div class="clog-section">
-          <div class="clog-h">✨ 首页评级引导弹窗</div>
-          <p>注册后若未评级，主页自动提醒去测评/选等级。</p>
+          <div class="clog-h">🎭 双风格等待界面</div>
+          <p>剧情 / 终端两种日志风格可切换，章节进度条 + 心跳 + 卡住提示。</p>
         </div>
         <div class="clog-section">
           <div class="clog-h">🔧 改进</div>
           <ul>
-            <li>角色/评级独立性澄清：难度深度 × 内容侧重 两个独立维度</li>
-            <li>输入框侧重按钮 "跟随评级" → "自动"</li>
+            <li>「做建模」入口新增「论文生成」卡片</li>
+            <li>完整论文页 UI 统一新中式配色</li>
+            <li>文献检索兜底：线程化 + 20s 超时，不卡生成</li>
           </ul>
         </div>
       </div>

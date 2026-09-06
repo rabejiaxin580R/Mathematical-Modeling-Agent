@@ -17,7 +17,7 @@
 #endif
 
 #define AppName "数学建模助教"
-#define AppVersion "1.0.0"
+#define AppVersion "2.2.0"
 #define AppPublisher "Math Modeling Agent"
 #define AppExe "启动助教.exe"
 

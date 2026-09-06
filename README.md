@@ -1,10 +1,10 @@
 <p align="center">
-  <h1 align="center">📐 数学建模助教 v2.1</h1>
+  <h1 align="center">📐 数学建模助教 v2.2</h1>
   <p align="center"><em>基于 40 小时数学建模课程知识库的 AI 智能助教<br>自动拆解问题 · 有出处地答疑 · 写代码跑代码 · 手把手教零基础</em></p>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v2.1.0-2ea44f?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/version-v2.2.0-2ea44f?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=for-the-badge" alt="Platform">
   <img src="https://img.shields.io/badge/license-MIT-yellow?style=for-the-badge" alt="License">
 </p>
@@ -15,7 +15,19 @@
 
 ---
 
-## 🆕 v2.1 更新亮点
+## 🆕 v2.2 更新亮点
+
+| 🎯 | 内容 |
+|---|------|
+| 📝 | **一键生成建模论文**：大纲→全文、自动配图、文献溯源，生成结果一键导出 Word |
+| 🔍 | **在线文献检索**：检索服务迁到网关（鉴权不计费、结果缓存 7 天），agent 端网关优先、直连兜底 |
+| 🎭 | **双风格等待界面**：剧情 / 终端两种日志可切换，章节进度条 + 心跳 + 卡住提示 |
+| 📊 | **自动配图**：从数据表格自动选型成图（柱状 / 折线），base64 注入正文 |
+
+> 📋 [完整更新日志](CHANGELOG.md)
+
+<details>
+<summary>📦 v2.1 更新亮点</summary>
 
 | 🎯 | 内容 |
 |---|------|
@@ -23,7 +35,7 @@
 | ✨ | **知识库按评级分层**：检索结果随你的 L1~L5 水平自动调整——萌新多给「一句话总结 + 举例」，高手多给「公式 + 推导 + 代码」 |
 | 🔧 | **角色 × 评级独立**：「内容侧重」由分工决定、「难度深度」由评级决定，两个维度互不干扰 |
 
-> 📋 [完整更新日志](CHANGELOG.md)
+</details>
 
 <details>
 <summary>📦 v2.0 更新亮点</summary>
@@ -43,7 +55,8 @@
 
 | 功能 | 说明 |
 |------|------|
-| 📝 **入门测评** 🆕 | 55 道精选题，自动定级 + 弱项分析 + 推荐学习路线，不再盲目瞎逛 |
+| 📝 **论文生成** 🆕 | 一键生成完整建模论文：大纲→全文、自动配图、文献溯源、导出 Word |
+| 📝 **入门测评** | 55 道精选题，自动定级 + 弱项分析 + 推荐学习路线，不再盲目瞎逛 |
 | 📚 **学习模式** | 顺着知识图谱，从基础概念一步步点亮建模技能树 |
 | 🔧 **做建模** | 自由工作台（编辑器 + 终端 + AI），AI 陪你一步步解题 |
 | 📝 **真题练习** | 历年 HiMCM 真题分步练，AI 按评分要点打分点评 |
@@ -71,11 +84,11 @@
 
 开箱即用，**自带完整 Python 运行环境，无需安装任何东西**。
 
-> 📥 **[前往 Releases 下载 v2.1 →](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases)**
+> 📥 **[前往 Releases 下载 v2.2 →](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases)**
 
 | 系统 | 下载 |
 |------|------|
-| 🪟 **Windows** | `数学建模助教-安装程序-v2.1.0.exe` 或 `数学建模助教-windows-x64.zip` |
+| 🪟 **Windows** | `数学建模助教-安装程序-v2.2.0.exe` 或 `数学建模助教-windows-x64.zip` |
 | 🍎 **macOS** | `数学建模助教-macos-arm64.tar.gz`（⚠️ 不要放在 iCloud 云盘！） |
 | 🐧 **Linux** | `数学建模助教-linux-x86_64.tar.gz` |
 
