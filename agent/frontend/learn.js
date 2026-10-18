@@ -41,6 +41,7 @@
   }
 
   function conceptVisible(c, diffFilter, onlyTodo) {
+    const query=$("knowledge-search")?.value.trim().toLowerCase();if(query&&!c.title.toLowerCase().includes(query))return false;
     if (diffFilter && c.difficulty !== diffFilter) return false;
     if (onlyTodo && completed.has(c.id)) return false;
     return true;
@@ -50,7 +51,7 @@
     const catFilter = $("filter-cat").value;
     const diffFilter = $("filter-diff").value;
     const onlyTodo = $("show-ext").checked;
-    const filterActive = !!(catFilter || diffFilter || onlyTodo);
+    const filterActive = !!(catFilter || diffFilter || onlyTodo || $("knowledge-search")?.value.trim());
 
     const host = $("map");
     host.innerHTML = "";
@@ -173,9 +174,9 @@
     }
     // 默认：完整学习阶梯
     return {
-      order: ["when_to_use", "definition", "math_principle", "step_by_step", "worked_example", "pitfalls", "tools"],
+      order: ["when_to_use", "definition", "worked_example", "step_by_step", "math_principle", "pitfalls", "tools"],
       emphasize: new Set(),
-      collapse: new Set(),
+      collapse: new Set(["math_principle","tools"]),
     };
   }
 
@@ -186,7 +187,9 @@
     return !!d[key];
   }
 
+  let readerOptions = {}, readerOrigin=null;
   function gotoAsk(q) {
+    if(readerOptions.onAsk) { readerOptions.onAsk(q); return; }
     location.href = `/build/free?ask=${encodeURIComponent(q)}`;
   }
 
@@ -302,7 +305,7 @@
 
   function renderReader(d) {
     currentId = d.chunk_id;
-    const plan = sectionPlan(d.roles);
+    const plan = sectionPlan(profile?.role ? [profile.role] : d.roles);
 
     // 顶栏标签 + 标题
     const tags = [];
@@ -413,8 +416,10 @@
   }
 
   function openReaderShell() {
+    if($("reader").hidden)readerOrigin=document.activeElement;
     $("reader").hidden = false;
     document.body.classList.add("reader-open");
+    $('reader-close').focus();
   }
   function closeReader() {
     const reader = $("reader");
@@ -423,6 +428,7 @@
       reader.classList.remove("reader-closing");
       document.body.classList.remove("reader-open");
       currentId = null;
+      readerOrigin?.focus();readerOptions.onClose?.();
     };
     if (window.MMAnim && !MMAnim.reduced && !reader.hidden) {
       reader.classList.add("reader-closing");
@@ -539,68 +545,15 @@
       openNode(open);
     }
 
-    // 首次进入引导：未定级、未跳过、且没有深链时弹出
-    if (!myLevel && !asm.skipped && !open) {
-      const gate = $("asm-gate");
-      if (gate) {
-        gate.hidden = false;
-        const skip = () => {
-          gate.hidden = true;
-          fetch("/api/assessment/skip", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ pid: profile.id }),
-          }).catch(() => {});
-        };
-        $("asm-gate-skip").onclick = skip;
-        $("asm-gate-scrim").onclick = skip;
-      }
-    }
+    if(!myLevel){const host=$('asm-path-banner');host.hidden=false;host.innerHTML='<div class="ui-next-lesson"><div class="ui-kicker">选择你的起点</div><h2>从一个概念开始</h2><p>直接浏览全部知识，或选择等级获得一条学习路径。</p><a href="/assessment" class="ui-btn">选择等级 / 参加测评</a></div>';}
   }
 
   // 知识地图顶部置顶「我的推荐路径」卡片
   function renderPathBanner() {
-    if (!myPath) return;
-    const host = $("asm-path-banner");
-    if (!host) return;
-    const total = recommendedIds.size;
-    const doneN = [...recommendedIds].filter((id) => completed.has(id)).length;
-    const pct = total ? Math.round((doneN / total) * 100) : 0;
-
-    // 取前几个还没掌握的推荐知识点作为「接下来学」快捷入口
-    const next = [];
-    for (const m of (myPath.milestones || [])) {
-      for (const c of (m.concepts || [])) {
-        if (!completed.has(c.id)) next.push(c);
-        if (next.length >= 6) break;
-      }
-      if (next.length >= 6) break;
-    }
-    const chips = next.map((c) =>
-      `<button class="pb-chip press" data-id="${esc(c.id)}">` +
-      `<span class="pb-chip-t">${esc(c.title)}</span>` +
-      `<span class="pb-chip-d">${esc(DIFF_LABEL[c.difficulty] || "")}</span>` +
-      `</button>`
-    ).join("");
-
-    host.hidden = false;
-    host.innerHTML =
-      `<div class="pb-head">` +
-      `<div class="pb-title"><span class="lv-badge lv-${myLevel}">${myLevel}</span>` +
-      `<span class="pb-title-t">为你推荐的学习路径 · ${esc(myPath.name || "")}</span></div>` +
-      `<div class="pb-prog"><span class="pb-prog-num">${doneN}/${total}</span>` +
-      `<div class="pb-bar"><i style="width:${pct}%"></i></div></div>` +
-      `<button class="pb-more" id="pb-more">查看完整路径 →</button>` +
-      `</div>` +
-      (myPath.tagline ? `<p class="pb-tagline">${esc(myPath.tagline)}</p>` : "") +
-      (chips
-        ? `<div class="pb-next"><span class="pb-next-h">接下来学：</span><div class="pb-chips">${chips}</div></div>`
-        : `<p class="pb-done">🎉 推荐路径上的知识点都掌握了，去地图里挑战更多吧。</p>`);
-
-    host.querySelector("#pb-more").onclick = openPathPanel;
-    host.querySelectorAll(".pb-chip").forEach((b) => {
-      b.onclick = () => openNode(b.dataset.id);
-    });
+    if(!myPath)return;const host=$('asm-path-banner');if(!host)return;
+    const all=(myPath.milestones||[]).flatMap(m=>m.concepts||[]),next=all.filter(c=>!completed.has(c.id));
+    host.hidden=false;host.innerHTML='<div class="ui-next-lesson"><div class="ui-kicker">下一项学习 · '+esc(myLevel)+'</div><h2>'+esc(next[0]?.title||'这条学习路径已完成')+'</h2><p>根据你的等级与学习路径推荐 · 已掌握 '+all.filter(c=>completed.has(c.id)).length+' / '+all.length+' 项</p>'+(next[0]?'<button class="ui-btn primary" data-lesson="'+esc(next[0].id)+'">开始学习 →</button>':'<a class="ui-btn" href="/practice">尝试真题练习 →</a>')+' <button class="ui-btn" id="pb-more">查看完整路径</button>'+(next.length>1?'<div class="ui-later">之后学习：'+next.slice(1,3).map(c=>'<button class="sv-link-btn" data-lesson="'+esc(c.id)+'">'+esc(c.title)+'</button>').join(' · ')+'</div>':'')+'</div>';
+    host.querySelector('#pb-more').onclick=openPathPanel;host.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>openNode(b.dataset.lesson));
   }
 
   async function openPathPanel() {
@@ -678,6 +631,9 @@
     }
 
     totalConcepts = mapData.modules.reduce((s, m) => s + m.count, 0);
+    const controls=document.querySelector('.learn-controls');const search=document.createElement('input');search.id='knowledge-search';search.type='search';search.placeholder='搜索知识标题';search.setAttribute('aria-label','搜索知识标题');controls.prepend(search);search.oninput=()=>renderMap();
+    const tabs=document.createElement('div');tabs.className='ui-segment learn-tabs';tabs.innerHTML='<button data-learn-tab="path" aria-pressed="true">学习路径</button><button data-learn-tab="all" aria-pressed="false">全部知识</button>';document.querySelector('.learn-scroll').before(tabs);
+    const selectTab=tab=>{document.body.dataset.learnTab=tab;tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.learnTab===tab));};tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>selectTab(b.dataset.learnTab));selectTab('path');
     populateCatFilter();
     updateProgress();
     renderMap(true);
@@ -706,5 +662,17 @@
     initAssessment();
   }
 
-  init();
+  window.MMKnowledgeReader = { open:openNode, close:closeReader, mount(options={}) {
+    readerOptions=options;
+    $('reader-close').onclick=closeReader;$('reader-scrim').onclick=closeReader;
+    $('reader-done').hidden=true;
+    $('reader-body').onscroll=updateRail;
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('reader').hidden)closeReader();});
+  }};
+  if (document.documentElement.dataset.guidePreview) {
+    window.GuideKnowledge = {
+      map(data) { mapData=data; totalConcepts=data.modules.reduce((n,m)=>n+m.count,0); openSubs=new Set(data.modules.flatMap(m=>m.subcats.map(s=>s.subcat_id))); populateCatFilter(); renderMap(false); updateProgress(); },
+      reader(data) { openReaderShell(); renderReader(data); }
+    };
+  } else if(document.getElementById('map')) init();
 })();

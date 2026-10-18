@@ -1,50 +1,63 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/static/chat-tasks.js?v=heartbeat1"></script>
+  <script src="/static/waiting.js?v=companion1"></script>
+  <link rel="stylesheet" href="/static/companion.css?v=1" />
+  <script src="/static/companion-state.js?v=1"></script>
+  <script src="/static/companion.js?v=1"></script>
+  <script src="/static/companion-notebook.js?v=2"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>数学建模助教 · 做题</title>
+  <title>建模研究台 · 做题</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
 
   <!-- KaTeX 公式渲染 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="/static/vendor/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="/static/vendor/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
   <!-- Markdown + 代码高亮 -->
-  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="/static/vendor/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="/static/vendor/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
 
   <!-- CodeMirror 5（编辑器，供 ide.js 使用） -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="/static/vendor/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
 
-  <link rel="stylesheet" href="/static/style.css?v=anim1" />
-  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+  <link rel="stylesheet" href="/static/style.css?v=research3" />
+  <link rel="stylesheet" href="/static/anim.css?v=research3" />
+  <link rel="stylesheet" href="/static/modeling-flow.css?v=onetab1" />
+  <link rel="stylesheet" href="/static/folder-browser.css?v=1" />
+  <link rel="stylesheet" href="/static/ui.css?v=research3" />
+<link rel="stylesheet" href="/static/solve-studio.css?v=coverage2" />
+  <link rel="stylesheet" href="/static/studio-personality.css?v=1" />
+  <link rel="stylesheet" href="/static/companion-notebook.css?v=2" />
+  <link rel="stylesheet" href="/static/research-materials.css?v=3" />
+  <link rel="stylesheet" href="/static/solve-discussion.css?v=1" />
+  <script defer src="/static/ui.js?v=companion1"></script>
 </head>
-<body>
+<body class="modeling-flow">
   <div class="sv" id="sv">
     <!-- 顶栏：品牌 + 题目 + 编辑器工具（工作目录/文件名/保存/运行/停止）+ 模型 -->
     <header class="sv-top">
-      <div class="sv-brand"><span class="mark">绣</span>做题</div>
+      <div class="sv-brand"><span class="mark">◇</span>做题</div>
       <span class="sv-cur-title" id="sv-cur-title"></span>
-      <span class="sv-top-spacer"></span>
+      <span class="sv-top-spacer"></span><span id="sv-save-state" class="sv-status" role="status"></span>
       <input type="text" class="ws-path" id="workdir" placeholder="工作目录（绝对路径，回车生效；留空用临时目录）" />
       <input type="text" class="ws-path ws-fname" id="filename" placeholder="文件名 main.py" value="main.py" />
       <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
       <button class="ide-btn run" id="btn-run" title="运行（Ctrl+Enter）">▶ 运行</button>
       <button class="ide-btn" id="btn-stop" title="停止当前进程" disabled>⛔ 停止</button>
-      <button class="sv-link-btn" id="sv-reset" title="换一道题" hidden>↻ 重新出题</button>
+      <button class="sv-link-btn" id="sv-reset" title="换一道题" hidden>＋ 新题目</button>
       <a class="ws-link" href="/home" title="返回首页">⌂ 首页</a>
       <div class="model-selector" id="model-selector">
         <button class="model-pill" id="model-pill" title="点击切换模型">
@@ -69,17 +82,21 @@
     <!-- 视图 A：立题 -->
     <section class="sv-setup" id="sv-setup">
       <div class="sv-setup-inner">
-        <h1 class="sv-h1">带一道题来，我陪你一步步做完它</h1>
-        <p class="sv-lead">粘贴赛题题面或上传题目文件，助教会按建模框架把它拆成一条<strong>解题路线</strong>。然后进入工作台：左边是路线，中间写代码、跑程序，右边和助教一起把当前这一步做出来。</p>
+        <div class="flow-eyebrow">研究手帐 · 新的一页</div><h1 class="sv-h1">先记下一个想法，<br>我们一起把它做出来。</h1>
+        <p class="sv-lead">不必一开始就想得完整。你来提出想法，助教陪你推敲、验证，留下每一步的发现。</p><label class="flow-label" for="sv-statement"><span class="studio-field-number">01</span> 这次研究什么？</label>
         <textarea id="sv-statement" class="sv-statement" placeholder="把赛题题面粘贴到这里（也可只上传题目文件）…"></textarea>
+        <label class="flow-label" for="sv-thought"><span class="studio-field-number">02</span> 我想先试试… <span>一点直觉，也值得记下来</span></label>
+        <textarea id="sv-thought" class="sv-statement flow-thought" placeholder="我想采用……，因为……，但不确定这个想法是否成立。"></textarea>
+        <details class="flow-question"><summary>补充最不确定的地方（可选）</summary><textarea id="sv-question" class="sv-statement flow-thought" aria-label="最不确定的地方" placeholder="例如：这个假设合理吗？哪些结果能支持我的判断？"></textarea></details>
         <div class="sv-setup-actions">
           <input type="file" id="sv-file" hidden accept=".csv,.xlsx,.xls,.json,.txt,.md,.py,.pdf,.docx,.doc,.pptx,.ppt,.html,.htm" />
           <button class="sv-btn" id="sv-upload" title="上传题目文件（pdf/word/txt 等）">📎 上传题目文件</button>
           <span class="sv-chips" id="sv-chips"></span>
-          <button class="sv-btn primary" id="sv-analyze">让助教拆解 →</button>
+          <button class="sv-btn primary" id="sv-analyze">开始讨论 →</button>
           <span class="sv-status" id="sv-status"></span>
         </div>
 
+        <div class="flow-example-row"><button class="sv-link-btn" id="sv-example">用一个例子试试 ↗</button><span id="sv-example-note" class="sv-status"></span></div>
         <!-- 我的做题存档：刷新/下次进来可继续做过的题 -->
         <div class="sv-archive" id="sv-archive" hidden>
           <div class="sv-archive-head">我的做题存档</div>
@@ -88,21 +105,22 @@
       </div>
     </section>
 
+    <nav class="flow-tabs" id="sv-tabs" aria-label="本步工作视图" hidden><button class="sv-btn" id="sv-route-toggle" aria-expanded="false">☰ 路线</button><button data-view="discussion" class="active" aria-pressed="true">讨论思路</button><button data-view="verification" aria-pressed="false">计算与验证</button><button data-view="outcome" aria-pressed="false">本步成果</button><span id="sv-confirm-progress" class="sv-status"></span></nav>
     <!-- 视图 B：解题驾驶舱（路线图 | 编辑器+终端 | 当前步共创） -->
     <section class="sv-cockpit" id="sv-cockpit" hidden>
       <!-- 左：题目 + 路线图 -->
       <aside class="sv-rail">
         <div class="sv-rail-head">
           <h2 class="sv-rail-title" id="sv-rail-title">我的题目</h2>
-          <button class="sv-bg-toggle" id="sv-bg-toggle" title="展开/收起题面">题面 ▾</button>
+          <button class="sv-bg-toggle" id="sv-bg-toggle" title="查看完整题面" aria-haspopup="dialog">查看题面</button>
+          <button class="sv-bg-toggle" id="sv-edit-plan" title="调整模块顺序、换模块或改写内容">编辑路线</button>
         </div>
-        <div class="sv-bg panel-md" id="sv-bg" hidden></div>
         <div class="sv-roadmap-label">解题路线</div>
-        <div class="sv-roadmap" id="sv-roadmap"></div>
+        <div class="sv-roadmap" id="sv-roadmap"></div><div class="flow-paper-entry"><p id="sv-material-status">逐步确认成果后，整理成论文。</p><button id="sv-to-paper" class="sv-btn" disabled>整理成论文 →</button></div>
       </aside>
 
       <!-- 中：编辑器 + 终端（复用 ide.js） -->
-      <section class="sv-col-mid">
+      <section class="sv-col-mid"><div class="flow-editor-tools" id="sv-editor-tools"></div><label class="flow-purpose">这次计算想验证什么？<input id="sv-purpose" placeholder="例如：候选方案是否满足所有约束" /></label>
         <div class="ws-editor"><textarea id="editor"></textarea></div>
         <div class="ws-console" id="ws-console">
           <div class="console-head">
@@ -125,60 +143,87 @@
       </section>
 
       <!-- 右：当前步任务 + 共创对话 -->
-      <main class="sv-stage">
+      <main class="sv-stage"><details class="flow-idea" id="sv-idea"><summary><span>当前采用的想法</span><strong id="sv-current-thought"></strong></summary><p>最初的想法</p><div id="sv-original-thought"></div></details>
         <div class="sv-step-head" id="sv-step-head">
           <div class="sv-step-empty">从左边的路线里点开一步，开始和助教一起做。</div>
         </div>
-        <div class="sv-chat" id="sv-chat"></div>
+        <div class="sv-chat" id="sv-chat"></div><section id="sv-outcome" class="flow-outcome" hidden></section><section id="sv-evidence" class="flow-evidence" hidden></section>
         <div class="sv-composer">
+          <button type="button" class="sv-attach" id="sv-discussion-attach" aria-label="给本步讨论添加附件" title="添加附件">＋</button>
+          <input type="file" id="sv-discussion-file" hidden accept=".csv,.xlsx,.xls,.json,.txt,.md,.py,.pdf,.docx,.doc,.pptx,.ppt,.html,.htm" />
           <textarea id="sv-input" rows="1" placeholder="和助教一起把这一步做出来…（Enter 发送，Shift+Enter 换行）" disabled></textarea>
           <button class="sv-send" id="sv-send" title="发送" disabled>➤</button>
         </div>
-        <div class="sv-composer-hint">助教只聚焦你点开的这一步；想推进下一步，点左边路线的下一个节点。</div>
+        <div class="sv-attachments" id="sv-discussion-attachments" aria-label="本步讨论附件"></div>
+        <div class="sv-composer-hint">讨论清楚后，在“本步成果”中确认你的决定与依据。</div>
       </main>
     </section>
 
-    <!-- 设置弹窗（与工作台同款） -->
-    <!-- 首次使用：选择/创建工作目录弹窗 -->
-    <div class="fm-overlay" id="fm-overlay" hidden>
-      <div class="fm-backdrop"></div>
-      <div class="fm-modal">
-        <div class="fm-inner">
-          <div class="fm-brand">
-            <div class="fm-mark">绣</div>
-            <div class="fm-head">
-              <div class="fm-title">选择工作目录</div>
-              <div class="fm-desc">新建或选择一个文件夹来存放建模文件</div>
-            </div>
-          </div>
+    <dialog id="sv-statement-dialog" class="statement-dialog" aria-label="完整题面">
+      <header><span>题面</span><button id="sv-statement-close" class="sv-btn" aria-label="关闭题面" title="关闭题面">×</button></header>
+      <div class="panel-md" id="sv-bg"></div>
+    </dialog>
 
-          <div class="fm-tabs">
-            <button class="fm-tab active" data-tab="new">＋ 新建文件夹</button>
-            <button class="fm-tab" data-tab="existing">📂 打开已有</button>
-          </div>
-
-          <div class="fm-panel" id="fm-panel-new">
-            <label for="fm-new-name">文件夹名称</label>
-            <input type="text" id="fm-new-name" placeholder="例如：mcm_workspace" />
-            <label for="fm-new-parent">放在哪个目录（默认桌面）</label>
-            <input type="text" id="fm-new-parent" placeholder="C:\Users\用户名\Desktop" />
-            <button class="fm-btn primary" id="fm-btn-create">创建并进入 →</button>
-            <div class="fm-msg" id="fm-msg-new"></div>
-          </div>
-
-          <div class="fm-panel" id="fm-panel-existing" hidden>
-            <label for="fm-existing-path">文件夹路径</label>
-            <input type="text" id="fm-existing-path" placeholder="粘贴或输入项目文件夹的绝对路径" />
-            <button class="fm-btn primary" id="fm-btn-open">进入此文件夹 →</button>
-            <div class="fm-msg" id="fm-msg-existing"></div>
-          </div>
-
-          <div class="fm-foot">
-            <button class="fm-skip" id="fm-skip">暂不选择，使用临时目录</button>
-          </div>
+    <dialog id="sv-plan-dialog" class="plan-dialog" aria-label="调整建模路线">
+      <header>
+        <div>
+          <h2>调整建模路线</h2>
+          <p>主线必须保留 9 个模块；每个情景组里同一个模块只能用一次，不同情景之间可以重复。
+             可以调换顺序、换模块、改写标题与引导语、调整每步负责的题面要求；改动后受影响的步骤需要重新确认。</p>
         </div>
+        <button type="button" id="sv-plan-close" class="sv-btn" aria-label="关闭" title="关闭">×</button>
+      </header>
+      <div id="sv-plan-list" class="plan-list"></div>
+      <footer>
+        <button type="button" id="sv-plan-add-task" class="sv-btn">＋ 新增情景</button>
+        <button type="button" id="sv-plan-default" class="sv-btn">按框架顺序重排</button>
+        <span id="sv-plan-status" role="status" class="plan-status"></span>
+        <button type="button" id="sv-plan-save" class="sv-btn primary">保存路线</button>
+      </footer>
+    </dialog>
+
+    <dialog id="solve-ai-warning" class="ai-warning" aria-labelledby="solve-ai-warning-title">
+      <h2 id="solve-ai-warning-title">⚠️ 生成论文大纲前，请先看一眼</h2>
+      <p class="ai-warning-lead" id="saw-lead">
+        AI 生成的内容重复性很高——同一道题，很多同学会得到非常相似的思路、公式和表达，
+        评阅时这些雷同点很容易被识别，<b>完全依赖 AI 会大幅降低获奖的可能性</b>。
+      </p>
+      <ul>
+        <li><b>这一步不可逆</b>：生成大纲就代表这一步的讨论结束了；之后想倒回来，只能你自己再手动说明。</li>
+        <li>已确认的步骤按你的结论写；没确认的步骤会交给 AI 直接补写，不再问你。</li>
+        <li>生成后你会落在大纲页，可以逐节查看、修改，再决定要不要生成完整论文。</li>
+      </ul>
+      <div class="ai-warning-actions">
+        <button type="button" class="sv-btn" id="saw-back">返回检查</button>
+        <button type="button" class="sv-btn" id="saw-review">回到本步继续确认</button>
+        <button type="button" class="sv-btn primary" id="saw-continue">我了解，开始生成大纲</button>
       </div>
-    </div>
+    </dialog>
+
+    <!-- 设置弹窗（与工作台同款） -->
+    <dialog id="fm-overlay" class="folder-browser" aria-labelledby="fm-title">
+      <header class="fb-header">
+        <div><h2 id="fm-title">选择工作文件夹</h2><p>找到你的项目，或新建一个文件夹存放建模文件。</p></div>
+        <button type="button" id="fm-close" class="fb-plain" aria-label="关闭文件夹选择器">×</button>
+      </header>
+      <div class="fb-body">
+        <aside class="fb-sidebar"><strong>本机位置</strong><nav id="fm-locations" aria-label="常用位置和磁盘"></nav></aside>
+        <section class="fb-main" aria-label="文件夹浏览">
+          <div class="fb-toolbar"><button type="button" id="fm-up" class="fb-plain" aria-label="返回上级文件夹">↑</button><nav id="fm-crumbs" aria-label="当前位置"></nav></div>
+          <div class="fb-tools"><input id="fm-filter" type="search" placeholder="查找当前目录中的文件夹" aria-label="筛选文件夹"><button type="button" id="fm-new" class="fb-plain">＋ 新建</button></div>
+          <div id="fm-list" aria-label="子文件夹"></div>
+          <form id="fm-create-form" class="fb-create" hidden>
+            <label for="fm-name">新文件夹名称</label><input id="fm-name" maxlength="120" required placeholder="例如：我的建模项目">
+            <button id="fm-create" class="fb-primary" type="submit">创建</button><button id="fm-new-cancel" class="fb-plain" type="button">取消</button>
+          </form>
+        </section>
+      </div>
+      <footer class="fb-footer">
+        <div class="fb-selected">将使用的文件夹<span id="fm-location">尚未选择</span></div>
+        <p id="fm-message" role="status" aria-live="polite"></p>
+        <div class="fb-actions"><button id="fm-cancel" class="fb-plain" type="button">取消</button><button id="fm-use" class="fb-primary" type="button" disabled>使用此文件夹</button></div>
+      </footer>
+    </dialog>
 
     <div class="settings-overlay" id="settings-overlay">
       <div class="settings-modal">
@@ -220,22 +265,20 @@
   </div>
 
   <!-- 顺序：共享渲染 → 档案 → 编辑器/终端（ide.js）→ 编辑器预览 → 做题驾驶舱逻辑 -->
-  <script src="/static/anim.js?v=anim1"></script>
-  <script src="/static/render.js?v=anim1"></script>
-  <script src="/static/profile.js?v=anim1"></script>
-  <script src="/static/ide.js?v=anim1"></script>
-  <script src="/static/editor-preview.js?v=anim1"></script>
-  <script src="/static/layout.js?v=anim1"></script>
-  <script src="/static/keysetup.js?v=anim1"></script>
-  <script src="/static/solve.js?v=anim1"></script>
-  <script>
-    // 缺 API Key 时主动弹配置向导（避免深链进入直接撞静默失败）
-    (function () {
-      if (!window.KeySetup) return;
-      const go = () => KeySetup.ensure();
-      if (window.Profile && Profile.require) Profile.require().then((p) => { if (p) go(); });
-      else go();
-    })();
-  </script>
+  <script src="/static/anim.js?v=research3"></script>
+  <script src="/static/render.js?v=research3"></script>
+  <script src="/static/profile.js?v=research3"></script>
+  <script>['workdir','filename','btn-save','btn-run','btn-stop'].forEach(id=>document.getElementById('sv-editor-tools').appendChild(document.getElementById(id)));</script>
+  <script src="/static/ide.js?v=companion1"></script>
+  <script src="/static/editor-preview.js?v=research3"></script>
+  <script src="/static/layout.js?v=research3"></script>
+  <script src="/static/keysetup.js?v=research3"></script>
+<script src="/static/solve-flow.js?v=onetab1"></script>
+  <script src="/static/research-materials.js?v=3"></script>
+<script src="/static/workflow-ui.js?v=onetab1"></script>
+  <script src="/static/folder-browser.js?v=1"></script>
+  <script src="/static/studio-personality.js?v=1"></script>
+<script src="/static/solve.js?v=coverage2"></script>
+
 </body>
 </html>

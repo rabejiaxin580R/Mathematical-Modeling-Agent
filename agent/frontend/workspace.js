@@ -356,11 +356,11 @@
   // ===== 首次使用 · 工作目录选择弹窗 =====
   (function initFolderModal() {
     const STORAGE_KEY = "mm_folder_setup_done";
-    if (localStorage.getItem(STORAGE_KEY) === "1") return;
+
 
     const overlay = document.getElementById("fm-overlay");
     if (!overlay) return;
-    overlay.hidden = false;
+    const directoryButton=document.createElement("button");directoryButton.className="ide-btn";directoryButton.textContent="工作环境";$("workdir").before(directoryButton);directoryButton.onclick=()=>{overlay.hidden=false;$("fm-new-name").focus();};
 
     // Tab 切换
     const tabs = overlay.querySelectorAll(".fm-tab");

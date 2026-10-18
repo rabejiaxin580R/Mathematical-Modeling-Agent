@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>论文草稿 · 本步整理</title>
+  <script src="/static/vendor/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css?v=research3" />
+  <link rel="stylesheet" href="/static/ui.css?v=research3" />
+  <link rel="stylesheet" href="/static/draft.css?v=1" />
+  <script defer src="/static/ui.js?v=companion1"></script>
+  <script src="/static/render.js?v=research3"></script>
+  <script src="/static/profile.js?v=research3"></script>
+  <script defer src="/static/draft.js?v=1"></script>
+</head>
+<body class="ui-v2 draft-page" data-page="draft">
+  <header class="draft-top">
+    <a class="draft-back" id="draft-back" href="/solve">← 返回建模</a>
+    <div class="draft-title"><b>论文草稿</b><span id="draft-step">正在读取…</span></div>
+    <span class="draft-status" id="draft-status" role="status"></span>
+  </header>
+
+  <main class="draft-main">
+    <section class="draft-card draft-goal" id="draft-goal" hidden></section>
+
+    <section class="draft-card">
+      <h2>这一步的讨论整理</h2>
+      <p class="draft-note">草稿在这里整理和确认，不再占用聊天界面。整理结果只作为本步待审稿，需要你确认后才进入项目记忆。</p>
+      <div class="draft-actions">
+        <button class="draft-btn primary" id="draft-summarize" type="button">从讨论中整理草稿</button>
+        <span class="draft-hint" id="draft-hint">整理约需 10 秒，期间可以继续留在本页。</span>
+      </div>
+    </section>
+
+    <section class="draft-card">
+      <h2>本步成果</h2>
+      <p class="draft-note" id="draft-state"></p>
+      <label class="draft-field">本步决定<textarea id="d-decision" rows="3" placeholder="我决定采用……"></textarea></label>
+      <label class="draft-field">采用的理由<textarea id="d-reason" rows="3" placeholder="因为……；如本步不适用，请说明原因。"></textarea></label>
+      <label class="draft-field">已有依据<textarea id="d-basis" rows="4" placeholder="知识出处、公式推导、外部材料或结果解释"></textarea></label>
+      <label class="draft-field">限制与待办<textarea id="d-limits" rows="3" placeholder="还不能说明什么？适用条件是什么？"></textarea></label>
+      <label class="draft-field">结果对我的想法意味着什么
+        <select id="d-verdict">
+          <option value="pending">尚未判断</option>
+          <option value="supported">支持我的想法</option>
+          <option value="partial">部分支持</option>
+          <option value="unsupported">不支持我的想法</option>
+          <option value="insufficient">证据不足</option>
+        </select>
+      </label>
+      <label class="draft-check"><input type="checkbox" id="d-na" /> 本步骤不适用（在上方说明理由）</label>
+      <div class="draft-evidence" id="draft-evidence"></div>
+      <div class="draft-actions">
+        <button class="draft-btn" id="draft-save" type="button">保存草稿</button>
+        <button class="draft-btn primary" id="draft-confirm" type="button">确认本步成果</button>
+      </div>
+      <p class="draft-error" id="draft-error" role="status"></p>
+    </section>
+  </main>
+
+  <dialog id="draft-next" class="draft-dialog" aria-label="草稿整理完成">
+    <h3 id="draft-next-title">本步草稿已整理完成</h3>
+    <p>是否进入完整论文写作区，把这一步接进整篇论文？</p>
+    <p class="draft-error" id="draft-next-note" role="status"></p>
+    <div class="draft-dialog-actions">
+      <button class="draft-btn" id="draft-stay" type="button">留在建模</button>
+      <button class="draft-btn primary" id="draft-goto-paper" type="button">进入完整论文写作区 →</button>
+    </div>
+  </dialog>
+</body>
+</html>

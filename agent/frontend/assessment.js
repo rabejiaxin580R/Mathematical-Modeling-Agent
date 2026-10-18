@@ -270,7 +270,7 @@
         timeline.appendChild(step);
       });
       sec.appendChild(timeline);
-      host.appendChild(sec);
+      const details=document.createElement('details');details.className='assessment-path-details';details.innerHTML='<summary>查看完整学习路径</summary>';details.append(sec);host.append(details);
 
       // 点知识点 → 跳学习模式并自动打开该知识点
       sec.querySelectorAll(".asm-ms-concept").forEach((b) => {
@@ -295,7 +295,7 @@
     footer.innerHTML =
       `<a class="asm-btn-primary" href="/learn">进入学习模式 →</a>` +
       `<button class="asm-btn-ghost" id="asm-retake">重新测评 / 改等级</button>`;
-    host.appendChild(footer);
+    const lesson=result.path?.milestones?.flatMap(m=>m.concepts||[])[0];if(lesson){const a=footer.querySelector('a');a.href='/learn?open='+encodeURIComponent(lesson.id);a.textContent='下一步：学习'+lesson.title+' →';}head.after(footer);
     $("asm-retake").onclick = () => { renderIntro(); };
 
     show("view-result");
@@ -409,5 +409,11 @@
     renderIntro();
   }
 
-  init();
+  if (document.documentElement.dataset.guidePreview) {
+    window.GuideAssessment = {
+      intro(data) { quiz=data.quiz; levels=data.levels; renderIntro(); },
+      question() { idx=0; answers={}; renderQuestion(); show('view-quiz'); },
+      result(data) { renderResult(data); }
+    };
+  } else init();
 })();

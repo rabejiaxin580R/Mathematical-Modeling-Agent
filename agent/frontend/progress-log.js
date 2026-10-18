@@ -408,8 +408,7 @@
         this.working = ev.current || 0;
         var secKey = deriveSection(ev);
         this.workingSec = SECTION_ZH[secKey] || secKey || '';
-        // 大纲无 section_done，直接用 current-1 计已完成
-        if (ev.step === 'generate_outline') this.done = Math.max(this.done, (ev.current || 1) - 1);
+        // Only actual section_done events count as completed work.
       }
     } else if (ev.type === 'section_done') {
       this.done += 1;

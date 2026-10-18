@@ -41,6 +41,13 @@
   editorWrap.appendChild(preview);
 
   let tab = "code";
+  function syncDocumentTools() {
+    bar.hidden = !fmtForExt(extOf(curName()));
+    if (bar.hidden && tab !== "code") setTab("code");
+  }
+  $("filename")?.addEventListener("input", syncDocumentTools);
+  $("filename")?.addEventListener("change", syncDocumentTools);
+  syncDocumentTools();
   function setTab(next) {
     tab = next;
     bar.querySelectorAll(".ep-tab").forEach((b) => b.classList.toggle("active", b.dataset.tab === next));
@@ -91,7 +98,7 @@
   // 在预览态下编辑器内容变化（如 AI 写入）时刷新预览
   (function watchEditor() {
     const ed = cm();
-    if (ed && ed.on) ed.on("change", () => { if (tab === "preview") renderPreview(); });
+    if (ed && ed.on) ed.on("change", () => { syncDocumentTools(); if (tab === "preview") renderPreview(); });
   })();
 
   // ── 导出 Word ──

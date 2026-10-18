@@ -1,0 +1,24 @@
+/* Keep the conversation full-width until a research surface is opened. */
+body.studio-solve .sv-stage :is(.sv-chat,.sv-composer,.sv-composer-hint,.studio-context-bar){padding-left:32px;padding-right:32px}
+body.studio-solve .sv-attachments{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;padding:8px 32px 0;max-height:96px;overflow:auto}
+body.studio-solve .sv-attachments:empty{display:none}
+.sv-attachment{display:inline-flex;gap:8px;align-items:center;max-width:100%;padding:3px 6px 3px 10px;border:1px solid var(--line);border-radius:4px;font-size:12px;background:var(--studio-paper)}
+.sv-attachment>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sv-attachment button{flex:none;width:28px;height:28px;padding:0;border:0;background:transparent;color:var(--ink-soft);cursor:pointer}
+.sv-attachment-status,.sv-wait-note{font-size:12px;line-height:1.7;color:var(--ink-soft)}
+.sv-wait-note{margin:12px 0;padding:8px 12px;border-left:2px solid var(--rouge)}
+.sv-attach{flex:0 0 40px;width:40px;height:42px;align-self:flex-end;margin-bottom:4px;border:1px solid var(--control);border-radius:5px;background:transparent;color:var(--ink);font-size:24px;cursor:pointer}
+.sv-attach:disabled{opacity:.45;cursor:default}
+.sv-attach:focus-visible,.sv-attachment button:focus-visible{outline:2px solid var(--rouge);outline-offset:3px}
+@media(min-width:1024px){
+  body.studio-solve.route-open .sv-cockpit{grid-template-columns:240px minmax(0,1fr)!important}
+  body.studio-solve.route-open .sv-rail{position:relative;grid-column:1;grid-row:1;width:auto;inset:auto;z-index:1;box-shadow:none;min-height:0}
+  body.studio-solve.route-open .sv-stage{grid-column:2!important}
+  body.studio-solve.route-open.workflow-panel-open .sv-cockpit{grid-template-columns:220px minmax(0,1.1fr) minmax(340px,.9fr)!important}
+  body.studio-solve.route-open.workflow-panel-open .sv-col-mid{grid-column:3!important}
+}
+@media(max-width:767px){
+  body.studio-solve .sv-stage :is(.sv-chat,.sv-composer,.sv-composer-hint,.studio-context-bar){padding-left:14px;padding-right:14px}
+  body.studio-solve .sv-attachments{padding:4px 14px 0;max-height:62px}
+  .sv-attach{flex-basis:32px;width:32px;height:36px}
+}

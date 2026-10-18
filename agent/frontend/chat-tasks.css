@@ -1,0 +1,40 @@
+/* Task feedback takes its place in the layout; it never blocks navigation. */
+.request-vitals{display:flex;align-items:center;flex-wrap:wrap;gap:6px 18px;margin:10px 0 14px;color:#687064;font:12px/1.6 var(--font-sans,system-ui,sans-serif);font-variant-numeric:tabular-nums}
+.request-vitals [role=status]::before{content:'●';font-size:9px;margin-right:6px;color:#78866e}
+.request-vitals[data-connection=offline] [role=status]{color:#93652e}
+.request-vitals[data-connection=offline] [role=status]::before{color:currentColor}
+.studio-solve .sv-stage>.request-vitals{flex-shrink:0;padding:0 max(32px,calc((100% - 790px)/2));margin:6px 0}
+.studio-solve.workflow-panel-open .sv-stage>.request-vitals{padding:0 22px}
+@media(max-width:767px){.studio-solve .sv-stage>.request-vitals,.studio-solve.workflow-panel-open .sv-stage>.request-vitals{padding:0 18px;gap:4px 12px}}
+.chat-task-description{flex:1;min-width:0}.chat-task-description a{display:block}.chat-task-description small{display:block;color:#687064;font-variant-numeric:tabular-nums;margin-top:4px}
+#chat-task-center{position:fixed;top:68px;right:16px;z-index:180;max-width:min(380px,calc(100vw - 32px));color:#29342f;background:#fffdf7;border:1px solid #deded2;border-radius:6px;font:13px/1.6 var(--font-sans,system-ui,sans-serif)}
+#chat-task-center[hidden]{display:none}
+#chat-task-summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:8px 12px;min-height:40px}
+#chat-task-summary::-webkit-details-marker{display:none}
+.chat-task-summary-label{font-weight:500;white-space:nowrap}
+.chat-task-summary-count{color:#657168;min-width:0}
+.chat-task-summary-action{display:none;color:#657168;white-space:nowrap}
+#chat-task-center .chat-task-list{max-height:45vh;overflow:auto;overscroll-behavior:contain;padding:0 16px}
+#chat-task-center [data-chat-task]{display:flex;align-items:center;gap:16px;padding:12px 0;border-top:1px solid #deded2}
+#chat-task-center a{flex:1;min-width:0;color:inherit;overflow-wrap:anywhere;text-decoration:none;text-underline-offset:4px}
+#chat-task-center a:hover{text-decoration:underline}
+#chat-task-center button{flex:none;cursor:pointer;padding:6px 10px;min-height:36px;border:1px solid #deded2;border-radius:6px;background:transparent;color:#657168;font:inherit}
+#chat-task-center button:disabled{cursor:default;opacity:.6}
+#chat-task-center :focus-visible{outline:2px solid #a73646;outline-offset:3px}
+#chat-task-center[data-docked]{position:relative;top:auto;right:auto;flex:none;max-width:120px;background:transparent}
+#chat-task-center[data-placement=header] #chat-task-summary{white-space:nowrap;padding:4px 10px;min-height:36px;font-size:13px}
+#chat-task-center[data-placement=header] .chat-task-summary-count{min-width:16px;text-align:center;font-variant-numeric:tabular-nums}
+#chat-task-center[data-placement=header] .chat-task-list{position:absolute;right:0;top:calc(100% + 8px);width:min(380px,calc(100vw - 32px));background:#fffdf7;border:1px solid #deded2;border-radius:6px;box-shadow:0 8px 24px #29342f12}
+#chat-task-center[data-placement=home]{max-width:none;width:100%;border:0;border-bottom:1px solid #deded2;border-radius:0;margin-top:16px;z-index:1}
+#chat-task-center[data-placement=home] #chat-task-summary{gap:16px;padding:16px 0;min-height:56px;font-size:14px}
+#chat-task-center[data-placement=home] .chat-task-summary-action{display:block;margin-left:auto}
+#chat-task-center[data-placement=home][open] .chat-task-summary-action>span{display:inline-block;transform:rotate(180deg)}
+#chat-task-center[data-placement=home] .chat-task-list{padding:0;max-height:360px}
+#chat-task-center[data-state=failed] .chat-task-summary-count{color:#875e1c}
+@media(max-width:767px){
+  #chat-task-center[data-placement=header] #chat-task-summary{padding:4px 8px;min-height:36px;font-size:13px;gap:6px}
+  #chat-task-center[data-placement=home] #chat-task-summary{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;font-size:13px;padding:14px 0}
+  #chat-task-center[data-placement=home] .chat-task-summary-count{line-height:1.6}
+  #chat-task-center[data-placement=home] .chat-task-summary-action{font-size:13px}
+  #chat-task-center button{min-height:44px}
+}

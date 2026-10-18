@@ -14,20 +14,36 @@
       localStorage.removeItem(KEY);
     },
     /** 拉取当前档案；失败（不存在/被删）返回 null。 */
-    async fetch() {
+    async fetch({strict = false} = {}) {
       const id = this.id;
       if (!id) return null;
       try {
         const r = await fetch(`/api/profiles/${id}`);
-        if (!r.ok) return null;
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error('档案暂时无法读取');
         return await r.json();
-      } catch {
+      } catch (error) {
+        if (strict) throw error;
         return null;
       }
     },
     /** 门禁：无有效档案则跳登录页。返回档案对象。 */
     async require() {
-      const p = await this.fetch();
+      let p;
+      try { p = await this.fetch({strict:true}); }
+      catch {
+        if (!document.getElementById('profile-load-error')) {
+          const notice = document.createElement('section');
+          notice.id = 'profile-load-error'; notice.setAttribute('role', 'alert');
+          notice.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;background:white;color:#20242b;padding:16px;border:1px solid #dde1e7;border-radius:8px;max-width:90vw';
+          const message = document.createElement('p');
+          message.textContent = '暂时无法读取档案，你的档案和导览进度已保留。';
+          const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = '重新读取';
+          retry.onclick = () => location.reload();
+          notice.append(message, retry); document.body.append(notice);
+        }
+        return null;
+      }
       if (!p) {
         this.clear();
         location.href = "/";

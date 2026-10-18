@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/static/chat-tasks.js?v=1"></script>
+  <script src="/static/waiting.js?v=companion1"></script>
+  <link rel="stylesheet" href="/static/companion.css?v=1" />
+  <script src="/static/companion-state.js?v=1"></script>
+  <script src="/static/companion.js?v=1"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>论文大纲生成</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
-  <link rel="stylesheet" href="/static/style.css" />
+      <link rel="stylesheet" href="/static/vendor/npm/katex@0.16.9/dist/katex.min.css" />
+  <link rel="stylesheet" href="/static/style.css?v=research3" />
   <style>
     /* 覆盖默认 body，全屏展示 */
     body {
@@ -902,8 +905,12 @@
       box-shadow: 0 4px 12px rgba(217,182,17,0.35);
     }
   </style>
+  <link rel="stylesheet" href="/static/modeling-flow.css?v=research3" />
+  <link rel="stylesheet" href="/static/ui.css?v=research3" />
+  <link rel="stylesheet" href="/static/studio-pages.css?v=1" />
+  <script defer src="/static/ui.js?v=companion1"></script>
 </head>
-<body>
+<body class="modeling-outline">
   <div class="outline-app">
     <!-- 阶段 1：欢迎输入 -->
     <div class="stage active" id="stage-welcome">
@@ -985,13 +992,16 @@
 
     <!-- 阶段 3：大纲展示 -->
     <div class="stage" id="stage-outline">
+      <header class="topbar"><div class="topbar-brand"><span class="topbar-name" id="flow-paper-topic">我的论文大纲</span></div><nav class="topbar-nav"><a id="flow-back-solve" href="/solve">返回建模</a><a href="/outline?history=1">我的论文</a></nav></header>
+      <details class="outline-source-details"><summary>研究材料与版本</summary><div id="flow-paper-source" class="flow-source" hidden></div></details>
+      <button id="outline-chapters-toggle" class="sv-btn" aria-expanded="false" aria-controls="outline-chapters">选择章节</button>
       <div class="resume-banner" id="resumeBanner" style="display:none;">
         <span class="resume-text" id="resumeText"></span>
         <button type="button" class="btn-mini primary" id="btnResume">继续生成</button>
         <button type="button" class="btn-mini" id="btnResumeDismiss">忽略</button>
       </div>
       <div class="outline-view">
-        <div class="sections-sidebar">
+        <div class="sections-sidebar" id="outline-chapters">
           <h2 class="sections-title">论文章节</h2>
           <div id="sectionsList"></div>
         </div>
@@ -1004,8 +1014,8 @@
                 <p class="focus-meta" id="focusMeta"></p>
               </div>
               <div class="lang-toggle" id="langToggle" style="display:none;">
-                <button type="button" data-lang="both" class="active">双语</button>
-                <button type="button" data-lang="en">EN</button>
+                <button type="button" data-lang="both">双语对照</button>
+                <button type="button" data-lang="en" class="active">原文</button>
                 <button type="button" data-lang="zh">中文</button>
               </div>
             </div>
@@ -1088,11 +1098,12 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  <script src="/static/render.js"></script>
-  <script src="/static/progress-log.js"></script>
+  <script src="/static/vendor/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="/static/vendor/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="/static/vendor/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="/static/render.js?v=research3"></script>
+  <script src="/static/keysetup.js?v=research3"></script>
+  <script src="/static/progress-log.js?v=research3"></script>
   <script>
     let outlineData = null;
     let currentSectionIndex = 0;
@@ -1189,6 +1200,7 @@
 
     // 调用 API 生成大纲
     async function generateOutline(title, description, thought, userData) {
+      if(!await ResearchUI.needModel())return;
       isGenerating = true;
       const ctl = GenLog.mount(document.getElementById('genlogMount'), { total: 9, kind: 'outline' });
       try {
@@ -1224,13 +1236,13 @@
             if (!line.startsWith('data: ')) continue;
             const data = JSON.parse(line.substring(6));
 
-            if (data.type === 'progress') {
+            if (['progress','section_done','section_error'].includes(data.type)) {
               ctl.push(data);
             } else if (data.type === 'session_created') {
               // 尽早把 session_id 写进 URL：刷新后据此断点续传
               history.replaceState(null, '', '/outline?session_id=' + encodeURIComponent(data.session_id));
             } else if (data.type === 'outline_ready') {
-              ctl.finish(data);
+              if(data.sections?.length===9 && data.sections.every(s=>(s.summary || '').trim())) ctl.finish(data); else ctl.fail('部分章节尚未完成，已保留生成内容。');
               handleOutlineReady(data);
               return;
             } else if (data.type === 'error') {
@@ -1245,7 +1257,17 @@
     }
 
     function handleOutlineReady(data) {
+      if (outlineData?.source_solve_id && !data.source_solve_id) {
+        data={...data,source_solve_id:outlineData.source_solve_id,source_revision:outlineData.source_revision,source_steps:outlineData.source_steps,source_outcomes:outlineData.source_outcomes,topic:outlineData.topic};
+      }
       outlineData = data;
+      document.getElementById('flow-paper-topic').textContent=data.topic || '我的论文大纲';
+      document.getElementById('flow-paper-topic').title=data.topic || '我的论文大纲';
+      if(data.source_solve_id){
+        document.getElementById('flow-back-solve').href='/solve?session_id='+encodeURIComponent(data.source_solve_id);
+        const source=document.getElementById('flow-paper-source');source.hidden=false;
+        source.textContent='研究材料版本 '+data.source_revision+' · 本稿依据已确认的建模成果。更换模型或研究结论，请返回建模确认后生成新稿。';
+      }
 
       // 把 session_id 写进 URL，刷新（F5）后据此重载同一份大纲
       if (data && data.session_id) {
@@ -1264,14 +1286,29 @@
 
       // 默认选中第一个章节
       selectSection(0);
+      const complete=data.sections.every(s=>(s.summary || '').trim());
+      document.getElementById('btnGenerate').disabled=!complete;
+      if(complete)hideResumeBanner();
+      if(!complete)showResumeBanner(data.sections.filter(s=>(s.summary || '').trim()).length,data.sections.length);
     }
 
+    const chapterToggle = document.getElementById('outline-chapters-toggle');
+    chapterToggle.onclick = () => {
+      const open = document.body.classList.toggle('chapters-open');
+      chapterToggle.setAttribute('aria-expanded', String(open));
+      if(open) document.querySelector('.section-item.active')?.focus();
+    };
+    document.addEventListener('keydown', e => {
+      if(e.key==='Escape' && document.body.classList.contains('chapters-open')) {
+        document.body.classList.remove('chapters-open');chapterToggle.setAttribute('aria-expanded','false');chapterToggle.focus();
+      }
+    });
     function renderSectionsList(sections) {
       const list = document.getElementById('sectionsList');
       list.innerHTML = sections.map((sec, i) => `
-        <div class="section-item ${i === 0 ? 'active' : ''}" data-index="${i}">
+        <div class="section-item ${i === 0 ? 'active' : ''}" data-index="${i}" role="button" tabindex="0">
           <span class="section-num">${i+1}</span>
-          <span class="section-name">${sec.title}</span>
+          <span class="section-name">${sectionLabels[sec.section_key]||sec.title}</span>
           ${sec.needs_user_data ? '<span class="section-badge">需数据</span>' : ''}
         </div>
       `).join('');
@@ -1281,7 +1318,9 @@
         item.addEventListener('click', () => {
           const index = parseInt(item.dataset.index);
           selectSection(index);
+          if(document.body.classList.contains('chapters-open')) {document.body.classList.remove('chapters-open');chapterToggle.setAttribute('aria-expanded','false');chapterToggle.focus();}
         });
+        item.addEventListener('keydown', e=>{if(e.key==='Enter' || e.key===' '){e.preventDefault();item.click();}});
       });
     }
 
@@ -1299,7 +1338,8 @@
       'Extensions': '推广方向', 'Conclusion': '总结', 'Summary': '概述',
     };
 
-    let langMode = 'both';   // both | en | zh
+    const sectionLabels={restate:'问题重述',assume:'模型假设',notation:'符号说明',build:'模型建立',solve:'模型求解',analyze:'结果分析',sensitivity:'敏感性分析',evaluate:'模型评价',extend:'模型扩展',abstract:'摘要'};
+    let langMode = 'en';   // both | en | zh
 
     // 按 `### ` 把 Markdown 切成逻辑块
     function splitBlocks(md) {
@@ -1330,6 +1370,7 @@
       const wrap = document.getElementById('focusSummary');
       const en = splitBlocks(section.summary);
       const zh = splitBlocks(section.summary_zh);
+      if(!en.length&&zh.length)langMode='zh';
       if (!en.length && !zh.length) {
         wrap.style.display = 'none';
         document.getElementById('langToggle').style.display = 'none';
@@ -1451,8 +1492,15 @@
       });
 
       // 更新焦点区域
-      document.getElementById('focusTitle').textContent = section.title;
-      document.getElementById('focusMeta').textContent = `第 ${index + 1} 章 · ${section.section_key}`;
+      document.getElementById('focusTitle').textContent = sectionLabels[section.section_key]||section.title;
+      const sourceStep=outlineData.source_steps?.find(s=>s.stage_key===section.section_key);
+      const sourceOutcome=sourceStep && outlineData.source_outcomes?.[sourceStep.id];
+      document.getElementById('focusMeta').textContent = `第 ${index + 1} 章` + (sourceOutcome?' · 依据：'+sourceStep.title+'，成果第 '+sourceOutcome.version+' 版':'');
+      if(sourceOutcome){
+        const link=document.createElement('a');link.textContent=' · 查看建模依据';
+        link.href='/solve?session_id='+encodeURIComponent(outlineData.source_solve_id)+'&step_id='+encodeURIComponent(sourceStep.id)+'&view=outcome';
+        document.getElementById('focusMeta').appendChild(link);
+      }
 
       // 需数据提示 + 待办清单
       const dataNoteEl = document.getElementById('focusDataNote');
@@ -1664,10 +1712,10 @@
           for (const line of lines) {
             if (!line.startsWith('data: ')) continue;
             const data = JSON.parse(line.substring(6));
-            if (data.type === 'progress') {
+            if (['progress','section_done','section_error'].includes(data.type)) {
               ctl.push(data);
             } else if (data.type === 'outline_ready') {
-              ctl.finish(data);
+              if(data.sections?.length===9 && data.sections.every(s=>(s.summary || '').trim())) ctl.finish(data); else ctl.fail('部分章节尚未完成，已保留生成内容。');
               handleOutlineReady(data);
               return;
             } else if (data.type === 'error') {
@@ -1685,6 +1733,7 @@
     }
 
     async function resumeOutline() {
+      if(!await ResearchUI.needModel())return;
       if (!outlineData || !outlineData.session_id) return;
       hideResumeBanner();
       showStage('loading');
@@ -1705,10 +1754,10 @@
           for (const line of lines) {
             if (!line.startsWith('data: ')) continue;
             const data = JSON.parse(line.substring(6));
-            if (data.type === 'progress') {
+            if (['progress','section_done','section_error'].includes(data.type)) {
               ctl.push(data);
             } else if (data.type === 'outline_ready') {
-              ctl.finish(data);
+              if(data.sections?.length===9 && data.sections.every(s=>(s.summary || '').trim())) ctl.finish(data); else ctl.fail('部分章节尚未完成，已保留生成内容。');
               handleOutlineReady(data);
               return;
             } else if (data.type === 'error') {
@@ -1752,13 +1801,14 @@
     }
 
     async function postSection(action, payload) {
+      if(['refine','rewrite','regenerate-block'].includes(action)&&!await ResearchUI.needModel())throw Error('尚未配置模型，输入已保留');
       const s = currentSection();
       const resp = await fetch(
         `/api/paper/outline/${encodeURIComponent(outlineData.session_id)}/${encodeURIComponent(s.section_key)}/${action}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({...payload, expected_revision:s.revision ?? null}),
         }
       );
       if (!resp.ok) {
@@ -1890,41 +1940,13 @@
     }
 
     // ── 历史论文列表（同标题自动合并，只留最近一条 + 次数） ─────────────
-    function renderHistory() {
-      const wrap = document.getElementById('historyList');
-      fetch('/api/paper/sessions')
-        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-        .then(data => {
-          const list = data.sessions || [];
-          if (!list.length) return;
-
-          // 后端已按 updated_at 倒序：首次出现的即该标题最新的一条
-          const merged = [];
-          const seen = new Map();
-          list.forEach(s => {
-            const key = (s.topic || '').trim().replace(/^["']|["',]+$/g, '') || '未命名';
-            if (seen.has(key)) { seen.get(key).count++; return; }
-            const row = { ...s, cleanTopic: key, count: 1 };
-            seen.set(key, row);
-            merged.push(row);
-          });
-
-          wrap.innerHTML = merged.map(s => {
-            const isFull = s.kind === 'full';
-            const href = (isFull ? '/paper?session_id=' : '/outline?session_id=')
-              + encodeURIComponent(s.session_id);
-            const badge = isFull
-              ? '<span class="history-badge full">完整论文</span>'
-              : '<span class="history-badge">大纲</span>';
-            const count = s.count > 1 ? `<span class="history-count">${s.count} 次</span>` : '';
-            const time = (s.updated_at || '').slice(0, 10);
-            return `<a class="history-item" href="${href}" title="${esc(s.cleanTopic)}">
-              <span class="history-topic">${esc(s.cleanTopic)}</span>
-              <span class="history-line">${badge}${count}<span class="history-time">${time}</span></span>
-            </a>`;
-          }).join('');
-        })
-        .catch(() => { /* 历史列表失败不阻塞主流程 */ });
+    async function renderHistory() {
+      const wrap=document.getElementById('historyList');
+      let list=[];const labels={empty:'尚未写作',outline:'大纲',partial:'部分正文',complete:'全文完成'};
+      if(!document.getElementById('paper-search')){const f=document.createElement('div');f.className='ui-filters';f.innerHTML='<input id="paper-search" type="search" placeholder="搜索论文题名" aria-label="搜索论文题名"><select id="paper-filter" aria-label="文档状态"><option value="">全部状态</option>'+Object.entries(labels).map(([k,v])=>'<option value="'+k+'">'+v+'</option>').join('')+'</select>';wrap.before(f);}
+      const draw=()=>{const query=document.getElementById('paper-search').value.trim().toLowerCase(),filter=document.getElementById('paper-filter').value;const rows=list.filter(s=>(s.topic||'').toLowerCase().includes(query)&&(!filter||s.document_state===filter));wrap.innerHTML=rows.map(s=>{const state=s.document_state|| (s.status==='complete'?'complete':s.sections_done?'partial':'outline'),full=['partial','complete'].includes(state);return '<a class="history-item" href="'+(full?'/paper':'/outline')+'?session_id='+encodeURIComponent(s.session_id)+'"><span class="history-topic">'+esc(s.topic||'未命名论文')+'</span><span class="history-line"><span class="history-badge '+(state==='complete'?'full':'')+'">'+labels[state]+'</span><span class="history-time">'+esc((s.updated_at||'').slice(0,10))+'</span></span></a>';}).join('')||'<div class="ui-empty"><h2>'+(list.length?'没有匹配的文档':'还没有论文')+'</h2><p>'+(list.length?'试试其他题名或状态。':'在项目中确认研究成果后，即可整理写作材料。')+'</p><a href="/home" class="ui-btn">查看项目 →</a></div>';};
+      document.getElementById('paper-search').oninput=draw;document.getElementById('paper-filter').onchange=draw;
+      try{const r=await fetch('/api/paper/sessions');if(!r.ok)throw Error();list=(await r.json()).sessions||[];draw();}catch{wrap.innerHTML='<p class="ui-state error">文档读取失败，你的记录仍会保留。</p><button id="paper-list-retry" class="ui-btn">重新读取</button>';document.getElementById('paper-list-retry').onclick=renderHistory;}
     }
 
     function esc(s) {
@@ -1943,20 +1965,32 @@
 
     // ── 刷新/重开恢复：URL 带 session_id 时直接加载已生成的大纲 ──────────
     (function restoreOutline() {
-      const sid = new URLSearchParams(window.location.search).get('session_id');
+      const params = new URLSearchParams(window.location.search);
+      const sid = params.get('session_id');
       if (!sid) return;
+      const autostart = params.get('autostart') === '1';
       fetch('/api/paper/outline/' + encodeURIComponent(sid))
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(data => {
-          if (!data || !data.sections || !data.sections.length) return;
+          if (!data || !Array.isArray(data.sections) || !data.sections.length) return;
           const total = data.sections.length;
           const done = data.sections.filter(s => (s.summary || '').trim()).length;
           handleOutlineReady(data);
+          // 从「整理成论文」跳过来时自动开工；刷新（无 autostart）仍只提示续传。
+          if (autostart && done === 0) { void regenerateAllOutline(); return; }
           // 部分生成（刷新/断网打断）：提示续传
-          if (done > 0 && done < total) showResumeBanner(done, total);
+          if (done < total) showResumeBanner(done, total);
         })
-        .catch(() => { /* 会话已删除或数据不全，停留在欢迎页 */ });
+        .catch(() => { document.querySelector('.page-sub').textContent='这份论文暂时无法读取，请从最近文档重试。'; });
     })();
+    if(!new URLSearchParams(location.search).get('session_id')) {
+      const box=document.querySelector('.welcome-box');
+      box.querySelector('.page-title').textContent='我的论文';
+      box.querySelector('.page-sub').textContent='继续已有文档，或从建模成果开始一篇新论文。';
+      box.querySelectorAll('.field,.submit-row').forEach(el=>el.hidden=true);
+      const a=document.createElement('a');a.className='ui-btn';a.href='/home';a.textContent='从项目开始写作 →';box.append(a);
+    }
   </script>
+
 </body>
 </html>

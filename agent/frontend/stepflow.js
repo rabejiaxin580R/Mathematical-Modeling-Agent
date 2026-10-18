@@ -13,6 +13,13 @@
 */
 (function () {
   const esc = (s) => MMRender.escapeHtml(s);
+  const mountedViews = new Set();
+  // Removing a practice panel only releases its reader; the server keeps its task alive.
+  new MutationObserver(() => {
+    for(const view of mountedViews)if(!view.element.isConnected){view.detach();mountedViews.delete(view);}
+  }).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('pagehide',()=>{for(const view of mountedViews)view.detach();});
+  window.addEventListener('pageshow',event=>{if(event.persisted)for(const view of mountedViews)if(view.element.isConnected)view.restore();});
 
   const MODALITY_LABEL = {
     "key-points": "要点拆解", formula: "公式建模", code: "编程求解", prose: "分析论述",
@@ -73,17 +80,24 @@
     }
 
     // 对话区
-    const messages = [];   // 本步师生对话，前端持有
+    const messages = [];   // 当前视图；每次提交的完整上下文由后台任务存档。
     const chat = document.createElement("div");
     chat.className = "pstep-chat";
     const log = document.createElement("div");
     log.className = "chat-log";
     // 粘底策略：用户上滚阅读时不再被流式增量拽下去
     log._s_sticky = true;
+    const newReply=document.createElement('button');
+    newReply.type='button';newReply.className='composer-tool step-new-reply';
+    newReply.textContent='有新回复 ↓';newReply.hidden=true;
+    newReply.style.cssText='align-self:center;margin:4px auto;flex:none;';
+    log._s_notice=newReply;
+    newReply.onclick=()=>{log._s_sticky=true;followLog(log);};
     log.addEventListener("scroll", () => {
       log._s_sticky = log.scrollHeight - log.scrollTop - log.clientHeight < 80;
+      if(log._s_sticky)newReply.hidden=true;
     });
-    chat.appendChild(log);
+    chat.append(log,newReply);
 
     addBubble(log, "assistant",
       idx === 0
@@ -146,7 +160,7 @@
       const v = flatex.value.trim();
       if (!v) return;
       ta.value = (ta.value ? ta.value + " " : "") + "$" + v + "$";
-      flatex.value = ""; fprev.innerHTML = ""; ta.focus();
+      flatex.value = ""; fprev.innerHTML = ""; ta.focus();saveDraft();
     };
 
     // 代码面板（内联编辑 + 运行）
@@ -234,6 +248,7 @@
         const d = await r.json();
         if (!uploadedFiles.includes(d.filename)) uploadedFiles.push(d.filename);
         chip.textContent = "📎 " + d.filename;
+        saveDraft();
       } catch {
         chip.textContent = "✗ " + file.name; chip.classList.add("err");
       }
@@ -263,108 +278,147 @@
     result.hidden = true;
     wrap.appendChild(result);
 
-    async function submitChat(forced) {
-      const q = (forced !== undefined ? forced : ta.value).trim();
-      if (!q) return;
-      if (forced === undefined) ta.value = "";
-      send.disabled = true;
-      log._s_sticky = true;
-      addBubble(log, "user", q);
-      messages.push({ role: "user", content: q });
-      let body = null;
-      let acc = "";
-      let thinking = addThinkingLine(log);
-      const clearThinking = () => { if (thinking) { thinking.remove(); thinking = null; } };
-      try {
-        const resp = await fetch(`/api/problems/${encodeURIComponent(pid)}/step-chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            pid: profileId, step_id: step.id, messages, query: q,
-            run_id: runId, workspace_files: uploadedFiles,
-          }),
-        });
-        if (!resp.ok) {
-          let detail = "请求失败";
-          try { detail = (await resp.json()).detail || detail; } catch { /* 非 JSON */ }
-          clearThinking();
-          if (!body) body = addBubble(log, "assistant", "");
-          MMRender.renderMarkdown(body, `_（${detail}）_`);
-          return;
+    const endpoint=`/api/problems/${encodeURIComponent(pid)}/step-chat`;
+    // Full identities prevent different profiles with the same truncated run prefix sharing drafts.
+    const draftKey='mm_step_draft_v2.'+JSON.stringify([profileId || 'guest',opts.sessionId || opts.solveSessionId || pid,step.id]);
+    let streaming=false, restoringHistory=false, controller=null, activeTask=null, taskReady=null;
+    let generation=0, explicitlyCancelled=false, reconnectNeeded=false;
+    let lastDraft=null;
+    const readDraft=()=>{try{return JSON.parse(localStorage.getItem(draftKey) || 'null') || lastDraft;}catch{return lastDraft;}};
+    const writeDraft=draft=>{lastDraft=draft;try{localStorage.setItem(draftKey,JSON.stringify(draft));}catch{}return draft;};
+    const saveDraft=()=>{
+      const previous=readDraft();
+      return writeDraft({input:ta.value,inputRevision:previous?.input===ta.value?previous.inputRevision:crypto.randomUUID(),code:ccode.value,formula:flatex.value,files:uploadedFiles});
+    };
+    try{
+      const draft=readDraft() || {};
+      ta.value=draft.input || '';ccode.value=draft.code || '';flatex.value=draft.formula || '';
+      for(const name of draft.files || []){
+        uploadedFiles.push(name);const chip=document.createElement('span');chip.className='composer-chip';chip.textContent='📎 '+name;chips.append(chip);
+      }
+    }catch{}
+    [ta,ccode,flatex].forEach(node=>node.addEventListener('input',saveDraft));
+    const paintSend=()=>{
+      send.disabled=restoringHistory;
+      send.textContent=streaming?'停止':reconnectNeeded?'重新连接':'发送';
+      send.title=streaming?'停止当前回复；浏览其他步骤不会停止生成':reconnectNeeded?'继续接收已有任务，保留当前草稿':'发送';
+    };
+    function detach(){generation++;controller?.abort();controller=null;streaming=false;restoringHistory=false;saveDraft();paintSend();}
+    async function stopChat(){
+      if(!streaming)return;
+      try{
+        if(!taskReady){explicitlyCancelled=true;detach();return;}
+        const task=activeTask || await taskReady;
+        await ChatTasks.cancel(task);explicitlyCancelled=true;controller?.abort();
+      }catch(error){if(wrap.isConnected)addToolLine(log,'停止请求未送达：'+error.message);}
+    }
+    async function restoreConversation(){
+      if(restoringHistory || !wrap.isConnected)return;
+      detach();const version=generation;
+      restoringHistory=true;paintSend();
+      try{
+        await window.ChatTasks.ready;
+        const task=await ChatTasks.find({conversationId:runId,endpoint,includeAcknowledged:true});
+        if(version!==generation || !wrap.isConnected)return;
+        reconnectNeeded=false;
+        if(!task)return;
+        messages.splice(0,messages.length,...(task.request?.messages || []).map(message=>({...message})));
+        log.innerHTML='';
+        for(const message of messages)if(['user','assistant'].includes(message.role))addBubble(log,message.role,message.content || '');
+        // The submitted request already contains its student message; only replay its answer.
+        void receive(task,version);
+      }catch(error){
+        if(version===generation && wrap.isConnected){reconnectNeeded=true;addToolLine(log,'历史回复尚未接上：'+error.message);}
+      }finally{if(version===generation){restoringHistory=false;paintSend();}}
+    }
+    async function submitChat(forced){
+      if(streaming || restoringHistory || reconnectNeeded)return;
+      const q=(forced!==undefined?forced:ta.value).trim();if(!q)return;
+      const submittedDraft=forced===undefined ? saveDraft() : null;
+      const version=++generation;streaming=true;explicitlyCancelled=false;taskReady=null;activeTask=null;paintSend();
+      const request={pid:profileId,step_id:step.id,conversation_id:runId,run_id:runId,
+        messages:[...messages.map(message=>({...message})),{role:'user',content:q}],query:q,
+        workspace_files:[...uploadedFiles],client_message_id:crypto.randomUUID()};
+      try{
+        if(window.ResearchUI && !await ResearchUI.needModel())return;
+        await window.ChatTasks.ready;
+        if(explicitlyCancelled)return;
+        if(version===generation && wrap.isConnected){
+          messages.splice(0,messages.length,...request.messages);log._s_sticky=true;addBubble(log,'user',q);
         }
-        const reader = resp.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = "";
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          const parts = buf.split("\n\n");
-          buf = parts.pop();
-          for (const part of parts) {
-            const line = part.trim();
-            if (!line.startsWith("data:")) continue;
-            let ev;
-            try { ev = JSON.parse(line.slice(5).trim()); } catch { continue; }
-            if (ev.type === "token") {
-              clearThinking();
-              if (!body) body = addBubble(log, "assistant", "");
-              acc += ev.text;
-              MMRender.renderMarkdown(body, acc);
-              if (log._s_sticky !== false) log.scrollTop = log.scrollHeight;
-            } else if (ev.type === "tool_call") {
-              clearThinking();
-              addToolLine(log, "🔧 " + toolLabel(ev.name, ev.arguments));
-              body = null; acc = "";
-            } else if (ev.type === "tool_result") {
-              if (ev.display && ev.display.images && ev.display.images.length) {
-                addToolImages(log, ev.display.images);
-              }
-            } else if (ev.type === "done") {
-              clearThinking();
-              if (ev.content) { if (!body) body = addBubble(log, "assistant", ""); acc = ev.content; MMRender.renderMarkdown(body, acc); }
-            } else if (ev.type === "error") {
-              clearThinking();
-              if (!body) body = addBubble(log, "assistant", "");
-              acc += `\n\n_（出错：${ev.message}）_`;
-              MMRender.renderMarkdown(body, acc);
-            }
-          }
+        taskReady=ChatTasks.submit(endpoint,request,{url:'/practice?p='+encodeURIComponent(pid)+'&step_id='+encodeURIComponent(step.id),title:(problem.title || '真题练习')+' · '+step.title});
+        const task=await taskReady;
+        const latestDraft=readDraft();
+        if(submittedDraft && latestDraft?.inputRevision===submittedDraft.inputRevision){
+          writeDraft({...latestDraft,input:'',inputRevision:crypto.randomUUID()});
+          // This textarea belongs to this step even while detached/bfcached.
+          if(ta.value===submittedDraft.input)ta.value='';
         }
-        // 流结束：flush decoder 待决字节，补处理残留完整事件（防截断丢失）
-        buf += decoder.decode();
-        if (buf.trim()) {
-          for (const part of buf.split("\n\n")) {
-            const line = part.trim();
-            if (!line.startsWith("data:")) continue;
-            let ev; try { ev = JSON.parse(line.slice(5).trim()); } catch { continue; }
-            if (ev.type === "token") {
-              if (!body) body = addBubble(log, "assistant", "");
-              acc += ev.text; MMRender.renderMarkdown(body, acc);
-            } else if (ev.type === "done") {
-              if (ev.content) { if (!body) body = addBubble(log, "assistant", ""); acc = ev.content; MMRender.renderMarkdown(body, acc); }
-            } else if (ev.type === "error") {
-              if (!body) body = addBubble(log, "assistant", "");
-              acc += `\n\n_（出错：${ev.message}）_`; MMRender.renderMarkdown(body, acc);
-            }
-          }
+        if(version!==generation || !wrap.isConnected)return;
+        await receive(task,version);
+      }catch(error){
+        if(version===generation && wrap.isConnected){reconnectNeeded=true;addToolLine(log,'回复暂未接上：'+error.message+'；重新连接可确认原任务状态。');}
+      }finally{if(version===generation){streaming=false;paintSend();}}
+    }
+    async function receive(task,version){
+      activeTask=task;taskReady=Promise.resolve(task);streaming=true;explicitlyCancelled=false;paintSend();
+      const localController=new AbortController();controller=localController;
+      const current=()=>version===generation && wrap.isConnected;
+      let body=null,acc='',allText='',terminal=false,reader=null,timer=null,recorded=false;
+      let thinking=addThinkingLine(log);
+      const clearThinking=()=>{if(thinking){thinking.remove();thinking=null;}};
+      const flush=()=>{clearTimeout(timer);timer=null;if(current() && body){MMRender.renderMarkdown(body,acc);followLog(log);}};
+      const schedule=()=>{if(timer===null)timer=setTimeout(flush,80);};
+      const recordReply=()=>{if(!recorded && (allText || acc)){messages.push({role:'assistant',content:allText+acc});recorded=true;}};
+      const handle=event=>{
+        if(!current())return;
+        if(event.type==='token'){
+          clearThinking();if(!body)body=addBubble(log,'assistant','');acc+=event.text || '';schedule();
+        }else if(event.type==='tool_call'){
+          flush();clearThinking();allText+=acc;addToolLine(log,'🔧 '+toolLabel(event.name,event.arguments));body=null;acc='';
+        }else if(event.type==='tool_result'){
+          if(event.display?.images?.length)addToolImages(log,event.display.images);
+        }else if(event.type==='done'){
+          terminal=true;clearThinking();if(event.content){if(!body)body=addBubble(log,'assistant','');acc=event.content;}flush();
+        }else if(event.type==='error'){
+          terminal=true;clearThinking();flush();addToolLine(log,'回复失败：'+(event.message || '请重试'));
+        }else if(event.type==='cancelled'){
+          terminal=true;explicitlyCancelled=true;clearThinking();flush();addToolLine(log,'已停止生成，已有回复已保留。');
         }
-        messages.push({ role: "assistant", content: acc });
-      } catch {
-        clearThinking();
-        if (!body) body = addBubble(log, "assistant", "");
-        MMRender.renderMarkdown(body, acc + "\n\n_（请求失败，请重试）_");
-      } finally {
-        clearThinking();
-        send.disabled = false;
+      };
+      const parse=part=>{
+        const text=part.split(/\r?\n/).filter(line=>line.startsWith('data:')).map(line=>line.slice(5).trimStart()).join('\n');
+        let event;try{event=JSON.parse(text);}catch{return;}handle(event);
+      };
+      try{
+        const response=await ChatTasks.response(task,{signal:localController.signal,after:0});
+        if(!response.ok || !response.body)throw new Error('暂时无法接收回复');
+        reader=response.body.getReader();const decoder=new TextDecoder();let buffer='';
+        while(current()){
+          const {done,value}=await reader.read();if(done)break;
+          buffer+=decoder.decode(value,{stream:true});const parts=buffer.split(/\r?\n\r?\n/);buffer=parts.pop();parts.forEach(parse);
+        }
+        buffer+=decoder.decode();if(buffer.trim())parse(buffer);flush();
+        if(current()){
+          recordReply();
+          if(terminal){ChatTasks.acknowledge(task.id);reconnectNeeded=false;}
+          else if(!explicitlyCancelled){reconnectNeeded=true;addToolLine(log,'回复连接已中断，可以重新连接。');}
+        }
+      }catch(error){
+        if(current() && error?.name!=='AbortError'){reconnectNeeded=true;addToolLine(log,'连接暂时中断；后台仍会继续，可重新连接。');}
+      }finally{
+        clearTimeout(timer);clearThinking();reader?.cancel().catch(()=>{});
+        if(current()){if(explicitlyCancelled){flush();recordReply();}streaming=false;controller=null;paintSend();}
       }
     }
-    send.onclick = () => submitChat();
-    ta.onkeydown = (e) => {
-      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitChat(); }
-    };
+    send.onclick=()=>streaming?stopChat():reconnectNeeded?restoreConversation():submitChat();
+    ta.onkeydown=event=>{if(event.key==='Enter' && !event.shiftKey && !event.isComposing){event.preventDefault();if(!streaming && !restoringHistory && !reconnectNeeded)submitChat();}};
+    const mounted={element:wrap,detach,restore:restoreConversation};mountedViews.add(mounted);
+    queueMicrotask(()=>restoreConversation());
 
     assessBtn.onclick = async () => {
+      if(streaming || restoringHistory || reconnectNeeded){assessStatus.textContent='本轮回复完成后再评估；可以先浏览其他步骤。';return;}
+      if(window.ResearchUI&&!await ResearchUI.needModel())return;
       if (!messages.some((m) => m.role === "user")) {
         assessStatus.textContent = "先和 AI 聊聊你的思路再评估～";
         return;
@@ -397,6 +451,10 @@
   }
 
   // ---------- 小工具 ----------
+  function followLog(log) {
+    if(log._s_sticky!==false){log.scrollTop=log.scrollHeight;if(log._s_notice)log._s_notice.hidden=true;}
+    else if(log._s_notice)log._s_notice.hidden=false;
+  }
   function addBubble(log, role, text) {
     const m = document.createElement("div");
     m.className = "chat-msg chat-" + role + " anim-bubble";
@@ -405,7 +463,7 @@
     MMRender.renderMarkdown(body, text);
     m.appendChild(body);
     log.appendChild(m);
-    if (log._s_sticky !== false) log.scrollTop = log.scrollHeight;
+    followLog(log);
     return body;
   }
 
@@ -424,7 +482,7 @@
     if (window.MMAnim) d.appendChild(MMAnim.thinkingEl());
     else { const b = document.createElement("div"); b.className = "chat-body panel-md"; b.textContent = "…"; d.appendChild(b); }
     log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
+    followLog(log);
     return d;
   }
 
@@ -443,7 +501,7 @@
     d.className = "chat-tool";
     d.textContent = text;
     log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
+    followLog(log);
     return d;
   }
 
@@ -457,7 +515,7 @@
       box.appendChild(el);
     }
     log.appendChild(box);
-    log.scrollTop = log.scrollHeight;
+    followLog(log);
   }
 
   function renderRunOutput(el, d) {

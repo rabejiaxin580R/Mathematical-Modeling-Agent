@@ -105,12 +105,13 @@
     document.addEventListener("click", (e) => { if (!wrap.contains(e.target)) menu.hidden = true; });
 
     // 应用布局
-    function apply() {
+    function apply(persist = true) {
       const preset = presets.find((p) => p.key === presetKey) || presets[0];
       container.setAttribute("data-layout", presetKey);
 
       // 各面板显隐
-      const visibleKeys = preset.order.filter((k) => isVisible(k, preset));
+      const order = [...preset.order, ...regions.map(r => r.key).filter(k => !preset.order.includes(k))];
+      const visibleKeys = order.filter((k) => isVisible(k, preset));
       regions.forEach((r) => {
         const el = document.querySelector(r.sel);
         if (!el) return;
@@ -135,7 +136,7 @@
         regions.forEach((r) => {
           const el = document.querySelector(r.sel);
           if (!el) return;
-          const pos = preset.order.indexOf(r.key);
+          const pos = order.indexOf(r.key);
           el.style.order = pos >= 0 ? String(pos) : "";
         });
         const cols = visibleKeys.map((k) => {
@@ -149,13 +150,17 @@
         grid.style.gridTemplateColumns = cols.join(" ");
       }
 
-      writeState(cfg.storageKey, { preset: presetKey, hidden: hiddenOverride });
+      if (persist) writeState(cfg.storageKey, { preset: presetKey, hidden: hiddenOverride });
       if (typeof cfg.onChange === "function") setTimeout(cfg.onChange, 30);
     }
 
     buildMenu();
     apply();
     window.addEventListener("resize", () => { if (typeof cfg.onChange === "function") cfg.onChange(); });
+    return {
+      select(key, persist = false) { presetKey = key; hiddenOverride = {}; apply(persist); buildMenu(); },
+      restore() { const state = readState(cfg.storageKey); presetKey = state.preset || presets[0].key; hiddenOverride = state.hidden || {}; apply(false); buildMenu(); },
+    };
   }
 
   function readState(key) {

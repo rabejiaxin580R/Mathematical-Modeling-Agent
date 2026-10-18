@@ -3,16 +3,11 @@
   const $ = (id) => document.getElementById(id);
 
   async function init() {
-    // 背景点阵网络母题（比 landing 更淡，不抢内容）+ 卡片级联入场
-    if (window.MMAnim) {
-      MMAnim.ambientNetwork("#bg-canvas", { density: 26000, inkAlpha: 0.08, dotAlpha: 0.3, interactive: false });
-      MMAnim.reveal(document.querySelector(".home-cards"), { observe: false });
-    }
-
     const p = await Profile.require();
     if (!p) return;
 
-    $("greet").textContent = `${p.nickname}，选择一个开始的方式`;
+    $("greet").textContent = "继续研究";
+    loadRecent();
 
     const user = $("home-user");
     user.innerHTML = "";
@@ -39,52 +34,14 @@
     const setRoleLabel = (role) => { roleBtn.textContent = "分工：" + Profile.roleLabel(role); };
     setRoleLabel(p.role || "");
     roleBtn.onclick = () => Profile.openRolePicker(p.role || "", (role) => { p.role = role; setRoleLabel(role); });
-    user.appendChild(roleBtn);
+    $('home-options').appendChild(roleBtn);
 
-    user.appendChild(logout);
+    $('home-options').appendChild(logout);
 
-    // 进度概览
-    const learned = (p.learn && p.learn.completed) ? p.learn.completed.length : 0;
-    if (learned > 0) $("meta-learn").textContent = `已掌握 ${learned} 个知识点`;
-
-    const attempts = (p.practice && p.practice.attempts) ? p.practice.attempts.length : 0;
-    if (attempts > 0) $("meta-practice").textContent = `已练 ${attempts} 道真题`;
-
-    // 新用户引导流程（登录后带 ?tour=1 参数，或从未完成过引导）
     const T = window.OnboardingTour;
-
-    // 首次启动：若尚未配置 API 密钥，先弹「连接大模型」向导（两条路引导），
-    // 配置完成（或用户选择稍后）再继续产品功能引导。
-    const startTour = () => {
-      if (!T) return;
-      const params = new URLSearchParams(location.search);
-      if (params.get("tour") === "1" || !T.isCompleted()) {
-        if (params.get("tour")) {
-          const url = new URL(location.href);
-          url.searchParams.delete("tour");
-          history.replaceState(null, "", url.toString());
-        }
-        setTimeout(() => { T.start(); }, 400);
-      }
-    };
-
-    if (window.KeySetup) {
-      KeySetup.ensure(startTour);
-    } else {
-      startTour();
-    }
-
     if (T) {
       // 手动触发引导按钮
-      const tourBtn = document.createElement("button");
-      tourBtn.className = "home-logout";
-      tourBtn.textContent = "使用引导";
-      tourBtn.title = "重新查看产品引导";
-      tourBtn.onclick = () => {
-        T.reset();
-        T.start();
-      };
-      user.appendChild(tourBtn);
+      // Shared navigation owns the per-block guide and saved progress.
 
       // 手动重新配置 API 密钥
       if (window.KeySetup) {
@@ -93,15 +50,61 @@
         keyBtn.textContent = "API 设置";
         keyBtn.title = "重新配置大模型接口";
         keyBtn.onclick = () => KeySetup.open();
-        user.appendChild(keyBtn);
+        $('home-options').appendChild(keyBtn);
       }
     }
 
     // 评级引导：未评测且未跳过的用户，弹窗引导去测评/选等级
-    showAssessmentReminder(p);
+    // Assessment stays available in the settings menu; avoid overlapping startup dialogs.
 
     // 更新日志按钮
     bindChangelog();
+  }
+
+  async function loadRecent() {
+    const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const feature=$('home-feature'),recent=$('home-recent');
+    feature.setAttribute('aria-busy','true');
+    let visits={};
+    try { visits=JSON.parse(localStorage.getItem('mm_research_visits_v1.'+(localStorage.getItem('mm_profile_id')||'guest'))||'{}') || {}; } catch {}
+    const visitOf=item=>Number(visits[item.id]?.at)||0;
+    const dateOf=(timestamp)=>new Date(timestamp).toLocaleDateString('zh-CN',{month:'long',day:'numeric'});
+    const projectURL=item=>'/solve?session_id='+encodeURIComponent(item.id)+(visits[item.id]?.stepId?'&step_id='+encodeURIComponent(visits[item.id].stepId):'');
+    try {
+      const response=await fetch('/api/solve/sessions');if(!response.ok)throw Error('项目读取失败');
+      const items=await response.json();
+      items.sort((a,b)=>visitOf(b)-visitOf(a)||(b.updated_at||0)-(a.updated_at||0));
+      recent.hidden=true;
+      if(!items.length){$('greet').textContent='开始研究';feature.innerHTML='<div class="ui-empty"><h2>从一道题、一个想法开始。</h2><p>讨论思路，检验结果，留下自己的判断。</p><div class="home-actions"><a class="ui-btn primary" href="/solve">新建项目 <span aria-hidden="true">→</span></a><a class="home-secondary" href="/solve?example=1">查看示例</a></div></div>';return;}
+      $('greet').textContent='继续研究';
+      const latest=items[0],base='/solve?session_id='+encodeURIComponent(latest.id);
+      const stamp=visitOf(latest),saved=Number(latest.updated_at)*1000;
+      const meta=stamp?'上次访问 · '+dateOf(stamp):saved?'最近保存 · '+dateOf(saved):'当前项目';
+      feature.innerHTML='<article class="ui-project-feature"><div class="home-project-copy"><p class="home-project-meta">'+esc(meta)+'</p><h2>'+esc(latest.title)+'</h2><p id="home-next" class="home-next">当前步骤 · '+esc(latest.current_title||'问题分析')+'</p></div><div class="home-actions"><a class="ui-btn primary" id="home-modeling" href="'+esc(projectURL(latest))+'">继续研究 <span aria-hidden="true">→</span></a><a class="home-secondary" href="/solve">新建项目</a></div></article>';
+      if(items.length>1){
+        const other=items.slice(1);let expanded=false;
+        const renderRows=()=>{
+          recent.hidden=false;
+          recent.innerHTML='<div class="home-list-heading"><h2 class="ui-section-label">其他项目</h2>'+(other.length>3?'<button id="home-all-projects" class="home-secondary" type="button" aria-expanded="'+expanded+'" aria-controls="home-project-list">'+(expanded?'收起':'查看全部（'+other.length+'）')+'</button>':'')+'</div><div id="home-project-list">'+(expanded?other:other.slice(0,3)).map(item=>'<a class="ui-project-row" href="'+esc(projectURL(item))+'"><strong>'+esc(item.title)+'</strong><small>'+esc(visitOf(item)?'访问于 '+dateOf(visitOf(item)):item.updated_at?'保存于 '+dateOf(item.updated_at*1000):'已保存')+'</small><span aria-hidden="true">↗</span></a>').join('')+'</div>';
+          if($('home-all-projects'))$('home-all-projects').onclick=()=>{expanded=!expanded;renderRows();$('home-all-projects').focus();};
+        };renderRows();
+      }
+      // The main action is already usable while its next-step detail loads.
+      feature.setAttribute('aria-busy','false');
+      try {
+        const r=await fetch('/api/solve/sessions/'+encodeURIComponent(latest.id));if(!r.ok)return;
+        const d=await r.json(),steps=d.problem?.steps||[];
+        const current=steps.find(s=>s.id===visits[latest.id]?.stepId)||steps[d.progress?.cur_step]||steps.find(s=>s.id===d.current_step)||steps[0];
+        const review=steps.find(s=>d.outcomes?.[s.id]?.status==='needs_review');
+        let target=base,next='当前步骤 · '+(current?.title||'问题分析');
+        if(current)target+='&step_id='+encodeURIComponent(current.id);
+        if(review){next+=' · '+(review.id===current?.id?'这一步需要复核':'有成果需要复核');if(review.id===current?.id)target+='&view=outcome';}
+        else if(steps.length&&steps.every(s=>d.outcomes?.[s.id]?.status==='confirmed')){next='各步成果已确认，可以整理写作材料';target+='&view=outcome';}
+        else if(current)next+=' · '+(d.outcomes?.[current.id]?.status==='draft'?'检查本步草稿与依据':'接着上次的思路继续');
+        $('home-next').textContent=next;$('home-modeling').href=target;
+      } catch { /* A detail failure must not hide the existing project or prevent opening it. */ }
+    }catch(e){feature.innerHTML='<div class="ui-empty"><h2>暂时无法读取项目</h2><p>你的记录仍会保留，请重试。</p><div class="home-actions"><button id="home-retry" class="ui-btn">重新读取</button><a class="home-secondary" href="/solve">新建项目</a></div></div>';$('home-retry').onclick=loadRecent;}
+    finally {feature.setAttribute('aria-busy','false');}
   }
 
   function bindChangelog() {

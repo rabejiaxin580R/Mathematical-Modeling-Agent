@@ -1,0 +1,38 @@
+/* Small feedback and printable research cards; scoped away from tour previews. */
+.studio-sound{display:inline-flex;align-items:center;gap:5px;border:0;background:transparent;color:var(--ink-soft);padding:6px 8px;font-size:12px;white-space:nowrap;min-height:40px;cursor:pointer}
+.studio-sound svg{width:17px;height:17px;stroke-linecap:round;stroke-linejoin:round}
+.studio-sound[data-muted=false] .studio-sound-slash{display:none}
+.studio-sound[data-muted=true]{color:var(--ink-soft)}
+.studio-sound:hover{color:var(--rouge);background:var(--paper)}
+.studio-feedback{display:flex;align-items:center;gap:12px;margin:8px 24px;padding:12px 14px;border-left:3px solid var(--rouge);background:#fcf1e5;flex-shrink:0;animation:studio-arrive .18s ease-out}
+.studio-feedback>div{flex:1;min-width:0}.studio-feedback strong{font-size:13px;font-weight:600;color:var(--ink)}
+.studio-feedback p{margin:3px 0 0;font-size:12px;color:var(--ink-soft);line-height:1.6}
+.studio-feedback .sv-btn{font-size:12px;white-space:nowrap;padding:6px 9px}
+.studio-feedback-close{border:0;background:transparent;color:var(--ink-soft);min-width:36px;min-height:36px}
+.studio-card-dialog{width:min(680px,calc(100vw - 24px));max-height:90dvh;margin:auto;border:1px solid #ded8ce;border-radius:12px;padding:0;color:#2c302f;background:#fffcf5;overflow:auto}
+.studio-card-dialog::backdrop{background:#24272266}
+.studio-card-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 24px;border-bottom:1px solid #e2ddd4;position:sticky;top:0;background:#fffcf5;z-index:1}
+body .studio-card-toolbar h2{font-size:18px;margin:0}
+.studio-card-toolbar .sv-btn{padding:6px 12px}
+.studio-research-card{padding:32px 36px;overflow-wrap:anywhere}
+.studio-card-kicker{font-size:11px;letter-spacing:.14em;color:#a73646;border-top:3px solid #a73646;padding-top:14px}
+.studio-card-project{margin-top:24px;font-size:13px;color:#5c625d}
+body .studio-research-card h3{font-size:26px;margin:6px 0 10px;font-weight:600}
+.studio-card-meta{font-size:12px;color:#66695f;padding-bottom:16px;border-bottom:1px solid #ded8ce}
+.studio-research-card section{margin-top:20px}.studio-research-card h4{font-size:12px;color:#9b3040;margin:0 0 6px}
+.studio-research-card section p{font-size:14px;line-height:1.8;white-space:pre-wrap}
+.studio-research-card footer{margin-top:28px;padding-top:16px;border-top:1px solid #ded8ce;color:#66695f;font-size:12px}
+.studio-card-actions{display:flex;gap:8px;padding:16px 24px;background:#f7f3ea;border-top:1px solid #e2ddd4;flex-wrap:wrap}
+@keyframes studio-arrive{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(max-width:767px){.studio-sound{padding:5px 7px}.studio-sound span{display:none}.studio-feedback{margin:5px 12px;padding:8px;gap:6px;flex-wrap:wrap}.studio-feedback p{display:none}.studio-feedback-close{margin-left:auto}.studio-research-card{padding:24px}.studio-card-toolbar{padding:12px 18px}.studio-card-toolbar h2{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.studio-feedback{animation:none}.studio-card-dialog{scroll-behavior:auto}}
+@media print{
+  body.studio-printing{display:block!important;overflow:visible!important;height:auto!important;background:white!important}
+  body.studio-printing>*:not(.studio-card-dialog){display:none!important}
+  body.studio-printing .studio-card-dialog{position:static!important;display:block!important;width:auto!important;max-width:none!important;max-height:none!important;height:auto!important;overflow:visible!important;border:0!important;margin:0!important;padding:0!important;background:white!important;box-shadow:none!important}
+  body.studio-printing .studio-card-dialog::backdrop{background:transparent}
+  body.studio-printing :is(.studio-card-toolbar,.studio-card-actions){display:none!important}
+  body.studio-printing .studio-research-card{padding:10mm 8mm;color:#111}
+  body.studio-printing .studio-research-card section{break-inside:avoid}
+  body.studio-printing .studio-research-card p{font-size:11pt}
+}

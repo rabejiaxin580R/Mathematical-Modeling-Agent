@@ -83,7 +83,7 @@
      opts: { density, linkDist, mouseDist, inkAlpha, dotAlpha, interactive } */
   function ambientNetwork(canvas, opts) {
     if (typeof canvas === "string") canvas = document.querySelector(canvas);
-    if (!canvas || reduced) return { stop() {} };
+    if (!canvas || reduced || document.querySelector('link[href*="ui.css"]')) return { stop() {} };
     const ctx = canvas.getContext("2d");
     opts = opts || {};
     const INK = "43, 45, 48", ROUGE = "192, 72, 81";

@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/static/chat-tasks.js?v=1"></script>
+  <script src="/static/waiting.js?v=companion1"></script>
+  <link rel="stylesheet" href="/static/companion.css?v=1" />
+  <script src="/static/companion-state.js?v=1"></script>
+  <script src="/static/companion.js?v=1"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>论文生成</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=research3">
     <style>
         .paper-container {
             max-width: 900px;
@@ -179,10 +184,21 @@
             color: var(--rouge);
         }
     </style>
+    <link rel="stylesheet" href="/static/modeling-flow.css?v=research3" />
+    <script src="/static/vendor/npm/marked@12.0.2/marked.min.js"></script>
+    <link rel="stylesheet" href="/static/vendor/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="/static/vendor/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="/static/vendor/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+    <script src="/static/render.js?v=research3"></script>
+  <link rel="stylesheet" href="/static/ui.css?v=research3" />
+  <link rel="stylesheet" href="/static/studio-pages.css?v=1" />
+  <script defer src="/static/ui.js?v=companion1"></script>
 </head>
 <body>
     <div class="paper-container">
-        <h1 class="page-title">📚 论文生成系统</h1>
+        <nav class="flow-actions"><a id="paper-back-outline" href="/outline?history=1">返回大纲</a><a id="paper-back-solve" href="/solve">返回建模</a></nav>
+        <h1 class="page-title" id="paper-title">我的论文</h1>
+        <div id="paper-source" class="flow-source" hidden></div>
 
         <!-- Step 1: 选择题目 -->
         <div class="step-card">
@@ -219,7 +235,8 @@
 
         <!-- Step 3: 查看结果 -->
         <div class="result-box" id="resultBox">
-            <h3 style="margin-top: 0;">✅ 论文生成完成！</h3>
+            <h3 id="paper-result-heading" style="margin-top: 0;">论文生成完成</h3>
+            <div id="paper-preview" class="flow-paper-preview panel-md"></div>
 
             <div class="result-stats">
                 <div class="stat-item">
@@ -243,13 +260,22 @@
             <div class="result-actions">
                 <button class="btn-primary" id="downloadDocx">📄 下载 Word 文档</button>
                 <button class="btn-secondary" id="viewMarkdown">📝 查看 Markdown</button>
-                <button class="btn-secondary" id="resetBtn">🔄 生成新论文</button>
+                <button class="btn-secondary" id="resetBtn">编辑大纲</button>
+                <button class="btn-secondary" id="retryPaper" hidden>继续生成未完成章节</button>
             </div>
+            <p class="format-audit" id="formatAudit" role="status" hidden></p>
         </div>
     </div>
 
-    <script src="/static/progress-log.js"></script>
+    <script src="/static/keysetup.js?v=research3"></script>
+  <script src="/static/progress-log.js?v=research3"></script>
     <script>
+        const paperShell=document.querySelector('.paper-container'),paperHeader=document.createElement('header');paperHeader.className='paper-header';paperHeader.append(document.getElementById('paper-title'));paperShell.before(paperHeader);const sourceDetails=document.createElement('details');sourceDetails.className='paper-source-details';sourceDetails.innerHTML='<summary>研究来源</summary>';sourceDetails.append(document.getElementById('paper-source'));paperHeader.append(sourceDetails);const oldLinks=paperShell.querySelector('nav.flow-actions');paperHeader.append(oldLinks);
+        // Persistent document actions and one reading scroll region.
+        const previewNode=document.getElementById('paper-preview'),reading=document.createElement('div');reading.className='paper-reading';
+        const tocNode=document.createElement('nav');tocNode.className='paper-toc';tocNode.id='paper-toc';tocNode.setAttribute('aria-label','正文章节');previewNode.before(reading);reading.append(tocNode,previewNode);
+        const resultNode=document.getElementById('resultBox');paperShell.before(document.querySelector('.result-actions'));paperHeader.append(document.getElementById('paper-result-heading'));document.getElementById('downloadDocx').disabled=true;
+        const more=document.createElement('details');more.className='ui-menu';more.innerHTML='<summary>更多</summary><div class="ui-menu-items"></div>';document.querySelector('.result-actions').append(more);more.querySelector('div').append(document.getElementById('viewMarkdown'),document.getElementById('paper-back-outline'),document.getElementById('paper-back-solve'));oldLinks.remove();
         // 题目数据
         const PROBLEMS = {
             '2023A': {
@@ -307,6 +333,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const fromSessionId = urlParams.get('session_id');
 
+        if (!fromSessionId)location.replace('/outline?history=1');
         if (fromSessionId) {
             // 隐藏题目选择与按钮，先查会话状态：已完成 → 展示结果；否则断点续传
             problemSelect.closest('.step-card').style.display = 'none';
@@ -322,11 +349,20 @@
                 const resp = await fetch('/api/paper/session/' + encodeURIComponent(sid));
                 if (!resp.ok) throw new Error('会话不存在');
                 const data = await resp.json();
-                if (data.has_docx || data.complete) {
-                    showResultFromState(sid, data);
+                currentSessionId=sid;
+                document.getElementById('paper-title').textContent=data.session.topic || '我的论文';
+                document.getElementById('paper-back-outline').href='/outline?session_id='+encodeURIComponent(sid);
+                if(data.session.source_solve_id){
+                    document.getElementById('paper-back-solve').href='/solve?session_id='+encodeURIComponent(data.session.source_solve_id);
+                    const source=document.getElementById('paper-source');source.hidden=false;source.textContent='研究材料版本 '+data.session.source_revision+' · 依据学生已确认的研究成果写作';
+                }
+                if (data.document_state==='partial' || data.complete || data.sections.some(s=>s.status==='approved'&&s.content_md)) {
+                    showResultFromState(sid, data);downloadDocx.disabled=!data.has_docx;
                     return;
                 }
-                await generatePaper({}, sid);
+                generateBtn.style.display=''; generateBtn.disabled=false;generateBtn.textContent='根据已确认大纲生成论文';
+                generateBtn.onclick=async()=>{generateBtn.disabled=true;try{await generatePaper({},sid);}catch(e){showError(e.message);}finally{generateBtn.disabled=false;}};
+                statusBox.style.display='none';
             } catch (error) {
                 showError('加载会话失败: ' + error.message);
             }
@@ -341,8 +377,9 @@
             ).length;
             const words = sections.reduce((sum, s) => sum + (s.chars || 0), 0);
             paperCtl = GenLog.mount(document.getElementById('genlogMount'), { total: 10, kind: 'paper' });
-            paperCtl.finish({ type: 'complete' });
-            showResult({ sections: doneCount, papers: '-', chunks: '-', words: words });
+            if(data.complete)paperCtl.finish({ type: 'complete' });
+            else paperCtl.fail('部分章节尚未生成，可继续生成。');
+            showResult({ sections: doneCount, papers: '-', chunks: '-', words: words }, !data.complete);
         }
 
         // 选择题目
@@ -386,6 +423,12 @@
 
         // 生成论文流程
         async function generatePaper(problem, sessionId) {
+            statusBox.style.display='block';
+            if(!await ResearchUI.needModel())return;
+            window.ResearchCompanion?.notify('start',{id:'paper',state:'thinking',label:'生成论文章节'});
+            generateBtn.disabled=true;
+            const savedLog=document.getElementById('paper-generation-history');
+            if(savedLog){savedLog.open=true;resultBox.before(savedLog);}
             paperCtl = GenLog.mount(document.getElementById('genlogMount'), { total: 10, kind: 'paper' });
             const response = await fetch('/api/paper/generate-full', {
                 method: 'POST',
@@ -424,10 +467,12 @@
                     const data = JSON.parse(line.substring(6));
 
                     if (data.type === 'progress' || data.type === 'section_done' || data.type === 'section_error') {
+                        if(data.session_id){currentSessionId=data.session_id;history.replaceState(null,'','/paper?session_id='+encodeURIComponent(currentSessionId));}
                         paperCtl.push(data);
-                    } else if (data.type === 'complete') {
+                        if(data.type==='section_done'&&currentSessionId)refreshPaperBody();
+                    } else if (data.type === 'complete' || data.type === 'partial') {
                         currentSessionId = data.session_id;
-                        paperCtl.finish(data);
+                        if(data.type==='complete')paperCtl.finish(data);else paperCtl.fail('部分章节生成失败，已完成内容已保存。');
                         handleComplete(data);
                         return;
                     } else if (data.type === 'error') {
@@ -435,6 +480,7 @@
                     }
                 }
             }
+            throw new Error('连接已结束，生成尚未完成。可继续生成未完成章节。');
         }
 
         function handleComplete(data) {
@@ -442,22 +488,68 @@
             if (data.session_id) {
                 history.replaceState(null, '', '/paper?session_id=' + encodeURIComponent(data.session_id));
             }
-            showResult(data.stats);
+            showResult(data.stats, data.type==='partial');
         }
 
         function showError(message) {
+            window.ResearchCompanion?.notify('finish',{id:'paper'});
+            window.ResearchCompanion?.notify('result',{state:'offline',alpha:'论文生成尚未完成，已完成的章节仍会保留。',xiaobei:'查看错误提示后，可以继续生成剩余章节。'});
             const mount = document.getElementById('genlogMount');
             if (mount) {
                 (paperCtl || GenLog.mount(mount, { total: 10, kind: 'paper' })).fail(message);
             }
+            if(currentSessionId)document.getElementById('retryPaper').hidden=false;
+            resultBox.style.display='block';
+            document.getElementById('paper-result-heading').textContent='生成尚未完成';
+            refreshPaperBody();
+            generateBtn.disabled=false;
         }
 
-        function showResult(stats) {
+        async function refreshPaperBody(){
+            if(!currentSessionId)return;
+            const preview=document.getElementById('paper-preview');
+            try{const r=await fetch('/api/paper/assemble/'+encodeURIComponent(currentSessionId));if(!r.ok)throw Error();const d=await r.json();MMRender.renderMarkdown(preview,d.markdown||d.content_md||'');
+                const headings=[...preview.querySelectorAll('h1,h2')];const toc=document.getElementById('paper-toc');toc.innerHTML='';headings.forEach((h,i)=>{h.id='paper-section-'+i;const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;toc.append(a);});
+            }catch{preview.textContent='正文暂时无法加载。请刷新重试，已保存内容仍会保留。';}
+        }
+        function showResult(stats, partial=false) {
+            window.ResearchCompanion?.notify('finish',{id:'paper'});
+            window.ResearchCompanion?.notify('result',{state:partial?'draft_ready':'complete',alpha:partial?'部分章节已经保存，论文尚未全部生成。':'论文生成完成，请核对研究依据和引用。',xiaobei:partial?'可以继续生成未完成的章节。':'提交前，再检查数据来源和结论的适用范围。'});
             resultBox.style.display = 'block';
+            document.getElementById('paper-result-heading').textContent=partial?'部分完成 · 已保存当前草稿':'论文生成完成';
+            document.getElementById('retryPaper').hidden=!partial;
+            downloadDocx.textContent=partial?'下载当前草稿 Word':'下载 Word 文档';
+            downloadDocx.disabled=false;
+            generateBtn.style.display='none';
+            let history=document.getElementById('paper-generation-history');
+            if(!history){
+                history=document.createElement('details');history.id='paper-generation-history';
+                const summary=document.createElement('summary');summary.textContent='查看生成记录';history.append(summary,statusBox.closest('.step-card'));
+            }
+            history.open=false;resultBox.after(history);
+            refreshPaperBody();
             document.getElementById('statSections').textContent = stats.sections;
             document.getElementById('statPapers').textContent = stats.papers;
             document.getElementById('statChunks').textContent = stats.chunks;
             document.getElementById('statWords').textContent = stats.words.toLocaleString();
+            // 导出时的自动排版复查：公式有没有残留 LaTeX，用户不用管，这里只如实汇报。
+            const audit = document.getElementById('formatAudit');
+            if (audit) {
+                const f = stats.format;
+                if (!f) { audit.hidden = true; }
+                else if (f.ok) {
+                    audit.hidden = false;
+                    audit.className = 'format-audit ok';
+                    audit.textContent = `排版复查通过：${f.math_objects} 个公式已转成 Word 公式`
+                        + (f.preflight_fixes?.length ? `（导出前修整：${f.preflight_fixes.join('；')}）` : '');
+                } else {
+                    audit.hidden = false;
+                    audit.className = 'format-audit warn';
+                    audit.textContent = `排版复查：${f.leftovers} 处公式没能转成 Word 公式，已降级为可读文本`
+                        + (f.samples?.length ? `（例如 ${f.samples.join('、')}）` : '')
+                        + '。建议在 Word 里核对这几处。';
+                }
+            }
 
             resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -476,8 +568,11 @@
 
         // 重置
         resetBtn.addEventListener('click', function() {
-            location.reload();
+            location.href=currentSessionId?'/outline?session_id='+encodeURIComponent(currentSessionId):'/solve';
         });
+        document.getElementById('retryPaper').onclick=async function(){this.disabled=true;try{await generatePaper({},currentSessionId);}catch(e){showError(e.message);}finally{this.disabled=false;}};
+        const statsEl=document.querySelector('.result-stats'),statsDetails=document.createElement('details');
+        const statsSummary=document.createElement('summary');statsSummary.textContent='文档统计';statsDetails.append(statsSummary,statsEl);resultBox.append(statsDetails);
 
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));

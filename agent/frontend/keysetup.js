@@ -20,6 +20,7 @@ const KeySetup = (() => {
   let info = null;       // /api/onboarding 返回
   let onDone = null;
   let provider = "deepseek";
+  let guideOnClose = false;
 
   async function loadInfo() {
     try {
@@ -32,6 +33,7 @@ const KeySetup = (() => {
 
   // ---------- 入口：尚未配置密钥才弹 ----------
   async function ensure(callback) {
+    guideOnClose = false;
     onDone = callback || null;
     await loadInfo();
     if (info.has_api_key) { if (onDone) onDone(); return; }
@@ -40,6 +42,7 @@ const KeySetup = (() => {
 
   // ---------- 手动打开（设置里「重新配置」用） ----------
   async function open(callback) {
+    guideOnClose = !callback;
     onDone = callback || null;
     await loadInfo();
     render();
@@ -57,7 +60,7 @@ const KeySetup = (() => {
       <div class="ks-card" role="dialog" aria-modal="true">
         <button class="ks-x" id="ks-x" title="稍后配置">×</button>
         <div class="ks-head">
-          <span class="ks-mark">绣</span>
+          <span class="ks-mark">◇</span>
           <div>
             <h2 class="ks-title">连接 AI 大模型</h2>
             <p class="ks-sub">聊天、跑代码都需要一个大模型接口。两种方式任选其一，随时可在「设置」里更换。</p>
@@ -230,6 +233,7 @@ const KeySetup = (() => {
     const el = overlay;
     overlay = null;
     setTimeout(() => el.parentNode && el.parentNode.removeChild(el), 280);
+    if(guideOnClose)window.OnboardingTour?.settingsOpened();
   }
 
   return { ensure, open };

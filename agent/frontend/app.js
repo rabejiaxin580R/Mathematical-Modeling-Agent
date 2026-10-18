@@ -1,4 +1,4 @@
-// ===== 数学建模助教 前端逻辑 =====
+// ===== 建模研究台 前端逻辑 =====
 
 const $ = (sel) => document.querySelector(sel);
 const messagesEl = $("#messages");
@@ -129,7 +129,7 @@ function addRollbackButton(userDiv, index) {
 }
 
 async function rollbackTo(index) {
-  if (streaming || !currentConvId) return;
+  if (streaming || chatLoading || !currentConvId) return;
   if (!confirm("将回到这一步，并撤销之后 AI 对文件的改动（仅对 AI 写/删过的文件）。确定？")) return;
   try {
     const resp = await fetch(`/api/conversations/${currentConvId}/rollback`, {
@@ -294,6 +294,73 @@ function scrollDownForce() { autoStick = true; messagesEl.scrollTop = messagesEl
 
 // ---------- 发送 + SSE 流 ----------
 let abortController = null;
+let activeChatTask = null, activeChatRun = null, chatViewVersion = 0, chatLoading = false;
+const chatDrafts = new Map();
+function chatDraftKey(id = currentConvId) {
+  // app.js also boots before profile.js on the workspace page.
+  let profileId = (window.Profile && Profile.id) || '';
+  if (!profileId) { try { profileId = localStorage.getItem('mm_profile_id') || ''; } catch {} }
+  return 'mm_chat_draft_v1:' + (profileId || 'guest') + ':' + (id || 'new');
+}
+function readChatDraft(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw !== null) {
+      let record; try { record = JSON.parse(raw); } catch { /* Earlier versions stored plain text. */ }
+      if (record && typeof record.text === 'string' && typeof record.revision === 'string') return record;
+      return {text: raw, revision: 'legacy:' + raw};
+    }
+  } catch { /* Storage denied: use this page's draft. */ }
+  return chatDrafts.get(key) || null;
+}
+function writeChatDraft(key, text) {
+  const previous = readChatDraft(key);
+  if (previous?.text === text) return previous;
+  const record = {text, revision: ChatTasks.uuid()};
+  chatDrafts.set(key, record);
+  try { localStorage.setItem(key, JSON.stringify(record)); } catch { /* Keep this page's draft in memory. */ }
+  return record;
+}
+function saveChatDraft() {
+  const key = chatDraftKey();
+  return {key, ...writeChatDraft(key, inputEl.value)};
+}
+function restoreChatDraft() {
+  inputEl.value = readChatDraft(chatDraftKey())?.text || ''; autoGrow();
+}
+function bindChatConversation(id) {
+  const previousKey = chatDraftKey();
+  const previousId = currentConvId;
+  currentConvId = id; rememberConversation(id);
+  if (!previousId && id) {
+    saveChatDraft();
+    chatDrafts.delete(previousKey);
+    try { localStorage.removeItem(previousKey); } catch { /* Memory fallback. */ }
+  }
+}
+
+function setChatLoading(on) {
+  chatLoading = on;
+  inputEl.disabled = on; sendBtn.disabled = on;
+  const attach = document.getElementById('btn-attach'); if (attach) attach.disabled = on;
+}
+
+function rememberConversation(id) {
+  if (!id) return;
+  const url = new URL(location.href); url.searchParams.set('conversation_id', id);
+  history.replaceState(null, '', url);
+}
+
+function detachChat() {
+  saveChatDraft();
+  chatViewVersion++;
+  abortController?.abort();
+  abortController = null; activeChatTask = null; activeChatRun = null;
+  setChatLoading(false);
+  setStreamingUI(false); removeThinking();
+}
+window.addEventListener('pagehide', detachChat);
+window.addEventListener('pageshow', event => { if (event.persisted && currentConvId) openConversation(currentConvId); });
 
 function setStreamingUI(on) {
   streaming = on;
@@ -308,20 +375,34 @@ function setStreamingUI(on) {
   }
 }
 
-function stopStreaming() {
-  if (abortController) abortController.abort();
+async function stopStreaming() {
+  const run = activeChatRun;
+  if (!run || run.cancelPromise) return;
+  // Remember an explicit stop even if submission has not been acknowledged yet.
+  run.cancelRequested = true;
+  run.cancelPromise = (async () => {
+    const task = run.task || await run.taskReady;
+    if (task) await ChatTasks.cancel(task);
+  })();
+  try { await run.cancelPromise; }
+  catch (error) { run.cancelPromise = null; if (activeChatRun === run) alert('停止请求未送达：' + error.message); }
 }
 
 async function send(text, opts = {}) {
+  if (chatLoading || streaming) return;
+  const initialView = chatViewVersion;
+  if(!opts.task && window.ResearchUI&&!await ResearchUI.needModel())return;
+  if (initialView !== chatViewVersion || chatLoading) return;
   const regenerate = !!opts.regenerate;
-  if (streaming) { stopStreaming(); return; }
-  if (!regenerate && !text.trim()) return;
+  if (streaming) return;
+  if (!opts.task && !regenerate && !text.trim()) return;
+  const viewVersion = ++chatViewVersion;
+  const visible = () => viewVersion === chatViewVersion;
+  const submittedDraft = !regenerate && !opts.task && inputEl.value.trim() === text.trim() ? saveChatDraft() : null;
 
   setStreamingUI(true);
-  if (!regenerate) {
+  if (!regenerate && !opts.task) {
     addUserMsg(text, true);
-    inputEl.value = "";
-    autoGrow();
   }
   attachedFiles = [];
   renderAttachments();
@@ -329,18 +410,32 @@ async function send(text, opts = {}) {
 
   let bubble = null;
   let buf = "";
-  abortController = new AbortController();
+  const controller = new AbortController(); abortController = controller;
+  const painter = ChatTasks.renderer((element, value) => { if (visible()) { renderMarkdown(element, value); scrollDown(); } });
+  let task = opts.task, completed = false;
+  const run = {task, taskReady: null, cancelRequested: false, cancelPromise: null};
+  activeChatRun = run;
 
   try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    run.taskReady = task ? Promise.resolve(task) : ChatTasks.submit('/api/chat', {
         conversation_id: currentConvId, message: text || "", regenerate,
         pid: (window.Profile && Profile.id) || "", focus: currentFocus,
-      }),
-      signal: abortController.signal,
-    });
+        client_message_id: ChatTasks.uuid(),
+      }, {url: location.pathname + location.search, title: text.slice(0, 25) || '助教回复'});
+    task = await run.taskReady; run.task = task;
+    // Acknowledgement is the first point where the server owns the submitted text.
+    // A later edit (even back to the same words) has a different revision.
+    if (submittedDraft && readChatDraft(submittedDraft.key)?.revision === submittedDraft.revision) {
+      if (visible() && inputEl.value === submittedDraft.text) {
+        writeChatDraft(submittedDraft.key, ''); inputEl.value = ''; autoGrow();
+      } else if (!visible() && chatDraftKey() !== submittedDraft.key) {
+        writeChatDraft(submittedDraft.key, '');
+      }
+    }
+    if (!visible()) return;
+    activeChatTask = task;
+    bindChatConversation(task.conversation_id);
+    const resp = await ChatTasks.response(task, {signal: controller.signal});
 
     if (!resp.ok) {
       let detail = "请求失败";
@@ -357,6 +452,7 @@ async function send(text, opts = {}) {
 
     while (true) {
       const { done, value } = await reader.read();
+      if (!visible()) return;
       if (done) break;
       sseBuf += decoder.decode(value, { stream: true });
       const parts = sseBuf.split("\n\n");
@@ -382,6 +478,7 @@ async function send(text, opts = {}) {
       }
     }
   } catch (e) {
+    if (!visible()) return;
     if (e.name === "AbortError") {
       // 用户主动停止：保留已生成内容
       if (bubble) bubble.classList.remove("cursor");
@@ -391,8 +488,13 @@ async function send(text, opts = {}) {
       bubble.innerHTML += `<p style="color:var(--rouge)">连接出错：${escapeHtml(String(e))}</p>`;
     }
   } finally {
+    painter.cancel();
+    if (!visible()) return;
+    if (completed && task) ChatTasks.acknowledge(task.id);
     setStreamingUI(false);
     abortController = null;
+    activeChatTask = null;
+    activeChatRun = null;
     removeThinking();
     if (bubble) bubble.classList.remove("cursor");
     const keepScroll = !autoStick;
@@ -402,6 +504,7 @@ async function send(text, opts = {}) {
     if (currentConvId) {
       try {
         const conv = await (await fetch(`/api/conversations/${currentConvId}`)).json();
+        if (!visible()) return;
         // 给每条用户消息挂回溯按钮（按会话 messages 里的真实下标）
         const userDivs = messagesEl.querySelectorAll(".msg.user");
         let userIdx = 0;
@@ -421,19 +524,21 @@ async function send(text, opts = {}) {
   }
 
   function handleEvent(ev) {
+    if (!visible()) return;
     switch (ev.type) {
       case "meta":
         currentConvId = ev.conversation_id;
+        rememberConversation(currentConvId);
         $("#topbar-title").textContent = ev.title || "新对话";
         break;
       case "token":
         if (!bubble) bubble = addAssistantShell(true);
         buf += ev.text;
         bubble.classList.add("cursor");
-        renderMarkdown(bubble, buf);
-        scrollDown();
+        painter.update(bubble, buf);
         break;
       case "tool_call":
+        painter.flush();
         // 标记：后面 tool_result 会渲染。先收尾当前气泡
         removeThinking();
         if (bubble) { bubble.classList.remove("cursor"); bubble = null; buf = ""; }
@@ -446,13 +551,14 @@ async function send(text, opts = {}) {
         else if (d.type === "document") renderDocumentCard(card, d);
         else if (d.type === "file_op") renderFileOpCard(card, d);
         // AI 写文件成功 → 通知工作台把该文件实时加载进编辑器（纯聊天页无监听者，无副作用）
-        if (d.type === "file_op" && d.action === "write" && d.ok && d.path) {
+        if (!opts.task && d.type === "file_op" && d.action === "write" && d.ok && d.path) {
           window.dispatchEvent(new CustomEvent("ai-file-write", { detail: { path: d.path } }));
         }
         scrollDown();
         break;
       }
       case "done":
+        completed = true; painter.flush();
         if (!bubble && ev.content) bubble = addAssistantShell();
         if (bubble) {
           bubble.classList.remove("cursor");
@@ -460,10 +566,15 @@ async function send(text, opts = {}) {
           // ev.content 为空则保留 token 增量渲染的既有内容，不覆盖
         }
         break;
+      case "cancelled":
+        completed = true; painter.flush();
+        if (bubble) bubble.classList.remove('cursor');
+        break;
       case "saved":
         loadConversations();
         break;
       case "error":
+        painter.flush();
         if (!bubble) bubble = addAssistantShell();
         bubble.classList.remove("cursor");
         bubble.innerHTML += `<p style="color:var(--rouge)">⚠ ${escapeHtml(ev.message)}</p>`;
@@ -488,7 +599,7 @@ function addRegenerateButton() {
 }
 
 function regenerate() {
-  if (streaming || !currentConvId) return;
+  if (streaming || chatLoading || !currentConvId) return;
   // 移除当前最后一条助教消息及其工具卡片，再请求重新生成
   document.querySelectorAll(".regen-row").forEach((r) => r.remove());
   const last = messagesEl.querySelector(".msg.assistant:last-of-type");
@@ -523,15 +634,39 @@ async function loadConversations() {
 }
 
 async function openConversation(id) {
-  if (streaming) stopStreaming();
-  const conv = await (await fetch(`/api/conversations/${id}`)).json();
+  detachChat();
+  const version = chatViewVersion;
+  currentConvId = id; rememberConversation(id); setChatLoading(true);
+  restoreChatDraft();
+  $('#topbar-title').textContent = '正在读取对话…';
+  messagesEl.innerHTML = '';
+  try {
+  // Task acknowledgement guarantees that its user message has been persisted.
+  // Read history afterwards so an older snapshot cannot hide a just-finished turn.
+  const foundTask = await ChatTasks.find({conversationId: id, endpoint: '/api/chat'});
+  if (version !== chatViewVersion) return;
+  const convResponse = await fetch(`/api/conversations/${encodeURIComponent(id)}`);
+  if (version !== chatViewVersion) return;
+  if (!convResponse.ok) throw new Error('暂时无法读取对话，原始消息仍保留。');
+  const conv = await convResponse.json();
+  if (version !== chatViewVersion) return;
+  let pending = foundTask && !foundTask.invalidated &&
+    !(conv.invalidated_chat_message_ids || []).includes(foundTask.client_message_id) ? foundTask : null;
+  const pendingIndex = pending ? conv.messages.findIndex(m => m.role === 'user' && m.client_message_id === pending.client_message_id) : -1;
+  if (pending && pendingIndex >= 0 && conv.messages.slice(pendingIndex + 1).some(m => m.role === 'user')) {
+    ChatTasks.acknowledge(pending.id); pending = null;
+  }
   currentConvId = id;
+  rememberConversation(id);
   attachedFiles = [];
   renderAttachments();
   $("#topbar-title").textContent = conv.title;
   messagesEl.innerHTML = "";
-  for (let i = 0; i < conv.messages.length; i++) {
-    const m = conv.messages[i];
+  // The current turn is replayed from the task journal; earlier turns come from the archive.
+  const turnIndex = pending ? conv.messages.findIndex(m => m.role === 'user' && m.client_message_id === pending.client_message_id) : -1;
+  const visibleMessages = turnIndex >= 0 ? conv.messages.slice(0, turnIndex + 1) : conv.messages;
+  for (let i = 0; i < visibleMessages.length; i++) {
+    const m = visibleMessages[i];
     if (m.role === "user") {
       addRollbackButton(addUserMsg(m.content), i);
     } else if (m.role === "assistant") {
@@ -555,24 +690,39 @@ async function openConversation(id) {
   addRegenerateButton();
   loadConversations();
   scrollDownForce();
+  setChatLoading(false);
+  if (pending) {
+    if (turnIndex < 0 && pending.request?.message) addUserMsg(pending.request.message);
+    void send(pending.request?.message || '', {task: pending});
+  }
+  } catch (error) {
+    if (version !== chatViewVersion) return;
+    $('#topbar-title').textContent = '对话读取失败';
+    const message = document.createElement('p'); message.textContent = error.message;
+    const retry = document.createElement('button'); retry.className = 'chip'; retry.textContent = '重试读取对话';
+    retry.onclick = () => openConversation(id); messagesEl.replaceChildren(message, retry);
+  }
 }
 
 async function deleteConversation(id) {
-  await fetch(`/api/conversations/${id}`, { method: "DELETE" });
+  const response = await fetch(`/api/conversations/${id}`, { method: "DELETE" });
+  if (!response.ok) { const detail = await response.json().catch(() => ({})); alert(detail.detail || '暂时无法删除对话'); return; }
   if (id === currentConvId) newConversation();
   loadConversations();
 }
 
 function newConversation() {
-  if (streaming) stopStreaming();
+  detachChat();
   currentConvId = null;
+  restoreChatDraft();
+  const url = new URL(location.href); url.searchParams.delete('conversation_id'); history.replaceState(null, '', url);
   attachedFiles = [];
   renderAttachments();
   $("#topbar-title").textContent = "新对话";
   messagesEl.innerHTML = `
     <div class="welcome" id="welcome">
-      <div class="vertical-deco">数学建模助教</div>
-      <h1>数学建模助教</h1>
+      <div class="vertical-deco">建模研究台</div>
+      <h1>建模研究台</h1>
       <p>基于 40 小时课程知识库，帮你拆解问题、有出处地解答、写并自测 Python 代码、手把手带你配环境与排版。</p>
       <div class="suggestions">
         <button class="chip">层次分析法怎么构造判断矩阵？一致性检验怎么做？</button>
@@ -616,22 +766,26 @@ function renderAttachments() {
 }
 
 async function uploadFile(file) {
+  if (chatLoading) return;
+  const viewVersion = chatViewVersion, conversationId = currentConvId;
+  const ownsView = () => viewVersion === chatViewVersion && conversationId === currentConvId;
   const fd = new FormData();
   fd.append("file", file);
-  if (currentConvId) fd.append("conversation_id", currentConvId);
+  if (conversationId) fd.append("conversation_id", conversationId);
   try {
     const resp = await fetch("/api/upload", { method: "POST", body: fd });
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
-      alert("上传失败：" + (err.detail || resp.status));
+      if (ownsView()) alert("上传失败：" + (err.detail || resp.status));
       return;
     }
     const data = await resp.json();
-    currentConvId = data.conversation_id;
+    if (!ownsView()) return;
+    bindChatConversation(data.conversation_id);
     if (!attachedFiles.includes(data.filename)) attachedFiles.push(data.filename);
     renderAttachments();
   } catch (e) {
-    alert("上传出错：" + e);
+    if (ownsView()) alert("上传出错：" + e);
   }
 }
 
@@ -666,11 +820,11 @@ function autoGrow() {
   inputEl.style.height = "auto";
   inputEl.style.height = Math.min(inputEl.scrollHeight, 180) + "px";
 }
-inputEl.addEventListener("input", autoGrow);
+inputEl.addEventListener("input", () => { autoGrow(); saveChatDraft(); });
 inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(inputEl.value); }
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); if (!streaming) send(inputEl.value); }
 });
-sendBtn.onclick = () => send(inputEl.value);
+sendBtn.onclick = () => streaming ? stopStreaming() : send(inputEl.value);
 $("#btn-new").onclick = newConversation;
 $("#btn-toggle").onclick = () => $("#sidebar").classList.toggle("collapsed");
 $("#btn-export").onclick = exportConversation;
@@ -680,8 +834,7 @@ const tourBtn = $("#btn-tour");
 if (tourBtn) {
   tourBtn.onclick = () => {
     if (window.OnboardingTour) {
-      OnboardingTour.reset();
-      OnboardingTour.start();
+      OnboardingTour.open();
     }
   };
 }
@@ -731,15 +884,14 @@ enhanceWelcome();
 loadHealth();
 loadConversations();
 loadSettings();
+const linkedConversation = new URLSearchParams(location.search).get('conversation_id');
+if (linkedConversation) {
+  currentConvId = linkedConversation; restoreChatDraft();
+  openConversation(linkedConversation).catch(error => console.warn('恢复对话：', error.message));
+}
+else restoreChatDraft();
 
-// 新用户引导流程：聊天页首次加载时自动触发
-(function checkTour() {
-  if (window.OnboardingTour && !OnboardingTour.isCompleted()) {
-    setTimeout(() => {
-      OnboardingTour.start();
-    }, 600);
-  }
-})();
+// The shared guide resumes this page's block after active work and dialogs finish.
 
 // ===== 模型与 API 设置 =====
 const PROVIDER_PRESETS = {

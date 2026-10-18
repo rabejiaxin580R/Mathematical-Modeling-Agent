@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+  <script src="/static/chat-tasks.js?v=1"></script>
+  <script src="/static/waiting.js?v=companion1"></script>
+  <link rel="stylesheet" href="/static/companion.css?v=1" />
+  <script src="/static/companion-state.js?v=1"></script>
+  <script src="/static/companion.js?v=1"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>数学建模助教 · 工作台</title>
+  <title>建模研究台 · 工作台</title>
 
   <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet" />
 
   <!-- KaTeX 公式渲染 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="/static/vendor/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="/static/vendor/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
   <!-- Markdown + 代码高亮 -->
-  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="/static/vendor/npm/marked@12.0.2/marked.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css" />
+  <script src="/static/vendor/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
 
   <!-- CodeMirror 5（轻量代码编辑器） -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <link rel="stylesheet" href="/static/vendor/npm/codemirror@5.65.16/lib/codemirror.min.css" />
+  <script src="/static/vendor/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/python/python.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/markdown/markdown.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/stex/stex.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/xml/xml.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/css/css.min.js"></script>
+  <script src="/static/vendor/npm/codemirror@5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
 
-  <link rel="stylesheet" href="/static/style.css?v=anim1" />
-  <link rel="stylesheet" href="/static/anim.css?v=anim4" />
+  <link rel="stylesheet" href="/static/style.css?v=research3" />
+  <link rel="stylesheet" href="/static/anim.css?v=research3" />
+  <link rel="stylesheet" href="/static/ui.css?v=research3" />
+  <script defer src="/static/ui.js?v=companion1"></script>
 </head>
 <body>
   <div class="ws" id="ws" style="--col-left:240px; --col-right:440px;">
     <!-- 顶栏：品牌 + 工作目录 + 文件名 + 运行/保存 + 设置 -->
     <header class="ws-topbar">
-      <div class="ws-brand"><span class="mark">绣</span>独立练习</div>
+      <div class="ws-brand"><span class="mark">◇</span>自由工作台</div>
       <input type="text" class="ws-path" id="workdir" placeholder="工作目录（项目文件夹绝对路径，回车加载文件树；留空用临时目录）" />
       <input type="text" class="ws-path ws-fname" id="filename" placeholder="文件名 main.py" value="main.py" />
       <button class="ide-btn" id="btn-save" title="保存编辑器内容到工作目录">保存</button>
@@ -72,7 +77,7 @@
           <button class="ide-btn mini" id="explorer-refresh" title="按工作目录重新加载">↻</button>
         </div>
         <div class="explorer-tree" id="explorer-tree">
-          <div class="explorer-empty">在上方「工作目录」填入项目文件夹路径并回车，即可浏览文件。</div>
+          <div class="explorer-empty">打开“工作环境”，选择文件夹后即可浏览文件。</div>
         </div>
       </section>
 
@@ -121,7 +126,7 @@
 
         <div class="messages" id="messages">
           <div class="welcome" id="welcome">
-            <h1>数学建模助教</h1>
+            <h1>建模研究台</h1>
             <p>左侧浏览项目文件、中间写并运行代码、右侧随时提问——选中代码可一键带入对话，AI 也能把代码送回编辑器。</p>
             <div class="suggestions">
               <button class="chip">层次分析法怎么构造判断矩阵？一致性检验怎么做？</button>
@@ -158,7 +163,7 @@
     <div class="fm-modal">
       <div class="fm-inner">
         <div class="fm-brand">
-          <div class="fm-mark">绣</div>
+          <div class="fm-mark">◇</div>
           <div class="fm-head">
             <div class="fm-title">选择工作目录</div>
             <div class="fm-desc">新建或选择一个文件夹来存放建模文件</div>
@@ -232,24 +237,16 @@
   </div>
 
   <!-- 顺序：聊天逻辑 → IDE 编辑器/终端逻辑 → 共享渲染/档案/分步引擎 → 编辑器预览 → 工作台胶水层 -->
-  <script src="/static/anim.js?v=anim1"></script>
-  <script src="/static/app.js?v=anim1"></script>
-  <script src="/static/ide.js?v=anim1"></script>
-  <script src="/static/profile.js?v=anim1"></script>
-  <script src="/static/render.js?v=anim1"></script>
-  <script src="/static/stepflow.js?v=anim1"></script>
-  <script src="/static/editor-preview.js?v=anim1"></script>
-  <script src="/static/layout.js?v=anim1"></script>
-  <script src="/static/keysetup.js?v=anim1"></script>
-  <script src="/static/workspace.js?v=anim1"></script>
-  <script>
-    // 缺 API Key 时主动弹配置向导（避免深链进入直接撞静默失败）
-    (function () {
-      if (!window.KeySetup) return;
-      const go = () => KeySetup.ensure();
-      if (window.Profile && Profile.require) Profile.require().then((p) => { if (p) go(); });
-      else go();
-    })();
-  </script>
+  <script src="/static/anim.js?v=research3"></script>
+  <script src="/static/app.js?v=research3"></script>
+  <script src="/static/ide.js?v=companion1"></script>
+  <script src="/static/profile.js?v=research3"></script>
+  <script src="/static/render.js?v=research3"></script>
+  <script src="/static/stepflow.js?v=research3"></script>
+  <script src="/static/editor-preview.js?v=research3"></script>
+  <script src="/static/layout.js?v=research3"></script>
+  <script src="/static/keysetup.js?v=research3"></script>
+  <script src="/static/workspace.js?v=research3"></script>
+
 </body>
 </html>
