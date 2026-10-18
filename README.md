@@ -62,17 +62,6 @@
 | 运行成功容易被误当成结论成立 | 运行记录与验收清单分开，结论由你确认 |
 | 长对话容易挤掉关键上下文 | 有出处的上下文预算，保留可追溯来源 |
 
-### 更新完成度
-
-| 模块 | 进度 |
-|:---|:---|
-| 🧭 持久化工作流 | 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪 100% |
-| 💬 后台对话 | 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪 100% |
-| 🗂 研究材料 | 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪 100% |
-| 🎨 工作台重设计 | 🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪 100% |
-| 🚀 三平台构建 | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 100% |
-
-<sub>装饰进度条，表示本次发布包含的模块，不代表性能指标。</sub>
 
 > 📋 [完整更新日志](CHANGELOG.md)
 
@@ -149,29 +138,6 @@
 ---
 
 ## 📈 关注曲线
-
-<p align="center"><b>谢谢每一个关注、试用和反馈的人。</b></p>
-
-<table align="center">
-<tr><td>
-<pre>
-   ★
-   │                                      ╭──
-   │                                 ╭────╯
-   │                            ╭────╯
-   │                       ╭────╯
-   │                  ╭────╯
-   │             ╭────╯
-   │        ╭────╯
-   └───┬────┴────┬────┴────┬────┴────┬──→
-     v2.0       v2.1       v2.2     v2.3
-</pre>
-</td></tr>
-</table>
-
-<sub>装饰示意，不是统计数据；真实 Star 数见页面顶部徽章。</sub>
-
-<details>
 <summary>📌 展开实时 Star 曲线（Star History）</summary>
 
 <p align="center">
@@ -180,7 +146,6 @@
   </a>
 </p>
 
-</details>
 
 ---
 
@@ -191,7 +156,6 @@
 | 系统 | 下载 | 说明 |
 |------|------|------|
 | 🪟 **Windows 安装版** | [MathModelingAgent-Setup-v2.3.0.exe](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases/download/v2.3.0/MathModelingAgent-Setup-v2.3.0.exe) | 图形安装，约 207 MB |
-| 🪟 **Windows 免安装** | [MathModelingAgent-windows-x64.zip](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases/download/v2.3.0/MathModelingAgent-windows-x64.zip) | 解压即用，约 321 MB |
 | 🍎 **macOS ARM64** | [MathModelingAgent-macos-arm64.tar.gz](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases/download/v2.3.0/MathModelingAgent-macos-arm64.tar.gz) | Apple Silicon，约 271 MB |
 | 🐧 **Linux x86_64** | [MathModelingAgent-linux-x86_64.tar.gz](https://github.com/rabejiaxin580R/Mathematical-Modeling-Agent/releases/download/v2.3.0/MathModelingAgent-linux-x86_64.tar.gz) | 解压后运行 `./启动助教`，约 464 MB |
 
@@ -227,18 +191,6 @@
 
 > 🔑 你的 Key 直连网关，上游密钥不暴露。额度用完可联系管理员免费续期。
 
----
-
-## 🧪 质量与验证
-
-| 项目 | 结果 |
-|:---|:---|
-| Python 测试 | 232 项通过 |
-| 前端 JavaScript | 35 个文件语法检查通过 |
-| 构建平台 | Windows / macOS / Linux 三平台成功 |
-| 当前版本 | v2.3.0 |
-
----
 
 ## ⚠️ 安全提醒
 
