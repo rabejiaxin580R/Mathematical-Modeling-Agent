@@ -6,9 +6,13 @@
 import json
 import time
 import uuid
+import os
+import threading
 from pathlib import Path
 
 from .config import config
+
+lock = threading.RLock()
 
 
 def _base_dir(base: Path | None) -> Path:
@@ -30,7 +34,7 @@ def load(conversation_id: str, base: Path | None = None) -> dict | None:
         return None
     try:
         return json.loads(p.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, UnicodeError, OSError):
         return None
 
 
@@ -41,7 +45,16 @@ def save(conversation: dict, base: Path | None = None):
     if base is None and conversation.get("agent") == "solve":
         base = config.SOLVE_CONVERSATIONS_DIR
     p = _path(conversation["id"], base)
-    p.write_text(json.dumps(conversation, ensure_ascii=False, indent=2), encoding="utf-8")
+    with lock:
+        for message in conversation.get("messages", []):
+            message.setdefault("id", "msg_" + uuid.uuid4().hex)
+            message.setdefault("origin", "assistant" if message.get("role") == "assistant" else "legacy_unknown")
+        tmp = p.with_suffix(f".{uuid.uuid4().hex}.tmp")
+        try:
+            tmp.write_text(json.dumps(conversation, ensure_ascii=False, indent=2), encoding="utf-8")
+            os.replace(tmp, p)
+        finally:
+            tmp.unlink(missing_ok=True)
 
 
 def create(base: Path | None = None) -> dict:

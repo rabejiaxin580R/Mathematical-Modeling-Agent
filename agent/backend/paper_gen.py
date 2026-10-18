@@ -330,7 +330,8 @@ def _build_user_prompt(
             "",
             "## Relevant academic literature",
             "These papers from arXiv and Semantic Scholar are relevant to this section.",
-            "Cite them using APA format (Author, Year) when their methods inform your approach.",
+            "Cite actual use with the supplied [LPn] identifier alongside APA format (Author, Year). "
+            "These are abstract excerpts, not full text. Do not invent sources or details beyond them.",
             "",
             literature_context,
         ])
@@ -395,6 +396,10 @@ def _build_structured_context(conn, session_id: str, current_key: str) -> str:
     current_idx = order.index(current_key) if current_key in order else len(order)
 
     parts = []
+    from .solve_flow import paper_source, material_text
+    source = paper_source(conn, session_id)
+    if source:
+        parts.append("## Student-confirmed research (highest authority, including over proposed outline edits)\n" + material_text(source))
 
     # 1. 符号表（从 symbols 表读，不从 Markdown 截断）
     symbols = paper_db.load_symbols(conn, session_id)
@@ -471,8 +476,9 @@ def _client() -> OpenAI:
     return OpenAI(api_key=config.get_llm_api_key(), base_url=config.get_llm_base_url())
 
 
-def _call_writer(system: str, user: str) -> str | None:
-    """调用 LLM 生成一节内容。失败返回 None。"""
+def _call_writer(system: str, user: str, *, max_tokens: int = 384000,
+                 timeout: float = 1800) -> str | None:
+    """Call the configured writer; workflow extraction can use a smaller budget."""
     client = _client()
     model = config.get_llm_model()
 
@@ -484,8 +490,8 @@ def _call_writer(system: str, user: str) -> str | None:
                 {"role": "user", "content": user},
             ],
             temperature=0.3,
-            max_tokens=384000,  # DeepSeek V4 Pro支持最大384K输出
-            timeout=1800,  # 3分钟超时（生成更长内容需要更多时间）
+            max_tokens=max_tokens,
+            timeout=timeout,
         )
         return resp.choices[0].message.content or ""
 
@@ -952,6 +958,7 @@ def generate_section(
     session_id: str,
     section_key: str,
     solve_session: dict | None = None,
+    expected_revision: int | None = None,
 ) -> Generator[dict, None, None]:
     """生成论文的一个章节，yield SSE event dicts。
 
@@ -984,9 +991,8 @@ def generate_section(
             yield {"type": "progress", "step": "init_literature",
                    "message": "正在初始化文献知识库..."}
 
-            # 创建文献会话（如果不存在）
+            # Opening the shared database initializes its literature tables.
             lit_conn = paper_literature.get_lit_conn()
-            paper_literature.create_paper_session(lit_conn, session_id, problem_md)
             lit_conn.close()
 
             logger.info(f"文献知识库已初始化: {session_id}")
@@ -998,7 +1004,11 @@ def generate_section(
            "message": f"正在收集「{heading}」的做题记录…"}
 
     conversation_text = ""
-    if solve_session:
+    from .solve_flow import paper_source, material_text
+    frozen_source = paper_source(conn, session_id)
+    if frozen_source:
+        conversation_text = material_text(frozen_source)
+    elif solve_session:
         from .config import config as cfg
         conversation_text = _conversation_for_stage(
             solve_session, section_key, cfg.SOLVE_CONVERSATIONS_DIR,
@@ -1012,6 +1022,8 @@ def generate_section(
     # 3.5. 若本节已有「大纲摘要」（来自大纲页面），注入为「展开这份已确认的大纲」，
     #      确保完整论文与用户在大纲页审阅过的符号/数值/结论一致，而不是凭空重写。
     existing = paper_db.load_section(conn, session_id, section_key)
+    if expected_revision is None:
+        expected_revision = (existing or {}).get("revision", 0)
     outline_summary = (existing.get("content_md") or "").strip() if existing else ""
     if outline_summary:
         previous_text = (
@@ -1029,6 +1041,7 @@ def generate_section(
 
     # 4.5. 文献检索（从paper_literature知识库）
     literature_ctx = ""
+    citation_candidates = []
     try:
         from . import paper_literature
 
@@ -1070,21 +1083,8 @@ def generate_section(
                 max_chunks=15
             )
 
-            # 自动记录引用（所有被检索到的论文）
-            if chunks:
-                cited_papers = set()
-                for chunk in chunks:
-                    paper_id = chunk.get("paper_id")
-                    if paper_id and paper_id not in cited_papers:
-                        paper_literature.cite_paper(
-                            conn=lit_conn,
-                            session_id=session_id,
-                            section_key=section_key,
-                            paper_id=paper_id,
-                            citation_context=f"Used for {section_key} section: {chunk.get('chunk_type', 'reference')}"
-                        )
-                        cited_papers.add(paper_id)
-                logger.info(f"为 {section_key} 章节检索到 {len(chunks)} 个文献片段，引用 {len(cited_papers)} 篇论文")
+            # Retrieval alone is not a citation; record only identifiers in saved prose.
+            citation_candidates = chunks
 
             lit_conn.close()
 
@@ -1096,7 +1096,7 @@ def generate_section(
 
     # 5. 构建 prompt 并调用 LLM
     # 特殊处理：analyze 章节使用两阶段生成
-    if section_key == "analyze":
+    if section_key == "analyze" and not frozen_source:
         yield {"type": "progress", "step": "stage1_test_data",
                "message": f"正在生成虚构测试数据…"}
         dataset_id = _generate_fictional_test_data(
@@ -1118,12 +1118,24 @@ def generate_section(
         user_prompt = _build_user_prompt(
             section_key, problem_md, conversation_text, previous_text, kb_ctx, literature_ctx,
         )
+        if frozen_source:
+            user_prompt += "\n\nUse ONLY the student-confirmed research snapshot as research authority. Never generate placeholder or fictional data. Where evidence is insufficient, report that limitation. Changes to models, measurements or conclusions require returning to modeling for student confirmation. Cite only the supplied verified literature identifiers. If no verified literature is supplied, do not invent references. Successful execution alone is not evidence that a hypothesis is supported."
         content_md = _call_writer(_WRITER_PERSONA, user_prompt)
 
     if content_md is None:
         yield {"type": "error", "message": f"「{heading}」生成失败（LLM 调用错误），请稍后重试。"}
         yield {"type": "done"}
         return
+
+    if frozen_source and section_key == 'analyze':
+        from .solve_flow import evidence_figures
+        try:
+            figures = evidence_figures(frozen_source)
+        except ValueError as exc:
+            yield {"type": "error", "message": str(exc)}
+            return
+        if figures:
+            content_md += '\n\n' + figures
 
     # 5.5. 验证章节完整性
     is_complete, reason = _verify_completeness(content_md, section_key)
@@ -1145,7 +1157,24 @@ def generate_section(
 
     # 6. 写入 section_state（完整论文已成节用 approved，与大纲摘要的 draft 区分，
     #    断点续传据此跳过已完成的节）
-    paper_db.upsert_section(conn, session_id, section_key, content_md, status="approved")
+    try:
+        saved = paper_db.upsert_section(conn, session_id, section_key, content_md, status="approved",
+                                       expected_revision=expected_revision)
+    except paper_db.SectionConflict as exc:
+        yield {"type": "error", "section_key": section_key, "message": str(exc), "conflict": True}
+        return
+
+    if citation_candidates:
+        try:
+            from contextlib import closing
+            with closing(paper_literature.get_lit_conn()) as lit_conn:
+                for candidate in citation_candidates:
+                    if f"[{candidate['paper_id']}]" in content_md:
+                        paper_literature.cite_paper(lit_conn, session_id, section_key,
+                                                   candidate["paper_id"], candidate["chunk_id"],
+                                                   "正文中实际引用的摘要原文")
+        except Exception:
+            logger.exception("文献引用归档失败")
 
     # 7. 特殊阶段：提取结构化数据
     if section_key == "notation":
@@ -1172,6 +1201,7 @@ def generate_section(
         "heading": heading,
         "content_md": content_md,
         "chars": len(content_md),
+        "revision": saved["revision"],
     }
     yield {"type": "done"}
 
@@ -1239,6 +1269,7 @@ def _build_outline_prompt(
     previous_context: str,
     kb_context: str,
     literature_context: str,
+    confirmed_source: bool = False,
 ) -> str:
     """组装单节大纲的 user prompt：复用 _stage_instructions 的填表约束。"""
     instructions = _stage_instructions(section_key, problem_md)
@@ -1307,7 +1338,9 @@ def _build_outline_prompt(
             literature_context,
         ])
 
-    if section_key in outline_notes:
+    if confirmed_source:
+        parts.extend(["", "Use ONLY the student-confirmed research snapshot. Never invent numerical findings or placeholder data. Preserve theoretical arguments, negative findings and simulation labels. If measurements are missing, list the missing evidence and request it from the student instead of supplying results."])
+    elif section_key in outline_notes:
         parts.extend(["", outline_notes[section_key]])
 
     blocks = _OUTLINE_BLOCKS.get(section_key, ["Summary"])
@@ -1459,6 +1492,7 @@ def generate_outline_section(
     user_thought: str = "",
     user_data: str = "",
     literature_context: str = "",
+    expected_revision: int | None = None,
 ) -> Generator[dict, None, None]:
     """生成单个章节的「大纲摘要」，复用 generate_section 的逐节流水线 + 填表约束。
 
@@ -1486,15 +1520,19 @@ def generate_outline_section(
         yield {"type": "done"}
         return
     problem_md = ps.get("problem_md", "")
+    if expected_revision is None:
+        expected_revision = (paper_db.load_section(conn, session_id, section_key) or {}).get("revision", 0)
 
     # 2. 每章专属指令 + 前序结构化上下文 + 知识库检索
     previous_context = _build_structured_context(conn, session_id, section_key)
     kb_ctx = _kb_for_stage(section_key, "")
 
     # 3. 组装大纲 prompt 并调用 LLM
+    from .solve_flow import paper_source
+    source = paper_source(conn, session_id)
     user_prompt = _build_outline_prompt(
         section_key, heading, problem_md, user_thought, user_data,
-        previous_context, kb_ctx, literature_context,
+        previous_context, kb_ctx, literature_context, confirmed_source=bool(source),
     )
     raw = _call_writer(_OUTLINE_PERSONA, user_prompt)
     if raw is None:
@@ -1510,11 +1548,17 @@ def generate_outline_section(
     # 大纲会话是独立新建的，不会与完整论文的 draft 内容混淆。
     # 只落英文 summary：中文翻译仅供预览，不进正文、不进 Word 导出。
     if summary:
-        paper_db.upsert_section(conn, session_id, section_key, summary, status="draft")
+        try:
+            saved = paper_db.upsert_section(conn, session_id, section_key, summary, status="draft",
+                                           expected_revision=expected_revision)
+        except paper_db.SectionConflict as exc:
+            yield {"type": "error", "section_key": section_key, "message": str(exc), "conflict": True}
+            return
 
     # 大纲元数据（中文翻译 + 结构化公式/文献）单独落库，供刷新后重载
     paper_db.upsert_outline_meta(conn, session_id, section_key,
-                                 data["summary_zh"], data["formulas"], data["citations"])
+                                 data["summary_zh"], data["formulas"], data["citations"],
+                                 expected_revision=saved["revision"] if summary else expected_revision)
 
     # 5. 结构化提取写回 DB（符号/模型/结果闭环）
     if section_key == "notation":
@@ -1539,14 +1583,22 @@ def generate_outline_section(
         "section_key": section_key,
         "title": heading,
         "summary": summary,
+        "revision": saved["revision"] if summary else expected_revision,
         "summary_zh": data["summary_zh"],
         "blocks": _OUTLINE_BLOCKS.get(section_key, ["Summary"]),
         "formulas": data["formulas"],
         "citations": data["citations"],
-        "needs_user_data": section_key in _DATA_CHECKLIST,
-        "data_checklist": _DATA_CHECKLIST.get(section_key, ""),
+        "needs_user_data": _source_data_note(source, section_key)[0] if source else section_key in _DATA_CHECKLIST,
+        "data_checklist": _source_data_note(source, section_key)[1] if source else _DATA_CHECKLIST.get(section_key, ""),
     }
     yield {"type": "done"}
+
+
+def _source_data_note(source, section_key):
+    steps = source.get('problem', {}).get('steps', [])
+    outcomes = [source.get('outcomes', {}).get(s['id'], {}) for s in steps if s.get('stage_key') == section_key]
+    missing = [o for o in outcomes if o.get('verdict') == 'insufficient' and not o.get('not_applicable')]
+    return bool(missing), '；'.join(o.get('limits') or o.get('basis') or '请补充本步依据' for o in missing)
 
 
 def load_outline(conn, session_id: str) -> dict | None:
@@ -1559,6 +1611,8 @@ def load_outline(conn, session_id: str) -> dict | None:
     if ps is None:
         return None
 
+    from .solve_flow import paper_source
+    source = paper_source(conn, session_id)
     sections = []
     for sk in paper_db.SECTION_ORDER[:9]:
         sec = paper_db.load_section(conn, session_id, sk)
@@ -1583,16 +1637,21 @@ def load_outline(conn, session_id: str) -> dict | None:
             "section_key": sk,
             "title": section_heading(sk),
             "summary": summary,
+            "revision": (sec or {}).get("revision", 0),
             "summary_zh": summary_zh,
             "blocks": _OUTLINE_BLOCKS.get(sk, ["Summary"]),
             "formulas": formulas,
             "citations": citations,
-            "needs_user_data": sk in _DATA_CHECKLIST,
-            "data_checklist": _DATA_CHECKLIST.get(sk, ""),
+            "needs_user_data": _source_data_note(source, sk)[0] if source else sk in _DATA_CHECKLIST,
+            "data_checklist": _source_data_note(source, sk)[1] if source else _DATA_CHECKLIST.get(sk, ""),
         })
 
     return {
         "session_id": session_id,
+        "source_solve_id": ps.get("source_solve_id"),
+        "source_revision": source.get("revision") if source else None,
+        "source_steps": source.get("problem", {}).get("steps", []) if source else [],
+        "source_outcomes": source.get("outcomes", {}) if source else {},
         "topic": ps.get("topic", ""),
         "sections": sections,
         "literature_stats": {"papers": 0, "chunks": 0},
@@ -1654,11 +1713,14 @@ def _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
 
 
 def _persist_outline_section(conn, session_id, section_key,
-                             summary, summary_zh, formulas, citations):
+                             summary, summary_zh, formulas, citations, expected_revision=None):
     """写回 section_state + outline_meta，并做结构化提取（符号/模型/结果闭环）。"""
+    saved = None
     if summary:
-        paper_db.upsert_section(conn, session_id, section_key, summary, status="draft")
-    paper_db.upsert_outline_meta(conn, session_id, section_key, summary_zh, formulas, citations)
+        saved = paper_db.upsert_section(conn, session_id, section_key, summary, status="draft",
+                                       expected_revision=expected_revision)
+    paper_db.upsert_outline_meta(conn, session_id, section_key, summary_zh, formulas, citations,
+                                 expected_revision=(saved or {}).get("revision", expected_revision))
 
     if section_key == "notation":
         try:
@@ -1676,6 +1738,7 @@ def _persist_outline_section(conn, session_id, section_key,
             _extract_results(conn, session_id, section_key, summary)
         except Exception:
             logger.exception("大纲结果提取失败（非致命）")
+    return saved
 
 
 def _build_refine_prompt(section_key, heading, problem_md, current_summary,
@@ -1740,10 +1803,13 @@ def _build_rewrite_prompt(section_key, heading, problem_md, current_summary,
     return base + "\n" + "\n".join(extra_parts)
 
 
-def refine_outline_section(conn, session_id: str, section_key: str, instruction: str) -> dict:
+def refine_outline_section(conn, session_id: str, section_key: str, instruction: str,
+                           expected_revision: int | None = None) -> dict:
     """局部微调一章大纲，返回新章节 dict。失败抛 ValueError。"""
     meta = _SECTION_META.get(section_key, {})
     heading = meta.get("heading", section_key)
+    if expected_revision is None:
+        expected_revision = (paper_db.load_section(conn, session_id, section_key) or {}).get("revision", 0)
     ps = paper_db.load_session(conn, session_id)
     if ps is None:
         raise ValueError(f"论文会话 {session_id} 不存在")
@@ -1768,18 +1834,20 @@ def refine_outline_section(conn, session_id: str, section_key: str, instruction:
     if not data["summary"].strip():
         raise ValueError(f"「{heading}」微调结果为空")
 
-    _persist_outline_section(conn, session_id, section_key,
+    saved = _persist_outline_section(conn, session_id, section_key,
                              data["summary"], data["summary_zh"],
-                             data["formulas"], data["citations"])
-    return _outline_section_dict(section_key, data["summary"], data["summary_zh"],
-                                 data["formulas"], data["citations"])
+                             data["formulas"], data["citations"], expected_revision=expected_revision)
+    return {**_outline_section_dict(section_key, data["summary"], data["summary_zh"],
+                                    data["formulas"], data["citations"]), "revision": (saved or {}).get("revision", 0)}
 
 
 def rewrite_outline_section(conn, session_id: str, section_key: str,
-                            mode: str, extra: str = "") -> dict:
+                            mode: str, extra: str = "", expected_revision: int | None = None) -> dict:
     """按模式重写一章大纲。返回新章节 dict + previous_version_no + previous。失败抛 ValueError。"""
     meta = _SECTION_META.get(section_key, {})
     heading = meta.get("heading", section_key)
+    if expected_revision is None:
+        expected_revision = (paper_db.load_section(conn, session_id, section_key) or {}).get("revision", 0)
     ps = paper_db.load_session(conn, session_id)
     if ps is None:
         raise ValueError(f"论文会话 {session_id} 不存在")
@@ -1788,12 +1856,6 @@ def rewrite_outline_section(conn, session_id: str, section_key: str,
 
     summary, summary_zh, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
     previous = _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
-    version_no = None
-    if summary.strip():
-        version_no = paper_db.save_section_version(
-            conn, session_id, section_key, summary, summary_zh, formulas, citations,
-        )
-
     previous_context = _build_structured_context(conn, session_id, section_key)
     kb_ctx = _kb_for_stage(section_key, "")
 
@@ -1808,18 +1870,22 @@ def rewrite_outline_section(conn, session_id: str, section_key: str,
     if not data["summary"].strip():
         raise ValueError(f"「{heading}」重写结果为空")
 
-    _persist_outline_section(conn, session_id, section_key,
+    saved = _persist_outline_section(conn, session_id, section_key,
                              data["summary"], data["summary_zh"],
-                             data["formulas"], data["citations"])
+                             data["formulas"], data["citations"], expected_revision=expected_revision)
     result = _outline_section_dict(section_key, data["summary"], data["summary_zh"],
                                    data["formulas"], data["citations"])
-    result["previous_version_no"] = version_no
+    result["previous_version_no"] = (saved or {}).get("previous_version_no")
+    result["revision"] = (saved or {}).get("revision", 0)
     result["previous"] = previous
     return result
 
 
-def restore_outline_section(conn, session_id: str, section_key: str, version_no: int) -> dict:
+def restore_outline_section(conn, session_id: str, section_key: str, version_no: int,
+                            expected_revision: int | None = None) -> dict:
     """把某历史版本恢复为当前。失败抛 ValueError。"""
+    if expected_revision is None:
+        expected_revision = (paper_db.load_section(conn, session_id, section_key) or {}).get("revision", 0)
     v = paper_db.load_section_version(conn, session_id, section_key, version_no)
     if v is None:
         raise ValueError(f"版本 {version_no} 不存在")
@@ -1833,9 +1899,10 @@ def restore_outline_section(conn, session_id: str, section_key: str, version_no:
         citations = []
     summary = v.get("content_md") or ""
     summary_zh = v.get("summary_zh") or ""
-    _persist_outline_section(conn, session_id, section_key,
-                             summary, summary_zh, formulas, citations)
-    return _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
+    saved = _persist_outline_section(conn, session_id, section_key,
+                                     summary, summary_zh, formulas, citations, expected_revision=expected_revision)
+    return {**_outline_section_dict(section_key, summary, summary_zh, formulas, citations),
+            "revision": (saved or {}).get("revision", 0)}
 
 
 # ── 板块级编辑：按 `### ` 逻辑块直接改 / AI 重写一块 / 影响评估 ───────────────
@@ -1989,7 +2056,7 @@ def _build_impact_prompt(section_key, heading, problem_md, full_summary,
 
 
 def save_outline_section(conn, session_id: str, section_key: str,
-                         summary: str, summary_zh: str) -> dict:
+                         summary: str, summary_zh: str, expected_revision: int | None = None) -> dict:
     """直接保存用户手工编辑后的整章 summary（不触发 LLM），保留原公式/文献。失败抛 ValueError。"""
     ps = paper_db.load_session(conn, session_id)
     if ps is None:
@@ -1997,14 +2064,18 @@ def save_outline_section(conn, session_id: str, section_key: str,
     if not (summary or "").strip():
         raise ValueError("内容不能为空")
     _, _, formulas, citations = _load_current_outline_section(conn, session_id, section_key)
-    _persist_outline_section(conn, session_id, section_key, summary, summary_zh, formulas, citations)
-    return _outline_section_dict(section_key, summary, summary_zh, formulas, citations)
+    saved = _persist_outline_section(conn, session_id, section_key, summary, summary_zh, formulas, citations,
+                                     expected_revision=expected_revision)
+    return {**_outline_section_dict(section_key, summary, summary_zh, formulas, citations),
+            "revision": (saved or {}).get("revision", 0)}
 
 
 def regenerate_outline_block(conn, session_id: str, section_key: str,
-                             heading: str, instruction: str = "") -> dict:
+                             heading: str, instruction: str = "", expected_revision: int | None = None) -> dict:
     """AI 只重写一个 `### ` 逻辑块（英文 + 中文），并评估是否影响后续。失败抛 ValueError。"""
     meta = _SECTION_META.get(section_key, {})
+    if expected_revision is None:
+        expected_revision = (paper_db.load_section(conn, session_id, section_key) or {}).get("revision", 0)
     ps = paper_db.load_session(conn, session_id)
     if ps is None:
         raise ValueError(f"论文会话 {session_id} 不存在")
@@ -2035,10 +2106,12 @@ def regenerate_outline_block(conn, session_id: str, section_key: str,
     new_summary = _join_md_blocks(en_blocks)
     new_zh = _join_md_blocks(zh_blocks)
 
-    _persist_outline_section(conn, session_id, section_key, new_summary, new_zh, formulas, citations)
+    saved = _persist_outline_section(conn, session_id, section_key, new_summary, new_zh, formulas, citations,
+                                     expected_revision=expected_revision)
     result = _outline_section_dict(section_key, new_summary, new_zh, formulas, citations)
     result["affects_later"] = data.get("affects_later", False)
     result["impact_reason"] = data.get("impact_reason", "")
+    result["revision"] = (saved or {}).get("revision", 0)
     return result
 
 

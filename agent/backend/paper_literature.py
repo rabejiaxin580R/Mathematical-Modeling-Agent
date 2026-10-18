@@ -3,9 +3,9 @@
 设计原则
 --------
 - **隔离性**: 每个论文会话有独立的文献知识库，不污染全局knowledge_base
-- **上下文管理**: LLM读取完整PDF → 提取相关片段 → 存入数据库 → 喂给论文生成LLM
+- **上下文管理**: 检索返回的真实摘要 → 校验逐字引文 → 存入数据库 → 供写作引用
 - **两阶段处理**:
-  1. 预处理阶段：DeepSeek读取PDF全文，提取与问题相关的内容
+  1. 预处理阶段：配置的模型从摘要提取与问题相关的原文；PDF URL 不代表已读取全文
   2. 引用阶段：论文生成时检索相关文献片段，作为上下文
 
 数据库表结构
@@ -17,7 +17,7 @@
 使用流程
 -------
 1. 搜索文献: search_literature() → 返回论文列表
-2. 预处理: process_paper_with_llm() → LLM读取PDF并提取关键片段
+2. 预处理: process_paper_with_llm() → 提取并校验摘要原文
 3. 检索片段: search_chunks() → BM25检索相关片段
 4. 生成引用: cite_paper() → 记录引用关系
 """
@@ -255,7 +255,7 @@ def process_paper_with_llm(
 
     工作流:
     1. 从数据库加载论文元数据
-    2. 如果有PDF链接，让LLM读取全文（模拟，实际需要PDF解析）
+    2. 只使用数据库中实际取得的摘要，不把 PDF 链接当作全文
     3. LLM提取与problem_description相关的片段
     4. 存入literature_chunks表
 
@@ -285,9 +285,9 @@ def process_paper_with_llm(
         # 构建提取prompt
         prompt = _build_extraction_prompt(paper, problem_description)
 
-        # 调用LLM（使用DeepSeek）
+        from .config import config
         response = llm_client.chat.completions.create(
-            model="deepseek-v4-pro",  # 使用DeepSeek最强模型（1M上下文，384K输出）
+            model=config.get_llm_model(),
             messages=[
                 {"role": "system", "content": "你是论文分析助手，负责从学术论文中提取与数学建模问题相关的内容。"},
                 {"role": "user", "content": prompt}
@@ -328,13 +328,14 @@ def process_paper_with_llm(
 
 
 def _build_extraction_prompt(paper: Dict, problem_desc: str) -> str:
-    """构建文献提取prompt"""
+    """No PDF has been downloaded: only the supplied abstract is evidence."""
     authors_list = json.loads(paper["authors"])
     authors_str = ", ".join(authors_list[:3])
     if len(authors_list) > 3:
         authors_str += " et al."
 
-    return f"""请从以下学术论文中提取与数学建模问题相关的关键内容。
+    return f"""请从实际获得的论文摘要中选择与问题有关的逐字原文。
+未读取 PDF 全文。不得推测摘要未提到的方法、公式、实验数字或页码。
 
 **数学建模问题**:
 {problem_desc[:800]}
@@ -343,36 +344,24 @@ def _build_extraction_prompt(paper: Dict, problem_desc: str) -> str:
 - 标题: {paper['title']}
 - 作者: {authors_str}
 - 发表: {paper['published']}
-- 摘要: {paper['abstract'][:500]}...
+- 摘要（检索原文）: {paper.get('abstract') or ''}
 
 **任务**:
-1. 判断该论文与问题的相关性（1-5分，5分最相关）
-2. 如果相关性>=2，提取以下内容：
-   - **核心方法**: 论文使用的数学模型/算法（200字以内）
-   - **关键结果**: 主要发现和结论（150字以内）
-   - **公式**: 重要的数学公式（如有）
-   - **适用场景**: 该论文的方法适用于什么类型的问题
+1. 判断相关性（1-5分）；无摘要或相关性低于2时返回空 chunks。
+2. 每个 chunk 的 quote 必须是以上摘要的连续逐字原文，content 与 quote 相同。
+3. relevance 只说明与问题的关系，不得当成文献结论。type 固定 abstract。
 
 输出格式（JSON）:
 ```json
 {{
   "relevance_score": 4,
-  "relevance_reason": "该论文使用排队论建模急救资源分配，与本题的...",
+  "relevance_reason": "说明摘要与当前问题的关系",
   "chunks": [
     {{
-      "type": "method",
-      "content": "论文提出了基于M/M/c排队模型的...",
-      "relevance": "直接适用于本题的资源分配建模"
-    }},
-    {{
-      "type": "formula",
-      "content": "期望等待时间公式: W_q = \\\\lambda / (\\\\mu (\\\\mu - \\\\lambda))",
-      "relevance": "可用于计算响应时间"
-    }},
-    {{
-      "type": "result",
-      "content": "实验表明，当服务率提高20%时...",
-      "relevance": "为灵敏度分析提供参考"
+      "type": "abstract",
+      "quote": "此处复制真实摘要的连续原句",
+      "content": "与 quote 完全相同",
+      "relevance": "与本题的关系（不是文献的新增结论）"
     }}
   ]
 }}
@@ -418,52 +407,28 @@ def _store_chunks(
     paper_id: str,
     chunks_data: List[Dict]
 ) -> int:
-    """存储提取的内容片段"""
+    """Store only quotes found in the actual abstract, never model reconstructions."""
     now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     count = 0
-
-    # 允许的chunk_type枚举值
-    VALID_TYPES = {'abstract', 'introduction', 'method', 'result', 'conclusion', 'formula', 'other'}
-
-    # LLM返回值映射（防止LLM返回不规范的值）
-    TYPE_MAPPING = {
-        'methods': 'method',
-        'methodology': 'method',
-        'approach': 'method',
-        'results': 'result',
-        'findings': 'result',
-        'conclusions': 'conclusion',
-        'discussion': 'conclusion',
-        'equation': 'formula',
-        'equations': 'formula',
-        'math': 'formula',
-        'scenario': 'other',
-        'applicable_scenario': 'other',
-        'applicability': 'other',
-        'application': 'other',
-    }
+    paper = get_paper(conn, session_id, paper_id) or {}
+    abstract = paper.get("abstract") or ""
 
     for chunk in chunks_data:
-        chunk_id = _next_chunk_id(conn, session_id)
-        raw_type = chunk.get("type", "other").lower().strip()
-
-        # 映射到标准类型
-        chunk_type = TYPE_MAPPING.get(raw_type, raw_type)
-
-        # 验证是否在允许的枚举中
-        if chunk_type not in VALID_TYPES:
-            logger.warning(f"无效的chunk_type '{raw_type}'，使用默认值 'other'")
-            chunk_type = "other"
-        content = chunk.get("content", "")
-        relevance = chunk.get("relevance", "")
-
-        if not content or len(content) < 10:
+        if not isinstance(chunk, dict):
             continue
+        quote = chunk.get("quote") or chunk.get("content") or ""
+        if not isinstance(quote, str) or len(quote.strip()) < 10 or quote not in abstract:
+            logger.warning("丢弃无法在摘要原文核实的文献片段: %s", paper_id)
+            continue
+        chunk_id = _next_chunk_id(conn, session_id)
+        chunk_type = "abstract"
+        content = quote
+        relevance = chunk.get("relevance", "")
 
         conn.execute("""
             INSERT INTO literature_chunks
-            (session_id, chunk_id, paper_id, chunk_type, content, relevance, extracted_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (session_id, chunk_id, paper_id, chunk_type, content, relevance, page_ref, extracted_at)
+            VALUES (?, ?, ?, ?, ?, ?, 'abstract', ?)
         """, (session_id, chunk_id, paper_id, chunk_type, content, relevance, now))
 
         count += 1
@@ -485,6 +450,13 @@ def _next_chunk_id(conn: sqlite3.Connection, session_id: str) -> str:
 
 
 # ── 检索与引用 ──────────────────────────────────────────────────────────────
+
+def _verified_chunks(conn, session_id, chunks):
+    """Exclude older LLM summaries that cannot be verified against the abstract."""
+    abstracts = {p["paper_id"]: p.get("abstract") or "" for p in load_papers(conn, session_id)}
+    return [chunk for chunk in chunks if chunk.get("content")
+            and chunk["content"] in abstracts.get(chunk.get("paper_id"), "")]
+
 
 def search_chunks(
     conn: sqlite3.Connection,
@@ -522,7 +494,7 @@ def search_chunks(
             ORDER BY c.chunk_id
             LIMIT ?
         """, (session_id, top_k)).fetchall()
-        return [dict(r) for r in rows]
+        return _verified_chunks(conn, session_id, [dict(r) for r in rows])
 
     # 构建OR条件
     conditions = []
@@ -550,7 +522,7 @@ def search_chunks(
     """
 
     rows = conn.execute(sql, params).fetchall()
-    return [dict(r) for r in rows]
+    return _verified_chunks(conn, session_id, [dict(r) for r in rows])
 
 
 def cite_paper(
@@ -575,7 +547,9 @@ def cite_paper(
         {"ok": True}
     """
     now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-
+    if conn.execute("SELECT 1 FROM literature_citations WHERE session_id=? AND section_key=? AND paper_id=? AND chunk_id IS ?",
+                    (session_id, section_key, paper_id, chunk_id)).fetchone():
+        return {"ok": True}
     conn.execute("""
         INSERT INTO literature_citations
         (session_id, section_key, paper_id, chunk_id, citation_context, cited_at)
@@ -703,12 +677,12 @@ def build_literature_context(
             ORDER BY c.paper_id, c.chunk_id
             LIMIT ?
         """, (session_id, max_chunks)).fetchall()
-        chunks = [dict(r) for r in rows]
+        chunks = _verified_chunks(conn, session_id, [dict(r) for r in rows])
 
     if not chunks:
         return ""
 
-    lines = ["## 📚 相关文献\n"]
+    lines = ["## 📚 相关文献（仅检索摘要，未读取全文；引文来自摘要原文）\n"]
 
     current_paper_id = None
 

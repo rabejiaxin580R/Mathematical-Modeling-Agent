@@ -50,6 +50,61 @@ class Config:
     # 代码执行
     CODE_TIMEOUT = int(_get("CODE_TIMEOUT", "30"))
     MAX_CODE_ITERATIONS = int(_get("MAX_CODE_ITERATIONS", "6"))
+    # 0 表示按当前模型自动选择；正数表示显式指定上下文窗口（单位 token）。
+    WORKFLOW_CONTEXT_TOKENS = int(_get("WORKFLOW_CONTEXT_TOKENS", "0"))
+
+    # ── 各模型的上下文窗口（token）──
+    # 工作流的输入预算最终以 UTF-8 字节计量（与 dialogue_policy.prompt_size 同单位）：
+    # 中文约 3 字节 ≈ 1 token，英文约 4 字节 ≈ 1 token，故按 3 字节/token 保守折算，
+    # 并预留 10% 给输出与协议开销。数值取各厂商文档中偏保守的值：窗口估小只会更早
+    # 截断历史，窗口估大会把超长请求发给上游直接报错，所以宁可保守。
+    # 可用 WORKFLOW_CONTEXT_TOKENS（token）显式覆盖。
+    MODEL_CONTEXT_WINDOWS = (
+        ("deepseek-v4-pro", 1_000_000),
+        ("deepseek-v4-flash", 1_000_000),
+        ("deepseek-v4", 1_000_000),
+        ("deepseek-pro", 1_000_000),
+        ("deepseek-flash", 1_000_000),
+        ("deepseek-reasoner", 64_000),
+        ("deepseek-chat", 64_000),
+        ("deepseek", 64_000),
+        ("qwen-plus", 128_000),
+        ("qwen-max", 128_000),
+        ("qwen-turbo", 128_000),
+        ("qwen", 32_000),
+        ("gpt-4.1", 1_000_000),
+        ("gpt-4o", 128_000),
+        ("gpt-4-turbo", 128_000),
+        ("gpt-3.5", 16_000),
+        ("claude", 200_000),
+        ("moonshot-v1-128k", 128_000),
+        ("moonshot-v1-32k", 32_000),
+        ("moonshot-v1-8k", 8_000),
+        ("moonshot", 8_000),
+        ("glm-4", 128_000),
+        ("gemini", 1_000_000),
+    )
+    BUDGET_BYTES_PER_TOKEN = 3
+    BUDGET_HEADROOM = 0.9
+    DEFAULT_CONTEXT_WINDOW = 32_000
+
+    @classmethod
+    def context_window(cls, model: str) -> int:
+        """按模型名匹配上下文窗口（token）；未知模型回退到保守默认值。"""
+        name = (model or "").lower().rsplit("/", 1)[-1]
+        matches = [(prefix, window) for prefix, window in cls.MODEL_CONTEXT_WINDOWS if prefix in name]
+        if not matches:
+            return cls.DEFAULT_CONTEXT_WINDOW
+        return max(matches, key=lambda item: len(item[0]))[1]
+
+    @classmethod
+    def get_workflow_context_budget(cls) -> int:
+        """工作流单轮输入的字节预算（与 dialogue_policy.prompt_size 同单位）。"""
+        if cls.WORKFLOW_CONTEXT_TOKENS > 0:
+            window = cls.WORKFLOW_CONTEXT_TOKENS
+        else:
+            window = cls.context_window(cls.get_llm_model())
+        return int(window * cls.BUDGET_BYTES_PER_TOKEN * cls.BUDGET_HEADROOM)
 
     # 本地文件操作（read_file / write_file / list_dir / delete_file）
     FILEOPS_MAX_READ_BYTES = int(_get("FILEOPS_MAX_READ_BYTES", str(5 * 1024 * 1024)))

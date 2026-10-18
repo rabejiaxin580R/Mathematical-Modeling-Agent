@@ -14,6 +14,10 @@ import json
 import os
 import time
 import hashlib
+import math
+import threading
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
+from email.utils import parsedate_to_datetime
 from typing import List, Dict, Optional
 from datetime import datetime
 import requests
@@ -28,11 +32,60 @@ SEMANTIC_SCHOLAR_API = "https://api.semanticscholar.org/graph/v1"
 # 网络代理：requests 会自动读取 HTTPS_PROXY / HTTP_PROXY 环境变量（含 .env 经 load_dotenv 注入的），
 # 用于国内访问 arXiv / Semantic Scholar 时挂代理。无需额外代码。
 
-# 搜索失败时的重试次数与退避基数（处理 429 限流 / 瞬时 SSL 抖动）
-# 直连 arXiv/Semantic Scholar 在无代理时极易超时/429，重试太多会拖慢整条生成链路。
-# 降到 1 次重试：宁可快点失败返回 0 篇，也别让「搜索文献」挂 1 分多钟。
-_SEARCH_RETRIES = 1
-_RETRY_BASE_DELAY = 1.5  # 秒，指数退避：1.5s
+# Source limits apply across all conversations in this local server process.
+# Busy sources fail fast; callers keep their drafts and can retry later.
+_arxiv_lock = threading.Lock()
+_arxiv_client = None
+_arxiv_next_at = 0.0
+_semantic_lock = threading.Lock()
+_semantic_next_at = 0.0
+_search_capacity = threading.BoundedSemaphore(2)
+_search_pool = ThreadPoolExecutor(max_workers=2, thread_name_prefix="literature-search")
+_SEARCH_TIMEOUT = 20.0
+_RATE_WAIT_BUDGET = 3.1
+_monotonic = time.monotonic
+_sleep = time.sleep
+_wall_time = time.time
+
+
+class _TimedSession(requests.Session):
+    """arxiv.Client has no public request-timeout option in arxiv 2.x/4.x."""
+
+    def request(self, method, url, **kwargs):
+        if kwargs.get("timeout") is None:
+            kwargs["timeout"] = (4, 10)
+        return super().request(method, url, **kwargs)
+
+
+def _wait_until(next_at):
+    delay = max(0.0, next_at - _monotonic())
+    if delay > _RATE_WAIT_BUDGET:
+        return False
+    if delay:
+        _sleep(delay)
+    return True
+
+
+def _semantic_interval():
+    # Anonymous public requests commonly need more spacing than a keyed client.
+    default = 1.0 if _semantic_headers() else 3.0
+    try:
+        value = float(os.getenv("LITERATURE_SEMANTIC_INTERVAL_SECONDS", str(default)))
+        return max(default, value) if math.isfinite(value) else default
+    except ValueError:
+        return default
+
+
+def _retry_after_seconds(value):
+    """Honor seconds and HTTP dates; missing/invalid headers use a short cooldown."""
+    try:
+        seconds = float(value)
+    except (TypeError, ValueError):
+        try:
+            seconds = parsedate_to_datetime(str(value)).timestamp() - _wall_time()
+        except (TypeError, ValueError, OverflowError):
+            return 60.0
+    return max(0.0, seconds) if math.isfinite(seconds) else 60.0
 
 
 def _semantic_headers() -> Dict[str, str]:
@@ -42,10 +95,6 @@ def _semantic_headers() -> Dict[str, str]:
         return {"x-api-key": api_key}
     return {}
 
-
-def _sleep_backoff(attempt: int) -> None:
-    """指数退避等待；attempt 从 0 起算。"""
-    time.sleep(_RETRY_BASE_DELAY * (2 ** attempt))
 
 # ========== arXiv 搜索 ==========
 
@@ -69,18 +118,32 @@ def search_arxiv(query: str, max_results: int = 10) -> List[Dict]:
             "categories": ["cs.LG", "math.OC"]
         }
     """
+    global _arxiv_client, _arxiv_next_at
+    if not _arxiv_lock.acquire(blocking=False):
+        logger.info("arXiv 已有请求运行，本次查询跳过，避免排队积压")
+        return []
     try:
         import arxiv
     except ImportError:
+        _arxiv_lock.release()
         logger.error("arxiv 库未安装，请运行: pip install arxiv")
         return []
 
     try:
+        deadline = _monotonic() + _SEARCH_TIMEOUT
         # arxiv 4.0+ API: 使用 Client().results(Search)
-        # num_retries/delay_seconds：对瞬时网络抖动（含 SSL EOF）自动重试。
+        # Shared client plus lock preserves spacing across queries and pages.
         # delay_seconds 用 3.0：arXiv 官方限流是「同一 IP 每 3 秒最多 1 次请求」，低于 3s 反而更容易 429。
         # 代理：arxiv 客户端内部用 requests，自动读取 HTTPS_PROXY / HTTP_PROXY 环境变量。
-        client = arxiv.Client(num_retries=_SEARCH_RETRIES, delay_seconds=3.0)
+        if not _wait_until(_arxiv_next_at):
+            return []
+        _arxiv_next_at = _monotonic() + 3.0
+        if _arxiv_client is None:
+            _arxiv_client = arxiv.Client(num_retries=0, delay_seconds=3.0, page_size=100)
+            # The upstream client uses this requests.Session for each feed page.
+            _arxiv_client._session.close()
+            _arxiv_client._session = _TimedSession()
+        client = _arxiv_client
         search = arxiv.Search(
             query=query,
             max_results=max_results,
@@ -89,6 +152,8 @@ def search_arxiv(query: str, max_results: int = 10) -> List[Dict]:
 
         papers = []
         for result in client.results(search):
+            if _monotonic() >= deadline:
+                break
             papers.append({
                 "source": "arxiv",
                 "id": result.entry_id.split("/")[-1],  # 提取 ID
@@ -106,6 +171,8 @@ def search_arxiv(query: str, max_results: int = 10) -> List[Dict]:
     except Exception as e:
         logger.error(f"arXiv 搜索失败: {e}")
         return []
+    finally:
+        _arxiv_lock.release()
 
 
 # ========== Semantic Scholar 搜索 ==========
@@ -132,7 +199,14 @@ def search_semantic_scholar(query: str, max_results: int = 10) -> List[Dict]:
             "pdf_url": "https://..."
         }
     """
+    global _semantic_next_at
+    if not _semantic_lock.acquire(blocking=False):
+        logger.info("Semantic Scholar 已有请求运行，本次查询跳过")
+        return []
     try:
+        if not _wait_until(_semantic_next_at):
+            logger.info("Semantic Scholar 处于限流冷却中，本次查询跳过")
+            return []
         url = f"{SEMANTIC_SCHOLAR_API}/paper/search"
         params = {
             "query": query,
@@ -142,31 +216,20 @@ def search_semantic_scholar(query: str, max_results: int = 10) -> List[Dict]:
 
         headers = _semantic_headers()
 
-        last_err = None
-        for attempt in range(_SEARCH_RETRIES):
-            try:
-                response = requests.get(url, params=params, headers=headers, timeout=15)
-                # 429 限流：退避后重试（未配置 key 时尤其常见）
-                if response.status_code == 429:
-                    last_err = RuntimeError("429 Too Many Requests (Semantic Scholar 限流)")
-                    if attempt < _SEARCH_RETRIES - 1:
-                        logger.warning(f"Semantic Scholar 429，第 {attempt + 1} 次退避重试")
-                        _sleep_backoff(attempt)
-                        continue
-                    raise last_err
-                response.raise_for_status()
-                data = response.json()
-                break
-            except Exception as e:
-                last_err = e
-                if attempt < _SEARCH_RETRIES - 1:
-                    logger.warning(f"Semantic Scholar 搜索第 {attempt + 1} 次失败: {e}，重试")
-                    _sleep_backoff(attempt)
-                    continue
-                raise
+        _semantic_next_at = _monotonic() + _semantic_interval()
+        response = requests.get(url, params=params, headers=headers, timeout=(4, 10))
+        if response.status_code == 429:
+            cooldown = _retry_after_seconds(response.headers.get("Retry-After"))
+            _semantic_next_at = max(_semantic_next_at, _monotonic() + cooldown)
+            logger.warning("Semantic Scholar 返回429，已记录全局冷却；本次不立即重试")
+            return []
+        response.raise_for_status()
+        data = response.json()
 
         papers = []
         for item in data.get("data", []):
+            if not isinstance(item, dict) or not item.get("paperId") or not item.get("title"):
+                continue
             # 提取作者名
             authors = [author.get("name", "Unknown") for author in item.get("authors", [])]
 
@@ -193,6 +256,8 @@ def search_semantic_scholar(query: str, max_results: int = 10) -> List[Dict]:
     except Exception as e:
         logger.error(f"Semantic Scholar 搜索失败: {e}")
         return []
+    finally:
+        _semantic_lock.release()
 
 
 # ========== 聚合搜索 ==========
@@ -223,12 +288,13 @@ def _search_via_gateway(query: str, sources: List[str], max_per_source: int) -> 
             url,
             json={"query": query, "sources": sources, "max_per_source": max_per_source},
             headers={"Authorization": f"Bearer {key}"},
-            timeout=30,
+            timeout=(3, 6),
         )
         if resp.status_code != 200:
             logger.warning(f"网关文献检索返回 {resp.status_code}")
             return None
-        return resp.json().get("papers")
+        papers = resp.json().get("papers")
+        return papers if isinstance(papers, list) else None
     except Exception as e:
         logger.warning(f"网关文献检索失败，回退直连: {e}")
         return None
@@ -242,34 +308,40 @@ def search_literature(
     """聚合搜索多个学术数据源。
 
     优先走网关服务端（无需本地代理/key）；网关不可用或未配置时回退直连 arXiv/Semantic Scholar。
-    直连搜索用线程 + 硬超时兜底：无代理时 arXiv 直连会挂很久，别让「搜索文献」阻塞整条生成链路。
+    全局工作线程有容量上限，调用方最多等待20秒；后台HTTP也有连接和读取超时。
     """
-    gateway_papers = _search_via_gateway(query, sources, max_per_source)
-    if gateway_papers is not None:
-        logger.info(f"网关文献检索 '{query}': {len(gateway_papers)} 篇")
-        return gateway_papers
-
-    def _direct_search():
-        all_papers = []
-        if "arxiv" in sources:
-            all_papers.extend(search_arxiv(query, max_per_source))
-        if "semantic_scholar" in sources:
-            all_papers.extend(search_semantic_scholar(query, max_per_source))
-        return _deduplicate_papers(all_papers)
-
-    import concurrent.futures
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-    future = executor.submit(_direct_search)
+    if not _search_capacity.acquire(blocking=False):
+        logger.info("文献检索繁忙，本次返回空结果，可稍后重试")
+        return []
+    deadline = _monotonic() + _SEARCH_TIMEOUT
+    def _search():
+        try:
+            gateway_papers = _search_via_gateway(query, sources, max_per_source)
+            if gateway_papers is not None:
+                return _deduplicate_papers(gateway_papers)
+            all_papers = []
+            if "arxiv" in sources and _monotonic() < deadline:
+                all_papers.extend(search_arxiv(query, max_per_source))
+            if "semantic_scholar" in sources and _monotonic() < deadline:
+                all_papers.extend(search_semantic_scholar(query, max_per_source))
+            return _deduplicate_papers(all_papers)
+        finally:
+            _search_capacity.release()
     try:
-        papers = future.result(timeout=20)
+        future = _search_pool.submit(_search)
+    except RuntimeError:
+        _search_capacity.release()
+        return []
+    try:
+        papers = future.result(timeout=_SEARCH_TIMEOUT)
         logger.info(f"聚合搜索 '{query}': 总共 {len(papers)} 篇论文（去重后）")
         return papers
-    except concurrent.futures.TimeoutError:
-        logger.warning(f"文献搜索超时（>20s），返回 0 篇，不阻塞生成")
+    except FutureTimeout:
+        logger.warning("文献搜索超时（>%ss），返回空结果，可稍后重试", _SEARCH_TIMEOUT)
         return []
-    finally:
-        # 不等待仍在跑的超时线程（本地单用户，孤儿线程会自行结束）
-        executor.shutdown(wait=False)
+    except Exception as exc:
+        logger.warning("文献搜索失败：%s", type(exc).__name__)
+        return []
 
 
 def _deduplicate_papers(papers: List[Dict]) -> List[Dict]:
@@ -278,7 +350,11 @@ def _deduplicate_papers(papers: List[Dict]) -> List[Dict]:
     unique = []
 
     for paper in papers:
-        title = paper.get("title", "").lower().strip()
+        if not isinstance(paper, dict) or not paper.get("id") or not isinstance(paper.get("title"), str):
+            continue
+        title = paper["title"].lower().strip()
+        if not title:
+            continue
         title_hash = hashlib.md5(title.encode()).hexdigest()[:16]
 
         if title_hash not in seen:

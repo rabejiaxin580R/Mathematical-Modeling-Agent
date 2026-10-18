@@ -86,12 +86,18 @@ def _step_max(step: dict) -> float:
 
 def _public_step(step: dict, idx: int) -> dict:
     """剔除评分细则 / 参考答案 / 论文要点，供学生做题。"""
+    spec = framework.acceptance(step)
     return {
         "id": step.get("id") or f"s{idx + 1}",
+        "task_id": step.get("task_id", ""),
         "stage_key": step.get("stage_key", ""),
         "modality": _modality_of(step),
         "guide_style": step.get("guide_style", ""),
         "deliverable": step.get("deliverable", ""),
+        "objective": spec["objective"],
+        "checklist": spec["checklist"],
+        "covers": framework.step_covers(step),
+        "covers_assumed": bool(step.get("covers_assumed")),
         "title": step.get("title", ""),
         "prompt": step.get("prompt", ""),
         "max_score": _step_max(step),
@@ -141,6 +147,9 @@ def load_public(problem_id: str) -> dict | None:
         "data_files": data.get("data_files", []) or [],
         "total_max_score": data.get("total_max_score")
             or sum(_step_max(s) for s in steps),
+        "requirements": framework.requirements_of(data),
+        "tasks": framework.tasks_of(data),
+        "coverage": framework.coverage_map(data),
         "steps": [_public_step(s, i) for i, s in enumerate(steps)],
     }
 
@@ -150,6 +159,22 @@ def load_full(problem_id: str) -> dict | None:
     return _load_raw(problem_id)
 
 
+def ensure_acceptance(problem: dict) -> dict:
+    """给已保存题目的每一步补 objective / checklist（不覆盖已有内容）。
+
+    旧存档的步骤没有验收清单，展示与提示词都按框架阶段回退，保证向后兼容。
+    """
+    if not isinstance(problem, dict):
+        return problem
+    for step in problem.get("steps", []) or []:
+        if not isinstance(step, dict):
+            continue
+        spec = framework.acceptance(step)
+        step.setdefault("objective", spec["objective"])
+        step.setdefault("checklist", spec["checklist"])
+    return problem
+
+
 def get_step(problem_id: str, step_id: str) -> dict | None:
     """单步完整数据，归一为 v2 字段（criteria / reference_outline / modality / paper_points）。"""
     data = _load_raw(problem_id)
@@ -157,12 +182,15 @@ def get_step(problem_id: str, step_id: str) -> dict | None:
         return None
     for i, s in enumerate(data.get("steps", []) or []):
         if (s.get("id") or f"s{i + 1}") == step_id:
+            spec = framework.acceptance(s)
             return {
                 "id": step_id,
                 "stage_key": s.get("stage_key", ""),
                 "modality": _modality_of(s),
                 "guide_style": s.get("guide_style", ""),
                 "deliverable": s.get("deliverable", ""),
+                "objective": spec["objective"],
+                "checklist": spec["checklist"],
                 "title": s.get("title", ""),
                 "prompt": s.get("prompt", ""),
                 "max_score": _step_max(s),

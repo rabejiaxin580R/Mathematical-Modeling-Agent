@@ -18,8 +18,11 @@ requirements 装的是 pypandoc 而非 pypandoc-binary，用户机上主路径�
 """
 import base64
 import io
+import logging
 import os
 import re
+
+logger = logging.getLogger(__name__)
 
 OMML_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
 
@@ -92,32 +95,70 @@ _INLINE_RE = re.compile(
 )
 
 
-def _add_inline(para, text: str, font: str = _FONT_BODY):
-    """把一行 Markdown 文本按行内标记切开，逐段加进段落。"""
+# 公式转不成 OMML 时的兜底：把 LaTeX 包装拆成可读文本，
+# 绝不把 $…$ / \text{…} 原样留在 Word 正文里。
+_MATH_TIDY = [
+    (re.compile(r"\\(?:text|mathrm|operatorname|math(?:bf|it|sf|tt))\s*\{([^{}]*)\}"), r"\1"),
+    (re.compile(r"\\(?:left|right|bigl|bigr|Bigl|Bigr|bigg|Bigg)\s*"), ""),
+    (re.compile(r"\\(?:max|min|sum|prod|log|ln|exp|arg|sin|cos|tan|lim)\b"), lambda m: m.group(0)[1:]),
+    (re.compile(r"\\[,;:!]|\\quad|\\qquad|~"), " "),
+]
+
+
+def _readable_math_fallback(token: str) -> str:
+    """转不了的公式降级成可读文本（去掉 $ 与常见 LaTeX 包装）。"""
+    text = token.strip()
+    if text.startswith("$$") and text.endswith("$$"):
+        text = text[2:-2]
+    elif text.startswith("$") and text.endswith("$"):
+        text = text[1:-1]
+    for pattern, repl in _MATH_TIDY:
+        text = pattern.sub(repl, text)
+    text = text.replace("^{", "^").replace("_{", "_").replace("{", "").replace("}", "")
+    text = re.sub(r"\s{2,}", " ", text).strip()
+    return text or token
+
+
+def _add_inline(para, text: str, font: str = _FONT_BODY, *, bold: bool = False, italic: bool = False):
+    """把一行 Markdown 文本按行内标记切开，逐段加进段落。
+
+    粗体/斜体里的行内公式必须同样转成 OMML：写手很爱把关键量加粗，如果这里
+    把 **…** 整段当纯文本，就会出现 `$T_{\text{clear}}$` 这种原文残留。
+    所以粗体/斜体内容递归处理，只把样式沿用到普通文字上。
+    """
     if not text:
         return
+
+    def plain(chunk: str, mono: bool = False):
+        run = _plain_run(para, chunk, _FONT_MONO if mono else font)
+        if bold:
+            run.bold = True
+        if italic:
+            run.italic = True
+        return run
+
     pos = 0
     for m in _INLINE_RE.finditer(text):
         if m.start() > pos:
-            _plain_run(para, text[pos:m.start()], font)
+            plain(text[pos:m.start()])
         tok = m.group(0)
         if tok.startswith("$"):
             el = _latex_to_omml_element(tok[1:-1])
             if el is not None:
                 para._p.append(el)
             else:
-                _plain_run(para, tok, font)     # 转不了就保留原样，不静默丢
+                plain(_readable_math_fallback(tok))   # 转不了就降级成可读文本，不静默丢
         elif tok.startswith("**"):
-            _plain_run(para, tok[2:-2], font).bold = True
+            _add_inline(para, tok[2:-2], font, bold=True, italic=italic)
         elif tok.startswith("`"):
-            _plain_run(para, tok[1:-1], _FONT_MONO)
+            plain(tok[1:-1], mono=True)
         elif tok.startswith("*"):
-            _plain_run(para, tok[1:-1], font).italic = True
+            _add_inline(para, tok[1:-1], font, bold=bold, italic=True)
         else:                                   # 链接：只留可见文字
-            _plain_run(para, re.match(r"\[(.+?)\]", tok).group(1), font)
+            plain(re.match(r"\[(.+?)\]", tok).group(1))
         pos = m.end()
     if pos < len(text):
-        _plain_run(para, text[pos:], font)
+        plain(text[pos:])
 
 
 def _plain_run(para, text: str, font: str = _FONT_BODY):
@@ -214,19 +255,21 @@ def _add_table(doc, rows: list[list[str]], *,
     """
     from docx.enum.table import WD_TABLE_ALIGNMENT
     from docx.shared import Pt
+    from docx.oxml import OxmlElement
 
     if table_no is not None:
         p_num = doc.add_paragraph()
         p_num.paragraph_format.space_before = Pt(6)
         p_num.paragraph_format.space_after = Pt(0)
+        p_num.paragraph_format.keep_with_next = True
         r_num = _plain_run(p_num, f"Table {table_no}")
         r_num.bold = True
         if caption:
             p_cap = doc.add_paragraph()
             p_cap.paragraph_format.space_before = Pt(0)
             p_cap.paragraph_format.space_after = Pt(2)
-            r_cap = _plain_run(p_cap, caption)
-            r_cap.italic = True
+            p_cap.paragraph_format.keep_with_next = True
+            _add_inline(p_cap, caption, italic=True)   # 表题里也可能有 $…$
 
     ncol = max(len(r) for r in rows)
     t = doc.add_table(rows=0, cols=ncol)
@@ -241,7 +284,12 @@ def _add_table(doc, rows: list[list[str]], *,
     last = len(rows) - 1
 
     for ri, row in enumerate(rows):
-        cells = t.add_row().cells
+        table_row = t.add_row()
+        properties = table_row._tr.get_or_add_trPr()
+        properties.append(OxmlElement("w:cantSplit"))
+        if ri == 0:
+            properties.append(OxmlElement("w:tblHeader"))
+        cells = table_row.cells
         for ci in range(ncol):
             cell = cells[ci]
             cell.paragraphs[0].text = ""
@@ -249,6 +297,8 @@ def _add_table(doc, rows: list[list[str]], *,
             para.paragraph_format.space_before = Pt(2)
             para.paragraph_format.space_after = Pt(2)
             para.paragraph_format.line_spacing = 1.0
+            # Keep short comparison tables together; repeat headers for long tables.
+            para.paragraph_format.keep_with_next = ri < last and len(rows) <= 8
             _add_inline(para, row[ci] if ci < len(row) else "")
             if ri == 0:
                 for p in cell.paragraphs:
@@ -289,7 +339,10 @@ def _add_image(doc, src: str, alt: str, base_dir: str | None):
             if os.path.exists(path):
                 stream = open(path, "rb")
         if stream is None:
-            doc.add_paragraph(f"[图片缺失: {alt or src}]")
+            p_missing = doc.add_paragraph()
+            _plain_run(p_missing, "[图片缺失: ")
+            _add_inline(p_missing, alt or src)      # 图注里可能有公式
+            _plain_run(p_missing, "]")
             return
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -297,11 +350,14 @@ def _add_image(doc, src: str, alt: str, base_dir: str | None):
         if alt:                                  # alt 当图注
             cap = doc.add_paragraph()
             cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            r = cap.add_run(alt)
-            r.italic = True
-            r.font.size = Pt(9)
+            _add_inline(cap, alt, italic=True)   # 图注里也可能有 $…$
+            for r in cap.runs:
+                r.font.size = Pt(9)
     except Exception:
-        doc.add_paragraph(f"[图片无法嵌入: {alt or src}]")
+        p_broken = doc.add_paragraph()
+        _plain_run(p_broken, "[图片无法嵌入: ")
+        _add_inline(p_broken, alt or src)
+        _plain_run(p_broken, "]")
     finally:
         if stream is not None and not isinstance(stream, io.BytesIO):
             stream.close()
@@ -557,11 +613,39 @@ def _render_markdown(doc, md: str, base_dir: str | None = None,
 
         # 引用
         if stripped.startswith(">"):
-            p = doc.add_paragraph(style="Intense Quote") if "Intense Quote" in [
-                s.name for s in doc.styles
-            ] else doc.add_paragraph()
-            _add_inline(p, stripped.lstrip("> ").strip())
-            i += 1
+            # 引用常常连着好几行（Exhibit 之类），里面还可能有 $$ 独立公式；
+            # 以前逐行当普通文字处理，$$…$$ 只被当成行内公式，多出来的 $ 会漏进正文。
+            block = []
+            while i < n and lines[i].strip().startswith(">"):
+                block.append(lines[i].strip().lstrip(">").strip())
+                i += 1
+            k = 0
+            while k < len(block):
+                text = block[k]
+                if text.startswith("$$"):
+                    body = text[2:]
+                    if body.endswith("$$") and len(text) > 4:
+                        _add_display_equation(doc, body[:-2], None)
+                        k += 1
+                        continue
+                    buf = [body] if body else []
+                    k += 1
+                    while k < len(block) and not block[k].endswith("$$"):
+                        buf.append(block[k])
+                        k += 1
+                    if k < len(block):
+                        tail = block[k][:-2]
+                        if tail:
+                            buf.append(tail)
+                        k += 1
+                    _add_display_equation(doc, "\n".join(buf), None)
+                    continue
+                if text:
+                    p = doc.add_paragraph(style="Intense Quote") if "Intense Quote" in [
+                        s.name for s in doc.styles
+                    ] else doc.add_paragraph()
+                    _add_inline(p, text)
+                k += 1
             continue
 
         # 无序 / 有序列表（按缩进给 2 级）
@@ -602,6 +686,106 @@ def _safe_para(doc, style: str):
 
 # ── 对外入口 ────────────────────────────────────────────────────────────────
 
+# ── 自动复查：排版前的体检 + 排版后的残留扫描 ────────────────────────────────
+#
+# 生成完论文后**不需要用户说**，导出这一步自己会跑一遍：
+#   1) 排版前把模型换写法的公式标记统一成 $ / $$（确定性修整）；
+#   2) 统计有多少公式、哪些真转不了、哪些行 $ 不配对；
+#   3) 排完把 docx 拆开再看一遍正文，确认没有 LaTeX 残留。
+
+_MATH_ENVS = ("equation*", "equation", "gather*", "gather", "align*", "align",
+              "multline*", "multline")
+_LATEX_LEAK_RE = re.compile(r"\\[a-zA-Z]{2,}|\$[^$\n]{1,160}\$|\^\{|_\{")
+
+
+def _preflight_repair(md: str) -> tuple[str, list[str]]:
+    """排版前把模型常见的「另一种写法」统一成 $ / $$，返回 (文本, 做过的修整)。"""
+    fixes: list[str] = []
+
+    converted = re.sub(r"\\\((.+?)\\\)", lambda m: "$" + m.group(1).strip() + "$", md, flags=re.DOTALL)
+    if converted != md:
+        fixes.append(r"行内公式 \(…\) → $…$")
+        md = converted
+
+    converted = re.sub(r"\\\[(.+?)\\\]", lambda m: "$$\n" + m.group(1).strip() + "\n$$", md, flags=re.DOTALL)
+    if converted != md:
+        fixes.append(r"独立公式 \[…\] → $$…$$")
+        md = converted
+
+    for env in _MATH_ENVS:
+        pattern = re.compile(r"\\begin\{" + re.escape(env) + r"\}(.+?)\\end\{" + re.escape(env) + r"\}",
+                             re.DOTALL)
+        if not pattern.search(md):
+            continue
+        if env.startswith("align"):
+            md = pattern.sub(lambda m: "$$\n\\begin{aligned}" + m.group(1) + "\\end{aligned}\n$$", md)
+        else:
+            md = pattern.sub(lambda m: "$$\n" + m.group(1).strip() + "\n$$", md)
+        fixes.append(f"{env} 环境 → $$…$$")
+    return md, fixes
+
+
+def audit_markdown(md: str) -> dict:
+    """排版前的体检：公式总量、转不了的公式、单行里 $ 不配对的句子。"""
+    spans = re.findall(r"\$\$[^$]+?\$\$|\$[^$\n]+?\$", md)
+    unconvertible = []
+    for span in spans:
+        latex = span[2:-2] if span.startswith("$$") else span[1:-1]
+        if _latex_to_omml_element(latex) is None:
+            unconvertible.append(latex.strip()[:120])
+    unbalanced = []
+    for index, line in enumerate(md.split("\n"), 1):
+        if line.count("$") % 2 == 1:
+            unbalanced.append({"line": index, "text": line.strip()[:120]})
+    return {"math_spans": len(spans), "unconvertible": unconvertible,
+            "unbalanced_dollar_lines": unbalanced}
+
+
+def verify_docx_bytes(data: bytes) -> dict:
+    """把排好的 docx 拆开复查：正文里还有没有 LaTeX 残留。"""
+    import zipfile
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        xml = zf.read("word/document.xml").decode("utf-8", "ignore")
+    joined = "".join(re.findall(r"<w:t[^>]*>([^<]*)</w:t>", xml))
+    leaks = [m.group(0) for m in _LATEX_LEAK_RE.finditer(joined)]
+    return {"ok": not leaks, "leftovers": len(leaks), "samples": leaks[:5],
+            "math_objects": xml.count("<m:oMath")}
+
+
+def build_docx(
+    content: str,
+    source_fmt: str = "markdown",
+    *,
+    cover_title: str = "",
+    cover_subtitle: str = "",
+    cover_meta: str = "",
+    page_numbers: bool = True,
+    number_equations: bool = True,
+    base_dir: str | None = None,
+) -> tuple[bytes, dict]:
+    """排版 + 自动复查：返回 (docx 字节, 复查报告)。generate-full 用它。"""
+    text = _latex_to_markdown(content) if source_fmt in ("latex", "tex") else content
+    text, fixes = _preflight_repair(text)
+    audit = audit_markdown(text)
+    data = to_docx(text, "markdown", cover_title=cover_title, cover_subtitle=cover_subtitle,
+                   cover_meta=cover_meta, page_numbers=page_numbers,
+                   number_equations=number_equations, base_dir=base_dir)
+    try:
+        report = verify_docx_bytes(data)
+    except Exception as exc:          # 复查本身失败不能连累导出
+        logger.warning("论文排版复查未能完成：%s", exc)
+        report = {"ok": None, "leftovers": 0, "samples": [], "math_objects": 0, "error": str(exc)}
+    report.update({"preflight_fixes": fixes, "math_spans": audit["math_spans"],
+                   "unconvertible": audit["unconvertible"],
+                   "unbalanced_dollar_lines": audit["unbalanced_dollar_lines"]})
+    if report["ok"]:
+        logger.info("论文排版复查通过：%s 个公式对象，无 LaTeX 残留", report["math_objects"])
+    else:
+        logger.warning("论文排版复查发现 %s 处 LaTeX 残留（已降级为可读文本），样例：%s",
+                       report["leftovers"], report["samples"])
+    return data, report
+
+
 def to_docx(
     content: str,
     source_fmt: str = "markdown",
@@ -621,6 +805,7 @@ def to_docx(
     from docx import Document
 
     text = _latex_to_markdown(content) if source_fmt in ("latex", "tex") else content
+    text, _fixes = _preflight_repair(text)   # 统一公式标记，避免 \(…\) 之类原样进 Word
 
     doc = Document()
     _setup_page(doc)

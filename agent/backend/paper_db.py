@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS section_state (
                     CHECK(status IN ('pending', 'generating', 'draft', 'approved', 'skipped')),
     content_md  TEXT,                  -- 当前草稿（approved 后固化）
     attempt_no  INTEGER NOT NULL DEFAULT 0 CHECK(attempt_no >= 0),
+    revision    INTEGER NOT NULL DEFAULT 0,
     updated_at  TEXT NOT NULL CHECK(updated_at GLOB '????-??-??T??:??:??*'),
     PRIMARY KEY (session_id, section_key)
 );
@@ -233,6 +234,10 @@ def get_conn(db_path: Path | None = None, check_same_thread: bool = True) -> sql
     conn = sqlite3.connect(str(path), check_same_thread=check_same_thread)
     conn.row_factory = sqlite3.Row
     conn.executescript(PAPER_DDL)
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(section_state)")}
+    if "revision" not in columns:
+        conn.execute("ALTER TABLE section_state ADD COLUMN revision INTEGER NOT NULL DEFAULT 0")
+        conn.commit()
     return conn
 
 
@@ -375,6 +380,24 @@ SECTION_ORDER = [
 ]
 
 
+def document_state(conn, session: dict, sections=None) -> str:
+    """Shared list/detail state; exported drafts are never proof of completion.
+
+    Outline summaries use draft section rows. Full generation approves chapters,
+    and only the generation coordinator marks the session complete.
+    """
+    if session.get("status") == "complete":
+        return "complete"
+    sections = load_approved_sections(conn, session["session_id"]) if sections is None else sections
+    if any(s.get("status") == "approved" and (s.get("content_md") or "").strip() for s in sections):
+        return "partial"
+    if any((s.get("content_md") or "").strip() for s in sections):
+        return "outline"
+    if any(load_outline_meta(conn, session["session_id"], key) is not None for key in SECTION_ORDER):
+        return "outline"
+    return "empty"
+
+
 def create_paper_session(
     conn: sqlite3.Connection,
     *,
@@ -405,40 +428,57 @@ def create_paper_session(
     return sid
 
 
+class SectionConflict(ValueError):
+    """A section changed after the caller read it; keep both drafts intact."""
+
+
 def upsert_section(
     conn: sqlite3.Connection,
     session_id: str,
     section_key: str,
     content_md: str,
     status: str = "draft",
+    expected_revision: int | None = None,
 ) -> dict:
-    """写入/更新一节内容。返回 {ok, section_key, status, chars}。"""
+    """Archive the previous text and atomically save; CAS is optional for old clients."""
     import datetime
+    import json
     now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    # 先查是否存在
-    row = conn.execute(
-        "SELECT attempt_no FROM section_state WHERE session_id=? AND section_key=?",
-        (session_id, section_key),
-    ).fetchone()
-    if row is None:
+    previous_version_no = None
+    with conn:
+        if not conn.in_transaction:
+            conn.execute("BEGIN IMMEDIATE")
+        row = conn.execute(
+            "SELECT * FROM section_state WHERE session_id=? AND section_key=?",
+            (session_id, section_key),
+        ).fetchone()
+        revision = row["revision"] if row else 0
+        if expected_revision is not None and expected_revision != revision:
+            raise SectionConflict("章节已被修改，自动结果未覆盖当前文字；请读取最新版本后再保存。")
+        if row and (row["content_md"] or "").strip():
+            meta = load_outline_meta(conn, session_id, section_key) or {}
+            previous_version_no = conn.execute(
+                "SELECT COALESCE(MAX(version_no),0)+1 FROM section_versions WHERE session_id=? AND section_key=?",
+                (session_id, section_key),
+            ).fetchone()[0]
+            conn.execute(
+                "INSERT INTO section_versions (session_id,section_key,version_no,content_md,summary_zh,"
+                "formulas_json,citations_json,created_at) VALUES (?,?,?,?,?,?,?,?)",
+                (session_id, section_key, previous_version_no, row["content_md"], meta.get("summary_zh", ""),
+                 meta.get("formulas_json") or json.dumps([]), meta.get("citations_json") or json.dumps([]), now),
+            )
+        revision += 1
         conn.execute(
-            "INSERT INTO section_state"
-            " (session_id, section_key, status, content_md, attempt_no, updated_at)"
-            " VALUES (?,?,?,?,0,?)",
-            (session_id, section_key, status, content_md, now),
+            "INSERT INTO section_state (session_id,section_key,status,content_md,attempt_no,updated_at,revision)"
+            " VALUES (?,?,?,?,0,?,?) ON CONFLICT(session_id,section_key) DO UPDATE SET"
+            " content_md=excluded.content_md,status=excluded.status,attempt_no=section_state.attempt_no+1,"
+            " updated_at=excluded.updated_at,revision=excluded.revision",
+            (session_id, section_key, status, content_md, now, revision),
         )
-    else:
-        conn.execute(
-            "UPDATE section_state SET content_md=?, status=?, attempt_no=attempt_no+1, updated_at=?"
-            " WHERE session_id=? AND section_key=?",
-            (content_md, status, now, session_id, section_key),
-        )
-    conn.execute(
-        "UPDATE paper_sessions SET updated_at=? WHERE session_id=?",
-        (now, session_id),
-    )
-    conn.commit()
-    return {"ok": True, "section_key": section_key, "status": status, "chars": len(content_md)}
+        conn.execute("UPDATE paper_sessions SET updated_at=?,status=CASE WHEN status='complete' THEN 'active' ELSE status END WHERE session_id=?",
+                     (now, session_id))
+    return {"ok": True, "section_key": section_key, "status": status, "chars": len(content_md),
+            "revision": revision, "previous_version_no": previous_version_no}
 
 
 def load_approved_sections(conn: sqlite3.Connection, session_id: str) -> list[dict]:
@@ -471,6 +511,7 @@ def upsert_outline_meta(
     summary_zh: str,
     formulas: list,
     citations: list,
+    expected_revision: int | None = None,
 ) -> None:
     """写入/更新一节的「大纲元数据」（中文翻译 + 结构化公式/文献）。
 
@@ -479,14 +520,20 @@ def upsert_outline_meta(
     import json
     import datetime
     now = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    conn.execute(
-        "INSERT OR REPLACE INTO outline_meta"
-        " (session_id, section_key, summary_zh, formulas_json, citations_json, updated_at)"
-        " VALUES (?,?,?,?,?,?)",
-        (session_id, section_key, summary_zh or "",
-         json.dumps(formulas or []), json.dumps(citations or []), now),
-    )
-    conn.commit()
+    with conn:
+        if not conn.in_transaction:
+            conn.execute("BEGIN IMMEDIATE")
+        if expected_revision is not None:
+            row = load_section(conn, session_id, section_key)
+            if not row or row["revision"] != expected_revision:
+                raise SectionConflict("章节已修改，旧大纲元数据未覆盖当前版本。")
+        conn.execute(
+            "INSERT OR REPLACE INTO outline_meta"
+            " (session_id, section_key, summary_zh, formulas_json, citations_json, updated_at)"
+            " VALUES (?,?,?,?,?,?)",
+            (session_id, section_key, summary_zh or "",
+             json.dumps(formulas or []), json.dumps(citations or []), now),
+        )
 
 
 def load_outline_meta(conn: sqlite3.Connection,

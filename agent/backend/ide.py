@@ -15,7 +15,7 @@ import threading
 from pathlib import Path
 
 from .config import config
-from .executor import _PREAMBLE, collect_new_pngs
+from .executor import _PREAMBLE, collect_new_pngs, png_fingerprints
 
 logger = logging.getLogger(__name__)
 
@@ -117,7 +117,7 @@ class TerminalSession:
         self.emit({"type": "exit", "code": 0, "cwd": str(self.cwd)})
 
     def _spawn(self, args, shell: bool, capture_images: bool):
-        before_imgs = {p.name for p in self.cwd.glob("*.png")} if capture_images else set()
+        before_imgs = png_fingerprints(self.cwd) if capture_images else {}
         try:
             self.proc = subprocess.Popen(
                 args,
@@ -185,6 +185,9 @@ class TerminalSession:
             if capture_images:
                 for img in collect_new_pngs(self.cwd, before_imgs):
                     self.emit({"type": "image", **img})
+            for pipe in (proc.stdin, proc.stdout):
+                if pipe is not None:
+                    pipe.close()
             self.proc = None
             self.emit({"type": "exit", "code": code, "cwd": str(self.cwd)})
 

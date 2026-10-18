@@ -87,7 +87,7 @@ SOLVE_SYSTEM_PROMPT = """你是「建模共创伙伴」，一个专门陪学生�
 1. **引导式，不直接喂答案**
    - 绝不一上来就把这一步的完整答案、公式、代码丢给学生。
    - 先帮他把"这一步到底要解决什么问题"理清楚，再抛出第一个具体问题让他来答；他卡住时给方向、给提示，而不是给结论。
-   - 可以参照优秀做法启发他，但讲清思路，让他自己写，不让他照抄。
+   - 学生提出方法后，检查成立条件并解释取舍。方法明确后可以替学生完整编写、运行和调试代码；学生负责认领模型、假设与结论。
 
 2. **立场必须稳，不讨好、不放水（重要）**
    - 你的判断只基于学生**实际写出/说出**的内容，而不是他的语气或情绪。
@@ -102,7 +102,7 @@ SOLVE_SYSTEM_PROMPT = """你是「建模共创伙伴」，一个专门陪学生�
 
 4. **基于知识库、代码要自测**
    - 涉及模型、算法、公式的问题，先用 search_knowledge 检索知识库，引用出处（格式：依据：知识点 chunk_id「标题」）；超出范围要如实说明。
-   - 需要演示或验证时用 run_python 实际运行（已预置 pandas/numpy/matplotlib），报错就按错误信息改到跑通；但记住——是帮他验证思路，不是替他把代码写完交差。
+   - 需要演示或验证时用 run_python 实际运行（已预置 pandas/numpy/matplotlib），报错就按错误信息改到跑通；运行结果必须如实解释，包括不支持原想法的结果；不要把程序成功等同于模型成立。
    - 学生上传的文件就在当前工作目录：文档（pdf/word/ppt/html/txt/py）用 read_document 读取，表格（csv/xlsx）用 run_python 以相对路径读取。若目录里没有相关文件，就直接和他讨论，不要反复去找不存在的文件。
 
 # 风格
@@ -167,6 +167,8 @@ class Agent:
                 entry = {"role": "assistant", "content": m.get("content") or ""}
                 if m.get("tool_calls"):
                     entry["tool_calls"] = m["tool_calls"]
+                if isinstance(m.get("reasoning_content"), str):
+                    entry["reasoning_content"] = m["reasoning_content"]
                 msgs.append(entry)
             elif role == "tool":
                 msgs.append({
@@ -188,6 +190,8 @@ class Agent:
         level：用户能力评级（L1..L5，空=未定级），传给工具层做分层检索与知识展示。
         """
         messages = self.build_messages(history, workspace_files, system_extra, base_prompt)
+        from .dialogue_policy import tools_for_turn, bounded_prompt
+        available_tools = tools_for_turn(TOOLS_SCHEMA)
         max_rounds = config.MAX_CODE_ITERATIONS + 4  # 检索 + 多轮代码迭代余量
         final_text = ""
         # 跨多轮（含工具迭代）累计的 token 用量，供计费。最后随 done 事件产出。
@@ -195,10 +199,11 @@ class Agent:
 
         for _ in range(max_rounds):
             try:
+                messages = bounded_prompt(messages, available_tools)
                 stream = self.client.chat.completions.create(
                     model=config.get_llm_model(),
                     messages=messages,
-                    tools=TOOLS_SCHEMA,
+                    tools=available_tools,
                     stream=True,
                     temperature=0.3,
                     stream_options={"include_usage": True},
@@ -209,6 +214,7 @@ class Agent:
                 return
 
             content_buf = ""
+            reasoning_parts = []
             tool_calls = {}  # index -> {id, name, args_str}
 
             try:
@@ -220,6 +226,9 @@ class Agent:
                     if not chunk.choices:
                         continue
                     delta = chunk.choices[0].delta
+                    reasoning = getattr(delta, "reasoning_content", None)
+                    if isinstance(reasoning, str):
+                        reasoning_parts.append(reasoning)
 
                     if delta.content:
                         content_buf += delta.content
@@ -242,8 +251,12 @@ class Agent:
                     yield {"type": "token", "text": "\n\n（流中断，回答截断）"}
                     final_text = content_buf
                 yield {"type": "usage", **usage_total}
-                yield {"type": "done", "content": final_text or ""}
+                yield {"type": "error", "message": "模型服务在生成过程中拒绝或中断了请求，已保留输入与已有内容。请稍后继续；若反复出现，请检查模型配置或服务日志。"}
+                yield {"type": "done", "content": final_text or "", "interrupted": True}
                 return
+            finally:
+                if hasattr(stream, "close"):
+                    stream.close()
 
             # 没有工具调用 → 本轮就是最终回答
             if not tool_calls:
@@ -265,6 +278,11 @@ class Agent:
                     for idx, slot in sorted(tool_calls.items())
                 ],
             }
+            # Thinking-mode providers require the exact reasoning from this
+            # assistant tool-call round on the next request. Keep it internal:
+            # it is neither an answer token nor a tool event shown to students.
+            if reasoning_parts:
+                assistant_msg["reasoning_content"] = "".join(reasoning_parts)
             messages.append(assistant_msg)
 
             # 依次执行每个工具调用
@@ -278,7 +296,14 @@ class Agent:
 
                 yield {"type": "tool_call", "name": name, "call_id": call_id, "arguments": args}
 
-                result = dispatch_tool(name, args, run_id, level=level)
+                from .dialogue_policy import dispatch_solve_tool
+                result = dispatch_solve_tool(name, args, run_id, level=level)
+                if result.get('display', {}).get('type') == 'workflow_queued':
+                    job_id = result['display']['job_id']
+                    yield {'type': 'task_wait', 'job_id': job_id, 'message': '正在等待后台验证；可以切换页面，结果回来后会继续回复。'}
+                    # A queued job cannot become a final answer, even when the
+                    # model forgets to explicitly call the sleep tool.
+                    result = dispatch_solve_tool('sleep_until_result', {'job_id': job_id}, run_id, level=level)
                 logger.info("工具调用: %s, 参数: %s", name, json.dumps(args, ensure_ascii=False)[:200])
                 yield {
                     "type": "tool_result",
@@ -313,6 +338,7 @@ class Agent:
                 messages.append({"role": role, "content": m.get("content", "")})
 
         use_tools = bool(run_id)
+        level = step_context.get("level", "")
         max_rounds = config.MAX_CODE_ITERATIONS + 4
         final_text = ""
         usage_total = {"prompt_tokens": 0, "completion_tokens": 0}
@@ -335,6 +361,7 @@ class Agent:
                 return
 
             content_buf = ""
+            reasoning_parts = []
             tool_calls = {}  # index -> {id, name, args}
             for chunk in stream:
                 if getattr(chunk, "usage", None):
@@ -343,6 +370,9 @@ class Agent:
                 if not chunk.choices:
                     continue
                 delta = chunk.choices[0].delta
+                reasoning = getattr(delta, "reasoning_content", None)
+                if isinstance(reasoning, str):
+                    reasoning_parts.append(reasoning)
                 if delta.content:
                     content_buf += delta.content
                     yield {"type": "token", "text": delta.content}
@@ -364,7 +394,7 @@ class Agent:
                 return
 
             # 记录 assistant 的 tool_calls，再依次执行
-            messages.append({
+            assistant_msg = {
                 "role": "assistant",
                 "content": content_buf or None,
                 "tool_calls": [
@@ -372,7 +402,10 @@ class Agent:
                      "function": {"name": slot["name"], "arguments": slot["args"] or "{}"}}
                     for idx, slot in sorted(tool_calls.items())
                 ],
-            })
+            }
+            if reasoning_parts:
+                assistant_msg["reasoning_content"] = "".join(reasoning_parts)
+            messages.append(assistant_msg)
             for idx, slot in sorted(tool_calls.items()):
                 name = slot["name"]
                 call_id = slot["id"] or f"call_{idx}"
