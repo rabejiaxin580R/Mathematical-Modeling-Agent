@@ -125,29 +125,27 @@
     card.innerHTML = `
       <div class="clog-close" title="关闭">×</div>
       <div class="clog-title">🆕 更新日志</div>
-      <div class="clog-ver">v2.2.0 · 2026-09-06</div>
+      <div class="clog-ver">v2.3.0 · 2026-10-18</div>
       <div class="clog-body">
         <div class="clog-section">
-          <div class="clog-h">📝 新功能：一键生成建模论文</div>
-          <p>从大纲到全文，自动配图 + 文献溯源：</p>
+          <div class="clog-h">🧭 新的做题工作流</div>
           <ul>
-            <li><b>大纲 → 全文</b>：先确认大纲，再逐章生成，支持续传 / 重生成</li>
-            <li><b>在线文献检索</b>：迁到网关服务端，鉴权不计费、结果缓存 7 天</li>
-            <li><b>自动配图</b>：从数据表格自动选型成图（柱状 / 折线），直接注入正文</li>
-            <li><b>导出 Word</b>：生成结果一键导出 .docx</li>
+            <li><b>持久化任务</b>：代码验证与对话在后台继续，切换页面或刷新后可恢复</li>
+            <li><b>步骤成果</b>：每步都有目标与验收清单，成果由你确认后才进入论文材料</li>
+            <li><b>研究材料</b>：讨论摘录、验证记录与论文草稿保留来源和版本</li>
           </ul>
         </div>
         <div class="clog-section">
-          <div class="clog-h">🎭 双风格等待界面</div>
-          <p>剧情 / 终端两种日志风格可切换，章节进度条 + 心跳 + 卡住提示。</p>
+          <div class="clog-h">✨ 工作台与陪伴</div>
+          <ul>
+            <li>做题工作台重新排版，讨论、代码、结果和论文材料在同一处切换</li>
+            <li>新增研究手记与表达偏好，阿尔法和小北按你的节奏接续讨论</li>
+            <li>长对话与工具结果使用有出处的上下文预算，减少关键信息丢失</li>
+          </ul>
         </div>
         <div class="clog-section">
-          <div class="clog-h">🔧 改进</div>
-          <ul>
-            <li>「做建模」入口新增「论文生成」卡片</li>
-            <li>完整论文页 UI 统一新中式配色</li>
-            <li>文献检索兜底：线程化 + 20s 超时，不卡生成</li>
-          </ul>
+          <div class="clog-h">📄 论文与验证</div>
+          <p>已确认成果可整理为论文；代码运行结果、图表和引用保留可追溯记录。</p>
         </div>
       </div>
     `;
